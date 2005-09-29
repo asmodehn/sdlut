@@ -1,0 +1,64 @@
+#ifndef SDLOVERLAY
+#define SDLOVERLAY
+
+#include "SDLConfig.hh"
+#include "SDLRect.hh"
+#include "SDLDisplaySurface.hh"
+#include "SDLSurfaceFactory.hh"
+
+//TODO : test it...
+class SDLOverlay
+{
+	//address of the SDL_Overlay structure should never change
+	SDL_Overlay * const _overlay;
+	
+	typedef enum { YV12, IYUV, YUY2, UYVY, YVYU } Format;
+	static Uint32 formatConvert(Format f )
+	{
+		Uint32 format = 0;
+		switch (f)
+		{
+			case YV12 : format = SDL_YV12_OVERLAY; break;
+			case IYUV : format = SDL_IYUV_OVERLAY; break;
+			case YUY2 : format = SDL_YUY2_OVERLAY; break;
+			case UYVY : format = SDL_UYVY_OVERLAY; break;
+			case YVYU : format = SDL_YVYU_OVERLAY; break;
+			default : break;//should not happen
+		}
+		return format;
+	}
+	
+public :
+	//Constructor
+	//maybe the current display size must be used ?
+	SDLOverlay(Format f, int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, SDLDisplaySurface* dsurf = SDLSurfaceFactory::getScreen())
+	: _overlay(SDL_CreateYUVOverlay(width,height,formatConvert(f),dsurf->_surf))
+	{}
+	//Destructor
+	~SDLOverlay() { SDL_FreeYUVOverlay(_overlay);}
+	
+	//Methods
+	Format getFormat(void) const;
+	int getHeight(void) const {return _overlay->w;}
+	int getWidth(void) const {return _overlay->h;}
+	int getPlanes(void) const {return _overlay->planes;}
+	bool isHWAccel(void) const {return _overlay->hw_overlay;}
+	
+	//locks
+	bool lock(void)
+	{
+		return SDL_LockYUVOverlay(_overlay)==0;
+	}
+	void unlock(void)
+	{
+		SDL_UnlockYUVOverlay(_overlay);
+	}
+	
+	//return true of dislay is successfull
+	bool display(SDLRect r)
+	{
+		return SDL_DisplayYUVOverlay(_overlay,r._rect) == 0;
+	}
+};
+
+#endif
