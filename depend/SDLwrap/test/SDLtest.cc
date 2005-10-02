@@ -4,11 +4,14 @@
 #include <iostream>
 using namespace std;
 
+
+//would be nice if we can put that in SDLwrap.hh
 #ifdef __MINGW32__
 #ifdef main
 #undef main
 #endif
 #endif
+
 
 //global variable
 SDLRGBSurface bitmap("sample.bmp");

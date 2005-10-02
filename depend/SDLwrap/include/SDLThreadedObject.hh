@@ -27,7 +27,7 @@ protected:
 
 	//Constructeur et Destructeur
 	SDLThreadedObject();
-	~SDLThreadedObject();
+	virtual ~SDLThreadedObject();
 	
 	//lance l'execution en thread
 	int run(void * arg);

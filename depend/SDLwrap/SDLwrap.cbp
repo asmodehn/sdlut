@@ -217,14 +217,6 @@
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 		</Unit>
-		<Unit filename="include\SDLThreadedObject.hh">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
-			<Option target="test-debug"/>
-		</Unit>
 		<Unit filename="include\SDLVideoInfo.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>

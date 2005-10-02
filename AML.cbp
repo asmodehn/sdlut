@@ -6,6 +6,7 @@
 		<Option title="AML"/>
 		<Option makefile="Makefile"/>
 		<Option makefile_is_custom="0"/>
+		<Option default_target="1"/>
 		<Option compiler="0"/>
 		<Build>
 			<Target title="default">
@@ -18,52 +19,80 @@
 				<Option compiler="0"/>
 				<Option projectResourceIncludeDirsRelation="2"/>
 			</Target>
+			<Target title="test">
+				<Option output="test\AML.exe"/>
+				<Option working_dir="test"/>
+				<Option object_output="obj"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps=""/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Linker>
+					<Add library="bin\libAML.a"/>
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-pedantic"/>
+			<Add option="-Wall"/>
 			<Add directory="include"/>
 			<Add directory="depend\SDLwrap\include"/>
 		</Compiler>
+		<Linker>
+			<Add library="opengl32"/>
+			<Add library="SDL"/>
+			<Add library="SDLmain"/>
+		</Linker>
 		<Unit filename="include\AML.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
+			<Option target="test"/>
 		</Unit>
 		<Unit filename="include\AML_config.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
+			<Option target="test"/>
 		</Unit>
 		<Unit filename="include\Camera.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
+			<Option target="test"/>
 		</Unit>
 		<Unit filename="include\GraphicElement.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
+			<Option target="test"/>
 		</Unit>
 		<Unit filename="include\Layer.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
+			<Option target="test"/>
 		</Unit>
 		<Unit filename="include\Logger.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
+			<Option target="test"/>
 		</Unit>
 		<Unit filename="include\Sprite.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
+			<Option target="test"/>
 		</Unit>
 		<Unit filename="src\Camera.cc">
 			<Option compilerVar="CC"/>
@@ -84,6 +113,10 @@
 		<Unit filename="src\Sprite.cc">
 			<Option compilerVar="CC"/>
 			<Option target="default"/>
+		</Unit>
+		<Unit filename="test\test.cc">
+			<Option compilerVar="CC"/>
+			<Option target="test"/>
 		</Unit>
 	</Project>
 </Code::Blocks_project_file>
