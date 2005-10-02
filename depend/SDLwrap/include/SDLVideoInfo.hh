@@ -1,9 +1,23 @@
 #ifndef SDLVIDEOINFO_HH
 #define SDLVIDEOINFO_HH
 
-/*******************************************************************************
- * Wrap class for SDL_VideoInfo
- ******************************************************************************/
+/**
+ * \class SDLVideoInfo
+ *
+ * \ingroup Video
+ *
+ * \brief A class to wrap SDL_VideoInfo
+ *
+ * A simple singleton wrap...
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
 
 #include "SDLConfig.hh"
 #include "SDLPixelFormat.hh"

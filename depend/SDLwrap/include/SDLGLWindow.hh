@@ -1,10 +1,24 @@
 #ifndef SDLGLWINDOW_HH
 #define SDLGLWINDOW_HH
 
-/*******************************************************************************
- * Handle an OpenGL Window
- * Beware : must only be used by Surface Factory
- ******************************************************************************/
+/**
+ * \class SDLGLWindow
+ *
+ * \ingroup Video
+ *
+ * \brief This class is an OpenGL Window
+ *
+ * This class implement in C++ the behaviour of SDLDdisplaySurface when the content is 3D (OpenGL).
+ *
+ * \note should be only used by SDLSurfaceFactory for more safety...
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
 
 #include "SDLConfig.hh"
 

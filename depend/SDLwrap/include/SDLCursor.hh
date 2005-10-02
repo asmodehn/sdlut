@@ -4,6 +4,26 @@
 #include "SDLConfig.hh"
 #include "SDLPoint.hh"
 
+/**
+ * \class SDLCursor
+ *
+ * \ingroup Video
+ *
+ * \brief This class is a mouse Cursor
+ *
+ * This class wraps SDL_Cursor, and also provide a set of predefined cursors
+ *
+ * \note Feel free to add more cursors ;)
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
+
 typedef enum { arrow, blackArrow } SDLCursorShape;
 
 class SDLCursor

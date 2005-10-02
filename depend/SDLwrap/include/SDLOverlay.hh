@@ -6,6 +6,26 @@
 #include "SDLDisplaySurface.hh"
 #include "SDLSurfaceFactory.hh"
 
+/**
+ * \class SDLOverlay
+ *
+ * \ingroup Video
+ *
+ * \brief This class wraps SDL_Overlay
+ *
+ * This class implement in C++ all the SDL functions related to SDL_Overlay
+ *
+ * \note NOT TESTED YET
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
+
 //TODO : test it...
 class SDLOverlay
 {

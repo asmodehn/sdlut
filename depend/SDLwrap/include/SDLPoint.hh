@@ -3,6 +3,23 @@
 
 #include "SDLConfig.hh"
 
+/**
+ * \class SDLPoint
+ *
+ * \ingroup Video
+ *
+ * \brief This class is a Point
+ *
+ * This class wraps SDL_Rect but width and height are never used
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
 /******************************************************************************
  * Handle a Point
  * A Point is a SDL_Rect where width and height are never used.

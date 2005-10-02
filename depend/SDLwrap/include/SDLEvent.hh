@@ -3,6 +3,24 @@
 
 #include "SDLConfig.hh"
 #include "SDLEventHandler.hh"
+/**
+ * \class SDLEvent
+ *
+ * \ingroup EventHandling
+ *
+ * \brief This class wraps SDL_Event
+ *
+ * This class wraps SDL_Event and all the SDL related functions
+ *
+ * \note should only be used through SLDEventHandler for more safety...
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
 
 class SDLEvent {
 	//the adress of SDL_Event struct should never change

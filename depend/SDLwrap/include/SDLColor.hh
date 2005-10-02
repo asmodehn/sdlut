@@ -14,6 +14,23 @@
  * but optimisation with alpha can be done in SDL though.
  ******************************************************************************/
 
+
+/**
+ * \class SDLRGBColor
+ *
+ * \ingroup Video
+ *
+ * \brief This class wraps SDL_Color (without alpha)
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
+
 //TODO : Color constructor with string ("black", "yellow", "grey", etc. )
 class SDLRGBColor
 {
@@ -57,6 +74,21 @@ public:
 	
 };
 
+/**
+ * \class SDLRGBAColor (alias SDLColor)
+ * 
+ * \ingroup Video
+ *
+ * \brief This class wraps SDL_Color with alpha
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
 class SDLRGBAColor : public SDLRGBColor
 {
 //	explicit SDLRGBAColor(SDL_Color * color) : SDLRGBColor(color) {}
@@ -79,6 +111,21 @@ public:
 
 //defining an alias. Could be usefull.
 #define SDLColor SDLRGBColor
+
+/**
+ * \class SDLPalette
+ *
+ * \ingroup Video
+ *
+ * \brief This class wraps SDL_Palette
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
 
 //read-only access
 class SDLPalette

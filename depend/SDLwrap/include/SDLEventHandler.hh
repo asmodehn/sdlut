@@ -2,6 +2,24 @@
 #define SDLEVENTHANDLER_HH
 
 #include "SDLConfig.hh"
+
+/**
+ * \class SDLEventHandler
+ *
+ * \ingroup EventHandling
+ *
+ * \brief This class is an interface for classes wanted to handle SDL events
+ *
+ * This class should be derivated by the classes wanted to handle SDL events
+ * 
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
 class SDLEventHandler
 {
 public:

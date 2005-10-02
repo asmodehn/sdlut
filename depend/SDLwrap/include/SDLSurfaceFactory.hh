@@ -9,6 +9,27 @@
 #include "SDLWindow.hh"
 #include "SDLGLWindow.hh"
 
+/**
+ * \class SDLSurfaceFactory
+ *
+ * \ingroup Video
+ *
+ * \brief This class is a a Factory for SDLSurfaces.
+ *
+ * This class implement a lot of functions related to SDLSurface in an easy and obvious way.
+ * Because there is only one dislay surface, the related methods and members are static.
+ *
+ * \note maybe we wil be able in the future to get rid of this...
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
+
 /*******************************************************************************
  * This is a Factory, used to manage creation of all SDLSurfaces.
  * Because there is only one display surface, the related functions are static

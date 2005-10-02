@@ -1,10 +1,24 @@
 #ifndef SDLWINDOW_HH
 #define SDLWINDOW_HH
 
-/*******************************************************************************
- * Handle a 2D Window
- * Beware : must only be used by Surface Factory
- ******************************************************************************/
+/**
+ * \class SDLWindow
+ *
+ * \ingroup Video
+ *
+ * \brief This class is a 2DWindow
+ *
+ * This class implement in C++ the behaviour of SDLDdisplaySurface when the content is only 2D.
+ *
+ * \note should be only used by SDLSurfaceFactory for more safety...
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
 
 #include "SDLConfig.hh"
 #include "SDLDisplaySurface.hh"

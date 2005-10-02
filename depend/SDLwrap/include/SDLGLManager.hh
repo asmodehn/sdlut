@@ -3,6 +3,23 @@
 
 #include "SDLConfig.hh"
 
+/**
+ * \class SDLGLManager
+ *
+ * \ingroup Video
+ *
+ * \brief This class is an SDL - OpenGL Manager
+ *
+ * This singleton implements all the opengl related functions that SDL provides
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
 /*******************************************************************************
  * Manager of the GL state machine - Singleton
  ******************************************************************************/

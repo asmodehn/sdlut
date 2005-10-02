@@ -1,11 +1,25 @@
 #ifndef SDLRECT_HH
 #define SDLRECT_HH
 
-/******************************************************************************
- * Handle a Rect
- * A Rect is a SDLRect where width and Height are always used( by opposition to
- * Point) but the origin point can be sometimes ignored...
- *****************************************************************************/
+
+/**
+ * \class SDLRect
+ *
+ * \ingroup Video
+ *
+ * \brief This class is a Rectangle
+ *
+ * This class wraps SDL_Rect as a Rectangle (width and height are always used, by opposition to SDLPoint)
+ *
+ * \note The origin point can sometimes be ignored
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
 
 #include "SDLConfig.hh"
 #include "SDLPoint.hh"

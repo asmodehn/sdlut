@@ -1,10 +1,23 @@
 #ifndef SDLDISPLAYSURFACE_HH
 #define SDLDISPLAYSURFACE_HH
 
-/*******************************************************************************
- * Handle a Display Surface, usually used for standard 2D video
- * Also handle Window Manager basic Behaviour
- ******************************************************************************/
+/**
+ * \class SDLDisplaySurface
+ *
+ * \ingroup Video
+ * \ingroup WindowManager
+ * 
+ * \brief This class is handle a display surface and also the Window Manager behaviour.
+ *
+ * This class has two derivatives depending if your display is 2D or 3D.
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
 
 #include "SDLConfig.hh"
 #include "SDLBaseSurface.hh"

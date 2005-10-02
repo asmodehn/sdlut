@@ -1,10 +1,23 @@
 #ifndef SDLMANAGER_HH
 #define SDLMANAGER_HH
 
-/*******************************************************************************
- * Manage the global SDL state
- ******************************************************************************/
- 
+/**
+ * \class SDLManager
+ *
+ * \ingroup General
+ *
+ * \brief Manage the global SDL state
+ *
+ * Singleton to manage SDL
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
 #include "SDLConfig.hh"
 
 //#include "SDLDisplaySurface.hh"
