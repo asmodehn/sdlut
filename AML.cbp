@@ -17,7 +17,11 @@
 				<Option external_deps=""/>
 				<Option type="2"/>
 				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="2"/>
+				<Linker>
+					<Add library="depend\SDLwrap\bin\libSDLwrap.a"/>
+				</Linker>
 			</Target>
 			<Target title="test">
 				<Option output="test\AML.exe"/>
@@ -30,6 +34,7 @@
 				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Linker>
+					<Add library="depend\SDLwrap\bin\libSDLwrap.a"/>
 					<Add library="bin\libAML.a"/>
 				</Linker>
 			</Target>
@@ -66,6 +71,13 @@
 			<Option target="default"/>
 			<Option target="test"/>
 		</Unit>
+		<Unit filename="include\Display.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+			<Option target="test"/>
+		</Unit>
 		<Unit filename="include\GraphicElement.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -95,6 +107,10 @@
 			<Option target="test"/>
 		</Unit>
 		<Unit filename="src\Camera.cc">
+			<Option compilerVar="CC"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\Display.cc">
 			<Option compilerVar="CC"/>
 			<Option target="default"/>
 		</Unit>
