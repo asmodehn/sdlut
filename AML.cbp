@@ -24,7 +24,7 @@
 				</Linker>
 			</Target>
 			<Target title="test">
-				<Option output="test\AML.exe"/>
+				<Option output="test\AML-test.exe"/>
 				<Option working_dir="test"/>
 				<Option object_output="obj"/>
 				<Option deps_output=".deps"/>
@@ -93,6 +93,13 @@
 			<Option target="test"/>
 		</Unit>
 		<Unit filename="include\Logger.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+			<Option target="test"/>
+		</Unit>
+		<Unit filename="include\Math2D.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
