@@ -110,8 +110,8 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="staticlib-optimised"/>
 		</Unit>
 		<Unit filename="include\SDLCursor.hh">
 			<Option compilerVar=""/>
@@ -240,6 +240,14 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+		</Unit>
+		<Unit filename="include\SDLwrap.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="test-debug"/>
+			<Option target="staticlib-optimised"/>
 		</Unit>
 		<Unit filename="src\Interface3D.cc">
 			<Option compilerVar="CC"/>

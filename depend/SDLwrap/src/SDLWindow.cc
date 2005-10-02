@@ -50,7 +50,7 @@ bool SDLWindow::resize(int width, int height)
 {
 	
   std::cerr << "Resize start" << std::endl;
-	bool res;
+	bool res = false;
 	//proper way to do that :
 	// 1 - save the current display surface
 	
@@ -79,6 +79,7 @@ bool SDLWindow::resize(int width, int height)
     //update the pointer
     _surf=newSurf;
     
+    res = true;
     //BEWARE : According to the doc, the display surface should never be freed by the caller of SetVideoMode. SDL_Quit will handle that.
 	}
 

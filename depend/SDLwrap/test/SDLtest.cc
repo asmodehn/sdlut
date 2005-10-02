@@ -1,12 +1,4 @@
-#include "SDLManager.hh"
-#include "SDLSurfaceFactory.hh"
-#include "SDLDisplaySurface.hh"
-#include "SDLGLWindow.hh"
-#include "SDLEvent.hh"
-#include "SDLPoint.hh"
-#include "SDLRGBSurface.hh"
-#include "SDLCursor.hh"
-#include "SDLGLManager.hh"
+#include "SDLwrap.hh"
 
 #include <unistd.h>
 #include <iostream>
@@ -19,7 +11,7 @@ using namespace std;
 #endif
 
 //global variable
-SDLRGBSurface bitmap("../test-data/SDL_logo.bmp");
+SDLRGBSurface bitmap("sample.bmp");
 
 //global function :
 void resetDisplay(int newW, int newH)
@@ -129,7 +121,7 @@ when the configuration file changed...*/
 			display->blit(bitmap,SDLPoint(30,30));
 		
 		SDLSurfaceFactory smileyFactory;
-		smileyFactory.createRGBSurface("../test-data/icon.bmp");
+		smileyFactory.createRGBSurface("icon.bmp");
 		if(!smileyFactory.cloneToDisplay()) std::cerr << "clone failed" << std::endl;
 		
 		std::vector<SDLRGBSurface*> slist=smileyFactory.getSurfaceList();
