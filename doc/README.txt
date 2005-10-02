@@ -8,7 +8,7 @@ This is a Developer README for AML
 
 - Exceptions must be used wisely. Some sort of design pattern using exception to manage C wrapping in C++ has been used in SDLwrap... try to follow the idea. No exception should happen in main part of code. Idealy the core of AML should be fault tolerant ;)
 
-- In the future we want to be able to choose the library we will depend upon. So everything in "depend/[libname]wrap" folder is tied to the library used, and everything in the root folder should be as independant as possible from the library used. That means using delegation instead of heritage for example...
+- In the future we want to be able to choose the library we will depend upon. So everything in "depend/[libname]wrap" folder is tied to the library used, and everything in the root folder should be as independant as possible from the library used.
 
 - The wrapping layer for each library should idealy do the same test than the library has, but using the wrap...
 
@@ -27,6 +27,7 @@ SDL_ttf
 SDL_mixer
 OpenSceneGraph
 OpenInput
+ACE
 OGRE3D
 G3D
 AALIB
