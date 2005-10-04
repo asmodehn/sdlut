@@ -32,7 +32,7 @@ class Logger
   
     ///Default Constructor that defines the loglevel of messages stored
     Logger(Loglevel lvl = verbose, int indentwidth = 2);
-    //TODO Logger (std::string filename);
+    //TODO Logger (std::string filename, Loglevel memlvl, Loglevel filelvl);
     ///Default Destructor that flush the Log Buffer
     ~Logger();
     

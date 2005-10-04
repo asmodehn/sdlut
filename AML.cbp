@@ -43,6 +43,7 @@
 			<Add option="-pedantic"/>
 			<Add option="-Wall"/>
 			<Add directory="include"/>
+			<Add directory="depend\Common\include"/>
 			<Add directory="depend\SDLwrap\include"/>
 		</Compiler>
 		<Linker>
@@ -50,6 +51,13 @@
 			<Add library="SDL"/>
 			<Add library="SDLmain"/>
 		</Linker>
+		<Unit filename="depend\Common\include\Logger.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+			<Option target="test"/>
+		</Unit>
 		<Unit filename="include\AML.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -86,13 +94,6 @@
 			<Option target="test"/>
 		</Unit>
 		<Unit filename="include\Layer.hh">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-			<Option target="test"/>
-		</Unit>
-		<Unit filename="include\Logger.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
