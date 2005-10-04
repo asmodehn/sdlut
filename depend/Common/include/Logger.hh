@@ -5,6 +5,17 @@
 
 #include <iostream>
 
+///just a LOGINDENT value to be defined at build time. this way you have indent levels depending on built libraries
+
+#ifndef LOGINDENTLVL
+#define LOGINDENTLVL 0
+#endif
+
+#ifndef LOGINDENTWIDTH
+#define LOGINDENTWIDTH 2
+#endif
+
+
 /**
  * \class Logger
  *
@@ -31,14 +42,13 @@ class Logger
   public :
   
     ///Default Constructor that defines the loglevel of messages stored
-    Logger(Loglevel lvl = verbose, int indentwidth = 2);
-    //TODO Logger (std::string filename, Loglevel memlvl, Loglevel filelvl);
+    Logger(Loglevel lvl = verbose, int indentwidth = LOGINDENTWIDTH );
+    //TODO Logger (std::string filename, Loglevel memlvl, Loglevel filelvl, indentstuff );
     ///Default Destructor that flush the Log Buffer
     ~Logger();
     
-    bool add(std::string, Loglevel lvl);
-    bool add(int indentlevel, std::string, Loglevel lvl);
-	
+    bool add(std::string, Loglevel lvl = normal, int indentlevel = LOGINDENTLVL);
+    
     void flush(void);
     
     
@@ -50,19 +60,13 @@ inline Logger::Logger(Loglevel lvl, int indentwidth)
 	
 }
 
-inline bool Logger::add(std::string msg,Loglevel lvl)
+inline bool Logger::add(std::string msg, Loglevel lvl, int indentlevel)
 {
+	std::string s(indentlevel * _indentwidth, ' ');
 	bool getmsg = (lvl <=_loglevel);
 	if ( getmsg )
-    std::clog << msg;
+    std::clog << s << msg;
 	return getmsg;
-}
-
-inline bool Logger::add(int indentlevel, std::string msg,Loglevel lvl)
-{
-  std::string s(indentlevel * _indentwidth, ' ');
-	std::clog << s;
-	return add(msg, lvl);
 }
 
 inline void Logger::flush(void)
