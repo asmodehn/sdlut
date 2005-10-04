@@ -129,10 +129,6 @@
 			<Option compilerVar="CC"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\Logger.cc">
-			<Option compilerVar="CC"/>
-			<Option target="default"/>
-		</Unit>
 		<Unit filename="src\Sprite.cc">
 			<Option compilerVar="CC"/>
 			<Option target="default"/>

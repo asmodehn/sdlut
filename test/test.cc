@@ -17,7 +17,9 @@ int main(int argc, char* argv [] )
 	
 		Logger testlog;
 		
-		testlog.add ("blablbla");
+		testlog.add (4,"blablabla",verbose);
 		
 		return 0;
-};
+}
+
+
