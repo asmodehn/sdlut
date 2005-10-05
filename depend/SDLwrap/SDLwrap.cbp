@@ -83,14 +83,6 @@
 			<Add library="SDL"/>
 			<Add library="SDLmain"/>
 		</Linker>
-		<Unit filename="..\Common\include\Logger.hh">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
-			<Option target="staticlib-optimised"/>
-		</Unit>
 		<Unit filename="include\Interface3D.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
