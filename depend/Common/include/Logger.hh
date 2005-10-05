@@ -4,9 +4,9 @@
 #include "AML_config.hh"
 
 #include <iostream>
+#include <fstream>
 
 ///just a LOGINDENT value to be defined at build time. this way you have indent levels depending on built libraries
-
 #ifndef LOGINDENTLVL
 #define LOGINDENTLVL 0
 #endif
@@ -43,21 +43,35 @@ class Logger
   
     ///Default Constructor that defines the loglevel of messages stored
     Logger(Loglevel lvl = verbose, int indentwidth = LOGINDENTWIDTH );
-    //TODO Logger (std::string filename, Loglevel memlvl, Loglevel filelvl, indentstuff );
+    Logger(const std::string & filename, Loglevel filelvl = verbose, int indentwidth = LOGINDENTWIDTH ) throw (std::logic_error);
     ///Default Destructor that flush the Log Buffer
     ~Logger();
     
     bool add(std::string, Loglevel lvl = normal, int indentlevel = LOGINDENTLVL);
     
     void flush(void);
-    
-    
+
 };
 
 inline Logger::Logger(Loglevel lvl, int indentwidth)
 : _loglevel(lvl), _indentwidth(indentwidth)
 {
 	
+}
+
+inline Logger::Logger(const std::string & filename, Loglevel lvl, int indentwidth) throw (std::logic_error)
+try : _loglevel(lvl), _indentwidth(indentwidth)
+{
+	std::ofstream logfile(filename.c_str());
+  if ( logfile )
+    std::clog.rdbuf(logfile.rdbuf());
+  else
+    throw std::logic_error( "Failed to open " + filename );
+}
+catch (std::exception &e )
+{
+	std::cerr << "Exception catched in Logger constructor ! " << e.what();
+  std::clog << filename << " can't be opened. Going on with console log output.";
 }
 
 inline bool Logger::add(std::string msg, Loglevel lvl, int indentlevel)
