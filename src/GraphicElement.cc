@@ -62,4 +62,11 @@ bool GraphicElement::updateHalfSize(const Vector2& deltahs)
 	return true;
 }
 
+bool GraphicElement::predraw(void) const
+{
+	//draw square
+	
+	//draw X Y axis (before any transformation)
+}
+
 

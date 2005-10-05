@@ -7,7 +7,18 @@
 
 class GraphicElement
 {
-	protected : 
+	
+  protected : 
+	
+	#ifdef USE_DEPEND_SDLwrap
+	
+	static SDLRGBSurface _graphic;	
+	
+	#else 
+	
+	//TODO : throw an error on compile.
+	
+	#endif
 	
 	Vector2 _position;
 	
@@ -34,6 +45,11 @@ class GraphicElement
   virtual bool updateSize(const Vector2& deltas);
   virtual bool updateHalfSize(const Vector2& deltahs);
 	
+	//this one predraw the graphics in memory
+	bool predraw(void) const;
+	
+	//this one render the graphicElement on top of another
+	bool render(const GraphicElement& dest) const {};
 };
 
 
