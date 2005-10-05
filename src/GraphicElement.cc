@@ -69,4 +69,10 @@ bool GraphicElement::predraw(void) const
 	//draw X Y axis (before any transformation)
 }
 
+bool GraphicElement::render(const GraphicElement& dest) const
+{
+	//find the actual thing to display from the master graphic
+	//do the required tranform
+	//do the required blits
+}
 

@@ -16,7 +16,7 @@ class GraphicElement
 	
 	#else 
 	
-	//TODO : throw an error on compile.
+	#error "No library defined to handle 2D graphics"
 	
 	#endif
 	
@@ -49,7 +49,7 @@ class GraphicElement
 	bool predraw(void) const;
 	
 	//this one render the graphicElement on top of another
-	bool render(const GraphicElement& dest) const {};
+	bool render(const GraphicElement& dest) const;
 };
 
 
