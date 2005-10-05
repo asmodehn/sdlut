@@ -74,9 +74,7 @@
 		<Compiler>
 			<Add option="-pedantic"/>
 			<Add option="-W"/>
-			<Add option="-DLOGINDENTLEVEL 1"/>
 			<Add directory="include"/>
-			<Add directory="..\Common\include"/>
 		</Compiler>
 		<Linker>
 			<Add library="opengl32"/>
