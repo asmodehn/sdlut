@@ -22,6 +22,7 @@
 				<Compiler>
 					<Add option="-Wall"/>
 					<Add option="-g"/>
+					<Add option="-DLOGPREFIX=\&quot;SDLwrap.debug\&quot;"/>
 				</Compiler>
 			</Target>
 			<Target title="test-debug">
@@ -40,6 +41,7 @@
 					<Add option="-Wall"/>
 					<Add option="-pg"/>
 					<Add option="-g"/>
+					<Add option="-DLOGPREFIX=\&quot;SDLwrap-test\&quot;"/>
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
@@ -65,6 +67,7 @@
 					<Add option="-O1"/>
 					<Add option="-O"/>
 					<Add option="-W"/>
+					<Add option="-DLOGPREFIX=\&quot;SDLwrap\&quot;"/>
 				</Compiler>
 				<Linker>
 					<Add option="-s"/>
@@ -74,13 +77,23 @@
 		<Compiler>
 			<Add option="-pedantic"/>
 			<Add option="-W"/>
+			<Add option="-DLOGINDENTLVL=1"/>
 			<Add directory="include"/>
+			<Add directory="..\Common\include"/>
 		</Compiler>
 		<Linker>
 			<Add library="opengl32"/>
 			<Add library="SDL"/>
 			<Add library="SDLmain"/>
 		</Linker>
+		<Unit filename="..\Common\include\Logger.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="test-debug"/>
+			<Option target="staticlib-optimised"/>
+		</Unit>
 		<Unit filename="include\Interface3D.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>

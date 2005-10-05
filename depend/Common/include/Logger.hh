@@ -1,8 +1,6 @@
 #ifndef LOGGER_HH
 #define LOGGER_HH
 
-#include "AML_config.hh"
-
 #include <iostream>
 #include <fstream>
 
@@ -11,6 +9,12 @@
 #define LOGINDENTLVL 0
 #endif
 
+///just a LOGPREFIX value to be defined at build time. this way you can have a prefix for the whole project binary (library or executable)
+#ifndef LOGPREFIX
+#define LOGPREFIX "Default Log"
+#endif
+
+///the default tab width for the indent...
 #ifndef LOGINDENTWIDTH
 #define LOGINDENTWIDTH 2
 #endif
@@ -79,7 +83,7 @@ inline bool Logger::add(std::string msg, Loglevel lvl, int indentlevel)
 	std::string s(indentlevel * _indentwidth, ' ');
 	bool getmsg = (lvl <=_loglevel);
 	if ( getmsg )
-    std::clog << s << msg;
+    std::clog << s << LOGPREFIX << " : " << msg;
 	return getmsg;
 }
 

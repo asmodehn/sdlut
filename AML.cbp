@@ -19,6 +19,9 @@
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="2"/>
+				<Compiler>
+					<Add option="-DLOGPREFIX=\&quot;AML\&quot;"/>
+				</Compiler>
 				<Linker>
 					<Add library="depend\SDLwrap\bin\libSDLwrap.a"/>
 				</Linker>
@@ -33,6 +36,9 @@
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-DLOGPREFIX=\&quot;AML-test\&quot;"/>
+				</Compiler>
 				<Linker>
 					<Add library="depend\SDLwrap\bin\libSDLwrap.a"/>
 					<Add library="bin\libAML.a"/>
@@ -42,6 +48,7 @@
 		<Compiler>
 			<Add option="-pedantic"/>
 			<Add option="-Wall"/>
+			<Add option="-DLOGINDENTLVL=0"/>
 			<Add directory="include"/>
 			<Add directory="depend\Common\include"/>
 			<Add directory="depend\SDLwrap\include"/>
