@@ -26,6 +26,8 @@
  * \brief This class defines loglevel on top of clog
  *
  * This Logger use indentation levels, and also filters using 3 loglevel : quiet / normal / verbose
+ * TODO : need to be improved to be used with stream as well as strings.
+ * TODO : Improve LogLevels to filter the console output as well as the file output...
  *
  * \author Alex
  *
@@ -38,52 +40,58 @@
 
 typedef enum {quiet,normal,verbose} Loglevel;
 
-class Logger
+class Logger : public std::ostream
 {
   Loglevel _loglevel;
 	int _indentwidth;
+	std::string _logprefix;
 	
   public :
   
     ///Default Constructor that defines the loglevel of messages stored
-    Logger(Loglevel lvl = verbose, int indentwidth = LOGINDENTWIDTH );
-    Logger(const std::string & filename, Loglevel filelvl = verbose, int indentwidth = LOGINDENTWIDTH ) throw (std::logic_error);
+    Logger(const std::string & LogPrefix = LOGPREFIX,Loglevel lvl = verbose, int indentwidth = LOGINDENTWIDTH );
+    
     ///Default Destructor that flush the Log Buffer
     ~Logger();
     
-    bool add(std::string, Loglevel lvl = normal, int indentlevel = LOGINDENTLVL);
+    bool setLogfile( const std::string & filename,  Loglevel outlvl);
+    
+    bool add(const std::string& message, Loglevel lvl = normal, int indentlevel = LOGINDENTLVL);
     
     void flush(void);
 
 };
 
-inline Logger::Logger(Loglevel lvl, int indentwidth)
-: _loglevel(lvl), _indentwidth(indentwidth)
+inline Logger::Logger(const std::string & LogPrefix,Loglevel lvl, int indentwidth)
+: _loglevel(lvl), _indentwidth(indentwidth),_logprefix(LogPrefix)
 {
 	
 }
 
-inline Logger::Logger(const std::string & filename, Loglevel lvl, int indentwidth) throw (std::logic_error)
-try : _loglevel(lvl), _indentwidth(indentwidth)
+inline bool Logger::setLogfile( const std::string & filename, Loglevel outlvl)
 {
+	bool res=false;
+	// TODO : improve that to filter the messages by level.
 	std::ofstream logfile(filename.c_str());
   if ( logfile )
+  {
     std::clog.rdbuf(logfile.rdbuf());
+    res=true;
+  }
   else
-    throw std::logic_error( "Failed to open " + filename );
-}
-catch (std::exception &e )
-{
-	std::cerr << "Exception catched in Logger constructor ! " << e.what();
-  std::clog << filename << " can't be opened. Going on with console log output.";
+  {
+    add("Failed to open " + filename );
+  }
+  return res;
 }
 
-inline bool Logger::add(std::string msg, Loglevel lvl, int indentlevel)
+
+inline bool Logger::add( const std::string & msg, Loglevel lvl, int indentlevel)
 {
 	std::string s(indentlevel * _indentwidth, ' ');
 	bool getmsg = (lvl <=_loglevel);
 	if ( getmsg )
-    std::clog << s << LOGPREFIX << " : " << msg;
+    std::clog << s << _logprefix << " : " << msg << "\n";
 	return getmsg;
 }
 

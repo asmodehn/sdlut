@@ -35,6 +35,7 @@
 #include <string>
 #include <stdexcept>
 #include <vector>
+#include "Logger.hh"
 
 //Debug Constants
 #define SDLUserInput_DEBUG

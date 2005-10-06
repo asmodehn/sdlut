@@ -1,4 +1,5 @@
 #include "SDLwrap.hh"
+#include "Logger.hh"
 
 #include <unistd.h>
 #include <iostream>
@@ -59,17 +60,25 @@ public:
 //Main Program
 int main(int argc, char** argv)
 {
+	
+  Logger testlog("Test Log");
+		
 	//Setup example
 
+	testlog.add(" Enabling SDL Video... ");
 	SDLManager::enableVideo();
 	SDLManager::manager()->debug();
 
+
+  testlog.add(" Checking SDL Video Info... ");
 	//Getting video informations
 	SDLVideoInfo::Info()->debug();
 
+  testlog.add(" Creating the User Interface... ");
 	//UI Creation
 	MyUserInput ui;
 
+  testlog.add(" Creating the SDL Cursor... ");
 	SDLCursor cursor(blackArrow);
 	cursor.show();
 	SDLCursor::setCurrent(cursor);
@@ -85,7 +94,8 @@ when the configuration file changed...*/
 	//Checking available video Modes
 	if(!SDLSurfaceFactory::setDisplayFlags())
 	{
-		std::cout << "\nThe required mode is not available !" << std::endl;
+		std::cerr << "\nThe required mode is not available !" << std::endl;
+		exit(1);
 	}
 	else
 	{
@@ -151,7 +161,9 @@ when the configuration file changed...*/
 	
 	//First test ended : go on to test OPENGL
 	
-	std::cout << " OPENGL activation... " << std::endl;
+	testlog.add(" OPENGL activation... ",quiet);
+	
+	
 	if(!SDLSurfaceFactory::setDisplayFlags(true))
 	{
 		std::cout << "\nThe required mode is not available !" << std::endl;
