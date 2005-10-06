@@ -52,7 +52,7 @@
   */
 
 /**
-  * \defgroup Interfaces
+  * \defgroup Other
   */
 #include "Interface3D.hh"
 

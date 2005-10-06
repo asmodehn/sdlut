@@ -15,9 +15,6 @@
 
 SDLManager* SDLManager::_uniqueInstance = NULL;
 
-//Logger always enabled..
-Logger* SDLManager::_SDLlog=new Logger("SDLwrap.log");
-
 SDLManager::SDLManager(Uint32 flags) throw (std::logic_error)
 try
 {

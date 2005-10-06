@@ -33,6 +33,7 @@
 //utils
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <stdexcept>
 #include <vector>
 #include "Logger.hh"
@@ -44,5 +45,28 @@
 //Error Messages
 #define SDLERROR std::cerr << SDL_GetError() << std::endl
 #define LIB_ERROR(str) std::cerr << " ERROR ==> " << str << std::endl
+
+/**
+ * \class SDLConfig
+ *
+ * \ingroup Other
+ * 
+ * \brief This class gather the common objects that all the SDL classes may be able to access
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
+class SDLConfig
+{
+  static Logger *	_SDLlog;
+public:
+  SDLConfig(void) {_SDLlog->setLogfile("SDLwrap.log");}
+  static inline  Logger * getLog(void) {return _SDLlog;}
+};
 
 #endif

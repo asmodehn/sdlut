@@ -97,11 +97,13 @@ bool SDLDisplaySurface::update(std::vector<SDLRect> rlist)
 void SDLDisplaySurface::debug(void) const
 {
 	SDLBaseSurface::debug();
-	
-	std::cout 	<< std::boolalpha << "- Fullscreen ? " << isFullScreenset() << "\n"
+	std::stringstream logstr;
+	logstr<< std::boolalpha << "- Fullscreen ? " << isFullScreenset() << "\n"
 				<< "- Resizable ? " << isResizableset() << "\n"
 				<< "- NoFrame ? " << isNoFrameset() << "\n"
 				<< "- AnyFormat ? " << isAnyFormatset() << "\n"
-				<< "- Double Buffered ? " << isDoubleBufset()
-				<< std::endl;
+				<< "- Double Buffered ? " << isDoubleBufset();
+  SDLConfig::getLog()->add(logstr.str(),verbose);
+  //tmp
+  SDLConfig::getLog()->flush();
 }

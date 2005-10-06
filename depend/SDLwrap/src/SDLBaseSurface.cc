@@ -184,7 +184,8 @@ SDLRect SDLBaseSurface::getClipRect(void) const
 
 void SDLBaseSurface::debug(void) const
 {
-	std::cout	<< "\nSDL*Surfaces::debug()" << "\n"
+	std::stringstream logstr;
+	logstr<< "\nSDL*Surfaces::debug()" << "\n"
 				<< "- Height = " << getHeight() << "\n"
 				<< "- Width = " << getWidth() << "\n"
 				<< "- bpp = " << getBPP() << "\n"
@@ -193,6 +194,8 @@ void SDLBaseSurface::debug(void) const
 				<< "- HW ? " << isHWset() << "\n"
 				<< "- HWAccel ? " << isHWAccelset() << "\n"
 				<< "- RLEAccel ? " << isRLEAccelset() << "\n"
-				<< "- PreAlloc ? " << isPreAllocset()
-				<< std:: endl;
+				<< "- PreAlloc ? " << isPreAllocset();
+  SDLConfig::getLog()->add(logstr.str(),verbose);
+  //tmp
+  SDLConfig::getLog()->flush();
 }

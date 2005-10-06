@@ -40,7 +40,7 @@
 
 typedef enum {quiet,normal,verbose} Loglevel;
 
-class Logger : public std::ostream
+class Logger
 {
   Loglevel _loglevel;
 	int _indentwidth;
@@ -54,10 +54,10 @@ class Logger : public std::ostream
     ///Default Destructor that flush the Log Buffer
     ~Logger();
     
-    bool setLogfile( const std::string & filename,  Loglevel outlvl);
+    bool setLogfile( const std::string & filename,  Loglevel outlvl = verbose);
     
     bool add(const std::string& message, Loglevel lvl = normal, int indentlevel = LOGINDENTLVL);
-    
+        
     void flush(void);
 
 };
@@ -94,6 +94,7 @@ inline bool Logger::add( const std::string & msg, Loglevel lvl, int indentlevel)
     std::clog << s << _logprefix << " : " << msg << "\n";
 	return getmsg;
 }
+
 
 inline void Logger::flush(void)
 {

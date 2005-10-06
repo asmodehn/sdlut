@@ -30,7 +30,6 @@
 class SDLManager
 {
 	static SDLManager * _uniqueInstance;
-  static Logger * _SDLlog;
 
 protected:
 	SDLManager(Uint32 flags = SDL_INIT_EVERYTHING) throw (std::logic_error);
@@ -76,9 +75,6 @@ public:
 	inline bool isJoystickEnabled(void) {return SDL_WasInit(SDL_INIT_JOYSTICK);}
 	inline bool isNoParachuteEnabled(void) {return SDL_WasInit(SDL_INIT_NOPARACHUTE);}
 	inline bool isEventThreadEnabled(void) {return SDL_WasInit(SDL_INIT_EVENTTHREAD);}
-
-  //Get the pointer to the Log
-  inline Logger* getLog(void) {return _SDLlog;}
 
 	//display all Informations
 	void debug(void);
