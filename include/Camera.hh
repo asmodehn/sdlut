@@ -15,6 +15,14 @@ class Camera : public GraphicElement
   
   static Camera * getCamera(unsigned int index);
   
+  #ifdef USE_DEPEND_SDLwrap
+	
+	void setRenderArea( SDLBaseSurface * _graphic );
+	
+	#else 
+	#error "No library defined to handle 2D graphics"
+  #endif
+
 };
 
 

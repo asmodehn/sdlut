@@ -13,3 +13,8 @@ Camera * Camera::getCamera(unsigned int index)
 	return cameraList.at(index);
 	else return NULL;
 }
+
+void Camera::setRenderArea( SDLBaseSurface * render )
+{
+	_graphic=render;
+}

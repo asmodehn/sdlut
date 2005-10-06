@@ -12,7 +12,8 @@ class GraphicElement
 	
 	#ifdef USE_DEPEND_SDLwrap
 	
-	static SDLRGBSurface * _graphic;	
+	//BEWARE : can be NULL (if uninitialised yet because unused for example) -> should always be tested !
+	SDLBaseSurface * _graphic;	
 	
 	#else 
 	

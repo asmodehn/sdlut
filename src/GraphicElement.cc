@@ -9,6 +9,7 @@ GraphicElement::GraphicElement( const GraphicElement & ge )
 :_position(ge._position),_halfSize(ge._halfSize)
 {
 }
+
 GraphicElement::~GraphicElement (void)
 {
 }

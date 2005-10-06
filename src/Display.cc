@@ -1,12 +1,15 @@
 #include "Display.hh"
 
+SDLDisplaySurface * Display::_display=NULL;	
+
 Display::Display(int width, int height) throw (std::logic_error)
 try{
 	#ifdef USE_DEPEND_SDLwrap
 	
 	SDLSurfaceFactory::setDisplaySize(width,height);
-	//BEWARE : we HAVE TO BE SURE that the screen is created here...
-	if ( NULL == SDLSurfaceFactory::createDisplay("AML Application","../data/SDL.ico") )
+	//BEWARE : we HAVE TO BE SURE that the actual SDLDisplaySurface is created here...
+	_display=SDLSurfaceFactory::createDisplay("AML Application","../data/SDL.ico");
+	if ( NULL == _display )
     throw std::logic_error("SDLDisplaySurface creation failed !");
   //otherwise the display creation fail as well.
   
@@ -21,6 +24,7 @@ try{
 	{
 		_camera = new Camera();
 	}
+	_camera->setRenderArea(_display);
 	
 }
 catch (std::exception& e)
