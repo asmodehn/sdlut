@@ -1,7 +1,7 @@
 #ifndef GRAPHICELEMENT_HH
 #define GRAPHICELEMENT_HH
 
-#include "AML_config.hh"
+#include "Config.hh"
 
 #include "Math2D.hh"
 
@@ -12,7 +12,7 @@ class GraphicElement
 	
 	#ifdef USE_DEPEND_SDLwrap
 	
-	static SDLRGBSurface _graphic;	
+	static SDLRGBSurface * _graphic;	
 	
 	#else 
 	

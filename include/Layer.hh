@@ -1,7 +1,7 @@
 #ifndef LAYER_HH
 #define LAYER_HH
 
-#include "AML_config.hh"
+#include "Config.hh"
 
 #include "GraphicElement.hh"
 

@@ -11,13 +11,14 @@
 #define M_1_PI (1.0 / 3.14159265)
 #endif
 
-//global double tolerance
-double tolerance = 10e-10;
-//MAGIC NUMBER !!! CAREFULL...
-//HAS TO BE DONE BETTER LATER...
-
 class Vector2
 {
+	
+  //global double tolerance
+  static const int precision = -10;
+  //MAGIC NUMBER !!! CAREFULL...
+  //HAS TO BE DONE BETTER LATER...
+
 	private :
 	
   double _x,_y;
@@ -120,6 +121,7 @@ inline double Vector2::magnitude(void) const
 inline  void Vector2::normalize(void)
 {
 	double m = magnitude();
+	double tolerance = pow(10,precision);
 	if ( m <= tolerance ) m = 1;
 	_x /= m;
 	_y /= m;

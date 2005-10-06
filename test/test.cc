@@ -17,7 +17,13 @@ int main(int argc, char* argv [] )
 	
 		Logger testlog;
 		
-		testlog.add ("blablabla",verbose);
+		//mandatory call to initialize
+		Config conf;
+		
+		//creating the display
+		Display screen;
+		
+		testlog.add ("Display created");
 		
 		return 0;
 }

@@ -1,12 +1,20 @@
 #ifndef CAMERA_HH
 #define CAMERA_HH
 
-#include "AML_config.hh"
+#include "Config.hh"
 
 #include "GraphicElement.hh"
 
 class Camera : public GraphicElement
 {
+	private:
+		static std::vector<Camera*> cameraList;
+  
+  public:
+  Camera(void);
+  
+  static Camera * getCamera(unsigned int index);
+  
 };
 
 
