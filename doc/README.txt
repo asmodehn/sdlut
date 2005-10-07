@@ -33,5 +33,6 @@ G3D
 AALIB
 NCURSES
 NGL/NUI
+Cairo/Glitz
 
 TODO : A Poll on the website to prioritise the work.
