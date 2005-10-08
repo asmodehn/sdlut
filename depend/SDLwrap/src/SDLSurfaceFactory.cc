@@ -136,7 +136,7 @@ bool SDLSurfaceFactory::setRGBFlags( bool SWSURFACE, bool HWSURFACE, bool SRCCOL
 	return true;
 }
 
-SDLRGBSurface* SDLSurfaceFactory::createRGBSurface(void)
+unsigned int SDLSurfaceFactory::createRGBSurface(void)
 {
 	SDLRGBSurface* surf = NULL;
 	try
@@ -150,10 +150,10 @@ SDLRGBSurface* SDLSurfaceFactory::createRGBSurface(void)
 	}
 	if (surf!=NULL)
 		surfaceList.insert(surfaceList.end(),surf);
-	return surf;
+	return surfaceList.size()-1;
 }
 
-SDLRGBSurface* SDLSurfaceFactory::createRGBSurface(int width , int height , SDLColor color )
+unsigned int SDLSurfaceFactory::createRGBSurface(int width , int height , SDLColor color )
 {
 	SDLRGBSurface* surf = NULL;
 	try
@@ -168,10 +168,10 @@ SDLRGBSurface* SDLSurfaceFactory::createRGBSurface(int width , int height , SDLC
 	}
 	if (surf!=NULL)
 		surfaceList.insert(surfaceList.end(),surf);
-	return surf;
+	return surfaceList.size()-1;
 }
 
-SDLRGBSurface* SDLSurfaceFactory::createRGBSurface(void* pixeldata, int depth, int pitch)
+unsigned int SDLSurfaceFactory::createRGBSurface(void* pixeldata, int depth, int pitch)
 {
 	SDLRGBSurface* surf = NULL;
 	try
@@ -185,10 +185,10 @@ SDLRGBSurface* SDLSurfaceFactory::createRGBSurface(void* pixeldata, int depth, i
 	}
 	if (surf!=NULL)
 		surfaceList.push_back(surf);
-	return surf;
+	return surfaceList.size()-1;
 }
 
-SDLRGBSurface* SDLSurfaceFactory::createRGBSurface( std::string filename )
+unsigned int SDLSurfaceFactory::createRGBSurface( std::string filename )
 {
 	SDLRGBSurface* surf = NULL;
 	try
@@ -202,58 +202,58 @@ SDLRGBSurface* SDLSurfaceFactory::createRGBSurface( std::string filename )
 	}
 	if (surf!=NULL)
 		surfaceList.push_back(surf);
-	return surf;
+	return surfaceList.size()-1;
 }
 
 //recent add to enable background on file load if needed... 18/08/2005 - Alex
 //TO TEST !
-SDLRGBSurface* SDLSurfaceFactory::createRGBSurface( std::string filename, SDLRGBColor bgcolor )
+unsigned int SDLSurfaceFactory::createRGBSurface( std::string filename, SDLRGBColor bgcolor )
 {
-	SDLRGBSurface* fsurf = createRGBSurface(filename);
-	SDLRGBSurface* csurf = createRGBSurface(fsurf->getWidth(),fsurf->getHeight(), bgcolor);
+	SDLRGBSurface* fsurf = getSurface(createRGBSurface(filename));
+	SDLRGBSurface* csurf = getSurface(createRGBSurface(fsurf->getWidth(),fsurf->getHeight(), bgcolor));
 	
 	csurf->blit(*fsurf);
-	return csurf;
+  if (csurf!=NULL)
+		surfaceList.push_back(csurf);
+	return surfaceList.size()-1;
 }
 
 //clone an RGBSurface.
-bool SDLSurfaceFactory::clone(int index,int times) // clone the one on index
+unsigned int SDLSurfaceFactory::clone(int index,int times) // clone the one on index
 {
-	bool res = true;
 	SDLRGBSurface* toClone = surfaceList.at(index);
 	try //before the loop, because if one fail, the others should fail also...
 	{
 		for(int i=0; i<times ; i++)
 		{
 			SDLRGBSurface* s = new SDLRGBSurface(*toClone,true,false,toClone->isSRCAlphaset());
-			if (s == NULL) { res = false; break;}//Is this line still usefull with exception handling ??
-			surfaceList.push_back(s);
+			if (s != NULL)
+        surfaceList.push_back(s);
 		}
 	}
 	catch (std::exception & e)
 	{
-		LIB_ERROR(e.what()); res=false;
+		LIB_ERROR(e.what());
 	}
-	return res;
+  return surfaceList.size()-1;;
 }
 
-bool SDLSurfaceFactory::cloneToDisplay(int index,int times, bool alpha) // clone the one on index, optimized for display
+unsigned int SDLSurfaceFactory::cloneToDisplay(int index,int times, bool alpha) // clone the one on index, optimized for display
 {
-	bool res = true;
 	SDLRGBSurface* toClone = surfaceList.at(index);
 	try //before the loop, because if one fail, the others should fail also...
 	{
 		for(int i=0; i<times ; i++)
 		{
 			SDLRGBSurface* s = new SDLRGBSurface(*toClone,true,true,alpha);
-			if (s == NULL) { res = false; break;}//Is this line still usefull with exception handling ??
-			surfaceList.push_back(s);
+			if (s != NULL)
+			  surfaceList.push_back(s);
 		}
 	}
 	catch (std::exception & e)
 	{
-		LIB_ERROR(e.what()); res=false;
+		LIB_ERROR(e.what());
 	}
-	return res;
+	return surfaceList.size()-1;
 }
 

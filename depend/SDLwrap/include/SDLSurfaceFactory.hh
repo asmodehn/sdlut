@@ -119,22 +119,25 @@ public:
     {
 		RGBBPP = bpp; 
 	}
-	//returns NULL if the RGB Surface cannot be created
-	SDLRGBSurface* createRGBSurface(void);
-    SDLRGBSurface* createRGBSurface(int width , int height , SDLColor color = SDLColor() );
-    SDLRGBSurface* createRGBSurface(void* pixeldata, int depth, int pitch);
+	//return the index of the created surface in the list
+	//if the surface cannot be created return the last created surface
+	  unsigned int createRGBSurface(void);
+    unsigned int createRGBSurface(int width , int height , SDLColor color = SDLColor() );
+    unsigned int createRGBSurface(void* pixeldata, int depth, int pitch);
     //creates surfaces from picture files.
-    SDLRGBSurface* createRGBSurface( std::string filename );
+    unsigned int createRGBSurface( std::string filename );
     //same than above. Also allows you to specify a background if the picture file has some transparency
-    SDLRGBSurface* createRGBSurface( std::string filename, SDLRGBColor bgcolor );
+    unsigned int createRGBSurface( std::string filename, SDLRGBColor bgcolor );
     //Handy method to clone the last created RGBSurface.
-    inline bool clone(int times = 1) // clone the last
+    inline unsigned int clone(int times = 1) // clone the last
     {	return clone(surfaceList.size()-1,times); }
-    bool clone(int index,int times = 1); // clone the one on index
-    inline bool cloneToDisplay(int times = 1, bool alpha = false) // clone the last, optimized for display
+    unsigned int clone(int index,int times = 1); // clone the one on index
+    inline unsigned int cloneToDisplay(int times = 1, bool alpha = false) // clone the last, optimized for display
     {	return cloneToDisplay(surfaceList.size()-1,times,alpha); }
-    bool cloneToDisplay(int index,int times = 1, bool alpha = false); // clone the one on index, optimized for display
+    unsigned int cloneToDisplay(int index,int times = 1, bool alpha = false); // clone the one on index, optimized for display
     //access to RGBSurface created by the Factory
+    inline SDLRGBSurface* getSurface(unsigned int index) {return surfaceList.at(index);}
+    //is that really usefull ??
     inline std::vector<SDLRGBSurface*> getSurfaceList(void) { return surfaceList; }
     
 };
