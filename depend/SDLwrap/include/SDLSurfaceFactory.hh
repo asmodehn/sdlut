@@ -128,12 +128,10 @@ public:
     unsigned int createRGBSurface( std::string filename );
     //same than above. Also allows you to specify a background if the picture file has some transparency
     unsigned int createRGBSurface( std::string filename, SDLRGBColor bgcolor );
-    //Handy method to clone the last created RGBSurface.
-    inline unsigned int clone(int times = 1) // clone the last
-    {	return clone(surfaceList.size()-1,times); }
+
+    //Handy method to clone a RGBSurface already in the Factory
     unsigned int clone(int index,int times = 1); // clone the one on index
-    inline unsigned int cloneToDisplay(int times = 1, bool alpha = false) // clone the last, optimized for display
-    {	return cloneToDisplay(surfaceList.size()-1,times,alpha); }
+
     unsigned int cloneToDisplay(int index,int times = 1, bool alpha = false); // clone the one on index, optimized for display
     //access to RGBSurface created by the Factory
     inline SDLRGBSurface* getSurface(unsigned int index) {return surfaceList.at(index);}

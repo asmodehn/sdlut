@@ -7,7 +7,10 @@
 
 class Sprite : public GraphicElement
 {
-	int refnumber;
+	static SDLSurfaceFactory * _graphics;
+	static unsigned int _referencecount;
+	
+	unsigned int _graphicIndex;
 	
   public:
 	//constructor : just pass the file containing the sprite
