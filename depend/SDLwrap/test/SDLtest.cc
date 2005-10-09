@@ -134,8 +134,8 @@ when the configuration file changed...*/
 			display->blit(bitmap,SDLPoint(30,30));
 		
 		SDLSurfaceFactory smileyFactory;
-		smileyFactory.createRGBSurface("icon.bmp");
-		if(!smileyFactory.cloneToDisplay()) std::cerr << "clone failed" << std::endl;
+		int index=smileyFactory.createRGBSurface("icon.bmp");
+		if(!smileyFactory.cloneToDisplay(index)) std::cerr << "clone failed" << std::endl;
 		
 		std::vector<SDLRGBSurface*> slist=smileyFactory.getSurfaceList();
 		std::cout << "taille = " << slist.size() << std::endl;

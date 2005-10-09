@@ -76,6 +76,22 @@ public:
 	SDLRect inf(const SDLRect & r);
 	//Return the shorter Rect containing the both Rects
 	SDLRect sup(const SDLRect & r);
+
+  //scalar operations
+  inline SDLRect& operator*=(int s)
+  { _rect->w *= s; _rect->h *= s; return *this; }
+
+  inline SDLRect& operator/=(int s)
+  { _rect->w /= s; _rect->h /= s;	return *this; }
+
+  inline friend SDLRect operator*(int s, const SDLRect& u)
+  {	return SDLRect ( u._rect->w * s, u._rect->h * s ); }
+
+	inline friend SDLRect operator*(const SDLRect& u, int s)
+  {	return SDLRect ( u._rect->w * s, u._rect->h * s ); }
+
+  inline friend SDLRect operator/(const SDLRect& u, int s)
+  { return SDLRect ( u._rect->w / s, u._rect->h / s ); }
 	
 	//TODO growCenter, growCorner, rotate90, rotate180, rotate270
 	
