@@ -1,5 +1,7 @@
 #include "Config.hh"
 
+SDLDisplaySurface * Config::_screen=NULL;	
+
 Config * Config::_uniqueInstance=NULL;
 
 Config::Config(void)
@@ -30,6 +32,14 @@ Config * Config::getConfig()
 {
 	if (_uniqueInstance == NULL)
 		_uniqueInstance=new Config();
+	return _uniqueInstance;
+
+}
+
+Config * Config::setConfig(bool video, bool audio, bool cdrom, bool joystick, bool timer)
+{
+	if (_uniqueInstance == NULL)
+		_uniqueInstance=new Config( video, audio, cdrom, joystick, timer);
 	return _uniqueInstance;
 
 }

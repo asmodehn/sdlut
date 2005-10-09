@@ -6,6 +6,7 @@
 
 class Display
 {
+	
   protected : 
 	
 	#ifdef USE_DEPEND_SDLwrap
@@ -25,6 +26,7 @@ class Display
 	
   Display(int width = 640, int height = 480) throw (std::logic_error) ;
   
+  bool update(void);
 };
 
 #endif

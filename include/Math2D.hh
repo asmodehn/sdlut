@@ -11,6 +11,7 @@
 #define M_1_PI (1.0 / 3.14159265)
 #endif
 
+//TODO : template !!! to be able to use int, float, etc...
 class Vector2
 {
 	

@@ -5,52 +5,58 @@
 
 #include "Math2D.hh"
 
+
+
 class GraphicElement
 {
 	
   protected : 
 	
-	#ifdef USE_DEPEND_SDLwrap
+	//implementing a sort of dependency tree for GraphicElements :
 	
-	//BEWARE : can be NULL (if uninitialised yet because unused for example) -> should always be tested !
-	SDLBaseSurface * _graphic;	
-	
-	#else 
-	
-	#error "No library defined to handle 2D graphics"
-	
-	#endif
-	
-	Vector2 _position;
-	
-	Vector2 _halfSize;
+	//to manage calls and UPWARDS dependencies in the tree
+	GraphicElement * _referent;
+	unsigned int _referentID;
 	
 	
+	//methods to handle the Graphic referent calls(scene tree from nodes to root)
+  virtual bool setreferent(GraphicElement * referent);
+  void delreferent(void);
+		
+	//to manage calls and DOWNWARDS dependencies in the tree
+	//TODO : think about KDTree to handle that more efficiently... LATER
+  std::vector<GraphicElement * >_referee;
+	std::vector<Vector2>_position;
+
+
+  //to update the referee position
+  bool translate(unsigned int index, const Vector2& deltap);
+  
+  
+  
+  
+  
+  
 	public :
   
-  GraphicElement( const Vector2& position = Vector2( 0.0 , 0.0 ) , const Vector2& halfSize = Vector2( 0.0 , 0.0 ) );
+  //default constructor
+  GraphicElement( );
+  //copy constructor
   GraphicElement( const GraphicElement & ge );
+  //Default destructor
   virtual ~GraphicElement(void);
   
-  //position manipulators
-  Vector2 getPosition(void);
-  void setPosition(const Vector2& p);
-  //this one might be derivated... and if so make some test about the possibility to update the position
-  virtual bool updatePosition(const Vector2& deltap);
+  
+//to update my position (calling _referent->move(int, const Vector2&) )
+	bool move(const Vector2& deltap);
+  
+  //methods to handle the Graphic referee calls(scene tree from root to nodes)
+  virtual unsigned int add(GraphicElement * referee,const Vector2& position = Vector2 (0.0,0.0));
+  virtual bool update(unsigned int index, GraphicElement * referee,const Vector2& position = Vector2 (0.0,0.0));
+  void remove(unsigned int index);
 	
-	Vector2 getHalfSize(void);
-	Vector2 getSize(void);
-	void setSize(const Vector2& s);
-	void setHalfSize(const Vector2& hs);
-	//these two might be derivated... and if so make some test about the possibility to update the position
-  virtual bool updateSize(const Vector2& deltas);
-  virtual bool updateHalfSize(const Vector2& deltahs);
-	
-	//this one predraw the graphics in memory
-	bool predraw(void) const;
-	
-	//this one render the graphicElement on top of another
-	bool render(const GraphicElement& dest) const;
+  void render(unsigned int myPixCenterX, unsigned int myPixCenterY);
+
 };
 
 

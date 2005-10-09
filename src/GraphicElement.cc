@@ -1,12 +1,10 @@
 #include "GraphicElement.hh"
 
-GraphicElement::GraphicElement( const Vector2& position, const Vector2& halfSize)
-:_position(position),_halfSize(halfSize)
+GraphicElement::GraphicElement( )
 {
 }
 
 GraphicElement::GraphicElement( const GraphicElement & ge )
-:_position(ge._position),_halfSize(ge._halfSize)
 {
 }
 
@@ -14,68 +12,67 @@ GraphicElement::~GraphicElement (void)
 {
 }
 
-Vector2 GraphicElement::getPosition(void)
+bool GraphicElement::setreferent(GraphicElement * referent)
 {
-	return _position;
-}
-
-void GraphicElement::setPosition(const Vector2& p)
-{
-	_position = p;
-}
-
-bool GraphicElement::updatePosition(const Vector2& deltap)
-{
-	_position += deltap;
+	_referent=referent;
 	return true;
 }
 
-Vector2 GraphicElement::getHalfSize(void)
+void GraphicElement::delreferent(void)
 {
-	return _halfSize;
+	_referent=NULL;
 }
 
-Vector2 GraphicElement::getSize(void)
+//methods to handle the Graphic referee (scene tree from root to nodes)
+//virtual or not ???
+unsigned int GraphicElement::add(GraphicElement * referee, const Vector2& position)
 {
-	return 2 * _halfSize;
+	_referee.push_back(referee);
+	_position.push_back(position);
+	referee->setreferent(this);
+	return _referee.size()-1;
 }
 
-void GraphicElement::setSize(const Vector2& s)
+bool GraphicElement::update(unsigned int index, GraphicElement * referee, const Vector2& position)
 {
-	_halfSize = s / 2;
-}
-
-void GraphicElement::setHalfSize(const Vector2& hs)
-{
-	_halfSize = hs;
-}
-
-//these two might be derivated... and if so make some test about how to update the position
-bool GraphicElement::updateSize(const Vector2& deltas)
-{
-	_halfSize+= deltas / 2;
+	_referee.at(index)->delreferent();
+	_referee.at(index)=referee;
+	_position.at(index)=position;
+	referee->setreferent(this);
 	return true;
 }
 
-bool GraphicElement::updateHalfSize(const Vector2& deltahs)
+void GraphicElement::remove(unsigned int index)
 {
-	_halfSize+= deltahs;
+	_referee.at(index)->delreferent();
+	std::vector<GraphicElement*>::iterator it=_referee.begin()+index;
+	_referee.erase(it);
+}
+
+//to update the position
+bool GraphicElement::translate(unsigned int index, const Vector2& deltap)
+{
+	_position.at(index)+=deltap;
 	return true;
 }
 
-bool GraphicElement::predraw(void) const
+
+bool GraphicElement::move(const Vector2& deltap)
 {
-	//draw square
-	
-	//draw X Y axis (before any transformation)
-	return false;
+	bool res=false;
+	//only if we have a referent
+	if (_referent!=NULL)
+    res=_referent->translate(_referentID,deltap);
+	return res;
 }
 
-bool GraphicElement::render(const GraphicElement& dest) const
+void GraphicElement::render(unsigned int myPixCenterX, unsigned int myPixCenterY)
 {
-	//find the actual thing to display from the master graphic
-	//do the required tranform
-	//do the required blits
-	return false;
+	for ( unsigned int i=0;  i<_referee.size(); i++ )
+	{
+		Vector2 pos=_position[i];
+		_referee[i]->render(static_cast<int>(pos.x())-myPixCenterX,static_cast<int>(pos.y())-myPixCenterY);
+  }
 }
+
 

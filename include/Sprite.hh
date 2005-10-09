@@ -5,9 +5,9 @@
 
 #include "GraphicElement.hh"
 
-class Sprite : public GraphicElement
+class Sprite : public GraphicElement //TODO : NEED to prevent access to base class methods handling referee...
 {
-	static SDLSurfaceFactory * _graphics;
+	static SDLSurfaceFactory * _graphicMaster;
 	static unsigned int _referencecount;
 	
 	unsigned int _graphicIndex;
@@ -20,6 +20,19 @@ class Sprite : public GraphicElement
 	
 	~Sprite();
 	
+  //to use the size
+	SDLRect getSize(void);
+	
+	//this one predraw a bounding box and axis on top of _graphic.
+	// TO DO AND IMPROVE
+	bool drawBox(void) const;
+	
+	
+ //to update my position (calling _referent->move(int, const Vector2&) )
+	bool move(const Vector2& deltap);
+	
+	//TODO
+	void render(unsigned int myPixCenterX, unsigned int myPixCenterY);
 };
 
 
