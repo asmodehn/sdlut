@@ -33,11 +33,10 @@ bool SDLSurfaceFactory::setDisplaySize( int width, int height)
 {
 	displayWidth = width; displayHeight = height;
 	int new_bpp=checkVideoMode();
-	if ( new_bpp==0)  return false;
+	if (new_bpp)
+    setDisplayBPP ( new_bpp );
 	else 
-	{
-		setDisplayBPP ( new_bpp );
-	}
+		return false;
 	return true;
 }
 	

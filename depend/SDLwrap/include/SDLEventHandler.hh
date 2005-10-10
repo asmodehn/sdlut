@@ -20,6 +20,8 @@
  *
  */
 
+//TODO : have a look about Uint8 *keys = SDL_GetKeyPresses();
+
 class SDLEventHandler
 {
 public:

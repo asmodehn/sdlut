@@ -62,6 +62,9 @@ public:
 			return screen;
 	}
 	
+	static inline bool isScreenSet(void)
+	{ return screen!=NULL; }
+	
 	//This set the display flags for the future display surface
 	//return false if no modes available for those flags
 	static bool setDisplayFlags( bool openGL = false, bool fullScreen = false,

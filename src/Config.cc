@@ -1,7 +1,5 @@
 #include "Config.hh"
 
-SDLDisplaySurface * Config::_screen=NULL;	
-
 Config * Config::_uniqueInstance=NULL;
 
 Config::Config(void)

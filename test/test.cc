@@ -21,14 +21,21 @@ int main(int argc, char* argv [] )
 		//mandatory call to initialize
 		Config::setConfig(true,false,false,false,false);
 		
-    //creating the display
-		Display screen;
-		//looks like Display must be created before the sprite, otherwise there is no DisplayFormat to optimise the sprite
-		
-		Sprite * s = new Sprite("../data/spritelib_gpl/paddle/arinoid.bmp");
+   Sprite * s = new Sprite("../data/spritelib_gpl/paddle/arinoid.bmp");
 		//Layer l;
 		
     //l.add(s);
+		
+		
+    //creating the display // STILL NOT RIGHT !!!! -> TO INVESTIGATE
+		Display screen;
+		//1 ) looks like Display must be created before the sprite, otherwise there is no DisplayFormat to optimise the sprite
+		//should be handled in sprite constructor... in progress...
+		//2 ) error when sprite moves... ->TO INVESTIGATE
+		screen.update();
+		system("pause");
+		//screen is BAD... if we resize it, or timeout windows (app not responding) then it becomes fine... -> to investigate
+		
 		
 		Camera * c=Camera::getCamera(); // has been created by Display
 		
@@ -43,7 +50,7 @@ int main(int argc, char* argv [] )
 		
 		testlog.add ("Display created");
 		screen.update();
-		//screen is BAD... if we resize it, everything then becomes fine... -> to investigate
+		
 		
 		
 		system("pause");

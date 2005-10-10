@@ -7,7 +7,7 @@
 
 class Sprite : public GraphicElement //TODO : NEED to prevent access to base class methods handling referee...
 {
-	static SDLSurfaceFactory * _graphicMaster;
+  static SDLSurfaceFactory * _graphicMaster;
 	static unsigned int _referencecount;
 	
 	unsigned int _graphicIndex;

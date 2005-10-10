@@ -12,8 +12,14 @@ Sprite::Sprite(const std::string & filename)
   _referencecount++;
   //creating the surface in memory
   _graphicIndex=_graphicMaster->createRGBSurface(filename);
-  //optimizing for display
-  _graphicIndex=_graphicMaster->cloneToDisplay(_graphicIndex);
+  
+  //optimizing for display //ONLY IF DISPLAY HAS BEEN CREATED
+  if (SDLSurfaceFactory::isScreenSet())
+    _graphicIndex=_graphicMaster->cloneToDisplay(_graphicIndex);
+  else //OTHERWISE POSTPONE IT OR CREATE THE SCREEN (?)
+  {
+    //TODO
+  }
 }
 //copy constructor : just pass the sprite to use as model
 Sprite::Sprite(const Sprite & model)
@@ -62,6 +68,6 @@ void Sprite::render(unsigned int myPixCenterX, unsigned int myPixCenterY)
 	destPos.setx(destPos.getx() - getSize().getw() /2) ;
 	destPos.sety(destPos.gety() - getSize().geth() /2) ;
   std::cerr<<"Calling _screen->blit(*"<<(_graphicMaster->getSurface(_graphicIndex))<<","<< destPos<<")"<<std::endl;
-  std::cerr << " returns " <<std::boolalpha<< Config::_screen->blit(*(_graphicMaster->getSurface(_graphicIndex)), destPos) << std::endl;
+  std::cerr << " returns " <<std::boolalpha<< SDLSurfaceFactory::getScreen()->blit(*(_graphicMaster->getSurface(_graphicIndex)), destPos) << std::endl;
 }
 

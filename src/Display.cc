@@ -1,33 +1,41 @@
 #include "Display.hh"
 
 SDLDisplaySurface * Display::_display=NULL;	
+SDLColor Display::_bg=SDLColor(255,0,0);
 
 Display::Display(int width, int height) throw (std::logic_error)
 try{
 	#ifdef USE_DEPEND_SDLwrap
 	
-	SDLSurfaceFactory::setDisplaySize(width,height);
+	if(!SDLSurfaceFactory::setDisplayFlags())
+    throw std::logic_error("The required mode is not available !");
+	
+	if (!SDLSurfaceFactory::setDisplaySize(width,height))
+		throw std::logic_error("This Video Mode is not available !");
+	
 	//BEWARE : we HAVE TO BE SURE that the actual SDLDisplaySurface is created here...
 	_display=SDLSurfaceFactory::createDisplay("AML Application","../data/SDL.ico");
 	if ( NULL == _display ) //otherwise the display creation fail as well.
     throw std::logic_error("SDLDisplaySurface creation failed !");
   
   
+  std::cout << "SDL will use " << SDLSurfaceFactory::getScreen()->getWidth()
+            << "x" << SDLSurfaceFactory::getScreen()->getHeight()
+            << "@" << SDLSurfaceFactory::getScreen()->getBPP()
+            << std::endl;
+  
   #else 
   #error "No library defined to handle 2D graphics"
 	#endif
+	_display->fill(_bg);
 	
-	//give the info to Config about the screen
-	Config::_screen=_display;
-	
-	//if there is already a Camera created, we attach the first of the list.
+		//if there is already a Camera created, we attach the first of the list.
 	_camera=Camera::getCamera(0);
 	//if there is no Camera created, we create one.
 	if ( _camera==NULL )
 	{
 		_camera = new Camera();
 	}
-	_display->debug();
 }
 catch (std::exception& e)
 {
@@ -35,10 +43,16 @@ catch (std::exception& e)
     std::cerr << e.what() << std::endl;
 }
 
+void Display::setBGColor(const SDLColor& c )
+{
+	//_bg=c; //TO FIX
+	_display->fill(c);
+}
 
 bool Display::update(void)
 {
 	bool res = false;
+	_display->fill(_bg);
 	if (_camera!=NULL)
   {
   	std::cerr<< "Calling _camera->render (" <<_display->getWidth()/2 << "," << _display->getHeight()/2<< ")"<<std::endl;

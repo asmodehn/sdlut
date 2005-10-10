@@ -20,3 +20,4 @@ bool Layer::update(unsigned int index,  Sprite * sprite, const Vector2& position
   return GraphicElement::update(index,sprite,position);
 }
 
+//think about render with downcasting GraphicElement to sprite...

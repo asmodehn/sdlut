@@ -22,6 +22,8 @@
  *
  */
 
+//TODO : have a look about Uint8 *keys = SDL_GetKeyPresses();
+
 class SDLEvent {
 	//the adress of SDL_Event struct should never change
 	SDL_Event * const _event;

@@ -32,6 +32,7 @@
 
 
 //TODO : Color constructor with string ("black", "yellow", "grey", etc. )
+//TODO : Color operator, like + - = etc. (like a vector)
 class SDLRGBColor
 {
 	friend class SDLPalette;

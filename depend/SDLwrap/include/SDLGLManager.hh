@@ -24,6 +24,7 @@
  * Manager of the GL state machine - Singleton
  ******************************************************************************/
  
+ //Howto use glSDL( planned in SDL from SDL 1.3) : http://icps.u-strasbg.fr/~marchesin/sdl/glsdl.html
  //GOOD STUFF TO ADD AT http://steinsoft.net
 
 //This may be useless in Windows....

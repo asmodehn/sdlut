@@ -30,22 +30,7 @@ class Sprite;
 class Config
 {
 	private:
-	
-  #ifdef USE_DEPEND_SDLwrap
-	
-	//only one display possible at the same time
-	static SDLDisplaySurface * _screen;	
-	
-	#else 
-	
-	#error "No library defined to handle 2D graphics"
-	
-	#endif	
-	
-	//to access screen...
-	friend class Display;
-	friend class Sprite;
-	
+		
 	static Config * _uniqueInstance;
 	
 	protected:
@@ -58,10 +43,6 @@ class Config
 	static Config * getConfig(void);
 	static Config * setConfig(bool video, bool audio, bool cdrom, bool joystick, bool timer);
 	
-	
-	bool isScreenSet() { return _screen!=NULL; }
-	
-
 };
 
 

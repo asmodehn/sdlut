@@ -13,6 +13,8 @@ class Display
 	
 	//only one display possible at the same time
 	static SDLDisplaySurface * _display;	
+	static SDLColor _bg;
+	
 	
 	#else 
 	
@@ -24,8 +26,10 @@ class Display
 	
 	public:
 	
+	//Config should have been called with Video turned on... CHECK TO ADD
   Display(int width = 640, int height = 480) throw (std::logic_error) ;
   
+  void setBGColor(const SDLColor& c = SDLColor(255,0,0));
   bool update(void);
 };
 
