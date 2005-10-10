@@ -57,7 +57,12 @@ class Logger
     bool setLogfile( const std::string & filename,  Loglevel outlvl = verbose);
     
     bool add(const std::string& message, Loglevel lvl = normal, int indentlevel = LOGINDENTLVL);
-        
+  
+  //TODO : handle operator<<
+  //http://www.mactech.com/articles/mactech/Vol.16/16.04/StreamforAllSeasons/
+  //http://www.horstmann.com/cpp/iostreams.html
+  //http://spec.winprog.org/streams/
+  
     void flush(void);
 
 };
