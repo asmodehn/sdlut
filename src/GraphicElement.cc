@@ -71,7 +71,8 @@ void GraphicElement::render(unsigned int myPixCenterX, unsigned int myPixCenterY
 	for ( unsigned int i=0;  i<_referee.size(); i++ )
 	{
 		Vector2 pos=_position[i];
-		_referee[i]->render(static_cast<int>(pos.x())-myPixCenterX,static_cast<int>(pos.y())-myPixCenterY);
+		std::cerr << "calling _referee[" <<i <<"]->render(" << myPixCenterX-static_cast<int>(pos.x())<< "," <<myPixCenterY-static_cast<int>(pos.y()) <<")"<<std::endl;
+		_referee[i]->render(myPixCenterX-static_cast<int>(pos.x()),myPixCenterY-static_cast<int>(pos.y()));
   }
 }
 

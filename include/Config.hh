@@ -42,6 +42,7 @@ class Config
 	
 	#endif	
 	
+	//to access screen...
 	friend class Display;
 	friend class Sprite;
 	

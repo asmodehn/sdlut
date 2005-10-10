@@ -55,7 +55,7 @@ class GraphicElement
   virtual bool update(unsigned int index, GraphicElement * referee,const Vector2& position = Vector2 (0.0,0.0));
   void remove(unsigned int index);
 	
-  void render(unsigned int myPixCenterX, unsigned int myPixCenterY);
+  virtual void render(unsigned int myPixCenterX, unsigned int myPixCenterY);
 
 };
 

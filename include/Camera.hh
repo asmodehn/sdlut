@@ -6,7 +6,7 @@
 #include "GraphicElement.hh"
 #include "Layer.hh"
 
-class Camera :  public GraphicElement //private to prevent access to base class methods handling referent...
+class Camera :  public GraphicElement
 {
 	private:
 		static std::vector<Camera*> cameraList;
@@ -17,13 +17,13 @@ class Camera :  public GraphicElement //private to prevent access to base class 
   public:
   Camera(const Vector2 & position = Vector2(0.0,0.0));
   
-  static Camera * getCamera(unsigned int index);
+  static Camera * getCamera(unsigned int index = 0);
   
   //overriding move : The Camera manage his own position
   bool move(const Vector2& deltap);
   
-  //overriding render to handl camera position
-  //camera usually in the midle of the screen
+  //overriding render to handle camera position
+  //camera usually in the middle of the screen
   void render(unsigned int myPixCenterX = 0, unsigned int myPixCenterY = 0);
 };
 

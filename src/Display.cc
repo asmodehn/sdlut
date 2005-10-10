@@ -27,7 +27,7 @@ try{
 	{
 		_camera = new Camera();
 	}
-	
+	_display->debug();
 }
 catch (std::exception& e)
 {
@@ -41,7 +41,9 @@ bool Display::update(void)
 	bool res = false;
 	if (_camera!=NULL)
   {
+  	std::cerr<< "Calling _camera->render (" <<_display->getWidth()/2 << "," << _display->getHeight()/2<< ")"<<std::endl;
   	_camera->render(_display->getWidth()/2,_display->getHeight()/2);
+  	_display->debug();
   	res=true;
   }
   return res;

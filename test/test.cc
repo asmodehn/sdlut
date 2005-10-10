@@ -23,17 +23,17 @@ int main(int argc, char* argv [] )
 		
     //creating the display
 		Display screen;
-		//looks like Display must be created before the sprite... -> to investigate
+		//looks like Display must be created before the sprite, otherwise there is no DisplayFormat to optimise the sprite
 		
 		Sprite * s = new Sprite("../data/spritelib_gpl/paddle/arinoid.bmp");
 		//Layer l;
-
 		
     //l.add(s);
 		
-		Camera c;
+		Camera * c=Camera::getCamera(); // has been created by Display
+		
 		//if not using layer, the sprite has to be attached directly to the camera
-		c.add(s);
+		c->add(s);
 		//c.add(l);
 		
 		Vector2 up(100.0,0.0);
@@ -42,8 +42,9 @@ int main(int argc, char* argv [] )
 
 		
 		testlog.add ("Display created");
-		
 		screen.update();
+		//screen is BAD... if we resize it, everything then becomes fine... -> to investigate
+		
 		
 		system("pause");
 		cout << "moving sprite up" << endl;
@@ -63,7 +64,7 @@ int main(int argc, char* argv [] )
 		
 		system("pause");
 		cout << "moving camera up" << endl;
-		c.move(up);
+		c->move(up);
 		screen.update();
 		
 		system("pause");

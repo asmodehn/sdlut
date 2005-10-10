@@ -60,8 +60,8 @@ void Sprite::render(unsigned int myPixCenterX, unsigned int myPixCenterY)
   //put the center of the sprite at his position
 	SDLPoint destPos ( myPixCenterX,myPixCenterY);
 	destPos.setx(destPos.getx() - getSize().getw() /2) ;
-	destPos.sety(destPos.gety() - getSize().gety() /2) ;
-  
-	Config::_screen->blit(*(_graphicMaster->getSurface(_graphicIndex)), destPos);
+	destPos.sety(destPos.gety() - getSize().geth() /2) ;
+  std::cerr<<"Calling _screen->blit(*"<<(_graphicMaster->getSurface(_graphicIndex))<<","<< destPos<<")"<<std::endl;
+  std::cerr << " returns " <<std::boolalpha<< Config::_screen->blit(*(_graphicMaster->getSurface(_graphicIndex)), destPos) << std::endl;
 }
 
