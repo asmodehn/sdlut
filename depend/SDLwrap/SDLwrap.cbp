@@ -75,7 +75,6 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-pedantic"/>
 			<Add option="-W"/>
 			<Add option="-DLOGINDENTLVL=1"/>
 			<Add directory="include"/>

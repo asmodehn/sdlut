@@ -27,10 +27,18 @@ class Display
 	public:
 	
 	//Config should have been called with Video turned on... CHECK TO ADD
+	//this should add to the user input everything that is needed to handle
   Display(int width = 640, int height = 480) throw (std::logic_error) ;
+  
+  bool resize(int width = 640, int height)
+  {//TODO in .cc
+  }
   
   void setBGColor(const SDLColor& c = SDLColor(255,0,0));
   bool update(void);
+  
+  //function that implement the loop to manage the window and events.
+  //void show();
 };
 
 #endif

@@ -46,7 +46,6 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-pedantic"/>
 			<Add option="-Wall"/>
 			<Add option="-g"/>
 			<Add option="-DLOGINDENTLVL=0"/>

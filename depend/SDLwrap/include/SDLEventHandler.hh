@@ -10,7 +10,8 @@
  *
  * \brief This class is an interface for classes wanted to handle SDL events
  *
- * This class should be derivated by the classes wanted to handle SDL events
+ * This class should be derivated by the classes wanted to handle SDL events.
+ * It implements the interface for all callbacks on event.
  * 
  * \author Alex
  *

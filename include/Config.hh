@@ -37,11 +37,13 @@ class Config
 	
 	Config(void);
 	Config(bool video, bool audio, bool cdrom, bool joystick, bool timer);
-		
+
 	public:
 	
 	static Config * getConfig(void);
 	static Config * setConfig(bool video, bool audio, bool cdrom, bool joystick, bool timer);
+	
+	//even if everything is false we still need to create a user input (mouse and keyboard)
 	
 };
 

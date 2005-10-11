@@ -11,10 +11,10 @@ try{
     throw std::logic_error("The required mode is not available !");
 	
 	if (!SDLSurfaceFactory::setDisplaySize(width,height))
-		throw std::logic_error("This Video Mode is not available !");
+		throw std::logic_error("This Size is not available in the current mode !");
 	
 	//BEWARE : we HAVE TO BE SURE that the actual SDLDisplaySurface is created here...
-	_display=SDLSurfaceFactory::createDisplay("AML Application","../data/SDL.ico");
+	_display=SDLSurfaceFactory::createDisplay("AML Application");//"../data/SDL.ico"
 	if ( NULL == _display ) //otherwise the display creation fail as well.
     throw std::logic_error("SDLDisplaySurface creation failed !");
   

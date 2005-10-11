@@ -69,6 +69,8 @@ int main(int argc, char** argv)
 	SDLManager::enableVideo();
 	SDLManager::manager()->debug();
 
+//SDLDisplaySurface* display = SDLSurfaceFactory::createDisplay();
+//system("pause");
 
   testlog.add(" Checking SDL Video Info... ");
 	//Getting video informations

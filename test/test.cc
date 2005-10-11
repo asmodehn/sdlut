@@ -13,6 +13,36 @@
 
 using namespace std;
 
+//TEMPORARY
+void resetDisplay(int newW, int newH)
+{
+	SDLSurfaceFactory::getScreen()->resize(newW,newH);
+	SDLSurfaceFactory::getScreen()->debug();
+}
+
+//Defining UserInput
+class MyUserInput : public SDLEventHandler
+{
+	bool closing;
+
+public:
+	MyUserInput() : closing(false) {}
+	virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
+	{
+		switch( keysym.sym ) {
+    		case SDLK_ESCAPE: if (pressed==false) closing=true; break;
+    		case SDLK_F5: if (pressed==true) SDLDisplaySurface::iconify(); break;
+    		case SDLK_F6: if (pressed==true) SDLDisplaySurface::toggleFullScreen(); break;
+	    default: break;
+		}
+		return true;
+	}
+	virtual bool handleResizeEvent(int w, int h) { resetDisplay(w,h); }
+	virtual bool handleQuitEvent(void) { closing=true; return true; }
+	bool closed(void) { return closing; }
+};
+
+
 int main(int argc, char* argv [] )
 {
 	
@@ -26,13 +56,20 @@ int main(int argc, char* argv [] )
 		
     //l.add(s);
 		
+		MyUserInput ui;
 		
     //creating the display // STILL NOT RIGHT !!!! -> TO INVESTIGATE
 		Display screen;
 		//1 ) looks like Display must be created before the sprite, otherwise there is no DisplayFormat to optimise the sprite
 		//should be handled in sprite constructor... in progress...
 		//2 ) error when sprite moves... ->TO INVESTIGATE
-		screen.update();
+		
+		while(1)
+		{
+			SDLEvent::handleEvents(ui);
+			screen.update();
+		}
+		
 		system("pause");
 		//screen is BAD... if we resize it, or timeout windows (app not responding) then it becomes fine... -> to investigate
 		

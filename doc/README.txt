@@ -18,9 +18,18 @@ This is a Developer README for AML
 
 - Documentation : from Doxygen only
 
+---------------------
+2) Development help |
+---------------------
+
+- One might consider looking at pygame, the SDL wrapping for python. Good samples of code... One part should be in SDLWrap (only wrapping SDL), the other part should be in AML(more high level, like 2d engine, etc.)
+
+
 --------------------------
 Libraries for the future ?
 --------------------------
+
+Considering SDL2.0 docs, there are annex librairies we will have to manage in the future
 
 SDL_draw
 SDL_ttf
