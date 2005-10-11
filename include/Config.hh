@@ -44,7 +44,7 @@ class Config
 	static Config * setConfig(bool video, bool audio, bool cdrom, bool joystick, bool timer);
 	
 	//even if everything is false we still need to create a user input (mouse and keyboard)
-	
+	//or maybe we should had another parameter if necessary...
 };
 
 

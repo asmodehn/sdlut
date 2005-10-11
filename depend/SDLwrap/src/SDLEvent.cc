@@ -95,6 +95,9 @@ int SDLEvent::joystickEventState(int state)
 	return SDL_JoystickEventState(state);
 }
 
+//using that with threads
+//http://vilimpoc.org/research/portmonitorg/sdl-tips-and-tricks.html
+
 //Using correct handler for processing events...
 // Handler should be const maybe ??
 void SDLEvent::handleEvents(SDLEventHandler &handler)

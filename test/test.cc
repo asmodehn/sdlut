@@ -58,12 +58,14 @@ int main(int argc, char* argv [] )
 		
 		MyUserInput ui;
 		
-    //creating the display // STILL NOT RIGHT !!!! -> TO INVESTIGATE
+    //creating the display //NOT RIGHT IF NO LOOP to handle the events... even a default "do nothing" one is needed...
 		Display screen;
 		//1 ) looks like Display must be created before the sprite, otherwise there is no DisplayFormat to optimise the sprite
 		//should be handled in sprite constructor... in progress...
 		//2 ) error when sprite moves... ->TO INVESTIGATE
 		
+		
+		//http://geocities.com/smxrk/game-example.html
 		while(1)
 		{
 			SDLEvent::handleEvents(ui);
