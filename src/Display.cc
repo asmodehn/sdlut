@@ -43,6 +43,11 @@ catch (std::exception& e)
     std::cerr << e.what() << std::endl;
 }
 
+bool Display::resize(int width, int height)
+{
+	_display->resize(width,height);
+}
+
 void Display::setBGColor(const SDLColor& c )
 {
 	//_bg=c; //TO FIX

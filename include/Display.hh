@@ -29,10 +29,10 @@ class Display
 	//Config should have been called with Video turned on... CHECK TO ADD
 	//this should add to the user input everything that is needed to handle
   Display(int width = 640, int height = 480) throw (std::logic_error) ;
+  //WARNING : if event not handled, the application will eb detected as "not responding" by windows
+  //so this class should handle all the graphic WM event at least
   
-  bool resize(int width = 640, int height)
-  {//TODO in .cc
-  }
+  bool resize(int width, int height);
   
   void setBGColor(const SDLColor& c = SDLColor(255,0,0));
   bool update(void);
