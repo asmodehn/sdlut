@@ -45,7 +45,7 @@ catch (std::exception& e)
 
 bool Display::resize(int width, int height)
 {
-	_display->resize(width,height);
+	return _display->resize(width,height);
 }
 
 void Display::setBGColor(const SDLColor& c )
