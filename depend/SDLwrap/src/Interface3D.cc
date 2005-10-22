@@ -3,7 +3,7 @@
 //from NeheGL Tutorial
 //#include <GL/glu.h>
 //remove this when my gluPerspective is working...
-
+#ifdef OPENGL
 
 //additional includes
 #include <math.h>
@@ -141,3 +141,5 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Bu
 	rquad-=0.15f;										// Decrease The Rotation Variable For The Quad ( NEW )
 										// Keep Going
 }
+
+#endif

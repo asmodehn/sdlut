@@ -10,6 +10,7 @@
 //(cf UI interface)
 #include "SDLConfig.hh"
 
+#ifdef OPENGL
 //Coder en singleton ici aussi
 class Interface3D
 {
@@ -24,7 +25,7 @@ class Object3D
 	public:
 	virtual void move()=0;
 };
-
+#endif
 
 //Classes d'interface avec un moteur 2D
 //Meme probleme que precedemment

@@ -1,7 +1,11 @@
 #include "SDLGLWindow.hh"
 
+
+
 namespace SDL {
 
+#ifdef OPENGL
+	
 Interface3D* GLWindow::engine = new Interface3D;
 
 /*
@@ -43,5 +47,7 @@ bool GLWindow::resize (int width, int height)
 {
 	return engine->resize(width,height);
 }
+
+#endif
 
 } //namespace SDL

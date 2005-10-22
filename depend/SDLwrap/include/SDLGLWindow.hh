@@ -28,6 +28,8 @@
 
 namespace SDL {
 
+#ifdef OPENGL
+
 class GLWindow : public DisplaySurface
 {
 protected:
@@ -73,6 +75,8 @@ public:
  //{return SDL_DOUBLEBUF & screen()->getSurface()->flags;}
  ******************************************************************************/
 };
+
+#endif
 
 } //namespace SDL
 

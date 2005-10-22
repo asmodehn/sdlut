@@ -21,6 +21,9 @@
  */
 
 namespace SDL {
+	
+#ifdef OPENGL
+
 /*******************************************************************************
  * Manager of the GL state machine - Singleton
  ******************************************************************************/
@@ -94,7 +97,7 @@ public :
 	
 	void debug(void) const;
 };
-
+#endif
 } // namespace SDL
 
 #endif

@@ -109,10 +109,16 @@ DisplaySurface* SurfaceFactory::createDisplay(std::string title, std::string ico
 	//create a new screen
 	try
 	{
+#ifdef OPENGL
 		if (SDL_OPENGL & displayFlags)
 			screen = new GLWindow(displayWidth, displayHeight, displayBPP , displayFlags );
 		else
+		{
+#endif
 			screen = new Window(displayWidth, displayHeight, displayBPP , displayFlags );
+#ifdef OPENGL
+		}
+#endif
 	}
 	//beware about the bpp == 0 used with rgbsurfaces !
 	catch(std::exception & e)

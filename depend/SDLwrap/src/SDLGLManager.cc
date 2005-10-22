@@ -1,7 +1,10 @@
 #include "SDLGLManager.hh"
 
+
 namespace SDL {
 
+#ifdef OPENGL
+		
 GLManager* GLManager::_uniqueInstance = NULL;
 
 int GLManager::getRSize(void) const
@@ -152,5 +155,7 @@ void GLManager::debug(void) const
 		"GL Accum Alpha Size = " << getAccumASize() <<
 	std::endl;
 }
+
+#endif
 
 }

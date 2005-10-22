@@ -17,13 +17,18 @@
 				<Option external_deps=""/>
 				<Option type="2"/>
 				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectIncludeDirsRelation="0"/>
 				<Option projectResourceIncludeDirsRelation="2"/>
 				<Compiler>
 					<Add option="-Wall"/>
 					<Add option="-g"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap.debug\&quot;"/>
+					<Add option="-DOPENGL"/>
 				</Compiler>
+				<Linker>
+					<Add library="opengl32"/>
+				</Linker>
 			</Target>
 			<Target title="test-debug">
 				<Option output="test\SDLtest.exe"/>
@@ -42,9 +47,11 @@
 					<Add option="-pg"/>
 					<Add option="-g"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap-test\&quot;"/>
+					<Add option="-DOPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
+					<Add library="opengl32"/>
 					<Add library="bin\libSDLwrap.debug.a"/>
 				</Linker>
 			</Target>
@@ -68,10 +75,25 @@
 					<Add option="-O"/>
 					<Add option="-W"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap\&quot;"/>
+					<Add option="-DOPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add option="-s"/>
+					<Add library="opengl32"/>
 				</Linker>
+			</Target>
+			<Target title="static-NoOpenGL">
+				<Option output="bin\libSDLwrap.NoGL.a"/>
+				<Option working_dir=""/>
+				<Option object_output="obj"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps=""/>
+				<Option type="2"/>
+				<Option compiler="0"/>
+				<Option projectResourceIncludeDirsRelation="2"/>
+				<Compiler>
+					<Add option="-W"/>
+				</Compiler>
 			</Target>
 		</Build>
 		<Compiler>
@@ -81,7 +103,6 @@
 			<Add directory="..\Common\include"/>
 		</Compiler>
 		<Linker>
-			<Add library="opengl32"/>
 			<Add library="SDL"/>
 			<Add library="SDLmain"/>
 		</Linker>
@@ -92,6 +113,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\Interface3D.hh">
 			<Option compilerVar=""/>
@@ -100,6 +122,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLBaseSurface.hh">
 			<Option compilerVar=""/>
@@ -108,6 +131,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLColor.hh">
 			<Option compilerVar=""/>
@@ -116,6 +140,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLConfig.hh">
 			<Option compilerVar=""/>
@@ -124,6 +149,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLCursor.hh">
 			<Option compilerVar=""/>
@@ -132,6 +158,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLDisplaySurface.hh">
 			<Option compilerVar=""/>
@@ -140,6 +167,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLEvent.hh">
 			<Option compilerVar=""/>
@@ -148,6 +176,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLEventHandler.hh">
 			<Option compilerVar=""/>
@@ -156,6 +185,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLGLManager.hh">
 			<Option compilerVar=""/>
@@ -164,6 +194,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLGLWindow.hh">
 			<Option compilerVar=""/>
@@ -172,6 +203,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLManager.hh">
 			<Option compilerVar=""/>
@@ -180,6 +212,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLOverlay.hh">
 			<Option compilerVar=""/>
@@ -188,6 +221,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLPixelFormat.hh">
 			<Option compilerVar=""/>
@@ -196,6 +230,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLPoint.hh">
 			<Option compilerVar=""/>
@@ -204,6 +239,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLRGBSurface.hh">
 			<Option compilerVar=""/>
@@ -212,6 +248,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLRect.hh">
 			<Option compilerVar=""/>
@@ -220,6 +257,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLSurfaceFactory.hh">
 			<Option compilerVar=""/>
@@ -228,6 +266,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLVideoInfo.hh">
 			<Option compilerVar=""/>
@@ -236,6 +275,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLWindow.hh">
 			<Option compilerVar=""/>
@@ -244,6 +284,7 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="include\SDLwrap.hh">
 			<Option compilerVar=""/>
@@ -252,96 +293,115 @@
 			<Option target="staticlib-debug"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\Interface3D.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLBaseSurface.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLConfig.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLCursor.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLDisplaySurface.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLEvent.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLEventHandler.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLGLManager.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLGLWindow.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLManager.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLOverlay.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLPixelFormat.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLPoint.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLRGBSurface.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLRect.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLSurfaceFactory.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLVideoInfo.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLWindow.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
+			<Option target="static-NoOpenGL"/>
 		</Unit>
 		<Unit filename="test\SDLtest.cc">
 			<Option compilerVar="CC"/>

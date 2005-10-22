@@ -2,7 +2,7 @@
 #define SDLCONFIG_HH
 
 //Forced Config
-#undef OPENGL //engine call seems to work... 3D part postponed...
+//#undef OPENGL //engine call seems to work... 3D part postponed...
 #undef THREAD
 
 //Normal Setup
