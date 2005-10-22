@@ -12,8 +12,8 @@ class Display
 	#ifdef USE_DEPEND_SDLwrap
 	
 	//only one display possible at the same time
-	static SDLDisplaySurface * _display;	
-	static SDLColor _bg;
+	static SDL::DisplaySurface * _display;	
+	static SDL::Color _bg;
 	
 	
 	#else 
@@ -34,7 +34,7 @@ class Display
   
   bool resize(int width = 640, int height =480);
   
-  void setBGColor(const SDLColor& c = SDLColor(255,0,0));
+  void setBGColor(const SDL::Color& c = SDL::Color(255,0,0));
   bool update(void);
   
   //function that implement the loop to manage the window and events.

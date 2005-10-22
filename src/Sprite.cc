@@ -1,6 +1,6 @@
 #include "Sprite.hh"
 
-SDLSurfaceFactory * Sprite::_graphicMaster=NULL;
+SDL::SurfaceFactory * Sprite::_graphicMaster=NULL;
 
 unsigned int Sprite::_referencecount=0;
 
@@ -8,13 +8,13 @@ unsigned int Sprite::_referencecount=0;
 Sprite::Sprite(const std::string & filename)
 {
 	if (_graphicMaster==NULL || _referencecount == 0)
-    _graphicMaster=new SDLSurfaceFactory();
+    _graphicMaster=new SDL::SurfaceFactory();
   _referencecount++;
   //creating the surface in memory
   _graphicIndex=_graphicMaster->createRGBSurface(filename);
   
   //optimizing for display //ONLY IF DISPLAY HAS BEEN CREATED
-  if (SDLSurfaceFactory::isScreenSet())
+  if (SDL::SurfaceFactory::isScreenSet())
     _graphicIndex=_graphicMaster->cloneToDisplay(_graphicIndex);
   else //OTHERWISE POSTPONE IT OR CREATE THE SCREEN (?)
   {
@@ -26,7 +26,7 @@ Sprite::Sprite(const Sprite & model)
 {
 	//shouldnt be neeeded, but...
 	if (_graphicMaster==NULL || _referencecount == 0)
-    _graphicMaster=new SDLSurfaceFactory();
+    _graphicMaster=new SDL::SurfaceFactory();
   _referencecount++;
   _graphicIndex=model._graphicIndex;
 }
@@ -41,9 +41,9 @@ Sprite::~Sprite()
 }
 
 //to get the size
-SDLRect Sprite::getSize(void)
+SDL::Rect Sprite::getSize(void)
 {
-	return SDLRect(_graphicMaster->getSurface(_graphicIndex)->getWidth(),_graphicMaster->getSurface(_graphicIndex)->getHeight());
+	return SDL::Rect(_graphicMaster->getSurface(_graphicIndex)->getWidth(),_graphicMaster->getSurface(_graphicIndex)->getHeight());
 }
 	
 //this one predraw a bounding box and axis on top of _graphic. Up to the derivative class to use it or not.
@@ -64,10 +64,10 @@ void Sprite::render(unsigned int myPixCenterX, unsigned int myPixCenterY)
 {
 	
   //put the center of the sprite at his position
-	SDLPoint destPos ( myPixCenterX,myPixCenterY);
+	SDL::Point destPos ( myPixCenterX,myPixCenterY);
 	destPos.setx(destPos.getx() - getSize().getw() /2) ;
 	destPos.sety(destPos.gety() - getSize().geth() /2) ;
   std::cerr<<"Calling _screen->blit(*"<<(_graphicMaster->getSurface(_graphicIndex))<<","<< destPos<<")"<<std::endl;
-  std::cerr << " returns " <<std::boolalpha<< SDLSurfaceFactory::getScreen()->blit(*(_graphicMaster->getSurface(_graphicIndex)), destPos) << std::endl;
+  std::cerr << " returns " <<std::boolalpha<< SDL::SurfaceFactory::getScreen()->blit(*(_graphicMaster->getSurface(_graphicIndex)), destPos) << std::endl;
 }
 

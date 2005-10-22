@@ -1,27 +1,27 @@
 #include "Display.hh"
 
-SDLDisplaySurface * Display::_display=NULL;	
-SDLColor Display::_bg=SDLColor(255,0,0);
+SDL::DisplaySurface * Display::_display=NULL;	
+SDL::Color Display::_bg=SDL::Color(255,0,0);
 
 Display::Display(int width, int height) throw (std::logic_error)
 try{
 	#ifdef USE_DEPEND_SDLwrap
 	
-	if(!SDLSurfaceFactory::setDisplayFlags())
+	if(!SDL::SurfaceFactory::setDisplayFlags())
     throw std::logic_error("The required mode is not available !");
 	
-	if (!SDLSurfaceFactory::setDisplaySize(width,height))
+	if (!SDL::SurfaceFactory::setDisplaySize(width,height))
 		throw std::logic_error("This Size is not available in the current mode !");
 	
 	//BEWARE : we HAVE TO BE SURE that the actual SDLDisplaySurface is created here...
-	_display=SDLSurfaceFactory::createDisplay("AML Application");//"../data/SDL.ico"
+	_display=SDL::SurfaceFactory::createDisplay("AML Application");//"../data/SDL.ico"
 	if ( NULL == _display ) //otherwise the display creation fail as well.
     throw std::logic_error("SDLDisplaySurface creation failed !");
   
   
-  std::cout << "SDL will use " << SDLSurfaceFactory::getScreen()->getWidth()
-            << "x" << SDLSurfaceFactory::getScreen()->getHeight()
-            << "@" << SDLSurfaceFactory::getScreen()->getBPP()
+  std::cout << "SDL will use " << SDL::SurfaceFactory::getScreen()->getWidth()
+            << "x" << SDL::SurfaceFactory::getScreen()->getHeight()
+            << "@" << SDL::SurfaceFactory::getScreen()->getBPP()
             << std::endl;
   
   #else 
@@ -48,7 +48,7 @@ bool Display::resize(int width, int height)
 	return _display->resize(width,height);
 }
 
-void Display::setBGColor(const SDLColor& c )
+void Display::setBGColor(const SDL::Color& c )
 {
 	//_bg=c; //TO FIX
 	_display->fill(c);

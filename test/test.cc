@@ -16,12 +16,12 @@ using namespace std;
 //TEMPORARY
 void resetDisplay(int newW, int newH)
 {
-	SDLSurfaceFactory::getScreen()->resize(newW,newH);
-	SDLSurfaceFactory::getScreen()->debug();
+	SDL::SurfaceFactory::getScreen()->resize(newW,newH);
+	SDL::SurfaceFactory::getScreen()->debug();
 }
 
 //Defining UserInput
-class MyUserInput : public SDLEventHandler
+class MyUserInput : public SDL::EventHandler
 {
 	bool closing;
   int step;
@@ -32,8 +32,8 @@ public:
 		switch( keysym.sym ) {
     		case SDLK_ESCAPE: if (pressed==false) closing=true; break;
     		case SDLK_F4: if (pressed==false) step++; break;
-    		case SDLK_F5: if (pressed==true) SDLDisplaySurface::iconify(); break;
-    		case SDLK_F6: if (pressed==true) SDLDisplaySurface::toggleFullScreen(); break;
+    		case SDLK_F5: if (pressed==true) SDL::DisplaySurface::iconify(); break;
+    		case SDLK_F6: if (pressed==true) SDL::DisplaySurface::toggleFullScreen(); break;
 	    default: break;
 		}
 		return true;
@@ -70,7 +70,7 @@ int main(int argc, char* argv [] )
 		//http://geocities.com/smxrk/game-example.html
 		while(ui.getStep()==0)
 		{
-			SDLEvent::handleEvents(ui);
+			SDL::Event::handleEvents(ui);
 			screen.update();
 		}
 		
@@ -85,7 +85,7 @@ int main(int argc, char* argv [] )
 		
 		while(ui.getStep()==1)
 		{
-			SDLEvent::handleEvents(ui);
+			SDL::Event::handleEvents(ui);
 			screen.update();
 		}
 		
@@ -99,7 +99,7 @@ int main(int argc, char* argv [] )
 
 		while(ui.getStep()==2)
 		{
-			SDLEvent::handleEvents(ui);
+			SDL::Event::handleEvents(ui);
 			screen.update();
 		}
 		
@@ -121,7 +121,7 @@ int main(int argc, char* argv [] )
 		
 		while(ui.getStep()==3)
 		{
-			SDLEvent::handleEvents(ui);
+			SDL::Event::handleEvents(ui);
 			screen.update();
 		}
 		

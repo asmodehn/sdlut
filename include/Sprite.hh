@@ -7,7 +7,7 @@
 
 class Sprite : public GraphicElement //TODO : NEED to prevent access to base class methods handling referee...
 {
-  static SDLSurfaceFactory * _graphicMaster;
+  static SDL::SurfaceFactory * _graphicMaster;
 	static unsigned int _referencecount;
 	
 	unsigned int _graphicIndex;
@@ -21,7 +21,7 @@ class Sprite : public GraphicElement //TODO : NEED to prevent access to base cla
 	~Sprite();
 	
   //to use the size
-	SDLRect getSize(void);
+	SDL::Rect getSize(void);
 	
 	//this one predraw a bounding box and axis on top of _graphic.
 	// TO DO AND IMPROVE
