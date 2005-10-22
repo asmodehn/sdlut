@@ -29,6 +29,16 @@
 			<Add library="SDL"/>
 			<Add library="SDLmain"/>
 		</Linker>
+		<Unit filename="MxInput.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="MxInput.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="MxMap.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
