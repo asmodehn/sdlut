@@ -151,6 +151,16 @@ void RGBSurface::setUpdateRect(int x, int y, int w, int h)
 }
 */
 
+bool RGBSurface::setColorKey(const RGBColor & key, const PixelFormat & pformat, bool rleAccel)
+{
+	Uint32 flags;
+	if (rleAccel)
+	flags=SDL_SRCCOLORKEY | SDL_RLEACCEL;
+	else
+	flags=SDL_SRCCOLORKEY;
+	
+	return SDL_SetColorKey(_surf, flags, pformat.getValueFromRGB(key) ) == 0;
+}
 
 /*	
 int RGBSurface::update(void)

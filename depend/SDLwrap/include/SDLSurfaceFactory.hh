@@ -130,9 +130,13 @@ public:
     unsigned int createRGBSurface(void* pixeldata, int depth, int pitch);
     //creates surfaces from picture files.
     unsigned int createRGBSurface( std::string filename );
-    //same than above. Also allows you to specify a background if the picture file has some transparency
-    unsigned int createRGBSurface( std::string filename, RGBColor bgcolor );
-
+    //same than above. also allow you to specify a background (to supprim)
+    unsigned int createRGBSurface( std::string filename, const RGBColor & bgcolor );
+    
+    // Also allows you to specify a colorkey if your file doesnt allow alpha
+    //unsigned int createRGBSurface( std::string filename, const RGBColor & bgcolor );
+    //BROKEN ?!?
+    
     //Handy method to clone a RGBSurface already in the Factory
     unsigned int clone(int index,int times = 1); // clone the one on index
 

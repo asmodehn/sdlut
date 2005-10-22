@@ -214,7 +214,7 @@ unsigned int SurfaceFactory::createRGBSurface( std::string filename )
 
 //recent add to enable background on file load if needed... 18/08/2005 - Alex
 //TO TEST !
-unsigned int SurfaceFactory::createRGBSurface( std::string filename, RGBColor bgcolor )
+unsigned int SurfaceFactory::createRGBSurface( std::string filename, const RGBColor & bgcolor )
 {
 	RGBSurface* fsurf = getSurface(createRGBSurface(filename));
 	RGBSurface* csurf = getSurface(createRGBSurface(fsurf->getWidth(),fsurf->getHeight(), bgcolor));
@@ -224,6 +224,18 @@ unsigned int SurfaceFactory::createRGBSurface( std::string filename, RGBColor bg
 		surfaceList.push_back(csurf);
 	return surfaceList.size()-1;
 }
+//ColorKey more useful BREAK EVERYTHING... WHY ???
+/*
+unsigned int SurfaceFactory::createRGBSurface( std::string filename, const RGBColor & colorkey )
+{
+	RGBSurface* fsurf = getSurface(createRGBSurface(filename));
+  if (fsurf!=NULL)
+  {
+    fsurf->setColorKey(colorkey, VideoInfo::Info()->getPixelFormat());
+		surfaceList.push_back(fsurf);
+  }
+	return surfaceList.size()-1;
+}*/
 
 //clone an RGBSurface.
 unsigned int SurfaceFactory::clone(int index,int times) // clone the one on index

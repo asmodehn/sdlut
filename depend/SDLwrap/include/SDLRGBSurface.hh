@@ -66,7 +66,7 @@ public :
 	//not sure if this is useful or not, but the default copy constructor has to be properly overloaded
 	//RGBSurface(const RGBSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
   
-  
+  bool setColorKey(const RGBColor &, const PixelFormat & pformat, bool rleAccel = true);
 
     
 	//Use Standard Colors here
