@@ -1,8 +1,8 @@
-#ifndef SDLVIDEOINFO_HH
-#define SDLVIDEOINFO_HH
+#ifndef SDL_VIDEOINFO_HH
+#define SDL_VIDEOINFO_HH
 
 /**
- * \class SDLVideoInfo
+ * \class VideoInfo
  *
  * \ingroup Video
  *
@@ -22,9 +22,11 @@
 #include "SDLConfig.hh"
 #include "SDLPixelFormat.hh"
 
+
+namespace SDL {
 //Only one display
-//Only one SDLvideoinfo -> Singleton
-class SDLVideoInfo
+//Only one VideoInfo -> Singleton
+class VideoInfo
 {
 private:
 	//Actual VideoInfo pointer
@@ -32,16 +34,16 @@ private:
 	//the address of the SDL_VideoInfo struct should not change
 	const SDL_VideoInfo* const _info;
 	//Singleton pointer
-	static SDLVideoInfo* _Instance;
+	static VideoInfo* _Instance;
  	
 protected:
 
 	//Singleton Constructor
-	SDLVideoInfo() throw (std::logic_error);
+	VideoInfo() throw (std::logic_error);
 
 public:
 	//Singleton accessor
-	static SDLVideoInfo* Info();
+	static VideoInfo* Info();
 			 
 	//return true if hardware acceleration is enabled
 	inline bool isHWAvailable() const { return _info->hw_available; }
@@ -76,10 +78,12 @@ public:
 	std::string getDriverName(void) const;
 			 
 	//return the SDLPixelFormat for the current video device
-	SDLPixelFormat getPixelFormat() const
-		{ return SDLPixelFormat(_info->vfmt); }
+	PixelFormat getPixelFormat() const
+		{ return PixelFormat(_info->vfmt); }
 	
 	//display all detected informations about graphics
 	void debug(void) const;
 };
+
+} //namespace SDL
 #endif

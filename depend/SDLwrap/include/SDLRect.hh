@@ -1,9 +1,9 @@
-#ifndef SDLRECT_HH
-#define SDLRECT_HH
+#ifndef SDL_RECT_HH
+#define SDL_RECT_HH
 
 
 /**
- * \class SDLRect
+ * \class Rect
  *
  * \ingroup Video
  *
@@ -24,41 +24,43 @@
 #include "SDLConfig.hh"
 #include "SDLPoint.hh"
 
-class SDLRect : public SDLPoint
+namespace SDL {
+
+class Rect : public Point
 {
 	//Because some functions of SDLBaseSurface needs access to SDL_Rect directly
 	//And because SDLBaseSurface includes SDLRect.hh, we cannot specify the functions
 	//here.
-	friend class SDLBaseSurface;
-	friend class SDLDisplaySurface;
-	friend class SDLOverlay;
+	friend class BaseSurface;
+	friend class DisplaySurface;
+	friend class Overlay;
 
 protected :
 	
 public:
 
 	//also used to convert point for main methods use...
-	SDLRect(const SDLPoint& p , unsigned int nw=0, unsigned int nh=0) : SDLPoint(p.getx(),p.gety())
+	Rect(const Point& p , unsigned int nw=0, unsigned int nh=0) : Point(p.getx(),p.gety())
 	{
 		_rect->w=nw;
 		_rect->h=nh;
 	}
 
-	SDLRect(int x, int y , unsigned int nw, unsigned int nh) : SDLPoint(x,y)
+	Rect(int x, int y , unsigned int nw, unsigned int nh) : Point(x,y)
 	{
 		_rect->w=nw;
 		_rect->h=nh;
 	}
 
 	//2 parameter define only a rectangular zone
-	SDLRect( unsigned int nw=0, unsigned int nh=0) : SDLPoint(0,0)
+	Rect( unsigned int nw=0, unsigned int nh=0) : Point(0,0)
 	{
 		_rect->w=nw;
 		_rect->h=nh;
 	}
 	
 	//Copy Constructor
-	SDLRect( const SDLRect& r) : SDLPoint(r.getx(),r.gety())
+	Rect( const Rect& r) : Point(r.getx(),r.gety())
 	{
 		_rect->w=r.getw();
 		_rect->h=r.geth();
@@ -73,32 +75,34 @@ public:
 	//Methods
 	//
 	//Return the bigger Rect contained in both Rects
-	SDLRect inf(const SDLRect & r);
+	Rect inf(const Rect & r);
 	//Return the shorter Rect containing the both Rects
-	SDLRect sup(const SDLRect & r);
+	Rect sup(const Rect & r);
 
   //scalar operations
-  inline SDLRect& operator*=(int s)
+  inline Rect& operator*=(int s)
   { _rect->w *= s; _rect->h *= s; return *this; }
 
-  inline SDLRect& operator/=(int s)
+  inline Rect& operator/=(int s)
   { _rect->w /= s; _rect->h /= s;	return *this; }
 
-  inline friend SDLRect operator*(int s, const SDLRect& u)
-  {	return SDLRect ( u._rect->w * s, u._rect->h * s ); }
+  inline friend Rect operator*(int s, const Rect& u)
+  {	return Rect ( u._rect->w * s, u._rect->h * s ); }
 
-	inline friend SDLRect operator*(const SDLRect& u, int s)
-  {	return SDLRect ( u._rect->w * s, u._rect->h * s ); }
+	inline friend Rect operator*(const Rect& u, int s)
+  {	return Rect ( u._rect->w * s, u._rect->h * s ); }
 
-  inline friend SDLRect operator/(const SDLRect& u, int s)
-  { return SDLRect ( u._rect->w / s, u._rect->h / s ); }
+  inline friend Rect operator/(const Rect& u, int s)
+  { return Rect ( u._rect->w / s, u._rect->h / s ); }
 	
 	//TODO growCenter, growCorner, rotate90, rotate180, rotate270
 	
 	//TODO tests operators :  != == <= < >= > (about size of the area only)
 	
-	inline friend std::ostream& operator << (std::ostream& os, const SDLRect& r)
+	inline friend std::ostream& operator << (std::ostream& os, const Rect& r)
 		{ return os << "Rect : ( " << r.getx() << ", " << r.gety() << ") W= " << r.getw() << " H= " << r.geth(); } 
 };
+
+} //namespace SDL
 
 #endif

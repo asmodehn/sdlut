@@ -1,40 +1,42 @@
 #include "SDLWindow.hh"
 
-SDLWindow::SDLWindow(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
-: SDLDisplaySurface( width, height, bpp, flags)
+namespace SDL {
+	
+Window::Window(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
+: DisplaySurface( width, height, bpp, flags)
 { }
 
 
 
-bool SDLWindow::update(void)
+bool Window::update(void)
 {
 	return SDL_Flip(_surf) == 0;
 }
 
-void SDLWindow::debug(void) const
+void Window::debug(void) const
 {
-	SDLDisplaySurface::debug();
+	DisplaySurface::debug();
 	std::cout << std::endl;
 }
 
 //SaveScreen -> backup the screen content in a RGBSurface...
-SDLRGBSurface* SDLWindow::save(void)
+RGBSurface* Window::save(void)
 {
-	std::cerr << "SDLWindow::save()" << std::endl;
+	std::cerr << "Window::save()" << std::endl;
 	// we create a new RGB surface to clone the display...
-	SDLRGBSurface * backupScreen= new SDLRGBSurface(*this,true,true,false);
+	RGBSurface * backupScreen= new RGBSurface(*this,true,true,false);
 	
 	return backupScreen;
 }
 
 //restoreScreen -> blit the saved surface to the center of the screen
-bool SDLWindow::restore(const SDLRGBSurface& savedScreen)
+bool Window::restore(const RGBSurface& savedScreen)
 {
   bool res;
   
-  std::cerr << "SDLWindow::restore()" << std::endl;
+  std::cerr << "Window::restore()" << std::endl;
   
-  SDLPoint newpos;
+  Point newpos;
   newpos.setx( (getWidth()-savedScreen.getWidth()) / 2 );
   newpos.sety( (getHeight()-savedScreen.getHeight()) / 2 );
   
@@ -46,7 +48,7 @@ bool SDLWindow::restore(const SDLRGBSurface& savedScreen)
 	
 	
 
-bool SDLWindow::resize(int width, int height)
+bool Window::resize(int width, int height)
 {
 	
   std::cerr << "Resize start" << std::endl;
@@ -55,13 +57,13 @@ bool SDLWindow::resize(int width, int height)
 	// 1 - save the current display surface
 	
 	//AUTO_PTR to manage the delete at the end ??
-	SDLRGBSurface * backup=save();
+	RGBSurface * backup=save();
 	
 	std::cerr << "Saved Surface debug :" << std::endl;
 	backup->debug();
 	
 	// 2 - create a new one similar, with new size
-  //BEWARE : should match SDLDisplaySurface Constructor code
+  //BEWARE : should match DisplaySurface Constructor code
   SDL_Surface * newSurf = SDL_SetVideoMode(width,height,getBPP(),getFlags());
 
 
@@ -90,3 +92,5 @@ bool SDLWindow::resize(int width, int height)
 	
 	return res;
 }
+
+} //namespace SDL

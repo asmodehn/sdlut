@@ -51,7 +51,7 @@
  *
  * \ingroup Other
  * 
- * \brief This class gather the common objects that all the SDL classes may be able to access
+ * \brief This class gather the common objects that all the SDL classes have to be able to access...
  *
  * \author Alex
  *

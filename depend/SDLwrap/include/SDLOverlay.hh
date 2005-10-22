@@ -25,9 +25,10 @@
  *
  */
 
+namespace SDL {
 
 //TODO : test it...
-class SDLOverlay
+class Overlay
 {
 	//address of the SDL_Overlay structure should never change
 	SDL_Overlay * const _overlay;
@@ -51,11 +52,11 @@ class SDLOverlay
 public :
 	//Constructor
 	//maybe the current display size must be used ?
-	SDLOverlay(Format f, int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, SDLDisplaySurface* dsurf = SDLSurfaceFactory::getScreen())
+	Overlay(Format f, int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, DisplaySurface* dsurf = SurfaceFactory::getScreen())
 	: _overlay(SDL_CreateYUVOverlay(width,height,formatConvert(f),dsurf->_surf))
 	{}
 	//Destructor
-	~SDLOverlay() { SDL_FreeYUVOverlay(_overlay);}
+	~Overlay() { SDL_FreeYUVOverlay(_overlay);}
 	
 	//Methods
 	Format getFormat(void) const;
@@ -75,10 +76,12 @@ public :
 	}
 	
 	//return true of dislay is successfull
-	bool display(SDLRect r)
+	bool display(Rect r)
 	{
 		return SDL_DisplayYUVOverlay(_overlay,r._rect) == 0;
 	}
 };
+
+}
 
 #endif

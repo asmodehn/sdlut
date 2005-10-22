@@ -1,6 +1,8 @@
 #include "SDLBaseSurface.hh"
 
-bool SDLBaseSurface::lock(void)
+namespace SDL {
+	
+bool BaseSurface::lock(void)
 {
 	if (SDL_MUSTLOCK(_surf))
 	{
@@ -10,7 +12,7 @@ bool SDLBaseSurface::lock(void)
 	else return true;
 }
 
-bool SDLBaseSurface::unlock(void)
+bool BaseSurface::unlock(void)
 {
 	if (SDL_MUSTLOCK(_surf))
 	{
@@ -21,7 +23,7 @@ bool SDLBaseSurface::unlock(void)
 }
 
 
-SDLBaseSurface::SDLBaseSurface(const SDLBaseSurface & s , bool cloning, bool toDisplay, bool alpha) throw (std::logic_error)
+BaseSurface::BaseSurface(const BaseSurface & s , bool cloning, bool toDisplay, bool alpha) throw (std::logic_error)
 try : locks(0)
 {
 	if (cloning)
@@ -47,7 +49,7 @@ try : locks(0)
 		_surf=SDL_CreateRGBSurface(s._surf->flags, s.getWidth(), s.getHeight(), s._surf->format->BitsPerPixel, s._surf->format->Rmask, s._surf->format->Gmask, s._surf->format->Bmask, s._surf->format->Amask);
 	}
 		
-	std::cerr << "SDLBaseSurface Copy Called" << std::endl;
+	std::cerr << "SDL::BaseSurface Copy Called" << std::endl;
 	const std::string errstr = cloning ? toDisplay ? alpha ? "SDL_DisplayFormatAlpha" : "SDLDisplayFormat" : "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
   if(_surf == NULL)
 	{
@@ -65,7 +67,7 @@ catch (std::exception &e)
 }
 
 
-Uint32 SDLBaseSurface::getpixel(int x, int y)
+Uint32 BaseSurface::getpixel(int x, int y)
 {
     lock();
 	/* Here p is the address to the pixel we want to retrieve */
@@ -93,7 +95,7 @@ Uint32 SDLBaseSurface::getpixel(int x, int y)
 	return pixel;
 }
 
-void SDLBaseSurface::setpixel(int x, int y, Uint32 pixel)
+void BaseSurface::setpixel(int x, int y, Uint32 pixel)
 {
 	lock();
     /* Here p is the address to the pixel we want to set */
@@ -129,7 +131,7 @@ void SDLBaseSurface::setpixel(int x, int y, Uint32 pixel)
 
 //instance methods
 
-bool SDLBaseSurface::saveBMP(std::string filename) const
+bool BaseSurface::saveBMP(std::string filename) const
 {
 	if (_surf!=NULL) 
 	{
@@ -138,7 +140,7 @@ bool SDLBaseSurface::saveBMP(std::string filename) const
 	return false;
 }
 
-bool SDLBaseSurface::fill (const SDLPixelColor& color, SDLRect dest_rect)
+bool BaseSurface::fill (const PixelColor& color, Rect dest_rect)
 {
 	int res=SDL_FillRect(_surf, dest_rect._rect, color);
 	//std::cerr << "SDLBaseSurface::Fill(" << _surf << ", " << dest_rect << ", " << color << ")" << std::endl;
@@ -146,7 +148,7 @@ bool SDLBaseSurface::fill (const SDLPixelColor& color, SDLRect dest_rect)
 	return res == 0;
 }
 
-bool SDLBaseSurface::blit(const SDLBaseSurface& src, SDLRect& dest_rect, const SDLRect& src_rect )
+bool BaseSurface::blit(const BaseSurface& src, Rect& dest_rect, const Rect& src_rect )
 {
 	/*if (src._surf==NULL) LIB_ERROR("! src._surf NULL !");
 	if (src._surf->pixels==NULL) LIB_ERROR("! src._surf->pixels NULL !");
@@ -169,20 +171,20 @@ bool SDLBaseSurface::blit(const SDLBaseSurface& src, SDLRect& dest_rect, const S
 
 
 //Set the clip rect
-void SDLBaseSurface::setClipRect(const SDLRect& rect)
+void BaseSurface::setClipRect(const Rect& rect)
 {
 	SDL_SetClipRect(_surf,rect._rect);
 }
 
 //get the clip rect
-SDLRect SDLBaseSurface::getClipRect(void) const 
+Rect BaseSurface::getClipRect(void) const 
 {
-	SDLRect r;
+	Rect r;
 	SDL_GetClipRect(_surf, r._rect);
 	return r;
 }
 
-void SDLBaseSurface::debug(void) const
+void BaseSurface::debug(void) const
 {
 	std::stringstream logstr;
 	logstr<< "\nSDL*Surfaces::debug()" << "\n"
@@ -199,3 +201,5 @@ void SDLBaseSurface::debug(void) const
   //tmp
   SDLConfig::getLog()->flush();
 }
+
+} //namespace SDL

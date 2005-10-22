@@ -22,16 +22,17 @@
  *
  */
 
+namespace SDL {
 //TODO : have a look about Uint8 *keys = SDL_GetKeyPresses();
 
-class SDLEvent {
+class Event {
 	//the adress of SDL_Event struct should never change
 	SDL_Event * const _event;
 
 public:
 	
-	SDLEvent() : _event(new SDL_Event) {}
-	~SDLEvent() {delete _event;}
+	Event() : _event(new SDL_Event) {}
+	~Event() {delete _event;}
 		
 	//Polls for currently pending events
 	bool poll (bool fetch = true);
@@ -51,7 +52,7 @@ public:
 	static Uint8 eventState(Uint8 type, int state);
 	
 	//Handle all queued events using the specified EventHandler
-	static void handleEvents(SDLEventHandler &handler);
+	static void handleEvents(EventHandler &handler);
 	
 	//Get a snapshot of the current keyboard state
 	static Uint8* getKeyState (int &numkeys);
@@ -88,4 +89,7 @@ public:
 	static int joystickEventState(int state);
 		
 };	
+
+} //namespace SDL
+
 #endif

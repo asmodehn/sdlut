@@ -1,19 +1,21 @@
-#ifndef SDLPIXELFORMAT_HH
-#define SDLPIXELFORMAT_HH
+#ifndef SDL_PIXELFORMAT_HH
+#define SDL_PIXELFORMAT_HH
 
 #include "SDLConfig.hh"
 #include "SDLColor.hh"
 
-//to store pixel colors
-typedef Uint32 SDLPixelColor;
+namespace SDL { 
 
-class SDLPixelFormat
+//to store pixel colors
+typedef Uint32 PixelColor;
+
+class PixelFormat
 {
 	//because SDLPixelColor needs to access actual SDL_PixelFormat
-	friend class SDLVideoInfo;
-	friend class SDLSurfaceFactory;
-	friend class SDLRGBSurface;
-	friend class SDLBaseSurface;
+	friend class VideoInfo;
+	friend class SurfaceFactory;
+	friend class RGBSurface;
+	friend class BaseSurface;
 	
 	bool pointerCopy;
 	
@@ -25,7 +27,7 @@ protected:
 	
 	//Copy Constructor from SDL_PixelFormat
 	//This handle explicit casts
-	explicit SDLPixelFormat(const SDL_PixelFormat* pf) : _pformat(pf)
+	explicit PixelFormat(const SDL_PixelFormat* pf) : _pformat(pf)
 	{
 		pointerCopy = true;
 	}
@@ -36,11 +38,11 @@ protected:
 public:
 	
 	//default Constructor
-	//SDLPixelFormat(void) { _pformat= new SDL_PixelFormat; }
+	//PixelFormat(void) { _pformat= new SDL_PixelFormat; }
 	//TODO : To avoid using uninitialized PixelFormat , put default constructor on protected
 	//Really Usefull ??
 		
-	~SDLPixelFormat(void) { if (!pointerCopy) delete _pformat; }
+	~PixelFormat(void) { if (!pointerCopy) delete _pformat; }
 	
 	int getBitsPerPixel() const { return _pformat->BitsPerPixel; }
 	int getBytesPerPixel() const { return _pformat->BytesPerPixel; }
@@ -61,19 +63,21 @@ public:
 	unsigned long getBmask() const { return _pformat->Bmask; }
 	unsigned long getAmask() const { return _pformat->Amask; }
 	
-	SDLPixelColor getColorKey() const { return _pformat->colorkey; }
+	PixelColor getColorKey() const { return _pformat->colorkey; }
 	int getAlpha() const { return _pformat->alpha; }
-	SDLPalette getPalette() const { return SDLPalette(_pformat->palette); }
+	Palette getPalette() const { return Palette(_pformat->palette); }
 	
 	//display all detected informations about pixelformat
 	void debug(void) const;
 	
 	//methods for Color conversion : 
-	SDLPixelColor getValueFromRGB(const SDLRGBColor& val) const ;
-	SDLPixelColor getValueFromRGBA(const SDLRGBAColor& val) const ;
-	SDLRGBColor getRGBValue(const SDLPixelColor& color) const ;
-	SDLRGBAColor getRGBAValue(const SDLPixelColor& color) const ;
+	PixelColor getValueFromRGB(const RGBColor& val) const ;
+	PixelColor getValueFromRGBA(const RGBAColor& val) const ;
+	RGBColor getRGBValue(const PixelColor& color) const ;
+	RGBAColor getRGBAValue(const PixelColor& color) const ;
 
 };
+
+} //namespace SDL
 
 #endif

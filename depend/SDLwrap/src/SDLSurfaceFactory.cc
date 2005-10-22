@@ -1,15 +1,17 @@
 #include "SDLSurfaceFactory.hh"
 
-int SDLSurfaceFactory::displayWidth = DEFAULT_DISPLAY_WIDTH;
-int SDLSurfaceFactory::displayHeight = DEFAULT_DISPLAY_HEIGHT;
-int SDLSurfaceFactory::displayBPP = DEFAULT_DISPLAY_BPP;
-std::vector<int> SDLSurfaceFactory::availableDisplayWidth;
-std::vector<int> SDLSurfaceFactory::availableDisplayHeight;
-Uint32 SDLSurfaceFactory::displayFlags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
+namespace SDL  {
 
-SDLDisplaySurface* SDLSurfaceFactory::screen = NULL;
+int SurfaceFactory::displayWidth = DEFAULT_DISPLAY_WIDTH;
+int SurfaceFactory::displayHeight = DEFAULT_DISPLAY_HEIGHT;
+int SurfaceFactory::displayBPP = DEFAULT_DISPLAY_BPP;
+std::vector<int> SurfaceFactory::availableDisplayWidth;
+std::vector<int> SurfaceFactory::availableDisplayHeight;
+Uint32 SurfaceFactory::displayFlags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
 
-bool SDLSurfaceFactory::setDisplayFlags( bool openGL, bool fullScreen,
+DisplaySurface* SurfaceFactory::screen = NULL;
+
+bool SurfaceFactory::setDisplayFlags( bool openGL, bool fullScreen,
 						bool resizable, bool noFrame,
 						bool doubleBuf, bool anyFormat,
 						bool SWSurface, bool HWSurface,
@@ -29,7 +31,7 @@ bool SDLSurfaceFactory::setDisplayFlags( bool openGL, bool fullScreen,
 	return checkAvailableDisplaySize();
 }
 
-bool SDLSurfaceFactory::setDisplaySize( int width, int height)
+bool SurfaceFactory::setDisplaySize( int width, int height)
 {
 	displayWidth = width; displayHeight = height;
 	int new_bpp=checkVideoMode();
@@ -40,12 +42,12 @@ bool SDLSurfaceFactory::setDisplaySize( int width, int height)
 	return true;
 }
 	
-bool SDLSurfaceFactory::checkAvailableDisplaySize(void)
+bool SurfaceFactory::checkAvailableDisplaySize(void)
 {
-	return checkAvailableDisplaySize( SDLVideoInfo::Info()->getPixelFormat());
+	return checkAvailableDisplaySize( VideoInfo::Info()->getPixelFormat());
 }
 
-bool SDLSurfaceFactory::checkAvailableDisplaySize( const SDLPixelFormat& fmt )
+bool SurfaceFactory::checkAvailableDisplaySize( const PixelFormat& fmt )
 {
 	SDL_Rect ** modes;
 	bool res;
@@ -77,9 +79,9 @@ bool SDLSurfaceFactory::checkAvailableDisplaySize( const SDLPixelFormat& fmt )
 	return res;
 }
 
-int SDLSurfaceFactory::checkVideoMode(void)
+int SurfaceFactory::checkVideoMode(void)
 {
-	SDLVideoInfo * vi = SDLVideoInfo::Info();
+	VideoInfo * vi = VideoInfo::Info();
 
 	//If bpp is 0 and VideoInfo is reachable
 	//maybe this is already done by SDL and this code is just a waste of time ?
@@ -92,7 +94,7 @@ int SDLSurfaceFactory::checkVideoMode(void)
 	return SDL_VideoModeOK(displayWidth, displayHeight, displayBPP, displayFlags);
 }
 
-SDLDisplaySurface* SDLSurfaceFactory::createDisplay(std::string title, std::string icon)
+DisplaySurface* SurfaceFactory::createDisplay(std::string title, std::string icon)
 {
 	//if _screen already exists
 	if (screen!=NULL)
@@ -102,15 +104,15 @@ SDLDisplaySurface* SDLSurfaceFactory::createDisplay(std::string title, std::stri
 	}
 
 	//set the title and the icon of the window
-	SDLDisplaySurface::setCaption(title,icon);
+	DisplaySurface::setCaption(title,icon);
 
 	//create a new screen
 	try
 	{
 		if (SDL_OPENGL & displayFlags)
-			screen = new SDLGLWindow(displayWidth, displayHeight, displayBPP , displayFlags );
+			screen = new GLWindow(displayWidth, displayHeight, displayBPP , displayFlags );
 		else
-			screen = new SDLWindow(displayWidth, displayHeight, displayBPP , displayFlags );
+			screen = new Window(displayWidth, displayHeight, displayBPP , displayFlags );
 	}
 	//beware about the bpp == 0 used with rgbsurfaces !
 	catch(std::exception & e)
@@ -123,7 +125,7 @@ SDLDisplaySurface* SDLSurfaceFactory::createDisplay(std::string title, std::stri
 	return screen;
 }
 
-bool SDLSurfaceFactory::setRGBFlags( bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
+bool SurfaceFactory::setRGBFlags( bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
 {
 	if ( SWSURFACE ) RGBFlags|= SDL_SWSURFACE;
 	if ( HWSURFACE ) RGBFlags|= SDL_HWSURFACE;
@@ -135,12 +137,12 @@ bool SDLSurfaceFactory::setRGBFlags( bool SWSURFACE, bool HWSURFACE, bool SRCCOL
 	return true;
 }
 
-unsigned int SDLSurfaceFactory::createRGBSurface(void)
+unsigned int SurfaceFactory::createRGBSurface(void)
 {
-	SDLRGBSurface* surf = NULL;
+	RGBSurface* surf = NULL;
 	try
 	{
-		surf = new SDLRGBSurface(RGBWidth, RGBHeight, RGBBPP, RGBFlags);
+		surf = new RGBSurface(RGBWidth, RGBHeight, RGBBPP, RGBFlags);
 	}
 	catch ( std::exception& e )
 	{
@@ -152,12 +154,12 @@ unsigned int SDLSurfaceFactory::createRGBSurface(void)
 	return surfaceList.size()-1;
 }
 
-unsigned int SDLSurfaceFactory::createRGBSurface(int width , int height , SDLColor color )
+unsigned int SurfaceFactory::createRGBSurface(int width , int height , Color color )
 {
-	SDLRGBSurface* surf = NULL;
+	RGBSurface* surf = NULL;
 	try
 	{
-		surf = new SDLRGBSurface(width, height, RGBBPP, RGBFlags);
+		surf = new RGBSurface(width, height, RGBBPP, RGBFlags);
 		surf->fill(color);
 	}
 	catch ( std::exception& e )
@@ -170,12 +172,12 @@ unsigned int SDLSurfaceFactory::createRGBSurface(int width , int height , SDLCol
 	return surfaceList.size()-1;
 }
 
-unsigned int SDLSurfaceFactory::createRGBSurface(void* pixeldata, int depth, int pitch)
+unsigned int SurfaceFactory::createRGBSurface(void* pixeldata, int depth, int pitch)
 {
-	SDLRGBSurface* surf = NULL;
+	RGBSurface* surf = NULL;
 	try
 	{
-		surf = new SDLRGBSurface(pixeldata, RGBWidth, RGBHeight, depth, pitch);
+		surf = new RGBSurface(pixeldata, RGBWidth, RGBHeight, depth, pitch);
 	}
 	catch ( std::exception &e )
 	{
@@ -187,12 +189,12 @@ unsigned int SDLSurfaceFactory::createRGBSurface(void* pixeldata, int depth, int
 	return surfaceList.size()-1;
 }
 
-unsigned int SDLSurfaceFactory::createRGBSurface( std::string filename )
+unsigned int SurfaceFactory::createRGBSurface( std::string filename )
 {
-	SDLRGBSurface* surf = NULL;
+	RGBSurface* surf = NULL;
 	try
 	{
-		surf = new SDLRGBSurface(filename);
+		surf = new RGBSurface(filename);
 	}
 	catch ( std::exception &e )
 	{
@@ -206,10 +208,10 @@ unsigned int SDLSurfaceFactory::createRGBSurface( std::string filename )
 
 //recent add to enable background on file load if needed... 18/08/2005 - Alex
 //TO TEST !
-unsigned int SDLSurfaceFactory::createRGBSurface( std::string filename, SDLRGBColor bgcolor )
+unsigned int SurfaceFactory::createRGBSurface( std::string filename, RGBColor bgcolor )
 {
-	SDLRGBSurface* fsurf = getSurface(createRGBSurface(filename));
-	SDLRGBSurface* csurf = getSurface(createRGBSurface(fsurf->getWidth(),fsurf->getHeight(), bgcolor));
+	RGBSurface* fsurf = getSurface(createRGBSurface(filename));
+	RGBSurface* csurf = getSurface(createRGBSurface(fsurf->getWidth(),fsurf->getHeight(), bgcolor));
 	
 	csurf->blit(*fsurf);
   if (csurf!=NULL)
@@ -218,14 +220,14 @@ unsigned int SDLSurfaceFactory::createRGBSurface( std::string filename, SDLRGBCo
 }
 
 //clone an RGBSurface.
-unsigned int SDLSurfaceFactory::clone(int index,int times) // clone the one on index
+unsigned int SurfaceFactory::clone(int index,int times) // clone the one on index
 {
-	SDLRGBSurface* toClone = surfaceList.at(index);
+	RGBSurface* toClone = surfaceList.at(index);
 	try //before the loop, because if one fail, the others should fail also...
 	{
 		for(int i=0; i<times ; i++)
 		{
-			SDLRGBSurface* s = new SDLRGBSurface(*toClone,true,false,toClone->isSRCAlphaset());
+			RGBSurface* s = new RGBSurface(*toClone,true,false,toClone->isSRCAlphaset());
 			if (s != NULL)
         surfaceList.push_back(s);
 		}
@@ -237,14 +239,14 @@ unsigned int SDLSurfaceFactory::clone(int index,int times) // clone the one on i
   return surfaceList.size()-1;;
 }
 
-unsigned int SDLSurfaceFactory::cloneToDisplay(int index,int times, bool alpha) // clone the one on index, optimized for display
+unsigned int SurfaceFactory::cloneToDisplay(int index,int times, bool alpha) // clone the one on index, optimized for display
 {
-	SDLRGBSurface* toClone = surfaceList.at(index);
+	RGBSurface* toClone = surfaceList.at(index);
 	try //before the loop, because if one fail, the others should fail also...
 	{
 		for(int i=0; i<times ; i++)
 		{
-			SDLRGBSurface* s = new SDLRGBSurface(*toClone,true,true,alpha);
+			RGBSurface* s = new RGBSurface(*toClone,true,true,alpha);
 			if (s != NULL)
 			  surfaceList.push_back(s);
 		}
@@ -256,3 +258,4 @@ unsigned int SDLSurfaceFactory::cloneToDisplay(int index,int times, bool alpha) 
 	return surfaceList.size()-1;
 }
 
+}

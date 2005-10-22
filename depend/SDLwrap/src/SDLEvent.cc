@@ -1,6 +1,8 @@
 #include "SDLEvent.hh"
 
-bool SDLEvent::poll(bool fetch)
+namespace SDL {
+	
+bool Event::poll(bool fetch)
 {
 	if(fetch)
 	{
@@ -10,7 +12,7 @@ bool SDLEvent::poll(bool fetch)
 	}
 }
   
-bool SDLEvent::wait(bool fetch)
+bool Event::wait(bool fetch)
 {
 	if(fetch)
 	{
@@ -20,77 +22,77 @@ bool SDLEvent::wait(bool fetch)
 	}
 }
 
-bool SDLEvent::push()
+bool Event::push()
 {
 	return SDL_PushEvent(_event) == 0;
 }
 
-void SDLEvent::pumpEvents()
+void Event::pumpEvents()
 {
 	SDL_PumpEvents();
 }
 
-void SDLEvent::setEventFilter(SDL_EventFilter filter)
+void Event::setEventFilter(SDL_EventFilter filter)
 {
 	SDL_SetEventFilter(filter);
 }    
 
-SDL_EventFilter SDLEvent::getEventFilter()
+SDL_EventFilter Event::getEventFilter()
 {
 	return SDL_GetEventFilter();
 }
 
-Uint8 SDLEvent::eventState(Uint8 type, int state)
+Uint8 Event::eventState(Uint8 type, int state)
 {
 	return SDL_EventState(type, state);
 }
 
-Uint8* SDLEvent::getKeyState(int &numkeys)
+Uint8* Event::getKeyState(int &numkeys)
 {
 	return SDL_GetKeyState(&numkeys);
 }
 
-Uint8* SDLEvent::getKeyState()
+Uint8* Event::getKeyState()
 {
 	return SDL_GetKeyState(0);
 }
   
-SDLMod SDLEvent::getModState()
+SDLMod Event::getModState()
 {
 	return SDL_GetModState();
 }
 
-char* SDLEvent::getKeyName(SDLKey key)
+char* Event::getKeyName(SDLKey key)
 {
 	return SDL_GetKeyName(key);
 }
 
-void SDLEvent::setModState(SDLMod modstate)
+void Event::setModState(SDLMod modstate)
 {
 	SDL_SetModState(modstate);
 }
 
-bool SDLEvent::enableKeyRepeat(int delay, int interval)
+bool Event::enableKeyRepeat(int delay, int interval)
 {
 	return SDL_EnableKeyRepeat(delay, interval) == 0;
 }
 
-Uint8 SDLEvent::getMouseState(int *x, int *y)
+Uint8 Event::getMouseState(int *x, int *y)
 {
 	return SDL_GetMouseState(x, y);
 }
   
-Uint8 SDLEvent::getRelativeMouseState(int *x, int *y)
+Uint8 Event::getRelativeMouseState(int *x, int *y)
 {
 	return SDL_GetRelativeMouseState(x, y);
 }
 
-Uint8 SDLEvent::getAppState()
+Uint8 Event::getAppState()
 {
 	return SDL_GetAppState();
 }
 
-int SDLEvent::joystickEventState(int state)
+int Event::joystickEventState(int state)
 {
 	return SDL_JoystickEventState(state);
 }
@@ -100,7 +102,7 @@ int SDLEvent::joystickEventState(int state)
 
 //Using correct handler for processing events...
 // Handler should be const maybe ??
-void SDLEvent::handleEvents(SDLEventHandler &handler)
+void Event::handleEvents(EventHandler &handler)
 {
 	SDL_Event event;
     while(SDL_PollEvent(&event)) {
@@ -168,3 +170,5 @@ void SDLEvent::handleEvents(SDLEventHandler &handler)
 		}
 	}
 }
+
+} //namespace SDL

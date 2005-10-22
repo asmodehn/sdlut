@@ -10,7 +10,7 @@
 #include "SDLGLWindow.hh"
 
 /**
- * \class SDLSurfaceFactory
+ * \class SurfaceFactory
  *
  * \ingroup Video
  *
@@ -19,7 +19,7 @@
  * This class implement a lot of functions related to SDLSurface in an easy and obvious way.
  * Because there is only one dislay surface, the related methods and members are static.
  *
- * \note maybe we wil be able in the future to get rid of this...
+ * \note maybe we will be able in the future to get rid of this... (not sure how yet)
  *
  * \author Alex
  *
@@ -29,13 +29,14 @@
  *
  */
 
+namespace SDL {
 
 /*******************************************************************************
  * This is a Factory, used to manage creation of all SDLSurfaces.
  * Because there is only one display surface, the related functions are static
  ******************************************************************************/
 
-class SDLSurfaceFactory
+class SurfaceFactory
 {
 	
 protected :
@@ -43,18 +44,18 @@ protected :
 	static int displayBPP;
 	static Uint32 displayFlags;
 	static std::vector<int> availableDisplayWidth,availableDisplayHeight;	
-	static SDLDisplaySurface* screen;
+	static DisplaySurface* screen;
 	
 	int RGBWidth, RGBHeight;
 	int RGBBPP;
 	Uint32 RGBFlags;
-	std::vector<SDLRGBSurface*> surfaceList;
+	std::vector<RGBSurface*> surfaceList;
 
 	
 public:
 	
 	//Access to current screen
-	static inline SDLDisplaySurface* getScreen(void)
+	static inline DisplaySurface* getScreen(void)
 	{
 		if (screen == NULL )
 			return createDisplay();
@@ -87,13 +88,13 @@ public:
 	//This manage display creation. If there is already one display created,
 	//the older one is deleted by calling the singleton initializer...
 	//Then a new display with different parameters can be created
-    static SDLDisplaySurface* createDisplay(std::string title = DEFAULT_WINDOW_TITLE, std::string icon = DEFAULT_WINDOW_ICON );
+    static DisplaySurface* createDisplay(std::string title = DEFAULT_WINDOW_TITLE, std::string icon = DEFAULT_WINDOW_ICON );
 	    
 	//Check if there is any available display size for the current displayFlags
 	//return false if there are none.
     //No PixelFormat means using the one from VideoInfo
     static bool checkAvailableDisplaySize(void);
-    static bool checkAvailableDisplaySize(const SDLPixelFormat& fmt);
+    static bool checkAvailableDisplaySize(const PixelFormat& fmt);
     
 	//return 0 if the current mode is not supported under any depth,
 	//otherwise return the bpp of the best suitable video mode
@@ -104,11 +105,11 @@ public:
     static inline std::vector<int> getAvailableDisplayWidth() {return availableDisplayWidth;}    
     
     //Factory for RGBSurfaces
-    SDLSurfaceFactory(int rgbWidth = DEFAULT_RGB_WIDTH, int rgbHeight = DEFAULT_RGB_HEIGHT, int rgbBPP = DEFAULT_RGB_BPP)
+    SurfaceFactory(int rgbWidth = DEFAULT_RGB_WIDTH, int rgbHeight = DEFAULT_RGB_HEIGHT, int rgbBPP = DEFAULT_RGB_BPP)
 	{
 		setRGBSize(rgbWidth,rgbHeight); setRGBBPP(rgbBPP); setRGBFlags();
 	}
-	~SDLSurfaceFactory()
+	~SurfaceFactory()
 	{
 		for (unsigned int i=0; i<surfaceList.size(); i++) delete surfaceList[i];
 	}
@@ -125,24 +126,26 @@ public:
 	//return the index of the created surface in the list
 	//if the surface cannot be created return the last created surface
 	  unsigned int createRGBSurface(void);
-    unsigned int createRGBSurface(int width , int height , SDLColor color = SDLColor() );
+    unsigned int createRGBSurface(int width , int height , Color color = Color() );
     unsigned int createRGBSurface(void* pixeldata, int depth, int pitch);
     //creates surfaces from picture files.
     unsigned int createRGBSurface( std::string filename );
     //same than above. Also allows you to specify a background if the picture file has some transparency
-    unsigned int createRGBSurface( std::string filename, SDLRGBColor bgcolor );
+    unsigned int createRGBSurface( std::string filename, RGBColor bgcolor );
 
     //Handy method to clone a RGBSurface already in the Factory
     unsigned int clone(int index,int times = 1); // clone the one on index
 
     unsigned int cloneToDisplay(int index,int times = 1, bool alpha = false); // clone the one on index, optimized for display
     //access to RGBSurface created by the Factory
-    inline SDLRGBSurface* getSurface(unsigned int index) {return surfaceList.at(index);}
+    inline RGBSurface* getSurface(unsigned int index) {return surfaceList.at(index);}
     //is that really usefull ??
-    inline std::vector<SDLRGBSurface*> getSurfaceList(void) { return surfaceList; }
+    inline std::vector<RGBSurface*> getSurfaceList(void) { return surfaceList; }
     
 };
 
 //The factory manage cloning rgbSurfaces ( prototype may help for rgb surfaces ? )
+
+}//namespace SDL
 
 #endif

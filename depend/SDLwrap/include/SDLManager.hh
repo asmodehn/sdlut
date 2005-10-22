@@ -1,18 +1,18 @@
-#ifndef SDLMANAGER_HH
-#define SDLMANAGER_HH
+#ifndef SDL_MANAGER_HH
+#define SDL_MANAGER_HH
 
 /**
- * \class SDLManager
+ * \class Manager
  *
  * \ingroup General
  *
  * \brief Manage the global SDL state
  *
- * Singleton to manage SDL
+ * Singleton to manage SDL. It calls SDL_Quit when deleted
  *
  * \author Alex
  *
- * \date 2005/10/02
+ * \date 2005/10/22
  *
  * Contact: asmodehn@gna.org
  *
@@ -20,24 +20,24 @@
 
 #include "SDLConfig.hh"
 
-//#include "SDLDisplaySurface.hh"
-
 //Error Messages
 #define MANAGER_ERROR(system) LIB_ERROR("Unable to initialize SDL " << system << " : " << SDL_GetError() )
 
+
+namespace SDL {
 //Singleton Class to manage initializations in SDL
 //TODO : Make a separate SGEconfig
-class SDLManager
+class Manager
 {
-	static SDLManager * _uniqueInstance;
+	static Manager * _uniqueInstance;
 
 protected:
-	SDLManager(Uint32 flags = SDL_INIT_EVERYTHING) throw (std::logic_error);
-	~SDLManager(){SDL_Quit();}
+	Manager(Uint32 flags = SDL_INIT_EVERYTHING) throw (std::logic_error);
+	~Manager(){SDL_Quit();}
 	
 public:
 	
-	static inline SDLManager* manager(void) throw (std::logic_error)
+	static inline Manager* manager(void) throw (std::logic_error)
 	{
 		if (_uniqueInstance == NULL)
 			if (!enableEverything())
@@ -79,4 +79,6 @@ public:
 	//display all Informations
 	void debug(void);
 };
+
+}//namespace SDL
 #endif

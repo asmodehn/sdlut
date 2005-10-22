@@ -1,9 +1,15 @@
 #include "SDLPoint.hh"
-SDLPoint& SDLPoint::operator=(const SDLPoint& p)
+
+namespace SDL
 {
-	_rect->x=p.getx();
-	_rect->y=p.gety();
-	_rect->w=0;
-	_rect->h=0;
-	return *this;
-}
+
+    Point& Point::operator=(const Point& p)
+    {
+        _rect->x=p.getx();
+        _rect->y=p.gety();
+        _rect->w=0;
+        _rect->h=0;
+        return *this;
+    }
+    
+} //namespace SDL

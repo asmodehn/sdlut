@@ -1,142 +1,144 @@
 #include "SDLGLManager.hh"
 
-SDLGLManager* SDLGLManager::_uniqueInstance = NULL;
+namespace SDL {
 
-int SDLGLManager::getRSize(void) const
+GLManager* GLManager::_uniqueInstance = NULL;
+
+int GLManager::getRSize(void) const
 {
 	int res;
 	SDL_GL_GetAttribute(SDL_GL_RED_SIZE, &res);
 	return res;
 }
 
-int SDLGLManager::getGSize(void) const
+int GLManager::getGSize(void) const
 {
 	int res;
 	SDL_GL_GetAttribute(SDL_GL_GREEN_SIZE, &res);
 	return res;
 }
 
-int SDLGLManager::getBSize(void) const
+int GLManager::getBSize(void) const
 {
 	int res;
 	SDL_GL_GetAttribute(SDL_GL_BLUE_SIZE, &res);
 	return res;
 }
 
-int SDLGLManager::getASize(void) const
+int GLManager::getASize(void) const
 {
 	int res;
 	SDL_GL_GetAttribute(SDL_GL_ALPHA_SIZE, &res);
 	return res;
 }
 
-int SDLGLManager::getBufferSize(void) const
+int GLManager::getBufferSize(void) const
 {
 	int res;
 	SDL_GL_GetAttribute(SDL_GL_BUFFER_SIZE, &res);
 	return res;
 }
 
-int SDLGLManager::getDepthSize(void) const
+int GLManager::getDepthSize(void) const
 {
 	int res;
 	SDL_GL_GetAttribute(SDL_GL_DEPTH_SIZE, &res);
 	return res;
 }
 
-int SDLGLManager::getStencilSize(void) const
+int GLManager::getStencilSize(void) const
 {
 	int res;
 	SDL_GL_GetAttribute(SDL_GL_STENCIL_SIZE, &res);
 	return res;
 }
 
-int SDLGLManager::getAccumRSize(void) const
+int GLManager::getAccumRSize(void) const
 {
 	int res;
 	SDL_GL_GetAttribute(SDL_GL_ACCUM_RED_SIZE, &res);
 	return res;
 }
 
-int SDLGLManager::getAccumGSize(void) const
+int GLManager::getAccumGSize(void) const
 {
 	int res;
 	SDL_GL_GetAttribute(SDL_GL_ACCUM_GREEN_SIZE, &res);
 	return res;
 }
 
-int SDLGLManager::getAccumBSize(void) const
+int GLManager::getAccumBSize(void) const
 {
 	int res;
 	SDL_GL_GetAttribute(SDL_GL_ACCUM_BLUE_SIZE, &res);
 	return res;
 }
 
-int SDLGLManager::getAccumASize(void) const
+int GLManager::getAccumASize(void) const
 {
 	int res;
 	SDL_GL_GetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, &res);
 	return res;
 }
 	
-bool SDLGLManager::setRSize(int bits)
+bool GLManager::setRSize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_RED_SIZE, bits) == 0;
 }	
 
-bool SDLGLManager::setGSize(int bits)
+bool GLManager::setGSize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, bits) == 0;
 }	
 
-bool SDLGLManager::setBSize(int bits)
+bool GLManager::setBSize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, bits) == 0;
 }
 
-bool SDLGLManager::setASize(int bits)
+bool GLManager::setASize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, bits) == 0;
 }
 
-bool SDLGLManager::setBufferSize(int bits)
+bool GLManager::setBufferSize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, bits) == 0;
 }
 
-bool SDLGLManager::setDepthSize(int bits)
+bool GLManager::setDepthSize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, bits) == 0;
 }
 
-bool SDLGLManager::setStencilSize(int bits)
+bool GLManager::setStencilSize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, bits) == 0;
 }
 
-bool SDLGLManager::setAccumRSize(int bits)
+bool GLManager::setAccumRSize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, bits) == 0;
 }
 
-bool SDLGLManager::setAccumGSize(int bits)
+bool GLManager::setAccumGSize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, bits) == 0;
 }
 
-bool SDLGLManager::setAccumBSize(int bits)
+bool GLManager::setAccumBSize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, bits) == 0;
 }
 
-bool SDLGLManager::setAccumASize(int bits)
+bool GLManager::setAccumASize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, bits) == 0;
 }
 	
-void SDLGLManager::debug(void) const
+void GLManager::debug(void) const
 {
-	std::cout << "SDLGLManager - debug() : \n" <<
+	std::cout << "GLManager - debug() : \n" <<
     	"GL Red Size = " << getRSize() << "\n" <<
 		"GL Green Size = " << getGSize() << "\n" <<
 		"GL Blue Size = " << getBSize() << "\n" <<
@@ -149,4 +151,6 @@ void SDLGLManager::debug(void) const
 		"GL Accum Blue Size = " << getAccumBSize() << "\n" <<
 		"GL Accum Alpha Size = " << getAccumASize() <<
 	std::endl;
+}
+
 }

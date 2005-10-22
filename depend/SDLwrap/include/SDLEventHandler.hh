@@ -21,12 +21,14 @@
  *
  */
 
+namespace SDL {
+	
 //TODO : have a look about Uint8 *keys = SDL_GetKeyPresses();
 
-class SDLEventHandler
+class EventHandler
 {
 public:
-	virtual	~SDLEventHandler() {}
+	virtual	~EventHandler() {}
 	
 	//Callbacks on SDL_KEYUP or SDL_KEYDOWN
 	virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed);
@@ -83,4 +85,7 @@ public:
 	virtual bool handleEvent(SDL_Event &event);
 	
 };
+
+} //namespace SDL
+
 #endif

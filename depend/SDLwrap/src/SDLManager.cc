@@ -4,7 +4,7 @@
 #define CONSTRUCTOR_CALL_BLOCK(SDLFlag)								\
 	try 															\
 	{																\
-		_uniqueInstance = new SDLManager(SDLFlag);					\
+		_uniqueInstance = new Manager(SDLFlag);					\
 		res=true;													\
 	}																\
 	catch (std::exception & e)										\
@@ -13,9 +13,11 @@
 	}	
 /**/
 
-SDLManager* SDLManager::_uniqueInstance = NULL;
+namespace SDL {
 
-SDLManager::SDLManager(Uint32 flags) throw (std::logic_error)
+Manager* Manager::_uniqueInstance = NULL;
+
+Manager::Manager(Uint32 flags) throw (std::logic_error)
 try
 {
 	if (SDL_Init(flags)<0)
@@ -25,11 +27,11 @@ try
 }
 catch (std::exception &e)
 {
-	LIB_ERROR ( "Exception catched in SDLManager Constructor !!!" );
+	LIB_ERROR ( "Exception catched in Manager Constructor !!!" );
 	LIB_ERROR(e.what());
 }
 
-bool SDLManager::enableTimer(void)
+bool Manager::enableTimer(void)
 {
 	bool res;
 	if ( _uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_TIMER))==0)
@@ -37,7 +39,7 @@ bool SDLManager::enableTimer(void)
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_TIMER) }
 	return res;
 }
-bool SDLManager::enableAudio(void)
+bool Manager::enableAudio(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_AUDIO))==0)
@@ -45,7 +47,7 @@ bool SDLManager::enableAudio(void)
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_AUDIO) }
 	return res;
 }
-bool SDLManager::enableVideo(void)
+bool Manager::enableVideo(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_VIDEO))==0)
@@ -53,7 +55,7 @@ bool SDLManager::enableVideo(void)
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_VIDEO) }
 	return res;
 }
-bool SDLManager::enableCdrom(void)
+bool Manager::enableCdrom(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_CDROM))==0)
@@ -61,7 +63,7 @@ bool SDLManager::enableCdrom(void)
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_CDROM)}
 	return res;
 }
-bool SDLManager::enableJoystick(void)
+bool Manager::enableJoystick(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_JOYSTICK))==0)
@@ -69,7 +71,7 @@ bool SDLManager::enableJoystick(void)
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_JOYSTICK) }
 	return res;	
 }
-bool SDLManager::enableEverything(void)
+bool Manager::enableEverything(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_EVERYTHING))==0)
@@ -77,7 +79,7 @@ bool SDLManager::enableEverything(void)
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_EVERYTHING) }
 	return res;	
 }
-bool SDLManager::enableNoParachute(void)
+bool Manager::enableNoParachute(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_NOPARACHUTE))==0)
@@ -85,7 +87,7 @@ bool SDLManager::enableNoParachute(void)
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_NOPARACHUTE) }
 	return res;
 }
-bool SDLManager::enableEventThread(void)
+bool Manager::enableEventThread(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_EVENTTHREAD))==0)
@@ -94,53 +96,53 @@ bool SDLManager::enableEventThread(void)
 	return res;
 }
 
-void SDLManager::disableTimer(void)
+void Manager::disableTimer(void)
 {
 	if (_uniqueInstance!=NULL)
 		SDL_QuitSubSystem(SDL_INIT_TIMER); 
 }
-void SDLManager::disableAudio(void)
+void Manager::disableAudio(void)
 {
 	if (_uniqueInstance!=NULL)
 		SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
-void SDLManager::disableVideo(void)
+void Manager::disableVideo(void)
 {
 	if (_uniqueInstance!=NULL)
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
-void SDLManager::disableCdrom(void)
+void Manager::disableCdrom(void)
 {
 	if (_uniqueInstance!=NULL)
 		SDL_QuitSubSystem(SDL_INIT_CDROM);
 }
-void SDLManager::disableJoystick(void)
+void Manager::disableJoystick(void)
 {
 	if (_uniqueInstance!=NULL)
 		SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 }
-void SDLManager::disableEverything(void)
+void Manager::disableEverything(void)
 {
 	if (_uniqueInstance!=NULL)
 		SDL_QuitSubSystem(SDL_INIT_EVERYTHING);
 }
-void SDLManager::disableNoParachute(void)
+void Manager::disableNoParachute(void)
 {
 	if (_uniqueInstance!=NULL)
 		SDL_QuitSubSystem(SDL_INIT_NOPARACHUTE);
 }
-void SDLManager::disableEventThread(void)
+void Manager::disableEventThread(void)
 {
 	if (_uniqueInstance!=NULL)
 		SDL_QuitSubSystem(SDL_INIT_EVENTTHREAD);
 }
 
-void SDLManager::debug(void)
+void Manager::debug(void)
 {
 	//To prevent calls without proper Initialization...
 	if (_uniqueInstance==NULL) enableEverything();
 	
-	std::cout << std::boolalpha << "\nSDLManager::debug()" << "\n" <<
+	std::cout << std::boolalpha << "\nManager::debug()" << "\n" <<
 	"- Is Timer Enabled ? " << isTimerEnabled() << "\n" <<
 	"- Is Audio Enabled ? " << isAudioEnabled() << "\n" <<
 	"- Is Video Enabled ? " << isVideoEnabled() << "\n" <<
@@ -150,3 +152,5 @@ void SDLManager::debug(void)
 	"- Is \"EventThread\" Enabled ? " << isEventThreadEnabled() << "\n" <<
 	std::endl;
 }
+
+}//namespace SDL

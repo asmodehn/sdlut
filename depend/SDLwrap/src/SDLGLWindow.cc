@@ -1,6 +1,8 @@
 #include "SDLGLWindow.hh"
 
-Interface3D* SDLGLWindow::engine = new Interface3D;
+namespace SDL {
+
+Interface3D* GLWindow::engine = new Interface3D;
 
 /*
 void SDLGLWindow::enableBlit(void)
@@ -26,7 +28,7 @@ void SDLWindow::disableDoubleBuf(void)
 }
 
 */
-bool SDLGLWindow::update(void)
+bool GLWindow::update(void)
 {
 	assert(engine);
 	engine->render();
@@ -37,7 +39,9 @@ bool SDLGLWindow::update(void)
 	return true;
 }
 
-bool SDLGLWindow::resize (int width, int height)
+bool GLWindow::resize (int width, int height)
 {
 	return engine->resize(width,height);
 }
+
+} //namespace SDL

@@ -8,9 +8,11 @@
 #include "SDLConfig.hh" 
 #include "SDLBaseSurface.hh"
 
-class SDLRGBSurface : public SDLBaseSurface
+namespace SDL {
+	
+class RGBSurface : public BaseSurface
 {
-	friend class SDLSurfaceFactory;
+	friend class SurfaceFactory;
 	//friend class SDLDisplaySurface;
 	
 //SDL interprets each pixel as a 32-bit number, so our masks must depend
@@ -32,13 +34,13 @@ protected : //the client should not access to flags...
 	//Constructor
 	//Beware : the default flags should be the same than in Factory for consistency
 	//BPP should NEVER be == 0 !!!!
-	SDLRGBSurface( int width, int height, int bpp,
+	RGBSurface( int width, int height, int bpp,
 					Uint32 flags = SDL_SWSURFACE,
 					Uint32 rmask = r_default_mask,
 					Uint32 gmask = g_default_mask,
 					Uint32 bmask = b_default_mask,
 					Uint32 amask = a_default_mask ) throw (std::logic_error);
-	SDLRGBSurface( void * pixeldata, int depth, int pitch,
+	RGBSurface( void * pixeldata, int depth, int pitch,
 					int width, int height,
 					Uint32 rmask = r_default_mask,
 					Uint32 gmask = g_default_mask,
@@ -46,23 +48,23 @@ protected : //the client should not access to flags...
 					Uint32 amask = a_default_mask ) throw (std::logic_error);
 public :
 	//creates surface from file, copying its content...
-	SDLRGBSurface( std::string filename )throw (std::logic_error);
+	RGBSurface( std::string filename )throw (std::logic_error);
 
 protected : //the client should not access to flags...
 
 	//Copy Constructor and cloning constructors...
-	//SDLRGBSurface(const SDLRGBSurface &, bool cloneToDisplay = false, bool alpha = false) throw (std::logic_error);
+	//RGBSurface(const RGBSurface &, bool cloneToDisplay = false, bool alpha = false) throw (std::logic_error);
 	//Clone To display should be in Factory...
-  SDLRGBSurface(const SDLRGBSurface & s , const SDLPixelFormat & fmt, Uint32 flags, bool cloning = false) throw (std::logic_error);
+  RGBSurface(const RGBSurface & s , const SDL::PixelFormat & fmt, Uint32 flags, bool cloning = false) throw (std::logic_error);
 	//no pixel format use the one from the surface
-  SDLRGBSurface(const SDLRGBSurface & s , Uint32 flags, bool cloning = false) throw (std::logic_error);
+  RGBSurface(const RGBSurface & s , Uint32 flags, bool cloning = false) throw (std::logic_error);
   
 public :
 	//should be used as the default copy constructor. But should also be able to get DisplaySurface as input...
-  SDLRGBSurface(const SDLBaseSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
+  RGBSurface(const BaseSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
   
 	//not sure if this is useful or not, but the default copy constructor has to be properly overloaded
-	//SDLRGBSurface(const SDLRGBSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
+	//RGBSurface(const RGBSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
   
   
 
@@ -81,5 +83,7 @@ public :
 	
 	
 };
+
+} //namespace SDL
 
 #endif

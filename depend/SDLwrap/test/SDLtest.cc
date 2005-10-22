@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <iostream>
 using namespace std;
-
+using namespace SDL;
 
 //would be nice if we can put that in SDLwrap.hh
 #ifdef __MINGW32__
@@ -15,13 +15,13 @@ using namespace std;
 
 
 //global variable
-SDLRGBSurface bitmap("sample.bmp");
+RGBSurface bitmap("sample.bmp");
 
 //global function :
 void resetDisplay(int newW, int newH)
 {
-	SDLSurfaceFactory::getScreen()->resize(newW,newH);
-	SDLSurfaceFactory::getScreen()->debug();
+	SurfaceFactory::getScreen()->resize(newW,newH);
+	SurfaceFactory::getScreen()->debug();
 /*  if ( ! SDLSurfaceFactory::getScreen()->isOpenGLset() ) //2D specific resize code
   {
   SDLSurfaceFactory::getScreen()->fill(SDLColor(255,0,0));
@@ -36,7 +36,7 @@ void resetDisplay(int newW, int newH)
 
 
 //Defining UserInput
-class MyUserInput : public SDLEventHandler
+class MyUserInput : public EventHandler
 {
 	bool closing;
 
@@ -46,8 +46,8 @@ public:
 	{
 		switch( keysym.sym ) {
     		case SDLK_ESCAPE: if (pressed==false) closing=true; break;
-    		case SDLK_F5: if (pressed==true) SDLDisplaySurface::iconify(); break;
-    		case SDLK_F6: if (pressed==true) SDLDisplaySurface::toggleFullScreen(); break;
+    		case SDLK_F5: if (pressed==true) DisplaySurface::iconify(); break;
+    		case SDLK_F6: if (pressed==true) DisplaySurface::toggleFullScreen(); break;
 	    default: break;
 		}
 		return true;
@@ -66,24 +66,24 @@ int main(int argc, char** argv)
 	//Setup example
 
 	testlog.add(" Enabling SDL Video... ");
-	SDLManager::enableVideo();
-	SDLManager::manager()->debug();
+	Manager::enableVideo();
+	Manager::manager()->debug();
 
 //SDLDisplaySurface* display = SDLSurfaceFactory::createDisplay();
 //system("pause");
 
   testlog.add(" Checking SDL Video Info... ");
 	//Getting video informations
-	SDLVideoInfo::Info()->debug();
+	VideoInfo::Info()->debug();
 
   testlog.add(" Creating the User Interface... ");
 	//UI Creation
 	MyUserInput ui;
 
   testlog.add(" Creating the SDL Cursor... ");
-	SDLCursor cursor(blackArrow);
+	Cursor cursor(blackArrow);
 	cursor.show();
-	SDLCursor::setCurrent(cursor);
+	Cursor::setCurrent(cursor);
 	
 /* We cannot activate SDLDisplay and SDLGLWindow in the same time...
 This is due to sdl design for portability : only one window at the same time
@@ -94,15 +94,15 @@ when the configuration file changed...*/
 
 	
 	//Checking available video Modes
-	if(!SDLSurfaceFactory::setDisplayFlags())
+	if(!SurfaceFactory::setDisplayFlags())
 	{
 		std::cerr << "\nThe required mode is not available !" << std::endl;
 		exit(1);
 	}
 	else
 	{
-		vector<int> h=SDLSurfaceFactory::getAvailableDisplayHeight();
-		vector<int> w=SDLSurfaceFactory::getAvailableDisplayWidth();
+		vector<int> h=SurfaceFactory::getAvailableDisplayHeight();
+		vector<int> w=SurfaceFactory::getAvailableDisplayWidth();
 		
 		std::cout << "\nAvailable Modes : " ;
 		if ( h[0] == -1 || w[0] == -1 ) std::cout << "all";
@@ -119,44 +119,44 @@ when the configuration file changed...*/
 	int newW=bitmap.getWidth()+60;
 	int newH=bitmap.getHeight()+60;
 	
-	if (!SDLSurfaceFactory::setDisplaySize(newW,newH))
+	if (!SurfaceFactory::setDisplaySize(newW,newH))
 		std::cout << "\nThis Video Mode is not available !" << std::endl;
 		
-	int newBPP=SDLSurfaceFactory::checkVideoMode();
+	int newBPP=SurfaceFactory::checkVideoMode();
 	if (!newBPP) std::cout << "Video Mode not usable !" << std::endl;
 	else std::cout << "SDL will use " << newW << "x" << newH << "@" <<newBPP << std::endl;
 
-	SDLDisplaySurface* display;
+	DisplaySurface* display;
 	// Window creation
-	if ((display = SDLSurfaceFactory::createDisplay()) != NULL)
+	if ((display = SurfaceFactory::createDisplay()) != NULL)
 	{
 		display->debug();
 		
-		if (display->fill(SDLColor(255,0,0)))
-			display->blit(bitmap,SDLPoint(30,30));
+		if (display->fill(Color(255,0,0)))
+			display->blit(bitmap,Point(30,30));
 		
-		SDLSurfaceFactory smileyFactory;
+		SurfaceFactory smileyFactory;
 		int index=smileyFactory.createRGBSurface("icon.bmp");
 		if(!smileyFactory.cloneToDisplay(index)) std::cerr << "clone failed" << std::endl;
 		
-		std::vector<SDLRGBSurface*> slist=smileyFactory.getSurfaceList();
+		std::vector<RGBSurface*> slist=smileyFactory.getSurfaceList();
 		std::cout << "taille = " << slist.size() << std::endl;
-		SDLRGBSurface* s=slist[slist.size()-1];
+		RGBSurface* s=slist[slist.size()-1];
 		std::cout << "s : " <<s->getWidth() << " x " << s->getHeight() << std::endl;
 		if (s==NULL) {LIB_ERROR("s is NULL!"); exit(1);}
 		
 
-		std::cout << std::boolalpha << display->blit(*s,SDLPoint(50,50)) << std::endl;
+		std::cout << std::boolalpha << display->blit(*s,Point(50,50)) << std::endl;
 		
-		SDLCursor::warpCurrent(SDLPoint(50,50));
+		Cursor::warpCurrent(Point(50,50));
 		
 		while(!(ui.closed()))
 		{
-			SDLEvent::handleEvents(ui);
+			Event::handleEvents(ui);
 			//TODO : moving 10 smileys randomly
 			
 			//use the access method because of the resize event which modify the screen address
-			SDLSurfaceFactory::getScreen()->update();
+			SurfaceFactory::getScreen()->update();
 
 		}		
 	}
@@ -166,14 +166,14 @@ when the configuration file changed...*/
 	testlog.add(" OPENGL activation... ",quiet);
 	
 	
-	if(!SDLSurfaceFactory::setDisplayFlags(true))
+	if(!SurfaceFactory::setDisplayFlags(true))
 	{
 		std::cout << "\nThe required mode is not available !" << std::endl;
 	}
 	else
 	{
-		vector<int> h=SDLSurfaceFactory::getAvailableDisplayHeight();
-		vector<int> w=SDLSurfaceFactory::getAvailableDisplayWidth();
+		vector<int> h=SurfaceFactory::getAvailableDisplayHeight();
+		vector<int> w=SurfaceFactory::getAvailableDisplayWidth();
 		
 		std::cout << "\nAvailable Modes : " ;
 		if ( h[0] == -1 || w[0] == -1 ) std::cout << "all";
@@ -192,35 +192,35 @@ when the configuration file changed...*/
 	
 	//GLManager test
 	std::cout << std::boolalpha <<
-			"setRsize(5) " << SDLGLManager::manager()->setRSize(5) << "\n" <<
-			"setGSize(5) " << SDLGLManager::manager()->setGSize(5) << "\n" <<
-			"setBSize(5) " << SDLGLManager::manager()->setBSize(5) << "\n" <<
-			"setASize(5) " << SDLGLManager::manager()->setASize(5) << "\n" <<
-			"setBufferSize(5) " << SDLGLManager::manager()->setBufferSize(12) << "\n" <<
+			"setRsize(5) " << GLManager::manager()->setRSize(5) << "\n" <<
+			"setGSize(5) " << GLManager::manager()->setGSize(5) << "\n" <<
+			"setBSize(5) " << GLManager::manager()->setBSize(5) << "\n" <<
+			"setASize(5) " << GLManager::manager()->setASize(5) << "\n" <<
+			"setBufferSize(5) " << GLManager::manager()->setBufferSize(12) << "\n" <<
 			std::endl;
 
 		//GLManager test
-		SDLGLManager::manager()->debug();
+		GLManager::manager()->debug();
 	
-	if ((display = SDLSurfaceFactory::createDisplay()) != NULL)
+	if ((display = SurfaceFactory::createDisplay()) != NULL)
 	{
 		
 		//GLManager test
-		SDLGLManager::manager()->debug();
+		GLManager::manager()->debug();
 	
 		std::cout << "calling display->debug() " << std::endl;
 		display->debug();
 		
-		std::cout << std::boolalpha << " setDepthSize(16) " << SDLGLManager::manager()->setDepthSize(16) << std::endl;
+		std::cout << std::boolalpha << " setDepthSize(16) " << GLManager::manager()->setDepthSize(16) << std::endl;
 		
-		SDLGLManager::manager()->debug();
+		GLManager::manager()->debug();
 		
 		std::cout << "loop... " << std::endl;
 		while(!(ui2.closed()))
 		{
-			SDLEvent::handleEvents(ui2);
+			Event::handleEvents(ui2);
 			//use the access method because of the resize event which modify the screen address
-			SDLSurfaceFactory::getScreen()->update();
+			SurfaceFactory::getScreen()->update();
 		}		
 	}
 

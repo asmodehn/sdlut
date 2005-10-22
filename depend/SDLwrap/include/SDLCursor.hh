@@ -5,7 +5,7 @@
 #include "SDLPoint.hh"
 
 /**
- * \class SDLCursor
+ * \class Cursor
  *
  * \ingroup Video
  *
@@ -23,16 +23,17 @@
  *
  */
 
+namespace SDL {
 
-typedef enum { arrow, blackArrow } SDLCursorShape;
+typedef enum { arrow, blackArrow } CursorShape;
 
-class SDLCursor
+class Cursor
 {
 	
-	friend class SDLManager;
+	friend class Manager;
 	
 	//default shapes for cursor (XPM format)
-	//corresponding to SDLCursorShape
+	//corresponding to CursorShape
 	static const char** shapes[2];
 	//set Cursor from XPM
 	static SDL_Cursor *init_system_cursor(const char *image[]);
@@ -40,27 +41,27 @@ class SDLCursor
 	//The address of SDL_Cursor structure should not change
 	SDL_Cursor * const _cursor;
 
-	explicit SDLCursor(SDL_Cursor * c) : _cursor(c) {}
+	explicit Cursor(SDL_Cursor * c) : _cursor(c) {}
 
 public :
 	//Constructor
-	SDLCursor(SDLCursorShape sh = arrow) throw (std::logic_error);
+	Cursor(CursorShape sh = arrow) throw (std::logic_error);
 	
 	//Destructor
-	~SDLCursor() {SDL_FreeCursor(_cursor);}
+	~Cursor() {SDL_FreeCursor(_cursor);}
 
 	//Static Methods
-	static void setCurrent (const SDLCursor & cur)
+	static void setCurrent (const Cursor & cur)
 	{
 		SDL_SetCursor(cur._cursor);
 	}
 
-	static SDLCursor getCurrent (void)
+	static Cursor getCurrent (void)
 	{
-		return SDLCursor(SDL_GetCursor());
+		return Cursor(SDL_GetCursor());
 		
 	}
-	static void warpCurrent (SDLPoint p)
+	static void warpCurrent (Point p)
 	{
 		SDL_WarpMouse(p.getx(),p.gety());
 		std::cout << "Mouse warped !" << std::endl;
@@ -81,4 +82,7 @@ public :
 	}
 
 };
+
+} //namespace SDL
+
 #endif

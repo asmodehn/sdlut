@@ -1,6 +1,8 @@
 #include "SDLOverlay.hh"
 
-SDLOverlay::Format SDLOverlay::getFormat(void) const
+namespace SDL {
+	
+Overlay::Format Overlay::getFormat(void) const
 {
 	Format res;
 	if ( _overlay->format & SDL_YV12_OVERLAY ) res = YV12;
@@ -10,3 +12,5 @@ SDLOverlay::Format SDLOverlay::getFormat(void) const
 	else if ( _overlay->format & SDL_YVYU_OVERLAY ) res = YVYU;
 	return res;
 }
+
+} //namespace SDL

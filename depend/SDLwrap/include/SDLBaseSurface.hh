@@ -1,8 +1,8 @@
-#ifndef SDLBASESURFACE_HH
-#define SDLBASESURFACE_HH
+#ifndef SDL_BASESURFACE_HH
+#define SDL_BASESURFACE_HH
 
 /**
- * \class SDLBaseSurface
+ * \class BaseSurface
  *
  * \ingroup Video
  *
@@ -24,10 +24,12 @@
 #include "SDLPixelFormat.hh"
 #include <cassert>
 
+namespace SDL {
+
 //TODO : make this class pure virtual one (how then?)... and manage creation of _surf with exception
 //in the derivating tree
 //The goal is to have _surf and this really tied.
-class SDLBaseSurface
+class BaseSurface
 {
 	
 protected:
@@ -60,7 +62,7 @@ protected:
 	void setpixel(int x, int y, Uint32 pixel);
 		
 	///Conversion Constructor
-	explicit SDLBaseSurface(SDL_Surface * s) : _surf(s),locks(0) {} ///< This one should be called only by subclasses
+	explicit BaseSurface(SDL_Surface * s) : _surf(s),locks(0) {} ///< This one should be called only by subclasses
 	
 	//Copy Constructor
 	//SDLBaseSurface( const SDLBaseSurface & s) : _surf(s._surf) {std::cerr << " === WARNING === SDLBaseSurface Copy Called !"<< std::endl;} //this one should never be called
@@ -71,7 +73,7 @@ protected:
 	  * Abstracted from RGBSurface to include display as input...
 	  * by default this method copy the content in a quickly displayable format (no alpha)
 	  */
-	SDLBaseSurface(const SDLBaseSurface & s , bool cloning = true, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
+	BaseSurface(const BaseSurface & s , bool cloning = true, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
 	
   
   inline Uint32 getFlags(void) const { return _surf->flags; } ///<usefull accessor for children only
@@ -79,7 +81,7 @@ protected:
 public:
 	
 	/// Virtual Destructor
-	virtual ~SDLBaseSurface() {if (_surf!=NULL) SDL_FreeSurface(_surf);}
+	virtual ~BaseSurface() {if (_surf!=NULL) SDL_FreeSurface(_surf);}
 
 	///Accessors
 	inline int getHeight(void) const { return _surf->h; }
@@ -92,68 +94,70 @@ public:
 	inline bool isPreAllocset(void) const {return SDL_PREALLOC & _surf->flags;}
 	
 	///Accessor to pixelFormat
-	inline SDLPixelFormat getPixelFormat(void) const {return SDLPixelFormat(_surf->format);}
+	inline PixelFormat getPixelFormat(void) const {return PixelFormat(_surf->format);}
 	
    	//Set the clip rect
    	//Default Reset the clip rect to the full size of the surface
    	inline void setClipRect(void)
    	{
-		return setClipRect(SDLRect(getWidth(),getHeight()));
+		return setClipRect(Rect(getWidth(),getHeight()));
 	}
-   	void setClipRect(const SDLRect& rect);
+   	void setClipRect(const Rect& rect);
    	//get the clip rect
-	SDLRect getClipRect(void) const; 
+	Rect getClipRect(void) const; 
 
     //save the surface to a BMP file.
     bool saveBMP(std::string filename) const;
     //TODO : the same with other formats
     
     //Fill
-   	inline bool fill (const SDLRGBColor& color)
+   	inline bool fill (const RGBColor& color)
 	{
-		return fill(SDLPixelFormat(_surf->format).getValueFromRGB(color));
+		return fill(PixelFormat(_surf->format).getValueFromRGB(color));
 	}
-	inline bool fill (const SDLRGBAColor& color)
+	inline bool fill (const RGBAColor& color)
 	{
-		return fill(SDLPixelFormat(_surf->format).getValueFromRGBA(color));
+		return fill(PixelFormat(_surf->format).getValueFromRGBA(color));
 	}
-	inline bool fill (const SDLPixelColor& color)
+	inline bool fill (const PixelColor& color)
 	{
-		SDLRect dest_rect(getWidth(), getHeight());
+		Rect dest_rect(getWidth(), getHeight());
 		return fill( color, dest_rect );
 	}
-	inline bool fill (const SDLRGBColor& color, SDLRect dest_rect)
+	inline bool fill (const RGBColor& color, Rect dest_rect)
 	{
-		return fill(SDLPixelFormat(_surf->format).getValueFromRGB(color), dest_rect);
+		return fill(PixelFormat(_surf->format).getValueFromRGB(color), dest_rect);
 	}
-	inline bool fill (const SDLRGBAColor& color, SDLRect dest_rect)
+	inline bool fill (const RGBAColor& color, Rect dest_rect)
 	{
-		return fill(SDLPixelFormat(_surf->format).getValueFromRGBA(color), dest_rect);
+		return fill(PixelFormat(_surf->format).getValueFromRGBA(color), dest_rect);
 	}
-	bool fill (const SDLPixelColor& color, SDLRect dest_rect);
+	bool fill (const PixelColor& color, Rect dest_rect);
 
 	//Blit src surface into the current surface
-	inline bool blit (const SDLBaseSurface& src, const SDLPoint& dest_pos=SDLPoint())
+	inline bool blit (const BaseSurface& src, const Point& dest_pos=Point())
 	{
-		SDLRect dest_rect(dest_pos);
+		Rect dest_rect(dest_pos);
 		return blit(src, dest_rect);
 	}
-	inline bool blit (const SDLBaseSurface& src, const SDLPoint& dest_pos, const SDLRect& src_rect)
+	inline bool blit (const BaseSurface& src, const Point& dest_pos, const Rect& src_rect)
 	{
-		SDLRect dest_rect(dest_pos);
+		Rect dest_rect(dest_pos);
 		return blit(src, dest_rect, src_rect);
 	}
 	//Beware ! The final blitting rectangle is saved in dest_rect.
-	inline bool blit (const SDLBaseSurface& src, SDLRect& dest_rect)
+	inline bool blit (const BaseSurface& src, Rect& dest_rect)
 	{
-		SDLRect src_rect(src.getWidth(), src.getHeight());
+		Rect src_rect(src.getWidth(), src.getHeight());
 		return blit(src, dest_rect, src_rect);
 	}
 	//Blit src into the current surface.
-	bool blit (const SDLBaseSurface& src, SDLRect& dest_rect, const SDLRect& src_rect);
+	bool blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect);
     
     virtual void debug(void) const;
    	
 };
+
+} //namespace SDL
 
 #endif

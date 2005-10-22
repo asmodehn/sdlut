@@ -1,10 +1,10 @@
-#ifndef SDLPOINT_HH
-#define SDLPOINT_HH
+#ifndef SDL_POINT_HH
+#define SDL_POINT_HH
 
 #include "SDLConfig.hh"
 
 /**
- * \class SDLPoint
+ * \class Point
  *
  * \ingroup Video
  *
@@ -25,7 +25,9 @@
  * A Point is a SDL_Rect where width and height are never used.
  *****************************************************************************/
 
-class SDLPoint
+namespace SDL {
+
+class Point
 {
 protected:
 	//the address of the SDL_Rect struct should never change...
@@ -34,7 +36,7 @@ protected:
 public:
 
 	//2 parameters define only a point.
-	SDLPoint(int nx=0, int ny=0) : _rect(new SDL_Rect)
+	Point(int nx=0, int ny=0) : _rect(new SDL_Rect)
 	{
 		_rect->x=nx;
 		_rect->y=ny;
@@ -42,7 +44,7 @@ public:
 		_rect->h=0;
 	}
 	
-	SDLPoint( const SDLPoint& p ) : _rect(new SDL_Rect)
+	Point( const Point& p ) : _rect(new SDL_Rect)
 	{
 		_rect->x=p.getx();
 		_rect->y=p.gety();
@@ -50,7 +52,7 @@ public:
 		_rect->h=0;
 	}
 	
-	~SDLPoint() {if (_rect!=NULL) delete _rect; };
+	~Point() {if (_rect!=NULL) delete _rect; };
 
 	//Accessors
 
@@ -68,21 +70,23 @@ public:
 	//TODO : tests operators == , X< X> Y< Y> ( cf old vector operator overloading...)
 	
 	//TODO : assignement operators if default doesnt work... (= copy)
-	SDLPoint& operator=(const SDLPoint&);
+	Point& operator=(const Point&);
 	
 	//and others like + - etc...
-	inline SDLPoint operator+(const SDLPoint &p) const
-		{ return SDLPoint(_rect->x + p.getx(), _rect->y + p.gety()); }
-	inline SDLPoint operator-(const SDLPoint &p) const
-		{ return SDLPoint(_rect->x - p.getx(), _rect->y - p.gety()); }
-	inline SDLPoint& operator+=(const SDLPoint &p)
+	inline Point operator+(const Point &p) const
+		{ return Point(_rect->x + p.getx(), _rect->y + p.gety()); }
+	inline Point operator-(const Point &p) const
+		{ return Point(_rect->x - p.getx(), _rect->y - p.gety()); }
+	inline Point& operator+=(const Point &p)
 		{ _rect->x += p.getx(); _rect->y += p.gety(); return *this; }
-	inline SDLPoint& operator-=(const SDLPoint &p)
+	inline Point& operator-=(const Point &p)
 		{ _rect->x -= p.getx(); _rect->y -= p.gety(); return *this; }
 	
-	inline friend std::ostream& operator << (std::ostream& os, const SDLPoint& p)
+	inline friend std::ostream& operator << (std::ostream& os, const Point& p)
 		{ return os << "Point : ( " << p.getx() << ", " << p.gety() << " )"; } 
 	
 };
 
-#endif // SDLPOINT_HH
+} //namespace SDL
+
+#endif // SDL_POINT_HH

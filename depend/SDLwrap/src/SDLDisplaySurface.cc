@@ -1,12 +1,14 @@
 #include "SDLDisplaySurface.hh"
 
-SDLDisplaySurface* SDLDisplaySurface::_screen = NULL;
-std::string SDLDisplaySurface::_title = DEFAULT_WINDOW_TITLE;
-std::string SDLDisplaySurface::_icon = DEFAULT_WINDOW_ICON;
+namespace SDL {
+	
+DisplaySurface* DisplaySurface::_screen = NULL;
+std::string DisplaySurface::_title = DEFAULT_WINDOW_TITLE;
+std::string DisplaySurface::_icon = DEFAULT_WINDOW_ICON;
 
 //Constructor
-SDLDisplaySurface::SDLDisplaySurface(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
-try : SDLBaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
+DisplaySurface::DisplaySurface(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
+try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
 {
 	if (_surf == NULL)
 	{
@@ -21,7 +23,7 @@ try : SDLBaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
 }
 catch (std::exception &e)
 {
-	LIB_ERROR( "Exception catched in SDLDisplaySurface Constructor !!!" );
+	LIB_ERROR( "Exception catched in DisplaySurface Constructor !!!" );
 	//Affichage Erreur
 	LIB_ERROR(e.what());
 
@@ -30,7 +32,7 @@ catch (std::exception &e)
 }
 
 
-void SDLDisplaySurface::setCaption(std::string title, std::string icon)
+void DisplaySurface::setCaption(std::string title, std::string icon)
 {
 	_title=title; _icon=icon;
 	//if already displayed, change the caption
@@ -41,7 +43,7 @@ void SDLDisplaySurface::setCaption(std::string title, std::string icon)
 	}
 }
 
-void SDLDisplaySurface::getCaption(std::string & title, std::string & icon)
+void DisplaySurface::getCaption(std::string & title, std::string & icon)
 {
 	char ** t,** i;
 	SDL_WM_GetCaption(t,i);
@@ -49,12 +51,12 @@ void SDLDisplaySurface::getCaption(std::string & title, std::string & icon)
 	icon=std::string(*i);
 }
 
-bool SDLDisplaySurface::iconify(void)
+bool DisplaySurface::iconify(void)
 {
 	return ( SDL_WM_IconifyWindow() != 0 );	
 }
 
-bool SDLDisplaySurface::toggleFullScreen(void)
+bool DisplaySurface::toggleFullScreen(void)
 {
 	//This only works for X11
 	#ifndef __MINGW32__
@@ -75,14 +77,14 @@ queryGrabInput(void);
 
 
 
-bool SDLDisplaySurface::update(SDLRect r)
+bool DisplaySurface::update(Rect r)
 {
 	if (locked()) return false;//to prevent calling while locked
 	else SDL_UpdateRect(_surf, r.getx(), r.gety(), r.getw(), r.geth());
 	return true;
 }
 
-bool SDLDisplaySurface::update(std::vector<SDLRect> rlist)
+bool DisplaySurface::update(std::vector<Rect> rlist)
 {
 	if (locked()) return false;//to prevent calling while locked
 	else 
@@ -94,9 +96,9 @@ bool SDLDisplaySurface::update(std::vector<SDLRect> rlist)
 	return true;
 }
 
-void SDLDisplaySurface::debug(void) const
+void DisplaySurface::debug(void) const
 {
-	SDLBaseSurface::debug();
+	BaseSurface::debug();
 	std::stringstream logstr;
 	logstr<< std::boolalpha << "- Fullscreen ? " << isFullScreenset() << "\n"
 				<< "- Resizable ? " << isResizableset() << "\n"
@@ -107,3 +109,5 @@ void SDLDisplaySurface::debug(void) const
   //tmp
   SDLConfig::getLog()->flush();
 }
+
+} //namespace SDL

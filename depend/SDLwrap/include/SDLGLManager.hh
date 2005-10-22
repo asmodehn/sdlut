@@ -20,6 +20,7 @@
  *
  */
 
+namespace SDL {
 /*******************************************************************************
  * Manager of the GL state machine - Singleton
  ******************************************************************************/
@@ -29,19 +30,19 @@
 
 //This may be useless in Windows....
 //TEst to do on linux, to choose a class behaviour
-class SDLGLManager
+class GLManager
 {
-	static SDLGLManager * _uniqueInstance;
+	static GLManager * _uniqueInstance;
 	
 protected :
 	
-	SDLGLManager() {}	
+	GLManager() {}	
 	
 public :
 		
-	static SDLGLManager * manager()
+	static GLManager * manager()
 	{
-		if (_uniqueInstance == NULL) _uniqueInstance = new SDLGLManager;
+		if (_uniqueInstance == NULL) _uniqueInstance = new GLManager;
 		return _uniqueInstance;
 	}
 	
@@ -93,5 +94,7 @@ public :
 	
 	void debug(void) const;
 };
+
+} // namespace SDL
 
 #endif

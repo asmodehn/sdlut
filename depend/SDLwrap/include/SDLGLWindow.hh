@@ -26,7 +26,9 @@
 #include "Interface3D.hh"
 #include <cassert>
 
-class SDLGLWindow : public SDLDisplaySurface
+namespace SDL {
+
+class GLWindow : public DisplaySurface
 {
 protected:
 	static Interface3D* engine;
@@ -34,21 +36,21 @@ protected:
 public:
 	
 	//Constructor
-	SDLGLWindow(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
-	: SDLDisplaySurface(width, height, bpp, flags)
+	GLWindow(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
+	: DisplaySurface(width, height, bpp, flags)
 	{
 		engine->init(getWidth(),getHeight());
 	}
 	
 	//Destructor
-	~SDLGLWindow() {delete engine;}
+	~GLWindow() {delete engine;}
 	
 	inline bool isOpenGLset(void) const {return SDL_OPENGL & _surf->flags;}
 
   bool resize (int width, int height);
   
   //TODO : Save Screen -> backup the screen content in a new RGBSurface AND SAVE THE CURRENT SCENE STATE...
-	virtual SDLRGBSurface* save(void) {return NULL;}
+	virtual RGBSurface* save(void) {return NULL;}
 	  
 	bool update(void);//call scene3D->render
 	
@@ -71,5 +73,7 @@ public:
  //{return SDL_DOUBLEBUF & screen()->getSurface()->flags;}
  ******************************************************************************/
 };
+
+} //namespace SDL
 
 #endif //SDLGLWINDOW_HH

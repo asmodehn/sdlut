@@ -1,5 +1,5 @@
-#ifndef SDLCOLOR_HH
-#define SDLCOLOR_HH
+#ifndef SDL_COLOR_HH
+#define SDL_COLOR_HH
 
 #include "SDLConfig.hh"
 //#include "SDLPixelFormat.hh"
@@ -30,10 +30,10 @@
  *
  */
 
-
+namespace SDL {
 //TODO : Color constructor with string ("black", "yellow", "grey", etc. )
 //TODO : Color operator, like + - = etc. (like a vector)
-class SDLRGBColor
+class RGBColor
 {
 	friend class SDLPalette;
 
@@ -52,14 +52,14 @@ public:
 	
 	//Because NULL has no sense for function using colors, defaut constructor
 	// just paint it black :)
-	SDLRGBColor(Uint8 r=0, Uint8 g=0, Uint8 b=0) : _color(new SDL_Color)
+	RGBColor(Uint8 r=0, Uint8 g=0, Uint8 b=0) : _color(new SDL_Color)
 	{
 		_color->r=r;
 		_color->g=g;
 		_color->b=b;
 		pointerCopy = false;
 	}
-	virtual ~SDLRGBColor() { if (!pointerCopy) delete _color;}
+	virtual ~RGBColor() { if (!pointerCopy) delete _color;}
 	
 	void setR(Uint8 nr) { _color->r=nr ;}
 	void setG(Uint8 ng) { _color->g=ng ;}
@@ -69,7 +69,7 @@ public:
 	Uint8 getG(void) const { return _color->g;}
 	Uint8 getB(void) const { return _color->b;}
 	
-	inline friend std::ostream& operator << (std::ostream& os, const SDLRGBColor& c)
+	inline friend std::ostream& operator << (std::ostream& os, const RGBColor& c)
 		{ return os << "RGBColor : R=" << c.getR() << " G=" << c.getG() << " B=" << c.getB() << " "; } 
 
 	
@@ -90,31 +90,31 @@ public:
  *
  */
 
-class SDLRGBAColor : public SDLRGBColor
+class RGBAColor : public RGBColor
 {
 //	explicit SDLRGBAColor(SDL_Color * color) : SDLRGBColor(color) {}
 
 public:
-	SDLRGBAColor(Uint8 r=0, Uint8 g=0, Uint8 b=0, Uint8 a=0)
-	: SDLRGBColor(r, g, b)
+	RGBAColor(Uint8 r=0, Uint8 g=0, Uint8 b=0, Uint8 a=0)
+	: RGBColor(r, g, b)
 	{
 		_color->unused=a;
 	}
-	virtual ~SDLRGBAColor() {}
+	virtual ~RGBAColor() {}
 
 	void setA(Uint8 na) { _color->unused=na ;}
 	
 	Uint8 getA(void) const {return _color->unused;}
 
-	inline friend std::ostream& operator << (std::ostream& os, const SDLRGBAColor& c)
+	inline friend std::ostream& operator << (std::ostream& os, const RGBAColor& c)
 		{ return os << "RGBColor : R=" << c.getR() << " G=" << c.getG() << " B=" << c.getB() << " A=" << c.getA() << " " ; } //not sure how to derivate that properly... TODO
 };
 
 //defining an alias. Could be usefull.
-#define SDLColor SDLRGBColor
+#define Color RGBColor
 
 /**
- * \class SDLPalette
+ * \class Palette
  *
  * \ingroup Video
  *
@@ -129,9 +129,9 @@ public:
  */
 
 //read-only access
-class SDLPalette
+class Palette
 {
-	friend class SDLPixelFormat;
+	friend class PixelFormat;
 	
 	bool pointerCopy;
 protected:
@@ -141,14 +141,14 @@ protected:
 	// protected to prevent manual creation of palette
 	//maybe completely useless...
 	// default : one black color
-	/*SDLPalette(int ncolors = 1) : _palette(new SDL_Palette)
+	/*Palette(int ncolors = 1) : _palette(new SDL_Palette)
 	{
 		_palette->ncolors = ncolors;
-		_palette->colors = (new SDLColor[ncolors])->_color;
+		_palette->colors = (new Color[ncolors])->_color;
 		pointerCopy = false;
 	}*/
 	//idem for the copy contructor
-	/*SDLPalette(const SDLPalette & p ) : _palette(new SDL_Palette)
+	/*Palette(const Palette & p ) : _palette(new SDL_Palette)
 	{
 		_palette->ncolors = p.getNColors();
 		for (int i=0; i<_palette->ncolors ; i++)
@@ -158,25 +158,27 @@ protected:
 	//to handle explicit cast from SDL
 	//beware : store only a pointer...
 	//so the original should not be destroyed !
-	explicit SDLPalette(const SDL_Palette* palette) : _palette(palette)
+	explicit Palette(const SDL_Palette* palette) : _palette(palette)
 	{
 		pointerCopy = true;
 	}
 public:
 	
-	~SDLPalette(void) { if (!pointerCopy) delete _palette; }
+	~Palette(void) { if (!pointerCopy) delete _palette; }
 	
 	inline int getNColors(void) const { return _palette->ncolors; }
-	inline SDLRGBAColor getColors(int index) const
+	inline RGBAColor getColors(int index) const
 	{
 		//creates a new color to protects color in Palette...
 		//maybe using const would be better ??
-		return SDLRGBAColor(	_palette->colors[index].r,
+		return RGBAColor(	_palette->colors[index].r,
 							_palette->colors[index].g,
 							_palette->colors[index].b,
 							_palette->colors[index].unused
 						);
 	}
-	
+
 };
+
+}// namespace SDL
 #endif
