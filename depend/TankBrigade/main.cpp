@@ -2,6 +2,7 @@
 
 #include "MxSDL.h"
 #include "MxScene.h"
+#include "MxInput.h"
 
 using namespace MxLib;
 
@@ -11,21 +12,41 @@ using namespace MxLib;
 #endif
 #endif
 
+
+class MyPlayerTank : public MxLib::MxAnimatedSprite
+{
+    
+			
+		public :
+    MyPlayerTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
+    : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,size)
+    {}
+		MyPlayerTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
+    : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,sizeOriX, sizeOriY)
+    {}
+		
+  
+    
+		
+};
+
+
 int main()
 {
     MxInit::init();
 
-    MxBitmap mainBitmap("tankbrigade.bmp",SDL::Color(0,0,0));
+    MxBitmap mainBitmap("tankbrigade.bmp"/*,SDL::Color(0,0,0)*/);
 
     MxScene scene;
-    /*Fun but timer needed in SDLwrap...
-    MxSprite splash(&mainBitmap,33,430,360,240);
+    MxInput input(&scene);
+    //Fun but timer needed in SDLwrap...
+    /*MxSprite splash(mainBitmap,33,430,360,240);
     
     scene.add(&splash,200,200);
     scene.display(25,2);
-    
-    scene.clear();
     */
+    //scene.clear();
+    
     
     MxSprite greentank(mainBitmap,363,33,32);
     MxSprite bluetank(mainBitmap,396,33,32);
@@ -120,8 +141,12 @@ int main()
     scene.add(&greentank, 100, 100);
     scene.add(&bluetank, 200,100);
     
+  while (!input.closed())
+	{
+		SDL::Event::handleEvents(input);
+    scene.update();
     scene.display(25);
-    
+	}
 
 }
 

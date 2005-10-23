@@ -10,7 +10,7 @@ try
 	if (!SDL::Manager::enableEverything())
 	throw std::logic_error("SDL init failed");
 	
-	SDL::SurfaceFactory::setDisplayFlags();
+	SDL::SurfaceFactory::setDisplayFlags(false,false,false,false,true,true,false ,true,true,false);
 	
 	SDL::SurfaceFactory::setDisplaySize(width, height);
 	

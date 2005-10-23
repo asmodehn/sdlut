@@ -32,7 +32,18 @@ class MxAnimatedSprite : public MxSprite
 		MxAnimatedSprite (MxBitmap & , unsigned int coordOriX, unsigned int coordOriY, unsigned int size);
 		MxAnimatedSprite (MxBitmap & , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY);
 	
+	unsigned int loadFrame(unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
+	{
+		m_frame.push_back(SDL::Rect(coordOriX,coordOriY, size, size));
+		return m_frame.size() -1;
+  }
 	
+	unsigned int loadFrame(unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
+  {
+		m_frame.push_back(SDL::Rect(coordOriX,coordOriY, sizeOriX, sizeOriY));
+		return m_frame.size() -1;
+  }
+  
 	bool changeFrame(unsigned int newframe)  { if ( newframe < m_frame.size() ) m_currentframe = newframe; else return false; return true;}
 	
 	virtual void update();

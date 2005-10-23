@@ -1,4 +1,5 @@
 #include "MxScene.h"
+#include "MxInput.h"
 
 namespace MxLib {
 
@@ -6,7 +7,6 @@ MxScene::MxScene(int red , int green, int blue)
 : m_bitmap(NULL), m_map(NULL)
 {
 	setBG(red,green,blue);
-	m_input = new MxInput;
 }
 
 
@@ -58,17 +58,19 @@ void MxScene::setBG(int red, int green, int blue)
 }
 	
 	
-void MxScene::update (MxInput& input)
+void MxScene::update ()
 {
-	SDL::Event::handleEvents(input);
+	  //if (m_map!=NULL)
+    //m_map->update();
+  
+  for (unsigned int i=0;i<m_sprite.size() ;i++ )
+    m_sprite[i]->update();
+  
 }
 
 void MxScene::display(int framerate, int timeout)
 {
-	while (!m_input->closed())
-	{
-    update(*m_input);
-		
+
     if (m_map!=NULL)
     m_map->render(m_mapPosX,m_mapPosY);
   
@@ -79,7 +81,6 @@ void MxScene::display(int framerate, int timeout)
     m_bitmap->render(m_bitmapPosX, m_bitmapPosY);
     
     MxInit::getDisplay()->update();
-	}
 	//TODO
 }
 

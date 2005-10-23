@@ -3,17 +3,20 @@
 
 
 #include "MxSDL.h"
+#include "MxScene.h"
 
 namespace MxLib
 {
 	
 class MxInput : public SDL::EventHandler
 {
-
+  MxScene * m_scene;
+  	
 	bool closing;
 
 public:
-	MxInput() : closing(false) {}
+	MxInput(MxScene * scene) : closing(false),m_scene(scene) {}
+	
 	virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
 	{
 		switch( keysym.sym ) {
@@ -24,6 +27,7 @@ public:
 		}
 		return true;
 	}
+	
 	virtual bool handleResizeEvent(int w, int h) { MxInit::getDisplay()->resize(w,h); }
 	
 	virtual bool handleQuitEvent(void) { closing=true; return true; }

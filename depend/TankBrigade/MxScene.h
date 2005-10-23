@@ -4,14 +4,11 @@
 #include "MxSDL.h"
 #include "MxMap.h"
 #include "MxSprite.h"
-#include "MxInput.h"
 
 #include <vector>
 
 namespace MxLib {
 
-	
-		
     class MxScene
     {
     	SDL::Color m_bgColor;
@@ -26,11 +23,10 @@ namespace MxLib {
     	std::vector<int> m_spritePosX;
     	std::vector<int> m_spritePosY;
     	
-    	protected :
-    	MxInput * m_input;
-    	void update (MxInput&);
+    	public:
+    	void update ();
     	
-    		public:
+    		
     		MxScene(int red = 0, int green = 0, int blue = 0);
     		
     		bool add (MxBitmap *, int posX = 0, int posY = 0);
@@ -48,6 +44,6 @@ namespace MxLib {
     		void display(int framerate, int timeout = 0);
     		
     };
-								
+
 }
 #endif

@@ -28,6 +28,7 @@ namespace MxLib {
 			
 			static SDL::DisplaySurface * getDisplay(void);
 			
+			
 		};
 		
     class MxBitmap
