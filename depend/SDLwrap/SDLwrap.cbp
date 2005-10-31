@@ -9,6 +9,19 @@
 		<Option default_target="1"/>
 		<Option compiler="0"/>
 		<Build>
+			<Target title="static-NoOpenGL">
+				<Option output="bin\libSDLwrap.NoGL.a"/>
+				<Option working_dir=""/>
+				<Option object_output="obj"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps=""/>
+				<Option type="2"/>
+				<Option compiler="0"/>
+				<Option projectResourceIncludeDirsRelation="2"/>
+				<Compiler>
+					<Add option="-W"/>
+				</Compiler>
+			</Target>
 			<Target title="staticlib-debug">
 				<Option output="bin\libSDLwrap.debug.a"/>
 				<Option working_dir=""/>
@@ -51,8 +64,8 @@
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
-					<Add library="opengl32"/>
 					<Add library="bin\libSDLwrap.debug.a"/>
+					<Add library="opengl32"/>
 				</Linker>
 			</Target>
 			<Target title="staticlib-optimised">
@@ -63,6 +76,7 @@
 				<Option external_deps=""/>
 				<Option type="2"/>
 				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectIncludeDirsRelation="0"/>
 				<Option projectResourceIncludeDirsRelation="2"/>
 				<Option projectLibDirsRelation="0"/>
@@ -81,19 +95,6 @@
 					<Add option="-s"/>
 					<Add library="opengl32"/>
 				</Linker>
-			</Target>
-			<Target title="static-NoOpenGL">
-				<Option output="bin\libSDLwrap.NoGL.a"/>
-				<Option working_dir=""/>
-				<Option object_output="obj"/>
-				<Option deps_output=".deps"/>
-				<Option external_deps=""/>
-				<Option type="2"/>
-				<Option compiler="0"/>
-				<Option projectResourceIncludeDirsRelation="2"/>
-				<Compiler>
-					<Add option="-W"/>
-				</Compiler>
 			</Target>
 		</Build>
 		<Compiler>
