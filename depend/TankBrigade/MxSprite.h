@@ -6,12 +6,21 @@
 
 namespace MxLib {
 
+class MxScene;
+
 class MxSprite
 {
+	friend class MxScene;
+	
 	protected :
+	MxScene * m_scene;
+	int m_sceneindex;
 	
 	MxBitmap & m_BitmapOri;
 	SDL::Rect m_bboxOri;
+	
+	void setScene(MxScene * scene) { m_scene = scene; }
+	void setSceneIndex(int index) { m_sceneindex = index; }
 	
 	public:
 		MxSprite (MxBitmap & , unsigned int coordOriX, unsigned int coordOriY, unsigned int size);
@@ -20,6 +29,8 @@ class MxSprite
 	virtual void update();
 	
 	bool render(int pixX, int pixY) const;
+	
+	bool move (int deltax, int deltay) const;
 	
 };
 

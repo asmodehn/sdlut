@@ -10,12 +10,11 @@ namespace MxLib
 	
 class MxInput : public SDL::EventHandler
 {
-  MxScene * m_scene;
   	
 	bool closing;
 
 public:
-	MxInput(MxScene * scene) : closing(false),m_scene(scene) {}
+	MxInput() : closing(false) {}
 	
 	virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
 	{

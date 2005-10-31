@@ -3,13 +3,6 @@
 
 namespace MxLib {
 
-MxScene::MxScene(int red , int green, int blue)
-: m_bitmap(NULL), m_map(NULL)
-{
-	setBG(red,green,blue);
-}
-
-
 bool MxScene::add (MxBitmap * bitmap, int posX, int posY)
 {
 	bool res = (m_bitmap==NULL);
@@ -36,11 +29,13 @@ bool MxScene::add (MxMap * map, int posX, int posY)
   return res;
 }
 
-void MxScene::add (MxSprite * sprite, int posX, int posY)
+int MxScene::add (MxSprite * sprite, int posX, int posY)
 {
 	m_sprite.push_back(sprite);
 	m_spritePosX.push_back(posX);
 	m_spritePosY.push_back(posY);
+	sprite->setScene(this);
+	sprite->setSceneIndex(m_sprite.size() -1);
 }
 
 void MxScene::clear ()
@@ -50,13 +45,6 @@ void MxScene::clear ()
 	m_sprite.clear();
 }
 
-void MxScene::setBG(int red, int green, int blue)
-{
-	m_bgColor.setR(red);
-	m_bgColor.setG(green);
-	m_bgColor.setB(blue);
-}
-	
 	
 void MxScene::update ()
 {
@@ -83,5 +71,15 @@ void MxScene::display(int framerate, int timeout)
     MxInit::getDisplay()->update();
 	//TODO
 }
+
+	bool MxScene::moveSprite(unsigned int index, int deltaX, int deltaY)
+	{
+		
+		if (index < m_sprite.size())
+		{
+			m_spritePosX[index]+=deltaX;
+			m_spritePosY[index]+=deltaY;
+		}
+	}
 
 }

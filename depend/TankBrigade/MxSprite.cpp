@@ -1,4 +1,5 @@
 #include "MxSprite.h"
+#include "MxScene.h"
 
 namespace MxLib {
 	
@@ -27,7 +28,12 @@ MxSprite::MxSprite (MxBitmap & bitmapOri, unsigned int coordOriX, unsigned int c
 	{
 		//TODO
 	}
-	
+
+bool MxSprite::move (int deltax, int deltay) const
+{
+	m_scene->moveSprite(m_sceneindex,deltax,deltay);
+}
+
 	bool MxSprite::render(int pixX, int pixY) const
 	{
 		return MxInit::getDisplay()->blit(*m_BitmapOri.getRawSurface(),SDL::Point(pixX,pixY),m_bboxOri);

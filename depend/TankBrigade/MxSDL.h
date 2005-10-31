@@ -12,6 +12,7 @@
 
 namespace MxLib {
 	
+		//singleton to do again properly
 		class MxInit
 		{
 			private :

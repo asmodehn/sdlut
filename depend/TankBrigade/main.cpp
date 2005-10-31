@@ -15,21 +15,44 @@ using namespace MxLib;
 
 class MyPlayerTank : public MxLib::MxAnimatedSprite
 {
-    
-			
-		public :
-    MyPlayerTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
-    : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,size)
-    {}
-		MyPlayerTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
-    : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,sizeOriX, sizeOriY)
-    {}
-		
-  
+	int speed;
+	
+	public :
+  MyPlayerTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
+  : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,size)
+  {}
+	MyPlayerTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
+  : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,sizeOriX, sizeOriY)
+  {}
+	
+	bool moveUp() { return move ( 0,-speed); }
+	bool moveDown() { return move ( 0,speed); }
+	bool moveLeft() { return move ( -speed,0); }
+	bool moveRight() { return move ( speed,0); }
+
     
 		
 };
 
+class MyInput : public MxLib::MxInput
+{
+	MyPlayerTank * active;
+	
+	virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
+	{
+		
+		switch( keysym.sym ) {
+			case SDLK_UP: active->moveUp();
+			case SDLK_DOWN: active->moveDown();
+			case SDLK_LEFT: active->moveLeft();
+			case SDLK_RIGHT: active->moveRight();
+      default: break;
+		}
+		return MxLib::MxInput::handleKeyboardEvent(keysym,pressed);
+	}
+	public :
+	void setActive (MyPlayerTank * player) { active = player; }
+};
 
 int main()
 {
@@ -38,7 +61,7 @@ int main()
     MxBitmap mainBitmap("tankbrigade.bmp"/*,SDL::Color(0,0,0)*/);
 
     MxScene scene;
-    MxInput input(&scene);
+    MyInput input;
     //Fun but timer needed in SDLwrap...
     /*MxSprite splash(mainBitmap,33,430,360,240);
     
@@ -48,9 +71,11 @@ int main()
     //scene.clear();
     
     
-    MxSprite greentank(mainBitmap,363,33,32);
+    MyPlayerTank greentank(mainBitmap,363,33,32);
     MxSprite bluetank(mainBitmap,396,33,32);
-    
+	input.setActive (&greentank);
+
+//MAP
     MxMap map(32,20,15);
 	int tileWaterTopLeft=map.loadnewSprite(mainBitmap, 231 , 231);
 	int tileWaterTopRight=map.loadnewSprite(mainBitmap, 264 , 231);
@@ -135,6 +160,7 @@ int main()
   for (int j=1;j < 14;j++)
   map.placeSprite(tileGrass,i,j);
 
+//MAP DONE
     
     scene.add(&map);
     
@@ -149,4 +175,5 @@ int main()
 	}
 
 }
+
 

@@ -11,7 +11,10 @@ namespace MxLib {
 
     class MxScene
     {
-    	SDL::Color m_bgColor;
+			public :
+			MxScene() {}
+	  			
+			private:
     	
     	MxBitmap * m_bitmap;
     	int m_bitmapPosX,m_bitmapPosY;
@@ -25,20 +28,21 @@ namespace MxLib {
     	
     	public:
     	void update ();
-    	
-    		
-    		MxScene(int red = 0, int green = 0, int blue = 0);
+
+
     		
     		bool add (MxBitmap *, int posX = 0, int posY = 0);
     		
     		//authorise only one Map
     		bool add (MxMap *, int posX =0, int posY =0);
     		
-    		void add (MxSprite *, int posX =0, int posY =0);
+    		int add (MxSprite *, int posX =0, int posY =0);
     		
     		void clear ();
     		
     		void setBG(int red, int green, int blue);
+    		
+    		bool moveSprite(unsigned int index, int deltaX, int deltaY);
     		
     		//timeout = 0 means no timeout.
     		void display(int framerate, int timeout = 0);
