@@ -32,8 +32,8 @@ namespace MxLib
   void MxMap::render(int pixX, int pixY)
   {
   	//std::cerr << "Update called on MxMap" << std::endl;
-  	for (unsigned int i=0; i < m_mapWidth; i++)
-    {  for (unsigned int j=0; j< m_mapHeight; j++)
+  	for ( int i=0; i < m_mapWidth; i++)
+    {  for ( int j=0; j< m_mapHeight; j++)
       {
       	//std::cerr << "rendering tile from " << i << "," << j << " at " << i*32 << "," << j*32 << std::endl;
       	if (m_map[i+j*m_mapWidth]!=NULL)
