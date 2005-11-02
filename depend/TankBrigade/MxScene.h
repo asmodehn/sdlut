@@ -22,8 +22,7 @@ namespace MxLib
         int m_mapPosX,m_mapPosY;
 
         std::vector<MxSprite *> m_sprite;
-        std::vector<int> m_spritePosX;
-        std::vector<int> m_spritePosY;
+        std::vector<SDL::Rect> m_spritePos;
 
     public:
 
@@ -47,6 +46,8 @@ namespace MxLib
         void setBG(int red, int green, int blue);
 
         bool moveSprite(unsigned int index, int deltaX, int deltaY);
+
+        //bool testCollide(const Sprite & spr1, const Sprite & spr2);
 
         //timeout = 0 means no timeout.
         void display(int framerate, int timeout = 0);

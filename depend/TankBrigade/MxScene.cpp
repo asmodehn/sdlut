@@ -33,8 +33,15 @@ namespace MxLib
     int MxScene::add (MxSprite * sprite, int posX, int posY)
     {
         m_sprite.push_back(sprite);
-        m_spritePosX.push_back(posX);
-        m_spritePosY.push_back(posY);
+
+        SDL::Rect newpos;
+        newpos.setx(posX);
+        newpos.sety(posY);
+        newpos.setw(sprite->m_bboxOri.getw());
+        newpos.seth(sprite->m_bboxOri.geth());
+
+        m_spritePos.push_back(newpos);
+
         sprite->setScene(this);
         sprite->setSceneIndex(m_sprite.size() -1);
     }
@@ -64,7 +71,7 @@ namespace MxLib
             m_map->render(m_mapPosX,m_mapPosY);
 
         for (unsigned int i=0;i<m_sprite.size() ;i++ )
-            m_sprite[i]->render(m_spritePosX[i],m_spritePosY[i]);
+            m_sprite[i]->render(m_spritePos[i].getx(),m_spritePos[i].gety());
 
         if (m_bitmap!=NULL)
             m_bitmap->render(m_bitmapPosX, m_bitmapPosY);
@@ -78,9 +85,21 @@ namespace MxLib
 
         if (index < m_sprite.size())
         {
-            m_spritePosX[index]+=deltaX;
-            m_spritePosY[index]+=deltaY;
-        }
-    }
+          SDL::Point move;
+          move.setx(deltaX);
+          move.sety(deltaY);
 
+            m_spritePos[index] += move;
+        }
+        // if collide with another sprite
+        //call sprite->collide(sprite)
+        //call sprite->collide(sprite)
+
+    }
+/*
+    bool MxScene::testCollide(const Sprite & spr1, const Sprite & spr2)
+    {
+      spr1
+    }
+*/
 }

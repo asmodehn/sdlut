@@ -39,6 +39,8 @@ namespace MxLib
 
         bool move (int deltax, int deltay) const;
 
+        //virtual bool collide (const Sprite &);
+
     };
 
     class MxAnimatedSprite : public MxSprite
@@ -75,6 +77,7 @@ namespace MxLib
 
         bool render(int pixX, int pixY) const;
 
+        //virtual collide (const AnimatedSprite &);
     };
 
 }
