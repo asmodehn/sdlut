@@ -91,15 +91,33 @@ namespace MxLib
 
             m_spritePos[index] += move;
         }
+        for (unsigned int i=0; i<m_sprite.size(); i++ )
+          if (i != index ) testCollide(index,i);
         // if collide with another sprite
         //call sprite->collide(sprite)
         //call sprite->collide(sprite)
 
     }
-/*
-    bool MxScene::testCollide(const Sprite & spr1, const Sprite & spr2)
+
+    bool MxScene::testCollide(unsigned int index1, unsigned int index2)
     {
-      spr1
+      //might be better done like that, although
+      //this function should be completely symmetric
+      //
+      //return m_spritePos[index1].collide(m_spritePos[index2])
+      std::cout << m_spritePos[index1] << std::endl;
+      std::cout << m_spritePos[index2] << std::endl;
+
+      SDL::Rect intersection=m_spritePos[index1].inf(m_spritePos[index2]);
+
+      std::cout << intersection << std::endl;
+
+
+      if ( intersection.getw()!=0 && intersection.geth()!=0)
+        std::cout <<  "collide" << std::endl;
+      return true;
+
+
     }
-*/
+
 }

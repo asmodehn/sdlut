@@ -47,7 +47,7 @@ namespace MxLib
 
         bool moveSprite(unsigned int index, int deltaX, int deltaY);
 
-        //bool testCollide(const Sprite & spr1, const Sprite & spr2);
+        bool testCollide(unsigned int index1, unsigned int index2);
 
         //timeout = 0 means no timeout.
         void display(int framerate, int timeout = 0);
