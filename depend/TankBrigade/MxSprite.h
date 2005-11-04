@@ -39,7 +39,7 @@ namespace MxLib
 
         bool move (int deltax, int deltay) const;
 
-        //virtual bool collide (const Sprite &);
+        virtual bool collide (const SDL::Rect & intersection);
 
     };
 
@@ -72,6 +72,8 @@ namespace MxLib
                 return false;
             return true;
         }
+
+        bool collide (const SDL::Rect & intersection);
 
         virtual void update();
 

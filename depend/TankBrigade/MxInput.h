@@ -15,7 +15,9 @@ namespace MxLib
 
     public:
         MxInput() : closing(false)
-        {}
+        {
+          SDL::Event::enableKeyRepeat();
+        }
 
         virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
         {

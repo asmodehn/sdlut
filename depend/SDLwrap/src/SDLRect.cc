@@ -19,19 +19,21 @@ namespace SDL
         if ( (result.getx() == getx() && result.getx() < ( r.getx() + r.getw() ))
               || (result.getx() == r.getx() && result.getx() < ( getx() + getw() )) //Xintersection
             )
-        {
-          //getting the size of it
-          result.setw(min (getx()+getw(),r.getx()+r.getw()) - result.getx());
-        }
-        else result.setw(0);
-        if ( (result.gety() == gety() && result.gety() < ( r.gety() + r.geth() ))
-              || (result.gety() == r.gety() && result.gety() < ( gety() + geth() )) //Xintersection
+            if ( (result.gety() == gety() && result.gety() < ( r.gety() + r.geth() ))
+              || (result.gety() == r.gety() && result.gety() < ( gety() + geth() )) //Yintersection
             )
         {
           //getting the size of it
-          result.seth(min (gety()+geth(),r.gety()+r.geth()) - result.gety());
+          int cornerx = min (getx()+getw(),r.getx()+r.getw());
+          int cornery = min (gety()+geth(),r.gety()+r.geth());
+          result.seth(cornery - result.gety());
+          result.setw(cornerx - result.getx());
         }
-        else result.seth(0);
+        else
+        {
+          result.setw(0);
+          result.seth(0);
+        }
 
         return result;
     }

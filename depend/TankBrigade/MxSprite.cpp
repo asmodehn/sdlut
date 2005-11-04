@@ -7,7 +7,6 @@ namespace MxLib
     MxSprite::MxSprite (MxBitmap & bitmapOri , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
             : m_BitmapOri(bitmapOri)
     {
-
         m_bboxOri.setx(coordOriX);
         m_bboxOri.sety(coordOriY);
         m_bboxOri.setw(size);
@@ -17,13 +16,16 @@ namespace MxLib
     MxSprite::MxSprite (MxBitmap & bitmapOri, unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
             : m_BitmapOri(bitmapOri)
     {
-
         m_bboxOri.setx(coordOriX);
         m_bboxOri.sety(coordOriY);
         m_bboxOri.setw(sizeOriX);
         m_bboxOri.seth(sizeOriY);
     }
 
+    bool MxSprite::collide (const SDL::Rect & intersection)
+    {
+        return false;
+    }
 
     void MxSprite::update()
     {
@@ -50,6 +52,17 @@ namespace MxLib
             : MxSprite(bitmapOri, coordOriX, coordOriY, sizeOriX, sizeOriY), m_currentframe(0)
     {
         m_frame.push_back(m_bboxOri);
+    }
+
+    bool MxAnimatedSprite::collide (const SDL::Rect & intersection)
+    {
+        std::cout << intersection << std::endl;
+        // move back as needed // TO IMPROVE
+        if ( intersection.getw() < intersection.geth() )
+            move ( - intersection.getw(), 0 );
+        else
+            move  ( 0 , - intersection.geth() );
+        return true;
     }
 
     void MxAnimatedSprite::update()
