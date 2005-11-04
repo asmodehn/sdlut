@@ -82,36 +82,51 @@ namespace MxLib
 
     bool MxScene::moveSprite(unsigned int index, int deltaX, int deltaY)
     {
-
+        bool res = true;
         if (index < m_sprite.size())
         {
-          SDL::Point move;
-          move.setx(deltaX);
-          move.sety(deltaY);
-
-            m_spritePos[index] += move;
+          m_spritePos[index] += SDL::Point (deltaX, deltaY);
         }
         for (unsigned int i=0; i<m_sprite.size(); i++ )
-          if (i != index ) testCollide(index,i);
-    }
-
-    bool MxScene::testCollide(unsigned int index1, unsigned int index2)
-    {
-      //might be better done like that, although
-      //this function should be completely symmetric
-      //
-      //return m_spritePos[index1].collide(m_spritePos[index2])
-
-      SDL::Rect intersection=m_spritePos[index1].inf(m_spritePos[index2]);
-
-        if ( intersection.getw()!=0 && intersection.geth()!=0)
         {
-          m_sprite[index1]->collide(intersection);
-          m_sprite[index2]->collide(intersection);
+          if (i != index )
+            {
+                SDL::Rect intersection=m_spritePos[index].inf(m_spritePos[i]);
+                if ( intersection.getw()!=0 && intersection.geth()!=0)
+                {
+                  std::cout << "collide" << std::endl;
+                    // move back as needed
+                    if ( intersection.getw() < intersection.geth() )
+                    {
+                        if  ( m_spritePos[index].getx() < m_spritePos[i].getx() )
+                        {
+                            m_spritePos [index] += SDL::Point( - intersection.getw(), 0 );
+                        }
+                        else
+                        {
+                            m_spritePos [index] += SDL::Point( intersection.getw(), 0 );
+                        }
+                    }
+                    else
+                    {
+                        if  ( m_spritePos[index].gety() < m_spritePos[i].gety() )
+                        {
+                            m_spritePos [index] += SDL::Point( 0, - intersection.geth() );
+                        }
+                        else
+                        {
+                            m_spritePos [index] += SDL::Point(  0, intersection.geth() );
+                        }
+                    }
+                    m_sprite[index]->collide(intersection);
+                    m_sprite[i]->collide(intersection);
+                    res=false;
+                }
+
+            }
+
+            return res;
         }
-      return true;
-
-
     }
 
 }

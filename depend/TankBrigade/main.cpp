@@ -100,11 +100,11 @@ int main()
     */
     //scene.clear();
 
-
-    MyPlayerTank greentank(mainBitmap,363,33,32);
-//    std::cout  << "myplayertank ok" << std::endl;
     MxSprite bluetank(mainBitmap,396,33,32);
 //    std::cout  << "mxsprite ok" << std::endl;
+    MyPlayerTank greentank(mainBitmap,363,33,32);
+//    std::cout  << "myplayertank ok" << std::endl;
+
     input.setActive (&greentank);
 //    std::cout  << "input setactive ok" << std::endl;
 
@@ -198,10 +198,11 @@ int main()
 //std::cout  << "map define ok" << std::endl;
     scene.add(&map);
 //std::cout  << "scene add map ok" << std::endl;
-    scene.add(&greentank, 100, 100);
-//    std::cout  << "scene add tanklpayer ok" << std::endl;
     scene.add(&bluetank, 200,100);
 //    std::cout  << "scene add sprite ok" << std::endl;
+    scene.add(&greentank, 100, 100);
+//    std::cout  << "scene add tanklpayer ok" << std::endl;
+
 
     while (!input.closed())
     {

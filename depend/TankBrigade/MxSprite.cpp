@@ -56,13 +56,7 @@ namespace MxLib
 
     bool MxAnimatedSprite::collide (const SDL::Rect & intersection)
     {
-        std::cout << intersection << std::endl;
-        // move back as needed // TO IMPROVE
-        if ( intersection.getw() < intersection.geth() )
-            move ( - intersection.getw(), 0 );
-        else
-            move  ( 0 , - intersection.geth() );
-        return true;
+        return false;
     }
 
     void MxAnimatedSprite::update()
