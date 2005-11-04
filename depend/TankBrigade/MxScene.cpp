@@ -122,9 +122,7 @@ namespace MxLib
                     m_sprite[i]->collide(intersection);
                     res=false;
                 }
-
             }
-
             return res;
         }
     }

@@ -81,34 +81,13 @@ public :
     }
 };
 
-int main()
+class MyLevel : public MxLib::MxMap
 {
-    MxInit::init();
-//std::cout  << "init ok" << std::endl;
-    MxBitmap mainBitmap("tankbrigade.bmp"/*,SDL::Color(0,0,0)*/);
-//std::cout  << "mxbitmap ok" << std::endl;
-    MxScene scene;
+    public :
 
-//    std::cout  << "mxscene ok" << std::endl;
-    MyInput input;
-//    std::cout  << "input ok" << std::endl;
-    //Fun but timer needed in SDLwrap...
-    /*MxSprite splash(mainBitmap,33,430,360,240);
-
-    scene.add(&splash,200,200);
-    scene.display(25,2);
-    */
-    //scene.clear();
-
-    MxSprite bluetank(mainBitmap,396,33,32);
-//    std::cout  << "mxsprite ok" << std::endl;
-    MyPlayerTank greentank(mainBitmap,363,33,32);
-//    std::cout  << "myplayertank ok" << std::endl;
-
-    input.setActive (&greentank);
-//    std::cout  << "input setactive ok" << std::endl;
-
-    //MAP
+    MyLevel (MxLib::MxBitmap & bitmap, int tilesize, int Xsize, int Ysize )
+    {
+      //MAP
     MxMap map(32,20,15);
 //    std::cout  << "map ok" << std::endl;
     int tileWaterTopLeft=map.loadnewSprite(mainBitmap, 231 , 231);
@@ -195,6 +174,38 @@ int main()
             map.placeSprite(tileGrass,i,j);
 
     //MAP DONE
+    }
+
+}
+
+int main()
+{
+    MxInit::init();
+//std::cout  << "init ok" << std::endl;
+    MxBitmap mainBitmap("tankbrigade.bmp"/*,SDL::Color(0,0,0)*/);
+//std::cout  << "mxbitmap ok" << std::endl;
+    MxScene scene;
+
+//    std::cout  << "mxscene ok" << std::endl;
+    MyInput input;
+//    std::cout  << "input ok" << std::endl;
+    //Fun but timer needed in SDLwrap...
+    /*MxSprite splash(mainBitmap,33,430,360,240);
+
+    scene.add(&splash,200,200);
+    scene.display(25,2);
+    */
+    //scene.clear();
+
+    MxSprite bluetank(mainBitmap,396,33,32);
+//    std::cout  << "mxsprite ok" << std::endl;
+    MyPlayerTank greentank(mainBitmap,363,33,32);
+//    std::cout  << "myplayertank ok" << std::endl;
+
+    input.setActive (&greentank);
+//    std::cout  << "input setactive ok" << std::endl;
+
+
 //std::cout  << "map define ok" << std::endl;
     scene.add(&map);
 //std::cout  << "scene add map ok" << std::endl;
