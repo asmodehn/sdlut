@@ -86,97 +86,96 @@ class MyLevel : public MxLib::MxMap
     public :
 
     MyLevel (MxLib::MxBitmap & bitmap, int tilesize, int Xsize, int Ysize )
-    {
+    : MxMap(tilesize,Xsize,Ysize){
       //MAP
-    MxMap map(32,20,15);
 //    std::cout  << "map ok" << std::endl;
-    int tileWaterTopLeft=map.loadnewSprite(mainBitmap, 231 , 231);
-    int tileWaterTopRight=map.loadnewSprite(mainBitmap, 264 , 231);
-    int tileWaterBottomRight=map.loadnewSprite(mainBitmap, 198 , 231);
-    int tileWaterBottomLeft=map.loadnewSprite(mainBitmap, 165, 231);
-    map.placeSprite(tileWaterTopLeft,0,0);
-    map.placeSprite(tileWaterTopRight,19,0);
-    map.placeSprite(tileWaterBottomRight,19,14);
-    map.placeSprite(tileWaterBottomLeft,0,14);
+    int tileWaterTopLeft=loadnewSprite(bitmap, 231 , 231);
+    int tileWaterTopRight=loadnewSprite(bitmap, 264 , 231);
+    int tileWaterBottomRight=loadnewSprite(bitmap, 198 , 231);
+    int tileWaterBottomLeft=loadnewSprite(bitmap, 165, 231);
+    placeSprite(tileWaterTopLeft,0,0);
+    placeSprite(tileWaterTopRight,19,0);
+    placeSprite(tileWaterBottomRight,19,14);
+    placeSprite(tileWaterBottomLeft,0,14);
 
-    int tileWaterLeft=map.loadnewSprite(mainBitmap, 33 , 231);
-    int tileWaterRight=map.loadnewSprite(mainBitmap, 66 , 231);
-    int tileWaterTop=map.loadnewSprite(mainBitmap, 99 , 231);
-    int tileWaterBottom=map.loadnewSprite(mainBitmap, 132, 231);
-    map.placeSprite(tileWaterLeft,0,1);
-    map.placeSprite(tileWaterLeft,0,2);
-    map.placeSprite(tileWaterLeft,0,3);
-    map.placeSprite(tileWaterLeft,0,4);
-    map.placeSprite(tileWaterLeft,0,5);
-    map.placeSprite(tileWaterLeft,0,6);
-    map.placeSprite(tileWaterLeft,0,7);
-    map.placeSprite(tileWaterLeft,0,8);
-    map.placeSprite(tileWaterLeft,0,9);
-    map.placeSprite(tileWaterLeft,0,10);
-    map.placeSprite(tileWaterLeft,0,11);
-    map.placeSprite(tileWaterLeft,0,12);
-    map.placeSprite(tileWaterLeft,0,13);
-    map.placeSprite(tileWaterRight,19,1);
-    map.placeSprite(tileWaterRight,19,2);
-    map.placeSprite(tileWaterRight,19,3);
-    map.placeSprite(tileWaterRight,19,4);
-    map.placeSprite(tileWaterRight,19,5);
-    map.placeSprite(tileWaterRight,19,6);
-    map.placeSprite(tileWaterRight,19,7);
-    map.placeSprite(tileWaterRight,19,8);
-    map.placeSprite(tileWaterRight,19,9);
-    map.placeSprite(tileWaterRight,19,10);
-    map.placeSprite(tileWaterRight,19,11);
-    map.placeSprite(tileWaterRight,19,12);
-    map.placeSprite(tileWaterRight,19,13);
-    map.placeSprite(tileWaterTop,1,0);
-    map.placeSprite(tileWaterTop,2,0);
-    map.placeSprite(tileWaterTop,3,0);
-    map.placeSprite(tileWaterTop,4,0);
-    map.placeSprite(tileWaterTop,5,0);
-    map.placeSprite(tileWaterTop,6,0);
-    map.placeSprite(tileWaterTop,7,0);
-    map.placeSprite(tileWaterTop,8,0);
-    map.placeSprite(tileWaterTop,9,0);
-    map.placeSprite(tileWaterTop,10,0);
-    map.placeSprite(tileWaterTop,11,0);
-    map.placeSprite(tileWaterTop,12,0);
-    map.placeSprite(tileWaterTop,13,0);
-    map.placeSprite(tileWaterTop,14,0);
-    map.placeSprite(tileWaterTop,15,0);
-    map.placeSprite(tileWaterTop,16,0);
-    map.placeSprite(tileWaterTop,17,0);
-    map.placeSprite(tileWaterTop,18,0);
-    map.placeSprite(tileWaterBottom,1,14);
-    map.placeSprite(tileWaterBottom,2,14);
-    map.placeSprite(tileWaterBottom,3,14);
-    map.placeSprite(tileWaterBottom,4,14);
-    map.placeSprite(tileWaterBottom,5,14);
-    map.placeSprite(tileWaterBottom,6,14);
-    map.placeSprite(tileWaterBottom,7,14);
-    map.placeSprite(tileWaterBottom,8,14);
-    map.placeSprite(tileWaterBottom,9,14);
-    map.placeSprite(tileWaterBottom,10,14);
-    map.placeSprite(tileWaterBottom,11,14);
-    map.placeSprite(tileWaterBottom,12,14);
-    map.placeSprite(tileWaterBottom,13,14);
-    map.placeSprite(tileWaterBottom,14,14);
-    map.placeSprite(tileWaterBottom,15,14);
-    map.placeSprite(tileWaterBottom,16,14);
-    map.placeSprite(tileWaterBottom,17,14);
-    map.placeSprite(tileWaterBottom,18,14);
+    int tileWaterLeft=loadnewSprite(bitmap, 33 , 231);
+    int tileWaterRight=loadnewSprite(bitmap, 66 , 231);
+    int tileWaterTop=loadnewSprite(bitmap, 99 , 231);
+    int tileWaterBottom=loadnewSprite(bitmap, 132, 231);
+    placeSprite(tileWaterLeft,0,1);
+    placeSprite(tileWaterLeft,0,2);
+    placeSprite(tileWaterLeft,0,3);
+    placeSprite(tileWaterLeft,0,4);
+    placeSprite(tileWaterLeft,0,5);
+    placeSprite(tileWaterLeft,0,6);
+    placeSprite(tileWaterLeft,0,7);
+    placeSprite(tileWaterLeft,0,8);
+    placeSprite(tileWaterLeft,0,9);
+    placeSprite(tileWaterLeft,0,10);
+    placeSprite(tileWaterLeft,0,11);
+    placeSprite(tileWaterLeft,0,12);
+    placeSprite(tileWaterLeft,0,13);
+    placeSprite(tileWaterRight,19,1);
+    placeSprite(tileWaterRight,19,2);
+    placeSprite(tileWaterRight,19,3);
+    placeSprite(tileWaterRight,19,4);
+    placeSprite(tileWaterRight,19,5);
+    placeSprite(tileWaterRight,19,6);
+    placeSprite(tileWaterRight,19,7);
+    placeSprite(tileWaterRight,19,8);
+    placeSprite(tileWaterRight,19,9);
+    placeSprite(tileWaterRight,19,10);
+    placeSprite(tileWaterRight,19,11);
+    placeSprite(tileWaterRight,19,12);
+    placeSprite(tileWaterRight,19,13);
+    placeSprite(tileWaterTop,1,0);
+    placeSprite(tileWaterTop,2,0);
+    placeSprite(tileWaterTop,3,0);
+    placeSprite(tileWaterTop,4,0);
+    placeSprite(tileWaterTop,5,0);
+    placeSprite(tileWaterTop,6,0);
+    placeSprite(tileWaterTop,7,0);
+    placeSprite(tileWaterTop,8,0);
+    placeSprite(tileWaterTop,9,0);
+    placeSprite(tileWaterTop,10,0);
+    placeSprite(tileWaterTop,11,0);
+    placeSprite(tileWaterTop,12,0);
+    placeSprite(tileWaterTop,13,0);
+    placeSprite(tileWaterTop,14,0);
+    placeSprite(tileWaterTop,15,0);
+    placeSprite(tileWaterTop,16,0);
+    placeSprite(tileWaterTop,17,0);
+    placeSprite(tileWaterTop,18,0);
+    placeSprite(tileWaterBottom,1,14);
+    placeSprite(tileWaterBottom,2,14);
+    placeSprite(tileWaterBottom,3,14);
+    placeSprite(tileWaterBottom,4,14);
+    placeSprite(tileWaterBottom,5,14);
+    placeSprite(tileWaterBottom,6,14);
+    placeSprite(tileWaterBottom,7,14);
+    placeSprite(tileWaterBottom,8,14);
+    placeSprite(tileWaterBottom,9,14);
+    placeSprite(tileWaterBottom,10,14);
+    placeSprite(tileWaterBottom,11,14);
+    placeSprite(tileWaterBottom,12,14);
+    placeSprite(tileWaterBottom,13,14);
+    placeSprite(tileWaterBottom,14,14);
+    placeSprite(tileWaterBottom,15,14);
+    placeSprite(tileWaterBottom,16,14);
+    placeSprite(tileWaterBottom,17,14);
+    placeSprite(tileWaterBottom,18,14);
 
     //fill inside
-    int tileGrass=map.loadnewSprite(mainBitmap, 198, 132);
+    int tileGrass=loadnewSprite(bitmap, 198, 132);
 
     for (int i=1; i < 19;i++)
         for (int j=1;j < 14;j++)
-            map.placeSprite(tileGrass,i,j);
+            placeSprite(tileGrass,i,j);
 
     //MAP DONE
     }
 
-}
+};
 
 int main()
 {
@@ -197,6 +196,9 @@ int main()
     */
     //scene.clear();
 
+MyLevel lvl(mainBitmap,32,20,15);
+
+
     MxSprite bluetank(mainBitmap,396,33,32);
 //    std::cout  << "mxsprite ok" << std::endl;
     MyPlayerTank greentank(mainBitmap,363,33,32);
@@ -207,7 +209,7 @@ int main()
 
 
 //std::cout  << "map define ok" << std::endl;
-    scene.add(&map);
+    scene.add(&lvl);
 //std::cout  << "scene add map ok" << std::endl;
     scene.add(&bluetank, 200,100);
 //    std::cout  << "scene add sprite ok" << std::endl;
