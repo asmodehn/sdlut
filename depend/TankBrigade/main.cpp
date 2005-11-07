@@ -64,10 +64,10 @@ class MyTank : public MxLib::MxAnimatedSprite
 public :
     MyTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
             : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,size)
-    {speed = 1;}
+    {speed = 3;}
     MyTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
             : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,sizeOriX, sizeOriY)
-    {speed = 1;}
+    {speed = 3;}
 
     bool moveUp()
     {
@@ -93,11 +93,94 @@ public :
 
 class MyPlayerTank : public MyTank
 {
+	//index for frames... 012 ->shoot 3456789 -> move
+	unsigned int up[10];
+	unsigned int down[10];
+	unsigned int left[10];
+	unsigned int right[10];
 
   public :
     MyPlayerTank ()
-            : MyTank(MyTankGame::Instance().getResources().getBitmap(),363,33,32)
-    {}
+		: MyTank(MyTankGame::Instance().getResources().getBitmap(),495,33,32)
+    {
+    	up[0] = loadFrame(495,33,32);
+    	up[1] = loadFrame(495,66,32);
+    	up[2] = loadFrame(495,99,32);
+    	up[9] = loadFrame(528,33,32);
+    	up[8] = loadFrame(561,33,32);
+    	up[7] = loadFrame(594,33,32);
+    	up[6] = loadFrame(627,33,32);
+    	up[5] = loadFrame(660,33,32);
+    	up[4] = loadFrame(693,33,32);
+    	up[3] = loadFrame(726,33,32);
+
+    	down[0] = loadFrame(495,198,32);
+    	down[1] = loadFrame(495,165,32);
+    	down[2] = loadFrame(495,132,32);
+    	down[9] = loadFrame(528,66,32);
+    	down[8] = loadFrame(561,66,32);
+    	down[7] = loadFrame(594,66,32);
+    	down[6] = loadFrame(627,66,32);
+    	down[5] = loadFrame(660,66,32);
+    	down[4] = loadFrame(693,66,32);
+    	down[3] = loadFrame(726,66,32);
+
+    	left[0] = loadFrame(594,99,32);
+    	left[1] = loadFrame(627,66,32);
+    	left[2] = loadFrame(660,99,32);
+    	left[9] = loadFrame(561,99,32);
+    	left[8] = loadFrame(561,132,32);
+    	left[7] = loadFrame(561,165,32);
+    	left[6] = loadFrame(561,198,32);
+    	left[5] = loadFrame(561,231,32);
+    	left[4] = loadFrame(561,264,32);
+    	left[3] = loadFrame(561,297,32);
+
+    	right[0] = loadFrame(660,132,32);
+    	right[1] = loadFrame(627,132,32);
+    	right[2] = loadFrame(594,132,32);
+    	right[9] = loadFrame(528,99,32);
+    	right[8] = loadFrame(528,132,32);
+    	right[7] = loadFrame(528,165,32);
+    	right[6] = loadFrame(528,198,32);
+    	right[5] = loadFrame(528,231,32);
+    	right[4] = loadFrame(528,264,32);
+    	right[3] = loadFrame(528,297,32);
+
+		}
+
+		bool moveUp()
+    {
+    	static unsigned int current = 0;
+				changeFrame(up[current++]);
+				if  (current == 10) current = 0;
+				if  (current == 1) current = 3;
+        return MyTank::moveUp();
+    }
+    bool moveDown()
+    {
+    	static unsigned int current = 0;
+				changeFrame(down[current++]);
+				if  (current == 10) current = 0;
+				if  (current == 1) current = 3;
+        return MyTank::moveDown();
+    }
+    bool moveLeft()
+    {
+    	static unsigned int current = 0;
+				changeFrame(left[current++]);
+				if  (current == 10) current = 0;
+				if  (current == 1) current = 3;
+        return MyTank::moveLeft();
+    }
+    bool moveRight()
+    {
+    	static unsigned int current = 0;
+				changeFrame(right[current++]);
+				if  (current == 10) current = 0;
+				if  (current == 1) current = 3;
+        return MyTank::moveRight();
+    }
 
 };
 
@@ -244,7 +327,7 @@ int main()
 {
     MyTankGame::Instance();
 
-    MxScene scene;
+    MxScene scene(0,480,0,640);
 
 //    std::cout  << "mxscene ok" << std::endl;
     MyInput input;

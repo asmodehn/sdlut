@@ -1,5 +1,7 @@
 #include "MxScene.h"
-#include "MxInput.h"
+
+#define min( a , b ) a>b?b:a
+#define max( a , b ) a>b?a:b
 
 namespace MxLib
 {
@@ -86,6 +88,11 @@ namespace MxLib
         if (index < m_sprite.size())
         {
           m_spritePos[index] += SDL::Point (deltaX, deltaY);
+          m_spritePos[index].setx( max ( m_spritePos[index].getx(), m_borderleft ) );
+          m_spritePos[index].setx( min ( m_spritePos[index].getx(), m_borderright - m_spritePos[index].getw() ) );
+          m_spritePos[index].sety( max ( m_spritePos[index].gety(), m_borderup ) );
+          m_spritePos[index].sety( min ( m_spritePos[index].gety(), m_borderdown - m_spritePos[index].geth()) );
+          std::cout << m_spritePos[index] << std::endl;
         }
         for (unsigned int i=0; i<m_sprite.size(); i++ )
         {

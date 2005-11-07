@@ -35,7 +35,7 @@ namespace MxLib
 
         virtual void update();
 
-        bool render(int pixX, int pixY) const;
+        virtual bool render(int pixX, int pixY) const;
 
         bool move (int deltax, int deltay) const;
 

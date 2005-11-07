@@ -15,6 +15,11 @@ namespace MxLib
 
     private:
 
+				int m_borderup;
+				int m_borderdown;
+				int m_borderleft;
+				int m_borderright;
+
         MxBitmap * m_bitmap;
         int m_bitmapPosX,m_bitmapPosY;
 
@@ -26,7 +31,13 @@ namespace MxLib
 
     public:
 
-        MxScene() : m_bitmap(NULL), m_map(NULL) {}
+        MxScene(int borderup, int borderdown, int borderleft, int borderright) : m_bitmap(NULL), m_map(NULL)
+        {
+        	m_borderup = borderup;
+        	m_borderdown = borderdown;
+        	m_borderleft = borderleft;
+        	m_borderright = borderright;
+				}
 
         void update ();
 
@@ -46,8 +57,6 @@ namespace MxLib
         void setBG(int red, int green, int blue);
 
         bool moveSprite(unsigned int index, int deltaX, int deltaY);
-
-        //bool testCollide(unsigned int index1, unsigned int index2);
 
         //timeout = 0 means no timeout.
         void display(int framerate, int timeout = 0);
