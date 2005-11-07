@@ -12,16 +12,60 @@ using namespace MxLib;
 #endif
 #endif
 
+class MyResources
+{
+  MxLib::MxBitmap m_masterbmp;
 
-class MyPlayerTank : public MxLib::MxAnimatedSprite
+  public :
+  MyResources( std::string masterbmp = "tankbrigade.bmp" )
+  : m_masterbmp(masterbmp)
+  {
+
+  }
+
+  MxLib::MxBitmap& getBitmap(void) { return m_masterbmp; }
+};
+
+//my game : the singleton...
+class MyTankGame
+{
+private :
+
+MyResources resource;
+
+MyTankGame() : resource()
+{
+  MxInit::init();
+}
+
+//to disable them
+MyTankGame(const MyTankGame&);
+MyTankGame& operator=(const MyTankGame&);
+~MyTankGame() {}
+//
+
+  public:
+  static MyTankGame& Instance()
+  {
+    static MyTankGame theInstance;
+    return theInstance;
+  }
+
+  MyResources& getResources() { return resource; }
+};
+
+
+
+
+class MyTank : public MxLib::MxAnimatedSprite
 {
     int speed;
 
 public :
-    MyPlayerTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
+    MyTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
             : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,size)
     {speed = 1;}
-    MyPlayerTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
+    MyTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
             : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,sizeOriX, sizeOriY)
     {speed = 1;}
 
@@ -45,6 +89,25 @@ public :
   void setspeed(int newspeed) { speed = newspeed; }
   int getspeed(void) {return speed;}
 
+};
+
+class MyPlayerTank : public MyTank
+{
+
+  public :
+    MyPlayerTank ()
+            : MyTank(MyTankGame::Instance().getResources().getBitmap(),363,33,32)
+    {}
+
+};
+
+class MyEnnemyTank : public MyTank
+{
+  public :
+      MyEnnemyTank ()
+            : MyTank(MyTankGame::Instance().getResources().getBitmap(),396,33,32)
+    {
+    }
 
 };
 
@@ -179,10 +242,8 @@ class MyLevel : public MxLib::MxMap
 
 int main()
 {
-    MxInit::init();
-//std::cout  << "init ok" << std::endl;
-    MxBitmap mainBitmap("tankbrigade.bmp"/*,SDL::Color(0,0,0)*/);
-//std::cout  << "mxbitmap ok" << std::endl;
+    MyTankGame::Instance();
+
     MxScene scene;
 
 //    std::cout  << "mxscene ok" << std::endl;
@@ -196,12 +257,12 @@ int main()
     */
     //scene.clear();
 
-MyLevel lvl(mainBitmap,32,20,15);
+MyLevel lvl(MyTankGame::Instance().getResources().getBitmap(),32,20,15);
 
 
-    MxSprite bluetank(mainBitmap,396,33,32);
+    MyEnnemyTank bluetank;
 //    std::cout  << "mxsprite ok" << std::endl;
-    MyPlayerTank greentank(mainBitmap,363,33,32);
+    MyPlayerTank greentank;
 //    std::cout  << "myplayertank ok" << std::endl;
 
     input.setActive (&greentank);
@@ -225,5 +286,6 @@ MyLevel lvl(mainBitmap,32,20,15);
     }
 
 }
+
 
 
