@@ -16,11 +16,11 @@ namespace SDL
         result.sety( max (gety(),r.gety()) );
 
         //testing for actual intersection
-        if ( (result.getx() == getx() && result.getx() < ( r.getx() + r.getw() ))
-              || (result.getx() == r.getx() && result.getx() < ( getx() + getw() )) //Xintersection
+        if ( (result.getx() == getx() && result.getx() < ( r.getx() + static_cast<int>(r.getw()) ))
+              || (result.getx() == r.getx() && result.getx() < ( getx() + static_cast<int>(getw()) )) //Xintersection
             )
-            if ( (result.gety() == gety() && result.gety() < ( r.gety() + r.geth() ))
-              || (result.gety() == r.gety() && result.gety() < ( gety() + geth() )) //Yintersection
+            if ( (result.gety() == gety() && result.gety() < ( r.gety() + static_cast<int>(r.geth()) ))
+              || (result.gety() == r.gety() && result.gety() < ( gety() + static_cast<int>(geth()) )) //Yintersection
             )
         {
           //getting the size of it

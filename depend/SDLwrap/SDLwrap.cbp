@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!DOCTYPE Code::Blocks_project_file>
-<Code::Blocks_project_file>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
 	<FileVersion major="1" minor="1"/>
 	<Project>
 		<Option title="SDLwrap"/>
@@ -14,7 +14,6 @@
 				<Option working_dir=""/>
 				<Option object_output="obj"/>
 				<Option deps_output=".deps"/>
-				<Option external_deps=""/>
 				<Option type="2"/>
 				<Option compiler="0"/>
 				<Option projectResourceIncludeDirsRelation="2"/>
@@ -27,7 +26,6 @@
 				<Option working_dir=""/>
 				<Option object_output="obj"/>
 				<Option deps_output=".deps"/>
-				<Option external_deps=""/>
 				<Option type="2"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -48,7 +46,6 @@
 				<Option working_dir="test"/>
 				<Option object_output="obj"/>
 				<Option deps_output=".deps"/>
-				<Option external_deps=""/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -73,7 +70,6 @@
 				<Option working_dir=""/>
 				<Option object_output="obj"/>
 				<Option deps_output=".deps"/>
-				<Option external_deps=""/>
 				<Option type="2"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -133,6 +129,15 @@
 			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="static-NoOpenGL"/>
+		</Unit>
+		<Unit filename="include\SDLCDRom.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="static-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+			<Option target="test-debug"/>
+			<Option target="staticlib-optimised"/>
 		</Unit>
 		<Unit filename="include\SDLColor.hh">
 			<Option compilerVar=""/>
@@ -269,6 +274,15 @@
 			<Option target="test-debug"/>
 			<Option target="static-NoOpenGL"/>
 		</Unit>
+		<Unit filename="include\SDLTimer.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="static-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+			<Option target="test-debug"/>
+			<Option target="staticlib-optimised"/>
+		</Unit>
 		<Unit filename="include\SDLVideoInfo.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -307,6 +321,12 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-optimised"/>
 			<Option target="static-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLCDRom.cc">
+			<Option compilerVar="CC"/>
+			<Option target="static-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-optimised"/>
 		</Unit>
 		<Unit filename="src\SDLConfig.cc">
 			<Option compilerVar="CC"/>
@@ -409,4 +429,4 @@
 			<Option target="test-debug"/>
 		</Unit>
 	</Project>
-</Code::Blocks_project_file>
+</CodeBlocks_project_file>
