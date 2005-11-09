@@ -381,6 +381,25 @@
 					<Add library="bin\libSDLwrap.a"/>
 				</Linker>
 			</Target>
+			<Target title="testkeys">
+				<Option output="test\testkeys.exe"/>
+				<Option working_dir="test"/>
+				<Option object_output="obj"/>
+				<Option deps_output=".deps"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option includeInTargetAll="0"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="bin\libSDLwrap.a"/>
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-W"/>
@@ -415,6 +434,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\Interface3D.hh">
 			<Option compilerVar=""/>
@@ -439,6 +459,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLBaseSurface.hh">
 			<Option compilerVar=""/>
@@ -463,6 +484,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLCDRom.hh">
 			<Option compilerVar=""/>
@@ -487,6 +509,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLColor.hh">
 			<Option compilerVar=""/>
@@ -511,6 +534,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLConfig.hh">
 			<Option compilerVar=""/>
@@ -535,6 +559,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLCursor.hh">
 			<Option compilerVar=""/>
@@ -559,6 +584,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLDisplaySurface.hh">
 			<Option compilerVar=""/>
@@ -583,6 +609,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLEvent.hh">
 			<Option compilerVar=""/>
@@ -607,6 +634,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLEventHandler.hh">
 			<Option compilerVar=""/>
@@ -631,6 +659,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLGLManager.hh">
 			<Option compilerVar=""/>
@@ -655,6 +684,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLGLWindow.hh">
 			<Option compilerVar=""/>
@@ -679,6 +709,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLManager.hh">
 			<Option compilerVar=""/>
@@ -703,6 +734,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLOverlay.hh">
 			<Option compilerVar=""/>
@@ -727,6 +759,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLPixelFormat.hh">
 			<Option compilerVar=""/>
@@ -751,6 +784,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLPoint.hh">
 			<Option compilerVar=""/>
@@ -775,6 +809,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLRGBSurface.hh">
 			<Option compilerVar=""/>
@@ -799,6 +834,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLRect.hh">
 			<Option compilerVar=""/>
@@ -823,6 +859,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLSurfaceFactory.hh">
 			<Option compilerVar=""/>
@@ -847,6 +884,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLTimer.hh">
 			<Option compilerVar=""/>
@@ -871,6 +909,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLVideoInfo.hh">
 			<Option compilerVar=""/>
@@ -895,6 +934,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLWindow.hh">
 			<Option compilerVar=""/>
@@ -919,6 +959,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="include\SDLwrap.hh">
 			<Option compilerVar=""/>
@@ -943,6 +984,7 @@
 			<Option target="testgl"/>
 			<Option target="testthread"/>
 			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
 		</Unit>
 		<Unit filename="src\Interface3D.cc">
 			<Option compilerVar="CC"/>
@@ -1121,6 +1163,10 @@
 		<Unit filename="test\testjoystick.cc">
 			<Option compilerVar="CC"/>
 			<Option target="testjoystick"/>
+		</Unit>
+		<Unit filename="test\testkeys.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testkeys"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>
