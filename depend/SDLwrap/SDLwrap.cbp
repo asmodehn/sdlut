@@ -510,6 +510,25 @@
 					<Add library="bin\libSDLwrap.a"/>
 				</Linker>
 			</Target>
+			<Target title="testtimer">
+				<Option output="test\testtimer.exe"/>
+				<Option working_dir="test"/>
+				<Option object_output="obj"/>
+				<Option deps_output=".deps"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="bin\libSDLwrap.a"/>
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-W"/>
@@ -551,6 +570,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\Interface3D.hh">
 			<Option compilerVar=""/>
@@ -582,6 +602,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLBaseSurface.hh">
 			<Option compilerVar=""/>
@@ -613,6 +634,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLCDRom.hh">
 			<Option compilerVar=""/>
@@ -644,6 +666,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLColor.hh">
 			<Option compilerVar=""/>
@@ -675,6 +698,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLConfig.hh">
 			<Option compilerVar=""/>
@@ -706,6 +730,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLCursor.hh">
 			<Option compilerVar=""/>
@@ -737,6 +762,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLDisplaySurface.hh">
 			<Option compilerVar=""/>
@@ -768,6 +794,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLEvent.hh">
 			<Option compilerVar=""/>
@@ -799,6 +826,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLEventHandler.hh">
 			<Option compilerVar=""/>
@@ -830,6 +858,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLGLManager.hh">
 			<Option compilerVar=""/>
@@ -861,6 +890,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLGLWindow.hh">
 			<Option compilerVar=""/>
@@ -892,6 +922,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLManager.hh">
 			<Option compilerVar=""/>
@@ -923,6 +954,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLOverlay.hh">
 			<Option compilerVar=""/>
@@ -954,6 +986,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLPixelFormat.hh">
 			<Option compilerVar=""/>
@@ -985,6 +1018,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLPoint.hh">
 			<Option compilerVar=""/>
@@ -1016,6 +1050,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLRGBSurface.hh">
 			<Option compilerVar=""/>
@@ -1047,6 +1082,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLRect.hh">
 			<Option compilerVar=""/>
@@ -1078,6 +1114,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLSurfaceFactory.hh">
 			<Option compilerVar=""/>
@@ -1109,6 +1146,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLTimer.hh">
 			<Option compilerVar=""/>
@@ -1140,6 +1178,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLVideoInfo.hh">
 			<Option compilerVar=""/>
@@ -1171,6 +1210,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLWindow.hh">
 			<Option compilerVar=""/>
@@ -1202,6 +1242,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="include\SDLwrap.hh">
 			<Option compilerVar=""/>
@@ -1233,6 +1274,7 @@
 			<Option target="testpalette"/>
 			<Option target="testsem"/>
 			<Option target="testsprite"/>
+			<Option target="testtimer"/>
 		</Unit>
 		<Unit filename="src\Interface3D.cc">
 			<Option compilerVar="CC"/>
@@ -1360,6 +1402,12 @@
 			<Option compilerVar="CC"/>
 			<Option target="graywin"/>
 		</Unit>
+		<Unit filename="test\icon.bmp">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="testsprite"/>
+		</Unit>
 		<Unit filename="test\loopwave.cc">
 			<Option compilerVar="CC"/>
 			<Option target="loopwave"/>
@@ -1463,6 +1511,10 @@
 		<Unit filename="test\testsprite.cc">
 			<Option compilerVar="CC"/>
 			<Option target="testsprite"/>
+		</Unit>
+		<Unit filename="test\testtimer.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testtimer"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>
