@@ -61,23 +61,23 @@ glfuncs;
 
 void init_glfuncs(glfuncs* f)
 {
-	f->glBegin=get_funcaddr("glBegin");
-	f->glEnd=get_funcaddr("glEnd");
-	f->glVertex3f=get_funcaddr("glVertex3f");
-	f->glClearColor=get_funcaddr("glClearColor");
-	f->glClear=get_funcaddr("glClear");
-	f->glDisable=get_funcaddr("glDisable");
-	f->glEnable=get_funcaddr("glEnable");
-	f->glColor4ub=get_funcaddr("glColor4ub");
-	f->glPointSize=get_funcaddr("glPointSize");
-	f->glHint=get_funcaddr("glHint");
-	f->glBlendFunc=get_funcaddr("glBlendFunc");
-	f->glMatrixMode=get_funcaddr("glMatrixMode");
-	f->glLoadIdentity=get_funcaddr("glLoadIdentity");
-	f->glOrtho=get_funcaddr("glOrtho");
-	f->glRotatef=get_funcaddr("glRotatef");
-	f->glViewport=get_funcaddr("glViewport");
-	f->glFogf=get_funcaddr("glFogf");
+	f->glBegin=(void (APIENTRY*) (GLenum))get_funcaddr("glBegin");
+	f->glEnd=(void (APIENTRY*) ())get_funcaddr("glEnd");
+	f->glVertex3f=(void (APIENTRY*) (GLfloat, GLfloat, GLfloat))get_funcaddr("glVertex3f");
+	f->glClearColor=(void (APIENTRY*) (GLfloat, GLfloat, GLfloat, GLfloat))get_funcaddr("glClearColor");
+	f->glClear=(void (APIENTRY*) (GLbitfield))get_funcaddr("glClear");
+	f->glDisable=(void (APIENTRY*) (GLenum))get_funcaddr("glDisable");
+	f->glEnable=(void (APIENTRY*) (GLenum))get_funcaddr("glEnable");
+	f->glColor4ub=(void (APIENTRY*) (GLubyte,GLubyte,GLubyte,GLubyte))get_funcaddr("glColor4ub");
+	f->glPointSize=(void (APIENTRY*) (GLfloat))get_funcaddr("glPointSize");
+	f->glHint=(void (APIENTRY*) (GLenum,GLenum))get_funcaddr("glHint");
+	f->glBlendFunc=(void (APIENTRY*) (GLenum,GLenum))get_funcaddr("glBlendFunc");
+	f->glMatrixMode=(void (APIENTRY*) (GLenum))get_funcaddr("glMatrixMode");
+	f->glLoadIdentity=(void (APIENTRY*) ())get_funcaddr("glLoadIdentity");
+	f->glOrtho=(void (APIENTRY*) (GLdouble,GLdouble,GLdouble,GLdouble,GLdouble,GLdouble))get_funcaddr("glOrtho");
+	f->glRotatef=(void (APIENTRY*) (GLfloat,GLfloat,GLfloat,GLfloat))get_funcaddr("glRotatef");
+	f->glViewport=(void (APIENTRY*) (GLint,GLint,GLsizei,GLsizei))get_funcaddr("glViewport");
+	f->glFogf=(void (APIENTRY*) (GLenum,GLfloat))get_funcaddr("glFogf");
 }
 
 #define NB_PIXELS 1000

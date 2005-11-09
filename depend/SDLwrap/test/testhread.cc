@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 	atexit(SDL_Quit);
 
 	alive = 1;
-	thread = SDL_CreateThread(ThreadFunc, "#1");
+	thread = SDL_CreateThread(ThreadFunc,const_cast<char*>("#1"));
 	if ( thread == NULL ) {
 		fprintf(stderr, "Couldn't create thread: %s\n", SDL_GetError());
 		exit(1);
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 	SDL_WaitThread(thread, NULL);
 
 	alive = 1;
-	thread = SDL_CreateThread(ThreadFunc, "#2");
+	thread = SDL_CreateThread(ThreadFunc, const_cast<char*>("#2"));
 	if ( thread == NULL ) {
 		fprintf(stderr, "Couldn't create thread: %s\n", SDL_GetError());
 		exit(1);
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 
 	alive = 1;
 	signal(SIGTERM, killed);
-	thread = SDL_CreateThread(ThreadFunc, "#3");
+	thread = SDL_CreateThread(ThreadFunc,const_cast<char*>("#3"));
 	if ( thread == NULL ) {
 		fprintf(stderr, "Couldn't create thread: %s\n", SDL_GetError());
 		exit(1);

@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 							SDL_GetError());
 		exit(1);
 	}
-	for ( key=SDLK_FIRST; key<SDLK_LAST; ++key ) {
+	for ( key=SDLK_FIRST; key<SDLK_LAST; ++ static_cast<int>(key) ) {
 		printf("Key #%d, \"%s\"\n", key, SDL_GetKeyName(key));
 	}
 	SDL_Quit();
