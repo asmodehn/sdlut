@@ -4,8 +4,8 @@
 
 namespace SDL {
 
-#ifdef OPENGL
-	
+#ifdef HAVE_OPENGL
+
 Interface3D* GLWindow::engine = new Interface3D;
 
 /*
@@ -38,7 +38,7 @@ bool GLWindow::update(void)
 	engine->render();
 	//si on a du blit
 	//SDLDisplay::update();
-	
+
 	SDL_GL_SwapBuffers();
 	return true;
 }

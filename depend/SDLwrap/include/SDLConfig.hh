@@ -2,7 +2,7 @@
 #define SDLCONFIG_HH
 
 //Forced Config
-//#undef OPENGL //engine call seems to work... 3D part postponed...
+//#undef HAVE_OPENGL //engine call seems to work... 3D part postponed...
 #undef THREAD
 
 //Normal Setup
@@ -50,7 +50,7 @@
  * \class SDLConfig
  *
  * \ingroup Other
- * 
+ *
  * \brief This class gather the common objects that all the SDL classes have to be able to access...
  *
  * \author Alex

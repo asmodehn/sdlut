@@ -3,8 +3,8 @@
 
 namespace SDL {
 
-#ifdef OPENGL
-		
+#ifdef HAVE_OPENGL
+
 GLManager* GLManager::_uniqueInstance = NULL;
 
 int GLManager::getRSize(void) const
@@ -83,16 +83,16 @@ int GLManager::getAccumASize(void) const
 	SDL_GL_GetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, &res);
 	return res;
 }
-	
+
 bool GLManager::setRSize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_RED_SIZE, bits) == 0;
-}	
+}
 
 bool GLManager::setGSize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, bits) == 0;
-}	
+}
 
 bool GLManager::setBSize(int bits)
 {
@@ -138,7 +138,7 @@ bool GLManager::setAccumASize(int bits)
 {
 	return SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, bits) == 0;
 }
-	
+
 void GLManager::debug(void) const
 {
 	std::cout << "GLManager - debug() : \n" <<

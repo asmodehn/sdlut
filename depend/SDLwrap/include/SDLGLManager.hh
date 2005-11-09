@@ -21,13 +21,13 @@
  */
 
 namespace SDL {
-	
-#ifdef OPENGL
+
+#ifdef HAVE_OPENGL
 
 /*******************************************************************************
  * Manager of the GL state machine - Singleton
  ******************************************************************************/
- 
+
  //Howto use glSDL( planned in SDL from SDL 1.3) : http://icps.u-strasbg.fr/~marchesin/sdl/glsdl.html
  //GOOD STUFF TO ADD AT http://steinsoft.net
 
@@ -36,33 +36,33 @@ namespace SDL {
 class GLManager
 {
 	static GLManager * _uniqueInstance;
-	
+
 protected :
-	
-	GLManager() {}	
-	
+
+	GLManager() {}
+
 public :
-		
+
 	static GLManager * manager()
 	{
 		if (_uniqueInstance == NULL) _uniqueInstance = new GLManager;
 		return _uniqueInstance;
 	}
-	
+
 	//may be connected with constructor ???
 	bool loadGLLibrary(const std::string & path)
 	{
 		return SDL_GL_LoadLibrary(path.c_str()) == 0;
 	}
-	
+
 	//TODO : I don't know how to manage this....
 	//getProcAddress
-	
+
 	//Accessor to GLAttributes
 	//Note : DoubleBuf is managed by GLWindow, like 2D doublebuf
 	//TODO -> error managed by exceptions ???
 	//TODO -> different behavior depending if GLWindow is already set or not ? ( refer SDLManager... )
-	
+
 	// Q? : if GLWindow not set, can we access the GL data ??
 	// ANSWER : on windows (wingdi driver) everything is == 0 when GLWindow not set
 	// On Windows , after setvideo, the values are : { 8,8,8,8,32,24,8,0,0,0,0 } should be set by default...
@@ -75,10 +75,10 @@ public :
 	int getDepthSize(void) const ;
 	int getStencilSize(void) const ;
 	int getAccumRSize(void) const ;
-	int getAccumGSize(void) const ;	
+	int getAccumGSize(void) const ;
 	int getAccumBSize(void) const ;
 	int getAccumASize(void) const ;
-	
+
 	//TODO : if the video is already set, a change here should result in VIDEO RE-SET, via SDLSurfaceFactory
 	//beware of the Surface Factory behavior about this for other things like doublebuf, we have to do it the same way...
 	//On windows ( wingdi) all set functions returns true, but it seems they have no effects on the result after setVideoMode...
@@ -91,10 +91,10 @@ public :
 	bool setDepthSize(int bits);
 	bool setStencilSize(int bits);
 	bool setAccumRSize(int bits);
-	bool setAccumGSize(int bits);	
+	bool setAccumGSize(int bits);
 	bool setAccumBSize(int bits);
 	bool setAccumASize(int bits);
-	
+
 	void debug(void) const;
 };
 #endif

@@ -3,7 +3,7 @@
 //from NeheGL Tutorial
 //#include <GL/glu.h>
 //remove this when my gluPerspective is working...
-#ifdef OPENGL
+#ifdef HAVE_OPENGL
 
 //additional includes
 #include <math.h>
@@ -21,7 +21,7 @@ gluPerspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar)
    ymin = -ymax;
    xmin = ymin * aspect;
    xmax = ymax * aspect;
-   
+
    glFrustum(xmin, xmax, ymin, ymax, zNear, zFar);
 }
 
@@ -30,7 +30,7 @@ float rtri; // rotation angle
 float rquad; // rotation angle
 
 bool Interface3D::init(int width, int height)
-{   
+{
 	//actual init code
   std::cout << " 3D Engine's init" << std::endl;
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
@@ -39,7 +39,7 @@ bool Interface3D::init(int width, int height)
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
-	
+
 	return resize(width,height);
 }
 
@@ -57,14 +57,14 @@ bool Interface3D::resize(int width, int height)
   GLdouble ymin = -ymax;
   GLdouble xmin = ymin * GLfloat(width) / GLfloat(height);
   GLdouble xmax = ymax * GLfloat(width) / GLfloat(height);
-  
+
   glFrustum(xmin, xmax, ymin, ymax, znear, zfar);
 
 	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 	glLoadIdentity();
-	
+
 	return true;
-	
+
 }
 
 

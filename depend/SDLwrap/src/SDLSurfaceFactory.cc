@@ -27,7 +27,7 @@ bool SurfaceFactory::setDisplayFlags( bool openGL, bool fullScreen,
 	if ( HWSurface ) displayFlags|= SDL_HWSURFACE;
 	if ( HWPalette ) displayFlags|= SDL_HWPALETTE;
 	if ( asyncBlit ) displayFlags|= SDL_ASYNCBLIT;
-	
+
 	return checkAvailableDisplaySize();
 }
 
@@ -37,11 +37,11 @@ bool SurfaceFactory::setDisplaySize( int width, int height)
 	int new_bpp=checkVideoMode();
 	if (new_bpp)
     setDisplayBPP ( new_bpp );
-	else 
+	else
 		return false;
 	return true;
 }
-	
+
 bool SurfaceFactory::checkAvailableDisplaySize(void)
 {
 	return checkAvailableDisplaySize( VideoInfo::Info()->getPixelFormat());
@@ -53,14 +53,14 @@ bool SurfaceFactory::checkAvailableDisplaySize( const PixelFormat& fmt )
 	bool res;
 	//we copy the pixelformat (because of const behaviour...)
 	SDL_PixelFormat* test_fmt= new SDL_PixelFormat(*(fmt._pformat));
-	
+
 	modes=SDL_ListModes(test_fmt, displayFlags);
 	if (modes == (SDL_Rect **)0) res=false;
 	else
 	{
 		availableDisplayWidth.clear();
 		availableDisplayHeight.clear();
-		
+
 		if (modes == (SDL_Rect **)-1)
 		{
 			availableDisplayWidth.push_back(-1);
@@ -100,7 +100,7 @@ DisplaySurface* SurfaceFactory::createDisplay(std::string title, std::string ico
 	if (screen!=NULL)
 	{
 		//delete the object
-		delete screen;			
+		delete screen;
 	}
 
 	//set the title and the icon of the window
@@ -109,14 +109,14 @@ DisplaySurface* SurfaceFactory::createDisplay(std::string title, std::string ico
 	//create a new screen
 	try
 	{
-#ifdef OPENGL
+#ifdef HAVE_OPENGL
 		if (SDL_OPENGL & displayFlags)
 			screen = new GLWindow(displayWidth, displayHeight, displayBPP , displayFlags );
 		else
 		{
 #endif
 			screen = new Window(displayWidth, displayHeight, displayBPP , displayFlags );
-#ifdef OPENGL
+#ifdef HAVE_OPENGL
 		}
 #endif
 	}
@@ -125,9 +125,9 @@ DisplaySurface* SurfaceFactory::createDisplay(std::string title, std::string ico
 	{
 		LIB_ERROR(e.what());
 	}
-	
-	
-	
+
+
+
 	return screen;
 }
 
@@ -218,7 +218,7 @@ unsigned int SurfaceFactory::createRGBSurface( std::string filename, const RGBCo
 {
 	RGBSurface* fsurf = getSurface(createRGBSurface(filename));
 	RGBSurface* csurf = getSurface(createRGBSurface(fsurf->getWidth(),fsurf->getHeight(), bgcolor));
-	
+
 	csurf->blit(*fsurf);
   if (csurf!=NULL)
 		surfaceList.push_back(csurf);

@@ -6,11 +6,11 @@
  ******************************************************************************/
 
 //Classes d'interface avec un moteur 3D...
-// a voir si cette classe doit etre la scene, la camera ou les 2 
+// a voir si cette classe doit etre la scene, la camera ou les 2
 //(cf UI interface)
 #include "SDLConfig.hh"
 
-#ifdef OPENGL
+#ifdef HAVE_OPENGL
 //Coder en singleton ici aussi
 class Interface3D
 {

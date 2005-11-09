@@ -28,7 +28,7 @@
 
 namespace SDL {
 
-#ifdef OPENGL
+#ifdef HAVE_OPENGL
 
 class GLWindow : public DisplaySurface
 {
@@ -36,32 +36,32 @@ protected:
 	static Interface3D* engine;
 
 public:
-	
+
 	//Constructor
 	GLWindow(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
 	: DisplaySurface(width, height, bpp, flags)
 	{
 		engine->init(getWidth(),getHeight());
 	}
-	
+
 	//Destructor
 	~GLWindow() {delete engine;}
-	
+
 	inline bool isOpenGLset(void) const {return SDL_OPENGL & _surf->flags;}
 
   bool resize (int width, int height);
-  
+
   //TODO : Save Screen -> backup the screen content in a new RGBSurface AND SAVE THE CURRENT SCENE STATE...
 	virtual RGBSurface* save(void) {return NULL;}
-	  
+
 	bool update(void);//call scene3D->render
-	
+
 	//TODO : overload Basesurface functions that cannot be used here, because there is NO OPENGL Blit
 	//or overload using opengl textures ...
-	
+
 	//Branch to another 3Dengine
 	//static void set3DEngine(Interface3D* eng) {engine=eng;}
-	
+
 /*******************************************************************************
  * This is not recommended
  * Use it only for backward compatibility purpose

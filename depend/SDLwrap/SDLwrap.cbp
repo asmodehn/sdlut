@@ -35,7 +35,7 @@
 					<Add option="-Wall"/>
 					<Add option="-g"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap.debug\&quot;"/>
-					<Add option="-DOPENGL"/>
+					<Add option="-DHAVE_OPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add library="opengl32"/>
@@ -57,7 +57,7 @@
 					<Add option="-pg"/>
 					<Add option="-g"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap-test\&quot;"/>
-					<Add option="-DOPENGL"/>
+					<Add option="-DHAVE_OPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
@@ -85,7 +85,7 @@
 					<Add option="-O"/>
 					<Add option="-W"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap\&quot;"/>
-					<Add option="-DOPENGL"/>
+					<Add option="-DHAVE_OPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add option="-s"/>
@@ -107,7 +107,6 @@
 					<Add option="-Wall"/>
 					<Add option="-pg"/>
 					<Add option="-g"/>
-					<Add option="-DOPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
@@ -127,7 +126,6 @@
 					<Add option="-Wall"/>
 					<Add option="-pg"/>
 					<Add option="-g"/>
-					<Add option="-DOPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
@@ -148,7 +146,6 @@
 					<Add option="-Wall"/>
 					<Add option="-pg"/>
 					<Add option="-g"/>
-					<Add option="-DOPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
@@ -168,7 +165,6 @@
 					<Add option="-Wall"/>
 					<Add option="-pg"/>
 					<Add option="-g"/>
-					<Add option="-DOPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
@@ -207,7 +203,6 @@
 					<Add option="-Wall"/>
 					<Add option="-pg"/>
 					<Add option="-g"/>
-					<Add option="-DOPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
@@ -227,7 +222,6 @@
 					<Add option="-Wall"/>
 					<Add option="-pg"/>
 					<Add option="-g"/>
-					<Add option="-DOPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
@@ -248,7 +242,6 @@
 					<Add option="-Wall"/>
 					<Add option="-pg"/>
 					<Add option="-g"/>
-					<Add option="-DOPENGL"/>
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
@@ -291,6 +284,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
+					<Add library="bin\libSDLwrap.a"/>
 				</Linker>
 			</Target>
 			<Target title="testerror">
@@ -309,6 +303,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
+					<Add library="bin\libSDLwrap.a"/>
 				</Linker>
 			</Target>
 			<Target title="testgamma">
