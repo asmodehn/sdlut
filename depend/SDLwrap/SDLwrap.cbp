@@ -236,7 +236,6 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
-				<Option includeInTargetAll="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
@@ -256,7 +255,6 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
-				<Option includeInTargetAll="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
@@ -277,6 +275,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
@@ -295,7 +294,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
-				<Option includeInTargetAll="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
@@ -314,6 +313,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
@@ -332,6 +332,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
@@ -352,7 +353,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
-				<Option includeInTargetAll="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
@@ -371,6 +372,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
@@ -389,7 +391,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
-				<Option includeInTargetAll="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
@@ -408,6 +410,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
@@ -426,6 +429,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
@@ -444,6 +448,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
@@ -462,6 +467,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
@@ -481,6 +487,7 @@
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option parameters="42"/>
+				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
 					<Add option="-Wall"/>
