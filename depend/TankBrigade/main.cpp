@@ -14,16 +14,17 @@ using namespace MxLib;
 
 class MyResources
 {
-  MxLib::MxBitmap m_masterbmp;
+    MxLib::MxBitmap m_masterbmp;
 
-  public :
-  MyResources( std::string masterbmp = "tankbrigade.bmp" )
-  : m_masterbmp(masterbmp)
-  {
+public :
+    MyResources( std::string masterbmp = "tankbrigade.bmp" )
+            : m_masterbmp(masterbmp)
+    {}
 
-  }
-
-  MxLib::MxBitmap& getBitmap(void) { return m_masterbmp; }
+    MxLib::MxBitmap& getBitmap(void)
+    {
+        return m_masterbmp;
+    }
 };
 
 //my game : the singleton...
@@ -31,27 +32,31 @@ class MyTankGame
 {
 private :
 
-MyResources resource;
+    MyResources resource;
 
-MyTankGame() : resource()
-{
-  MxInit::init();
-}
+    MyTankGame() : resource()
+    {
+        MxInit::init();
+    }
 
-//to disable them
-MyTankGame(const MyTankGame&);
-MyTankGame& operator=(const MyTankGame&);
-~MyTankGame() {}
-//
+    //to disable them
+    MyTankGame(const MyTankGame&);
+    MyTankGame& operator=(const MyTankGame&);
+    ~MyTankGame()
+    {}
+    //
 
-  public:
-  static MyTankGame& Instance()
-  {
-    static MyTankGame theInstance;
-    return theInstance;
-  }
+public:
+    static MyTankGame& Instance()
+    {
+        static MyTankGame theInstance;
+        return theInstance;
+    }
 
-  MyResources& getResources() { return resource; }
+    MyResources& getResources()
+    {
+        return resource;
+    }
 };
 
 
@@ -62,137 +67,228 @@ class MyTank : public MxLib::MxAnimatedSprite
     int speed;
 
 public :
+    typedef enum
+    {
+        up=0, down, left, right
+    }
+    Direction;
+    Direction curdir;
+
     MyTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
             : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,size)
-    {speed = 3;}
+    {
+        speed = 3;
+        curdir = up;
+    }
     MyTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
             : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,sizeOriX, sizeOriY)
-    {speed = 3;}
-
-    bool moveUp()
     {
-        return move ( 0,- speed);
-    }
-    bool moveDown()
-    {
-        return move ( 0,speed);
-    }
-    bool moveLeft()
-    {
-        return move ( - speed,0);
-    }
-    bool moveRight()
-    {
-        return move ( speed,0);
+        speed = 3;
+        curdir = up;
     }
 
-  void setspeed(int newspeed) { speed = newspeed; }
-  int getspeed(void) {return speed;}
+    bool move(Direction d)
+    {
+        switch (d)
+        {
+            case up :
+            return MxLib::MxAnimatedSprite::move ( 0,- speed);
+            break;
+
+            case down :
+
+            return MxLib::MxAnimatedSprite::move ( 0,speed);
+            break;
+
+            case left :
+
+            return MxLib::MxAnimatedSprite::move ( - speed,0);
+            break;
+
+            case right :
+
+            return MxLib::MxAnimatedSprite::move ( speed,0);
+            break;
+
+            default :
+            std::cerr <<"shouldnt happen " << std::endl;
+            break;
+        }
+    }
+    void setspeed(int newspeed)
+    {
+        speed = newspeed;
+    }
+    int getspeed(void)
+    {
+        return speed;
+    }
+
 
 };
 
 class MyPlayerTank : public MyTank
 {
-	//index for frames... 012 ->shoot 3456789 -> move
-	unsigned int up[10];
-	unsigned int down[10];
-	unsigned int left[10];
-	unsigned int right[10];
+    typedef enum
+    {
+        dead =  -2, exploding = -1, shooting = 2, alive = 1
+    }
+    State;
+    State curstate;
 
-  public :
+    //index for frames... 012 ->shoot 3456789 -> move
+    unsigned int upframe[10];
+    unsigned int downframe[10];
+    unsigned int leftframe[10];
+    unsigned int rightframe[10];
+
+public :
+
+
     MyPlayerTank ()
-		: MyTank(MyTankGame::Instance().getResources().getBitmap(),495,33,32)
+            : MyTank(MyTankGame::Instance().getResources().getBitmap(),495,33,32)
     {
-    	up[0] = loadFrame(495,33,32);
-    	up[1] = loadFrame(495,66,32);
-    	up[2] = loadFrame(495,99,32);
-    	up[9] = loadFrame(528,33,32);
-    	up[8] = loadFrame(561,33,32);
-    	up[7] = loadFrame(594,33,32);
-    	up[6] = loadFrame(627,33,32);
-    	up[5] = loadFrame(660,33,32);
-    	up[4] = loadFrame(693,33,32);
-    	up[3] = loadFrame(726,33,32);
+        upframe[0] = loadFrame(495,33,32);
+        upframe[1] = loadFrame(495,66,32);
+        upframe[2] = loadFrame(495,99,32);
+        upframe[9] = loadFrame(528,33,32);
+        upframe[8] = loadFrame(561,33,32);
+        upframe[7] = loadFrame(594,33,32);
+        upframe[6] = loadFrame(627,33,32);
+        upframe[5] = loadFrame(660,33,32);
+        upframe[4] = loadFrame(693,33,32);
+        upframe[3] = loadFrame(726,33,32);
 
-    	down[0] = loadFrame(495,198,32);
-    	down[1] = loadFrame(495,165,32);
-    	down[2] = loadFrame(495,132,32);
-    	down[9] = loadFrame(528,66,32);
-    	down[8] = loadFrame(561,66,32);
-    	down[7] = loadFrame(594,66,32);
-    	down[6] = loadFrame(627,66,32);
-    	down[5] = loadFrame(660,66,32);
-    	down[4] = loadFrame(693,66,32);
-    	down[3] = loadFrame(726,66,32);
+        downframe[0] = loadFrame(495,198,32);
+        downframe[1] = loadFrame(495,165,32);
+        downframe[2] = loadFrame(495,132,32);
+        downframe[9] = loadFrame(528,66,32);
+        downframe[8] = loadFrame(561,66,32);
+        downframe[7] = loadFrame(594,66,32);
+        downframe[6] = loadFrame(627,66,32);
+        downframe[5] = loadFrame(660,66,32);
+        downframe[4] = loadFrame(693,66,32);
+        downframe[3] = loadFrame(726,66,32);
 
-    	left[0] = loadFrame(594,99,32);
-    	left[1] = loadFrame(627,66,32);
-    	left[2] = loadFrame(660,99,32);
-    	left[9] = loadFrame(561,99,32);
-    	left[8] = loadFrame(561,132,32);
-    	left[7] = loadFrame(561,165,32);
-    	left[6] = loadFrame(561,198,32);
-    	left[5] = loadFrame(561,231,32);
-    	left[4] = loadFrame(561,264,32);
-    	left[3] = loadFrame(561,297,32);
+        leftframe[0] = loadFrame(594,99,32);
+        leftframe[1] = loadFrame(627,66,32);
+        leftframe[2] = loadFrame(660,99,32);
+        leftframe[9] = loadFrame(561,99,32);
+        leftframe[8] = loadFrame(561,132,32);
+        leftframe[7] = loadFrame(561,165,32);
+        leftframe[6] = loadFrame(561,198,32);
+        leftframe[5] = loadFrame(561,231,32);
+        leftframe[4] = loadFrame(561,264,32);
+        leftframe[3] = loadFrame(561,297,32);
 
-    	right[0] = loadFrame(660,132,32);
-    	right[1] = loadFrame(627,132,32);
-    	right[2] = loadFrame(594,132,32);
-    	right[9] = loadFrame(528,99,32);
-    	right[8] = loadFrame(528,132,32);
-    	right[7] = loadFrame(528,165,32);
-    	right[6] = loadFrame(528,198,32);
-    	right[5] = loadFrame(528,231,32);
-    	right[4] = loadFrame(528,264,32);
-    	right[3] = loadFrame(528,297,32);
+        rightframe[0] = loadFrame(660,132,32);
+        rightframe[1] = loadFrame(627,132,32);
+        rightframe[2] = loadFrame(594,132,32);
+        rightframe[9] = loadFrame(528,99,32);
+        rightframe[8] = loadFrame(528,132,32);
+        rightframe[7] = loadFrame(528,165,32);
+        rightframe[6] = loadFrame(528,198,32);
+        rightframe[5] = loadFrame(528,231,32);
+        rightframe[4] = loadFrame(528,264,32);
+        rightframe[3] = loadFrame(528,297,32);
 
-		}
-
-		bool moveUp()
-    {
-    	static unsigned int current = 0;
-				changeFrame(up[current++]);
-				if  (current == 10) current = 0;
-				if  (current == 1) current = 3;
-        return MyTank::moveUp();
+        curstate = alive;
     }
-    bool moveDown()
+
+    bool move(Direction d)
     {
-    	static unsigned int current = 0;
-				changeFrame(down[current++]);
-				if  (current == 10) current = 0;
-				if  (current == 1) current = 3;
-        return MyTank::moveDown();
+        static unsigned int current = 0;
+        switch (d)
+        {
+            case up :
+            curdir = up;
+            changeFrame(upframe[current++]);
+
+            break;
+            case down :
+            curdir = down;
+            changeFrame(downframe[current++]);
+
+
+            break;
+            case left :
+            curdir = left;
+            changeFrame(leftframe[current++]);
+
+            break;
+            case right :
+            curdir = right;
+            changeFrame(rightframe[current++]);
+            break;
+            default :
+            std::cerr << "move nowhere shouldnt happen" << std::endl;
+            break;
+        }
+        if  (current == 10)
+            current = 0;
+        if  (current == 1)
+            current = 3;
+
+        return MyTank::move(d);
     }
-    bool moveLeft()
+
+    inline bool shoot (void )
     {
-    	static unsigned int current = 0;
-				changeFrame(left[current++]);
-				if  (current == 10) current = 0;
-				if  (current == 1) current = 3;
-        return MyTank::moveLeft();
+        return shoot(curdir);
     }
-    bool moveRight()
+
+    bool shoot (Direction d, int curframe = 0)
     {
-    	static unsigned int current = 0;
-				changeFrame(right[current++]);
-				if  (current == 10) current = 0;
-				if  (current == 1) current = 3;
-        return MyTank::moveRight();
+        curstate = shooting;
+        switch (d)
+        {
+            case up :
+            std::cerr<< "shoot up" << std::endl;
+            changeFrame(upframe[curframe++]);
+            break;
+
+            case down :
+            std::cerr<< "shoot down" << std::endl;
+            changeFrame(downframe[curframe++]);
+            break;
+
+            case left :
+            std::cerr<< "shoot left" << std::endl;
+            changeFrame(leftframe[curframe++]);
+            break;
+
+            case right :
+            std::cerr<< "shoot right" << std::endl;
+            changeFrame(rightframe[curframe++]);
+            break;
+
+            default :
+            std::cerr << "shoot nowhere shouldnt happen" << std::endl;
+            break;
+        }
+        if  (curframe == 3)
+            curstate = alive;
+        //timer with callback to launch...
     }
+
 
 };
 
 class MyEnnemyTank : public MyTank
 {
-  public :
-      MyEnnemyTank ()
+public :
+    MyEnnemyTank ()
             : MyTank(MyTankGame::Instance().getResources().getBitmap(),396,33,32)
-    {
-    }
+    {}
 
 };
+
+//class MyBullet : MxLib::MxSprite
+//{
+//  public:
+//  MyBullet() {}
+//};
+
 
 class MyInput : public MxLib::MxInput
 {
@@ -201,23 +297,25 @@ class MyInput : public MxLib::MxInput
     virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
     {
         if (pressed)
-        switch( keysym.sym )
-        {
-            case SDLK_UP:
-            active->moveUp();
-            break;
-            case SDLK_DOWN:
-            active->moveDown();
-            break;
-            case SDLK_LEFT:
-            active->moveLeft();
-            break;
-            case SDLK_RIGHT:
-            active->moveRight();
-            break;
-            default:
-            break;
-        }
+            switch( keysym.sym )
+            {
+                case SDLK_UP:
+                active->move(MyPlayerTank::up);
+                break;
+                case SDLK_DOWN:
+                active->move(MyPlayerTank::down);
+                break;
+                case SDLK_LEFT:
+                active->move(MyPlayerTank::left);
+                break;
+                case SDLK_RIGHT:
+                active->move(MyPlayerTank::right);
+                break;
+                case SDLK_SPACE:
+                active->shoot();
+                default:
+                break;
+            }
         return MxLib::MxInput::handleKeyboardEvent(keysym,pressed);
     }
 public :
@@ -229,96 +327,97 @@ public :
 
 class MyLevel : public MxLib::MxMap
 {
-    public :
+public :
 
     MyLevel (MxLib::MxBitmap & bitmap, int tilesize, int Xsize, int Ysize )
-    : MxMap(tilesize,Xsize,Ysize){
-      //MAP
-//    std::cout  << "map ok" << std::endl;
-    int tileWaterTopLeft=loadnewSprite(bitmap, 231 , 231);
-    int tileWaterTopRight=loadnewSprite(bitmap, 264 , 231);
-    int tileWaterBottomRight=loadnewSprite(bitmap, 198 , 231);
-    int tileWaterBottomLeft=loadnewSprite(bitmap, 165, 231);
-    placeSprite(tileWaterTopLeft,0,0);
-    placeSprite(tileWaterTopRight,19,0);
-    placeSprite(tileWaterBottomRight,19,14);
-    placeSprite(tileWaterBottomLeft,0,14);
+            : MxMap(tilesize,Xsize,Ysize)
+    {
+        //MAP
+        //    std::cout  << "map ok" << std::endl;
+        int tileWaterTopLeft=loadnewSprite(bitmap, 231 , 231);
+        int tileWaterTopRight=loadnewSprite(bitmap, 264 , 231);
+        int tileWaterBottomRight=loadnewSprite(bitmap, 198 , 231);
+        int tileWaterBottomLeft=loadnewSprite(bitmap, 165, 231);
+        placeSprite(tileWaterTopLeft,0,0);
+        placeSprite(tileWaterTopRight,19,0);
+        placeSprite(tileWaterBottomRight,19,14);
+        placeSprite(tileWaterBottomLeft,0,14);
 
-    int tileWaterLeft=loadnewSprite(bitmap, 33 , 231);
-    int tileWaterRight=loadnewSprite(bitmap, 66 , 231);
-    int tileWaterTop=loadnewSprite(bitmap, 99 , 231);
-    int tileWaterBottom=loadnewSprite(bitmap, 132, 231);
-    placeSprite(tileWaterLeft,0,1);
-    placeSprite(tileWaterLeft,0,2);
-    placeSprite(tileWaterLeft,0,3);
-    placeSprite(tileWaterLeft,0,4);
-    placeSprite(tileWaterLeft,0,5);
-    placeSprite(tileWaterLeft,0,6);
-    placeSprite(tileWaterLeft,0,7);
-    placeSprite(tileWaterLeft,0,8);
-    placeSprite(tileWaterLeft,0,9);
-    placeSprite(tileWaterLeft,0,10);
-    placeSprite(tileWaterLeft,0,11);
-    placeSprite(tileWaterLeft,0,12);
-    placeSprite(tileWaterLeft,0,13);
-    placeSprite(tileWaterRight,19,1);
-    placeSprite(tileWaterRight,19,2);
-    placeSprite(tileWaterRight,19,3);
-    placeSprite(tileWaterRight,19,4);
-    placeSprite(tileWaterRight,19,5);
-    placeSprite(tileWaterRight,19,6);
-    placeSprite(tileWaterRight,19,7);
-    placeSprite(tileWaterRight,19,8);
-    placeSprite(tileWaterRight,19,9);
-    placeSprite(tileWaterRight,19,10);
-    placeSprite(tileWaterRight,19,11);
-    placeSprite(tileWaterRight,19,12);
-    placeSprite(tileWaterRight,19,13);
-    placeSprite(tileWaterTop,1,0);
-    placeSprite(tileWaterTop,2,0);
-    placeSprite(tileWaterTop,3,0);
-    placeSprite(tileWaterTop,4,0);
-    placeSprite(tileWaterTop,5,0);
-    placeSprite(tileWaterTop,6,0);
-    placeSprite(tileWaterTop,7,0);
-    placeSprite(tileWaterTop,8,0);
-    placeSprite(tileWaterTop,9,0);
-    placeSprite(tileWaterTop,10,0);
-    placeSprite(tileWaterTop,11,0);
-    placeSprite(tileWaterTop,12,0);
-    placeSprite(tileWaterTop,13,0);
-    placeSprite(tileWaterTop,14,0);
-    placeSprite(tileWaterTop,15,0);
-    placeSprite(tileWaterTop,16,0);
-    placeSprite(tileWaterTop,17,0);
-    placeSprite(tileWaterTop,18,0);
-    placeSprite(tileWaterBottom,1,14);
-    placeSprite(tileWaterBottom,2,14);
-    placeSprite(tileWaterBottom,3,14);
-    placeSprite(tileWaterBottom,4,14);
-    placeSprite(tileWaterBottom,5,14);
-    placeSprite(tileWaterBottom,6,14);
-    placeSprite(tileWaterBottom,7,14);
-    placeSprite(tileWaterBottom,8,14);
-    placeSprite(tileWaterBottom,9,14);
-    placeSprite(tileWaterBottom,10,14);
-    placeSprite(tileWaterBottom,11,14);
-    placeSprite(tileWaterBottom,12,14);
-    placeSprite(tileWaterBottom,13,14);
-    placeSprite(tileWaterBottom,14,14);
-    placeSprite(tileWaterBottom,15,14);
-    placeSprite(tileWaterBottom,16,14);
-    placeSprite(tileWaterBottom,17,14);
-    placeSprite(tileWaterBottom,18,14);
+        int tileWaterLeft=loadnewSprite(bitmap, 33 , 231);
+        int tileWaterRight=loadnewSprite(bitmap, 66 , 231);
+        int tileWaterTop=loadnewSprite(bitmap, 99 , 231);
+        int tileWaterBottom=loadnewSprite(bitmap, 132, 231);
+        placeSprite(tileWaterLeft,0,1);
+        placeSprite(tileWaterLeft,0,2);
+        placeSprite(tileWaterLeft,0,3);
+        placeSprite(tileWaterLeft,0,4);
+        placeSprite(tileWaterLeft,0,5);
+        placeSprite(tileWaterLeft,0,6);
+        placeSprite(tileWaterLeft,0,7);
+        placeSprite(tileWaterLeft,0,8);
+        placeSprite(tileWaterLeft,0,9);
+        placeSprite(tileWaterLeft,0,10);
+        placeSprite(tileWaterLeft,0,11);
+        placeSprite(tileWaterLeft,0,12);
+        placeSprite(tileWaterLeft,0,13);
+        placeSprite(tileWaterRight,19,1);
+        placeSprite(tileWaterRight,19,2);
+        placeSprite(tileWaterRight,19,3);
+        placeSprite(tileWaterRight,19,4);
+        placeSprite(tileWaterRight,19,5);
+        placeSprite(tileWaterRight,19,6);
+        placeSprite(tileWaterRight,19,7);
+        placeSprite(tileWaterRight,19,8);
+        placeSprite(tileWaterRight,19,9);
+        placeSprite(tileWaterRight,19,10);
+        placeSprite(tileWaterRight,19,11);
+        placeSprite(tileWaterRight,19,12);
+        placeSprite(tileWaterRight,19,13);
+        placeSprite(tileWaterTop,1,0);
+        placeSprite(tileWaterTop,2,0);
+        placeSprite(tileWaterTop,3,0);
+        placeSprite(tileWaterTop,4,0);
+        placeSprite(tileWaterTop,5,0);
+        placeSprite(tileWaterTop,6,0);
+        placeSprite(tileWaterTop,7,0);
+        placeSprite(tileWaterTop,8,0);
+        placeSprite(tileWaterTop,9,0);
+        placeSprite(tileWaterTop,10,0);
+        placeSprite(tileWaterTop,11,0);
+        placeSprite(tileWaterTop,12,0);
+        placeSprite(tileWaterTop,13,0);
+        placeSprite(tileWaterTop,14,0);
+        placeSprite(tileWaterTop,15,0);
+        placeSprite(tileWaterTop,16,0);
+        placeSprite(tileWaterTop,17,0);
+        placeSprite(tileWaterTop,18,0);
+        placeSprite(tileWaterBottom,1,14);
+        placeSprite(tileWaterBottom,2,14);
+        placeSprite(tileWaterBottom,3,14);
+        placeSprite(tileWaterBottom,4,14);
+        placeSprite(tileWaterBottom,5,14);
+        placeSprite(tileWaterBottom,6,14);
+        placeSprite(tileWaterBottom,7,14);
+        placeSprite(tileWaterBottom,8,14);
+        placeSprite(tileWaterBottom,9,14);
+        placeSprite(tileWaterBottom,10,14);
+        placeSprite(tileWaterBottom,11,14);
+        placeSprite(tileWaterBottom,12,14);
+        placeSprite(tileWaterBottom,13,14);
+        placeSprite(tileWaterBottom,14,14);
+        placeSprite(tileWaterBottom,15,14);
+        placeSprite(tileWaterBottom,16,14);
+        placeSprite(tileWaterBottom,17,14);
+        placeSprite(tileWaterBottom,18,14);
 
-    //fill inside
-    int tileGrass=loadnewSprite(bitmap, 198, 132);
+        //fill inside
+        int tileGrass=loadnewSprite(bitmap, 198, 132);
 
-    for (int i=1; i < 19;i++)
-        for (int j=1;j < 14;j++)
-            placeSprite(tileGrass,i,j);
+        for (int i=1; i < 19;i++)
+            for (int j=1;j < 14;j++)
+                placeSprite(tileGrass,i,j);
 
-    //MAP DONE
+        //MAP DONE
     }
 
 };
@@ -329,9 +428,9 @@ int main()
 
     MxScene scene(0,480,0,640);
 
-//    std::cout  << "mxscene ok" << std::endl;
+    //    std::cout  << "mxscene ok" << std::endl;
     MyInput input;
-//    std::cout  << "input ok" << std::endl;
+    //    std::cout  << "input ok" << std::endl;
     //Fun but timer needed in SDLwrap...
     /*MxSprite splash(mainBitmap,33,430,360,240);
 
@@ -340,25 +439,25 @@ int main()
     */
     //scene.clear();
 
-MyLevel lvl(MyTankGame::Instance().getResources().getBitmap(),32,20,15);
+    MyLevel lvl(MyTankGame::Instance().getResources().getBitmap(),32,20,15);
 
 
     MyEnnemyTank bluetank;
-//    std::cout  << "mxsprite ok" << std::endl;
+    //    std::cout  << "mxsprite ok" << std::endl;
     MyPlayerTank greentank;
-//    std::cout  << "myplayertank ok" << std::endl;
+    //    std::cout  << "myplayertank ok" << std::endl;
 
     input.setActive (&greentank);
-//    std::cout  << "input setactive ok" << std::endl;
+    //    std::cout  << "input setactive ok" << std::endl;
 
 
-//std::cout  << "map define ok" << std::endl;
+    //std::cout  << "map define ok" << std::endl;
     scene.add(&lvl);
-//std::cout  << "scene add map ok" << std::endl;
+    //std::cout  << "scene add map ok" << std::endl;
     scene.add(&bluetank, 200,100);
-//    std::cout  << "scene add sprite ok" << std::endl;
+    //    std::cout  << "scene add sprite ok" << std::endl;
     scene.add(&greentank, 100, 100);
-//    std::cout  << "scene add tanklpayer ok" << std::endl;
+    //    std::cout  << "scene add tanklpayer ok" << std::endl;
 
 
     while (!input.closed())

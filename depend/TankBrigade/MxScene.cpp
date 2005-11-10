@@ -114,7 +114,7 @@ namespace MxLib
                             m_spritePos [index] += SDL::Point( intersection.getw(), 0 );
                         }
                     }
-                    else
+                    else if ( intersection.getw() > intersection.geth() )
                     {
                         if  ( m_spritePos[index].gety() < m_spritePos[i].gety() )
                         {
@@ -125,6 +125,27 @@ namespace MxLib
                             m_spritePos [index] += SDL::Point(  0, intersection.geth() );
                         }
                     }
+                    else
+                    {
+                      if  ( m_spritePos[index].getx() < m_spritePos[i].getx() )
+                        {
+                            m_spritePos [index] += SDL::Point( - intersection.getw(), 0 );
+                        }
+                        else
+                        {
+                            m_spritePos [index] += SDL::Point( intersection.getw(), 0 );
+                        }
+                      if  ( m_spritePos[index].gety() < m_spritePos[i].gety() )
+                        {
+                            m_spritePos [index] += SDL::Point( 0, - intersection.geth() );
+                        }
+                        else
+                        {
+                            m_spritePos [index] += SDL::Point(  0, intersection.geth() );
+                        }
+                    }
+
+
                     m_sprite[index]->collide(intersection);
                     m_sprite[i]->collide(intersection);
                     res=false;
