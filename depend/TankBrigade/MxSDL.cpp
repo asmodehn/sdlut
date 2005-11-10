@@ -12,7 +12,7 @@ namespace MxLib
             throw std::logic_error("SDL init failed");
 
         SDL::SurfaceFactory::setDisplayFlags(false,false,false,false,true,true,false ,true,true,false);
-
+				//BUG : we shouldnt be able to resize the display...
         SDL::SurfaceFactory::setDisplaySize(width, height);
 
         SDL::SurfaceFactory::createDisplay("Tank Brigade");

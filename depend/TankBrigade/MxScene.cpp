@@ -48,6 +48,22 @@ namespace MxLib
         sprite->setSceneIndex(m_sprite.size() -1);
     }
 
+    int MxScene::spawn (int index, MxSprite * sprite, int deltaX, int deltaY)
+    {
+        m_sprite.push_back(sprite);
+
+        SDL::Rect newpos;
+        newpos.setx(m_spritePos[index].getx());
+        newpos.sety(m_spritePos[index].gety());
+        newpos.setw(sprite->m_bboxOri.getw());
+        newpos.seth(sprite->m_bboxOri.geth());
+
+        m_spritePos.push_back(newpos);
+
+        sprite->setScene(this);
+        sprite->setSceneIndex(m_sprite.size() -1);
+    }
+
     void MxScene::clear ()
     {
         m_bitmap = NULL;
@@ -92,7 +108,8 @@ namespace MxLib
           m_spritePos[index].setx( min ( m_spritePos[index].getx(), m_borderright - m_spritePos[index].getw() ) );
           m_spritePos[index].sety( max ( m_spritePos[index].gety(), m_borderup ) );
           m_spritePos[index].sety( min ( m_spritePos[index].gety(), m_borderdown - m_spritePos[index].geth()) );
-          std::cout << m_spritePos[index] << std::endl;
+          //std::cout << m_spritePos[index] << std::endl;
+          //need to destroy bullets somehow...
         }
         for (unsigned int i=0; i<m_sprite.size(); i++ )
         {

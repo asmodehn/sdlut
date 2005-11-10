@@ -57,9 +57,113 @@ public:
     {
         return resource;
     }
+
 };
 
 
+typedef enum
+{
+    up=0, down, left, right
+}
+Direction;
+
+
+class MyBullet : public MxLib::MxAnimatedSprite
+{
+    typedef enum
+    {
+        alive =1 , exploding=0
+    }
+    State;
+
+    State curstate;
+    int speed;
+    Direction dir;
+
+    //0123 ->up,down,left,right 45 -> explode
+    int frameset[6];
+
+public:
+    MyBullet( Direction initdir, int initspeed = 6)
+            : MxLib::MxAnimatedSprite(MyTankGame::Instance().getResources().getBitmap() ,330, 33,32), speed(initspeed), dir(initdir)
+    {
+        frameset[0]=loadFrame(145,44,7,10);
+        frameset[1]=loadFrame(244,44,7,10);
+        frameset[2]=loadFrame(176,46,10,7);
+        frameset[3]=loadFrame(209,46,10,7);
+        frameset[4]=loadFrame(276,46,8,8);
+        frameset[5]=loadFrame(308,44,11,11);
+
+        curstate = alive;
+        switch (dir)
+        {
+            case up :
+            changeFrame(frameset[0]);
+            break;
+
+            case down :
+
+            changeFrame(frameset[1]);
+            break;
+
+            case left :
+
+            changeFrame(frameset[2]);
+            break;
+
+            case right :
+
+            changeFrame(frameset[3]);
+            break;
+
+            default :
+            std::cerr <<"shouldnt happen " << std::endl;
+            break;
+        }
+
+    }
+
+
+
+    void update(void)
+    {
+        if (curstate == alive)
+            switch (dir)
+            {
+                case up :
+                MxLib::MxAnimatedSprite::move ( 0,- speed);
+                break;
+
+                case down :
+
+                MxLib::MxAnimatedSprite::move ( 0,speed);
+                break;
+
+                case left :
+
+                MxLib::MxAnimatedSprite::move ( - speed,0);
+                break;
+
+                case right :
+
+                MxLib::MxAnimatedSprite::move ( speed,0);
+                break;
+
+                default :
+                std::cerr <<"shouldnt happen " << std::endl;
+                break;
+            }
+        else
+            changeFrame(5);
+    }
+
+    bool collide (const SDL::Rect & intersection)
+    {
+        //explode
+        curstate = exploding;
+        changeFrame(4);
+    }
+};
 
 
 class MyTank : public MxLib::MxAnimatedSprite
@@ -67,11 +171,7 @@ class MyTank : public MxLib::MxAnimatedSprite
     int speed;
 
 public :
-    typedef enum
-    {
-        up=0, down, left, right
-    }
-    Direction;
+
     Direction curdir;
 
     MyTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
@@ -131,7 +231,7 @@ class MyPlayerTank : public MyTank
 {
     typedef enum
     {
-        dead =  -2, exploding = -1, shooting = 2, alive = 1
+        exploding = -1, shooting = 0, alive = 1
     }
     State;
     State curstate;
@@ -269,6 +369,7 @@ public :
         if  (curframe == 3)
             curstate = alive;
         //timer with callback to launch...
+        m_scene->spawn(m_sceneindex,new MyBullet(d));
     }
 
 
@@ -281,13 +382,9 @@ public :
             : MyTank(MyTankGame::Instance().getResources().getBitmap(),396,33,32)
     {}
 
-};
+}
+;
 
-//class MyBullet : MxLib::MxSprite
-//{
-//  public:
-//  MyBullet() {}
-//};
 
 
 class MyInput : public MxLib::MxInput
@@ -300,16 +397,16 @@ class MyInput : public MxLib::MxInput
             switch( keysym.sym )
             {
                 case SDLK_UP:
-                active->move(MyPlayerTank::up);
+                active->move(up);
                 break;
                 case SDLK_DOWN:
-                active->move(MyPlayerTank::down);
+                active->move(down);
                 break;
                 case SDLK_LEFT:
-                active->move(MyPlayerTank::left);
+                active->move(left);
                 break;
                 case SDLK_RIGHT:
-                active->move(MyPlayerTank::right);
+                active->move(right);
                 break;
                 case SDLK_SPACE:
                 active->shoot();
