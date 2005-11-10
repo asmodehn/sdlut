@@ -85,7 +85,7 @@ class MyBullet : public MxLib::MxAnimatedSprite
 
 public:
     MyBullet( Direction initdir, int initspeed = 6)
-            : MxLib::MxAnimatedSprite(MyTankGame::Instance().getResources().getBitmap() ,330, 33,32), speed(initspeed), dir(initdir)
+            : MxLib::MxAnimatedSprite(MyTankGame::Instance().getResources().getBitmap() ,330, 33,8), speed(initspeed), dir(initdir)
     {
         frameset[0]=loadFrame(145,44,7,10);
         frameset[1]=loadFrame(244,44,7,10);
@@ -340,25 +340,45 @@ public :
     bool shoot (Direction d, int curframe = 0)
     {
         curstate = shooting;
+        //spawning bullet
+         switch (d)
+        {
+            case up :
+             m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,0);
+            break;
+
+            case down :
+             m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,m_bboxOri.geth());
+            break;
+
+            case left :
+             m_scene->spawn(m_sceneindex,new MyBullet(d),0,m_bboxOri.geth()/2);
+            break;
+
+            case right :
+             m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw(),m_bboxOri.geth()/2);
+            break;
+
+            default :
+            std::cerr << "shoot nowhere shouldnt happen" << std::endl;
+            break;
+        }
+        //changing frame
         switch (d)
         {
             case up :
-            std::cerr<< "shoot up" << std::endl;
             changeFrame(upframe[curframe++]);
             break;
 
             case down :
-            std::cerr<< "shoot down" << std::endl;
             changeFrame(downframe[curframe++]);
             break;
 
             case left :
-            std::cerr<< "shoot left" << std::endl;
             changeFrame(leftframe[curframe++]);
             break;
 
             case right :
-            std::cerr<< "shoot right" << std::endl;
             changeFrame(rightframe[curframe++]);
             break;
 
@@ -369,7 +389,9 @@ public :
         if  (curframe == 3)
             curstate = alive;
         //timer with callback to launch...
-        m_scene->spawn(m_sceneindex,new MyBullet(d));
+
+
+
     }
 
 

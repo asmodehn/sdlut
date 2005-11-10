@@ -53,8 +53,8 @@ namespace MxLib
         m_sprite.push_back(sprite);
 
         SDL::Rect newpos;
-        newpos.setx(m_spritePos[index].getx());
-        newpos.sety(m_spritePos[index].gety());
+        newpos.setx(m_spritePos[index].getx()+deltaX);
+        newpos.sety(m_spritePos[index].gety()+deltaY);
         newpos.setw(sprite->m_bboxOri.getw());
         newpos.seth(sprite->m_bboxOri.geth());
 
