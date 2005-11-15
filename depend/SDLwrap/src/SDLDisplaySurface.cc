@@ -1,7 +1,7 @@
 #include "SDLDisplaySurface.hh"
 
 namespace SDL {
-	
+
 DisplaySurface* DisplaySurface::_screen = NULL;
 std::string DisplaySurface::_title = DEFAULT_WINDOW_TITLE;
 std::string DisplaySurface::_icon = DEFAULT_WINDOW_ICON;
@@ -15,7 +15,7 @@ try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
 		std::cerr << "Unable to set " << width << " x " << height << " display surface : ";
 		throw std::logic_error("SDL_SetVideoMode() return NULL");
 	}
-			
+
 	//If a caption has been defined
 	SDL_WM_SetCaption(_title.c_str(), _icon.c_str());
 	//SDL_WM_SetIcon(SDL_LoadBMP(_icon.c_str()),NULL);
@@ -53,7 +53,7 @@ void DisplaySurface::getCaption(std::string & title, std::string & icon)
 
 bool DisplaySurface::iconify(void)
 {
-	return ( SDL_WM_IconifyWindow() != 0 );	
+	return ( SDL_WM_IconifyWindow() != 0 );
 }
 
 bool DisplaySurface::toggleFullScreen(void)
@@ -87,7 +87,7 @@ bool DisplaySurface::update(Rect r)
 bool DisplaySurface::update(std::vector<Rect> rlist)
 {
 	if (locked()) return false;//to prevent calling while locked
-	else 
+	else
 	{
 		SDL_Rect* list = new SDL_Rect[rlist.size()];
 		for (unsigned int i=0; i<rlist.size() ; i++) list[i]=*(rlist[i]._rect);
@@ -105,7 +105,7 @@ void DisplaySurface::debug(void) const
 				<< "- NoFrame ? " << isNoFrameset() << "\n"
 				<< "- AnyFormat ? " << isAnyFormatset() << "\n"
 				<< "- Double Buffered ? " << isDoubleBufset();
-  SDLConfig::getLog()->add(logstr.str(),verbose);
+  SDLConfig::getLog()->add(logstr.str());
   //tmp
   SDLConfig::getLog()->flush();
 }

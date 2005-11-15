@@ -60,9 +60,9 @@ public:
 //Main Program
 int main(int argc, char** argv)
 {
-	
+
   Logger testlog("Test Log");
-		
+
 	//Setup example
 
 	testlog.add(" Enabling SDL Video... ");
@@ -84,7 +84,7 @@ int main(int argc, char** argv)
 	Cursor cursor(blackArrow);
 	cursor.show();
 	Cursor::setCurrent(cursor);
-	
+
 /* We cannot activate SDLDisplay and SDLGLWindow in the same time...
 This is due to sdl design for portability : only one window at the same time
 Be carefull when you use them...
@@ -92,7 +92,7 @@ SGE should completely hide this from the user.
 SGE should also switch from one to the other with exec() and quit,
 when the configuration file changed...*/
 
-	
+
 	//Checking available video Modes
 	if(!SurfaceFactory::setDisplayFlags())
 	{
@@ -103,7 +103,7 @@ when the configuration file changed...*/
 	{
 		vector<int> h=SurfaceFactory::getAvailableDisplayHeight();
 		vector<int> w=SurfaceFactory::getAvailableDisplayWidth();
-		
+
 		std::cout << "\nAvailable Modes : " ;
 		if ( h[0] == -1 || w[0] == -1 ) std::cout << "all";
 		else
@@ -111,17 +111,17 @@ when the configuration file changed...*/
 			for (unsigned int i=0; i<h.size() ; i++)
 			{
 				std::cout <<  "- " << h[i] << "x" << w[i] << "\n";
-			}	
+			}
 		}
 		std::cout << std::endl ;
 	}
 
 	int newW=bitmap.getWidth()+60;
 	int newH=bitmap.getHeight()+60;
-	
+
 	if (!SurfaceFactory::setDisplaySize(newW,newH))
 		std::cout << "\nThis Video Mode is not available !" << std::endl;
-		
+
 	int newBPP=SurfaceFactory::checkVideoMode();
 	if (!newBPP) std::cout << "Video Mode not usable !" << std::endl;
 	else std::cout << "SDL will use " << newW << "x" << newH << "@" <<newBPP << std::endl;
@@ -131,14 +131,14 @@ when the configuration file changed...*/
 	if ((display = SurfaceFactory::createDisplay()) != NULL)
 	{
 		display->debug();
-		
+
 		if (display->fill(Color(255,0,0)))
 			display->blit(bitmap,Point(30,30));
-		
+
 		SurfaceFactory smileyFactory;
 		int index=smileyFactory.createRGBSurface("icon.bmp"/*,Color(255,255,255)*/); //doing the colorkey now break the clone...
 		if(!smileyFactory.cloneToDisplay(index)) std::cerr << "clone failed" << std::endl;
-		
+
 		std::vector<RGBSurface*> slist=smileyFactory.getSurfaceList();
 		std::cout << "taille = " << slist.size() << std::endl;
 		RGBSurface* s=slist[slist.size()-1];
@@ -147,25 +147,25 @@ when the configuration file changed...*/
 
 
 		std::cout << std::boolalpha << display->blit(*s,Point(50,50)) << std::endl;
-		
+
 		Cursor::warpCurrent(Point(50,50));
-		
+
 		while(!(ui.closed()))
 		{
 			Event::handleEvents(ui);
 			//TODO : moving 10 smileys randomly
-			
+
 			//use the access method because of the resize event which modify the screen address
 			SurfaceFactory::getScreen()->update();
 
-		}		
+		}
 	}
-	
+
 	//First test ended : go on to test OPENGL
-	
-	testlog.add(" OPENGL activation... ",quiet);
-	
-	
+
+	testlog.add(" OPENGL activation... ");
+
+
 	if(!SurfaceFactory::setDisplayFlags(true))
 	{
 		std::cout << "\nThe required mode is not available !" << std::endl;
@@ -174,7 +174,7 @@ when the configuration file changed...*/
 	{
 		vector<int> h=SurfaceFactory::getAvailableDisplayHeight();
 		vector<int> w=SurfaceFactory::getAvailableDisplayWidth();
-		
+
 		std::cout << "\nAvailable Modes : " ;
 		if ( h[0] == -1 || w[0] == -1 ) std::cout << "all";
 		else
@@ -182,14 +182,14 @@ when the configuration file changed...*/
 			for (unsigned int i=0; i<h.size() ; i++)
 			{
 				std::cout <<  "- " << h[i] << "x" << w[i] << "\n";
-			}	
+			}
 		}
 		std::cout << std::endl ;
 	}
-	
+
 	MyUserInput ui2; // another ui, since the first is closed ( but not deleted )
 	std::cout <<"display reset" << std::endl;
-	
+
 	//GLManager test
 	std::cout << std::boolalpha <<
 			"setRsize(5) " << GLManager::manager()->setRSize(5) << "\n" <<
@@ -201,27 +201,27 @@ when the configuration file changed...*/
 
 		//GLManager test
 		GLManager::manager()->debug();
-	
+
 	if ((display = SurfaceFactory::createDisplay()) != NULL)
 	{
-		
+
 		//GLManager test
 		GLManager::manager()->debug();
-	
+
 		std::cout << "calling display->debug() " << std::endl;
 		display->debug();
-		
+
 		std::cout << std::boolalpha << " setDepthSize(16) " << GLManager::manager()->setDepthSize(16) << std::endl;
-		
+
 		GLManager::manager()->debug();
-		
+
 		std::cout << "loop... " << std::endl;
 		while(!(ui2.closed()))
 		{
 			Event::handleEvents(ui2);
 			//use the access method because of the resize event which modify the screen address
 			SurfaceFactory::getScreen()->update();
-		}		
+		}
 	}
 
 	return 0;

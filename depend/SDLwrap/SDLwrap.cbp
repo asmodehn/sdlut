@@ -674,7 +674,6 @@
 		</Build>
 		<Compiler>
 			<Add option="-W"/>
-			<Add option="-DLOGINDENTLVL=1"/>
 			<Add directory="include"/>
 			<Add directory="..\Common\include"/>
 		</Compiler>

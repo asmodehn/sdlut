@@ -1,7 +1,7 @@
 #include "SDLBaseSurface.hh"
 
 namespace SDL {
-	
+
 bool BaseSurface::lock(void)
 {
 	if (SDL_MUSTLOCK(_surf))
@@ -48,7 +48,7 @@ try : locks(0)
 	{
 		_surf=SDL_CreateRGBSurface(s._surf->flags, s.getWidth(), s.getHeight(), s._surf->format->BitsPerPixel, s._surf->format->Rmask, s._surf->format->Gmask, s._surf->format->Bmask, s._surf->format->Amask);
 	}
-		
+
 	std::cerr << "SDL::BaseSurface Copy Called" << std::endl;
 	const std::string errstr = cloning ? toDisplay ? alpha ? "SDL_DisplayFormatAlpha" : "SDLDisplayFormat" : "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
   if(_surf == NULL)
@@ -133,7 +133,7 @@ void BaseSurface::setpixel(int x, int y, Uint32 pixel)
 
 bool BaseSurface::saveBMP(std::string filename) const
 {
-	if (_surf!=NULL) 
+	if (_surf!=NULL)
 	{
 		return SDL_SaveBMP(_surf,filename.c_str()) == 0;
 	}
@@ -177,7 +177,7 @@ void BaseSurface::setClipRect(const Rect& rect)
 }
 
 //get the clip rect
-Rect BaseSurface::getClipRect(void) const 
+Rect BaseSurface::getClipRect(void) const
 {
 	Rect r;
 	SDL_GetClipRect(_surf, r._rect);
@@ -197,7 +197,7 @@ void BaseSurface::debug(void) const
 				<< "- HWAccel ? " << isHWAccelset() << "\n"
 				<< "- RLEAccel ? " << isRLEAccelset() << "\n"
 				<< "- PreAlloc ? " << isPreAllocset();
-  SDLConfig::getLog()->add(logstr.str(),verbose);
+  SDLConfig::getLog()->add(logstr.str());
   //tmp
   SDLConfig::getLog()->flush();
 }

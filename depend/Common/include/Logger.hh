@@ -9,15 +9,17 @@
 #define LOGINDENTLVL 0
 #endif
 
+///the default tab width for the indent...
+#ifndef LOGINDENTWIDTH
+#define LOGINDENTWIDTH 2
+#endif
+
 ///just a LOGPREFIX value to be defined at build time. this way you can have a prefix for the whole project binary (library or executable)
 #ifndef LOGPREFIX
 #define LOGPREFIX "Default Log"
 #endif
 
-///the default tab width for the indent...
-#ifndef LOGINDENTWIDTH
-#define LOGINDENTWIDTH 2
-#endif
+
 
 
 /**
@@ -25,9 +27,9 @@
  *
  * \brief This class defines loglevel on top of clog
  *
- * This Logger use indentation levels, and also filters using 3 loglevel : quiet / normal / verbose
+ * This Logger use indentation levels, usually defined on build time.
  * TODO : need to be improved to be used with stream as well as strings.
- * TODO : Improve LogLevels to filter the console output as well as the file output...
+ * TODO : Add LogLevels to filter the console output as well as the file output (3 loglevel : quiet / normal / verbose)
  *
  * \author Alex
  *
@@ -42,41 +44,38 @@ typedef enum {quiet,normal,verbose} Loglevel;
 
 class Logger
 {
-  Loglevel _loglevel;
-	int _indentwidth;
+	int _indentlvl,_indentwidth;
 	std::string _logprefix;
-	
+
   public :
-  
-    ///Default Constructor that defines the loglevel of messages stored
-    Logger(const std::string & LogPrefix = LOGPREFIX,Loglevel lvl = verbose, int indentwidth = LOGINDENTWIDTH );
-    
+
+    ///Default Constructor that defines how to write the log
+    Logger(const std::string & LogPrefix = LOGPREFIX, int indentlevel = LOGINDENTLVL, int indentwidth = LOGINDENTWIDTH );
+
     ///Default Destructor that flush the Log Buffer
     ~Logger();
-    
-    bool setLogfile( const std::string & filename,  Loglevel outlvl = verbose);
-    
-    bool add(const std::string& message, Loglevel lvl = normal, int indentlevel = LOGINDENTLVL);
-  
+
+    bool setLogfile( const std::string & filename);
+
+    void add(const std::string& message);
+
   //TODO : handle operator<<
   //http://www.mactech.com/articles/mactech/Vol.16/16.04/StreamforAllSeasons/
   //http://www.horstmann.com/cpp/iostreams.html
   //http://spec.winprog.org/streams/
-  
+
     void flush(void);
 
 };
 
-inline Logger::Logger(const std::string & LogPrefix,Loglevel lvl, int indentwidth)
-: _loglevel(lvl), _indentwidth(indentwidth),_logprefix(LogPrefix)
-{
-	
-}
+inline Logger::Logger(const std::string & LogPrefix,int indentlvl, int indentwidth)
+: _indentlvl(indentlvl), _indentwidth(indentwidth),_logprefix(LogPrefix)
+{}
 
-inline bool Logger::setLogfile( const std::string & filename, Loglevel outlvl)
+//TO TEST
+inline bool Logger::setLogfile( const std::string & filename)
 {
 	bool res=false;
-	// TODO : improve that to filter the messages by level.
 	std::ofstream logfile(filename.c_str());
   if ( logfile )
   {
@@ -91,15 +90,14 @@ inline bool Logger::setLogfile( const std::string & filename, Loglevel outlvl)
 }
 
 
-inline bool Logger::add( const std::string & msg, Loglevel lvl, int indentlevel)
+inline void Logger::add( const std::string & msg)
 {
-	std::string s(indentlevel * _indentwidth, ' ');
-	bool getmsg = (lvl <=_loglevel);
-	if ( getmsg )
-    std::clog << s << _logprefix << " : " << msg << "\n";
-	return getmsg;
-}
+	std::string s(_indentlvl * _indentwidth, ' ');
+	//need to parse the string to find the "\n"
 
+
+  std::clog << s << _logprefix << " : " << msg << std::endl;
+}
 
 inline void Logger::flush(void)
 {
