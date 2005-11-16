@@ -187,19 +187,19 @@ Rect BaseSurface::getClipRect(void) const
 void BaseSurface::debug(void) const
 {
 	std::stringstream logstr;
-	logstr<< "\nSDL*Surfaces::debug()" << "\n"
+	logstr<< "SDL*Surfaces::debug()" << "\n"
 				<< "- Height = " << getHeight() << "\n"
-				<< "- Width = " << getWidth() << "\n"
+				<< "- Width = " << getWidth() << std::endl
 				<< "- bpp = " << getBPP() << "\n"
 				<< std::boolalpha
 				<< "- SW ? " << isSWset() << "\n"
 				<< "- HW ? " << isHWset() << "\n"
 				<< "- HWAccel ? " << isHWAccelset() << "\n"
 				<< "- RLEAccel ? " << isRLEAccelset() << "\n"
-				<< "- PreAlloc ? " << isPreAllocset();
+				<< "- PreAlloc ? " << isPreAllocset() << std::endl;
   SDLConfig::getLog()->add(logstr.str());
   //tmp
-  SDLConfig::getLog()->flush();
+  //SDLConfig::getLog()->flush();
 }
 
 } //namespace SDL

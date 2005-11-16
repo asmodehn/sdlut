@@ -57,7 +57,7 @@ class Logger
 
     bool setLogfile( const std::string & filename);
 
-    void add(const std::string& message);
+    void add(std::string message); // not const because of initial '\n' in string from streams...
 
   //TODO : handle operator<<
   //http://www.mactech.com/articles/mactech/Vol.16/16.04/StreamforAllSeasons/
@@ -90,13 +90,17 @@ inline bool Logger::setLogfile( const std::string & filename)
 }
 
 
-inline void Logger::add( const std::string & msg)
+inline void Logger::add( std::string msg)
 {
 	std::string s(_indentlvl * _indentwidth, ' ');
-	//need to parse the string to find the "\n"
-
-
-  std::clog << s << _logprefix << " : " << msg << std::endl;
+	s +=_logprefix + " : ";
+	std::istringstream iss(msg);
+	std::string outmsg;
+	//need to parse the string to append the prefix on each newline
+	while ( getline(iss, outmsg) )
+	{
+	  std::clog << s << outmsg << std::endl;
+	}
 }
 
 inline void Logger::flush(void)

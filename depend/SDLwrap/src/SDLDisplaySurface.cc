@@ -98,13 +98,13 @@ bool DisplaySurface::update(std::vector<Rect> rlist)
 
 void DisplaySurface::debug(void) const
 {
+  std::stringstream logstr;
 	BaseSurface::debug();
-	std::stringstream logstr;
 	logstr<< std::boolalpha << "- Fullscreen ? " << isFullScreenset() << "\n"
 				<< "- Resizable ? " << isResizableset() << "\n"
 				<< "- NoFrame ? " << isNoFrameset() << "\n"
 				<< "- AnyFormat ? " << isAnyFormatset() << "\n"
-				<< "- Double Buffered ? " << isDoubleBufset();
+				<< "- Double Buffered ? " << isDoubleBufset() << std::endl;
   SDLConfig::getLog()->add(logstr.str());
   //tmp
   SDLConfig::getLog()->flush();
