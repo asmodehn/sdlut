@@ -143,7 +143,7 @@ when the configuration file changed...*/
 		std::cout << "taille = " << slist.size() << std::endl;
 		RGBSurface* s=slist[slist.size()-1];
 		std::cout << "s : " <<s->getWidth() << " x " << s->getHeight() << std::endl;
-		if (s==NULL) {LIB_ERROR("s is NULL!"); exit(1);}
+		if (s==NULL) {testlog.add("s is NULL!"); exit(1);}
 
 
 		std::cout << std::boolalpha << display->blit(*s,Point(50,50)) << std::endl;

@@ -15,7 +15,7 @@ try : _info(SDL_GetVideoInfo())
 }
 catch (std::exception &e)
 {
-	LIB_ERROR( "Exception catched in VideoInfo Constructor !!!" );
+	Config::addLog( "Exception catched in VideoInfo Constructor !!!" );
 	//_info should remain NULL if there was an error...
 	//and *this* is not constructed since we throw an exception
 }
@@ -32,7 +32,7 @@ VideoInfo* VideoInfo::Info(void)
 		catch (std::exception& e)
 		{
 			//Keep this catch to prevent program terminate...
-			LIB_ERROR(e.what());
+			Config::addLog(e.what());
 			//no need to delete Instance, since constructor throw an exception
 			//the VideoInfo Instance wasn't built
 		}
@@ -49,9 +49,10 @@ std::string VideoInfo::getDriverName(void) const
 
 void VideoInfo::debug(void) const
 {
-	std::cout << "\nVideoInfo::debug()"  << "\n" <<
+	std::stringstream logstr;
+	logstr << "VideoInfo::debug()"  << "\n" <<
 	"- Driver Name : " << getDriverName() << "\n" <<
-	std::boolalpha << 
+	std::boolalpha <<
 	"- Is it possible to create Hardware Surfaces? " << isHWAvailable() << "\n" <<
 	"- Is there a window manager available? " << isWMAvailable() << "\n" <<
 	"- Are hardware to hardware blits accelerated? " << isBlitHWAccelAvailable() << "\n" <<
@@ -61,8 +62,10 @@ void VideoInfo::debug(void) const
 	"- Are software to hardware colorkey blits accelerated? " << isBlitSWCCAccelAvailable() << "\n" <<
 	"- Are software to hardware alpha blits accelerated? " << isBlitSWAAccelAvailable() << "\n" <<
 	"- Are color fills accelerated? " << isBlitFillAccelAvailable() << "\n" <<
-	"- Total amount of video memory in Kilobytes : " << videoMemSize() << "\n" <<
+	"- Total amount of video memory in Kilobytes : " << videoMemSize() <<
 	std::endl;
+	Config::addLog(logstr.str());
+
 	getPixelFormat().debug();
 }
 

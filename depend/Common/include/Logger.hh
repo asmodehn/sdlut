@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 ///just a LOGINDENT value to be defined at build time. this way you have indent levels depending on built libraries
 #ifndef LOGINDENTLVL
@@ -46,6 +47,8 @@ class Logger
 {
 	int _indentlvl,_indentwidth;
 	std::string _logprefix;
+	std::ofstream ofstr;
+	bool _clogSwitch;
 
   public :
 
@@ -57,7 +60,11 @@ class Logger
 
     bool setLogfile( const std::string & filename);
 
-    void add(std::string message); // not const because of initial '\n' in string from streams...
+    void toggleclog() { _clogSwitch = !_clogSwitch ; }
+    void enableclog() { _clogSwitch= true ; }
+    void disableclog() { _clogSwitch = false ; }
+
+    void add(const std::string & message); // not const because of initial '\n' in string from streams...
 
   //TODO : handle operator<<
   //http://www.mactech.com/articles/mactech/Vol.16/16.04/StreamforAllSeasons/
@@ -67,51 +74,6 @@ class Logger
     void flush(void);
 
 };
-
-inline Logger::Logger(const std::string & LogPrefix,int indentlvl, int indentwidth)
-: _indentlvl(indentlvl), _indentwidth(indentwidth),_logprefix(LogPrefix)
-{}
-
-//TO TEST
-inline bool Logger::setLogfile( const std::string & filename)
-{
-	bool res=false;
-	std::ofstream logfile(filename.c_str());
-  if ( logfile )
-  {
-    std::clog.rdbuf(logfile.rdbuf());
-    res=true;
-  }
-  else
-  {
-    add("Failed to open " + filename );
-  }
-  return res;
-}
-
-
-inline void Logger::add( std::string msg)
-{
-	std::string s(_indentlvl * _indentwidth, ' ');
-	s +=_logprefix + " : ";
-	std::istringstream iss(msg);
-	std::string outmsg;
-	//need to parse the string to append the prefix on each newline
-	while ( getline(iss, outmsg) )
-	{
-	  std::clog << s << outmsg << std::endl;
-	}
-}
-
-inline void Logger::flush(void)
-{
-	std::clog.flush();
-}
-
-inline Logger::~Logger()
-{
-	flush();
-}
 
 
 #endif

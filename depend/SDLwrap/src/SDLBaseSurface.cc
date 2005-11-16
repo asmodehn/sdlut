@@ -61,9 +61,9 @@ try : locks(0)
 }
 catch (std::exception &e)
 {
-	LIB_ERROR( "Exception catched in SDLBaseSurface Copy Constructor !!!" );
-	LIB_ERROR(e.what());
-	SDLERROR;
+	Config::addLog( "Exception catched in SDLBaseSurface Copy Constructor !!!" );
+	Config::addLog(e.what());
+	Config::addLog(GetError());
 }
 
 
@@ -164,7 +164,7 @@ bool BaseSurface::blit(const BaseSurface& src, Rect& dest_rect, const Rect& src_
 	{
 		case 0 : res=true; break;
 		case -1 : res=false; break;
-		default : SDLERROR; break; // beware the -2 returns... see the SDL doc
+		default : Config::addLog(GetError()); break; // beware the -2 returns... see the SDL doc
 	}
 	return res;
 }
@@ -189,7 +189,7 @@ void BaseSurface::debug(void) const
 	std::stringstream logstr;
 	logstr<< "SDL*Surfaces::debug()" << "\n"
 				<< "- Height = " << getHeight() << "\n"
-				<< "- Width = " << getWidth() << std::endl
+				<< "- Width = " << getWidth() << "\n"
 				<< "- bpp = " << getBPP() << "\n"
 				<< std::boolalpha
 				<< "- SW ? " << isSWset() << "\n"
@@ -197,7 +197,7 @@ void BaseSurface::debug(void) const
 				<< "- HWAccel ? " << isHWAccelset() << "\n"
 				<< "- RLEAccel ? " << isRLEAccelset() << "\n"
 				<< "- PreAlloc ? " << isPreAllocset() << std::endl;
-  SDLConfig::getLog()->add(logstr.str());
+  Config::getLog()->add(logstr.str());
 }
 
 } //namespace SDL

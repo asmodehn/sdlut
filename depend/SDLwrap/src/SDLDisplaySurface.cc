@@ -23,11 +23,11 @@ try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
 }
 catch (std::exception &e)
 {
-	LIB_ERROR( "Exception catched in DisplaySurface Constructor !!!" );
+	Config::addLog( "Exception catched in DisplaySurface Constructor !!!" );
 	//Affichage Erreur
-	LIB_ERROR(e.what());
+	Config::addLog(e.what());
 
-	SDLERROR;
+	Config::addLog(GetError());
 	//TODO : much more explicit error message...
 }
 
@@ -105,9 +105,7 @@ void DisplaySurface::debug(void) const
 				<< "- NoFrame ? " << isNoFrameset() << "\n"
 				<< "- AnyFormat ? " << isAnyFormatset() << "\n"
 				<< "- Double Buffered ? " << isDoubleBufset() << std::endl;
-  SDLConfig::getLog()->add(logstr.str());
-  //tmp
-  SDLConfig::getLog()->flush();
+  Config::addLog(logstr.str());
 }
 
 } //namespace SDL

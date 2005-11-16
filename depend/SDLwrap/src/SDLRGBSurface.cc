@@ -16,11 +16,10 @@ try : BaseSurface(SDL_CreateRGBSurface(flags, width, height, bpp, rmask, gmask, 
 }
 catch (std::exception &e)
 {
-	LIB_ERROR( "Exception catched in RGBSurface Constructor !!!" );
+	Config::addLog( "Exception catched in RGBSurface Constructor !!!" );
 	//Error Display
-	LIB_ERROR(e.what());
-
-	SDLERROR;
+	Config::addLog(e.what());
+	Config::addLog(GetError());
 	//TODO : much more explicit error message...
 }
 
@@ -36,11 +35,10 @@ try : BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitc
 }
 catch (std::exception &e)
 {
-	LIB_ERROR( "Exception catched in RGBSurface Constructor !!!" );
+	Config::addLog( "Exception catched in RGBSurface Constructor !!!" );
 	//Error Display
-	LIB_ERROR(e.what());
-
-	SDLERROR;
+	Config::addLog(e.what());
+	Config::addLog(GetError());
 	//TODO : much more explicit error message...
 }
 
@@ -57,11 +55,10 @@ try : BaseSurface(SDL_LoadBMP(filename.c_str()))
 }
 catch (std::exception &e)
 {
-	LIB_ERROR( "Exception catched in RGBSurface Constructor !!!" );
+	Config::addLog( "Exception catched in RGBSurface Constructor !!!" );
 	//Error Display
-	LIB_ERROR(e.what());
-
-	SDLERROR;
+	Config::addLog(e.what());
+	Config::addLog(GetError());
 	//TODO : much more explicit error message...
 }
 
@@ -72,22 +69,22 @@ try : BaseSurface ( 	cloning ?
 				SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*fmt._pformat),flags) // copy to deal with const... maybe a const cast should be ok...
 				: SDL_CreateRGBSurface(flags, s.getWidth(), s.getHeight(), fmt.getBitsPerPixel(), fmt.getRmask(), fmt.getGmask(), fmt.getBmask(), fmt.getAmask())
 		)
-{																				
-	std::cerr << "RGBSurface Copy Called" << std::endl;						
+{
+	std::cerr << "RGBSurface Copy Called" << std::endl;
 	const std::string errstr = cloning ? "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
-    if(_surf == NULL)															
-	{																			
-        std::cerr << "Unable to copy the RGBsurface @ " << &s << std::endl ;	
-        throw std::logic_error(errstr + " returns NULL");						
-    }																			
-    else																		
-	    std::cerr << "SDL_Surface created @ "<< _surf<< std::endl;				
-}																				
-catch (std::exception &e)														
-{																				
-	LIB_ERROR( "Exception catched in RGBSurface Copy Constructor !!!" );		
-	LIB_ERROR(e.what());														
-	SDLERROR;																	
+    if(_surf == NULL)
+	{
+        std::cerr << "Unable to copy the RGBsurface @ " << &s << std::endl ;
+        throw std::logic_error(errstr + " returns NULL");
+    }
+    else
+	    std::cerr << "SDL_Surface created @ "<< _surf<< std::endl;
+}
+catch (std::exception &e)
+{
+	Config::addLog( "Exception catched in RGBSurface Copy Constructor !!!" );
+	Config::addLog(e.what());
+	Config::addLog(GetError());
 }
 
 
@@ -96,49 +93,49 @@ try : BaseSurface ( 	cloning ?
 				SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*(s._surf->format)),flags) // copy to deal with const... maybe a const cast should be ok...
 				: SDL_CreateRGBSurface(flags, s.getWidth(), s.getHeight(), s._surf->format->BitsPerPixel, s._surf->format->Rmask, s._surf->format->Gmask, s._surf->format->Bmask, s._surf->format->Amask)
 		)
-{																				
-	std::cerr << "RGBSurface Copy Called" << std::endl;						
+{
+	std::cerr << "RGBSurface Copy Called" << std::endl;
 	const std::string errstr = cloning ? "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
-    if(_surf == NULL)															
-	{																			
-        std::cerr << "Unable to copy the RGBsurface @ " << &s << std::endl ;	
-        throw std::logic_error(errstr + " returns NULL");						
-    }																			
-    else																		
-	    std::cerr << "SDL_Surface created @ "<< _surf<< std::endl;				
-}																				
-catch (std::exception &e)														
-{																				
-	LIB_ERROR( "Exception catched in RGBSurface Copy Constructor !!!" );		
-	LIB_ERROR(e.what());														
-	SDLERROR;																	
+    if(_surf == NULL)
+	{
+        std::cerr << "Unable to copy the RGBsurface @ " << &s << std::endl ;
+        throw std::logic_error(errstr + " returns NULL");
+    }
+    else
+	    std::cerr << "SDL_Surface created @ "<< _surf<< std::endl;
+}
+catch (std::exception &e)
+{
+	Config::addLog("Exception catched in RGBSurface Copy Constructor !!!" );
+	Config::addLog(e.what());
+	Config::addLog(GetError());
 }
 
 RGBSurface::RGBSurface(const BaseSurface & s , bool cloning, bool toDisplay, bool alpha) throw (std::logic_error)
 try : BaseSurface(s,cloning,toDisplay,alpha)
 {
-  std::cerr << "RGBSurface Copy Called" << std::endl;						
+  std::cerr << "RGBSurface Copy Called" << std::endl;
 	std::cerr << "SDL_Surface created @ "<< _surf<< std::endl;
 }
-catch (std::exception &e)														
-{																				
-	LIB_ERROR( "Exception catched in RGBSurface Copy Constructor !!!" );		
-	LIB_ERROR(e.what());														
-	SDLERROR;																	
+catch (std::exception &e)
+{
+	Config::addLog("Exception catched in RGBSurface Copy Constructor !!!" );
+	Config::addLog(e.what());
+	Config::addLog(GetError());
 }
 
 /*
 RGBSurface::RGBSurface(const RGBSurface & s , bool cloning, bool toDisplay, bool alpha) throw (std::logic_error)
 try : SDLBaseSurface(s,cloning,toDisplay,alpha)
 {
-  std::cerr << "RGBSurface Copy Called" << std::endl;						
+  std::cerr << "RGBSurface Copy Called" << std::endl;
 	std::cerr << "SDL_Surface created @ "<< _surf<< std::endl;
 }
-catch (std::exception &e)														
-{																				
-	LIB_ERROR( "Exception catched in RGBSurface Copy Constructor !!!" );		
-	LIB_ERROR(e.what());														
-	SDLERROR;																	
+catch (std::exception &e)
+{
+	LIB_ERROR( "Exception catched in RGBSurface Copy Constructor !!!" );
+	LIB_ERROR(e.what());
+	SDLERROR;
 }
 */
 
@@ -158,11 +155,11 @@ bool RGBSurface::setColorKey(const RGBColor & key, const PixelFormat & pformat, 
 	flags=SDL_SRCCOLORKEY | SDL_RLEACCEL;
 	else
 	flags=SDL_SRCCOLORKEY;
-	
+
 	return SDL_SetColorKey(_surf, flags, pformat.getValueFromRGB(key) ) == 0;
 }
 
-/*	
+/*
 int RGBSurface::update(void)
 {
 	SDL_UpdateRects(_surf,_UpdateRectList.size(),UpdateRectList);

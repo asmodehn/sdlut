@@ -1,7 +1,7 @@
 #include "SDLWindow.hh"
 
 namespace SDL {
-	
+
 Window::Window(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
 : DisplaySurface( width, height, bpp, flags)
 { }
@@ -25,7 +25,7 @@ RGBSurface* Window::save(void)
 	std::cerr << "Window::save()" << std::endl;
 	// we create a new RGB surface to clone the display...
 	RGBSurface * backupScreen= new RGBSurface(*this,true,true,false);
-	
+
 	return backupScreen;
 }
 
@@ -33,63 +33,63 @@ RGBSurface* Window::save(void)
 bool Window::restore(const RGBSurface& savedScreen)
 {
   bool res;
-  
+
   std::cerr << "Window::restore()" << std::endl;
-  
+
   Point newpos;
   newpos.setx( (getWidth()-savedScreen.getWidth()) / 2 );
   newpos.sety( (getHeight()-savedScreen.getHeight()) / 2 );
-  
+
   std::cerr << "blit savedScreen at " << newpos << std::endl;
   res = blit(savedScreen, newpos);
 
-	return res;	
+	return res;
 }
-	
-	
+
+
 
 bool Window::resize(int width, int height)
 {
-	
+
   std::cerr << "Resize start" << std::endl;
 	bool res = false;
 	//proper way to do that :
 	// 1 - save the current display surface
-	
+
 	//AUTO_PTR to manage the delete at the end ??
 	RGBSurface * backup=save();
-	
+
 	std::cerr << "Saved Surface debug :" << std::endl;
 	backup->debug();
-	
+
 	// 2 - create a new one similar, with new size
   //BEWARE : should match DisplaySurface Constructor code
   SDL_Surface * newSurf = SDL_SetVideoMode(width,height,getBPP(),getFlags());
 
 
-	
+
 	if (newSurf==NULL) //SetVideoMode has failed
 	{
 		std::cerr << "Unable to resize to " << width << " x " << height << " 2D display surface " << std::endl;
-		SDLERROR;
+		Config::addLog(GetError());
 	}
 	else //setvideoMode successfull
 	{
 		// 3 - restore the screen
     restore(*backup);
-    
+
     //update the pointer
     _surf=newSurf;
-    
+
     res = true;
     //BEWARE : According to the doc, the display surface should never be freed by the caller of SetVideoMode. SDL_Quit will handle that.
 	}
 
-  std::cerr << "New Display Surface debug :" << std::endl;	
+  std::cerr << "New Display Surface debug :" << std::endl;
 	debug();
-	
+
 	//TODO : backup should be freed / deleted anyway !!
-	
+
 	return res;
 }
 

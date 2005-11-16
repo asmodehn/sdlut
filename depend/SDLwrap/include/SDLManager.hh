@@ -21,7 +21,7 @@
 #include "SDLConfig.hh"
 
 //Error Messages
-#define MANAGER_ERROR(system) LIB_ERROR("Unable to initialize SDL " << system << " : " << SDL_GetError() )
+//#define MANAGER_ERROR(system) Config::addLog("Unable to initialize SDL " + system + " : " + GetError() )
 
 
 namespace SDL {
@@ -34,9 +34,9 @@ class Manager
 protected:
 	Manager(Uint32 flags = SDL_INIT_EVERYTHING) throw (std::logic_error);
 	~Manager(){SDL_Quit();}
-	
+
 public:
-	
+
 	static inline Manager* manager(void) throw (std::logic_error)
 	{
 		if (_uniqueInstance == NULL)
@@ -44,9 +44,9 @@ public:
 				throw std::logic_error("enableEverything failed !!!");
 		return _uniqueInstance;
 	}
-	
+
 	//Enablers creates the singleton Instance if not present
-	//If Manager is already initialized, try to enable a subSystem 
+	//If Manager is already initialized, try to enable a subSystem
 	//and return the result
 	static bool enableTimer(void);
 	static bool enableAudio(void);
@@ -66,7 +66,7 @@ public:
 	void disableEverything(void);
 	void disableNoParachute(void);
 	void disableEventThread(void);
-	
+
 	//Accesseurs
 	inline bool isTimerEnabled(void) {return SDL_WasInit(SDL_INIT_TIMER);}
 	inline bool isAudioEnabled(void) {return SDL_WasInit(SDL_INIT_AUDIO);}
@@ -75,6 +75,12 @@ public:
 	inline bool isJoystickEnabled(void) {return SDL_WasInit(SDL_INIT_JOYSTICK);}
 	inline bool isNoParachuteEnabled(void) {return SDL_WasInit(SDL_INIT_NOPARACHUTE);}
 	inline bool isEventThreadEnabled(void) {return SDL_WasInit(SDL_INIT_EVENTTHREAD);}
+
+	//logs manager error with usefull information
+	static inline void error(std::string system)
+	{
+		Config::addLog("Unable to initialize SDL " + system + " : " + GetError() );
+	}
 
 	//display all Informations
 	void debug(void);

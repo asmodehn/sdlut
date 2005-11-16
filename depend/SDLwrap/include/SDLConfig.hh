@@ -41,11 +41,6 @@
 //Debug Constants
 #define SDLUserInput_DEBUG
 
-
-//Error Messages
-#define SDLERROR std::cerr << SDL_GetError() << std::endl
-#define LIB_ERROR(str) std::cerr << " ERROR ==> " << str << std::endl
-
 /**
  * \class SDLConfig
  *
@@ -61,12 +56,22 @@
  *
  */
 
-class SDLConfig
+namespace SDL
 {
-  static Logger *	_SDLlog;
-public:
-  SDLConfig(void) {_SDLlog->setLogfile("SDLwrap.log");}
-  static inline  Logger * getLog(void) {return _SDLlog;}
-};
+static inline std::string GetError(void) { return SDL_GetError(); }
 
+class Config
+{
+  static Logger *	_log;
+public:
+  Config(void) {_log->setLogfile("SDLwrap.log");}
+  static inline  Logger * getLog(void) {return _log;}
+  static inline  void addLog(std::string str, bool fatal = false)
+  {
+  	if (fatal)
+  	str = " FATAL ERROR ==> " + str;
+  	_log->add(str);
+	}
+};
+}
 #endif

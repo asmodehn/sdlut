@@ -123,7 +123,7 @@ DisplaySurface* SurfaceFactory::createDisplay(std::string title, std::string ico
 	//beware about the bpp == 0 used with rgbsurfaces !
 	catch(std::exception & e)
 	{
-		LIB_ERROR(e.what());
+		Config::addLog(e.what());
 	}
 
 
@@ -152,8 +152,8 @@ unsigned int SurfaceFactory::createRGBSurface(void)
 	}
 	catch ( std::exception& e )
 	{
-		LIB_ERROR("RGB Surface cannot be created !");
-		LIB_ERROR(e.what());
+		Config::addLog("RGB Surface cannot be created !");
+		Config::addLog(e.what());
 	}
 	if (surf!=NULL)
 		surfaceList.insert(surfaceList.end(),surf);
@@ -170,8 +170,8 @@ unsigned int SurfaceFactory::createRGBSurface(int width , int height , Color col
 	}
 	catch ( std::exception& e )
 	{
-		LIB_ERROR("RGB Surface cannot be created !");
-		LIB_ERROR(e.what());
+		Config::addLog("RGB Surface cannot be created !");
+		Config::addLog(e.what());
 	}
 	if (surf!=NULL)
 		surfaceList.insert(surfaceList.end(),surf);
@@ -187,8 +187,8 @@ unsigned int SurfaceFactory::createRGBSurface(void* pixeldata, int depth, int pi
 	}
 	catch ( std::exception &e )
 	{
-		LIB_ERROR("RGB Surface cannot be created !");
-		LIB_ERROR(e.what());
+		Config::addLog("RGB Surface cannot be created !");
+		Config::addLog(e.what());
 	}
 	if (surf!=NULL)
 		surfaceList.push_back(surf);
@@ -204,8 +204,8 @@ unsigned int SurfaceFactory::createRGBSurface( std::string filename )
 	}
 	catch ( std::exception &e )
 	{
-		LIB_ERROR("RGB Surface cannot be created !");
-		LIB_ERROR(e.what());
+		Config::addLog("RGB Surface cannot be created !");
+		Config::addLog(e.what());
 	}
 	if (surf!=NULL)
 		surfaceList.push_back(surf);
@@ -252,7 +252,7 @@ unsigned int SurfaceFactory::clone(int index,int times) // clone the one on inde
 	}
 	catch (std::exception & e)
 	{
-		LIB_ERROR(e.what());
+		Config::addLog(e.what());
 	}
   return surfaceList.size()-1;;
 }
@@ -271,7 +271,7 @@ unsigned int SurfaceFactory::cloneToDisplay(int index,int times, bool alpha) // 
 	}
 	catch (std::exception & e)
 	{
-		LIB_ERROR(e.what());
+		Config::addLog(e.what());
 	}
 	return surfaceList.size()-1;
 }

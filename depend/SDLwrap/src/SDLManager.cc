@@ -9,7 +9,7 @@
 	}																\
 	catch (std::exception & e)										\
 	{																\
-		MANAGER_ERROR("SDLFlag"); res=false;						\
+		error("SDLFlag"); res=false;						\
 	}
 /**/
 
@@ -27,15 +27,15 @@ try
 }
 catch (std::exception &e)
 {
-	LIB_ERROR ( "Exception catched in Manager Constructor !!!" );
-	LIB_ERROR(e.what());
+	Config::addLog( "Exception catched in Manager Constructor !!!" );
+	Config::addLog(e.what());
 }
 
 bool Manager::enableTimer(void)
 {
 	bool res;
 	if ( _uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_TIMER))==0)
-		MANAGER_ERROR("TIMER");
+		error("TIMER");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_TIMER) }
 	return res;
 }
@@ -43,7 +43,7 @@ bool Manager::enableAudio(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_AUDIO))==0)
-		MANAGER_ERROR("AUDIO");
+		error("AUDIO");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_AUDIO) }
 	return res;
 }
@@ -51,7 +51,7 @@ bool Manager::enableVideo(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_VIDEO))==0)
-		MANAGER_ERROR("VIDEO");
+		error("VIDEO");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_VIDEO) }
 	return res;
 }
@@ -59,7 +59,7 @@ bool Manager::enableCdrom(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_CDROM))==0)
-		MANAGER_ERROR("CDROM");
+		error("CDROM");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_CDROM)}
 	return res;
 }
@@ -67,7 +67,7 @@ bool Manager::enableJoystick(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_JOYSTICK))==0)
-		MANAGER_ERROR("JOYSTICK");
+		error("JOYSTICK");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_JOYSTICK) }
 	return res;
 }
@@ -75,7 +75,7 @@ bool Manager::enableEverything(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_EVERYTHING))==0)
-		MANAGER_ERROR("EVERYTHING");
+		error("EVERYTHING");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_EVERYTHING) }
 	return res;
 }
@@ -83,7 +83,7 @@ bool Manager::enableNoParachute(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_NOPARACHUTE))==0)
-		MANAGER_ERROR("NOPARACHUTE");
+		error("NOPARACHUTE");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_NOPARACHUTE) }
 	return res;
 }
@@ -91,7 +91,7 @@ bool Manager::enableEventThread(void)
 {
 	int res;
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_EVENTTHREAD))==0)
-		MANAGER_ERROR("EVENTTHREAD");
+		error("EVENTTHREAD");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_EVENTTHREAD) }
 	return res;
 }
@@ -143,16 +143,15 @@ void Manager::debug(void)
 	if (_uniqueInstance==NULL) enableEverything();
 
  std::stringstream logstr;
-	logstr<< std::boolalpha << "\nManager::debug()" << "\n" <<
+	logstr<< std::boolalpha << "Manager::debug()" << "\n" <<
 	"- Is Timer Enabled ? " << isTimerEnabled() << "\n" <<
 	"- Is Audio Enabled ? " << isAudioEnabled() << "\n" <<
 	"- Is Video Enabled ? " << isVideoEnabled() << "\n" <<
 	"- Is CDROM Enabled ? " << isCdromEnabled() << "\n" <<
 	"- Is Joystick Enabled ? " << isJoystickEnabled() << "\n" <<
 	"- Is \"NoParachute\" Enabled ? " << isNoParachuteEnabled() << "\n" <<
-	"- Is \"EventThread\" Enabled ? " << isEventThreadEnabled() << "\n" <<
-	std::endl;
-  SDLConfig::getLog()->add(logstr.str());
+	"- Is \"EventThread\" Enabled ? " << isEventThreadEnabled() << 	std::endl;
+  Config::addLog(logstr.str());
 }
 
 }//namespace SDL

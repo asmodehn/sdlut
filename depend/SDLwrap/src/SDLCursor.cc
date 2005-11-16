@@ -1,7 +1,7 @@
 #include "SDLCursor.hh"
 
 namespace SDL {
-	
+
 /* XPMs */
 //TODO : hand & time & reticulum & ...
 //TODO : manage inverse pixel, without XPM maybe ??
@@ -94,11 +94,11 @@ const char* _shape_blackArrow[] =
 	"                                ",
 	"0,0"
 	};
-	
+
 const char** Cursor::shapes[2] =
 {
 	_shape_arrow,
-	_shape_blackArrow	
+	_shape_blackArrow
 };
 
 //set Cursor from XPM
@@ -144,9 +144,9 @@ try : _cursor(init_system_cursor(shapes[sh]))
 }
 catch (std::exception & e)
 {
-	LIB_ERROR("Exception catched on Cursor Constructor !!!");
-	LIB_ERROR(e.what());
-	SDLERROR;
+	Config::addLog("Exception catched on Cursor Constructor !!!");
+	Config::addLog(e.what());
+	Config::addLog(GetError());
 }
 
 } //namespace SDL

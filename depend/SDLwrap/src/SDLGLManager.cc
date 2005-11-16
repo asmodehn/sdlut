@@ -154,7 +154,7 @@ void GLManager::debug(void) const
 		"GL Accum Green Size = " << getAccumGSize() << "\n" <<
 		"GL Accum Blue Size = " << getAccumBSize() << "\n" <<
 		"GL Accum Alpha Size = " << getAccumASize() << std::endl;
-  SDLConfig::getLog()->add(logstr.str());
+  Config::addLog(logstr.str());
 }
 
 #endif
