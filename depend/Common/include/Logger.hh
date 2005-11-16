@@ -28,7 +28,7 @@
  * \brief This class defines loglevel on top of clog
  *
  * This Logger use indentation levels, usually defined on build time.
- * TODO : need to be improved to be used with stream as well as strings.
+ * TODO : need to be improved to be used with streams as well as strings.
  * TODO : Add LogLevels to filter the console output as well as the file output (3 loglevel : quiet / normal / verbose)
  *
  * \author Alex

@@ -141,7 +141,8 @@ bool GLManager::setAccumASize(int bits)
 
 void GLManager::debug(void) const
 {
-	std::cout << "GLManager - debug() : \n" <<
+  std::stringstream logstr;
+	logstr<< "GLManager - debug() : \n" <<
     	"GL Red Size = " << getRSize() << "\n" <<
 		"GL Green Size = " << getGSize() << "\n" <<
 		"GL Blue Size = " << getBSize() << "\n" <<
@@ -152,8 +153,8 @@ void GLManager::debug(void) const
 		"GL Accum Red Size = " << getAccumRSize() << "\n" <<
 		"GL Accum Green Size = " << getAccumGSize() << "\n" <<
 		"GL Accum Blue Size = " << getAccumBSize() << "\n" <<
-		"GL Accum Alpha Size = " << getAccumASize() <<
-	std::endl;
+		"GL Accum Alpha Size = " << getAccumASize() << std::endl;
+  SDLConfig::getLog()->add(logstr.str());
 }
 
 #endif

@@ -10,7 +10,7 @@
 	catch (std::exception & e)										\
 	{																\
 		MANAGER_ERROR("SDLFlag"); res=false;						\
-	}	
+	}
 /**/
 
 namespace SDL {
@@ -69,7 +69,7 @@ bool Manager::enableJoystick(void)
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_JOYSTICK))==0)
 		MANAGER_ERROR("JOYSTICK");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_JOYSTICK) }
-	return res;	
+	return res;
 }
 bool Manager::enableEverything(void)
 {
@@ -77,7 +77,7 @@ bool Manager::enableEverything(void)
 	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_EVERYTHING))==0)
 		MANAGER_ERROR("EVERYTHING");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_EVERYTHING) }
-	return res;	
+	return res;
 }
 bool Manager::enableNoParachute(void)
 {
@@ -99,7 +99,7 @@ bool Manager::enableEventThread(void)
 void Manager::disableTimer(void)
 {
 	if (_uniqueInstance!=NULL)
-		SDL_QuitSubSystem(SDL_INIT_TIMER); 
+		SDL_QuitSubSystem(SDL_INIT_TIMER);
 }
 void Manager::disableAudio(void)
 {
@@ -141,8 +141,9 @@ void Manager::debug(void)
 {
 	//To prevent calls without proper Initialization...
 	if (_uniqueInstance==NULL) enableEverything();
-	
-	std::cout << std::boolalpha << "\nManager::debug()" << "\n" <<
+
+ std::stringstream logstr;
+	logstr<< std::boolalpha << "\nManager::debug()" << "\n" <<
 	"- Is Timer Enabled ? " << isTimerEnabled() << "\n" <<
 	"- Is Audio Enabled ? " << isAudioEnabled() << "\n" <<
 	"- Is Video Enabled ? " << isVideoEnabled() << "\n" <<
@@ -151,6 +152,7 @@ void Manager::debug(void)
 	"- Is \"NoParachute\" Enabled ? " << isNoParachuteEnabled() << "\n" <<
 	"- Is \"EventThread\" Enabled ? " << isEventThreadEnabled() << "\n" <<
 	std::endl;
+  SDLConfig::getLog()->add(logstr.str());
 }
 
 }//namespace SDL

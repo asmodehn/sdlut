@@ -198,8 +198,6 @@ void BaseSurface::debug(void) const
 				<< "- RLEAccel ? " << isRLEAccelset() << "\n"
 				<< "- PreAlloc ? " << isPreAllocset() << std::endl;
   SDLConfig::getLog()->add(logstr.str());
-  //tmp
-  //SDLConfig::getLog()->flush();
 }
 
 } //namespace SDL
