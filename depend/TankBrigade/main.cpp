@@ -84,6 +84,10 @@ class MyBullet : public MxLib::MxAnimatedSprite
     int frameset[6];
 
 public:
+
+    //magic number
+    static const int size = 8;
+
     MyBullet( Direction initdir, int initspeed = 6)
             : MxLib::MxAnimatedSprite(MyTankGame::Instance().getResources().getBitmap() ,330, 33,8), speed(initspeed), dir(initdir)
     {
@@ -168,7 +172,20 @@ public:
 
 class MyTank : public MxLib::MxAnimatedSprite
 {
+  protected:
     int speed;
+    typedef enum
+    {
+        exploding = -1, shooting = 0, alive = 1
+    }
+    State;
+    State curstate;
+
+    //index for frames... 012 ->shoot 3456789 -> move
+    unsigned int upframe[10];
+    unsigned int downframe[10];
+    unsigned int leftframe[10];
+    unsigned int rightframe[10];
 
 public :
 
@@ -189,31 +206,44 @@ public :
 
     bool move(Direction d)
     {
+        bool res=false;
+        static unsigned int current = 0;
         switch (d)
         {
             case up :
-            return MxLib::MxAnimatedSprite::move ( 0,- speed);
+            curdir = up;
+            changeFrame(upframe[current++]);
+            res= MxLib::MxAnimatedSprite::move ( 0,- speed);
             break;
 
             case down :
-
-            return MxLib::MxAnimatedSprite::move ( 0,speed);
+            curdir = down;
+            changeFrame(downframe[current++]);
+            res= MxLib::MxAnimatedSprite::move ( 0,speed);
             break;
 
             case left :
-
-            return MxLib::MxAnimatedSprite::move ( - speed,0);
+            curdir = left;
+            changeFrame(leftframe[current++]);
+            res= MxLib::MxAnimatedSprite::move ( - speed,0);
             break;
 
             case right :
-
-            return MxLib::MxAnimatedSprite::move ( speed,0);
+            curdir = right;
+            changeFrame(rightframe[current++]);
+            res= MxLib::MxAnimatedSprite::move ( speed,0);
             break;
 
             default :
             std::cerr <<"shouldnt happen " << std::endl;
+            res=false;
             break;
         }
+        if  (current == 10)
+            current = 0;
+        if  (current == 1)
+            current = 3;
+        return res;
     }
     void setspeed(int newspeed)
     {
@@ -224,23 +254,73 @@ public :
         return speed;
     }
 
+    inline bool shoot (void )
+    {
+        return shoot(curdir);
+    }
+
+    bool shoot (Direction d, int curframe = 0)
+    {
+        curstate = shooting;
+        //spawning bullet
+        switch (d)
+        {
+            case up :
+            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,-MyBullet::size);
+            break;
+
+            case down :
+            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,m_bboxOri.geth());
+            break;
+
+            case left :
+            m_scene->spawn(m_sceneindex,new MyBullet(d),-MyBullet::size,m_bboxOri.geth()/2);
+            break;
+
+            case right :
+            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw(),m_bboxOri.geth()/2);
+            break;
+
+            default :
+            std::cerr << "shoot nowhere shouldnt happen" << std::endl;
+            break;
+        }
+        //changing frame
+        switch (d)
+        {
+            case up :
+            changeFrame(upframe[curframe++]);
+            break;
+
+            case down :
+            changeFrame(downframe[curframe++]);
+            break;
+
+            case left :
+            changeFrame(leftframe[curframe++]);
+            break;
+
+            case right :
+            changeFrame(rightframe[curframe++]);
+            break;
+
+            default :
+            std::cerr << "shoot nowhere shouldnt happen" << std::endl;
+            break;
+        }
+        if  (curframe == 3)
+            curstate = alive;
+        //timer with callback to launch...
+
+
+
+    }
+
 
 };
 
 class MyPlayerTank : public MyTank
 {
-    typedef enum
-    {
-        exploding = -1, shooting = 0, alive = 1
-    }
-    State;
-    State curstate;
-
-    //index for frames... 012 ->shoot 3456789 -> move
-    unsigned int upframe[10];
-    unsigned int downframe[10];
-    unsigned int leftframe[10];
-    unsigned int rightframe[10];
 
 public :
 
@@ -295,122 +375,11 @@ public :
         curstate = alive;
     }
 
-    bool move(Direction d)
-    {
-        static unsigned int current = 0;
-        switch (d)
-        {
-            case up :
-            curdir = up;
-            changeFrame(upframe[current++]);
-
-            break;
-            case down :
-            curdir = down;
-            changeFrame(downframe[current++]);
-
-
-            break;
-            case left :
-            curdir = left;
-            changeFrame(leftframe[current++]);
-
-            break;
-            case right :
-            curdir = right;
-            changeFrame(rightframe[current++]);
-            break;
-            default :
-            std::cerr << "move nowhere shouldnt happen" << std::endl;
-            break;
-        }
-        if  (current == 10)
-            current = 0;
-        if  (current == 1)
-            current = 3;
-
-        return MyTank::move(d);
-    }
-
-    inline bool shoot (void )
-    {
-        return shoot(curdir);
-    }
-
-    bool shoot (Direction d, int curframe = 0)
-    {
-        curstate = shooting;
-        //spawning bullet
-        switch (d)
-        {
-            case up :
-            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,0);
-            break;
-
-            case down :
-            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,m_bboxOri.geth());
-            break;
-
-            case left :
-            m_scene->spawn(m_sceneindex,new MyBullet(d),0,m_bboxOri.geth()/2);
-            break;
-
-            case right :
-            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw(),m_bboxOri.geth()/2);
-            break;
-
-            default :
-            std::cerr << "shoot nowhere shouldnt happen" << std::endl;
-            break;
-        }
-        //changing frame
-        switch (d)
-        {
-            case up :
-            changeFrame(upframe[curframe++]);
-            break;
-
-            case down :
-            changeFrame(downframe[curframe++]);
-            break;
-
-            case left :
-            changeFrame(leftframe[curframe++]);
-            break;
-
-            case right :
-            changeFrame(rightframe[curframe++]);
-            break;
-
-            default :
-            std::cerr << "shoot nowhere shouldnt happen" << std::endl;
-            break;
-        }
-        if  (curframe == 3)
-            curstate = alive;
-        //timer with callback to launch...
-
-
-
-    }
-
-
 };
 
 class MyEnnemyTank : public MyTank
 {
-    typedef enum
-    {
-        exploding = -1, shooting = 0, alive = 1
-    }
-    State;
-    State curstate;
 
-    //index for frames... 012 ->shoot 3456789 -> move
-    unsigned int upframe[10];
-    unsigned int downframe[10];
-    unsigned int leftframe[10];
-    unsigned int rightframe[10];
 
 public :
     MyEnnemyTank ()
@@ -464,104 +433,9 @@ public :
     }
 
 
-    bool move(Direction d)
-    {
-        static unsigned int current = 0;
-        switch (d)
-        {
-            case up :
-            curdir = up;
-            changeFrame(upframe[current++]);
-
-            break;
-            case down :
-            curdir = down;
-            changeFrame(downframe[current++]);
-
-
-            break;
-            case left :
-            curdir = left;
-            changeFrame(leftframe[current++]);
-
-            break;
-            case right :
-            curdir = right;
-            changeFrame(rightframe[current++]);
-            break;
-            default :
-            std::cerr << "move nowhere shouldnt happen" << std::endl;
-            break;
-        }
-        if  (current == 10)
-            current = 0;
-        if  (current == 1)
-            current = 3;
-
-        return MyTank::move(d);
-    }
-
-    inline bool shoot (void )
-    {
-        return shoot(curdir);
-    }
-
-    bool shoot (Direction d, int curframe = 0)
-    {
-        curstate = shooting;
-        //spawning bullet
-        switch (d)
-        {
-            case up :
-            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,0);
-            break;
-
-            case down :
-            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,m_bboxOri.geth());
-            break;
-
-            case left :
-            m_scene->spawn(m_sceneindex,new MyBullet(d),0,m_bboxOri.geth()/2);
-            break;
-
-            case right :
-            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw(),m_bboxOri.geth()/2);
-            break;
-
-            default :
-            std::cerr << "shoot nowhere shouldnt happen" << std::endl;
-            break;
-        }
-        //changing frame
-        switch (d)
-        {
-            case up :
-            changeFrame(upframe[curframe++]);
-            break;
-
-            case down :
-            changeFrame(downframe[curframe++]);
-            break;
-
-            case left :
-            changeFrame(leftframe[curframe++]);
-            break;
-
-            case right :
-            changeFrame(rightframe[curframe++]);
-            break;
-
-            default :
-            std::cerr << "shoot nowhere shouldnt happen" << std::endl;
-            break;
-        }
-        if  (curframe == 3)
-            curstate = alive;
-        //timer with callback to launch...
 
 
 
-    }
 
 
 
