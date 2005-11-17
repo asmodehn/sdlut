@@ -341,22 +341,22 @@ public :
     {
         curstate = shooting;
         //spawning bullet
-         switch (d)
+        switch (d)
         {
             case up :
-             m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,0);
+            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,0);
             break;
 
             case down :
-             m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,m_bboxOri.geth());
+            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,m_bboxOri.geth());
             break;
 
             case left :
-             m_scene->spawn(m_sceneindex,new MyBullet(d),0,m_bboxOri.geth()/2);
+            m_scene->spawn(m_sceneindex,new MyBullet(d),0,m_bboxOri.geth()/2);
             break;
 
             case right :
-             m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw(),m_bboxOri.geth()/2);
+            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw(),m_bboxOri.geth()/2);
             break;
 
             default :
@@ -399,10 +399,172 @@ public :
 
 class MyEnnemyTank : public MyTank
 {
+    typedef enum
+    {
+        exploding = -1, shooting = 0, alive = 1
+    }
+    State;
+    State curstate;
+
+    //index for frames... 012 ->shoot 3456789 -> move
+    unsigned int upframe[10];
+    unsigned int downframe[10];
+    unsigned int leftframe[10];
+    unsigned int rightframe[10];
+
 public :
     MyEnnemyTank ()
-            : MyTank(MyTankGame::Instance().getResources().getBitmap(),396,33,32)
-    {}
+            : MyTank(MyTankGame::Instance().getResources().getBitmap(),594,165,32)
+    {
+        upframe[0] = loadFrame(594,165,32);
+        upframe[1] = loadFrame(594,198,32);
+        upframe[2] = loadFrame(594,231,32);
+        upframe[9] = loadFrame(528,330,32);
+        upframe[8] = loadFrame(561,330,32);
+        upframe[7] = loadFrame(594,330,32);
+        upframe[6] = loadFrame(627,330,32);
+        upframe[5] = loadFrame(660,330,32);
+        upframe[4] = loadFrame(693,330,32);
+        upframe[3] = loadFrame(726,330,32);
+
+        downframe[0] = loadFrame(627,231,32);
+        downframe[1] = loadFrame(627,198,32);
+        downframe[2] = loadFrame(627,165,32);
+        downframe[9] = loadFrame(528,363,32);
+        downframe[8] = loadFrame(561,363,32);
+        downframe[7] = loadFrame(594,363,32);
+        downframe[6] = loadFrame(627,363,32);
+        downframe[5] = loadFrame(660,363,32);
+        downframe[4] = loadFrame(693,363,32);
+        downframe[3] = loadFrame(726,363,32);
+
+        leftframe[0] = loadFrame(594,264,32);
+        leftframe[1] = loadFrame(627,264,32);
+        leftframe[2] = loadFrame(660,264,32);
+        leftframe[9] = loadFrame(693,99,32);
+        leftframe[8] = loadFrame(693,132,32);
+        leftframe[7] = loadFrame(693,165,32);
+        leftframe[6] = loadFrame(693,198,32);
+        leftframe[5] = loadFrame(693,231,32);
+        leftframe[4] = loadFrame(693,264,32);
+        leftframe[3] = loadFrame(693,297,32);
+
+        rightframe[0] = loadFrame(660,297,32);
+        rightframe[1] = loadFrame(627,297,32);
+        rightframe[2] = loadFrame(594,297,32);
+        rightframe[9] = loadFrame(726,99,32);
+        rightframe[8] = loadFrame(726,132,32);
+        rightframe[7] = loadFrame(726,165,32);
+        rightframe[6] = loadFrame(726,198,32);
+        rightframe[5] = loadFrame(726,231,32);
+        rightframe[4] = loadFrame(726,264,32);
+        rightframe[3] = loadFrame(726,297,32);
+
+        curstate = alive;
+    }
+
+
+    bool move(Direction d)
+    {
+        static unsigned int current = 0;
+        switch (d)
+        {
+            case up :
+            curdir = up;
+            changeFrame(upframe[current++]);
+
+            break;
+            case down :
+            curdir = down;
+            changeFrame(downframe[current++]);
+
+
+            break;
+            case left :
+            curdir = left;
+            changeFrame(leftframe[current++]);
+
+            break;
+            case right :
+            curdir = right;
+            changeFrame(rightframe[current++]);
+            break;
+            default :
+            std::cerr << "move nowhere shouldnt happen" << std::endl;
+            break;
+        }
+        if  (current == 10)
+            current = 0;
+        if  (current == 1)
+            current = 3;
+
+        return MyTank::move(d);
+    }
+
+    inline bool shoot (void )
+    {
+        return shoot(curdir);
+    }
+
+    bool shoot (Direction d, int curframe = 0)
+    {
+        curstate = shooting;
+        //spawning bullet
+        switch (d)
+        {
+            case up :
+            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,0);
+            break;
+
+            case down :
+            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw()/2,m_bboxOri.geth());
+            break;
+
+            case left :
+            m_scene->spawn(m_sceneindex,new MyBullet(d),0,m_bboxOri.geth()/2);
+            break;
+
+            case right :
+            m_scene->spawn(m_sceneindex,new MyBullet(d),m_bboxOri.getw(),m_bboxOri.geth()/2);
+            break;
+
+            default :
+            std::cerr << "shoot nowhere shouldnt happen" << std::endl;
+            break;
+        }
+        //changing frame
+        switch (d)
+        {
+            case up :
+            changeFrame(upframe[curframe++]);
+            break;
+
+            case down :
+            changeFrame(downframe[curframe++]);
+            break;
+
+            case left :
+            changeFrame(leftframe[curframe++]);
+            break;
+
+            case right :
+            changeFrame(rightframe[curframe++]);
+            break;
+
+            default :
+            std::cerr << "shoot nowhere shouldnt happen" << std::endl;
+            break;
+        }
+        if  (curframe == 3)
+            curstate = alive;
+        //timer with callback to launch...
+
+
+
+    }
+
+
+
 
 }
 ;
@@ -411,7 +573,8 @@ public :
 
 class MyInput : public MxLib::MxInput
 {
-    MyPlayerTank * active;
+    MyPlayerTank * player;
+    MyEnnemyTank * ennemy;
 
     virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
     {
@@ -419,29 +582,49 @@ class MyInput : public MxLib::MxInput
             switch( keysym.sym )
             {
                 case SDLK_UP:
-                active->move(up);
+                player->move(up);
                 break;
                 case SDLK_DOWN:
-                active->move(down);
+                player->move(down);
                 break;
                 case SDLK_LEFT:
-                active->move(left);
+                player->move(left);
                 break;
                 case SDLK_RIGHT:
-                active->move(right);
+                player->move(right);
                 break;
                 case SDLK_SPACE:
-                active->shoot();
+                player->shoot();
+                break;
+                case SDLK_w:
+                ennemy->move(up);
+                break;
+                case SDLK_s:
+                ennemy->move(down);
+                break;
+                case SDLK_a:
+                ennemy->move(left);
+                break;
+                case SDLK_d:
+                ennemy->move(right);
+                break;
+                case SDLK_TAB:
+                ennemy->shoot();
                 default:
                 break;
             }
         return MxLib::MxInput::handleKeyboardEvent(keysym,pressed);
     }
 public :
-    void setActive (MyPlayerTank * player)
+    void setPlayer (MyPlayerTank * newplayer)
     {
-        active = player;
+        player = newplayer;
     }
+    void setEnnemy (MyEnnemyTank * newennemy)
+    {
+        ennemy = newennemy ;
+    }
+
 };
 
 class MyLevel : public MxLib::MxMap
@@ -566,7 +749,8 @@ int main()
     MyPlayerTank greentank;
     //    std::cout  << "myplayertank ok" << std::endl;
 
-    input.setActive (&greentank);
+    input.setPlayer (&greentank);
+    input.setEnnemy (&bluetank);
     //    std::cout  << "input setactive ok" << std::endl;
 
 
