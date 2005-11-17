@@ -377,12 +377,12 @@ public :
 
 };
 
-class MyEnnemyTank : public MyTank
+class MyEnemyTank : public MyTank
 {
 
 
 public :
-    MyEnnemyTank ()
+    MyEnemyTank ()
             : MyTank(MyTankGame::Instance().getResources().getBitmap(),594,165,32)
     {
         upframe[0] = loadFrame(594,165,32);
@@ -448,7 +448,7 @@ public :
 class MyInput : public MxLib::MxInput
 {
     MyPlayerTank * player;
-    MyEnnemyTank * ennemy;
+    MyEnemyTank * ennemy;
 
     virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
     {
@@ -494,7 +494,7 @@ public :
     {
         player = newplayer;
     }
-    void setEnnemy (MyEnnemyTank * newennemy)
+    void setEnemy (MyEnemyTank * newennemy)
     {
         ennemy = newennemy ;
     }
@@ -618,13 +618,13 @@ int main()
     MyLevel lvl(MyTankGame::Instance().getResources().getBitmap(),32,20,15);
 
 
-    MyEnnemyTank bluetank;
+    MyEnemyTank bluetank;
     //    std::cout  << "mxsprite ok" << std::endl;
     MyPlayerTank greentank;
     //    std::cout  << "myplayertank ok" << std::endl;
 
     input.setPlayer (&greentank);
-    input.setEnnemy (&bluetank);
+    input.setEnemy (&bluetank);
     //    std::cout  << "input setactive ok" << std::endl;
 
 
