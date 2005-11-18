@@ -1,4 +1,5 @@
 #include "SDLDisplaySurface.hh"
+//#include <sstream>
 
 namespace SDL {
 
@@ -12,7 +13,9 @@ try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
 {
 	if (_surf == NULL)
 	{
-		std::cerr << "Unable to set " << width << " x " << height << " display surface : ";
+	  std::stringstream ss;
+	  ss<<"Unable to set " << width << " x " << height << " display surface : ";
+		Config::addLog(ss.str() );
 		throw std::logic_error("SDL_SetVideoMode() return NULL");
 	}
 

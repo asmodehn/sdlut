@@ -22,7 +22,7 @@ void Window::debug(void) const
 //SaveScreen -> backup the screen content in a RGBSurface...
 RGBSurface* Window::save(void)
 {
-	std::cerr << "Window::save()" << std::endl;
+	Config::addLog( "Window::save()" );
 	// we create a new RGB surface to clone the display...
 	RGBSurface * backupScreen= new RGBSurface(*this,true,true,false);
 
@@ -34,7 +34,7 @@ bool Window::restore(const RGBSurface& savedScreen)
 {
   bool res;
 
-  std::cerr << "Window::restore()" << std::endl;
+  Config::addLog( "Window::restore()" );
 
   Point newpos;
   newpos.setx( (getWidth()-savedScreen.getWidth()) / 2 );

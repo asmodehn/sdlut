@@ -96,7 +96,7 @@ when the configuration file changed...*/
 	//Checking available video Modes
 	if(!SurfaceFactory::setDisplayFlags())
 	{
-		std::cerr << "\nThe required mode is not available !" << std::endl;
+		testlog.add( "\nThe required mode is not available !" );
 		exit(1);
 	}
 	else
@@ -104,27 +104,33 @@ when the configuration file changed...*/
 		vector<int> h=SurfaceFactory::getAvailableDisplayHeight();
 		vector<int> w=SurfaceFactory::getAvailableDisplayWidth();
 
-		std::cout << "\nAvailable Modes : " ;
+    std::stringstream ssmodes;
+		ssmodes << "\nAvailable Modes : " ;
 		if ( h[0] == -1 || w[0] == -1 ) std::cout << "all";
 		else
 		{
 			for (unsigned int i=0; i<h.size() ; i++)
 			{
-				std::cout <<  "- " << h[i] << "x" << w[i] << "\n";
+				ssmodes <<  "- " << h[i] << "x" << w[i] << "\n";
 			}
 		}
-		std::cout << std::endl ;
+		testlog.add(ssmodes.str());
 	}
 
 	int newW=bitmap.getWidth()+60;
 	int newH=bitmap.getHeight()+60;
 
 	if (!SurfaceFactory::setDisplaySize(newW,newH))
-		std::cout << "\nThis Video Mode is not available !" << std::endl;
+		testlog.add( "This Video Mode is not available !" );
 
 	int newBPP=SurfaceFactory::checkVideoMode();
-	if (!newBPP) std::cout << "Video Mode not usable !" << std::endl;
-	else std::cout << "SDL will use " << newW << "x" << newH << "@" <<newBPP << std::endl;
+	if (!newBPP) testlog.add( "Video Mode not usable !" );
+	else
+	{
+	  std::stringstream ssused;
+	  ssused << "SDL will use " << newW << "x" << newH << "@" <<newBPP ;
+	  testlog.add(ssused.str());
+	}
 
 	DisplaySurface* display;
 	// Window creation

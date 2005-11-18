@@ -1,10 +1,11 @@
 #include "SDLPixelFormat.hh"
 
 namespace SDL {
-	
+
 void PixelFormat::debug(void) const
 {
-	std::cout << "\nPixelFormat::debug()" << "\n" <<
+	std::stringstream ss;
+	ss << "\nPixelFormat::debug()" << "\n" <<
 	"- Bits Per Pixel = " << getBitsPerPixel() << "\n" <<
 	"- Bytes Per Pixel = " << getBytesPerPixel() << "\n" <<
 	"- Red shift = " << getRshift() << "\n" <<
@@ -23,6 +24,7 @@ void PixelFormat::debug(void) const
 	std::dec <<
 	//To be continued
 	std::endl;
+	Config::addLog(ss.str());
 }
 
 PixelColor PixelFormat::getValueFromRGB(const RGBColor& val) const
@@ -50,7 +52,7 @@ RGBColor PixelFormat::getRGBValue(const PixelColor& color) const
 
 RGBAColor PixelFormat::getRGBAValue(const PixelColor& color) const
 {
-	
+
 	Uint8 r, g, b, a;
 	//copy the format because we don't want it to be modified...
 	SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);

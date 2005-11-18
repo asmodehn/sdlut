@@ -49,15 +49,15 @@ try : locks(0)
 		_surf=SDL_CreateRGBSurface(s._surf->flags, s.getWidth(), s.getHeight(), s._surf->format->BitsPerPixel, s._surf->format->Rmask, s._surf->format->Gmask, s._surf->format->Bmask, s._surf->format->Amask);
 	}
 
-	std::cerr << "SDL::BaseSurface Copy Called" << std::endl;
+	//std::cerr << "SDL::BaseSurface Copy Called" << std::endl;
 	const std::string errstr = cloning ? toDisplay ? alpha ? "SDL_DisplayFormatAlpha" : "SDLDisplayFormat" : "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
   if(_surf == NULL)
 	{
-    std::cerr << "Unable to copy the RGBsurface @ " << &s << std::endl ;
+    Config::addLog("Unable to copy the RGBsurface" );
     throw std::logic_error(errstr + " returns NULL");
   }
   else
-	  std::cerr << "SDL_Surface created @ "<< _surf<< std::endl;
+	  Config::addLog( "SDL_Surface created ");
 }
 catch (std::exception &e)
 {

@@ -25,7 +25,7 @@ namespace SDL
     }
     catch (std::exception & e)
     {
-        std::cerr << e.what() << std::endl;
+        Config::addLog( e.what() );
     }
 
     CDRom::~CDRom()
