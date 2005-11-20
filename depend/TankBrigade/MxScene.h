@@ -52,6 +52,8 @@ namespace MxLib
         int add (MxSprite *, int posX =0, int posY =0)
         ;
 
+        void del (int spriteIndex);
+
 				int spawn (int index, MxSprite * sprite, int deltaX =0, int deltaY =0 );
 
         void clear ();

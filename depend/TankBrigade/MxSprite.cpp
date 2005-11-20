@@ -5,21 +5,25 @@ namespace MxLib
 {
 
     MxSprite::MxSprite (MxBitmap & bitmapOri , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
-            : m_BitmapOri(bitmapOri)
+            : m_BitmapOri(bitmapOri),m_currentframe(0)
     {
         m_bboxOri.setx(coordOriX);
         m_bboxOri.sety(coordOriY);
         m_bboxOri.setw(size);
         m_bboxOri.seth(size);
+        m_frame.push_back(m_bboxOri);
+        m_collision=true;
     }
 
     MxSprite::MxSprite (MxBitmap & bitmapOri, unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
-            : m_BitmapOri(bitmapOri)
+            : m_BitmapOri(bitmapOri),m_currentframe(0)
     {
         m_bboxOri.setx(coordOriX);
         m_bboxOri.sety(coordOriY);
         m_bboxOri.setw(sizeOriX);
         m_bboxOri.seth(sizeOriY);
+        m_frame.push_back(m_bboxOri);
+        m_collision=true;
     }
 
     bool MxSprite::collide (const SDL::Rect & intersection)
@@ -38,33 +42,6 @@ namespace MxLib
     }
 
     bool MxSprite::render(int pixX, int pixY) const
-    {
-        return MxInit::getDisplay()->blit(*m_BitmapOri.getRawSurface(),SDL::Point(pixX,pixY),m_bboxOri);
-    }
-
-
-    MxAnimatedSprite::MxAnimatedSprite (MxBitmap & bitmapOri, unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
-            : MxSprite(bitmapOri, coordOriX, coordOriY, size), m_currentframe(0)
-    {
-        m_frame.push_back(m_bboxOri);
-    }
-    MxAnimatedSprite::MxAnimatedSprite (MxBitmap & bitmapOri, unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
-            : MxSprite(bitmapOri, coordOriX, coordOriY, sizeOriX, sizeOriY), m_currentframe(0)
-    {
-        m_frame.push_back(m_bboxOri);
-    }
-
-    bool MxAnimatedSprite::collide (const SDL::Rect & intersection)
-    {
-        return false;
-    }
-
-    void MxAnimatedSprite::update()
-    {
-        //TODO
-    }
-
-    bool MxAnimatedSprite::render(int pixX, int pixY) const
     {
         return MxInit::getDisplay()->blit(*m_BitmapOri.getRawSurface(),SDL::Point(pixX,pixY),m_frame[m_currentframe]);
     }

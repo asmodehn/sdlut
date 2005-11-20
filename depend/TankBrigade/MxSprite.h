@@ -20,6 +20,11 @@ namespace MxLib
         MxBitmap & m_BitmapOri;
         SDL::Rect m_bboxOri;
 
+        bool m_collision;
+
+				std::vector<SDL::Rect> m_frame;
+        unsigned int m_currentframe;
+
         void setScene(MxScene * scene)
         {
             m_scene = scene;
@@ -33,24 +38,6 @@ namespace MxLib
         MxSprite (MxBitmap & , unsigned int coordOriX, unsigned int coordOriY, unsigned int size);
         MxSprite (MxBitmap & , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY);
 
-        virtual void update();
-
-        virtual bool render(int pixX, int pixY) const;
-
-        bool move (int deltax, int deltay) const;
-
-        virtual bool collide (const SDL::Rect & intersection);
-
-    };
-
-    class MxAnimatedSprite : public MxSprite
-    {
-        std::vector<SDL::Rect> m_frame;
-        unsigned int m_currentframe;
-
-    public:
-        MxAnimatedSprite (MxBitmap & , unsigned int coordOriX, unsigned int coordOriY, unsigned int size);
-        MxAnimatedSprite (MxBitmap & , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY);
 
         unsigned int loadFrame(unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
         {
@@ -73,13 +60,15 @@ namespace MxLib
             return true;
         }
 
-        bool collide (const SDL::Rect & intersection);
-
-        virtual void update();
-
         bool render(int pixX, int pixY) const;
 
-        //virtual collide (const AnimatedSprite &);
+        bool move (int deltax, int deltay) const;
+
+        virtual void update();
+        virtual bool collide (const SDL::Rect & intersection);
+        virtual bool bordercollide(void) {return true;}
+        virtual bool collideActive(void) {return m_collision;}
+
     };
 
 }

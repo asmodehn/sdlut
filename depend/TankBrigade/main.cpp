@@ -68,7 +68,7 @@ typedef enum
 Direction;
 
 
-class MyBullet : public MxLib::MxAnimatedSprite
+class MyBullet : public MxLib::MxSprite
 {
     typedef enum
     {
@@ -89,7 +89,7 @@ public:
     static const int size = 8;
 
     MyBullet( Direction initdir, int initspeed = 6)
-            : MxLib::MxAnimatedSprite(MyTankGame::Instance().getResources().getBitmap() ,330, 33,8), speed(initspeed), dir(initdir)
+            : MxLib::MxSprite(MyTankGame::Instance().getResources().getBitmap() ,330, 33,8), speed(initspeed), dir(initdir)
     {
         frameset[0]=loadFrame(145,44,7,10);
         frameset[1]=loadFrame(244,44,7,10);
@@ -135,22 +135,22 @@ public:
             switch (dir)
             {
                 case up :
-                MxLib::MxAnimatedSprite::move ( 0,- speed);
+                MxLib::MxSprite::move ( 0,- speed);
                 break;
 
                 case down :
 
-                MxLib::MxAnimatedSprite::move ( 0,speed);
+                MxLib::MxSprite::move ( 0,speed);
                 break;
 
                 case left :
 
-                MxLib::MxAnimatedSprite::move ( - speed,0);
+                MxLib::MxSprite::move ( - speed,0);
                 break;
 
                 case right :
 
-                MxLib::MxAnimatedSprite::move ( speed,0);
+                MxLib::MxSprite::move ( speed,0);
                 break;
 
                 default :
@@ -166,11 +166,14 @@ public:
         //explode
         curstate = exploding;
         changeFrame(4);
+        m_collision=false;
     }
+    bool bordercollide(void) {return false;}
+
 };
 
 
-class MyTank : public MxLib::MxAnimatedSprite
+class MyTank : public MxLib::MxSprite
 {
   protected:
     int speed;
@@ -192,13 +195,13 @@ public :
     Direction curdir;
 
     MyTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
-            : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,size)
+            : MxLib::MxSprite(bitmap ,coordOriX, coordOriY,size)
     {
         speed = 3;
         curdir = up;
     }
     MyTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
-            : MxLib::MxAnimatedSprite(bitmap ,coordOriX, coordOriY,sizeOriX, sizeOriY)
+            : MxLib::MxSprite(bitmap ,coordOriX, coordOriY,sizeOriX, sizeOriY)
     {
         speed = 3;
         curdir = up;
@@ -213,25 +216,25 @@ public :
             case up :
             curdir = up;
             changeFrame(upframe[current++]);
-            res= MxLib::MxAnimatedSprite::move ( 0,- speed);
+            res= MxLib::MxSprite::move ( 0,- speed);
             break;
 
             case down :
             curdir = down;
             changeFrame(downframe[current++]);
-            res= MxLib::MxAnimatedSprite::move ( 0,speed);
+            res= MxLib::MxSprite::move ( 0,speed);
             break;
 
             case left :
             curdir = left;
             changeFrame(leftframe[current++]);
-            res= MxLib::MxAnimatedSprite::move ( - speed,0);
+            res= MxLib::MxSprite::move ( - speed,0);
             break;
 
             case right :
             curdir = right;
             changeFrame(rightframe[current++]);
-            res= MxLib::MxAnimatedSprite::move ( speed,0);
+            res= MxLib::MxSprite::move ( speed,0);
             break;
 
             default :
