@@ -47,14 +47,14 @@ namespace MxLib
         sprite->setScene(this);
         sprite->setSceneIndex(m_sprite.size() -1);
     }
-		void MxScene::del (int spriteIndex)
-		{
-				std::vector<MxSprite *>::iterator sprtodel=m_sprite.begin()+spriteIndex;
-				std::vector<SDL::Rect>::iterator sprpostodel=m_spritePos.begin()+spriteIndex;
+    void MxScene::del (int spriteIndex)
+    {
+        std::vector<MxSprite *>::iterator sprtodel=m_sprite.begin()+spriteIndex;
+        std::vector<SDL::Rect>::iterator sprpostodel=m_spritePos.begin()+spriteIndex;
 
-				m_sprite.erase(sprtodel);
-				m_spritePos.erase(sprpostodel);
-		}
+        m_sprite.erase(sprtodel);
+        m_spritePos.erase(sprpostodel);
+    }
 
     int MxScene::spawn (int index, MxSprite * sprite, int deltaX, int deltaY)
     {
@@ -111,37 +111,40 @@ namespace MxLib
         bool res = true;
         if (index < m_sprite.size())
         {
-          m_spritePos[index] += SDL::Point (deltaX, deltaY);
-          if (m_spritePos[index].getx() < m_borderleft
-						|| m_spritePos[index].gety() < m_borderup
-						|| m_spritePos[index].getx()+m_spritePos[index].getw () > m_borderright
-						|| m_spritePos[index].gety()+m_spritePos[index].geth() > m_borderdown)
-						//collide border
-						{
-          if (m_sprite[index]->bordercollide())
-          {
-          	m_spritePos[index].setx( max ( m_spritePos[index].getx(), m_borderleft ) );
-          m_spritePos[index].setx( min ( m_spritePos[index].getx(), m_borderright - m_spritePos[index].getw() ) );
-          m_spritePos[index].sety( max ( m_spritePos[index].gety(), m_borderup ) );
-          m_spritePos[index].sety( min ( m_spritePos[index].gety(), m_borderdown - m_spritePos[index].geth()) );
-          }
-          else
-          {
-          del(index);
-          }
-						}
+            m_spritePos[index] += SDL::Point (deltaX, deltaY);
+            if (m_spritePos[index].getx() < m_borderleft
+                    || m_spritePos[index].gety() < m_borderup
+                    || m_spritePos[index].getx()+m_spritePos[index].getw () > m_borderright
+                    || m_spritePos[index].gety()+m_spritePos[index].geth() > m_borderdown)
+                //collide border
+            {
+                if (m_sprite[index]->bordercollide())
+                {
+                    m_spritePos[index].setx( max ( m_spritePos[index].getx(), m_borderleft ) );
+                    m_spritePos[index].setx( min ( m_spritePos[index].getx(), m_borderright - m_spritePos[index].getw() ) );
+                    m_spritePos[index].sety( max ( m_spritePos[index].gety(), m_borderup ) );
+                    m_spritePos[index].sety( min ( m_spritePos[index].gety(), m_borderdown - m_spritePos[index].geth()) );
+                }
+                else
+                {
+                    del(index);
+                }
+            }
 
         }
         //collide other sprite
         for (unsigned int i=0; i<m_sprite.size(); i++ )
         {
-          if (i != index && m_sprite[i]->collideActive() )
+            if (i != index && m_sprite[i]->collideActive() )
             {
                 SDL::Rect intersection=m_spritePos[index].inf(m_spritePos[i]);
                 if ( intersection.getw()!=0 && intersection.geth()!=0)
                 {
-                  std::cout << "collide" << std::endl;
-                    // move back as needed
+                    std::cout << "collide" << std::endl;
+                    //call the collide specific code
+                    m_sprite[index]->collide(intersection);
+                    m_sprite[i]->collide(intersection);
+                    // and move back as needed
                     if ( intersection.getw() < intersection.geth() )
                     {
                         if  ( m_spritePos[index].getx() < m_spritePos[i].getx() )
@@ -166,7 +169,7 @@ namespace MxLib
                     }
                     else
                     {
-                      if  ( m_spritePos[index].getx() < m_spritePos[i].getx() )
+                        if  ( m_spritePos[index].getx() < m_spritePos[i].getx() )
                         {
                             m_spritePos [index] += SDL::Point( - intersection.getw(), 0 );
                         }
@@ -174,7 +177,7 @@ namespace MxLib
                         {
                             m_spritePos [index] += SDL::Point( intersection.getw(), 0 );
                         }
-                      if  ( m_spritePos[index].gety() < m_spritePos[i].gety() )
+                        if  ( m_spritePos[index].gety() < m_spritePos[i].gety() )
                         {
                             m_spritePos [index] += SDL::Point( 0, - intersection.geth() );
                         }
@@ -185,8 +188,7 @@ namespace MxLib
                     }
 
 
-                    m_sprite[index]->collide(intersection);
-                    m_sprite[i]->collide(intersection);
+
                     res=false;
                 }
             }
