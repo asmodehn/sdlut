@@ -45,10 +45,10 @@
 				</Linker>
 			</Target>
 			<Target title="test-debug">
-				<Option output="test\SDLtest.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\SDLtest.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -97,10 +97,10 @@
 				</Linker>
 			</Target>
 			<Target title="checkkeys">
-				<Option output="test\checkkeys.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\checkkeys.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -118,10 +118,10 @@
 				</Linker>
 			</Target>
 			<Target title="graywin">
-				<Option output="test\graywin.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\graywin.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -137,10 +137,10 @@
 				</Linker>
 			</Target>
 			<Target title="loopwave">
-				<Option output="test\loopwave.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\loopwave.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option parameters="sample.wav"/>
@@ -157,10 +157,10 @@
 				</Linker>
 			</Target>
 			<Target title="testalpha">
-				<Option output="test\testalpha.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testalpha.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -176,10 +176,10 @@
 				</Linker>
 			</Target>
 			<Target title="testbitmap">
-				<Option output="test\testbitmap.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testbitmap.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -195,10 +195,10 @@
 				</Linker>
 			</Target>
 			<Target title="testblitspeed">
-				<Option output="test\testblitspeed.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testblitspeed.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -214,10 +214,10 @@
 				</Linker>
 			</Target>
 			<Target title="testcdrom">
-				<Option output="test\testcdrom.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testcdrom.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -233,10 +233,10 @@
 				</Linker>
 			</Target>
 			<Target title="testcpuinfo">
-				<Option output="test\testcpuinfo.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testcpuinfo.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -252,10 +252,10 @@
 				</Linker>
 			</Target>
 			<Target title="testdyngl">
-				<Option output="test\testdyngl.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testdyngl.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -272,10 +272,10 @@
 				</Linker>
 			</Target>
 			<Target title="testendian">
-				<Option output="test\testendian.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testendian.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -291,10 +291,10 @@
 				</Linker>
 			</Target>
 			<Target title="testerror">
-				<Option output="test\testerror.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testerror.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -310,10 +310,10 @@
 				</Linker>
 			</Target>
 			<Target title="testgamma">
-				<Option output="test\testgamma.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testgamma.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -329,10 +329,10 @@
 				</Linker>
 			</Target>
 			<Target title="testgl">
-				<Option output="test\testgl.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testgl.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -350,10 +350,10 @@
 				</Linker>
 			</Target>
 			<Target title="testthread">
-				<Option output="test\testthread.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testthread.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -369,10 +369,10 @@
 				</Linker>
 			</Target>
 			<Target title="testjoystick">
-				<Option output="test\testjoystick.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testjoystick.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -388,10 +388,10 @@
 				</Linker>
 			</Target>
 			<Target title="testkeys">
-				<Option output="test\testkeys.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testkeys.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -407,10 +407,10 @@
 				</Linker>
 			</Target>
 			<Target title="testlock">
-				<Option output="test\testlock.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testlock.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -426,10 +426,10 @@
 				</Linker>
 			</Target>
 			<Target title="testoverlay2">
-				<Option output="test\testoverlay2.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testoverlay2.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -445,10 +445,10 @@
 				</Linker>
 			</Target>
 			<Target title="testoverlay">
-				<Option output="test\testoverlay.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testoverlay.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -464,10 +464,10 @@
 				</Linker>
 			</Target>
 			<Target title="testpalette">
-				<Option output="test\testpalette.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testpalette.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -483,10 +483,10 @@
 				</Linker>
 			</Target>
 			<Target title="testsem">
-				<Option output="test\testsem.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testsem.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option parameters="42"/>
@@ -503,10 +503,10 @@
 				</Linker>
 			</Target>
 			<Target title="testsprite">
-				<Option output="test\testsprite.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testsprite.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -522,10 +522,10 @@
 				</Linker>
 			</Target>
 			<Target title="testtimer">
-				<Option output="test\testtimer.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testtimer.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -541,10 +541,10 @@
 				</Linker>
 			</Target>
 			<Target title="testtypes">
-				<Option output="test\testtypes.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testtypes.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -560,10 +560,10 @@
 				</Linker>
 			</Target>
 			<Target title="testver">
-				<Option output="test\testver.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testver.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -579,10 +579,10 @@
 				</Linker>
 			</Target>
 			<Target title="testvidinfo">
-				<Option output="test\testvidinfo.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testvidinfo.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option parameters="-benchmark"/>
@@ -599,10 +599,10 @@
 				</Linker>
 			</Target>
 			<Target title="testwin">
-				<Option output="test\testwin.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testwin.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -618,10 +618,10 @@
 				</Linker>
 			</Target>
 			<Target title="testwm">
-				<Option output="test\testwm.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\testwm.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -637,10 +637,10 @@
 				</Linker>
 			</Target>
 			<Target title="threadwin">
-				<Option output="test\threadwin.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\threadwin.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -656,10 +656,10 @@
 				</Linker>
 			</Target>
 			<Target title="torturethread">
-				<Option output="test\torturethread.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="test\obj"/>
-				<Option deps_output="test\dep"/>
+				<Option output="build\test\torturethread.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
