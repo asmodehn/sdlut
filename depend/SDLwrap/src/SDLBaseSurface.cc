@@ -64,7 +64,7 @@ catch (std::exception &e)
 	Config::addLog( "Exception catched in SDLBaseSurface Copy Constructor !!!" );
 	Config::addLog(e.what());
 	Config::addLog(GetError());
-}
+};
 
 
 Uint32 BaseSurface::getpixel(int x, int y)

@@ -11,6 +11,11 @@ FIND_PACKAGE(SDL REQUIRED)
 IF (SDL_FOUND STREQUAL "NO")
 	MESSAGE(STATUS "SDL Not Found as a package - checking custom install in " ${SDLWrap_SOURCE_DIR}/depend/SDL-*)
 	
+	#to handle a specific variable used byt the cmake default module (doesnt work ??)
+	IF (NOT SDL_LIBRARY_TEMP)
+		SET(SDL_LIBRARY_TEMP "Unused - SDL Not found using the default CMake Module")
+	ENDIF (NOT SDL_LIBRARY_TEMP)
+	
 	FILE(GLOB DEPEND_SDL ${SDLWrap_SOURCE_DIR}/depend/SDL-*)
 	MESSAGE(STATUS "Custom Install of SDL found in "${DEPEND_SDL})
 	
@@ -24,5 +29,12 @@ IF (SDL_FOUND STREQUAL "NO")
 		SET(SDL_FOUND "YES")
 		MESSAGE( STATUS "SDL Found !")
 	ENDIF ( NOT SDL_INCLUDE_DIR OR NOT SDL_LIBRARY OR NOT SDLMAIN_LIBRARY )
+	
 ENDIF(SDL_FOUND STREQUAL "NO")
+
+INCLUDE_DIRECTORIES(SDLWrap_INCLUDES_FILES ${SDLWrap_SOURCE_DIR}/include ${SDLWrap_SOURCE_DIR}/../Common/include ${SDL_INCLUDE_DIR})
+
+LINK_LIBRARIES (${SDLMAIN_LIBRARY} ${SDL_LIBRARY})
+ADD_LIBRARY(SDLWrap ../Common/src/Logger.cc src/Interface3D.cc src/SDLBaseSurface.cc src/SDLCDRom.cc src/SDLConfig.cc src/SDLCursor.cc src/SDLDisplaySurface.cc src/SDLEvent.cc src/SDLEventHandler.cc src/SDLGLManager.cc src/SDLGLWindow.cc src/SDLManager.cc src/SDLOverlay.cc src/SDLPixelFormat.cc src/SDLPoint.cc src/SDLRect.cc src/SDLRGBSurface.cc src/SDLSurfaceFactory.cc src/SDLVideoInfo.cc src/SDLWindow.cc)
+
 

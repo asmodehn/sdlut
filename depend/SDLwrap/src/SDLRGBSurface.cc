@@ -23,7 +23,7 @@ catch (std::exception &e)
 	Config::addLog(e.what());
 	Config::addLog(GetError());
 	//TODO : much more explicit error message...
-}
+};
 
 RGBSurface::RGBSurface(void* pixeldata, int depth, int pitch, int width, int height, Uint32 rmask, Uint32 gmask, Uint32 bmask, Uint32 amask) throw (std::logic_error)
 try : BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitch, rmask, gmask, bmask, amask))
@@ -44,7 +44,7 @@ catch (std::exception &e)
 	Config::addLog(e.what());
 	Config::addLog(GetError());
 	//TODO : much more explicit error message...
-}
+};
 
 RGBSurface::RGBSurface( std::string filename )throw (std::logic_error)
 try : BaseSurface(SDL_LoadBMP(filename.c_str()))
@@ -64,7 +64,7 @@ catch (std::exception &e)
 	Config::addLog(e.what());
 	Config::addLog(GetError());
 	//TODO : much more explicit error message...
-}
+};
 
 //Copy Constructor ( doesn't copy the content of the surface)
 //and Clone (also copy the content of the surface)
@@ -89,7 +89,7 @@ catch (std::exception &e)
 	Config::addLog( "Exception catched in RGBSurface Copy Constructor !!!" );
 	Config::addLog(e.what());
 	Config::addLog(GetError());
-}
+};
 
 
 RGBSurface::RGBSurface(const RGBSurface & s , Uint32 flags, bool cloning) throw (std::logic_error)
@@ -113,7 +113,7 @@ catch (std::exception &e)
 	Config::addLog("Exception catched in RGBSurface Copy Constructor !!!" );
 	Config::addLog(e.what());
 	Config::addLog(GetError());
-}
+};
 
 RGBSurface::RGBSurface(const BaseSurface & s , bool cloning, bool toDisplay, bool alpha) throw (std::logic_error)
 try : BaseSurface(s,cloning,toDisplay,alpha)
@@ -126,7 +126,7 @@ catch (std::exception &e)
 	Config::addLog("Exception catched in RGBSurface Copy Constructor !!!" );
 	Config::addLog(e.what());
 	Config::addLog(GetError());
-}
+};
 
 /*
 RGBSurface::RGBSurface(const RGBSurface & s , bool cloning, bool toDisplay, bool alpha) throw (std::logic_error)

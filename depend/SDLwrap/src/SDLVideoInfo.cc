@@ -18,7 +18,7 @@ catch (std::exception &e)
 	Config::addLog( "Exception catched in VideoInfo Constructor !!!" );
 	//_info should remain NULL if there was an error...
 	//and *this* is not constructed since we throw an exception
-}
+};
 
 
 VideoInfo* VideoInfo::Info(void)

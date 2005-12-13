@@ -32,7 +32,7 @@ catch (std::exception &e)
 
 	Config::addLog(GetError());
 	//TODO : much more explicit error message...
-}
+};
 
 
 void DisplaySurface::setCaption(std::string title, std::string icon)
