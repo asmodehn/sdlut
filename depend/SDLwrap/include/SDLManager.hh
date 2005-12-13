@@ -68,13 +68,13 @@ public:
 	void disableEventThread(void);
 
 	//Accesseurs
-	inline bool isTimerEnabled(void) {return SDL_WasInit(SDL_INIT_TIMER);}
-	inline bool isAudioEnabled(void) {return SDL_WasInit(SDL_INIT_AUDIO);}
-	inline bool isVideoEnabled(void) {return SDL_WasInit(SDL_INIT_VIDEO);}
-	inline bool isCdromEnabled(void) {return SDL_WasInit(SDL_INIT_CDROM);}
-	inline bool isJoystickEnabled(void) {return SDL_WasInit(SDL_INIT_JOYSTICK);}
-	inline bool isNoParachuteEnabled(void) {return SDL_WasInit(SDL_INIT_NOPARACHUTE);}
-	inline bool isEventThreadEnabled(void) {return SDL_WasInit(SDL_INIT_EVENTTHREAD);}
+	inline bool isTimerEnabled(void) {return ( SDL_WasInit(SDL_INIT_TIMER) ) != 0;}
+	inline bool isAudioEnabled(void) {return ( SDL_WasInit(SDL_INIT_AUDIO) ) != 0;}
+	inline bool isVideoEnabled(void) {return ( SDL_WasInit(SDL_INIT_VIDEO) ) != 0;}
+	inline bool isCdromEnabled(void) {return ( SDL_WasInit(SDL_INIT_CDROM) ) != 0;}
+	inline bool isJoystickEnabled(void) {return ( SDL_WasInit(SDL_INIT_JOYSTICK) ) != 0;}
+	inline bool isNoParachuteEnabled(void) {return ( SDL_WasInit(SDL_INIT_NOPARACHUTE) ) != 0;}
+	inline bool isEventThreadEnabled(void) {return ( SDL_WasInit(SDL_INIT_EVENTTHREAD) ) != 0;}
 
 	//logs manager error with usefull information
 	static inline void error(std::string system)

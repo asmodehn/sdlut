@@ -87,11 +87,11 @@ public:
 	inline int getHeight(void) const { return _surf->h; }
 	inline int getWidth(void) const { return _surf->w; }
 	inline int getBPP(void) const { return _surf->format->BitsPerPixel; }
-	inline bool isSWset(void) const {return SDL_SWSURFACE & _surf->flags;}
-	inline bool isHWset(void) const {return SDL_HWSURFACE & _surf->flags;}
-	inline bool isHWAccelset(void) const {return SDL_HWACCEL & _surf->flags;}
-	inline bool isRLEAccelset(void) const {return SDL_RLEACCEL & _surf->flags;}	
-	inline bool isPreAllocset(void) const {return SDL_PREALLOC & _surf->flags;}
+	inline bool isSWset(void) const {return ( SDL_SWSURFACE & _surf->flags ) != 0;}
+	inline bool isHWset(void) const {return ( SDL_HWSURFACE & _surf->flags ) != 0;}
+	inline bool isHWAccelset(void) const {return ( SDL_HWACCEL & _surf->flags ) != 0;}
+	inline bool isRLEAccelset(void) const {return ( SDL_RLEACCEL & _surf->flags ) != 0;}	
+	inline bool isPreAllocset(void) const {return ( SDL_PREALLOC & _surf->flags ) != 0;}
 	
 	///Accessor to pixelFormat
 	inline PixelFormat getPixelFormat(void) const {return PixelFormat(_surf->format);}

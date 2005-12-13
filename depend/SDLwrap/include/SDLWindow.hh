@@ -42,7 +42,7 @@ public:
 	~Window() {}
 	
 	//just test if DoubleBuf is set.
-	inline bool isDoubleBufset(void) const {return SDL_DOUBLEBUF & _surf->flags;}
+	inline bool isDoubleBufset(void) const {return ( SDL_DOUBLEBUF & _surf->flags ) != 0;}
 	
 	bool resize(int width, int height);
 	

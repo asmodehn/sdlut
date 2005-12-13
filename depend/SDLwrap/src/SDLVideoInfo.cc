@@ -16,6 +16,7 @@ try : _info(SDL_GetVideoInfo())
 catch (std::exception &e)
 {
 	Config::addLog( "Exception catched in VideoInfo Constructor !!!" );
+	Config::addLog( e.what() );
 	//_info should remain NULL if there was an error...
 	//and *this* is not constructed since we throw an exception
 };

@@ -78,8 +78,8 @@ public :
 */
 
 	//Accesseurs - are they all really usefull ?
-	inline bool isSRCColorKeyset(void) {return SDL_SRCCOLORKEY & _surf->flags;}
-	inline bool isSRCAlphaset(void) {return SDL_SRCALPHA & _surf->flags;}
+	inline bool isSRCColorKeyset(void) {return ( SDL_SRCCOLORKEY & _surf->flags ) != 0;}
+	inline bool isSRCAlphaset(void) {return ( SDL_SRCALPHA & _surf->flags ) != 0;}
 	
 	
 };

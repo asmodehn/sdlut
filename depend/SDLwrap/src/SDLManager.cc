@@ -4,12 +4,13 @@
 #define CONSTRUCTOR_CALL_BLOCK(SDLFlag)								\
 	try 															\
 	{																\
-		_uniqueInstance = new Manager(SDLFlag);					\
+		_uniqueInstance = new Manager(SDLFlag);						\
 		res=true;													\
 	}																\
 	catch (std::exception & e)										\
 	{																\
-		error("SDLFlag"); res=false;						\
+		error("SDLFlag"); res=false;								\
+		Config::addLog(e.what());									\
 	}
 /**/
 
@@ -34,63 +35,63 @@ catch (std::exception &e)
 bool Manager::enableTimer(void)
 {
 	bool res;
-	if ( _uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_TIMER))==0)
+	if ( _uniqueInstance!=NULL && (res=(SDL_InitSubSystem(SDL_INIT_TIMER)==0)))
 		error("TIMER");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_TIMER) }
 	return res;
 }
 bool Manager::enableAudio(void)
 {
-	int res;
-	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_AUDIO))==0)
+	bool res;
+	if (_uniqueInstance!=NULL && (res=(SDL_InitSubSystem(SDL_INIT_AUDIO)==0)))
 		error("AUDIO");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_AUDIO) }
 	return res;
 }
 bool Manager::enableVideo(void)
 {
-	int res;
-	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_VIDEO))==0)
+	bool res;
+	if (_uniqueInstance!=NULL && (res=(SDL_InitSubSystem(SDL_INIT_VIDEO)==0)))
 		error("VIDEO");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_VIDEO) }
 	return res;
 }
 bool Manager::enableCdrom(void)
 {
-	int res;
-	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_CDROM))==0)
+	bool res;
+	if (_uniqueInstance!=NULL && (res=(SDL_InitSubSystem(SDL_INIT_CDROM)==0)))
 		error("CDROM");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_CDROM)}
 	return res;
 }
 bool Manager::enableJoystick(void)
 {
-	int res;
-	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_JOYSTICK))==0)
+	bool res;
+	if (_uniqueInstance!=NULL && (res=(SDL_InitSubSystem(SDL_INIT_JOYSTICK)==0)))
 		error("JOYSTICK");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_JOYSTICK) }
 	return res;
 }
 bool Manager::enableEverything(void)
 {
-	int res;
-	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_EVERYTHING))==0)
+	bool res;
+	if (_uniqueInstance!=NULL && (res=(SDL_InitSubSystem(SDL_INIT_EVERYTHING)==0)))
 		error("EVERYTHING");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_EVERYTHING) }
 	return res;
 }
 bool Manager::enableNoParachute(void)
 {
-	int res;
-	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_NOPARACHUTE))==0)
+	bool res;
+	if (_uniqueInstance!=NULL && (res=(SDL_InitSubSystem(SDL_INIT_NOPARACHUTE)==0)))
 		error("NOPARACHUTE");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_NOPARACHUTE) }
 	return res;
 }
 bool Manager::enableEventThread(void)
 {
-	int res;
-	if (_uniqueInstance!=NULL && (res=SDL_InitSubSystem(SDL_INIT_EVENTTHREAD))==0)
+  bool res;
+	if (_uniqueInstance!=NULL && (res=(SDL_InitSubSystem(SDL_INIT_EVENTTHREAD)==0)))
 		error("EVENTTHREAD");
 	else { CONSTRUCTOR_CALL_BLOCK(SDL_INIT_EVENTTHREAD) }
 	return res;
