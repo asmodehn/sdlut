@@ -2,8 +2,9 @@
 PROJECT(SDLWrap)
 
 INCLUDE (${CMAKE_ROOT}/Modules/FindSDL.cmake)
+INCLUDE (${CMAKE_ROOT}/Modules/FindOpenGL.cmake)
 
-#Checking for SDL
+#Default Check for SDL
 MESSAGE(STATUS "Checking for SDL")
 FIND_PACKAGE(SDL REQUIRED)
 
@@ -34,9 +35,32 @@ IF (SDL_FOUND STREQUAL "NO")
 	
 ENDIF(SDL_FOUND STREQUAL "NO")
 
-INCLUDE_DIRECTORIES(SDLWrap_INCLUDES_FILES ${SDLWrap_SOURCE_DIR}/include ${SDLWrap_SOURCE_DIR}/../Common/include ${SDL_INCLUDE_DIR})
+#check for SDL
+IF(SDL_FOUND)
+	#adding SDL includes to the build
+	INCLUDE_DIRECTORIES(SDLWrap_INCLUDES_FILES ${SDLWrap_SOURCE_DIR}/include ${SDLWrap_SOURCE_DIR}/../Common/include ${SDL_INCLUDE_DIR})
+	#adding SDL libraries to the link
+	LINK_LIBRARIES (${SDLMAIN_LIBRARY} ${SDL_LIBRARY})
+ENDIF(SDL_FOUND)
 
-LINK_LIBRARIES (${SDLMAIN_LIBRARY} ${SDL_LIBRARY})
-ADD_LIBRARY(SDLWrap ../Common/src/Logger.cc src/Interface3D.cc src/SDLBaseSurface.cc src/SDLCDRom.cc src/SDLConfig.cc src/SDLCursor.cc src/SDLDisplaySurface.cc src/SDLEvent.cc src/SDLEventHandler.cc src/SDLGLManager.cc src/SDLGLWindow.cc src/SDLManager.cc src/SDLOverlay.cc src/SDLPixelFormat.cc src/SDLPoint.cc src/SDLRect.cc src/SDLRGBSurface.cc src/SDLSurfaceFactory.cc src/SDLVideoInfo.cc src/SDLWindow.cc)
+#check for openGL
+FIND_PACKAGE(OPENGL)
+IF(OPENGL_FOUND)
+	ADD_DEFINITIONS(-DHAVE_OPENGL)
+	INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR})
+	LINK_LIBRARIES (${OPENGL_LIBRARIES})
+	ADD_DEFINITIONS(-DLOGPREFIX=\"SDLwrap\")
+ELSE (OPENGL_FOUND)
+	ADD_DEFINITIONS(-DLOGPREFIX=\"SDLwrap.noGL\")
+ENDIF(OPENGL_FOUND)
+	
+#adding definitions for Logs
+
+ADD_DEFINITIONS(-DLOGINDENTLVL=1)
+
+ADD_LIBRARY(bin/SDLWrap ../Common/src/Logger.cc src/Interface3D.cc src/SDLBaseSurface.cc src/SDLCDRom.cc src/SDLConfig.cc src/SDLCursor.cc src/SDLDisplaySurface.cc src/SDLEvent.cc src/SDLEventHandler.cc src/SDLGLManager.cc src/SDLGLWindow.cc src/SDLManager.cc src/SDLOverlay.cc src/SDLPixelFormat.cc src/SDLPoint.cc src/SDLRect.cc src/SDLRGBSurface.cc src/SDLSurfaceFactory.cc src/SDLVideoInfo.cc src/SDLWindow.cc)
+
+#adding subdirectory for tests
+ADD_SUBDIRECTORY(test EXCLUDE_FROM_ALL)
 
 
