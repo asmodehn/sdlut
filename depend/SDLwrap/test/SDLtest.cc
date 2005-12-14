@@ -1,7 +1,7 @@
 #include "SDLwrap.hh"
 #include "Logger.hh"
 
-#include <unistd.h>
+//#include <unistd.h>
 #include <iostream>
 using namespace std;
 using namespace SDL;
@@ -52,7 +52,7 @@ public:
 		}
 		return true;
 	}
-	virtual bool handleResizeEvent(int w, int h) { resetDisplay(w,h); }
+	virtual bool handleResizeEvent(int w, int h) { resetDisplay(w,h); return true;}
 	virtual bool handleQuitEvent(void) { closing=true; return true; }
 	bool closed(void) { return closing; }
 };

@@ -71,7 +71,7 @@ SDL_Surface *CreateLight(SDL_Surface *screen, int radius)
 			/* Slow distance formula (from center of light) */
 			xdist = x-(light->w/2);
 			ydist = y-(light->h/2);
-			range = (int)sqrt(xdist*xdist+ydist*ydist);
+			range = (int)sqrt(static_cast<float>(xdist*xdist+ydist*ydist));
 
 			/* Scale distance to range of transparency (0-255) */
 			if ( range > radius ) {
