@@ -47,7 +47,7 @@ public:
 	//Destructor
 	~GLWindow() {delete engine;}
 
-	inline bool isOpenGLset(void) const {return SDL_OPENGL & _surf->flags;}
+	inline bool isOpenGLset(void) const {return ((SDL_OPENGL & _surf->flags) != 0);}
 
   bool resize (int width, int height);
 

@@ -1,8 +1,7 @@
 #include "Interface3D.hh"
 //This file is here for test purposes only
 //from NeheGL Tutorial
-//#include <GL/glu.h>
-//remove this when my gluPerspective is working...
+
 #ifdef HAVE_OPENGL
 
 //additional includes
@@ -12,18 +11,18 @@
 #define M_PI		3.14159265358979323846
 #endif
 
-void
-gluPerspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar)
-{
-   GLdouble xmin, xmax, ymin, ymax;
-
-   ymax = zNear * tan(fovy * M_PI / 360.0);
-   ymin = -ymax;
-   xmin = ymin * aspect;
-   xmax = ymax * aspect;
-
-   glFrustum(xmin, xmax, ymin, ymax, zNear, zFar);
-}
+//void
+//perspective(GLdouble fovy, GLdouble aspect, GLdouble zNear, GLdouble zFar)
+//{
+//   GLdouble xmin, xmax, ymin, ymax;
+//
+//   ymax = zNear * tan(fovy * M_PI / 360.0);
+//   ymin = -ymax;
+//   xmin = ymin * aspect;
+//   xmax = ymax * aspect;
+//
+//   glFrustum(xmin, xmax, ymin, ymax, zNear, zFar);
+//}
 
 
 float rtri; // rotation angle

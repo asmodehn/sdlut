@@ -1,5 +1,11 @@
+CMAKE_MINIMUM_REQUIRED ( VERSION 2.2)
+
 #Project Definition
 PROJECT(SDLWrap)
+
+#
+#Checking software dependencies
+#
 
 INCLUDE (${CMAKE_ROOT}/Modules/FindSDL.cmake)
 INCLUDE (${CMAKE_ROOT}/Modules/FindOpenGL.cmake)
@@ -53,14 +59,30 @@ IF(OPENGL_FOUND)
 ELSE (OPENGL_FOUND)
 	ADD_DEFINITIONS(-DLOGPREFIX=\"SDLwrap.noGL\")
 ENDIF(OPENGL_FOUND)
-	
+
+#
+#Defining Rules for building SDLWrap
+#
+
 #adding definitions for Logs
 
 ADD_DEFINITIONS(-DLOGINDENTLVL=1)
 
-ADD_LIBRARY(bin/SDLWrap ../Common/src/Logger.cc src/Interface3D.cc src/SDLBaseSurface.cc src/SDLCDRom.cc src/SDLConfig.cc src/SDLCursor.cc src/SDLDisplaySurface.cc src/SDLEvent.cc src/SDLEventHandler.cc src/SDLGLManager.cc src/SDLGLWindow.cc src/SDLManager.cc src/SDLOverlay.cc src/SDLPixelFormat.cc src/SDLPoint.cc src/SDLRect.cc src/SDLRGBSurface.cc src/SDLSurfaceFactory.cc src/SDLVideoInfo.cc src/SDLWindow.cc)
+ADD_LIBRARY(SDLWrap ../Common/src/Logger.cc src/Interface3D.cc src/SDLBaseSurface.cc src/SDLCDRom.cc src/SDLConfig.cc src/SDLCursor.cc src/SDLDisplaySurface.cc src/SDLEvent.cc src/SDLEventHandler.cc src/SDLGLManager.cc src/SDLGLWindow.cc src/SDLManager.cc src/SDLOverlay.cc src/SDLPixelFormat.cc src/SDLPoint.cc src/SDLRect.cc src/SDLRGBSurface.cc src/SDLSurfaceFactory.cc src/SDLVideoInfo.cc src/SDLWindow.cc)
 
-#adding subdirectory for tests
-ADD_SUBDIRECTORY(test EXCLUDE_FROM_ALL)
+#
+#Adding targets for tests
+#Not in a subdir, because of the actual dependency being the other way around than the directory hierarchy
+#
 
+#linking SDLWrap
+LINK_LIBRARIES(SDLWrap)
 
+ADD_EXECUTABLE(checkkeys test/checkkeys.cc)
+ADD_DEPENDENCIES(checkkeys SDLWrap)
+
+#
+#Adding rules for installation
+#
+
+# TODO
