@@ -15,12 +15,12 @@ MESSAGE(STATUS "Checking for SDL")
 FIND_PACKAGE(SDL REQUIRED)
 
 #If not found try to get a custom one (default on Windows)
-IF (SDL_FOUND STREQUAL "NO")
+IF ( NOT SDL_FOUND )
 	MESSAGE(STATUS "SDL Not Found as a package - checking custom install in " ${SDLWrap_SOURCE_DIR}/depend/SDL-*)
 	
 	#to handle a specific variable used byt the cmake default module (doesnt work ??)
 	IF (NOT SDL_LIBRARY_TEMP)
-		SET(SDL_LIBRARY_TEMP "Unused - SDL Not found using the default CMake Module")
+		SET(SDL_LIBRARY_TEMP "Unused - SDL Not found using the default FindSDL.cmake Module")
 	ENDIF (NOT SDL_LIBRARY_TEMP)
 	
 
@@ -40,7 +40,7 @@ IF (SDL_FOUND STREQUAL "NO")
 		MESSAGE( STATUS "SDL Found !")
 	ENDIF ( NOT SDL_INCLUDE_DIR OR NOT SDL_LIBRARY OR NOT SDLMAIN_LIBRARY )
 	
-ENDIF(SDL_FOUND STREQUAL "NO")
+ENDIF(NOT SDL_FOUND )
 
 #check for openGL
 FIND_PACKAGE(OPENGL)
@@ -69,8 +69,12 @@ ENDIF(OPENGL_FOUND)
 
 
 #adding definitions for Logs
-
 ADD_DEFINITIONS(-DLOGINDENTLVL=1)
+
+#setting up flags depending on platform
+IF(WIN32)
+#TODO : disable the warning in VS about exception specifications.
+ENDIF(WIN32)
 
 ADD_LIBRARY(SDLWrap ../Common/src/Logger.cc src/Interface3D.cc src/SDLBaseSurface.cc src/SDLCDRom.cc src/SDLConfig.cc src/SDLCursor.cc src/SDLDisplaySurface.cc src/SDLEvent.cc src/SDLEventHandler.cc src/SDLGLManager.cc src/SDLGLWindow.cc src/SDLManager.cc src/SDLOverlay.cc src/SDLPixelFormat.cc src/SDLPoint.cc src/SDLRect.cc src/SDLRGBSurface.cc src/SDLSurfaceFactory.cc src/SDLVideoInfo.cc src/SDLWindow.cc)
 
@@ -180,15 +184,25 @@ ADD_DEPENDENCIES(threadwin SDLWrap)
 
 ADD_EXECUTABLE(torturethread test/torturethread.cc)
 ADD_DEPENDENCIES(torturethread SDLWrap)
-
+ 
 #
 #Adding rules for installation
 #
 
-# TODO installing main library
+# installing main library
+INSTALL_TARGETS(/. FILES SDLWrap)
+INSTALL_FILES(/include FILES "^include/*.hh$")
 
-# TODO installing main shared data
+# installing dependency if needed
+#IF(DEPEND_SDL)
+#	INSTALL_FILES(/. FILES ${DEPEND_SDL}/lib/SDL.dll ${DEPEND_SDL}/lib/SDL.so)
+#ENDIF(DEPEND_SDL)
 
-# TODO installing tests
+# installing main shared data
+INSTALL_FILES(/data FILES data/SDL.ico data/sdl_button.gif data/SDL_logo.bmp)
 
-# TODO installing tests data
+# installing tests
+INSTALL_TARGETS(/test FILES testdyngl checkkeys graywin loopwave SDLtest testalpha testbitmap testblitspeed testcdrom testcpuinfo testendian testerror testgamma testgl testthread testjoystick testkeys testlock testoverlay2 testoverlay testpalette testsem testsprite testtimer testtypes testver testvidinfo testwin testwm threadwin torturethread)
+
+# installing tests data
+INSTALL_FILES(/test FILES test/icon.bmp test/moose.dat test/picture.xbm test/sail.bmp test/sample.bmp test/sample.wav)
