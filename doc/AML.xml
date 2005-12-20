@@ -51,7 +51,7 @@
       behaviour with the input interface.</para>
 
       <para>- If the dependent library is not coded in proper C++, a C++
-      wrapper is needed.</para>
+      wrapper might be needed.</para>
     </section>
 
     <section>
@@ -120,7 +120,10 @@
       <title>Generic Libraries</title>
 
       <para>- <ulink url="http://www.libsdl.org">SDL</ulink>
-      <emphasis>mandatory</emphasis></para>
+      <emphasis>mandatory.</emphasis></para>
+
+      <para>The SDL library is used via a C++ wrapper : <link
+      linkend="???">SDLWrap</link></para>
     </section>
 
     <section>
@@ -168,13 +171,28 @@
     <section>
       <title>Code::Blocks build</title>
 
-      <para></para>
+      <para>I am personnaly using CodeBlocks on windows with mingw to build
+      AML. However it misses a dependency checking for the libraries
+      needed.</para>
     </section>
 
     <section>
       <title>Makefile build</title>
 
-      <para></para>
+      <para><emphasis>TODO</emphasis></para>
+    </section>
+
+    <section>
+      <title>CMake build</title>
+
+      <para>If you dont use either Codeblocks, or make files, and want to be
+      able to build AML using your own favorite environment, try the CMake
+      build. It generates files for most of the compilers / build
+      system.</para>
+
+      <para>The good thing with CMake is that it will check the dependencies
+      available on your system and help you to configure your system for
+      development.</para>
     </section>
 
     <section>
@@ -187,6 +205,14 @@
       <title>Installing AML</title>
 
       <para></para>
+    </section>
+
+    <section>
+      <title>Using AML</title>
+
+      <para>The online generated doc is available <link
+      linkend="???">here</link>, thanks to <link
+      linkend="www.doxygen.org">Doxygen</link>.</para>
     </section>
   </section>
 
