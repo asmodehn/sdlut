@@ -5,16 +5,16 @@
  * Handle a Graphical Surface
  ******************************************************************************/
 
-#include "SDLConfig.hh" 
+#include "SDLConfig.hh"
 #include "SDLBaseSurface.hh"
 
 namespace SDL {
-	
+
 class RGBSurface : public BaseSurface
 {
 	friend class SurfaceFactory;
 	//friend class SDLDisplaySurface;
-	
+
 //SDL interprets each pixel as a 32-bit number, so our masks must depend
 //on the endianness (byte order) of the machine */
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -35,7 +35,7 @@ protected : //the client should not access to flags...
 	//Beware : the default flags should be the same than in Factory for consistency
 	//BPP should NEVER be == 0 !!!!
 	RGBSurface( int width, int height, int bpp,
-					Uint32 flags = SDL_SWSURFACE,
+					bool SWSURFACE = false, bool HWSURFACE = true, bool SRCCOLORKEY = false, bool SRCALPHA = false,
 					Uint32 rmask = r_default_mask,
 					Uint32 gmask = g_default_mask,
 					Uint32 bmask = b_default_mask,
@@ -58,21 +58,21 @@ protected : //the client should not access to flags...
   RGBSurface(const RGBSurface & s , const SDL::PixelFormat & fmt, Uint32 flags, bool cloning = false) throw (std::logic_error);
 	//no pixel format use the one from the surface
   RGBSurface(const RGBSurface & s , Uint32 flags, bool cloning = false) throw (std::logic_error);
-  
+
 public :
 	//should be used as the default copy constructor. But should also be able to get DisplaySurface as input...
   RGBSurface(const BaseSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
-  
+
 	//not sure if this is useful or not, but the default copy constructor has to be properly overloaded
 	//RGBSurface(const RGBSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
-  
+
   bool setColorKey(const RGBColor &, const PixelFormat & pformat, bool rleAccel = true);
 
-    
+
 	//Use Standard Colors here
 	//setPixel();
 	//getPixel();
-	
+
 /*	void setUpdateRect(int x, int y, int w, int h);
 	int update(void);
 */
@@ -80,8 +80,8 @@ public :
 	//Accesseurs - are they all really usefull ?
 	inline bool isSRCColorKeyset(void) {return ( SDL_SRCCOLORKEY & _surf->flags ) != 0;}
 	inline bool isSRCAlphaset(void) {return ( SDL_SRCALPHA & _surf->flags ) != 0;}
-	
-	
+
+
 };
 
 } //namespace SDL

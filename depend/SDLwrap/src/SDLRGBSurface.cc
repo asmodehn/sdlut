@@ -2,9 +2,17 @@
 
 namespace SDL {
 
-RGBSurface::RGBSurface(int width, int height, int bpp, Uint32 flags, Uint32 rmask, Uint32 gmask, Uint32 bmask, Uint32 amask) throw (std::logic_error)
-try : BaseSurface(SDL_CreateRGBSurface(flags, width, height, bpp, rmask, gmask, bmask, amask))
+static Uint32 RGBFlags=SDL_SWSURFACE;
+
+RGBSurface::RGBSurface(int width, int height, int bpp, bool SWSURFACE , bool HWSURFACE , bool SRCCOLORKEY , bool SRCALPHA , Uint32 rmask, Uint32 gmask, Uint32 bmask, Uint32 amask) throw (std::logic_error)
+try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, rmask, gmask, bmask, amask))
 {
+	if ( SWSURFACE ) RGBFlags|= SDL_SWSURFACE; else RGBFlags&= (~SDL_SWSURFACE);
+	if ( HWSURFACE ) RGBFlags|= SDL_HWSURFACE; else RGBFlags&= (~SDL_HWSURFACE);
+	if ( SRCCOLORKEY ) RGBFlags|= SDL_SRCCOLORKEY; else RGBFlags&= (~SDL_SRCCOLORKEY);
+	if ( SRCALPHA ) RGBFlags|= SDL_SRCALPHA; else RGBFlags&= (~SDL_SRCALPHA);
+
+
 	//std::cerr << "RGBSurface Constructor Called" << std::endl;
 	if (bpp == 0)
 		throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");

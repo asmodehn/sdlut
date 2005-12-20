@@ -49,6 +49,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -101,6 +102,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -122,6 +124,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -141,6 +144,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option parameters="sample.wav"/>
@@ -161,6 +165,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -180,6 +185,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -199,6 +205,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_optimise\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -218,6 +225,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -237,6 +245,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -256,6 +265,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -276,6 +286,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -295,6 +306,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -314,6 +326,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -333,6 +346,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -354,6 +368,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -373,6 +388,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -392,6 +408,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -411,6 +428,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -430,6 +448,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -449,6 +468,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -468,6 +488,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -487,6 +508,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option parameters="42"/>
@@ -507,6 +529,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -526,6 +549,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -545,6 +569,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -564,6 +589,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -583,6 +609,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option parameters="-benchmark"/>
@@ -603,6 +630,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -622,6 +650,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -641,6 +670,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -660,6 +690,7 @@
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
