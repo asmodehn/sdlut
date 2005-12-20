@@ -2,17 +2,11 @@
 
 namespace SDL {
 
-static Uint32 RGBFlags=SDL_SWSURFACE;
+Uint32 RGBSurface::RGBFlags=SDL_SWSURFACE;
 
-RGBSurface::RGBSurface(int width, int height, int bpp, bool SWSURFACE , bool HWSURFACE , bool SRCCOLORKEY , bool SRCALPHA , Uint32 rmask, Uint32 gmask, Uint32 bmask, Uint32 amask) throw (std::logic_error)
-try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, rmask, gmask, bmask, amask))
+RGBSurface::RGBSurface(int width, int height, int bpp) throw (std::logic_error)
+try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
 {
-	if ( SWSURFACE ) RGBFlags|= SDL_SWSURFACE; else RGBFlags&= (~SDL_SWSURFACE);
-	if ( HWSURFACE ) RGBFlags|= SDL_HWSURFACE; else RGBFlags&= (~SDL_HWSURFACE);
-	if ( SRCCOLORKEY ) RGBFlags|= SDL_SRCCOLORKEY; else RGBFlags&= (~SDL_SRCCOLORKEY);
-	if ( SRCALPHA ) RGBFlags|= SDL_SRCALPHA; else RGBFlags&= (~SDL_SRCALPHA);
-
-
 	//std::cerr << "RGBSurface Constructor Called" << std::endl;
 	if (bpp == 0)
 		throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");
@@ -33,8 +27,8 @@ catch (std::exception &e)
 	//TODO : much more explicit error message...
 };
 
-RGBSurface::RGBSurface(void* pixeldata, int depth, int pitch, int width, int height, Uint32 rmask, Uint32 gmask, Uint32 bmask, Uint32 amask) throw (std::logic_error)
-try : BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitch, rmask, gmask, bmask, amask))
+RGBSurface::RGBSurface(void* pixeldata, int depth, int pitch, int width, int height) throw (std::logic_error)
+try : BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitch, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
 {
 	//std::cerr << "RGBSurface Constructor Called" << std::endl;
     if(_surf == NULL)
@@ -44,6 +38,31 @@ try : BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitc
         Config::addLog (ss.str() );
         throw std::logic_error("SDL_CreateRGBSurface returns NULL");
     }
+}
+catch (std::exception &e)
+{
+	Config::addLog( "Exception catched in RGBSurface Constructor !!!" );
+	//Error Display
+	Config::addLog(e.what());
+	Config::addLog(GetError());
+	//TODO : much more explicit error message...
+};
+
+RGBSurface::RGBSurface(const Color & color, int width, int height, int bpp )throw (std::logic_error)
+try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
+{
+	//std::cerr << "RGBSurface Constructor Called" << std::endl;
+	if (bpp == 0)
+		throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");
+    if(_surf == NULL)
+	{
+	  std::stringstream ss;
+	  ss << "Unable to set " <<  width<<  " x " <<  height <<  " rgb surface : ";
+        Config::addLog( ss.str());
+        throw std::logic_error("SDL_CreateRGBSurface returns NULL");
+    }
+    else
+			fill(color);
 }
 catch (std::exception &e)
 {
@@ -73,6 +92,29 @@ catch (std::exception &e)
 	Config::addLog(GetError());
 	//TODO : much more explicit error message...
 };
+
+RGBSurface::RGBSurface( std::string filename, const Color & colorKey )throw (std::logic_error)
+try : BaseSurface(SDL_LoadBMP(filename.c_str()))
+{
+	//std::cerr << "RGBSurface Constructor Called" << std::endl;
+	//TODO : support for other format than BMP with SDL_image
+    if(_surf == NULL)
+	{
+        Config::addLog( "Unable to set rgb surface from " + filename );
+        throw std::logic_error("SDL_LoadBMP returns NULL");
+	}
+	else
+		setColorKey(colorKey, VideoInfo::Info()->getPixelFormat());
+}
+catch (std::exception &e)
+{
+	Config::addLog( "Exception catched in RGBSurface Constructor !!!" );
+	//Error Display
+	Config::addLog(e.what());
+	Config::addLog(GetError());
+	//TODO : much more explicit error message...
+};
+
 
 //Copy Constructor ( doesn't copy the content of the surface)
 //and Clone (also copy the content of the surface)
@@ -159,6 +201,14 @@ void RGBSurface::setUpdateRect(int x, int y, int w, int h)
 	_UpdateRectList.push_back(rect);
 }
 */
+
+void RGBSurface::setFlags(bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
+{
+	if ( SWSURFACE ) RGBFlags|= SDL_SWSURFACE; else RGBFlags&= (~SDL_SWSURFACE);
+	if ( HWSURFACE ) RGBFlags|= SDL_HWSURFACE; else RGBFlags&= (~SDL_HWSURFACE);
+	if ( SRCCOLORKEY ) RGBFlags|= SDL_SRCCOLORKEY; else RGBFlags&= (~SDL_SRCCOLORKEY);
+	if ( SRCALPHA ) RGBFlags|= SDL_SRCALPHA; else RGBFlags&= (~SDL_SRCALPHA);
+}
 
 bool RGBSurface::setColorKey(const RGBColor & key, const PixelFormat & pformat, bool rleAccel)
 {

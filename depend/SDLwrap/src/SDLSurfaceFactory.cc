@@ -142,100 +142,100 @@ bool SurfaceFactory::setRGBFlags( bool SWSURFACE, bool HWSURFACE, bool SRCCOLORK
 
 	return true;
 }
-
-unsigned int SurfaceFactory::createRGBSurface(void)
-{
-	RGBSurface* surf = NULL;
-	try
-	{
-		surf = new RGBSurface(RGBWidth, RGBHeight, RGBBPP, RGBFlags);
-	}
-	catch ( std::exception& e )
-	{
-		Config::addLog("RGB Surface cannot be created !");
-		Config::addLog(e.what());
-	}
-	if (surf!=NULL)
-		surfaceList.insert(surfaceList.end(),surf);
-	return surfaceList.size()-1;
-}
-
-unsigned int SurfaceFactory::createRGBSurface(int width , int height , Color color )
-{
-	RGBSurface* surf = NULL;
-	try
-	{
-		surf = new RGBSurface(width, height, RGBBPP, RGBFlags);
-		surf->fill(color);
-	}
-	catch ( std::exception& e )
-	{
-		Config::addLog("RGB Surface cannot be created !");
-		Config::addLog(e.what());
-	}
-	if (surf!=NULL)
-		surfaceList.insert(surfaceList.end(),surf);
-	return surfaceList.size()-1;
-}
-
-unsigned int SurfaceFactory::createRGBSurface(void* pixeldata, int depth, int pitch)
-{
-	RGBSurface* surf = NULL;
-	try
-	{
-		surf = new RGBSurface(pixeldata, RGBWidth, RGBHeight, depth, pitch);
-	}
-	catch ( std::exception &e )
-	{
-		Config::addLog("RGB Surface cannot be created !");
-		Config::addLog(e.what());
-	}
-	if (surf!=NULL)
-		surfaceList.push_back(surf);
-	return surfaceList.size()-1;
-}
-
-unsigned int SurfaceFactory::createRGBSurface( std::string filename )
-{
-	RGBSurface* surf = NULL;
-	try
-	{
-		surf = new RGBSurface(filename);
-	}
-	catch ( std::exception &e )
-	{
-		Config::addLog("RGB Surface cannot be created !");
-		Config::addLog(e.what());
-	}
-	if (surf!=NULL)
-		surfaceList.push_back(surf);
-	return surfaceList.size()-1;
-}
-
-//recent add to enable background on file load if needed... 18/08/2005 - Alex
-//TO TEST !
-unsigned int SurfaceFactory::createRGBSurface( std::string filename, const RGBColor & bgcolor )
-{
-	RGBSurface* fsurf = getSurface(createRGBSurface(filename));
-	RGBSurface* csurf = getSurface(createRGBSurface(fsurf->getWidth(),fsurf->getHeight(), bgcolor));
-
-	csurf->blit(*fsurf);
-  if (csurf!=NULL)
-		surfaceList.push_back(csurf);
-	return surfaceList.size()-1;
-}
-//ColorKey more useful BREAK EVERYTHING... WHY ???
-/*
-unsigned int SurfaceFactory::createRGBSurface( std::string filename, const RGBColor & colorkey )
-{
-	RGBSurface* fsurf = getSurface(createRGBSurface(filename));
-  if (fsurf!=NULL)
-  {
-    fsurf->setColorKey(colorkey, VideoInfo::Info()->getPixelFormat());
-		surfaceList.push_back(fsurf);
-  }
-	return surfaceList.size()-1;
-}*/
+//
+//unsigned int SurfaceFactory::createRGBSurface(void)
+//{
+//	RGBSurface* surf = NULL;
+//	try
+//	{
+//		surf = new RGBSurface(RGBWidth, RGBHeight, RGBBPP, RGBFlags);
+//	}
+//	catch ( std::exception& e )
+//	{
+//		Config::addLog("RGB Surface cannot be created !");
+//		Config::addLog(e.what());
+//	}
+//	if (surf!=NULL)
+//		surfaceList.insert(surfaceList.end(),surf);
+//	return surfaceList.size()-1;
+//}
+//
+//unsigned int SurfaceFactory::createRGBSurface(int width , int height , Color color )
+//{
+//	RGBSurface* surf = NULL;
+//	try
+//	{
+//		surf = new RGBSurface(width, height, RGBBPP, RGBFlags);
+//		surf->fill(color);
+//	}
+//	catch ( std::exception& e )
+//	{
+//		Config::addLog("RGB Surface cannot be created !");
+//		Config::addLog(e.what());
+//	}
+//	if (surf!=NULL)
+//		surfaceList.insert(surfaceList.end(),surf);
+//	return surfaceList.size()-1;
+//}
+//
+//unsigned int SurfaceFactory::createRGBSurface(void* pixeldata, int depth, int pitch)
+//{
+//	RGBSurface* surf = NULL;
+//	try
+//	{
+//		surf = new RGBSurface(pixeldata, RGBWidth, RGBHeight, depth, pitch);
+//	}
+//	catch ( std::exception &e )
+//	{
+//		Config::addLog("RGB Surface cannot be created !");
+//		Config::addLog(e.what());
+//	}
+//	if (surf!=NULL)
+//		surfaceList.push_back(surf);
+//	return surfaceList.size()-1;
+//}
+//
+//unsigned int SurfaceFactory::createRGBSurface( std::string filename )
+//{
+//	RGBSurface* surf = NULL;
+//	try
+//	{
+//		surf = new RGBSurface(filename);
+//	}
+//	catch ( std::exception &e )
+//	{
+//		Config::addLog("RGB Surface cannot be created !");
+//		Config::addLog(e.what());
+//	}
+//	if (surf!=NULL)
+//		surfaceList.push_back(surf);
+//	return surfaceList.size()-1;
+//}
+//
+////recent add to enable background on file load if needed... 18/08/2005 - Alex
+////TO TEST !
+//unsigned int SurfaceFactory::createRGBSurface( std::string filename, const RGBColor & bgcolor )
+//{
+//	RGBSurface* fsurf = getSurface(createRGBSurface(filename));
+//	RGBSurface* csurf = getSurface(createRGBSurface(fsurf->getWidth(),fsurf->getHeight(), bgcolor));
+//
+//	csurf->blit(*fsurf);
+//  if (csurf!=NULL)
+//		surfaceList.push_back(csurf);
+//	return surfaceList.size()-1;
+//}
+////ColorKey more useful BREAK EVERYTHING... WHY ???
+///*
+//unsigned int SurfaceFactory::createRGBSurface( std::string filename, const RGBColor & colorkey )
+//{
+//	RGBSurface* fsurf = getSurface(createRGBSurface(filename));
+//  if (fsurf!=NULL)
+//  {
+//    fsurf->setColorKey(colorkey, VideoInfo::Info()->getPixelFormat());
+//		surfaceList.push_back(fsurf);
+//  }
+//	return surfaceList.size()-1;
+//}*/
 
 //clone an RGBSurface.
 unsigned int SurfaceFactory::clone(int index,int times) // clone the one on index

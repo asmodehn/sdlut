@@ -141,18 +141,17 @@ when the configuration file changed...*/
 		if (display->fill(Color(255,0,0)))
 			display->blit(bitmap,Point(30,30));
 
-		SurfaceFactory smileyFactory;
-		int index=smileyFactory.createRGBSurface("icon.bmp"/*,Color(255,255,255)*/); //doing the colorkey now break the clone...
-		if(!smileyFactory.cloneToDisplay(index)) std::cerr << "clone failed" << std::endl;
+		RGBSurface smiley("icon.bmp"/*,Color(255,255,255)*/); //doing the colorkey now break the clone...
+//		if(!smileyFactory.cloneToDisplay(index)) std::cerr << "clone failed" << std::endl;
+//
+//		std::vector<RGBSurface*> slist=smileyFactory.getSurfaceList();
+//		std::cout << "taille = " << slist.size() << std::endl;
+//		RGBSurface* s=slist[slist.size()-1];
+//		std::cout << "s : " <<s->getWidth() << " x " << s->getHeight() << std::endl;
+//		if (s==NULL) {testlog.add("s is NULL!"); exit(1);}
 
-		std::vector<RGBSurface*> slist=smileyFactory.getSurfaceList();
-		std::cout << "taille = " << slist.size() << std::endl;
-		RGBSurface* s=slist[slist.size()-1];
-		std::cout << "s : " <<s->getWidth() << " x " << s->getHeight() << std::endl;
-		if (s==NULL) {testlog.add("s is NULL!"); exit(1);}
 
-
-		std::cout << std::boolalpha << display->blit(*s,Point(50,50)) << std::endl;
+		std::cout << std::boolalpha << display->blit(smiley,Point(50,50)) << std::endl;
 
 		Cursor::warpCurrent(Point(50,50));
 
