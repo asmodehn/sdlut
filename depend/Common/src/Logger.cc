@@ -3,7 +3,7 @@
 
 
 Logger::Logger(const std::string & LogPrefix,int indentlvl, int indentwidth)
-: _indentlvl(indentlvl), _indentwidth(indentwidth),_logprefix(LogPrefix)
+: /*std::ostream(new std::stringbuf(std::ios_base::out)),*/ _indentlvl(indentlvl), _indentwidth(indentwidth),_logprefix(LogPrefix)
 {
 	_clogSwitch = true;
 }
@@ -35,21 +35,46 @@ void Logger::add( const std::string & msg)
 		if (ofstr)
 			ofstr << s << outmsg << std::endl;
 	}
-	if (_clogSwitch)
-		std::clog << std::endl;
-	if (ofstr)
-		ofstr << std::endl;
+//	if (_clogSwitch)
+//		std::clog << std::endl;
+//	if (ofstr)
+//		ofstr << std::endl;
 }
 
-void Logger::flush(void)
+Logger& nl (Logger& log) // adds a new line with the prefix
 {
-	if (_clogSwitch)
-		std::clog.flush();
-	if (ofstr)
-		ofstr.flush();
+				std::string s(log._indentlvl * log._indentwidth, ' ');
+				s +=log._logprefix + " : ";
+
+				log << "\n" << s;
+				return log;
+}
+
+Logger & Logger::flush(void)
+{
+
+	if (_clogSwitch) std::clog.flush();
+	if (ofstr) ofstr.flush();
+}
+
+//to enable ostream manipulators on Logger
+Logger& Logger::operator << (std::ostream& (*manip)(std::ostream&))
+{
+		if (_clogSwitch) (*manip)(std::clog);
+		if (ofstr) (*manip)(ofstr);
+	return *this;
+}
+
+//to enable ostream manipulators on Logger
+Logger& Logger::operator << (Logger& (*manip)(Logger&))
+{
+		if (_clogSwitch) (*manip)(*this);
+		if (ofstr) (*manip)(*this);
+	return *this;
 }
 
 Logger::~Logger()
 {
 	flush();
 }
+

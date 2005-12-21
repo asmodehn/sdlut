@@ -43,10 +43,11 @@
 
 typedef enum {quiet,normal,verbose} Loglevel;
 
-class Logger
+class Logger //: public std::ostream
 {
 	int _indentlvl,_indentwidth;
 	std::string _logprefix;
+
 	std::ofstream ofstr;
 	bool _clogSwitch;
 
@@ -65,15 +66,29 @@ class Logger
     void disableclog() { _clogSwitch = false ; }
 
     void add(const std::string & message); // not const because of initial '\n' in string from streams...
+		template<class M> Logger& operator << (const M & msg);
+		Logger& operator << (std::ostream& (*manip)(std::ostream&));//to enable manipulators on Logger
+		Logger& operator << (Logger& (*manip)(Logger&));//to enable specific manipulators on Logger
 
-  //TODO : handle operator<<
+		friend Logger& nl (Logger& log); // adds a new line with the prefix
+
+		Logger & flush(void);
+
+  //TODO : handle operator<< and
   //http://www.mactech.com/articles/mactech/Vol.16/16.04/StreamforAllSeasons/
   //http://www.horstmann.com/cpp/iostreams.html
   //http://spec.winprog.org/streams/
 
-    void flush(void);
-
 };
+
+template<class M> Logger& Logger::operator<< ( const M & msg)
+{
+	if (_clogSwitch) std::clog << msg;
+	if (ofstr) ofstr << msg;
+	return *this;
+}
+
+
 
 
 #endif
