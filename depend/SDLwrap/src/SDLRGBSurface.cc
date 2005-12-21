@@ -171,7 +171,7 @@ try : BaseSurface(s,cloning,toDisplay,alpha)
 {
   //std::cerr << "RGBSurface Copy Called" << std::endl;
 	//Config::addLog( "SDL_Surface created @ " + (int) _surf );
-	Config::getLogX() << "SDL_Surface created @ " << (void*) _surf;
+	Config::Log() << "SDL_Surface created @ " << (void*) _surf;
 }
 catch (std::exception &e)
 {
