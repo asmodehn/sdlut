@@ -1766,6 +1766,7 @@
 		<Unit filename="test\SDLtest.cc">
 			<Option compilerVar="CC"/>
 			<Option target="test-debug"/>
+			<Breakpoint line="95" enabled="1" pass="0" />
 		</Unit>
 		<Unit filename="test\checkkeys.cc">
 			<Option compilerVar="CC"/>

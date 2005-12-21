@@ -1,4 +1,5 @@
 #include "SDLRGBSurface.hh"
+#include "SDLManager.hh"
 
 namespace SDL {
 
@@ -104,7 +105,7 @@ try : BaseSurface(SDL_LoadBMP(filename.c_str()))
         throw std::logic_error("SDL_LoadBMP returns NULL");
 	}
 	else
-		setColorKey(colorKey, VideoInfo::Info()->getPixelFormat());
+		setColorKey(colorKey, Manager::manager()->getVideoInfo()->getPixelFormat());
 }
 catch (std::exception &e)
 {
@@ -169,7 +170,8 @@ RGBSurface::RGBSurface(const BaseSurface & s , bool cloning, bool toDisplay, boo
 try : BaseSurface(s,cloning,toDisplay,alpha)
 {
   //std::cerr << "RGBSurface Copy Called" << std::endl;
-	Config::addLog( "SDL_Surface created @ " + (int) _surf );
+	//Config::addLog( "SDL_Surface created @ " + (int) _surf );
+	Config::getLogX() << "SDL_Surface created @ " << (void*) _surf;
 }
 catch (std::exception &e)
 {

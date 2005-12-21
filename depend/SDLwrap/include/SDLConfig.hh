@@ -69,9 +69,11 @@ public:
   static inline  void addLog(std::string str, bool fatal = false)
   {
   	if (fatal)
-  	str = " FATAL ERROR ==> " + str;
+  		str = " FATAL ERROR ==> " + str;
   	_log->add(str);
 	}
+
+  static Logger& getLogX() { return *_log; }
 };
 }
 #endif

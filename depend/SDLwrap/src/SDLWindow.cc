@@ -2,10 +2,9 @@
 
 namespace SDL {
 
-Window::Window(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
-: DisplaySurface( width, height, bpp, flags)
+Window::Window(int width, int height, int bpp) throw (std::logic_error)
+: DisplaySurface( width, height, bpp, flags & (~SDL_OPENGL))
 { }
-
 
 
 bool Window::update(void)

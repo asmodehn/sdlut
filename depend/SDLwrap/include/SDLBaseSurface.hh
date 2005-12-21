@@ -8,7 +8,7 @@
  *
  * \brief Abstract Class to manage Surfaces
  *
- * Abstract Class to handle common behaviour between display surface 
+ * Abstract Class to handle common behaviour between display surface
  * and other surface types...
  *
  * \author Alex
@@ -18,8 +18,9 @@
  * Contact: asmodehn@gna.org
  *
  */
- 
+
 #include "SDLConfig.hh"
+
 #include "SDLRect.hh"
 #include "SDLPixelFormat.hh"
 #include <cassert>
@@ -31,55 +32,55 @@ namespace SDL {
 //The goal is to have _surf and this really tied.
 class BaseSurface
 {
-	
+
 protected:
-	//TODO : improve wrapping with const SDL_Surface * // or maybe (const?) SDL_Surface & 
+	//TODO : improve wrapping with const SDL_Surface * // or maybe (const?) SDL_Surface &
 	//... look at SDL_video.h to access correctly to SDL_Surface like as for PixelFormat and everything else
-	
-	//the adress of SDL_Surface struct should never change 
+
+	//the adress of SDL_Surface struct should never change
 	//SDL_Surface * const _surf;
 	//except for resize...
 	SDL_Surface * _surf; ///< the actual allocated surface
-  
+
 	/// This method return true if the surface is initialized, false otherwise.
 	bool initialized() const { return _surf != NULL; }
 	//could be useless if exception handle is well coded in the heriting tree
-	
+
 	//TODO : delete this, already in SDL_Surface structure
 	//To manage locks
 	unsigned int locks;
 	inline bool locked(void) { return locks > 0; }
 	inline bool unlocked(void) { return !locked(); }
 	//
-	
+
 	///This method return true if all is OK,or if it doesn't need being locked/unlocked.
 	///it return false only if this cannot be locked...
 	bool lock(void);
 	bool unlock(void);
-	
-	
+
+
 	Uint32 getpixel(int x, int y);
 	void setpixel(int x, int y, Uint32 pixel);
-		
+
 	///Conversion Constructor
 	explicit BaseSurface(SDL_Surface * s) : _surf(s),locks(0) {} ///< This one should be called only by subclasses
-	
+
 	//Copy Constructor
 	//SDLBaseSurface( const SDLBaseSurface & s) : _surf(s._surf) {std::cerr << " === WARNING === SDLBaseSurface Copy Called !"<< std::endl;} //this one should never be called
 	//must use the one of the subclasses
-  
+
   // 25/08/2005
 	/** \brief Copy constructor overload.
 	  * Abstracted from RGBSurface to include display as input...
 	  * by default this method copy the content in a quickly displayable format (no alpha)
 	  */
 	BaseSurface(const BaseSurface & s , bool cloning = true, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
-	
-  
+
+
   inline Uint32 getFlags(void) const { return _surf->flags; } ///<usefull accessor for children only
-  
+
 public:
-	
+
 	/// Virtual Destructor
 	virtual ~BaseSurface() {if (_surf!=NULL) SDL_FreeSurface(_surf);}
 
@@ -90,12 +91,12 @@ public:
 	inline bool isSWset(void) const {return ( SDL_SWSURFACE & _surf->flags ) != 0;}
 	inline bool isHWset(void) const {return ( SDL_HWSURFACE & _surf->flags ) != 0;}
 	inline bool isHWAccelset(void) const {return ( SDL_HWACCEL & _surf->flags ) != 0;}
-	inline bool isRLEAccelset(void) const {return ( SDL_RLEACCEL & _surf->flags ) != 0;}	
+	inline bool isRLEAccelset(void) const {return ( SDL_RLEACCEL & _surf->flags ) != 0;}
 	inline bool isPreAllocset(void) const {return ( SDL_PREALLOC & _surf->flags ) != 0;}
-	
+
 	///Accessor to pixelFormat
 	inline PixelFormat getPixelFormat(void) const {return PixelFormat(_surf->format);}
-	
+
    	//Set the clip rect
    	//Default Reset the clip rect to the full size of the surface
    	inline void setClipRect(void)
@@ -104,12 +105,12 @@ public:
 	}
    	void setClipRect(const Rect& rect);
    	//get the clip rect
-	Rect getClipRect(void) const; 
+	Rect getClipRect(void) const;
 
     //save the surface to a BMP file.
     bool saveBMP(std::string filename) const;
     //TODO : the same with other formats
-    
+
     //Fill
    	inline bool fill (const RGBColor& color)
 	{
@@ -153,9 +154,9 @@ public:
 	}
 	//Blit src into the current surface.
 	bool blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect);
-    
+
     virtual void debug(void) const;
-   	
+
 };
 
 } //namespace SDL

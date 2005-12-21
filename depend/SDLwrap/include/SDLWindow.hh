@@ -28,35 +28,34 @@ namespace SDL {
 class Window : public DisplaySurface
 {
 	//To access the contructor
-	friend class SurfaceFactory;
-	
+	friend class Manager;
+
 protected:
-	
-	//Contructor : build the super
-	//BEWARE : flags must be the same than in factory...
-	Window(int width, int height, int bpp, Uint32 flags) throw (std::logic_error);
-	
+
+    //using the flags form DisplaySurface
+	Window(int width, int height, int bpp) throw (std::logic_error);
+
 public:
-	
+
 	//Destructor
 	~Window() {}
-	
+
 	//just test if DoubleBuf is set.
 	inline bool isDoubleBufset(void) const {return ( SDL_DOUBLEBUF & _surf->flags ) != 0;}
-	
+
 	bool resize(int width, int height);
-	
+
 	//TODO : SaveScreen -> backup the screen content in a RGBSurface...
 	virtual RGBSurface * save(void);
 	//TODO : restoreScreen -> blit the saved surface to the screen
 	virtual bool restore(const RGBSurface& savedScreen);
-	
+
 	bool update(void);
 
 	//display specific informations
 	void debug(void) const;
 
-   	
+
 };
 
 } //namespace SDL

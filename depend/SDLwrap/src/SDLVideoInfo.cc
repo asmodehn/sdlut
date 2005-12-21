@@ -2,7 +2,7 @@
 
 namespace SDL {
 
-VideoInfo* VideoInfo::_Instance=NULL;
+//VideoInfo* VideoInfo::_Instance=NULL;
 
 //beware : throw bad_alloc if SDL_GetVideoInfo failed.
 //Usefull for windows because this must be called AFTER SDL_setVideo
@@ -22,24 +22,6 @@ catch (std::exception &e)
 };
 
 
-VideoInfo* VideoInfo::Info(void)
-{
-	if (_Instance == NULL)
-	{
-		try
-		{
-			_Instance=new VideoInfo();
-		}
-		catch (std::exception& e)
-		{
-			//Keep this catch to prevent program terminate...
-			Config::addLog(e.what());
-			//no need to delete Instance, since constructor throw an exception
-			//the VideoInfo Instance wasn't built
-		}
-	}
-	return _Instance;
-}
 
 std::string VideoInfo::getDriverName(void) const
 {

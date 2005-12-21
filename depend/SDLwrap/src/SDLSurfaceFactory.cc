@@ -5,143 +5,143 @@ namespace SDL  {
 int SurfaceFactory::displayWidth = DEFAULT_DISPLAY_WIDTH;
 int SurfaceFactory::displayHeight = DEFAULT_DISPLAY_HEIGHT;
 int SurfaceFactory::displayBPP = DEFAULT_DISPLAY_BPP;
-std::vector<int> SurfaceFactory::availableDisplayWidth;
-std::vector<int> SurfaceFactory::availableDisplayHeight;
-Uint32 SurfaceFactory::displayFlags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
+//std::vector<int> SurfaceFactory::availableDisplayWidth;
+//std::vector<int> SurfaceFactory::availableDisplayHeight;
+//Uint32 SurfaceFactory::displayFlags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
 
-DisplaySurface* SurfaceFactory::screen = NULL;
+//DisplaySurface* SurfaceFactory::screen = NULL;
 
-bool SurfaceFactory::setDisplayFlags( bool openGL, bool fullScreen,
-						bool resizable, bool noFrame,
-						bool doubleBuf, bool anyFormat,
-						bool SWSurface, bool HWSurface,
-						bool HWPalette, bool asyncBlit)
-{
-	if ( openGL ) displayFlags|= SDL_OPENGL;
-	if ( fullScreen ) displayFlags|= SDL_FULLSCREEN;
-	if ( resizable ) displayFlags|= SDL_RESIZABLE;
-	if ( noFrame ) displayFlags|= SDL_NOFRAME;
-	if ( doubleBuf ) displayFlags|= SDL_DOUBLEBUF;
-	if ( anyFormat ) displayFlags|= SDL_ANYFORMAT;
-	if ( SWSurface ) displayFlags|= SDL_SWSURFACE;
-	if ( HWSurface ) displayFlags|= SDL_HWSURFACE;
-	if ( HWPalette ) displayFlags|= SDL_HWPALETTE;
-	if ( asyncBlit ) displayFlags|= SDL_ASYNCBLIT;
+//bool SurfaceFactory::setDisplayFlags( bool openGL, bool fullScreen,
+//						bool resizable, bool noFrame,
+//						bool doubleBuf, bool anyFormat,
+//						bool SWSurface, bool HWSurface,
+//						bool HWPalette, bool asyncBlit)
+//{
+//	if ( openGL ) displayFlags|= SDL_OPENGL;
+//	if ( fullScreen ) displayFlags|= SDL_FULLSCREEN;
+//	if ( resizable ) displayFlags|= SDL_RESIZABLE;
+//	if ( noFrame ) displayFlags|= SDL_NOFRAME;
+//	if ( doubleBuf ) displayFlags|= SDL_DOUBLEBUF;
+//	if ( anyFormat ) displayFlags|= SDL_ANYFORMAT;
+//	if ( SWSurface ) displayFlags|= SDL_SWSURFACE;
+//	if ( HWSurface ) displayFlags|= SDL_HWSURFACE;
+//	if ( HWPalette ) displayFlags|= SDL_HWPALETTE;
+//	if ( asyncBlit ) displayFlags|= SDL_ASYNCBLIT;
+//
+//	return checkAvailableDisplaySize();
+//}
+//
+//bool SurfaceFactory::setDisplaySize( int width, int height)
+//{
+//	displayWidth = width; displayHeight = height;
+//	int new_bpp=checkVideoMode();
+//	if (new_bpp)
+//    setDisplayBPP ( new_bpp );
+//	else
+//		return false;
+//	return true;
+//}
 
-	return checkAvailableDisplaySize();
-}
+//bool SurfaceFactory::checkAvailableDisplaySize(void)
+//{
+//	return checkAvailableDisplaySize( VideoInfo::Info()->getPixelFormat());
+//}
+//
+//bool SurfaceFactory::checkAvailableDisplaySize( const PixelFormat& fmt )
+//{
+//	SDL_Rect ** modes;
+//	bool res;
+//	//we copy the pixelformat (because of const behaviour...)
+//	SDL_PixelFormat* test_fmt= new SDL_PixelFormat(*(fmt._pformat));
+//
+//	modes=SDL_ListModes(test_fmt, displayFlags);
+//	if (modes == (SDL_Rect **)0) res=false;
+//	else
+//	{
+//		availableDisplayWidth.clear();
+//		availableDisplayHeight.clear();
+//
+//		if (modes == (SDL_Rect **)-1)
+//		{
+//			availableDisplayWidth.push_back(-1);
+//			availableDisplayHeight.push_back(-1);
+//		}
+//		else
+//		{
+//			for(int i=0;modes[i];++i)
+//			{
+//				availableDisplayWidth.push_back(modes[i]->w);
+//				availableDisplayHeight.push_back(modes[i]->h);
+//			}
+//		}
+//		res=true;
+//	}
+//	return res;
+//}
 
-bool SurfaceFactory::setDisplaySize( int width, int height)
-{
-	displayWidth = width; displayHeight = height;
-	int new_bpp=checkVideoMode();
-	if (new_bpp)
-    setDisplayBPP ( new_bpp );
-	else
-		return false;
-	return true;
-}
+//int SurfaceFactory::checkVideoMode(void)
+//{
+//	VideoInfo * vi = VideoInfo::Info();
+//
+//	//If bpp is 0 and VideoInfo is reachable
+//	//maybe this is already done by SDL and this code is just a waste of time ?
+//	if ( displayBPP == DEFAULT_DISPLAY_BPP && vi != NULL )
+//	{
+//		//getting the best video mode pixel format
+//		displayBPP=vi->getPixelFormat().getBitsPerPixel();
+//	}
+//	//but beware about bpp == 0... (especially when used with rgb)
+//	return SDL_VideoModeOK(displayWidth, displayHeight, displayBPP, displayFlags);
+//}
 
-bool SurfaceFactory::checkAvailableDisplaySize(void)
-{
-	return checkAvailableDisplaySize( VideoInfo::Info()->getPixelFormat());
-}
+//DisplaySurface* SurfaceFactory::createDisplay(std::string title, std::string icon)
+//{
+//	//if _screen already exists
+//	if (screen!=NULL)
+//	{
+//		//delete the object
+//		delete screen;
+//	}
+//
+//	//set the title and the icon of the window
+//	DisplaySurface::setCaption(title,icon);
+//
+//	//create a new screen
+//	try
+//	{
+//#ifdef HAVE_OPENGL
+//		if (SDL_OPENGL & displayFlags)
+//			screen = new GLWindow(displayWidth, displayHeight, displayBPP , displayFlags );
+//		else
+//		{
+//#endif
+//			screen = new Window(displayWidth, displayHeight, displayBPP , displayFlags );
+//#ifdef HAVE_OPENGL
+//		}
+//#endif
+//	}
+//	//beware about the bpp == 0 used with rgbsurfaces !
+//	catch(std::exception & e)
+//	{
+//		Config::addLog(e.what());
+//	}
+//
+//
+//
+//	return screen;
+//}
 
-bool SurfaceFactory::checkAvailableDisplaySize( const PixelFormat& fmt )
-{
-	SDL_Rect ** modes;
-	bool res;
-	//we copy the pixelformat (because of const behaviour...)
-	SDL_PixelFormat* test_fmt= new SDL_PixelFormat(*(fmt._pformat));
-
-	modes=SDL_ListModes(test_fmt, displayFlags);
-	if (modes == (SDL_Rect **)0) res=false;
-	else
-	{
-		availableDisplayWidth.clear();
-		availableDisplayHeight.clear();
-
-		if (modes == (SDL_Rect **)-1)
-		{
-			availableDisplayWidth.push_back(-1);
-			availableDisplayHeight.push_back(-1);
-		}
-		else
-		{
-			for(int i=0;modes[i];++i)
-			{
-				availableDisplayWidth.push_back(modes[i]->w);
-				availableDisplayHeight.push_back(modes[i]->h);
-			}
-		}
-		res=true;
-	}
-	return res;
-}
-
-int SurfaceFactory::checkVideoMode(void)
-{
-	VideoInfo * vi = VideoInfo::Info();
-
-	//If bpp is 0 and VideoInfo is reachable
-	//maybe this is already done by SDL and this code is just a waste of time ?
-	if ( displayBPP == DEFAULT_DISPLAY_BPP && vi != NULL )
-	{
-		//getting the best video mode pixel format
-		displayBPP=vi->getPixelFormat().getBitsPerPixel();
-	}
-	//but beware about bpp == 0... (especially when used with rgb)
-	return SDL_VideoModeOK(displayWidth, displayHeight, displayBPP, displayFlags);
-}
-
-DisplaySurface* SurfaceFactory::createDisplay(std::string title, std::string icon)
-{
-	//if _screen already exists
-	if (screen!=NULL)
-	{
-		//delete the object
-		delete screen;
-	}
-
-	//set the title and the icon of the window
-	DisplaySurface::setCaption(title,icon);
-
-	//create a new screen
-	try
-	{
-#ifdef HAVE_OPENGL
-		if (SDL_OPENGL & displayFlags)
-			screen = new GLWindow(displayWidth, displayHeight, displayBPP , displayFlags );
-		else
-		{
-#endif
-			screen = new Window(displayWidth, displayHeight, displayBPP , displayFlags );
-#ifdef HAVE_OPENGL
-		}
-#endif
-	}
-	//beware about the bpp == 0 used with rgbsurfaces !
-	catch(std::exception & e)
-	{
-		Config::addLog(e.what());
-	}
-
-
-
-	return screen;
-}
-
-bool SurfaceFactory::setRGBFlags( bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
-{
-	if ( SWSURFACE ) RGBFlags|= SDL_SWSURFACE;
-	if ( HWSURFACE ) RGBFlags|= SDL_HWSURFACE;
-	if ( SRCCOLORKEY ) RGBFlags|= SDL_SRCCOLORKEY;
-	if ( SRCALPHA ) RGBFlags|= SDL_SRCALPHA;
-
-	//must create a kind of prototype to clone ??
-
-	return true;
-}
+//bool SurfaceFactory::setRGBFlags( bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
+//{
+//	if ( SWSURFACE ) RGBFlags|= SDL_SWSURFACE;
+//	if ( HWSURFACE ) RGBFlags|= SDL_HWSURFACE;
+//	if ( SRCCOLORKEY ) RGBFlags|= SDL_SRCCOLORKEY;
+//	if ( SRCALPHA ) RGBFlags|= SDL_SRCALPHA;
+//
+//	//must create a kind of prototype to clone ??
+//
+//	return true;
+//}
 //
 //unsigned int SurfaceFactory::createRGBSurface(void)
 //{

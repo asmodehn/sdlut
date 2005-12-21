@@ -4,12 +4,12 @@
 /** This file gather all the header files a user need to include to be able to use SDLwrap
   * So the user just has to include SDLwrap to have full access to the whole wrapper
   */
-  
+
 /**
   * \defgroup General
-  * Provide a set of classes to manage the SDL General functions : 
-  * 
-  * <ul> 
+  * Provide a set of classes to manage the SDL General functions :
+  *
+  * <ul>
   * <li>SDL_Init -- Initializes SDL
   * <li>SDL_InitSubSystem -- Initialize subsystems
   * <li>SDL_QuitSubSystem -- Shut down a subsystem
@@ -18,12 +18,13 @@
   * <li>SDL_GetError -- Get SDL error string
   * <li>SDL_envvars -- SDL environment variables
   * </ul>
+  *
   */
 #include "SDLManager.hh"
 
 /**
   * \defgroup Video
-  * 
+  *
   * \defgroup WindowManager
   */
 #include "SDLVideoInfo.hh"
@@ -42,8 +43,8 @@
   */
 #include "SDLEvent.hh"
 #include "SDLEventHandler.hh"
-  
-/**  
+
+/**
   * \defgroup Joystick
   * \defgroup Audio
   * \defgroup CDROM
@@ -55,7 +56,6 @@
   * \defgroup Other
   */
 #include "Interface3D.hh"
-
 
 
 #endif

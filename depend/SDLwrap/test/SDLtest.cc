@@ -15,13 +15,13 @@ using namespace SDL;
 
 
 //global variable
-RGBSurface bitmap("sample.bmp");
+std::string bitmapname("sample.bmp");
 
 //global function :
 void resetDisplay(int newW, int newH)
 {
-	SurfaceFactory::getScreen()->resize(newW,newH);
-	SurfaceFactory::getScreen()->debug();
+	Manager::manager()->getDisplay()->resize(newW,newH);
+	Manager::manager()->getDisplay()->debug();
 /*  if ( ! SDLSurfaceFactory::getScreen()->isOpenGLset() ) //2D specific resize code
   {
   SDLSurfaceFactory::getScreen()->fill(SDLColor(255,0,0));
@@ -46,8 +46,8 @@ public:
 	{
 		switch( keysym.sym ) {
     		case SDLK_ESCAPE: if (pressed==false) closing=true; break;
-    		case SDLK_F5: if (pressed==true) DisplaySurface::iconify(); break;
-    		case SDLK_F6: if (pressed==true) DisplaySurface::toggleFullScreen(); break;
+    		case SDLK_F5: if (pressed==true) Manager::manager()->getDisplay()->iconify(); break;
+    		case SDLK_F6: if (pressed==true) Manager::manager()->getDisplay()->toggleFullScreen(); break;
 	    default: break;
 		}
 		return true;
@@ -74,7 +74,7 @@ int main(int argc, char** argv)
 
   testlog.add(" Checking SDL Video Info... ");
 	//Getting video informations
-	VideoInfo::Info()->debug();
+	Manager::manager()->getVideoInfo()->debug();
 
   testlog.add(" Creating the User Interface... ");
 	//UI Creation
@@ -94,49 +94,26 @@ when the configuration file changed...*/
 
 
 	//Checking available video Modes
-	if(!SurfaceFactory::setDisplayFlags())
+	if(!DisplaySurface::setFlags())
 	{
-		testlog.add( "\nThe required mode is not available !" );
+		testlog.add( "\nThe required mode (default) is not available !" );
 		exit(1);
 	}
-	else
-	{
-		vector<int> h=SurfaceFactory::getAvailableDisplayHeight();
-		vector<int> w=SurfaceFactory::getAvailableDisplayWidth();
 
-    std::stringstream ssmodes;
-		ssmodes << "\nAvailable Modes : " ;
-		if ( h[0] == -1 || w[0] == -1 ) std::cout << "all";
-		else
-		{
-			for (unsigned int i=0; i<h.size() ; i++)
-			{
-				ssmodes <<  "- " << h[i] << "x" << w[i] << "\n";
-			}
-		}
-		testlog.add(ssmodes.str());
-	}
+	RGBSurface bitmap (bitmapname);
 
 	int newW=bitmap.getWidth()+60;
 	int newH=bitmap.getHeight()+60;
 
-	if (!SurfaceFactory::setDisplaySize(newW,newH))
-		testlog.add( "This Video Mode is not available !" );
-
-	int newBPP=SurfaceFactory::checkVideoMode();
-	if (!newBPP) testlog.add( "Video Mode not usable !" );
-	else
-	{
-	  std::stringstream ssused;
-	  ssused << "SDL will use " << newW << "x" << newH << "@" <<newBPP ;
-	  testlog.add(ssused.str());
-	}
-
 	DisplaySurface* display;
-	// Window creation
-	if ((display = SurfaceFactory::createDisplay()) != NULL)
-	{
-		display->debug();
+	if (! (display=Manager::manager()->setDisplay(newW,newH)))
+    {
+        testlog.add( "Display Creation FAILED !");
+        exit(0);
+    }
+    else
+    {
+        display->debug();
 
 		if (display->fill(Color(255,0,0)))
 			display->blit(bitmap,Point(30,30));
@@ -161,7 +138,7 @@ when the configuration file changed...*/
 			//TODO : moving 10 smileys randomly
 
 			//use the access method because of the resize event which modify the screen address
-			SurfaceFactory::getScreen()->update();
+			Manager::manager()->getDisplay()->update();
 
 		}
 	}
@@ -171,25 +148,9 @@ when the configuration file changed...*/
 	testlog.add(" OPENGL activation... ");
 
 
-	if(!SurfaceFactory::setDisplayFlags(true))
+	if(!DisplaySurface::setFlags(true))
 	{
 		std::cout << "\nThe required mode is not available !" << std::endl;
-	}
-	else
-	{
-		vector<int> h=SurfaceFactory::getAvailableDisplayHeight();
-		vector<int> w=SurfaceFactory::getAvailableDisplayWidth();
-
-		std::cout << "\nAvailable Modes : " ;
-		if ( h[0] == -1 || w[0] == -1 ) std::cout << "all";
-		else
-		{
-			for (unsigned int i=0; i<h.size() ; i++)
-			{
-				std::cout <<  "- " << h[i] << "x" << w[i] << "\n";
-			}
-		}
-		std::cout << std::endl ;
 	}
 
 	MyUserInput ui2; // another ui, since the first is closed ( but not deleted )
@@ -207,7 +168,7 @@ when the configuration file changed...*/
 		//GLManager test
 		GLManager::manager()->debug();
 
-	if ((display = SurfaceFactory::createDisplay()) != NULL)
+	if ((display = Manager::manager()->setDisplay()) != NULL)
 	{
 
 		//GLManager test
@@ -225,7 +186,7 @@ when the configuration file changed...*/
 		{
 			Event::handleEvents(ui2);
 			//use the access method because of the resize event which modify the screen address
-			SurfaceFactory::getScreen()->update();
+			Manager::manager()->getDisplay()->update();
 		}
 	}
 

@@ -7,14 +7,13 @@
 
 #include "SDLConfig.hh"
 #include "SDLBaseSurface.hh"
-#include "SDLVideoInfo.hh"
 #include "SDLColor.hh"
 
 namespace SDL {
 
 class RGBSurface : public BaseSurface
 {
-	friend class SurfaceFactory;
+	//friend class SurfaceFactory;
 	//friend class SDLDisplaySurface;
 
 //SDL interprets each pixel as a 32-bit number, so our masks must depend
