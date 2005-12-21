@@ -65,15 +65,13 @@ class Config
   static Logger *	_log;
 public:
   Config(void) {_log->setLogfile("SDLwrap.log");}
-  static inline  Logger * getLog(void) {return _log;}
+  static inline  Logger& Log(void) {return *_log;}
   static inline  void addLog(std::string str, bool fatal = false)
   {
   	if (fatal)
   		str = " FATAL ERROR ==> " + str;
   	_log->add(str);
 	}
-
-  static Logger& getLogX() { return *_log; }
 };
 }
 #endif

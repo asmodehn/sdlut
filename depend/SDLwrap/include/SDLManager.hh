@@ -168,8 +168,8 @@ namespace SDL
         DisplaySurface * getDisplay( void ) {return _screen;} //init if not?
 
         VideoInfo * getVideoInfo( void );
-		
-		Config * getConfig( void ) { return _config; }
+
+				Config * getConfig( void ) { return _config; }
     };
 
 }//namespace SDL
