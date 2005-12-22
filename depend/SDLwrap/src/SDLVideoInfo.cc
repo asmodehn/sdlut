@@ -1,5 +1,5 @@
 #include "SDLVideoInfo.hh"
-
+#include "SDLManager.hh"
 namespace SDL {
 
 //VideoInfo* VideoInfo::_Instance=NULL;
@@ -15,8 +15,7 @@ try : _info(SDL_GetVideoInfo())
 }
 catch (std::exception &e)
 {
-	Config::addLog( "Exception catched in VideoInfo Constructor !!!" );
-	Config::addLog( e.what() );
+	Log << "Exception catched in VideoInfo Constructor !!!" << nl << e.what() ;
 	//_info should remain NULL if there was an error...
 	//and *this* is not constructed since we throw an exception
 };
@@ -32,23 +31,19 @@ std::string VideoInfo::getDriverName(void) const
 
 void VideoInfo::debug(void) const
 {
-	std::stringstream logstr;
-	logstr << "VideoInfo::debug()"  << "\n" <<
-	"- Driver Name : " << getDriverName() << "\n" <<
+	Log << nl << "VideoInfo::debug()"  << nl <<
+	"- Driver Name : " << getDriverName() << nl <<
 	std::boolalpha <<
-	"- Is it possible to create Hardware Surfaces? " << isHWAvailable() << "\n" <<
-	"- Is there a window manager available? " << isWMAvailable() << "\n" <<
-	"- Are hardware to hardware blits accelerated? " << isBlitHWAccelAvailable() << "\n" <<
-	"- Are hardware to hardware colorkey blits accelerated? " << isBlitHWCCAccelAvailable() << "\n" <<
-	"- Are hardware to hardware alpha blits accelerated? " << isBlitHWAAccelAvailable() << "\n" <<
-	"- Are software to hardware blits accelerated? " << isBlitSWAccelAvailable() << "\n" <<
-	"- Are software to hardware colorkey blits accelerated? " << isBlitSWCCAccelAvailable() << "\n" <<
-	"- Are software to hardware alpha blits accelerated? " << isBlitSWAAccelAvailable() << "\n" <<
-	"- Are color fills accelerated? " << isBlitFillAccelAvailable() << "\n" <<
-	"- Total amount of video memory in Kilobytes : " << videoMemSize() <<
-	std::endl;
-	Config::addLog(logstr.str());
-
+	"- Is it possible to create Hardware Surfaces? " << isHWAvailable() << nl <<
+	"- Is there a window manager available? " << isWMAvailable() << nl <<
+	"- Are hardware to hardware blits accelerated? " << isBlitHWAccelAvailable() << nl <<
+	"- Are hardware to hardware colorkey blits accelerated? " << isBlitHWCCAccelAvailable() << nl <<
+	"- Are hardware to hardware alpha blits accelerated? " << isBlitHWAAccelAvailable() << nl <<
+	"- Are software to hardware blits accelerated? " << isBlitSWAccelAvailable() << nl <<
+	"- Are software to hardware colorkey blits accelerated? " << isBlitSWCCAccelAvailable() << nl <<
+	"- Are software to hardware alpha blits accelerated? " << isBlitSWAAccelAvailable() << nl <<
+	"- Are color fills accelerated? " << isBlitFillAccelAvailable() << nl <<
+	"- Total amount of video memory in Kilobytes : " << videoMemSize() << nl <<	std::endl;
 	getPixelFormat().debug();
 }
 

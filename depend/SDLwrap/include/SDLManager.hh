@@ -24,6 +24,7 @@
 #include "SDLVideoInfo.hh"
 #ifdef HAVE_OPENGL
 #include "SDLGLWindow.hh"
+#include "SDLGLManager.hh"
 #endif //HAVE_OPENGL
 
 #include "SDLWindow.hh"
@@ -55,12 +56,15 @@ namespace SDL
                 errormsg+= "NOPARACHUTE " ;
             if ( (flags & SDL_INIT_EVENTTHREAD) != 0)
                 errormsg+= "EVENTTHREAD " ;
-            Config::addLog(errormsg + ": " + GetError() );
+            Log << errormsg << ": " << GetError() ;
         }
 
-		Config * _config;
+
         DisplaySurface * _screen;
         VideoInfo * _vinfo;
+#ifdef HAVE_OPENGL
+        GLManager * _gl;
+#endif
 
     protected:
         Manager(Uint32 flags = SDL_INIT_EVERYTHING) throw (std::logic_error);
@@ -165,11 +169,14 @@ namespace SDL
 
         //Access other classes (instanced only once)
         DisplaySurface * setDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, int bpp = DEFAULT_DISPLAY_BPP );
+        //same than set but forces the re-creation...
+        DisplaySurface * resetDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, int bpp = DEFAULT_DISPLAY_BPP );
         DisplaySurface * getDisplay( void ) {return _screen;} //init if not?
 
         VideoInfo * getVideoInfo( void );
-
-				Config * getConfig( void ) { return _config; }
+#ifdef HAVE_OPENGL
+        GLManager * getGLManager();
+#endif
     };
 
 }//namespace SDL

@@ -1,5 +1,6 @@
 #include "SDLSurfaceFactory.hh"
 
+
 namespace SDL  {
 
 int SurfaceFactory::displayWidth = DEFAULT_DISPLAY_WIDTH;
@@ -252,7 +253,7 @@ unsigned int SurfaceFactory::clone(int index,int times) // clone the one on inde
 	}
 	catch (std::exception & e)
 	{
-		Config::addLog(e.what());
+		Log << e.what();
 	}
   return surfaceList.size()-1;;
 }
@@ -271,7 +272,7 @@ unsigned int SurfaceFactory::cloneToDisplay(int index,int times, bool alpha) // 
 	}
 	catch (std::exception & e)
 	{
-		Config::addLog(e.what());
+		Log << e.what();
 	}
 	return surfaceList.size()-1;
 }

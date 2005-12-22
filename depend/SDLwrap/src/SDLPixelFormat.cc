@@ -4,27 +4,25 @@ namespace SDL {
 
 void PixelFormat::debug(void) const
 {
-	std::stringstream ss;
-	ss << "\nPixelFormat::debug()" << "\n" <<
-	"- Bits Per Pixel = " << getBitsPerPixel() << "\n" <<
-	"- Bytes Per Pixel = " << getBytesPerPixel() << "\n" <<
-	"- Red shift = " << getRshift() << "\n" <<
-	"- Green shift = " << getGshift() << "\n" <<
-	"- Blue shift = " << getBshift() << "\n" <<
-	"- Alpha shift = " << getAshift() << "\n" <<
-	"- Red loss = " << getRloss() << "\n" <<
-	"- Green loss = " << getGloss() << "\n" <<
-	"- Blue loss = " << getBloss() << "\n" <<
-	"- Alpha loss = " << getAloss() << "\n" <<
+	Log << nl << "PixelFormat::debug()" << nl <<
+	"- Bits Per Pixel = " << getBitsPerPixel() << nl <<
+	"- Bytes Per Pixel = " << getBytesPerPixel() << nl <<
+	"- Red shift = " << getRshift() << nl <<
+	"- Green shift = " << getGshift() << nl <<
+	"- Blue shift = " << getBshift() << nl <<
+	"- Alpha shift = " << getAshift() << nl <<
+	"- Red loss = " << getRloss() << nl <<
+	"- Green loss = " << getGloss() << nl <<
+	"- Blue loss = " << getBloss() << nl <<
+	"- Alpha loss = " << getAloss() << nl <<
 	std::hex << std::showbase <<
-	"- Red mask = " << getRmask() << "\n" <<
-	"- Green mask = " << getGmask() << "\n" <<
-	"- Blue mask = " << getBmask() << "\n" <<
+	"- Red mask = " << getRmask() << nl <<
+	"- Green mask = " << getGmask() << nl <<
+	"- Blue mask = " << getBmask() << nl <<
 	"- Alpha mask = " << getAmask() <<
 	std::dec <<
 	//To be continued
 	std::endl;
-	Config::addLog(ss.str());
 }
 
 PixelColor PixelFormat::getValueFromRGB(const RGBColor& val) const

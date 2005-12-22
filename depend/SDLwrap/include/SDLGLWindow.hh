@@ -38,7 +38,7 @@ protected:
 public:
 
 	//Constructor
-	GLWindow(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
+	GLWindow(int width, int height, int bpp) throw (std::logic_error)
 	: DisplaySurface(width, height, bpp, flags)
 	{
 		engine->init(getWidth(),getHeight());

@@ -17,9 +17,7 @@ try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
 {
 	if (_surf == NULL)
 	{
-	  std::stringstream ss;
-	  ss<<"Unable to set " << width << " x " << height << " display surface : ";
-		Config::addLog(ss.str() );
+	  Log << nl <<"Unable to set " << width << " x " << height << " display surface : ";
 		throw std::logic_error("SDL_SetVideoMode() return NULL");
 	}
 
@@ -30,11 +28,8 @@ try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
 }
 catch (std::exception &e)
 {
-	Config::addLog( "Exception catched in DisplaySurface Constructor !!!" );
-	//Affichage Erreur
-	Config::addLog(e.what());
-
-	Config::addLog(GetError());
+	Log << nl << "Exception catched in DisplaySurface Constructor !!!" << nl <<
+		e.what() << nl << GetError() << std::endl;
 	//TODO : much more explicit error message...
 };
 
@@ -57,7 +52,7 @@ bool DisplaySurface::setIcon(std::string iconfilename)
     }
     else
     {
-        Config::addLog("Unable to load the icon " + iconfilename + " : " + GetError());
+		Log << nl << "Unable to load the icon " << iconfilename << " : " << GetError() << std::endl;
     }
     return res;
 }
@@ -148,17 +143,16 @@ bool DisplaySurface::checkAvailableSize( const PixelFormat& fmt )
 		res=true;
 	}
 
-	std::stringstream ssmodes;
-    ssmodes << "\nAvailable Modes : " ;
-	if ( availableHeight[0] == -1 || availableWidth[0] == -1 ) ssmodes << "all";
+	Log << nl << "Available Modes : " ;
+	if ( availableHeight[0] == -1 || availableWidth[0] == -1 ) Log << "all";
 	else
 	{
 		for (unsigned int i=0; i<availableHeight.size() ; i++)
 		{
-			ssmodes <<  "- " << availableHeight[i] << "x" << availableWidth[i] << "\n";
+			Log <<  "- " << availableHeight[i] << "x" << availableWidth[i] << nl;
 		}
 	}
-	Config::addLog(ssmodes.str());
+	
 
 
 	return res;
@@ -193,14 +187,12 @@ bool DisplaySurface::update(std::vector<Rect> rlist)
 
 void DisplaySurface::debug(void) const
 {
-  std::stringstream logstr;
 	BaseSurface::debug();
-	logstr<< std::boolalpha << "- Fullscreen ? " << isFullScreenset() << "\n"
-				<< "- Resizable ? " << isResizableset() << "\n"
-				<< "- NoFrame ? " << isNoFrameset() << "\n"
-				<< "- AnyFormat ? " << isAnyFormatset() << "\n"
+	Log << nl<<std::boolalpha << "- Fullscreen ? " << isFullScreenset() << nl
+				<< "- Resizable ? " << isResizableset() << nl
+				<< "- NoFrame ? " << isNoFrameset() <<nl
+				<< "- AnyFormat ? " << isAnyFormatset() << nl
 				<< "- Double Buffered ? " << isDoubleBufset() << std::endl;
-  Config::addLog(logstr.str());
 }
 
 } //namespace SDL

@@ -15,16 +15,14 @@ try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_m
 	{
 	  std::stringstream ss;
 	  ss << "Unable to set " <<  width<<  " x " <<  height <<  " rgb surface : ";
-        Config::addLog( ss.str());
+        Log << ss.str();
         throw std::logic_error("SDL_CreateRGBSurface returns NULL");
     }
 }
 catch (std::exception &e)
 {
-	Config::addLog( "Exception catched in RGBSurface Constructor !!!" );
-	//Error Display
-	Config::addLog(e.what());
-	Config::addLog(GetError());
+	Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
+		e.what() << nl << GetError() << std::endl;
 	//TODO : much more explicit error message...
 };
 
@@ -34,18 +32,14 @@ try : BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitc
 	//std::cerr << "RGBSurface Constructor Called" << std::endl;
     if(_surf == NULL)
 	{
-	  std::stringstream ss;
-	  ss << "Unable to set " << width<< " x " << height<< " rgb surface : ";
-        Config::addLog (ss.str() );
+	  Log << "Unable to set " << width<< " x " << height<< " rgb surface : ";
         throw std::logic_error("SDL_CreateRGBSurface returns NULL");
     }
 }
 catch (std::exception &e)
 {
-	Config::addLog( "Exception catched in RGBSurface Constructor !!!" );
-	//Error Display
-	Config::addLog(e.what());
-	Config::addLog(GetError());
+	Log << "Exception catched in RGBSurface Constructor !!!" << nl <<
+		e.what() << nl << GetError() ;
 	//TODO : much more explicit error message...
 };
 
@@ -57,20 +51,16 @@ try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_m
 		throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");
     if(_surf == NULL)
 	{
-	  std::stringstream ss;
-	  ss << "Unable to set " <<  width<<  " x " <<  height <<  " rgb surface : ";
-        Config::addLog( ss.str());
+	  Log << "Unable to set " <<  width<<  " x " <<  height <<  " rgb surface : " ;
         throw std::logic_error("SDL_CreateRGBSurface returns NULL");
     }
     else
-			fill(color);
+		fill(color);
 }
 catch (std::exception &e)
 {
-	Config::addLog( "Exception catched in RGBSurface Constructor !!!" );
-	//Error Display
-	Config::addLog(e.what());
-	Config::addLog(GetError());
+	Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
+		e.what() << nl << GetError() << std::endl ;
 	//TODO : much more explicit error message...
 };
 
@@ -81,16 +71,14 @@ try : BaseSurface(SDL_LoadBMP(filename.c_str()))
 	//TODO : support for other format than BMP with SDL_image
     if(_surf == NULL)
 	{
-        Config::addLog( "Unable to set rgb surface from " + filename );
+		Log << nl << "Unable to set rgb surface from " << filename << std::endl;
         throw std::logic_error("SDL_LoadBMP returns NULL");
     }
 }
 catch (std::exception &e)
 {
-	Config::addLog( "Exception catched in RGBSurface Constructor !!!" );
-	//Error Display
-	Config::addLog(e.what());
-	Config::addLog(GetError());
+	Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
+		e.what() << nl << GetError();
 	//TODO : much more explicit error message...
 };
 
@@ -101,7 +89,7 @@ try : BaseSurface(SDL_LoadBMP(filename.c_str()))
 	//TODO : support for other format than BMP with SDL_image
     if(_surf == NULL)
 	{
-        Config::addLog( "Unable to set rgb surface from " + filename );
+		Log << nl << "Unable to set rgb surface from " << filename << std::endl;
         throw std::logic_error("SDL_LoadBMP returns NULL");
 	}
 	else
@@ -109,10 +97,8 @@ try : BaseSurface(SDL_LoadBMP(filename.c_str()))
 }
 catch (std::exception &e)
 {
-	Config::addLog( "Exception catched in RGBSurface Constructor !!!" );
-	//Error Display
-	Config::addLog(e.what());
-	Config::addLog(GetError());
+	Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
+		e.what() << nl << GetError();
 	//TODO : much more explicit error message...
 };
 
@@ -129,17 +115,16 @@ try : BaseSurface ( 	cloning ?
 	const std::string errstr = cloning ? "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
     if(_surf == NULL)
 	{
-        Config::addLog( "Unable to copy the RGBsurface @ " + (int) &s) ;
+		Log << nl << "Unable to copy the RGBsurface @ " << &s << std::endl;
         throw std::logic_error(errstr + " returns NULL");
     }
     else
-	    Config::addLog( "SDL_Surface created @ " + (int) _surf);
+		Log << nl << "SDL_Surface created @ " <<  _surf << std::endl;
 }
 catch (std::exception &e)
 {
-	Config::addLog( "Exception catched in RGBSurface Copy Constructor !!!" );
-	Config::addLog(e.what());
-	Config::addLog(GetError());
+	Log << nl<< "Exception catched in RGBSurface Copy Constructor !!!"<< nl <<
+		e.what() << nl << GetError() << std::endl;
 };
 
 
@@ -153,31 +138,27 @@ try : BaseSurface ( 	cloning ?
 	const std::string errstr = cloning ? "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
     if(_surf == NULL)
 	{
-        Config::addLog( "Unable to copy the RGBsurface @ " +  (int)&s );
+		Log << nl << "Unable to copy the RGBsurface @ "  << &s << std::endl;
         throw std::logic_error(errstr + " returns NULL");
     }
     else
-	    Config::addLog( "SDL_Surface created @ " + (int) _surf );
+		Log << nl << "SDL_Surface created @ " << _surf << std::endl;
 }
 catch (std::exception &e)
 {
-	Config::addLog("Exception catched in RGBSurface Copy Constructor !!!" );
-	Config::addLog(e.what());
-	Config::addLog(GetError());
+	Log << nl << "Exception catched in RGBSurface Copy Constructor !!!" << nl <<
+		e.what() << nl << GetError() << std::endl;
 };
 
 RGBSurface::RGBSurface(const BaseSurface & s , bool cloning, bool toDisplay, bool alpha) throw (std::logic_error)
 try : BaseSurface(s,cloning,toDisplay,alpha)
 {
-  //std::cerr << "RGBSurface Copy Called" << std::endl;
-	//Config::addLog( "SDL_Surface created @ " + (int) _surf );
-	Config::Log() << "SDL_Surface created @ " << (void*) _surf;
+	Log << nl << "SDL_Surface created @ " << _surf << std::endl;
 }
 catch (std::exception &e)
 {
-	Config::addLog("Exception catched in RGBSurface Copy Constructor !!!" );
-	Config::addLog(e.what());
-	Config::addLog(GetError());
+	Log << nl << "Exception catched in RGBSurface Copy Constructor !!!" << nl <<
+		e.what() << nl << GetError() << std::endl;
 };
 
 /*

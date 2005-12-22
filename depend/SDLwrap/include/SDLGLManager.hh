@@ -35,19 +35,13 @@ namespace SDL {
 //TEst to do on linux, to choose a class behaviour
 class GLManager
 {
-	static GLManager * _uniqueInstance;
+    friend class Manager;
 
 protected :
 
 	GLManager() {}
 
 public :
-
-	static GLManager * manager()
-	{
-		if (_uniqueInstance == NULL) _uniqueInstance = new GLManager;
-		return _uniqueInstance;
-	}
 
 	//may be connected with constructor ???
 	bool loadGLLibrary(const std::string & path)

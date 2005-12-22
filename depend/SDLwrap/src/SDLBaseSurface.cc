@@ -53,17 +53,16 @@ try : locks(0)
 	const std::string errstr = cloning ? toDisplay ? alpha ? "SDL_DisplayFormatAlpha" : "SDLDisplayFormat" : "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
   if(_surf == NULL)
 	{
-    Config::addLog("Unable to copy the RGBsurface" );
+    Log << nl << "Unable to copy the RGBsurface" ;
     throw std::logic_error(errstr + " returns NULL");
   }
   else
-	  Config::addLog( "SDL_Surface created ");
+	  Log << nl << "SDL_Surface created ";
 }
 catch (std::exception &e)
 {
-	Config::addLog( "Exception catched in SDLBaseSurface Copy Constructor !!!" );
-	Config::addLog(e.what());
-	Config::addLog(GetError());
+	Log << nl << "Exception catched in SDLBaseSurface Copy Constructor !!!" << nl <<
+		e.what() << nl << GetError();
 };
 
 
@@ -164,7 +163,7 @@ bool BaseSurface::blit(const BaseSurface& src, Rect& dest_rect, const Rect& src_
 	{
 		case 0 : res=true; break;
 		case -1 : res=false; break;
-		default : Config::addLog(GetError()); break; // beware the -2 returns... see the SDL doc
+		default : Log << GetError() << std::endl; break; // beware the -2 returns... see the SDL doc
 	}
 	return res;
 }
@@ -186,18 +185,16 @@ Rect BaseSurface::getClipRect(void) const
 
 void BaseSurface::debug(void) const
 {
-	std::stringstream logstr;
-	logstr<< "SDL*Surfaces::debug()" << "\n"
-				<< "- Height = " << getHeight() << "\n"
-				<< "- Width = " << getWidth() << "\n"
-				<< "- bpp = " << getBPP() << "\n"
+	Log << nl << "SDL*Surfaces::debug()" << nl
+				<< "- Height = " << getHeight() << nl
+				<< "- Width = " << getWidth() << nl
+				<< "- bpp = " << getBPP() << nl
 				<< std::boolalpha
-				<< "- SW ? " << isSWset() << "\n"
-				<< "- HW ? " << isHWset() << "\n"
-				<< "- HWAccel ? " << isHWAccelset() << "\n"
-				<< "- RLEAccel ? " << isRLEAccelset() << "\n"
+				<< "- SW ? " << isSWset() << nl
+				<< "- HW ? " << isHWset() << nl
+				<< "- HWAccel ? " << isHWAccelset() << nl
+				<< "- RLEAccel ? " << isRLEAccelset() << nl
 				<< "- PreAlloc ? " << isPreAllocset() << std::endl;
-  Config::getLog()->add(logstr.str());
 }
 
 } //namespace SDL

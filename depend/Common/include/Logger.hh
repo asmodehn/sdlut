@@ -29,7 +29,6 @@
  * \brief This class defines loglevel on top of clog
  *
  * This Logger use indentation levels, usually defined on build time.
- * TODO : need to be improved to be used with streams as well as strings.
  * TODO : Add LogLevels to filter the console output as well as the file output (3 loglevel : quiet / normal / verbose)
  *
  * \author Alex
@@ -65,12 +64,14 @@ class Logger //: public std::ostream
     void enableclog() { _clogSwitch= true ; }
     void disableclog() { _clogSwitch = false ; }
 
-    void add(const std::string & message); // not const because of initial '\n' in string from streams...
+    //void add(const std::string & message); // not const because of initial '\n' in string from streams...
 		template<class M> Logger& operator << (const M & msg);
-		Logger& operator << (std::ostream& (*manip)(std::ostream&));//to enable manipulators on Logger
+		//to enable manipulators on Logger
+		Logger& operator << (std::ostream& (*manip)(std::ostream&));
+		Logger& operator << (std::ios_base& (*manip)(std::ios_base&));
 		Logger& operator << (Logger& (*manip)(Logger&));//to enable specific manipulators on Logger
 
-		friend Logger& nl (Logger& log); // adds a new line with the prefix
+		friend Logger& nl (Logger& log); // adds a prefix
 
 		Logger & flush(void);
 

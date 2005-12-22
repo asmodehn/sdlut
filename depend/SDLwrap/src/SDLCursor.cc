@@ -144,9 +144,8 @@ try : _cursor(init_system_cursor(shapes[sh]))
 }
 catch (std::exception & e)
 {
-	Config::addLog("Exception catched on Cursor Constructor !!!");
-	Config::addLog(e.what());
-	Config::addLog(GetError());
+	Log << nl << "Exception catched on Cursor Constructor !!!" << nl <<
+		e.what() << nl << GetError() << std::endl;
 }
 
 } //namespace SDL

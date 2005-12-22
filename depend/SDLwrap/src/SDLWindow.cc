@@ -1,5 +1,6 @@
 #include "SDLWindow.hh"
 
+
 namespace SDL {
 
 Window::Window(int width, int height, int bpp) throw (std::logic_error)
@@ -21,7 +22,7 @@ void Window::debug(void) const
 //SaveScreen -> backup the screen content in a RGBSurface...
 RGBSurface* Window::save(void)
 {
-	Config::addLog( "Window::save()" );
+	Log << "Window::save()" ;
 	// we create a new RGB surface to clone the display...
 	RGBSurface * backupScreen= new RGBSurface(*this,true,true,false);
 
@@ -33,7 +34,7 @@ bool Window::restore(const RGBSurface& savedScreen)
 {
   bool res;
 
-  Config::addLog( "Window::restore()" );
+ Log << "Window::restore()";
 
   Point newpos;
   newpos.setx( (getWidth()-savedScreen.getWidth()) / 2 );
@@ -69,8 +70,7 @@ bool Window::resize(int width, int height)
 
 	if (newSurf==NULL) //SetVideoMode has failed
 	{
-		std::cerr << "Unable to resize to " << width << " x " << height << " 2D display surface " << std::endl;
-		Config::addLog(GetError());
+		Log << "Unable to resize to " << width << " x " << height << " 2D display surface " << nl << GetError();
 	}
 	else //setvideoMode successfull
 	{

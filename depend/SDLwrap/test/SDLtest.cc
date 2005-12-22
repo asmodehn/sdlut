@@ -65,22 +65,22 @@ int main(int argc, char** argv)
 
 	//Setup example
 
-	testlog.add(" Enabling SDL Video... ");
+  testlog << nl << " Enabling SDL Video... " << std::endl;
 	Manager::enableVideo();
 	Manager::manager()->debug();
 
 //SDLDisplaySurface* display = SDLSurfaceFactory::createDisplay();
 //system("pause");
 
-  testlog.add(" Checking SDL Video Info... ");
+	testlog << nl <<  " Checking SDL Video Info... " << std::endl;
 	//Getting video informations
 	Manager::manager()->getVideoInfo()->debug();
 
-  testlog.add(" Creating the User Interface... ");
+	testlog << nl << " Creating the User Interface... " << std::endl;
 	//UI Creation
 	MyUserInput ui;
 
-  testlog.add(" Creating the SDL Cursor... ");
+  testlog << " Creating the SDL Cursor... ";
 	Cursor cursor(blackArrow);
 	cursor.show();
 	Cursor::setCurrent(cursor);
@@ -96,7 +96,7 @@ when the configuration file changed...*/
 	//Checking available video Modes
 	if(!DisplaySurface::setFlags())
 	{
-		testlog.add( "\nThe required mode (default) is not available !" );
+		testlog << nl << "The required mode (default) is not available !" << std::endl;
 		exit(1);
 	}
 
@@ -108,7 +108,7 @@ when the configuration file changed...*/
 	DisplaySurface* display;
 	if (! (display=Manager::manager()->setDisplay(newW,newH)))
     {
-        testlog.add( "Display Creation FAILED !");
+		testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);
     }
     else
@@ -128,7 +128,7 @@ when the configuration file changed...*/
 //		if (s==NULL) {testlog.add("s is NULL!"); exit(1);}
 
 
-		std::cout << std::boolalpha << display->blit(smiley,Point(50,50)) << std::endl;
+		testlog << nl << std::boolalpha << display->blit(smiley,Point(50,50)) << std::endl;
 
 		Cursor::warpCurrent(Point(50,50));
 
@@ -145,43 +145,40 @@ when the configuration file changed...*/
 
 	//First test ended : go on to test OPENGL
 
-	testlog.add(" OPENGL activation... ");
+	testlog << nl << " OPENGL activation... " << std::endl;
 
 
 	if(!DisplaySurface::setFlags(true))
 	{
-		std::cout << "\nThe required mode is not available !" << std::endl;
+		testlog << nl << "\nThe required mode is not available !" << std::endl;
 	}
 
 	MyUserInput ui2; // another ui, since the first is closed ( but not deleted )
-	std::cout <<"display reset" << std::endl;
+	testlog << nl <<"display reset" << std::endl;
 
 	//GLManager test
-	std::cout << std::boolalpha <<
-			"setRsize(5) " << GLManager::manager()->setRSize(5) << "\n" <<
-			"setGSize(5) " << GLManager::manager()->setGSize(5) << "\n" <<
-			"setBSize(5) " << GLManager::manager()->setBSize(5) << "\n" <<
-			"setASize(5) " << GLManager::manager()->setASize(5) << "\n" <<
-			"setBufferSize(5) " << GLManager::manager()->setBufferSize(12) << "\n" <<
+	testlog << nl<<std::boolalpha <<
+			"setRsize(5) " << Manager::manager()->getGLManager()->setRSize(5) << nl <<
+			"setGSize(5) " << Manager::manager()->getGLManager()->setGSize(5) << nl <<
+			"setBSize(5) " << Manager::manager()->getGLManager()->setBSize(5) << nl <<
+			"setASize(5) " << Manager::manager()->getGLManager()->setASize(5) << nl <<
+			"setBufferSize(5) " << Manager::manager()->getGLManager()->setBufferSize(12) << nl <<
 			std::endl;
 
-		//GLManager test
-		GLManager::manager()->debug();
-
-	if ((display = Manager::manager()->setDisplay()) != NULL)
+	if ((display = Manager::manager()->resetDisplay()) != NULL)
 	{
 
 		//GLManager test
-		GLManager::manager()->debug();
+		Manager::manager()->getGLManager()->debug();
 
-		std::cout << "calling display->debug() " << std::endl;
+		testlog << nl << "calling display->debug() " << std::endl;
 		display->debug();
 
-		std::cout << std::boolalpha << " setDepthSize(16) " << GLManager::manager()->setDepthSize(16) << std::endl;
+		testlog << nl << std::boolalpha << " setDepthSize(16) " << Manager::manager()->getGLManager()->setDepthSize(16) << std::endl;
 
-		GLManager::manager()->debug();
+		Manager::manager()->getGLManager()->debug();
 
-		std::cout << "loop... " << std::endl;
+		testlog << nl << "loop... " << std::endl;
 		while(!(ui2.closed()))
 		{
 			Event::handleEvents(ui2);

@@ -5,8 +5,6 @@ namespace SDL {
 
 #ifdef HAVE_OPENGL
 
-GLManager* GLManager::_uniqueInstance = NULL;
-
 int GLManager::getRSize(void) const
 {
 	int res;
@@ -141,20 +139,18 @@ bool GLManager::setAccumASize(int bits)
 
 void GLManager::debug(void) const
 {
-  std::stringstream logstr;
-	logstr<< "GLManager - debug() : \n" <<
-    	"GL Red Size = " << getRSize() << "\n" <<
-		"GL Green Size = " << getGSize() << "\n" <<
-		"GL Blue Size = " << getBSize() << "\n" <<
-		"GL Alpha Size = " << getASize() << "\n" <<
-		"GL Buffer Size = " << getBufferSize() << "\n" <<
-		"GL Depth Size = " << getDepthSize() << "\n" <<
-		"GL Stencil Size = " << getStencilSize() << "\n" <<
-		"GL Accum Red Size = " << getAccumRSize() << "\n" <<
-		"GL Accum Green Size = " << getAccumGSize() << "\n" <<
-		"GL Accum Blue Size = " << getAccumBSize() << "\n" <<
+  Log << nl << "GLManager - debug() : " << nl <<
+    	"GL Red Size = " << getRSize() << nl <<
+		"GL Green Size = " << getGSize() << nl <<
+		"GL Blue Size = " << getBSize() << nl <<
+		"GL Alpha Size = " << getASize() << nl <<
+		"GL Buffer Size = " << getBufferSize() << nl <<
+		"GL Depth Size = " << getDepthSize() << nl <<
+		"GL Stencil Size = " << getStencilSize() << nl <<
+		"GL Accum Red Size = " << getAccumRSize() << nl <<
+		"GL Accum Green Size = " << getAccumGSize() << nl <<
+		"GL Accum Blue Size = " << getAccumBSize() << nl <<
 		"GL Accum Alpha Size = " << getAccumASize() << std::endl;
-  Config::addLog(logstr.str());
 }
 
 #endif
