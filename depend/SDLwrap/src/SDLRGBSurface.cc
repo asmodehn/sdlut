@@ -214,7 +214,7 @@ bool RGBSurface::optimise(bool alpha)
     }
     else
     {
-        optsurf=SDL_DisplayFormat(_surf);
+        optsurf=SDL_DisplayFormatAlpha(_surf);
     }
 
     if (optsurf == NULL ) res = false;
