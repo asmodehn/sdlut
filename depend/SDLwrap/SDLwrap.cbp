@@ -1454,45 +1454,6 @@
 			<Option target="threadwin"/>
 			<Option target="torturethread"/>
 		</Unit>
-		<Unit filename="include\SDLSurfaceFactory.hh">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
-			<Option target="test-debug"/>
-			<Option target="staticlib-NoOpenGL"/>
-			<Option target="checkkeys"/>
-			<Option target="graywin"/>
-			<Option target="loopwave"/>
-			<Option target="testalpha"/>
-			<Option target="testbitmap"/>
-			<Option target="testblitspeed"/>
-			<Option target="testcdrom"/>
-			<Option target="testcpuinfo"/>
-			<Option target="testdyngl"/>
-			<Option target="testendian"/>
-			<Option target="testerror"/>
-			<Option target="testgamma"/>
-			<Option target="testgl"/>
-			<Option target="testthread"/>
-			<Option target="testjoystick"/>
-			<Option target="testkeys"/>
-			<Option target="testlock"/>
-			<Option target="testoverlay2"/>
-			<Option target="testoverlay"/>
-			<Option target="testpalette"/>
-			<Option target="testsem"/>
-			<Option target="testsprite"/>
-			<Option target="testtimer"/>
-			<Option target="testtypes"/>
-			<Option target="testver"/>
-			<Option target="testvidinfo"/>
-			<Option target="testwin"/>
-			<Option target="testwm"/>
-			<Option target="threadwin"/>
-			<Option target="torturethread"/>
-		</Unit>
 		<Unit filename="include\SDLTimer.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -1739,12 +1700,6 @@
 			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
-		<Unit filename="src\SDLSurfaceFactory.cc">
-			<Option compilerVar="CC"/>
-			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
-			<Option target="staticlib-NoOpenGL"/>
-		</Unit>
 		<Unit filename="src\SDLVideoInfo.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
@@ -1844,10 +1799,6 @@
 			<Option compilerVar="CC"/>
 			<Option target="testgl"/>
 		</Unit>
-		<Unit filename="test\testhread.cc">
-			<Option compilerVar="CC"/>
-			<Option target="testthread"/>
-		</Unit>
 		<Unit filename="test\testjoystick.cc">
 			<Option compilerVar="CC"/>
 			<Option target="testjoystick"/>
@@ -1879,6 +1830,10 @@
 		<Unit filename="test\testsprite.cc">
 			<Option compilerVar="CC"/>
 			<Option target="testsprite"/>
+		</Unit>
+		<Unit filename="test\testthread.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testthread"/>
 		</Unit>
 		<Unit filename="test\testtimer.cc">
 			<Option compilerVar="CC"/>

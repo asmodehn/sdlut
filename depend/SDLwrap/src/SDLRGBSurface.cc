@@ -103,55 +103,55 @@ catch (std::exception &e)
 };
 
 
-//Copy Constructor ( doesn't copy the content of the surface)
-//and Clone (also copy the content of the surface)
-RGBSurface::RGBSurface(const RGBSurface & s , const PixelFormat& fmt, Uint32 flags, bool cloning) throw (std::logic_error)
-try : BaseSurface ( 	cloning ?
-				SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*fmt._pformat),flags) // copy to deal with const... maybe a const cast should be ok...
-				: SDL_CreateRGBSurface(flags, s.getWidth(), s.getHeight(), fmt.getBitsPerPixel(), fmt.getRmask(), fmt.getGmask(), fmt.getBmask(), fmt.getAmask())
-		)
-{
-	//std::cerr << "RGBSurface Copy Called" << std::endl;
-	const std::string errstr = cloning ? "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
-    if(_surf == NULL)
-	{
-		Log << nl << "Unable to copy the RGBsurface @ " << &s << std::endl;
-        throw std::logic_error(errstr + " returns NULL");
-    }
-    else
-		Log << nl << "SDL_Surface created @ " <<  _surf << std::endl;
-}
-catch (std::exception &e)
-{
-	Log << nl<< "Exception catched in RGBSurface Copy Constructor !!!"<< nl <<
-		e.what() << nl << GetError() << std::endl;
-};
+////Copy Constructor ( doesn't copy the content of the surface)
+////and Clone (also copy the content of the surface)
+//RGBSurface::RGBSurface(const RGBSurface & s , const PixelFormat& fmt, Uint32 flags, bool cloning) throw (std::logic_error)
+//try : BaseSurface ( 	cloning ?
+//				SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*fmt._pformat),flags) // copy to deal with const... maybe a const cast should be ok...
+//				: SDL_CreateRGBSurface(flags, s.getWidth(), s.getHeight(), fmt.getBitsPerPixel(), fmt.getRmask(), fmt.getGmask(), fmt.getBmask(), fmt.getAmask())
+//		)
+//{
+//	//std::cerr << "RGBSurface Copy Called" << std::endl;
+//	const std::string errstr = cloning ? "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
+//    if(_surf == NULL)
+//	{
+//		Log << nl << "Unable to copy the RGBsurface @ " << &s << std::endl;
+//        throw std::logic_error(errstr + " returns NULL");
+//    }
+//    else
+//		Log << nl << "SDL_Surface created @ " <<  _surf << std::endl;
+//}
+//catch (std::exception &e)
+//{
+//	Log << nl<< "Exception catched in RGBSurface Copy Constructor !!!"<< nl <<
+//		e.what() << nl << GetError() << std::endl;
+//};
+//
+//
+//RGBSurface::RGBSurface(const RGBSurface & s , Uint32 flags, bool cloning) throw (std::logic_error)
+//try : BaseSurface ( 	cloning ?
+//				SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*(s._surf->format)),flags) // copy to deal with const... maybe a const cast should be ok...
+//				: SDL_CreateRGBSurface(flags, s.getWidth(), s.getHeight(), s._surf->format->BitsPerPixel, s._surf->format->Rmask, s._surf->format->Gmask, s._surf->format->Bmask, s._surf->format->Amask)
+//		)
+//{
+//	//std::cerr << "RGBSurface Copy Called" << std::endl;
+//	const std::string errstr = cloning ? "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
+//    if(_surf == NULL)
+//	{
+//		Log << nl << "Unable to copy the RGBsurface @ "  << &s << std::endl;
+//        throw std::logic_error(errstr + " returns NULL");
+//    }
+//    else
+//		Log << nl << "SDL_Surface created @ " << _surf << std::endl;
+//}
+//catch (std::exception &e)
+//{
+//	Log << nl << "Exception catched in RGBSurface Copy Constructor !!!" << nl <<
+//		e.what() << nl << GetError() << std::endl;
+//};
 
-
-RGBSurface::RGBSurface(const RGBSurface & s , Uint32 flags, bool cloning) throw (std::logic_error)
-try : BaseSurface ( 	cloning ?
-				SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*(s._surf->format)),flags) // copy to deal with const... maybe a const cast should be ok...
-				: SDL_CreateRGBSurface(flags, s.getWidth(), s.getHeight(), s._surf->format->BitsPerPixel, s._surf->format->Rmask, s._surf->format->Gmask, s._surf->format->Bmask, s._surf->format->Amask)
-		)
-{
-	//std::cerr << "RGBSurface Copy Called" << std::endl;
-	const std::string errstr = cloning ? "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
-    if(_surf == NULL)
-	{
-		Log << nl << "Unable to copy the RGBsurface @ "  << &s << std::endl;
-        throw std::logic_error(errstr + " returns NULL");
-    }
-    else
-		Log << nl << "SDL_Surface created @ " << _surf << std::endl;
-}
-catch (std::exception &e)
-{
-	Log << nl << "Exception catched in RGBSurface Copy Constructor !!!" << nl <<
-		e.what() << nl << GetError() << std::endl;
-};
-
-RGBSurface::RGBSurface(const BaseSurface & s , bool cloning, bool toDisplay, bool alpha) throw (std::logic_error)
-try : BaseSurface(s,cloning,toDisplay,alpha)
+RGBSurface::RGBSurface(const BaseSurface & s ) throw (std::logic_error)
+try : BaseSurface(s)
 {
 	Log << nl << "SDL_Surface created @ " << _surf << std::endl;
 }
@@ -193,7 +193,7 @@ void RGBSurface::setFlags(bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool
 	if ( SRCALPHA ) RGBFlags|= SDL_SRCALPHA; else RGBFlags&= (~SDL_SRCALPHA);
 }
 
-bool RGBSurface::setColorKey(const RGBColor & key, const PixelFormat & pformat, bool rleAccel)
+bool RGBSurface::setColorKey(const RGBColor & key, const PixelFormat * pformat, bool rleAccel)
 {
 	Uint32 flags;
 	if (rleAccel)
@@ -201,7 +201,30 @@ bool RGBSurface::setColorKey(const RGBColor & key, const PixelFormat & pformat, 
 	else
 	flags=SDL_SRCCOLORKEY;
 
-	return SDL_SetColorKey(_surf, flags, pformat.getValueFromRGB(key) ) == 0;
+	return SDL_SetColorKey(_surf, flags, pformat->getValueFromRGB(key) ) == 0;
+}
+
+bool RGBSurface::optimise(bool alpha)
+{
+    bool res;
+    SDL_Surface * optsurf;
+    if ( alpha )
+    {
+        optsurf=SDL_DisplayFormat(_surf);
+    }
+    else
+    {
+        optsurf=SDL_DisplayFormat(_surf);
+    }
+
+    if (optsurf == NULL ) res = false;
+    else
+    {
+        _surf=optsurf;
+        res = true;
+    }
+
+    return res;
 }
 
 /*

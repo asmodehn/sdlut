@@ -80,7 +80,7 @@ int main(int argc, char** argv)
 	//UI Creation
 	MyUserInput ui;
 
-  testlog << " Creating the SDL Cursor... ";
+  testlog << nl << " Creating the SDL Cursor... "<< std::endl;
 	Cursor cursor(blackArrow);
 	cursor.show();
 	Cursor::setCurrent(cursor);
@@ -118,7 +118,7 @@ when the configuration file changed...*/
 		if (display->fill(Color(255,0,0)))
 			display->blit(bitmap,Point(30,30));
 
-		RGBSurface smiley("icon.bmp"/*,Color(255,255,255)*/); //doing the colorkey now break the clone...
+		RGBSurface smiley("icon.bmp",Color(255,255,255)); //doing the colorkey now break the clone...
 //		if(!smileyFactory.cloneToDisplay(index)) std::cerr << "clone failed" << std::endl;
 //
 //		std::vector<RGBSurface*> slist=smileyFactory.getSurfaceList();
@@ -126,7 +126,7 @@ when the configuration file changed...*/
 //		RGBSurface* s=slist[slist.size()-1];
 //		std::cout << "s : " <<s->getWidth() << " x " << s->getHeight() << std::endl;
 //		if (s==NULL) {testlog.add("s is NULL!"); exit(1);}
-
+        smiley.optimise(true);
 
 		testlog << nl << std::boolalpha << display->blit(smiley,Point(50,50)) << std::endl;
 

@@ -24,7 +24,7 @@ RGBSurface* Window::save(void)
 {
 	Log << "Window::save()" ;
 	// we create a new RGB surface to clone the display...
-	RGBSurface * backupScreen= new RGBSurface(*this,true,true,false);
+	RGBSurface * backupScreen= new RGBSurface(*this);
 
 	return backupScreen;
 }

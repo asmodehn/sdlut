@@ -43,8 +43,8 @@ void VideoInfo::debug(void) const
 	"- Are software to hardware colorkey blits accelerated? " << isBlitSWCCAccelAvailable() << nl <<
 	"- Are software to hardware alpha blits accelerated? " << isBlitSWAAccelAvailable() << nl <<
 	"- Are color fills accelerated? " << isBlitFillAccelAvailable() << nl <<
-	"- Total amount of video memory in Kilobytes : " << videoMemSize() << nl <<	std::endl;
-	getPixelFormat().debug();
+	"- Total amount of video memory in Kilobytes : " << videoMemSize() << nl <<
+	"- PixelFormat @ : "<< getPixelFormat() << std::endl;
 }
 
 } //namespace SDL

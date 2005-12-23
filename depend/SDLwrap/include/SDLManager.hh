@@ -59,7 +59,6 @@ namespace SDL
             Log << errormsg << ": " << GetError() ;
         }
 
-
         DisplaySurface * _screen;
         VideoInfo * _vinfo;
 #ifdef HAVE_OPENGL

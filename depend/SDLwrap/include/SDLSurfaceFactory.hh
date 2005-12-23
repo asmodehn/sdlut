@@ -137,14 +137,14 @@ public:
     //unsigned int createRGBSurface( std::string filename, const RGBColor & bgcolor );
     //BROKEN ?!?
 
-    //Handy method to clone a RGBSurface already in the Factory
-    unsigned int clone(int index,int times = 1); // clone the one on index
-
-    unsigned int cloneToDisplay(int index,int times = 1, bool alpha = false); // clone the one on index, optimized for display
-    //access to RGBSurface created by the Factory
-    inline RGBSurface* getSurface(unsigned int index) {return surfaceList.at(index);}
-    //is that really usefull ??
-    inline std::vector<RGBSurface*> getSurfaceList(void) { return surfaceList; }
+//    //Handy method to clone a RGBSurface already in the Factory
+//    unsigned int clone(int index,int times = 1); // clone the one on index
+//
+//    unsigned int cloneToDisplay(int index,int times = 1, bool alpha = false); // clone the one on index, optimized for display
+//    //access to RGBSurface created by the Factory
+//    inline RGBSurface* getSurface(unsigned int index) {return surfaceList.at(index);}
+//    //is that really usefull ??
+//    inline std::vector<RGBSurface*> getSurfaceList(void) { return surfaceList; }
 
 };
 

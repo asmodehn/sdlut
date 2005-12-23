@@ -65,7 +65,7 @@ public:
 
 	PixelColor getColorKey() const { return _pformat->colorkey; }
 	int getAlpha() const { return _pformat->alpha; }
-	Palette getPalette() const { return Palette(_pformat->palette); }
+	Palette * getPalette() const { return new Palette(_pformat->palette); }
 
 	//display all detected informations about pixelformat
 	void debug(void) const;

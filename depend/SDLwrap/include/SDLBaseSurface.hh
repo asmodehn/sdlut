@@ -65,17 +65,10 @@ protected:
 	///Conversion Constructor
 	explicit BaseSurface(SDL_Surface * s) : _surf(s),locks(0) {} ///< This one should be called only by subclasses
 
-	//Copy Constructor
-	//SDLBaseSurface( const SDLBaseSurface & s) : _surf(s._surf) {std::cerr << " === WARNING === SDLBaseSurface Copy Called !"<< std::endl;} //this one should never be called
-	//must use the one of the subclasses
-
-  // 25/08/2005
 	/** \brief Copy constructor overload.
-	  * Abstracted from RGBSurface to include display as input...
-	  * by default this method copy the content in a quickly displayable format (no alpha)
 	  */
-	BaseSurface(const BaseSurface & s , bool cloning = true, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
-
+	BaseSurface(const BaseSurface & s) throw (std::logic_error);
+    BaseSurface(const BaseSurface & s , Uint32 flags, PixelFormat pfmt) throw (std::logic_error);
 
   inline Uint32 getFlags(void) const { return _surf->flags; } ///<usefull accessor for children only
 

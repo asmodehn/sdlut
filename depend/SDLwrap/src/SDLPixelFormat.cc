@@ -19,10 +19,11 @@ void PixelFormat::debug(void) const
 	"- Red mask = " << getRmask() << nl <<
 	"- Green mask = " << getGmask() << nl <<
 	"- Blue mask = " << getBmask() << nl <<
-	"- Alpha mask = " << getAmask() <<
-	std::dec <<
-	//To be continued
-	std::endl;
+	"- Alpha mask = " << getAmask() << nl <<
+	std::dec<<
+	"- Color Key = " << getColorKey() << nl <<
+	"- Alpha = " << getAlpha() << nl <<
+	"- Palette = " << getPalette() << std::endl;
 }
 
 PixelColor PixelFormat::getValueFromRGB(const RGBColor& val) const

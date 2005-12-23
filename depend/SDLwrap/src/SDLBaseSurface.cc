@@ -23,34 +23,15 @@ bool BaseSurface::unlock(void)
 }
 
 
-BaseSurface::BaseSurface(const BaseSurface & s , bool cloning, bool toDisplay, bool alpha) throw (std::logic_error)
+BaseSurface::BaseSurface(const BaseSurface & s) throw (std::logic_error)
 try : locks(0)
 {
-	if (cloning)
-	{
-		if (toDisplay)
-		{
-			if (alpha)
-			{
-				_surf=SDL_DisplayFormatAlpha(s._surf);
-			}
-			else
-			{
-				_surf=SDL_DisplayFormat(s._surf);
-			}
-		}
-		else
-		{
-			_surf=SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*(s._surf->format)),s._surf->flags); // copy to deal with const... maybe a const cast should be ok...
-		}
-	}
-	else
-	{
-		_surf=SDL_CreateRGBSurface(s._surf->flags, s.getWidth(), s.getHeight(), s._surf->format->BitsPerPixel, s._surf->format->Rmask, s._surf->format->Gmask, s._surf->format->Bmask, s._surf->format->Amask);
-	}
+	_surf=SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*(s._surf->format)),s._surf->flags); // copy to deal with const... maybe a const cast should be ok...
+//	_surf=SDL_CreateRGBSurface(s._surf->flags, s.getWidth(), s.getHeight(), s._surf->format->BitsPerPixel, s._surf->format->Rmask, s._surf->format->Gmask, s._surf->format->Bmask, s._surf->format->Amask);
+
 
 	//std::cerr << "SDL::BaseSurface Copy Called" << std::endl;
-	const std::string errstr = cloning ? toDisplay ? alpha ? "SDL_DisplayFormatAlpha" : "SDLDisplayFormat" : "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
+	const std::string errstr = "SDL_ConvertSurface" ; //: "SDL_CreateRGBSurface";
   if(_surf == NULL)
 	{
     Log << nl << "Unable to copy the RGBsurface" ;
@@ -64,6 +45,29 @@ catch (std::exception &e)
 	Log << nl << "Exception catched in SDLBaseSurface Copy Constructor !!!" << nl <<
 		e.what() << nl << GetError();
 };
+
+BaseSurface::BaseSurface(const BaseSurface & s ,Uint32 flags, PixelFormat pfmt) throw (std::logic_error)
+try : locks(0)
+{
+	_surf=SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*(pfmt._pformat)),flags); // copy to deal with const... maybe a const cast should be ok...
+
+
+	//std::cerr << "SDL::BaseSurface Copy Called" << std::endl;
+	const std::string errstr = "SDL_ConvertSurface";
+  if(_surf == NULL)
+	{
+    Log << nl << "Unable to copy the RGBsurface" ;
+    throw std::logic_error(errstr + " returns NULL");
+  }
+  else
+	  Log << nl << "SDL_Surface created ";
+}
+catch (std::exception &e)
+{
+	Log << nl << "Exception catched in SDLBaseSurface Copy Constructor !!!" << nl <<
+		e.what() << nl << GetError();
+};
+
 
 
 Uint32 BaseSurface::getpixel(int x, int y)
@@ -194,7 +198,7 @@ void BaseSurface::debug(void) const
 				<< "- HW ? " << isHWset() << nl
 				<< "- HWAccel ? " << isHWAccelset() << nl
 				<< "- RLEAccel ? " << isRLEAccelset() << nl
-				<< "- PreAlloc ? " << isPreAllocset() << std::endl;
+				<< "- PreAlloc ? " << isPreAllocset();
 }
 
 } //namespace SDL

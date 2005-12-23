@@ -64,8 +64,47 @@
 namespace SDL
 {
 	static Logger Log("SDLwrap");
-	
+
 	static inline std::string GetError(void) { return SDL_GetError(); }
-	
+
+	class Version
+	{
+	    bool useLinked;
+	    SDL_version compiled;
+
+	    public:
+            Version()
+        {
+#if SDL_VERSION_ATLEAST(1, 2, 0)
+	Log << nl << "Compiled with SDL 1.2 or newer" << std::endl;
+#else
+	Log << nl << "Compiled with SDL older than 1.2" << std::endl;
+#endif
+             SDL_VERSION(&compiled);
+        }
+
+	    void switchLinked() { useLinked = true ; }
+	    void switchCompiled() { useLinked = false ; }
+
+	    int getmajor() { if (useLinked) return SDL_Linked_Version()->major; else return compiled.major; }
+	    int getminor() { if (useLinked) return SDL_Linked_Version()->minor; else return compiled.minor; }
+	    int getpatch() { if (useLinked) return SDL_Linked_Version()->patch; else return compiled.patch; }
+
+	    //check if link and compiled matches
+	    bool check() {return SDL_Linked_Version()->major == compiled.major && SDL_Linked_Version()->minor == compiled.minor && SDL_Linked_Version()->patch == compiled.patch;}
+
+	    void debug()
+	    {
+	        bool oldLinkflag = useLinked;
+	        switchCompiled();
+	        Log << nl <<"Compiled version: "<< getmajor() <<"."<< getminor() <<"."<< getpatch();
+            switchLinked();
+            Log << nl << "Linked version: " << getmajor() <<"."<< getminor() <<"."<< getpatch();
+            useLinked = oldLinkflag;
+        }
+	};
+
+	static Version version;
+
 }
 #endif

@@ -98,7 +98,7 @@ public:
 	disableGrabInput(void);
 	queryGrabInput(void);
 	*/
-	static bool checkAvailableSize( const PixelFormat& fmt );
+	static bool checkAvailableSize( const PixelFormat * fmt );
 	static bool checkAvailableSize( void);
 
 	virtual void debug(void) const;

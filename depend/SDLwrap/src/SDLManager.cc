@@ -112,19 +112,19 @@ DisplaySurface * Manager::resetDisplay( int width, int height, int bpp)
 	if ( bpp == DEFAULT_DISPLAY_BPP )
 	{
 		//getting the best video mode pixel format
-		bpp=getVideoInfo()->getPixelFormat().getBitsPerPixel();
+		bpp=getVideoInfo()->getPixelFormat()->getBitsPerPixel();
 	}
 
 	bpp=SDL_VideoModeOK(width, height, bpp, DisplaySurface::flags );
     //but beware about bpp == 0...
     if ( bpp == 0 )
     {//0 as return code mean the current format is not supported
-        Log << "The requested video mode is not supported under any bit depth";
+        Log << nl << "The requested video mode is not supported under any bit depth";
         return NULL;
     }
 	else
 	{
-	  Log << "SDL will use " << width << "x" << height << "@" <<bpp ;
+	  Log << nl << "SDL will use " << width << "x" << height << "@" <<bpp ;
 	}
 
 
@@ -132,8 +132,6 @@ DisplaySurface * Manager::resetDisplay( int width, int height, int bpp)
     std::string titletest, icontest;
     DisplaySurface::getCaption( titletest, icontest);
     if ( titletest == "" && icontest == "" ) DisplaySurface::setCaption();
-
-std::cerr << "caption done" << std::endl;
 
 	//create a new screen
 	try
@@ -148,7 +146,7 @@ std::cerr << "caption done" << std::endl;
 #ifdef HAVE_OPENGL
 		}
 #endif
-std::cerr << "screen created" << std::endl;
+
 	}
 	//beware about the bpp == 0 used with rgbsurfaces !
 	catch(std::exception & e)

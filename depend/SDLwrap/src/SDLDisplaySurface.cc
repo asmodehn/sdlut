@@ -113,12 +113,12 @@ bool DisplaySurface::setFlags( bool openGL, bool fullScreen,
 }
 
 
-bool DisplaySurface::checkAvailableSize( const PixelFormat& fmt )
+bool DisplaySurface::checkAvailableSize( const PixelFormat * fmt )
 {
 	SDL_Rect ** modes;
 	bool res;
 	//we copy the pixelformat (because of const behaviour...)
-	SDL_PixelFormat* test_fmt= new SDL_PixelFormat(*(fmt._pformat));
+	SDL_PixelFormat* test_fmt= new SDL_PixelFormat( *(fmt->_pformat));
 
 	modes=SDL_ListModes(test_fmt, flags);
 	if (modes == (SDL_Rect **)0) res=false;
@@ -144,15 +144,16 @@ bool DisplaySurface::checkAvailableSize( const PixelFormat& fmt )
 	}
 
 	Log << nl << "Available Modes : " ;
-	if ( availableHeight[0] == -1 || availableWidth[0] == -1 ) Log << "all";
+	if ( availableHeight[0] == -1 || availableWidth[0] == -1 ) Log << "all" << std::endl;
 	else
 	{
 		for (unsigned int i=0; i<availableHeight.size() ; i++)
 		{
 			Log <<  "- " << availableHeight[i] << "x" << availableWidth[i] << nl;
 		}
+		Log << std::endl;
 	}
-	
+
 
 
 	return res;

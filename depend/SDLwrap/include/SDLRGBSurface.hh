@@ -51,20 +51,20 @@ protected : //the client should not access to flags...
 	//Copy Constructor and cloning constructors...
 	//RGBSurface(const RGBSurface &, bool cloneToDisplay = false, bool alpha = false) throw (std::logic_error);
 	//Clone To display should be in Factory...
-  RGBSurface(const RGBSurface & s , const SDL::PixelFormat & fmt, Uint32 flags, bool cloning = false) throw (std::logic_error);
+  //RGBSurface(const RGBSurface & s , const SDL::PixelFormat & fmt, Uint32 flags, bool cloning = false) throw (std::logic_error);
 	//no pixel format use the one from the surface
-  RGBSurface(const RGBSurface & s , Uint32 flags, bool cloning = false) throw (std::logic_error);
+  //RGBSurface(const RGBSurface & s ) throw (std::logic_error);
 
 public :
 	//should be used as the default copy constructor. But should also be able to get DisplaySurface as input...
-  RGBSurface(const BaseSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
+  RGBSurface(const BaseSurface & s ) throw (std::logic_error);
 
 	//not sure if this is useful or not, but the default copy constructor has to be properly overloaded
 	//RGBSurface(const RGBSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
 
 	static void setFlags(bool SWSURFACE = false, bool HWSURFACE = true, bool SRCCOLORKEY = false, bool SRCALPHA = false);
 
-  bool setColorKey(const RGBColor &, const PixelFormat & pformat, bool rleAccel = true);
+    bool setColorKey(const RGBColor &, const PixelFormat * pformat, bool rleAccel = true);
 
 
 	//Use Standard Colors here
@@ -78,6 +78,8 @@ public :
 	//Accesseurs - are they all really usefull ?
 	inline bool isSRCColorKeyset(void) {return ( SDL_SRCCOLORKEY & _surf->flags ) != 0;}
 	inline bool isSRCAlphaset(void) {return ( SDL_SRCALPHA & _surf->flags ) != 0;}
+
+	bool optimise(bool alpha = false);
 
 
 };

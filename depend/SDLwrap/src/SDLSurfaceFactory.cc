@@ -1,11 +1,11 @@
 #include "SDLSurfaceFactory.hh"
 
 
-namespace SDL  {
-
-int SurfaceFactory::displayWidth = DEFAULT_DISPLAY_WIDTH;
-int SurfaceFactory::displayHeight = DEFAULT_DISPLAY_HEIGHT;
-int SurfaceFactory::displayBPP = DEFAULT_DISPLAY_BPP;
+//namespace SDL  {
+//
+//int SurfaceFactory::displayWidth = DEFAULT_DISPLAY_WIDTH;
+//int SurfaceFactory::displayHeight = DEFAULT_DISPLAY_HEIGHT;
+//int SurfaceFactory::displayBPP = DEFAULT_DISPLAY_BPP;
 //std::vector<int> SurfaceFactory::availableDisplayWidth;
 //std::vector<int> SurfaceFactory::availableDisplayHeight;
 //Uint32 SurfaceFactory::displayFlags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
@@ -239,42 +239,42 @@ int SurfaceFactory::displayBPP = DEFAULT_DISPLAY_BPP;
 //}*/
 
 //clone an RGBSurface.
-unsigned int SurfaceFactory::clone(int index,int times) // clone the one on index
-{
-	RGBSurface* toClone = surfaceList.at(index);
-	try //before the loop, because if one fail, the others should fail also...
-	{
-		for(int i=0; i<times ; i++)
-		{
-			RGBSurface* s = new RGBSurface(*toClone,true,false,toClone->isSRCAlphaset());
-			if (s != NULL)
-        surfaceList.push_back(s);
-		}
-	}
-	catch (std::exception & e)
-	{
-		Log << e.what();
-	}
-  return surfaceList.size()-1;;
-}
-
-unsigned int SurfaceFactory::cloneToDisplay(int index,int times, bool alpha) // clone the one on index, optimized for display
-{
-	RGBSurface* toClone = surfaceList.at(index);
-	try //before the loop, because if one fail, the others should fail also...
-	{
-		for(int i=0; i<times ; i++)
-		{
-			RGBSurface* s = new RGBSurface(*toClone,true,true,alpha);
-			if (s != NULL)
-			  surfaceList.push_back(s);
-		}
-	}
-	catch (std::exception & e)
-	{
-		Log << e.what();
-	}
-	return surfaceList.size()-1;
-}
-
-}
+//unsigned int SurfaceFactory::clone(int index,int times) // clone the one on index
+//{
+//	RGBSurface* toClone = surfaceList.at(index);
+//	try //before the loop, because if one fail, the others should fail also...
+//	{
+//		for(int i=0; i<times ; i++)
+//		{
+//			RGBSurface* s = new RGBSurface(*toClone,true,false,toClone->isSRCAlphaset());
+//			if (s != NULL)
+//        surfaceList.push_back(s);
+//		}
+//	}
+//	catch (std::exception & e)
+//	{
+//		Log << e.what();
+//	}
+//  return surfaceList.size()-1;;
+//}
+//
+//unsigned int SurfaceFactory::cloneToDisplay(int index,int times, bool alpha) // clone the one on index, optimized for display
+//{
+//	RGBSurface* toClone = surfaceList.at(index);
+//	try //before the loop, because if one fail, the others should fail also...
+//	{
+//		for(int i=0; i<times ; i++)
+//		{
+//			RGBSurface* s = new RGBSurface(*toClone,true,true,alpha);
+//			if (s != NULL)
+//			  surfaceList.push_back(s);
+//		}
+//	}
+//	catch (std::exception & e)
+//	{
+//		Log << e.what();
+//	}
+//	return surfaceList.size()-1;
+//}
+//
+//}

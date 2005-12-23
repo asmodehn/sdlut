@@ -47,9 +47,9 @@ protected:
 	{
 		pointerCopy = true;
 	}*/
-	
+
 public:
-	
+
 	//Because NULL has no sense for function using colors, defaut constructor
 	// just paint it black :)
 	RGBColor(Uint8 r=0, Uint8 g=0, Uint8 b=0) : _color(new SDL_Color)
@@ -60,24 +60,24 @@ public:
 		pointerCopy = false;
 	}
 	virtual ~RGBColor() { if (!pointerCopy) delete _color;}
-	
+
 	void setR(Uint8 nr) { _color->r=nr ;}
 	void setG(Uint8 ng) { _color->g=ng ;}
 	void setB(Uint8 nb) { _color->b=nb ;}
-	
+
 	Uint8 getR(void) const { return _color->r;}
 	Uint8 getG(void) const { return _color->g;}
 	Uint8 getB(void) const { return _color->b;}
-	
-	inline friend std::ostream& operator << (std::ostream& os, const RGBColor& c)
-		{ return os << "RGBColor : R=" << c.getR() << " G=" << c.getG() << " B=" << c.getB() << " "; } 
 
-	
+	inline friend std::ostream& operator << (std::ostream& os, const RGBColor& c)
+		{ return os << "RGBColor : R=" << c.getR() << " G=" << c.getG() << " B=" << c.getB() << " "; }
+
+
 };
 
 /**
  * \class SDLRGBAColor (alias SDLColor)
- * 
+ *
  * \ingroup Video
  *
  * \brief This class wraps SDL_Color with alpha
@@ -103,7 +103,7 @@ public:
 	virtual ~RGBAColor() {}
 
 	void setA(Uint8 na) { _color->unused=na ;}
-	
+
 	Uint8 getA(void) const {return _color->unused;}
 
 	inline friend std::ostream& operator << (std::ostream& os, const RGBAColor& c)
@@ -132,7 +132,7 @@ public:
 class Palette
 {
 	friend class PixelFormat;
-	
+
 	bool pointerCopy;
 protected:
 	//the adress of the SLD_Palette struct should never change
@@ -163,9 +163,9 @@ protected:
 		pointerCopy = true;
 	}
 public:
-	
+
 	~Palette(void) { if (!pointerCopy) delete _palette; }
-	
+
 	inline int getNColors(void) const { return _palette->ncolors; }
 	inline RGBAColor getColors(int index) const
 	{
@@ -177,7 +177,7 @@ public:
 							_palette->colors[index].unused
 						);
 	}
-
+    //void debug ();
 };
 
 }// namespace SDL
