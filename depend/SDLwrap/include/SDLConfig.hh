@@ -75,12 +75,7 @@ namespace SDL
 	    public:
             Version()
         {
-#if SDL_VERSION_ATLEAST(1, 2, 0)
-	Log << nl << "Compiled with SDL 1.2 or newer" << std::endl;
-#else
-	Log << nl << "Compiled with SDL older than 1.2" << std::endl;
-#endif
-             SDL_VERSION(&compiled);
+          SDL_VERSION(&compiled);
         }
 
 	    void switchLinked() { useLinked = true ; }
@@ -91,7 +86,15 @@ namespace SDL
 	    int getpatch() { if (useLinked) return SDL_Linked_Version()->patch; else return compiled.patch; }
 
 	    //check if link and compiled matches
-	    bool check() {return SDL_Linked_Version()->major == compiled.major && SDL_Linked_Version()->minor == compiled.minor && SDL_Linked_Version()->patch == compiled.patch;}
+	    bool check()
+	    {
+#if SDL_VERSION_ATLEAST(1, 2, 0)
+				Log << nl << "Compiled with SDL 1.2 or newer" << std::endl;
+#else
+				Log << nl << "Compiled with SDL older than 1.2" << std::endl;
+#endif
+	    	return SDL_Linked_Version()->major == compiled.major && SDL_Linked_Version()->minor == compiled.minor && SDL_Linked_Version()->patch == compiled.patch;
+			}
 
 	    void debug()
 	    {
