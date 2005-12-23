@@ -79,8 +79,10 @@ namespace SDL
         static inline Manager* manager(void) throw (std::logic_error)
         {
             if (_uniqueInstance == NULL)
-                if (!enableEverything())
-                    throw std::logic_error("enableEverything failed !!!");
+						{
+							enableEverything();
+              throw std::logic_error("WARNING : Everything Enabled by default. You should enable subsystems manually !");
+						}
             return _uniqueInstance;
         }
 
@@ -172,9 +174,10 @@ namespace SDL
         DisplaySurface * resetDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, int bpp = DEFAULT_DISPLAY_BPP );
         DisplaySurface * getDisplay( void ) {return _screen;} //init if not?
 
-        VideoInfo * getVideoInfo( void );
+        VideoInfo * getVideoInfo( void ) {return _vinfo;}
+
 #ifdef HAVE_OPENGL
-        GLManager * getGLManager();
+        GLManager * getGLManager() {return _gl;}
 #endif
     };
 

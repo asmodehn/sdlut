@@ -91,7 +91,17 @@ when the configuration file changed...*/
 
 
 	//Checking available video Modes
-	if(!DisplaySurface::setFlags())
+	if(!DisplaySurface::setFlags( false, //opengl
+																false, //fullScreen
+																true, //resizable
+																false, //noFrame
+																true, //doubleBuf
+																true, //anyFormat
+																false, //SWSurface
+																true, //HWSurface
+																true, //HWPalette
+																false //asyncblit
+															))
 	{
 		testlog << nl << "The required mode (default) is not available !" << std::endl;
 		exit(1);

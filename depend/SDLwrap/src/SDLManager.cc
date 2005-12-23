@@ -6,17 +6,28 @@ namespace SDL
     Manager* Manager::_uniqueInstance = NULL;
 
     Manager::Manager(Uint32 flags) throw (std::logic_error)
-    try : _screen(NULL), _vinfo(NULL)
-#ifdef HAVE_OPENGL
-        ,_gl(NULL)
-#endif
+    try
     {
+    	 _screen=NULL;
+    	 _vinfo=NULL;
+    	 #ifdef HAVE_OPENGL
+       _gl=NULL;
+			#endif
 				if (!Log.enableFileLog("SDLWrap.log"))
 					  throw std::logic_error("Log file creation FAILED !");
         if (SDL_Init(flags)<0)
         {
             throw std::logic_error("SDL_Init failed!");
         }
+
+        if (isVideoEnabled())
+        {
+        	_vinfo=new VideoInfo();
+        	#ifdef HAVE_OPENGL
+					_gl=new GLManager();
+					#endif
+        }
+
 
     }
     catch (std::exception &e)
@@ -93,7 +104,7 @@ namespace SDL
 
 DisplaySurface * Manager::setDisplay( int width, int height, int bpp)
 {
-	if (!isVideoEnabled()) { enableVideo(); std::cerr << "WARNING : shouldnt be needed !!!" << std::endl; }
+	//if (!isVideoEnabled()) { enableVideo(); std::cerr << "WARNING : shouldnt be needed !!!" << std::endl; }
 	//if _screen already exists
 	if (_screen!=NULL)
 	{
@@ -109,13 +120,14 @@ DisplaySurface * Manager::setDisplay( int width, int height, int bpp)
 
 DisplaySurface * Manager::resetDisplay( int width, int height, int bpp)
 {
-		if (!isVideoEnabled()) {enableVideo(); std::cerr << "WARNING : shouldnt be needed !!!" << std::endl; }
+		//if (!isVideoEnabled()) {enableVideo(); std::cerr << "WARNING : shouldnt be needed !!!" << std::endl; }
     //getting the actual bpp value
 	//maybe this is already done by SDL and this code is just a waste of time ?
 	if ( bpp == DEFAULT_DISPLAY_BPP )
 	{
 		//getting the best video mode pixel format
-		bpp=getVideoInfo()->getPixelFormat()->getBitsPerPixel();
+		//_vinfo has been built in the constructor
+		bpp=_vinfo->getPixelFormat()->getBitsPerPixel();
 	}
 
 	bpp=SDL_VideoModeOK(width, height, bpp, DisplaySurface::flags );
@@ -141,7 +153,9 @@ DisplaySurface * Manager::resetDisplay( int width, int height, int bpp)
 	{
 #ifdef HAVE_OPENGL
 		if (SDL_OPENGL & DisplaySurface::flags)
+		{
 			_screen = new GLWindow(width, height, bpp );
+		}
 		else
 		{
 #endif
@@ -160,47 +174,7 @@ DisplaySurface * Manager::resetDisplay( int width, int height, int bpp)
 
 }
 
-VideoInfo * Manager::getVideoInfo( void )
-{
-	if (_vinfo == NULL)
-	{
-		try
-		{
-			_vinfo=new VideoInfo();
-		}
-		catch (std::exception& e)
-		{
-			//Keep this catch to prevent program terminate...
-			Log << e.what();
-			//no need to delete _vinfo, since constructor throw an exception
-			//the VideoInfo Instance wasn't built
-		}
-	}
-	return _vinfo;
 
-}
-
-#ifdef HAVE_OPENGL
-GLManager * Manager::getGLManager( void )
-{
-	if (_gl == NULL)
-	{
-		try
-		{
-			_gl=new GLManager();
-		}
-		catch (std::exception& e)
-		{
-			//Keep this catch to prevent program terminate...
-			Log << e.what();
-			//no need to delete _vinfo, since constructor throw an exception
-			//the VideoInfo Instance wasn't built
-		}
-	}
-	return _gl;
-
-}
-#endif
 
     void Manager::debug(void)
     {

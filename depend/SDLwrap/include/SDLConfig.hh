@@ -5,7 +5,6 @@
 //#undef HAVE_OPENGL //engine call seems to work... 3D part postponed...
 #undef THREAD
 
-
 #if defined (_MSC_VER) && (_MSC_VER >= 1020)
 #pragma warning(disable:4290)	// Disable MSVC++ warning: C4290: C++ exception specification ignored.
 #endif
