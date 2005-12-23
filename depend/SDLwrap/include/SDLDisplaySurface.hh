@@ -72,15 +72,15 @@ public:
 							bool SWSurface = false ,bool HWSurface = true,
 							bool HWPalette = true, bool asyncBlit = false);
 	//Accessors
-	inline bool isOpenGLset(void) const {return ( SDL_OPENGL & _surf->flags ) != 0;}
-	inline bool isFullScreenset(void) const {return ( SDL_FULLSCREEN & _surf->flags ) != 0;}
-	inline bool isResizableset(void) const {return ( SDL_RESIZABLE & _surf->flags ) != 0;}
-	inline bool isNoFrameset(void) const {return ( SDL_NOFRAME & _surf->flags ) != 0;}
-	inline bool isAnyFormatset(void) const {return ( SDL_ANYFORMAT & _surf->flags ) != 0;}
-	virtual inline bool isDoubleBufset(void) const {return ( SDL_DOUBLEBUF & _surf->flags ) != 0;}
+	inline bool isOpenGLset(void) const {return ( SDL_OPENGL & (_surf!=NULL)?_surf->flags:flags:flags ) != 0;}
+	inline bool isFullScreenset(void) const {return ( SDL_FULLSCREEN & (_surf!=NULL)?_surf->flags:flags ) != 0;}
+	inline bool isResizableset(void) const {return ( SDL_RESIZABLE & (_surf!=NULL)?_surf->flags:flags ) != 0;}
+	inline bool isNoFrameset(void) const {return ( SDL_NOFRAME & (_surf!=NULL)?_surf->flags:flags ) != 0;}
+	inline bool isAnyFormatset(void) const {return ( SDL_ANYFORMAT & (_surf!=NULL)?_surf->flags:flags ) != 0;}
+	virtual inline bool isDoubleBufset(void) const {return ( SDL_DOUBLEBUF & (_surf!=NULL)?_surf->flags:flags ) != 0;}
 	//unused
-	inline bool isASyncBlitset(void) const {return ( SDL_ASYNCBLIT & _surf->flags ) != 0;}
-	inline bool isHWPaletteset(void) const {return ( SDL_HWPALETTE & _surf->flags ) != 0;}
+	inline bool isASyncBlitset(void) const {return ( SDL_ASYNCBLIT & (_surf!=NULL)?_surf->flags ) != 0;}
+	inline bool isHWPaletteset(void) const {return ( SDL_HWPALETTE & (_surf!=NULL)?_surf->flags:flags ) != 0;}
 
 
 	//WM methods

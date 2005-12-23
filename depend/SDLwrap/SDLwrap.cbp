@@ -69,34 +69,6 @@
 					<Add library="opengl32"/>
 				</Linker>
 			</Target>
-			<Target title="staticlib-optimised">
-				<Option output="build\bin_optimise\libSDLwrap.a"/>
-				<Option working_dir=""/>
-				<Option object_output="build\obj_optimise"/>
-				<Option deps_output="build\dep_optimise"/>
-				<Option type="2"/>
-				<Option compiler="0"/>
-				<Option projectLinkerOptionsRelation="2"/>
-				<Option projectIncludeDirsRelation="0"/>
-				<Option projectResourceIncludeDirsRelation="2"/>
-				<Option projectLibDirsRelation="0"/>
-				<Compiler>
-					<Add option="-fexpensive-optimizations"/>
-					<Add option="-Os"/>
-					<Add option="-O3"/>
-					<Add option="-O2"/>
-					<Add option="-O1"/>
-					<Add option="-O"/>
-					<Add option="-W"/>
-					<Add option="-DLOGINDENTLVL=1"/>
-					<Add option="-DLOGPREFIX=\&quot;SDLwrap\&quot;"/>
-					<Add option="-DHAVE_OPENGL"/>
-				</Compiler>
-				<Linker>
-					<Add option="-s"/>
-					<Add library="opengl32"/>
-				</Linker>
-			</Target>
 			<Target title="checkkeys">
 				<Option output="build\test\checkkeys.exe"/>
 				<Option working_dir="build\test"/>
@@ -708,6 +680,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-W"/>
+			<Add option="-g"/>
 			<Add directory="include"/>
 			<Add directory="..\Common\include"/>
 		</Compiler>
@@ -721,7 +694,6 @@
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
 			<Option target="test-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -759,7 +731,6 @@
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="staticlib-debug"/>
 			<Option target="test-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
 			<Option target="loopwave"/>
@@ -796,7 +767,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -835,7 +805,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -876,7 +845,6 @@
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="staticlib-debug"/>
 			<Option target="test-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
 			<Option target="loopwave"/>
@@ -913,7 +881,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -953,7 +920,6 @@
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
 			<Option target="test-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -991,7 +957,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1030,7 +995,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1069,7 +1033,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1108,7 +1071,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1147,7 +1109,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1186,7 +1147,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1225,7 +1185,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1264,7 +1223,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1303,7 +1261,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1342,7 +1299,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1381,7 +1337,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1420,7 +1375,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1461,7 +1415,6 @@
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="staticlib-debug"/>
 			<Option target="test-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
 			<Option target="loopwave"/>
@@ -1498,7 +1451,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1537,7 +1489,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
@@ -1577,7 +1528,6 @@
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
 			<Option target="test-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1613,103 +1563,86 @@
 		<Unit filename="src\Interface3D.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLBaseSurface.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLCDRom.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 		</Unit>
 		<Unit filename="src\SDLCursor.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLDisplaySurface.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLEvent.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLEventHandler.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLGLManager.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLGLWindow.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLManager.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLOverlay.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLPixelFormat.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLPoint.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLRGBSurface.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLRect.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLVideoInfo.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLWindow.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
-			<Option target="staticlib-optimised"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="test\SDLtest.cc">

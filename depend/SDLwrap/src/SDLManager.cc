@@ -11,7 +11,8 @@ namespace SDL
         ,_gl(NULL)
 #endif
     {
-		Log.setLogfile("SDLWrap.log");
+				if (!Log.enableFileLog("SDLWrap.log"))
+					  throw std::logic_error("Log file creation FAILED !");
         if (SDL_Init(flags)<0)
         {
             throw std::logic_error("SDL_Init failed!");
@@ -41,7 +42,7 @@ namespace SDL
             {
                 error(flags);
                 res=false;
-				Log << e.what();
+								Log << e.what();
             }
             if (_uniqueInstance != NULL)
                 res = true;
@@ -92,6 +93,7 @@ namespace SDL
 
 DisplaySurface * Manager::setDisplay( int width, int height, int bpp)
 {
+	if (!isVideoEnabled()) { enableVideo(); std::cerr << "WARNING : shouldnt be needed !!!" << std::endl; }
 	//if _screen already exists
 	if (_screen!=NULL)
 	{
@@ -107,6 +109,7 @@ DisplaySurface * Manager::setDisplay( int width, int height, int bpp)
 
 DisplaySurface * Manager::resetDisplay( int width, int height, int bpp)
 {
+		if (!isVideoEnabled()) {enableVideo(); std::cerr << "WARNING : shouldnt be needed !!!" << std::endl; }
     //getting the actual bpp value
 	//maybe this is already done by SDL and this code is just a waste of time ?
 	if ( bpp == DEFAULT_DISPLAY_BPP )
@@ -124,11 +127,11 @@ DisplaySurface * Manager::resetDisplay( int width, int height, int bpp)
     }
 	else
 	{
-	  Log << nl << "SDL will use " << width << "x" << height << "@" <<bpp ;
+	  Log << nl << "SDL will use " << width << "x" << height << "@" <<bpp << std::endl;
 	}
 
 
-    //setting caption (default if needed)
+    //setting caption (default if needed) BEFORE construction the displaysurface...
     std::string titletest, icontest;
     DisplaySurface::getCaption( titletest, icontest);
     if ( titletest == "" && icontest == "" ) DisplaySurface::setCaption();
@@ -209,7 +212,7 @@ GLManager * Manager::getGLManager( void )
         "- Is CDROM Enabled ? " << isCdromEnabled() << nl <<
         "- Is Joystick Enabled ? " << isJoystickEnabled() << nl <<
         "- Is \"NoParachute\" Enabled ? " << isNoParachuteEnabled() << nl <<
-        "- Is \"EventThread\" Enabled ? " << isEventThreadEnabled() <<  std::endl;
+        "- Is \"EventThread\" Enabled ? " << isEventThreadEnabled() << std::endl;
 
     }
 
