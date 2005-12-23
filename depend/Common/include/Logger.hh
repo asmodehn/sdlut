@@ -47,8 +47,11 @@ class Logger //: public std::ostream
 	int _indentlvl,_indentwidth;
 	std::string _logprefix;
 
-	std::ofstream ofstr;
-	bool _clogSwitch;
+	std::ofstream _ofstr;
+	bool _consoleLog;
+	bool _fileLog;
+
+	bool setLogfile( const std::string & filename);
 
   public :
 
@@ -58,20 +61,24 @@ class Logger //: public std::ostream
     ///Default Destructor that flush the Log Buffer
     ~Logger();
 
-    bool setLogfile( const std::string & filename);
 
-    void toggleclog() { _clogSwitch = !_clogSwitch ; }
-    void enableclog() { _clogSwitch= true ; }
-    void disableclog() { _clogSwitch = false ; }
+
+    void toggleConsoleLog() { _consoleLog = !_consoleLog ; }
+    void enableConsoleLog() { _consoleLog= true ; }
+    void disableConsoleLog() { _consoleLog = false ; }
+
+    bool enableFileLog( const std::string & filename) { _fileLog= true ; return setLogfile(filename);}
+    void disableFileLog() { _fileLog = false ; _ofstr.close();}
 
     //void add(const std::string & message); // not const because of initial '\n' in string from streams...
-		template<class M> Logger& operator << (const M & msg);
+		template<typename M> Logger& operator << (const M & msg);
 		//to enable manipulators on Logger
 		Logger& operator << (std::ostream& (*manip)(std::ostream&));
 		Logger& operator << (std::ios_base& (*manip)(std::ios_base&));
 		Logger& operator << (Logger& (*manip)(Logger&));//to enable specific manipulators on Logger
 
 		friend Logger& nl (Logger& log); // adds a prefix
+		friend Logger& endl (Logger& log); // adds a prefix
 
 		Logger & flush(void);
 
@@ -82,10 +89,10 @@ class Logger //: public std::ostream
 
 };
 
-template<class M> Logger& Logger::operator<< ( const M & msg)
+template<typename M> Logger& Logger::operator<< ( const M & msg)
 {
-	if (_clogSwitch) std::clog << msg;
-	if (ofstr) ofstr << msg;
+	if (_consoleLog) std::clog << msg;
+	if (_fileLog) _ofstr << msg;
 	return *this;
 }
 
