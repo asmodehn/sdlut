@@ -1,7 +1,7 @@
 #include "SDLEvent.hh"
 
 namespace SDL {
-	
+
 bool Event::poll(bool fetch)
 {
 	if(fetch)
@@ -11,7 +11,7 @@ bool Event::poll(bool fetch)
 		return SDL_PollEvent(0) != 0;
 	}
 }
-  
+
 bool Event::wait(bool fetch)
 {
 	if(fetch)
@@ -35,7 +35,7 @@ void Event::pumpEvents()
 void Event::setEventFilter(SDL_EventFilter filter)
 {
 	SDL_SetEventFilter(filter);
-}    
+}
 
 SDL_EventFilter Event::getEventFilter()
 {
@@ -56,7 +56,7 @@ Uint8* Event::getKeyState()
 {
 	return SDL_GetKeyState(0);
 }
-  
+
 SDLMod Event::getModState()
 {
 	return SDL_GetModState();
@@ -77,15 +77,7 @@ bool Event::enableKeyRepeat(int delay, int interval)
 	return SDL_EnableKeyRepeat(delay, interval) == 0;
 }
 
-Uint8 Event::getMouseState(int *x, int *y)
-{
-	return SDL_GetMouseState(x, y);
-}
-  
-Uint8 Event::getRelativeMouseState(int *x, int *y)
-{
-	return SDL_GetRelativeMouseState(x, y);
-}
+
 
 Uint8 Event::getAppState()
 {
@@ -115,7 +107,7 @@ void Event::handleEvents(EventHandler &handler)
 			case SDL_KEYDOWN:
 				ev_handled = handler.handleKeyPressEvent(event.key.keysym);
 				break;
-			case SDL_KEYUP: 
+			case SDL_KEYUP:
 				ev_handled = handler.handleKeyReleaseEvent(event.key.keysym);
 				break;
 			case SDL_MOUSEMOTION:
@@ -147,7 +139,7 @@ void Event::handleEvents(EventHandler &handler)
 				ev_handled = handler.handleJoyButtonPressEvent(event.jbutton.which,
 							event.jbutton.button);
 				break;
-			case SDL_JOYBUTTONUP: 
+			case SDL_JOYBUTTONUP:
 				ev_handled = handler.handleJoyButtonReleaseEvent(event.jbutton.which,
 							event.jbutton.button);
 				break;

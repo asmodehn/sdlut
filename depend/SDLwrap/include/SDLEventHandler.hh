@@ -12,7 +12,7 @@
  *
  * This class should be derivated by the classes wanted to handle SDL events.
  * It implements the interface for all callbacks on event.
- * 
+ *
  * \author Alex
  *
  * \date 2005/10/02
@@ -21,15 +21,28 @@
  *
  */
 
+#include "SDLAppWindow.hh"
+
 namespace SDL {
-	
+
 //TODO : have a look about Uint8 *keys = SDL_GetKeyPresses();
 
 class EventHandler
 {
+protected:
+
+    friend class App; //to access the protected member (focused window to check ...)
+
+    bool _quitRequested;
+    AppWindow * const _focusedwindow;
+
 public:
+	EventHandler(AppWindow * const appwindow);
 	virtual	~EventHandler() {}
-	
+
+    //method to trigger the app exiting of the mainloop...
+    virtual bool shouldQuit() {return _quitRequested;}
+
 	//Callbacks on SDL_KEYUP or SDL_KEYDOWN
 	virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed);
 	virtual inline bool handleKeyPressEvent (SDL_keysym &keysym)
@@ -40,7 +53,7 @@ public:
 	{
 		return handleKeyboardEvent (keysym, false);
 	}
-	
+
 	//Callbacks on Mouse Events
 	virtual bool handleMouseMotionEvent (Uint8 state, Uint16 x, Uint16 y,
 										 Sint16 xrel, Sint16 yrel);
@@ -54,7 +67,7 @@ public:
 	{
 		return handleMouseButtonEvent(button, x, y, false);
 	}
-	
+
 	//Callbacks on Joystick Events
 	virtual bool handleJoyAxisEvent (Uint8 joystick, Uint8 axis, Sint16 value);
 	virtual bool handleJoyButtonEvent (Uint8 joystick, Uint8 button, bool pressed);
@@ -68,22 +81,22 @@ public:
 	}
 	virtual bool handleJoyHatEvent(Uint8 joystick, Uint8 hat, Uint8 value);
 	virtual bool handleJoyBallEvent(Uint8 joystick, Uint8 ball, Sint16 xrel, Sint16 yrel);
-	
+
 	//Callbacks on Window / Display events
 	virtual bool handleActiveEvent(bool gain, Uint8 state);
 	virtual bool handleResizeEvent(int w, int h);
 	//callback on platform-dependent windows manager event
 	virtual bool handleSysWMEvent(void);
-	
+
 	//Callback on other Events
 	virtual bool handleUserEvent(Uint8 type, int code, void* data1, void* data2);
-	
+
 	//Callback on Quit Event
 	virtual bool handleQuitEvent(void);
-	
+
 	//Catch-all callback
 	virtual bool handleEvent(SDL_Event &event);
-	
+
 };
 
 } //namespace SDL

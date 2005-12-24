@@ -1,8 +1,15 @@
 #include "SDLEventHandler.hh"
 
 namespace SDL {
-	
+
 //Code for default event handler
+EventHandler::EventHandler(AppWindow * const appwindow)
+ :_quitRequested(false) , _focusedwindow(appwindow)
+ {
+     if ( _focusedwindow == NULL )
+      Log << nl << "Focused Window @ " << _focusedwindow << std::endl;
+ }
+
 
 bool EventHandler::handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
 { return false; }
@@ -27,22 +34,32 @@ bool EventHandler::handleJoyHatEvent(Uint8 joystick, Uint8 hat, Uint8 value)
 
 bool EventHandler::handleJoyBallEvent(Uint8 joystick, Uint8 ball, Sint16 xrel, Sint16 yrel)
 { return false; }
-	
+
 bool EventHandler::handleActiveEvent(bool gain, Uint8 state)
 { return false; }
 
 bool EventHandler::handleResizeEvent(int w, int h)
-{ return false; }
+{
+    if (_focusedwindow !=NULL)
+    {
+        _focusedwindow->resize(w,h);
+        return true;
+    }
+    else return false;
+}
 
 bool EventHandler::handleSysWMEvent(void)
 { return false; }
-	
+
 bool EventHandler::handleUserEvent(Uint8 type, int code, void* data1, void* data2)
 { return false; }
-	
+
 bool EventHandler::handleQuitEvent(void)
-{ return false; }
-	
+{
+    _quitRequested = true;
+    return true;
+}
+
 bool EventHandler::handleEvent(SDL_Event &event)
 { return false; }
 

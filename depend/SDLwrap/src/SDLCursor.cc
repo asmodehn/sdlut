@@ -7,7 +7,7 @@ namespace SDL {
 //TODO : manage inverse pixel, without XPM maybe ??
 // --> find a way to do this properly... (which cursor format to choose ?)
 
-const char* _shape_arrow[] =
+const char* Cursor::_shape_arrow[] =
 {
 	/* width height num_colors chars_per_pixel */
 	"    32    32        3            1",
@@ -51,7 +51,7 @@ const char* _shape_arrow[] =
 	"0,0"
 	};
 
-const char* _shape_blackArrow[] =
+const char* Cursor::_shape_blackArrow[] =
 {
 	/* width height num_colors chars_per_pixel */
 	"    32    32        3            1",

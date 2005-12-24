@@ -28,7 +28,7 @@ namespace SDL {
 
 class VideoInfo
 {
-    friend class Manager;
+    friend class App;
 
 private:
 	//Actual VideoInfo pointer
@@ -38,7 +38,7 @@ private:
 
 protected:
 
-	//Singleton Constructor
+	//Constructor
 	VideoInfo() throw (std::logic_error);
 
 public:

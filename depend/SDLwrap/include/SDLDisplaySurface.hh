@@ -33,10 +33,10 @@ class DisplaySurface : public BaseSurface
 {
 
 	friend class Overlay;
+	friend class App;
 
 protected:
 
-	static std::string _title, _icon;
 	static Uint32 flags;
 
 	//Constructor
@@ -64,13 +64,20 @@ public:
 	//restore Screen -> blit the saved surface to the center of the display surface
 	virtual bool restore(const RGBSurface& backupScreen) { return false; }
 
-    //This set the display flags for the future display surface
-	//return false if no modes available for those flags
-	static bool setFlags( bool openGL = false, bool fullScreen = false,
-							bool resizable = true, bool noFrame = false,
-							bool doubleBuf = true,  bool anyFormat = true,
-							bool SWSurface = false ,bool HWSurface = true,
-							bool HWPalette = true, bool asyncBlit = false);
+    //those methods just changes the static flags used on display creation.
+	//use the App::methods to also reset the display.
+	static inline void setOpenGL(bool val)  { if (val) flags|= SDL_OPENGL; else flags&= (~SDL_OPENGL) ; }
+	static inline void setFullscreen(bool val)  { if (val) flags|= SDL_FULLSCREEN; else flags&= (~SDL_FULLSCREEN) ; }
+	static inline void setResizable(bool val) { if (val) flags|= SDL_RESIZABLE; else flags&= (~SDL_RESIZABLE) ;}
+	static inline void setNoFrame(bool val) { if (val) flags|= SDL_NOFRAME; else flags&= (~SDL_NOFRAME) ;}
+	static inline void setDoubleBuf(bool val) { if (val) flags|= SDL_DOUBLEBUF; else flags&= (~SDL_DOUBLEBUF) ;}
+	static inline void setAnyFormat(bool val) { if (val) flags|= SDL_ANYFORMAT; else flags&= (~SDL_ANYFORMAT) ;}
+	static inline void setSWSurface(bool val) { if (val) flags|= SDL_SWSURFACE; else flags&= (~SDL_SWSURFACE) ;}
+	static inline void setHWSurface(bool val) { if (val) flags|= SDL_HWSURFACE; else flags&= (~SDL_HWSURFACE) ;}
+	static inline void setHWPalette(bool val) { if (val) flags|= SDL_HWPALETTE; else flags&= (~SDL_HWPALETTE) ;}
+	static inline void setAsyncBlit(bool val) { if (val) flags|= SDL_ASYNCBLIT; else flags&= (~SDL_ASYNCBLIT) ;}
+
+
 	//Accessors
 	inline bool isOpenGLset(void) const {return ( SDL_OPENGL & (_surf!=NULL)?_surf->flags:flags ) != 0;}
 	inline bool isFullScreenset(void) const {return ( SDL_FULLSCREEN & (_surf!=NULL)?_surf->flags:flags ) != 0;}
@@ -82,24 +89,9 @@ public:
 	inline bool isASyncBlitset(void) const {return ( SDL_ASYNCBLIT & (_surf!=NULL)?_surf->flags:flags ) != 0;}
 	inline bool isHWPaletteset(void) const {return ( SDL_HWPALETTE & (_surf!=NULL)?_surf->flags:flags ) != 0;}
 
-
-	//WM methods
-	static void setCaption(std::string title = DEFAULT_WINDOW_TITLE, std::string icon = DEFAULT_WINDOW_ICON);
-	static void getCaption(std::string & title, std::string & icon);
-	static inline void setTitle(std::string title) { setCaption(title); }
-	//to improve (mask, colorkey, loading wrapped Surface, etc.)
-	static inline bool setIcon(std::string iconfilename);// MAYBE version check here ?? { setCaption(_title,icon); }
-
-
-	//return true on success, false otherwise
-	bool iconify(void);
-	bool toggleFullScreen(void);
-	/*enablegrabInput(void);
-	disableGrabInput(void);
-	queryGrabInput(void);
-	*/
 	static bool checkAvailableSize( const PixelFormat * fmt );
 	static bool checkAvailableSize( void);
+    static int checkBPP(int width, int height, int bpp);
 
 	virtual void debug(void) const;
 };

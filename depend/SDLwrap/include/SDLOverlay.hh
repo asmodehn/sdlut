@@ -4,7 +4,7 @@
 #include "SDLConfig.hh"
 #include "SDLRect.hh"
 #include "SDLDisplaySurface.hh"
-#include "SDLManager.hh"
+#include "SDLApp.hh"
 
 /**
  * \class SDLOverlay
@@ -52,7 +52,7 @@ class Overlay
 public :
 	//Constructor
 	//maybe the current display size must be used ?
-	Overlay(Format f, int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, DisplaySurface* dsurf = Manager::manager()->getDisplay())
+	Overlay(Format f, int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, DisplaySurface* dsurf = App::getInstance().getAppWindow()->getDisplay())
 	: _overlay(SDL_CreateYUVOverlay(width,height,formatConvert(f),dsurf->_surf))
 	{}
 	//Destructor

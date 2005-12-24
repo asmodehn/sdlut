@@ -29,15 +29,17 @@ typedef enum { arrow, blackArrow } CursorShape;
 
 class Cursor
 {
-	
+
 	friend class Manager;
-	
+
 	//default shapes for cursor (XPM format)
 	//corresponding to CursorShape
+	static const char* _shape_arrow[];
+	static const char* _shape_blackArrow[];
 	static const char** shapes[2];
 	//set Cursor from XPM
 	static SDL_Cursor *init_system_cursor(const char *image[]);
-	
+
 	//The address of SDL_Cursor structure should not change
 	SDL_Cursor * const _cursor;
 
@@ -46,7 +48,7 @@ class Cursor
 public :
 	//Constructor
 	Cursor(CursorShape sh = arrow) throw (std::logic_error);
-	
+
 	//Destructor
 	~Cursor() {SDL_FreeCursor(_cursor);}
 
@@ -59,14 +61,14 @@ public :
 	static Cursor getCurrent (void)
 	{
 		return Cursor(SDL_GetCursor());
-		
+
 	}
 	static void warpCurrent (Point p)
 	{
 		SDL_WarpMouse(p.getx(),p.gety());
 		std::cout << "Mouse warped !" << std::endl;
 	}
-	
+
 	//Methods
 	void show(void) // show the current Cursor
 	{

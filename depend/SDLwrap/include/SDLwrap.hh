@@ -7,7 +7,8 @@
 
 /**
   * \defgroup General
-  * Provide a set of classes to manage the SDL General functions :
+  * This group provide many classes to make the use of SDL easier
+  * Also provide a set of classes to manage the SDL Global functions :
   *
   * <ul>
   * <li>SDL_Init -- Initializes SDL
@@ -20,6 +21,8 @@
   * </ul>
   *
   */
+#include "SDLApp.hh"
+#include "SDLAppWindow.hh"
 #include "SDLManager.hh"
 
 /**
@@ -45,7 +48,12 @@
 #include "SDLEventHandler.hh"
 
 /**
-  * \defgroup Joystick
+  * \defgroup Input
+  */
+
+#include "SDLMouse.hh"
+
+/**
   * \defgroup Audio
   * \defgroup CDROM
   * \defgroup Threads

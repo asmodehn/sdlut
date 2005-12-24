@@ -15,7 +15,7 @@
 #define DEFAULT_DISPLAY_BPP 0 //0 for current display pixel mode
 //beware ! 0 only usable for Display Surface, not for RGB ones !!
 #define DEFAULT_WINDOW_TITLE "My own SDL program"
-#define DEFAULT_WINDOW_ICON "../data/SDL.ico"
+#define DEFAULT_WINDOW_ICON "../data/SDL_icon.bmp"
 
 #define DEFAULT_RGB_WIDTH 640
 #define DEFAULT_RGB_HEIGHT 480
@@ -32,6 +32,10 @@
 
 #ifdef THREAD
 #include <SDL_thread.h>
+#endif
+
+#if SDL_VERSION_ATLEAST(1, 2, 7)
+#include "SDL_cpuinfo.h"
 #endif
 
 //utils
@@ -106,6 +110,21 @@ namespace SDL
         }
 	};
 
+#if SDL_VERSION_ATLEAST(1, 2, 7)
+    class CPU
+    {
+        public:
+        static inline bool hasRDTSC() { return SDL_HasRDTSC();}
+        static inline bool hasMMX() { return SDL_HasMMX();}
+        static inline bool hasMMXExt() { return SDL_HasMMXExt(); }
+        static inline bool has3DNow() { return SDL_Has3DNow(); }
+        static inline bool has3DNowExt() { return SDL_Has3DNowExt(); }
+        //static inline bool hasSSE() { return SDL_hasSSE();}
+        //static inline bool hasSSEExt() { return SDL_hasSSEExt();}
+        static inline bool hasAltiVec() { return SDL_HasAltiVec();}
+
+    };
+#endif
 	static Version version;
 
 }

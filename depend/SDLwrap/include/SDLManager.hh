@@ -21,14 +21,6 @@
 
 #include "SDLConfig.hh"
 
-#include "SDLVideoInfo.hh"
-#ifdef HAVE_OPENGL
-#include "SDLGLWindow.hh"
-#include "SDLGLManager.hh"
-#endif //HAVE_OPENGL
-
-#include "SDLWindow.hh"
-
 
 namespace SDL
 {
@@ -36,92 +28,27 @@ namespace SDL
     //Singleton Class to manage initializations in SDL
     class Manager
     {
-        static Manager * _uniqueInstance;
 
-        //logs manager error with usefull information
-        static inline void error(Uint32 flags)
-        {
-            std::string errormsg("Unable to initialize SDL subsystems ");
-            if ( (flags & SDL_INIT_TIMER) !=0 )
-                errormsg+= "TIMER " ;
-            if ( (flags & SDL_INIT_AUDIO) != 0)
-                errormsg+= "AUDIO " ;
-            if ( (flags & SDL_INIT_VIDEO) != 0)
-                errormsg+= "VIDEO " ;
-            if ( (flags & SDL_INIT_CDROM) != 0)
-                errormsg+= "CDROM " ;
-            if ( (flags & SDL_INIT_JOYSTICK) != 0)
-                errormsg+= "JOYSTICK " ;
-            if ( (flags & SDL_INIT_NOPARACHUTE) != 0)
-                errormsg+= "NOPARACHUTE " ;
-            if ( (flags & SDL_INIT_EVENTTHREAD) != 0)
-                errormsg+= "EVENTTHREAD " ;
-            Log << errormsg << ": " << GetError() ;
-        }
-
-        DisplaySurface * _screen;
-        VideoInfo * _vinfo;
-#ifdef HAVE_OPENGL
-        GLManager * _gl;
-#endif
+    friend class App;
 
     protected:
-        Manager(Uint32 flags = SDL_INIT_EVERYTHING) throw (std::logic_error);
+        Manager(bool video = false, bool audio = false, bool timer = false, bool cdrom = false, bool joystick = false, bool noparachute = false, bool eventthread = false) throw (std::logic_error);
         ~Manager()
         {
             SDL_Quit();
         }
-        static bool init(Uint32 flags);
-
+        bool init(Uint32 flags);
 
     public:
-
-        static inline Manager* manager(void) throw (std::logic_error)
-        {
-            if (_uniqueInstance == NULL)
-						{
-							enableEverything();
-              throw std::logic_error("WARNING : Everything Enabled by default. You should enable subsystems manually !");
-						}
-            return _uniqueInstance;
-        }
-
-
-        //Enablers creates the singleton Instance if not present
-        //If Manager is already initialized, try to enable a subSystem
-        //and return the result
-        static inline bool enableTimer(void)
-        {
-            return init(SDL_INIT_TIMER);
-        }
-        static inline bool enableAudio(void)
-        {
-            return init(SDL_INIT_AUDIO);
-        }
-        static inline bool enableVideo(void)
-        {
-            return init(SDL_INIT_VIDEO);
-        }
-        static inline bool enableCdrom(void)
-        {
-            return init(SDL_INIT_CDROM);
-        }
-        static inline bool enableJoystick(void)
-        {
-            return init(SDL_INIT_JOYSTICK);
-        }
-        static inline bool enableEverything(void)
-        {
-            return init(SDL_INIT_EVERYTHING);
-        }
-        static inline bool enableNoParachute(void)
-        {
-            return init(SDL_INIT_NOPARACHUTE);
-        }
-        static inline bool enableEventThread(void)
-        {
-            return init(SDL_INIT_EVENTTHREAD);
-        }
+    //Enablers
+        bool enableTimer(void);
+        bool enableAudio(void);
+        bool enableVideo(void);
+        bool enableCdrom(void);
+        bool enableJoystick(void);
+        bool enableEverything(void);
+        bool enableNoParachute(void);
+        bool enableEventThread(void);
 
         //Disablers
         void disableTimer(void);
@@ -168,18 +95,8 @@ namespace SDL
         //display all Informations
         void debug(void);
 
-        //Access other classes (instanced only once)
-        DisplaySurface * setDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, int bpp = DEFAULT_DISPLAY_BPP );
-        //same than set but forces the re-creation...
-        DisplaySurface * resetDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, int bpp = DEFAULT_DISPLAY_BPP );
-        DisplaySurface * getDisplay( void ) {return _screen;} //init if not?
-
-        VideoInfo * getVideoInfo( void ) {return _vinfo;}
-
-#ifdef HAVE_OPENGL
-        GLManager * getGLManager() {return _gl;}
-#endif
     };
 
 }//namespace SDL
 #endif
+

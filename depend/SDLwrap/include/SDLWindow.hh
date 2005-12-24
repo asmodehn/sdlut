@@ -28,7 +28,7 @@ namespace SDL {
 class Window : public DisplaySurface
 {
 	//To access the contructor
-	friend class Manager;
+	friend class AppWindow;
 
 protected:
 

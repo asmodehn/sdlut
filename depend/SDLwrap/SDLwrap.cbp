@@ -800,6 +800,20 @@
 			<Option target="threadwin"/>
 			<Option target="torturethread"/>
 		</Unit>
+		<Unit filename="include\SDLApp.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLAppWindow.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
 		<Unit filename="include\SDLBaseSurface.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -1218,6 +1232,13 @@
 			<Option target="threadwin"/>
 			<Option target="torturethread"/>
 		</Unit>
+		<Unit filename="include\SDLMouse.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
 		<Unit filename="include\SDLOverlay.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -1565,6 +1586,16 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
+		<Unit filename="src\SDLApp.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLAppWindow.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
 		<Unit filename="src\SDLBaseSurface.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
@@ -1609,6 +1640,11 @@
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLMouse.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
 		</Unit>
 		<Unit filename="src\SDLOverlay.cc">
 			<Option compilerVar="CC"/>

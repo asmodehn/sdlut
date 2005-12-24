@@ -35,7 +35,7 @@ namespace SDL {
 //TEst to do on linux, to choose a class behaviour
 class GLManager
 {
-    friend class Manager;
+    friend class App;
 
 protected :
 

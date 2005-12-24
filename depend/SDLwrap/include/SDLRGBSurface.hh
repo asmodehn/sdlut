@@ -6,6 +6,7 @@
  ******************************************************************************/
 
 #include "SDLConfig.hh"
+
 #include "SDLBaseSurface.hh"
 #include "SDLColor.hh"
 
