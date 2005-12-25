@@ -688,80 +688,6 @@
 			<Add library="SDL"/>
 			<Add library="SDLmain"/>
 		</Linker>
-		<Unit filename="..\Common\include\Logger.hh">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
-			<Option target="staticlib-NoOpenGL"/>
-			<Option target="checkkeys"/>
-			<Option target="graywin"/>
-			<Option target="loopwave"/>
-			<Option target="testalpha"/>
-			<Option target="testbitmap"/>
-			<Option target="testblitspeed"/>
-			<Option target="testcdrom"/>
-			<Option target="testcpuinfo"/>
-			<Option target="testdyngl"/>
-			<Option target="testendian"/>
-			<Option target="testerror"/>
-			<Option target="testgamma"/>
-			<Option target="testgl"/>
-			<Option target="testthread"/>
-			<Option target="testjoystick"/>
-			<Option target="testkeys"/>
-			<Option target="testlock"/>
-			<Option target="testoverlay2"/>
-			<Option target="testoverlay"/>
-			<Option target="testpalette"/>
-			<Option target="testsem"/>
-			<Option target="testsprite"/>
-			<Option target="testtimer"/>
-			<Option target="testtypes"/>
-			<Option target="testver"/>
-			<Option target="testvidinfo"/>
-			<Option target="testwin"/>
-			<Option target="testwm"/>
-			<Option target="threadwin"/>
-			<Option target="torturethread"/>
-		</Unit>
-		<Unit filename="..\Common\src\Logger.cc">
-			<Option compilerVar="CC"/>
-			<Option target="staticlib-NoOpenGL"/>
-			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
-			<Option target="checkkeys"/>
-			<Option target="graywin"/>
-			<Option target="loopwave"/>
-			<Option target="testalpha"/>
-			<Option target="testbitmap"/>
-			<Option target="testblitspeed"/>
-			<Option target="testcdrom"/>
-			<Option target="testcpuinfo"/>
-			<Option target="testdyngl"/>
-			<Option target="testendian"/>
-			<Option target="testerror"/>
-			<Option target="testgamma"/>
-			<Option target="testgl"/>
-			<Option target="testthread"/>
-			<Option target="testjoystick"/>
-			<Option target="testkeys"/>
-			<Option target="testlock"/>
-			<Option target="testoverlay2"/>
-			<Option target="testoverlay"/>
-			<Option target="testpalette"/>
-			<Option target="testsem"/>
-			<Option target="testsprite"/>
-			<Option target="testtimer"/>
-			<Option target="testtypes"/>
-			<Option target="testver"/>
-			<Option target="testvidinfo"/>
-			<Option target="testwin"/>
-			<Option target="testwm"/>
-			<Option target="threadwin"/>
-			<Option target="torturethread"/>
-		</Unit>
 		<Unit filename="include\Interface3D.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -799,6 +725,13 @@
 			<Option target="testwm"/>
 			<Option target="threadwin"/>
 			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\Logger.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
 		</Unit>
 		<Unit filename="include\SDLApp.hh">
 			<Option compilerVar=""/>
@@ -1585,6 +1518,11 @@
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\Logger.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
 		</Unit>
 		<Unit filename="src\SDLApp.cc">
 			<Option compilerVar="CC"/>

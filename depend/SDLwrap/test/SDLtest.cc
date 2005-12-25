@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 	App::getInstance().initWindow(false,false,true,false);
 
 	//Getting video informations
-	testlog << nl << App::getInstance().getAppWindow()->getVideoInfo() << std::endl;
+	testlog << nl << *App::getInstance().getAppWindow()->getVideoInfo() << std::endl;
 
 	testlog << nl << " Creating the User Interface... " << std::endl;
 	//UI Creation
@@ -115,15 +115,15 @@ if(App::getInstance().getAppWindow()->reset())
 
 
 		//GLManager test
-		testlog << nl << glman << std::endl;
+		testlog << nl << *glman << std::endl;
 
         DisplaySurface* display=App::getInstance().getAppWindow()->getDisplay();
 		testlog << nl << "calling display->debug() " << std::endl;
-		testlog << nl << display <<std::endl;
+		testlog << nl << *display <<std::endl;
 
 		testlog << nl << std::boolalpha << " setDepthSize(16) " << glman->setDepthSize(16) << std::endl;
 
-		testlog << nl << glman << std::endl;
+		testlog << nl << *glman << std::endl;
 
 		testlog << nl << "loop... " << std::endl;
 			App::getInstance().mainLoop();
