@@ -1,15 +1,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "SDL_main.h"
+#include "SDLwrap.hh"
 #include "SDL_types.h"
 
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
 int main(int argc, char *argv[])
 {
 	int error = 0;

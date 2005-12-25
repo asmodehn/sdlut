@@ -313,12 +313,6 @@ static void PrintUsage(char *argv0)
 	fprintf(stderr, "	-fullscreen (test overlay in fullscreen mode)\n");
 }
 
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
 int main(int argc, char **argv)
 {
 	char *argv0 = argv[0];

@@ -252,12 +252,6 @@ int FilterEvents(const SDL_Event *event)
 	}
 }
 
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
 int main(int argc, char *argv[])
 {
 	SDL_Event event;

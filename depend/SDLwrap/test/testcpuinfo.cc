@@ -8,17 +8,6 @@
 
 #include "SDLwrap.hh"
 
-#if SDL_VERSION_ATLEAST(1, 2, 7)
-#include "SDL_cpuinfo.h"
-#endif
-
-
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
 using namespace std;
 
 int main(int argc, char *argv[])

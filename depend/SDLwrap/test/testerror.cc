@@ -23,12 +23,6 @@ int ThreadFunc(void *data)
 	return(0);
 }
 
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
 
 int main(int argc, char *argv[])
 {

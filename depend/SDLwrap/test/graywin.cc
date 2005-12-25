@@ -131,13 +131,6 @@ SDL_Surface *CreateScreen(Uint16 w, Uint16 h, Uint8 bpp, Uint32 flags)
 	return(screen);
 }
 
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
-
 int main(int argc, char *argv[])
 {
 	SDL_Surface *screen;

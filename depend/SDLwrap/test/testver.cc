@@ -7,12 +7,6 @@
 
 #include "SDLwrap.hh"
 
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
 int main(int argc, char *argv[])
 {
     SDL::version.debug();

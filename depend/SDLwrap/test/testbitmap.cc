@@ -43,13 +43,6 @@ SDL_Surface *LoadXBM(SDL_Surface *screen, int w, int h, Uint8 *bits)
 	return(bitmap);
 }
 
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
-
 int main(int argc, char *argv[])
 {
 	SDL_Surface *screen;

@@ -66,4 +66,12 @@
 #include "Interface3D.hh"
 
 
+//just a little usefull tip for mingw
+#ifdef __MINGW32__
+#ifdef main
+#undef main
+#endif
+#endif
+
+
 #endif

@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "SDL.h"
+#include "SDLwrap.hh"
 
 #ifdef HAVE_OPENGL
 
@@ -81,13 +81,6 @@ void init_glfuncs(glfuncs* f)
 }
 
 #define NB_PIXELS 1000
-
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
 
 int main(int argc,char *argv[])
 {

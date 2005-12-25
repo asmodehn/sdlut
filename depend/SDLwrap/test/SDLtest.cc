@@ -6,13 +6,6 @@
 using namespace std;
 using namespace SDL;
 
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
-
 
 //global variable
 std::string bitmapname("sample.bmp");

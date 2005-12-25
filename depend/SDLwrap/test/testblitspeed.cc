@@ -352,13 +352,6 @@ static void test_blit_speed(void)
             (int) (((float)iterations) / (((float)elasped) / 1000.0f)));
 }
 
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
-
 int main(int argc, char **argv)
 {
     int initialized = setup_test(argc, argv);

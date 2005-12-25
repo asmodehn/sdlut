@@ -6,13 +6,6 @@
 #include "SDLwrap.hh"
 #include "SDL_endian.h"
 
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
-
 int main(int argc, char *argv[])
 {
 	Uint16 value16 = 0xCDAB;

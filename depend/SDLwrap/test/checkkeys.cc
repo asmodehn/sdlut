@@ -72,13 +72,6 @@ static void PrintKey(SDL_keysym *sym, int pressed)
 	printf("\n");
 }
 
-//would be nice if we can put that in SDLwrap.hh
-#ifdef __MINGW32__
-#ifdef main
-#undef main
-#endif
-#endif
-
 int main(int argc, char *argv[])
 {
 	SDL_Event event;
