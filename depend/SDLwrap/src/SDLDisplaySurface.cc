@@ -1,5 +1,5 @@
 #include "SDLDisplaySurface.hh"
-#include "SDLApp.hh" // to Access the videoinfo
+
 //#include <sstream>
 
 namespace SDL {
@@ -80,12 +80,12 @@ bool DisplaySurface::checkAvailableSize( const PixelFormat * fmt )
 
 bool DisplaySurface::checkAvailableSize(void)
 {
-	return checkAvailableSize( App::getInstance().getVideoInfo()->getPixelFormat());
+	return checkAvailableSize( getVideoInfo()->getPixelFormat());
 }
 
-int DisplaySurface::checkBPP(int width, int height, int bpp)
+int DisplaySurface::getSuggestedBPP(int width, int height)
 {
-    return SDL_VideoModeOK(width,height,bpp,flags);
+    return SDL_VideoModeOK(width,height,getVideoInfo()->getPixelFormat()->getBitsPerPixel(),flags);
 }
 
 

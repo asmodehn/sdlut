@@ -83,28 +83,23 @@ int main(int argc, char *argv[])
 {
 	SDL_Event event;
 	int done;
-	Uint32 videoflags;
 
-	/* Initialize SDL */
-  SDL::Manager::enableVideo();
 
-	videoflags = SDL_SWSURFACE;
+  bool fullscreen = false;
+
 	while( argc > 1 ) {
 		--argc;
 		if ( argv[argc] && !strcmp(argv[argc], "-fullscreen") ) {
-			videoflags |= SDL_FULLSCREEN;
+			fullscreen = true;
 		} else {
 			fprintf(stderr, "Usage: %s [-fullscreen]\n", argv[0]);
 			exit(1);
 		}
 	}
+	SDL::App::getInstance().initWindow(fullscreen);
 
 	/* Set 640x480 video mode */
-	if ( SDL_SetVideoMode(640, 480, 0, videoflags) == NULL ) {
-		fprintf(stderr, "Couldn't set 640x480 video mode: %s\n",
-							SDL_GetError());
-		exit(2);
-	}
+	SDL::App::getInstance().getAppWindow()->reset(640,480);
 
 	/* Enable UNICODE translation for keyboard input */
 	SDL_EnableUNICODE(1);

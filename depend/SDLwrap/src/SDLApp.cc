@@ -4,11 +4,7 @@ namespace SDL
 {
 
         App::App(std::string logfilename) :    _manager(NULL),
-#ifdef HAVE_OPENGL
-                                _glmanager(NULL),
-#endif
-                                _videoinfo(NULL),
-                                 _eventhandler(NULL),
+                                    _eventhandler(NULL),
                                  _appwindow(NULL)
         {
             setName();
@@ -18,40 +14,48 @@ namespace SDL
         }
         App::~App()
         {
+            //MAKE SURE those destructor dont need App. They shouldnt !
             delete _appwindow;
             delete _eventhandler;
-            delete _videoinfo;
-#ifdef HAVE_OPENGL
-            delete _glmanager;
-    #endif
+            //this one should be last because it calls SDL_Quit
             delete _manager;
         }
 
-bool App::initWindow(bool opengl, bool fullscreen, bool resizable, bool noframe)
+App& App::getInstance()
 {
+    static   App  instance;
+    return   instance;
+}
+
+bool App::initWindow( bool fullscreen,bool opengl, bool resizable, bool noframe)
+{
+    bool res = false;
     try
     {
     _manager = new Manager(true);
     }
     catch (...)
     {
-        Log << nl << "FATAL ERROR : Video cant be initialized... Exiting" << std::endl;
+        Log << nl << "FATAL ERROR : Manager cant be created... Exiting" << std::endl;
             exit (1);
     }
     if ( _manager !=NULL )
     {
-#ifdef HAVE_OPENGL
-        _glmanager = new GLManager();
-#endif
-        _videoinfo = new VideoInfo();
-        _appwindow = new AppWindow(_name,_icon,_videoinfo->getPixelFormat()->getBitsPerPixel());
+        //more try / catch to do ??
+        _appwindow = new AppWindow(_name,_icon);
         //setting the required flags...
+    #ifdef HAVE_OPENGL
         if (opengl) _appwindow->setOpenGL(true);
+    #else
+        if(opengl) Log << nl << "Not compiled with opengl support --> Ignoring opengl window request"<< std::endl;
+    #endif
         if (fullscreen) _appwindow->setFullscreen(true);
         if (resizable) _appwindow->setResizable(true);
         if (noframe) _appwindow->setNoFrame(true);
         _eventhandler = new EventHandler(_appwindow);
+        res = true;
     }
+    return res;
 }
 
 bool App::mainLoop()

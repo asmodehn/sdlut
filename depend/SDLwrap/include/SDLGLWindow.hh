@@ -23,8 +23,7 @@
 #include "SDLConfig.hh"
 
 #include "SDLDisplaySurface.hh"
-#include "Interface3D.hh"
-#include <cassert>
+#include "SDLGLManager.hh"
 
 namespace SDL {
 
@@ -32,27 +31,25 @@ namespace SDL {
 
 class GLWindow : public DisplaySurface
 {
-protected:
-	static Interface3D* engine;
 
+    GLManager * const _glmanager;
 public:
 
 	//Constructor
-	GLWindow(int width, int height, int bpp) throw (std::logic_error)
-	: DisplaySurface(width, height, bpp, flags)
-	{
-		engine->init(getWidth(),getHeight());
-	}
-
+	GLWindow(int width, int height, int bpp,GLManager * const glmanager ) throw (std::logic_error);
 	//Destructor
-	~GLWindow() {delete engine;}
+	~GLWindow() {}
 
 //	inline bool isOpenGLset(void) const {return ((SDL_OPENGL & _surf->flags) != 0);}
 
   bool resize (int width, int height);
 
   //TODO : Save Screen -> backup the screen content in a new RGBSurface AND SAVE THE CURRENT SCENE STATE...
-	virtual RGBSurface* save(void) {return NULL;}
+
+//Save Screen -> backup the screen content in a new RGBSurface...
+	virtual bool saveContent(void) {return false;}
+	//restore Screen -> blit the saved surface to the center of the display surface
+	virtual bool restoreContent(void) {return true;}
 
 	bool update(void);//call scene3D->render
 

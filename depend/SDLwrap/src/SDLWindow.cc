@@ -5,8 +5,13 @@ namespace SDL {
 
 Window::Window(int width, int height, int bpp) throw (std::logic_error)
 : DisplaySurface( width, height, bpp, flags & (~SDL_OPENGL))
-{ }
-
+{
+    _backupscreen = NULL;
+}
+Window::~Window()
+{
+    if (_backupscreen !=NULL ) delete _backupscreen;
+}
 
 bool Window::update(void)
 {
@@ -20,28 +25,31 @@ void Window::debug(void) const
 }
 
 //SaveScreen -> backup the screen content in a RGBSurface...
-RGBSurface* Window::save(void)
+bool Window::saveContent(void)
 {
-	Log << "Window::save()" ;
-	// we create a new RGB surface to clone the display...
-	RGBSurface * backupScreen= new RGBSurface(*this);
+    if (_backupscreen != NULL ) delete _backupscreen;
 
-	return backupScreen;
+	Log << nl << "Window::saveContent()" << std::endl;
+	// we create a new RGB surface to clone the display...
+	_backupscreen= new RGBSurface(*this);
+
+	return _backupscreen!=NULL;
 }
 
 //restoreScreen -> blit the saved surface to the center of the screen
-bool Window::restore(const RGBSurface& savedScreen)
+bool Window::restoreContent(void)
 {
   bool res;
 
- Log << "Window::restore()";
+ Log << nl << "Window::restoreContent()" << std::endl;
 
+//to restore the content in the middle of the window
   Point newpos;
-  newpos.setx( (getWidth()-savedScreen.getWidth()) / 2 );
-  newpos.sety( (getHeight()-savedScreen.getHeight()) / 2 );
+  newpos.setx( (getWidth()-_backupscreen->getWidth()) / 2 );
+  newpos.sety( (getHeight()-_backupscreen->getHeight()) / 2 );
 
-  std::cerr << "blit savedScreen at " << newpos << std::endl;
-  res = blit(savedScreen, newpos);
+  Log << nl << "Blitting backupscreen at " << newpos << std::endl;
+  res = blit(*_backupscreen, newpos);
 
 	return res;
 }
@@ -50,44 +58,22 @@ bool Window::restore(const RGBSurface& savedScreen)
 
 bool Window::resize(int width, int height)
 {
-
-  std::cerr << "Resize start" << std::endl;
-	bool res = false;
-	//proper way to do that :
-	// 1 - save the current display surface
-
-	//AUTO_PTR to manage the delete at the end ??
-	RGBSurface * backup=save();
-
-	std::cerr << "Saved Surface debug :" << std::endl;
-	backup->debug();
-
-	// 2 - create a new one similar, with new size
-  //BEWARE : should match DisplaySurface Constructor code
+    bool res = false;
+    //BEWARE : should match DisplaySurface Constructor code
   SDL_Surface * newSurf = SDL_SetVideoMode(width,height,getBPP(),getFlags());
-
-
 
 	if (newSurf==NULL) //SetVideoMode has failed
 	{
 		Log << "Unable to resize to " << width << " x " << height << " 2D display surface " << nl << GetError();
 	}
 	else //setvideoMode successfull
-	{
-		// 3 - restore the screen
-    restore(*backup);
-
-    //update the pointer
-    _surf=newSurf;
-
-    res = true;
-    //BEWARE : According to the doc, the display surface should never be freed by the caller of SetVideoMode. SDL_Quit will handle that.
-	}
-
-  std::cerr << "New Display Surface debug :" << std::endl;
-	debug();
-
-	//TODO : backup should be freed / deleted anyway !!
+    {
+        _surf=newSurf;
+          std::cerr << "New Display Surface debug :" << std::endl;
+            debug();
+        res = true;
+        //BEWARE : According to the doc, the display surface should never be freed by the caller of SetVideoMode. SDL_Quit will handle that.
+    }
 
 	return res;
 }

@@ -67,7 +67,7 @@ bool Interface3D::resize(int width, int height)
 }
 
 
-void Interface3D::render(void)
+void Interface3D::render(void) const
 {
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
 	glLoadIdentity();									// Reset The Current Modelview Matrix

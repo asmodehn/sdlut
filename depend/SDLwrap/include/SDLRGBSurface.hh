@@ -65,7 +65,7 @@ public :
 
 	static void setFlags(bool SWSURFACE = false, bool HWSURFACE = true, bool SRCCOLORKEY = false, bool SRCALPHA = false);
 
-    bool setColorKey(const RGBColor &, const PixelFormat * pformat, bool rleAccel = true);
+    bool setColorKey(const RGBColor &, bool rleAccel = true);
 
 
 	//Use Standard Colors here

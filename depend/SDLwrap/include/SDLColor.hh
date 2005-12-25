@@ -59,6 +59,22 @@ public:
 		_color->b=b;
 		pointerCopy = false;
 	}
+	RGBColor(const RGBColor & rgbcolor)
+    :_color(new SDL_Color)
+    {
+	    _color->r=rgbcolor.getR();
+		_color->g=rgbcolor.getG();;
+		_color->b=rgbcolor.getB();;
+		pointerCopy = false;
+	}
+	RGBColor& operator=( const RGBColor & rgbcolor)
+	{
+	    _color->r=rgbcolor.getR();
+		_color->g=rgbcolor.getG();;
+		_color->b=rgbcolor.getB();;
+		pointerCopy = false;
+		return *this;
+	}
 	virtual ~RGBColor() { if (!pointerCopy) delete _color;}
 
 	void setR(Uint8 nr) { _color->r=nr ;}
@@ -99,6 +115,19 @@ public:
 	: RGBColor(r, g, b)
 	{
 		_color->unused=a;
+	}
+	RGBAColor(const RGBAColor & rgbacolor)
+	: RGBColor(rgbacolor.getR(), rgbacolor.getG(), rgbacolor.getB())
+	{
+	    _color->unused=rgbacolor.getA();
+	}
+	RGBAColor& operator=( const RGBAColor & rgbacolor )
+	{
+	    _color->r=rgbacolor.getR();
+		_color->g=rgbacolor.getG();;
+		_color->b=rgbacolor.getB();;
+		_color->unused=rgbacolor.getA();
+		return *this;
 	}
 	virtual ~RGBAColor() {}
 

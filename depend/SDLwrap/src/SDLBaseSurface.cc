@@ -2,6 +2,8 @@
 
 namespace SDL {
 
+const VideoInfo * BaseSurface::_vinfo = NULL;
+
 bool BaseSurface::lock(void)
 {
 	if (SDL_MUSTLOCK(_surf))

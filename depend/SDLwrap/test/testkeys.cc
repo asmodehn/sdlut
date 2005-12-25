@@ -16,14 +16,11 @@ int main(int argc, char *argv[])
 {
 	SDLKey key;
 
-	if ( SDL_Init(SDL_INIT_VIDEO) < 0 ) {
-		fprintf(stderr, "Couldn't initialize SDL: %s\n",
-							SDL_GetError());
-		exit(1);
-	}
+    //Call to SDL_Init needed to get the Key code....
+    SDL::App::getInstance().initWindow();
+
 	for ( key=SDLK_FIRST; key<SDLK_LAST; key=static_cast<SDLKey>(1+(int)key) ) {
 		printf("Key #%d, \"%s\"\n", key, SDL_GetKeyName(key));
 	}
-	SDL_Quit();
 	return(0);
 }

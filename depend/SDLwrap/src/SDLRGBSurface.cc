@@ -1,5 +1,4 @@
 #include "SDLRGBSurface.hh"
-#include "SDLApp.hh" //to access the VideoInfo...
 
 namespace SDL {
 
@@ -93,7 +92,7 @@ try : BaseSurface(SDL_LoadBMP(filename.c_str()))
         throw std::logic_error("SDL_LoadBMP returns NULL");
 	}
 	else
-		setColorKey(colorKey, App::getInstance().getVideoInfo()->getPixelFormat());
+		setColorKey(colorKey, getVideoInfo()->getPixelFormat());
 }
 catch (std::exception &e)
 {
@@ -193,7 +192,7 @@ void RGBSurface::setFlags(bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool
 	if ( SRCALPHA ) RGBFlags|= SDL_SRCALPHA; else RGBFlags&= (~SDL_SRCALPHA);
 }
 
-bool RGBSurface::setColorKey(const RGBColor & key, const PixelFormat * pformat, bool rleAccel)
+bool RGBSurface::setColorKey(const RGBColor & key, bool rleAccel)
 {
 	Uint32 flags;
 	if (rleAccel)
@@ -201,7 +200,7 @@ bool RGBSurface::setColorKey(const RGBColor & key, const PixelFormat * pformat, 
 	else
 	flags=SDL_SRCCOLORKEY;
 
-	return SDL_SetColorKey(_surf, flags, pformat->getValueFromRGB(key) ) == 0;
+	return SDL_SetColorKey(_surf, flags, getPixelFormat().getValueFromRGB(key) ) == 0;
 }
 
 bool RGBSurface::optimise(bool alpha)

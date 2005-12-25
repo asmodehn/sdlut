@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 
 	testlog << nl <<  " Checking SDL Video Info... " << std::endl;
 	//Getting video informations
-	App::getInstance().getVideoInfo()->debug();
+	App::getInstance().getAppWindow()->getVideoInfo()->debug();
 
 	testlog << nl << " Creating the User Interface... " << std::endl;
 	//UI Creation
@@ -72,6 +72,8 @@ when the configuration file changed...*/
 	int newW=bitmap.getWidth()+60;
 	int newH=bitmap.getHeight()+60;
 
+    App::getInstance().getAppWindow()->setBGColor(Color (255,0,0));
+
 
 	if (! (App::getInstance().getAppWindow()->reset(newW,newH)))
     {
@@ -83,11 +85,10 @@ when the configuration file changed...*/
         DisplaySurface* display=App::getInstance().getAppWindow()->getDisplay();
         display->debug();
 
-		if (display->fill(Color(255,0,0)))
-			display->blit(bitmap,Point(30,30));
+		display->blit(bitmap,Point(30,30));
 
 		RGBSurface smiley("icon.bmp",Color(255,255,255));
-    smiley.optimise(true);
+        smiley.optimise(true);
 
 		testlog << nl << std::boolalpha << display->blit(smiley,Point(50,50)) << std::endl;
 
@@ -106,30 +107,31 @@ when the configuration file changed...*/
 	testlog << nl <<"display reset" << std::endl;
 
 	//GLManager test
+	GLManager * glman=App::getInstance().getAppWindow()->getGLManager();
 	testlog << nl<<std::boolalpha <<
-			"setRsize(5) " << App::getInstance().getGLManager()->setRSize(5) << nl <<
-			"setGSize(5) " << App::getInstance().getGLManager()->setGSize(5) << nl <<
-			"setBSize(5) " << App::getInstance().getGLManager()->setBSize(5) << nl <<
-			"setASize(5) " << App::getInstance().getGLManager()->setASize(5) << nl <<
-			"setBufferSize(5) " << App::getInstance().getGLManager()->setBufferSize(12) << nl <<
+			"setRsize(5) " << glman->setRSize(5) << nl <<
+			"setGSize(5) " << glman->setGSize(5) << nl <<
+			"setBSize(5) " << glman->setBSize(5) << nl <<
+			"setASize(5) " << glman->setASize(5) << nl <<
+			"setBufferSize(5) " << glman->setBufferSize(12) << nl <<
 			std::endl;
 
-//tmp
-std::cout << !App::getInstance().getAppWindow()->getDisplay()->isOpenGLset() << std::endl;
+App::getInstance().getAppWindow()->setOpenGL(true);
 
-if(!App::getInstance().getAppWindow()->setOpenGL(true))
+if(App::getInstance().getAppWindow()->reset())
 	{
 
+
 		//GLManager test
-		App::getInstance().getGLManager()->debug();
+		glman->debug();
 
         DisplaySurface* display=App::getInstance().getAppWindow()->getDisplay();
 		testlog << nl << "calling display->debug() " << std::endl;
 		display->debug();
 
-		testlog << nl << std::boolalpha << " setDepthSize(16) " << App::getInstance().getGLManager()->setDepthSize(16) << std::endl;
+		testlog << nl << std::boolalpha << " setDepthSize(16) " << glman->setDepthSize(16) << std::endl;
 
-		App::getInstance().getGLManager()->debug();
+		glman->debug();
 
 		testlog << nl << "loop... " << std::endl;
 			App::getInstance().mainLoop();

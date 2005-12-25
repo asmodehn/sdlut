@@ -1,12 +1,9 @@
 #include "SDLGLWindow.hh"
 
 
-
 namespace SDL {
 
 #ifdef HAVE_OPENGL
-
-Interface3D* GLWindow::engine = new Interface3D;
 
 /*
 void SDLGLWindow::enableBlit(void)
@@ -32,10 +29,26 @@ void SDLWindow::disableDoubleBuf(void)
 }
 
 */
+
+GLWindow::GLWindow(int width, int height, int bpp, GLManager * const glmanager) throw (std::logic_error)
+try	: DisplaySurface(width, height, bpp, flags), _glmanager(glmanager)
+{
+    assert (_glmanager);
+    if (_glmanager->getEngine() != NULL)
+        _glmanager->getEngine()->init(getWidth(),getHeight());
+    else
+        throw std::logic_error("Engine not initialized --> aborting GLWindow Constructor!");
+}
+catch (std::exception &e)
+{
+    Log << nl << "Exception catched in GLWindow constructor !" << nl << e.what() << std::endl;
+}
+
 bool GLWindow::update(void)
 {
-	assert(engine);
-	engine->render();
+    assert(_glmanager);
+	assert(_glmanager->getEngine());
+	_glmanager->getEngine()->render();
 	//si on a du blit
 	//SDLDisplay::update();
 
@@ -45,7 +58,10 @@ bool GLWindow::update(void)
 
 bool GLWindow::resize (int width, int height)
 {
-	return engine->resize(width,height);
+
+    assert(_glmanager);
+	assert(_glmanager->getEngine());
+	return _glmanager->getEngine()->resize(width,height);
 }
 
 #endif

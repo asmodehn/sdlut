@@ -20,12 +20,14 @@
  *
  */
 
+#include "Interface3D.hh"
+
 namespace SDL {
 
 #ifdef HAVE_OPENGL
 
 /*******************************************************************************
- * Manager of the GL state machine - Singleton
+ * Manager of the GL state machine
  ******************************************************************************/
 
  //Howto use glSDL( planned in SDL from SDL 1.3) : http://icps.u-strasbg.fr/~marchesin/sdl/glsdl.html
@@ -35,13 +37,15 @@ namespace SDL {
 //TEst to do on linux, to choose a class behaviour
 class GLManager
 {
-    friend class App;
+    friend class AppWindow;
 
 protected :
-
-	GLManager() {}
+    Interface3D* _glengine;
+	GLManager() : _glengine(NULL) {}
 
 public :
+
+    ~GLManager() {delete _glengine;}
 
 	//may be connected with constructor ???
 	bool loadGLLibrary(const std::string & path)
@@ -51,6 +55,9 @@ public :
 
 	//TODO : I don't know how to manage this....
 	//getProcAddress
+
+    void setEngine(Interface3D * engine = new Interface3D()) {_glengine = engine;}
+    Interface3D * getEngine() { return _glengine;}
 
 	//Accessor to GLAttributes
 	//Note : DoubleBuf is managed by GLWindow, like 2D doublebuf

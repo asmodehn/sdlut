@@ -11,11 +11,11 @@
 #include "SDLConfig.hh"
 
 #ifdef HAVE_OPENGL
-//Coder en singleton ici aussi
+
 class Interface3D
 {
 	public:
-	virtual void render(void);
+	virtual void render(void) const;
 	virtual bool init(int width, int height);
 	virtual bool resize(int width, int height);
 };

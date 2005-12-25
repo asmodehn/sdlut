@@ -96,7 +96,7 @@ namespace SDL
         bool res = true;
         if (_screen == NULL )
             DisplaySurface::setResizable(val);
-        else if (_screen->isResizableset() !=val )
+        else if (_screen->isResizableset() !=val ) //if called inside mainLoop while screen is active
         {
             if (! reset(_screen->getWidth(),_screen->getHeight()))
                 res=false;
@@ -109,7 +109,7 @@ namespace SDL
         bool res = true;
         if (_screen == NULL )
             DisplaySurface::setFullscreen(val);
-        else if (_screen->isFullScreenset() !=val )
+        else if (_screen->isFullScreenset() !=val ) //if called inside mainLoop while screen is active
         {
             if (! reset(_screen->getWidth(),_screen->getHeight()))
                 res=false;
@@ -122,50 +122,74 @@ namespace SDL
         bool res = true;
         if (_screen == NULL )
             DisplaySurface::setNoFrame(val);
-        else if (_screen->isNoFrameset() !=val )
+        else if (_screen->isNoFrameset() !=val )  //if called inside mainLoop while screen is active
         {
             if (! reset(_screen->getWidth(),_screen->getHeight()))
                 res=false;
         }
         return res;
     }
-
+#ifdef HAVE_OPENGL
     bool AppWindow::setOpenGL(bool val)
     {
         bool res = true;
         if (_screen == NULL )
             DisplaySurface::setOpenGL(val);
-        else
+        else if ( _screen->isOpenGLset() !=val ) //if called inside mainLoop while screen is active
         {
-            std::cout << _screen->isOpenGLset() << "!=" << val << std::endl;
-            //    if ( _screen->isOpenGLset() !=val )
-            //    {
             DisplaySurface::setOpenGL(val);
             if (! reset(_screen->getWidth(),_screen->getHeight()))
                 res=false;
         }
         return res;
     }
+#endif
 
 
-    AppWindow::AppWindow(std::string title,std::string icon,int bpp): _title(title), _icon(icon),_bpp(bpp)
+    AppWindow::AppWindow(std::string title,std::string icon)
+    : _title(title), _icon(icon)
     {
+        try
+         {
+             _videoinfo = new VideoInfo();
+             #ifdef HAVE_OPENGL
+                _glmanager = new GLManager();
+            #endif
+        }
+        catch (std::exception &e)
+        {
+            Log << nl << e.what() << std::endl;
+        }
         _screen=NULL;
+        //setting the static videoInfo to be used by all surfaces...
+        BaseSurface::_vinfo = _videoinfo;
 
         setIcon(_icon);
         setTitle(_title);
+
+        setBGColor( Color (0,0,0) );
     }
+
+    AppWindow::~AppWindow()
+    {
+#ifdef HAVE_OPENGL
+        delete _glmanager;
+#endif
+    delete _videoinfo; BaseSurface::_vinfo = NULL;
+    }
+
+
 
     bool AppWindow::reset( int width, int height)
     {
         bool res = false;
-        int suggestedbpp=DisplaySurface::checkBPP(width, height, _bpp);
+        int _bpp=DisplaySurface::getSuggestedBPP(width, height);
         //but beware about bpp == 0...
-        if ( suggestedbpp == 0 )
+        if (_bpp == 0 )
         {//0 as return code mean the current format is not supported
             Log << nl << "The requested video mode is not supported under any bit depth. Display reset cancelled !";
         }
-        else if ( suggestedbpp != _bpp)
+        /*else if ( suggestedbpp != _bpp)
         {
             Log << nl << " BPP wanted = " << _bpp << nl << " Using suggested BPP instead = " << suggestedbpp << std::endl;
             _bpp=suggestedbpp;
@@ -173,8 +197,9 @@ namespace SDL
         }
         else
             res=true;
-
-        if (res)
+*/
+        //if (res)
+        else
         {
             Log << nl << "SDL will use " << width << "x" << height << "@" <<_bpp << std::endl;
             //create a new screen
@@ -184,12 +209,16 @@ namespace SDL
 #ifdef HAVE_OPENGL
                 if (SDL_OPENGL & DisplaySurface::flags)
                 {
-                    _screen = new GLWindow(width, height, _bpp );
+                    if (_glmanager->getEngine() == NULL)
+                        _glmanager->setEngine();
+                    _screen = new GLWindow(width, height, _bpp,_glmanager );
+                    res= (_screen != NULL);
                 }
                 else
                 {
 #endif
                     _screen = new Window(width, height, _bpp );
+                    if (_screen!=NULL) return _screen->fill(background);
 #ifdef HAVE_OPENGL
 
                 }
@@ -201,14 +230,25 @@ namespace SDL
                 Log << e.what();
             }
         }
-        return res && ( _screen != NULL);
+
+
+        return res;
 
     }
 
 bool AppWindow::resize (int width, int height)
 {
-    if (_screen !=NULL ) return _screen->resize(width,height);
-    else return false;
+    bool res = false;
+    if (_screen == NULL ) res=reset (width,height);
+    else
+    {
+        _screen->saveContent();
+        if (_screen->resize(width,height))
+        {
+            res = _screen->fill(background) && _screen->restoreContent();
+        }
+    }
+    return res;
 }
 
 bool AppWindow::mainLoop(EventHandler & handler)
@@ -222,6 +262,8 @@ bool AppWindow::mainLoop(EventHandler & handler)
 
             _screen->update();
         }
+        delete _screen; // to delete the SDLWrap class (not the actual video surface in memory...)
+        _screen = NULL;
         res = true;
     }
     else

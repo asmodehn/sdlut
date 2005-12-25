@@ -19,9 +19,10 @@
 
  #include "SDLConfig.hh"
 
-
+#include "SDLVideoInfo.hh"
  #include "SDLWindow.hh"
  #ifdef HAVE_OPENGL
+ #include "SDLGLManager.hh"
  #include "SDLGLWindow.hh"
  #endif //HAVE_OPENGL
 
@@ -36,27 +37,45 @@ class AppWindow
 {
         friend class App; //to access the constructor
 
-        std::string _title, _icon;
+
 
         protected:
 
-       int  _bpp;
+        std::string _title, _icon;
+        Color background;
+
+        VideoInfo * _videoinfo;
+       #ifdef HAVE_OPENGL
+            GLManager * _glmanager;
+        #endif
+
        DisplaySurface * _screen;
 
-         AppWindow(std::string title, std::string iconname,int bpp = DEFAULT_DISPLAY_BPP);
+         AppWindow(std::string title, std::string iconname);
 
          public:
+        ~AppWindow();
 
-
+        //create the screen
         bool reset( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT);
+        //just resize the screen (without changing flags, or bpp)
         bool resize (int width, int height);
         DisplaySurface * getDisplay( void ) {return _screen;}
 
+        VideoInfo * getVideoInfo( void ) {return _videoinfo;}
+
+        //preset the flags
         bool setResizable(bool val);
         bool setFullscreen(bool val);
+    #ifdef HAVE_OPENGL
+    GLManager * getGLManager() {return _glmanager;}
         bool setOpenGL(bool val);
+    #endif
         bool setNoFrame(bool val);
 
+        //BGColor works only on 2DWindow
+        void setBGColor(const Color & color) { background = color;}
+        Color getBGColor () { return background;}
 
         //return true on success, false otherwise
         bool iconify(void);

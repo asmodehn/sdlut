@@ -22,7 +22,7 @@
 #include "SDLConfig.hh"
 
 #include "SDLRect.hh"
-#include "SDLPixelFormat.hh"
+#include "SDLVideoInfo.hh"
 #include <cassert>
 
 namespace SDL {
@@ -32,6 +32,9 @@ namespace SDL {
 //The goal is to have _surf and this really tied.
 class BaseSurface
 {
+    friend class AppWindow;
+private:
+    static const VideoInfo * _vinfo; ///a usefull static pointer, set to the current VideoInfo by AppWindow
 
 protected:
 	//TODO : improve wrapping with const SDL_Surface * // or maybe (const?) SDL_Surface &
@@ -41,6 +44,7 @@ protected:
 	//SDL_Surface * const _surf;
 	//except for resize...
 	SDL_Surface * _surf; ///< the actual allocated surface
+    static const VideoInfo * getVideoInfo() {return _vinfo;} ///access method to be used by derivated classes
 
 	/// This method return true if the surface is initialized, false otherwise.
 	bool initialized() const { return _surf != NULL; }

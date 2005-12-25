@@ -21,8 +21,6 @@
 
 #include "SDLConfig.hh"
 #include "SDLBaseSurface.hh"
-//#include "SDLUserInput.hh"
-#include "SDLVideoInfo.hh"
 #include "SDLRGBSurface.hh" //to help with backup of screen surface
 
 namespace SDL {
@@ -33,7 +31,7 @@ class DisplaySurface : public BaseSurface
 {
 
 	friend class Overlay;
-	friend class App;
+	//friend class AppWindow;
 
 protected:
 
@@ -49,20 +47,23 @@ public:
 
 	//Destructor
 	virtual ~DisplaySurface() {}
+	//this kind of surface shouldnt be deleted by hand. the raw SDL methods takes care of it
 
+//Save Screen -> backup the screen content in a new RGBSurface...
+	virtual bool saveContent(void) = 0;
+	//restore Screen -> blit the saved surface to the center of the display surface
+	virtual bool restoreContent(void) = 0;
   //to resize the display
   virtual bool resize (int width, int height) = 0;
 	//to update the display
 	virtual bool update(void) = 0;
+
 	//Maybe in Window only ?
 	bool update(Rect r);
 	bool update(std::vector<Rect> rlist);
 	//May be using a default value.. depending on what has to be done for GLWindow
 
-	//Save Screen -> backup the screen content in a new RGBSurface...
-	virtual RGBSurface* save(void) = 0;
-	//restore Screen -> blit the saved surface to the center of the display surface
-	virtual bool restore(const RGBSurface& backupScreen) { return false; }
+
 
     //those methods just changes the static flags used on display creation.
 	//use the App::methods to also reset the display.
@@ -91,7 +92,7 @@ public:
 
 	static bool checkAvailableSize( const PixelFormat * fmt );
 	static bool checkAvailableSize( void);
-    static int checkBPP(int width, int height, int bpp);
+    static int getSuggestedBPP(int width, int height);
 
 	virtual void debug(void) const;
 };
