@@ -152,7 +152,7 @@ public:
 	//Blit src into the current surface.
 	bool blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect);
 
-    virtual void debug(void) const;
+    friend Logger & operator << (Logger & ostr, const BaseSurface & surf);
 
 };
 

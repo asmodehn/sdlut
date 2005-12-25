@@ -18,10 +18,10 @@ bool Window::update(void)
 	return SDL_Flip(_surf) == 0;
 }
 
-void Window::debug(void) const
+Logger & operator << (Logger & ostr, const Window & win)
 {
-	DisplaySurface::debug();
-	std::cout << std::endl;
+	//log << static_cast<DisplaySurface> (win);
+	return ostr;
 }
 
 //SaveScreen -> backup the screen content in a RGBSurface...
@@ -69,8 +69,6 @@ bool Window::resize(int width, int height)
 	else //setvideoMode successfull
     {
         _surf=newSurf;
-          std::cerr << "New Display Surface debug :" << std::endl;
-            debug();
         res = true;
         //BEWARE : According to the doc, the display surface should never be freed by the caller of SetVideoMode. SDL_Quit will handle that.
     }

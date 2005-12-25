@@ -81,7 +81,7 @@ public:
 		{ return new PixelFormat(_info->vfmt); }
 
 	//display all detected informations about graphics
-	void debug(void) const;
+	friend Logger & operator << (Logger & ostr, const VideoInfo & vinfo);
 };
 
 } //namespace SDL

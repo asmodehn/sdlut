@@ -108,14 +108,15 @@ bool DisplaySurface::update(std::vector<Rect> rlist)
 	return true;
 }
 
-void DisplaySurface::debug(void) const
+Logger & operator << (Logger & log, const DisplaySurface & surf)
 {
-	BaseSurface::debug();
-	Log << nl<<std::boolalpha << "- Fullscreen ? " << isFullScreenset() << nl
-				<< "- Resizable ? " << isResizableset() << nl
-				<< "- NoFrame ? " << isNoFrameset() <<nl
-				<< "- AnyFormat ? " << isAnyFormatset() << nl
-				<< "- Double Buffered ? " << isDoubleBufset() << std::endl;
+	//log << static_cast<BaseSurface>(surf);
+	log << nl<<std::boolalpha << "- Fullscreen ? " << surf.isFullScreenset() << nl
+				<< "- Resizable ? " << surf.isResizableset() << nl
+				<< "- NoFrame ? " << surf.isNoFrameset() <<nl
+				<< "- AnyFormat ? " << surf.isAnyFormatset() << nl
+				<< "- Double Buffered ? " << surf.isDoubleBufset();
+    return log;
 }
 
 } //namespace SDL

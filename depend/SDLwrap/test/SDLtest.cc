@@ -31,24 +31,23 @@ public:
 int main(int argc, char** argv)
 {
 
-  Logger testlog("Test Log");
+    Logger testlog("Test Log");
 
 	//Setup example
 
-  testlog << nl << " Enabling SDL Video... " << std::endl;
+    testlog << nl << " Enabling SDL Video... " << std::endl;
 	App::getInstance().setName ("SDLtest");
 	App::getInstance().initWindow(false,false,true,false);
 
-	testlog << nl <<  " Checking SDL Video Info... " << std::endl;
 	//Getting video informations
-	App::getInstance().getAppWindow()->getVideoInfo()->debug();
+	testlog << nl << App::getInstance().getAppWindow()->getVideoInfo() << std::endl;
 
 	testlog << nl << " Creating the User Interface... " << std::endl;
 	//UI Creation
 	MyUserInput ui;
     App::getInstance().setEventHandler(&ui);
 
-  testlog << nl << " Creating the SDL Cursor... " << std::endl;
+    testlog << nl << " Creating the SDL Cursor... " << std::endl;
 	Cursor cursor(blackArrow);
 	cursor.show();
 	Cursor::setCurrent(cursor);
@@ -76,7 +75,7 @@ when the configuration file changed...*/
     else
     {
         DisplaySurface* display=App::getInstance().getAppWindow()->getDisplay();
-        display->debug();
+        testlog << nl << *display << std::endl;
 
 		display->blit(bitmap,Point(30,30));
 
@@ -116,15 +115,15 @@ if(App::getInstance().getAppWindow()->reset())
 
 
 		//GLManager test
-		glman->debug();
+		testlog << nl << glman << std::endl;
 
         DisplaySurface* display=App::getInstance().getAppWindow()->getDisplay();
 		testlog << nl << "calling display->debug() " << std::endl;
-		display->debug();
+		testlog << nl << display <<std::endl;
 
 		testlog << nl << std::boolalpha << " setDepthSize(16) " << glman->setDepthSize(16) << std::endl;
 
-		glman->debug();
+		testlog << nl << glman << std::endl;
 
 		testlog << nl << "loop... " << std::endl;
 			App::getInstance().mainLoop();

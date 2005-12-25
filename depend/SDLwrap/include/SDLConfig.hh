@@ -72,41 +72,42 @@ namespace SDL
 
 	class Version
 	{
-	    bool useLinked;
-	    SDL_version compiled;
+	    SDL_version _compiled;
+	    SDL_version _linked;
 
 	    public:
             Version()
         {
-          SDL_VERSION(&compiled);
+          SDL_VERSION(&_compiled);
+          _linked.major = SDL_Linked_Version()->major;
+          _linked.minor = SDL_Linked_Version()->minor;
+          _linked.patch = SDL_Linked_Version()->patch;
         }
 
-	    void switchLinked() { useLinked = true ; }
-	    void switchCompiled() { useLinked = false ; }
+	    int getcompiledmajor() const {return _compiled.major; }
+	    int getcompiledminor() const {return _compiled.minor; }
+	    int getcompiledpatch() const {return _compiled.patch; }
 
-	    int getmajor() { if (useLinked) return SDL_Linked_Version()->major; else return compiled.major; }
-	    int getminor() { if (useLinked) return SDL_Linked_Version()->minor; else return compiled.minor; }
-	    int getpatch() { if (useLinked) return SDL_Linked_Version()->patch; else return compiled.patch; }
+	    int getlinkedmajor() const { return _linked.major; }
+	    int getlinkedminor() const { return _linked.minor; }
+	    int getlinkedpatch() const { return _linked.patch; }
 
 	    //check if link and compiled matches
-	    bool check()
+	    bool check() const
 	    {
 #if SDL_VERSION_ATLEAST(1, 2, 0)
 				Log << nl << "Compiled with SDL 1.2 or newer" << std::endl;
 #else
 				Log << nl << "Compiled with SDL older than 1.2" << std::endl;
 #endif
-	    	return SDL_Linked_Version()->major == compiled.major && SDL_Linked_Version()->minor == compiled.minor && SDL_Linked_Version()->patch == compiled.patch;
+	    	return (_linked.major == _compiled.major) && (_linked.minor == _compiled.minor) && (_linked.patch == _compiled.patch);
 			}
 
-	    void debug()
+	    friend Logger & operator << (Logger& log, const Version & v)
 	    {
-	        bool oldLinkflag = useLinked;
-	        switchCompiled();
-	        Log << nl <<"Compiled version: "<< getmajor() <<"."<< getminor() <<"."<< getpatch();
-            switchLinked();
-            Log << nl << "Linked version: " << getmajor() <<"."<< getminor() <<"."<< getpatch();
-            useLinked = oldLinkflag;
+	        log << nl <<"Compiled version: "<< v.getcompiledmajor() <<"."<< v.getcompiledminor() <<"."<< v.getcompiledpatch();
+            log << nl << "Linked version: " << v.getcompiledmajor() <<"."<< v.getcompiledminor() <<"."<< v.getcompiledpatch();
+            return log;
         }
 	};
 

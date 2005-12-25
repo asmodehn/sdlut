@@ -189,18 +189,19 @@ Rect BaseSurface::getClipRect(void) const
 	return r;
 }
 
-void BaseSurface::debug(void) const
+Logger & operator << (Logger & log, const BaseSurface & surf)
 {
-	Log << nl << "SDL*Surfaces::debug()" << nl
-				<< "- Height = " << getHeight() << nl
-				<< "- Width = " << getWidth() << nl
-				<< "- bpp = " << getBPP() << nl
+	log << nl << "SDL*Surfaces::debug()" << nl
+				<< "- Height = " << surf.getHeight() << nl
+				<< "- Width = " << surf.getWidth() << nl
+				<< "- bpp = " << surf.getBPP() << nl
 				<< std::boolalpha
-				<< "- SW ? " << isSWset() << nl
-				<< "- HW ? " << isHWset() << nl
-				<< "- HWAccel ? " << isHWAccelset() << nl
-				<< "- RLEAccel ? " << isRLEAccelset() << nl
-				<< "- PreAlloc ? " << isPreAllocset();
+				<< "- SW ? " << surf.isSWset() << nl
+				<< "- HW ? " << surf.isHWset() << nl
+				<< "- HWAccel ? " << surf.isHWAccelset() << nl
+				<< "- RLEAccel ? " << surf.isRLEAccelset() << nl
+				<< "- PreAlloc ? " << surf.isPreAllocset();
+    return log;
 }
 
 } //namespace SDL

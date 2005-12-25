@@ -25,8 +25,7 @@ int main(int argc, char *argv[])
 
 #else
 
-    SDL::version.switchCompiled();
-	cout << "You SDL compiled version: " << SDL::version.getmajor() << "." << SDL::version.getminor() << "." << SDL::version.getpatch() << " doesnt support the cpuInfo feature." << std::endl;
+	cout << "Your SDL compiled version: " << SDL::version.getcompiledmajor() << "." << SDL::version.getcompiledminor() << "." << SDL::version.getcompiledpatch() << " doesnt support the cpuInfo feature." << std::endl;
 #endif
 	return(0);
 }

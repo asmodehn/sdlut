@@ -68,7 +68,7 @@ public:
 	Palette * getPalette() const { return new Palette(_pformat->palette); }
 
 	//display all detected informations about pixelformat
-	void debug(void) const;
+	friend std::ostream & operator << (std::ostream & ostr, const PixelFormat & pformat);
 
 	//methods for Color conversion :
 	PixelColor getValueFromRGB(const RGBColor& val) const ;

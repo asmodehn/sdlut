@@ -56,7 +56,7 @@ public:
 	bool update(void);
 
 	//display specific informations
-	void debug(void) const;
+	friend Logger & operator << (Logger & log, const Window & win);
 
 
 };

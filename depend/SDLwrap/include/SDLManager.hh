@@ -61,31 +61,31 @@ namespace SDL
         void disableEventThread(void);
 
         //Accesseurs
-        inline bool isTimerEnabled(void)
+        inline bool isTimerEnabled(void) const
         {
             return ( SDL_WasInit(SDL_INIT_TIMER) ) != 0;
         }
-        inline bool isAudioEnabled(void)
+        inline bool isAudioEnabled(void) const
         {
             return ( SDL_WasInit(SDL_INIT_AUDIO) ) != 0;
         }
-        inline bool isVideoEnabled(void)
+        inline bool isVideoEnabled(void) const
         {
             return ( SDL_WasInit(SDL_INIT_VIDEO) ) != 0;
         }
-        inline bool isCdromEnabled(void)
+        inline bool isCdromEnabled(void) const
         {
             return ( SDL_WasInit(SDL_INIT_CDROM) ) != 0;
         }
-        inline bool isJoystickEnabled(void)
+        inline bool isJoystickEnabled(void) const
         {
             return ( SDL_WasInit(SDL_INIT_JOYSTICK) ) != 0;
         }
-        inline bool isNoParachuteEnabled(void)
+        inline bool isNoParachuteEnabled(void) const
         {
             return ( SDL_WasInit(SDL_INIT_NOPARACHUTE) ) != 0;
         }
-        inline bool isEventThreadEnabled(void)
+        inline bool isEventThreadEnabled(void) const
         {
             return ( SDL_WasInit(SDL_INIT_EVENTTHREAD) ) != 0;
         }
@@ -93,7 +93,7 @@ namespace SDL
 
 
         //display all Informations
-        void debug(void);
+	friend Logger & operator << (Logger & log, const Manager & man);
 
     };
 

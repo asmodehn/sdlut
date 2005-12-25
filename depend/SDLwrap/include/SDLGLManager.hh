@@ -96,7 +96,7 @@ public :
 	bool setAccumBSize(int bits);
 	bool setAccumASize(int bits);
 
-	void debug(void) const;
+	friend Logger & operator << (Logger & ostr, const GLManager & glman);
 };
 #endif
 } // namespace SDL

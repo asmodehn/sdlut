@@ -94,7 +94,7 @@ public:
 	static bool checkAvailableSize( void);
     static int getSuggestedBPP(int width, int height);
 
-	virtual void debug(void) const;
+	friend Logger & operator << (Logger & log, const DisplaySurface & surf);
 };
 
 } //namespace SDL

@@ -9,5 +9,7 @@
 
 int main(int argc, char *argv[])
 {
-    SDL::version.debug();
+    Logger testlog("testver");
+
+    testlog << SDL::version << std::endl;
 }

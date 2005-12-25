@@ -137,20 +137,21 @@ bool GLManager::setAccumASize(int bits)
 	return SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, bits) == 0;
 }
 
-void GLManager::debug(void) const
+Logger & operator << (Logger & log, const GLManager & glman)
 {
-  Log << nl << "GLManager - debug() : " << nl <<
-    	"GL Red Size = " << getRSize() << nl <<
-		"GL Green Size = " << getGSize() << nl <<
-		"GL Blue Size = " << getBSize() << nl <<
-		"GL Alpha Size = " << getASize() << nl <<
-		"GL Buffer Size = " << getBufferSize() << nl <<
-		"GL Depth Size = " << getDepthSize() << nl <<
-		"GL Stencil Size = " << getStencilSize() << nl <<
-		"GL Accum Red Size = " << getAccumRSize() << nl <<
-		"GL Accum Green Size = " << getAccumGSize() << nl <<
-		"GL Accum Blue Size = " << getAccumBSize() << nl <<
-		"GL Accum Alpha Size = " << getAccumASize() << std::endl;
+  log << nl << "GLManager - debug() : " << nl <<
+    	"GL Red Size = " << glman.getRSize() << nl <<
+		"GL Green Size = " << glman.getGSize() << nl <<
+		"GL Blue Size = " << glman.getBSize() << nl <<
+		"GL Alpha Size = " << glman.getASize() << nl <<
+		"GL Buffer Size = " << glman.getBufferSize() << nl <<
+		"GL Depth Size = " << glman.getDepthSize() << nl <<
+		"GL Stencil Size = " << glman.getStencilSize() << nl <<
+		"GL Accum Red Size = " << glman.getAccumRSize() << nl <<
+		"GL Accum Green Size = " << glman.getAccumGSize() << nl <<
+		"GL Accum Blue Size = " << glman.getAccumBSize() << nl <<
+		"GL Accum Alpha Size = " << glman.getAccumASize() ;
+		return log;
 }
 
 #endif

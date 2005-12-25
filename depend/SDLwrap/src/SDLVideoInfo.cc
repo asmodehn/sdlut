@@ -29,22 +29,24 @@ std::string VideoInfo::getDriverName(void) const
 	return std::string(name);
 }
 
-void VideoInfo::debug(void) const
+Logger & operator << (Logger & log, const VideoInfo & vinfo)
 {
-	Log << nl << "VideoInfo::debug()"  << nl <<
-	"- Driver Name : " << getDriverName() << nl <<
+	log << nl << "VideoInfo::debug()"  << nl <<
+	"- Driver Name : " << vinfo.getDriverName() << nl <<
 	std::boolalpha <<
-	"- Is it possible to create Hardware Surfaces? " << isHWAvailable() << nl <<
-	"- Is there a window manager available? " << isWMAvailable() << nl <<
-	"- Are hardware to hardware blits accelerated? " << isBlitHWAccelAvailable() << nl <<
-	"- Are hardware to hardware colorkey blits accelerated? " << isBlitHWCCAccelAvailable() << nl <<
-	"- Are hardware to hardware alpha blits accelerated? " << isBlitHWAAccelAvailable() << nl <<
-	"- Are software to hardware blits accelerated? " << isBlitSWAccelAvailable() << nl <<
-	"- Are software to hardware colorkey blits accelerated? " << isBlitSWCCAccelAvailable() << nl <<
-	"- Are software to hardware alpha blits accelerated? " << isBlitSWAAccelAvailable() << nl <<
-	"- Are color fills accelerated? " << isBlitFillAccelAvailable() << nl <<
-	"- Total amount of video memory in Kilobytes : " << videoMemSize() << nl <<
-	"- PixelFormat @ : "<< getPixelFormat() << std::endl;
+	"- Is it possible to create Hardware Surfaces? " << vinfo.isHWAvailable() << nl <<
+	"- Is there a window manager available? " << vinfo.isWMAvailable() << nl <<
+	"- Are hardware to hardware blits accelerated? " << vinfo.isBlitHWAccelAvailable() << nl <<
+	"- Are hardware to hardware colorkey blits accelerated? " << vinfo.isBlitHWCCAccelAvailable() << nl <<
+	"- Are hardware to hardware alpha blits accelerated? " << vinfo.isBlitHWAAccelAvailable() << nl <<
+	"- Are software to hardware blits accelerated? " << vinfo.isBlitSWAccelAvailable() << nl <<
+	"- Are software to hardware colorkey blits accelerated? " << vinfo.isBlitSWCCAccelAvailable() << nl <<
+	"- Are software to hardware alpha blits accelerated? " << vinfo.isBlitSWAAccelAvailable() << nl <<
+	"- Are color fills accelerated? " << vinfo.isBlitFillAccelAvailable() << nl <<
+	"- Total amount of video memory in Kilobytes : " << vinfo.videoMemSize() << nl <<
+	"- PixelFormat @ : "<< vinfo.getPixelFormat() ;
+
+	return log;
 }
 
 } //namespace SDL

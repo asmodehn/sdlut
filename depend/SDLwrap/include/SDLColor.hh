@@ -206,7 +206,7 @@ public:
 							_palette->colors[index].unused
 						);
 	}
-    //void debug ();
+
 };
 
 }// namespace SDL

@@ -118,17 +118,17 @@ namespace SDL
 
 
 
-    void Manager::debug(void)
+    Logger & operator << (Logger & log, const Manager & man)
     {
-
-        Log << nl << std::boolalpha << "Manager::debug()" << nl <<
-        "- Is Timer Enabled ? " << isTimerEnabled() << nl <<
-        "- Is Audio Enabled ? " << isAudioEnabled() << nl <<
-        "- Is Video Enabled ? " << isVideoEnabled() << nl <<
-        "- Is CDROM Enabled ? " << isCdromEnabled() << nl <<
-        "- Is Joystick Enabled ? " << isJoystickEnabled() << nl <<
-        "- Is \"NoParachute\" Enabled ? " << isNoParachuteEnabled() << nl <<
-        "- Is \"EventThread\" Enabled ? " << isEventThreadEnabled() << std::endl;
+        log << nl << std::boolalpha << "Manager::debug()" << nl <<
+        "- Is Timer Enabled ? " << man.isTimerEnabled() << nl <<
+        "- Is Audio Enabled ? " << man.isAudioEnabled() << nl <<
+        "- Is Video Enabled ? " << man.isVideoEnabled() << nl <<
+        "- Is CDROM Enabled ? " << man.isCdromEnabled() << nl <<
+        "- Is Joystick Enabled ? " << man.isJoystickEnabled() << nl <<
+        "- Is \"NoParachute\" Enabled ? " << man.isNoParachuteEnabled() << nl <<
+        "- Is \"EventThread\" Enabled ? " << man.isEventThreadEnabled() ;
+        return log;
 
     }
 
