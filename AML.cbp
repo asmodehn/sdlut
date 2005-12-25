@@ -71,13 +71,21 @@
 			<Add library="SDL"/>
 			<Add library="SDLmain"/>
 		</Linker>
-		<Unit filename="depend\Common\include\Logger.hh">
+		<Unit filename="data\AML_ico.bmp">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="lib_default"/>
-			<Option target="test"/>
 			<Option target="lib_noGL"/>
+			<Option target="test"/>
+		</Unit>
+		<Unit filename="data\AML_sprite.bmp">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+			<Option target="test"/>
 		</Unit>
 		<Unit filename="include\AML.hh">
 			<Option compilerVar=""/>
