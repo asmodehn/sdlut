@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!DOCTYPE Code::Blocks_project_file>
-<Code::Blocks_project_file>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
 	<FileVersion major="1" minor="1"/>
 	<Project>
 		<Option title="AML"/>
@@ -9,21 +9,38 @@
 		<Option default_target="1"/>
 		<Option compiler="0"/>
 		<Build>
-			<Target title="default">
-				<Option output="bin\libAML.a"/>
+			<Target title="lib_default">
+				<Option output="build\bin_default\libAML.a"/>
 				<Option working_dir=""/>
-				<Option object_output="obj"/>
-				<Option deps_output=".deps"/>
-				<Option external_deps=""/>
+				<Option object_output="build\obj_default\"/>
+				<Option deps_output="build\.deps"/>
 				<Option type="2"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="2"/>
 				<Compiler>
 					<Add option="-DLOGPREFIX=\&quot;AML\&quot;"/>
+					<Add directory="depend\SDLwrap\include"/>
 				</Compiler>
 				<Linker>
-					<Add library="depend\SDLwrap\bin\libSDLwrap.a"/>
+					<Add library="depend\SDLwrap\build\bin_debug\libSDLwrap.a"/>
+					<Add library="opengl32"/>
+				</Linker>
+			</Target>
+			<Target title="lib_noGL">
+				<Option output="build\bin_noGL\libAML.a"/>
+				<Option working_dir=""/>
+				<Option object_output="build\obj_noGL\"/>
+				<Option deps_output="build\.deps"/>
+				<Option type="2"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="2"/>
+				<Compiler>
+					<Add directory="depend\SDLwrap\include"/>
+				</Compiler>
+				<Linker>
+					<Add library="depend\SDLwrap\build\bin_NoGL\libSDLwrap.a"/>
 				</Linker>
 			</Target>
 			<Target title="test">
@@ -31,7 +48,6 @@
 				<Option working_dir="test"/>
 				<Option object_output="obj"/>
 				<Option deps_output=".deps"/>
-				<Option external_deps=""/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
@@ -41,7 +57,6 @@
 				</Compiler>
 				<Linker>
 					<Add library="bin\libAML.a"/>
-					<Add library="depend\SDLwrap\bin\libSDLwrap.a"/>
 				</Linker>
 			</Target>
 		</Build>
@@ -51,10 +66,8 @@
 			<Add option="-DLOGINDENTLVL=0"/>
 			<Add directory="include"/>
 			<Add directory="depend\Common\include"/>
-			<Add directory="depend\SDLwrap\include"/>
 		</Compiler>
 		<Linker>
-			<Add library="opengl32"/>
 			<Add library="SDL"/>
 			<Add library="SDLmain"/>
 		</Linker>
@@ -62,85 +75,100 @@
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
-			<Option target="default"/>
+			<Option target="lib_default"/>
 			<Option target="test"/>
+			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="include\AML.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
-			<Option target="default"/>
+			<Option target="lib_default"/>
 			<Option target="test"/>
+			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="include\Camera.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
-			<Option target="default"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="include\Config.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="include\Display.hh">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="include\GraphicElement.hh">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="include\Layer.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
-			<Option target="default"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="include\Math2D.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
-			<Option target="default"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="include\Scene.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="include\Sprite.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
-			<Option target="default"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="include\Window.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="src\Camera.cc">
 			<Option compilerVar="CC"/>
-			<Option target="default"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="src\Config.cc">
 			<Option compilerVar="CC"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\Display.cc">
-			<Option compilerVar="CC"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\GraphicElement.cc">
-			<Option compilerVar="CC"/>
-			<Option target="default"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="src\Layer.cc">
 			<Option compilerVar="CC"/>
-			<Option target="default"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="src\Scene.cc">
+			<Option compilerVar="CC"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="src\Sprite.cc">
 			<Option compilerVar="CC"/>
-			<Option target="default"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="src\Window.cc">
+			<Option compilerVar="CC"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="test\test.cc">
 			<Option compilerVar="CC"/>
 			<Option target="test"/>
 		</Unit>
 	</Project>
-</Code::Blocks_project_file>
+</CodeBlocks_project_file>

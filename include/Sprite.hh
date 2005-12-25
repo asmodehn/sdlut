@@ -1,39 +1,35 @@
-#ifndef SPRITE_HH
-#define SPRITE_HH
+#ifndef AML_SPRITE_HH
+#define AML_SPRITE_HH
 
 #include "Config.hh"
+#include <string>
 
-#include "GraphicElement.hh"
-
-class Sprite : public GraphicElement //TODO : NEED to prevent access to base class methods handling referee...
+namespace AML
 {
-  static SDL::SurfaceFactory * _graphicMaster;
-	static unsigned int _referencecount;
-	
-	unsigned int _graphicIndex;
-	
-  public:
-	//constructor : just pass the file containing the sprite
-	Sprite(const std::string & filename);
-	//copy constructor : just pass the sprite to use as model
-	Sprite(const Sprite & model);
-	
-	~Sprite();
-	
-  //to use the size
-	SDL::Rect getSize(void);
-	
-	//this one predraw a bounding box and axis on top of _graphic.
-	// TO DO AND IMPROVE
-	bool drawBox(void) const;
-	
-	
- //to update my position (calling _referent->move(int, const Vector2&) )
-	bool move(const Vector2& deltap);
-	
-	//TODO
-	void render(unsigned int myPixCenterX, unsigned int myPixCenterY);
-};
+    class Sprite
+    {
+        friend class Scene;
 
+        static SDL::DisplaySurface * _display;
+
+        SDL::RGBSurface _surf;
+        int posX, posY;
+
+
+        public :
+        Sprite(std::string filename) : _surf(filename),posX(0),posY(0)
+        {}
+
+        void render();
+
+
+
+        void setPos( int x, int y) {posX=x;posY=y;}
+        int getPosX() { return posX;}
+        int getPosY() { return posY;}
+
+    };
+}
 
 #endif
+

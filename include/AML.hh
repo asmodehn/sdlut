@@ -1,7 +1,8 @@
 #ifndef AML_HH
 #define AML_HH
 
-//Single user-include file needed to use AML
+//The include file needed to use AML
+#include "Config.hh"
 #include "Math2D.hh"
 #include "Camera.hh"
 #include "Layer.hh"
