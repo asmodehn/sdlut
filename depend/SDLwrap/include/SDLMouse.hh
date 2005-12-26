@@ -8,7 +8,7 @@ namespace SDL
 
     class Mouse
     {
-        friend class Manager;
+        friend class SDLApp;
 
     protected:
 

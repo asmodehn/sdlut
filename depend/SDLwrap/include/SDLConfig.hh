@@ -49,16 +49,18 @@
 //Debug Constants
 #define SDLUserInput_DEBUG
 
+//REMINDER : For audio, (SDL_mixer) have alook at http://gameprogrammer.com/gpwiki/Audio_lib
+
 /**
- * \class SDLConfig
+ * \class Version
  *
- * \ingroup Other
+ * \ingroup General
  *
- * \brief This class gather the common objects that all the SDL classes have to be able to access...
+ * \brief This class provides access to both linked and compiled SDL versions
  *
  * \author Alex
  *
- * \date 2005/10/02
+ * \date 2005/12/26
  *
  * Contact: asmodehn@gna.org
  *

@@ -31,7 +31,8 @@
  * This Logger use indentation levels, usually defined on build time.
  * TODO : Add LogLevels to filter the console output as well as the file output (3 loglevel : quiet / normal / verbose)
  * Not yet in SDL namespace because it doesnt depend on SDL. However, later it should be made threadsafe, therefore it will rely on SDLThreads.
-
+ *
+ * BUG : On Windows the file for the log open fine, put some comment, and thats it ! No idea why it stops putting debug logs in it after a few...
  * \author Alex
  *
  * \date 2005/10/05

@@ -28,12 +28,20 @@
 float rtri; // rotation angle
 float rquad; // rotation angle
 
+bool Interface3D::setBGColor(float r, float g, float b)
+{
+    BGColorRed =r,
+    BGColorGreen = g;
+    BGColorBlue = b;
+    glClearColor(r,g,b, 0.0f);
+}
+
 bool Interface3D::init(int width, int height)
 {
 	//actual init code
   std::cout << " 3D Engine's init" << std::endl;
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
-	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
+	glClearColor(BGColorRed,BGColorGreen, BGColorBlue, 0.0f);				// Black Background
 	glClearDepth(1.0f);									// Depth Buffer Setup
 	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do

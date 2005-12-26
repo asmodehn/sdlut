@@ -14,10 +14,14 @@
 
 class Interface3D
 {
+    float BGColorRed,BGColorGreen, BGColorBlue;
+
 	public:
+	Interface3D() :  BGColorRed(0.0f),BGColorGreen(0.0f), BGColorBlue(0.0f){}
 	virtual void render(void) const;
 	virtual bool init(int width, int height);
 	virtual bool resize(int width, int height);
+	virtual bool setBGColor(float r, float g, float b);
 };
 
 class Object3D

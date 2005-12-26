@@ -218,12 +218,12 @@ namespace SDL
                 {
 #endif
                     _screen = new Window(width, height, _bpp );
-                    if (_screen!=NULL) return _screen->fill(background);
+                    res = (_screen!=NULL);
 #ifdef HAVE_OPENGL
 
                 }
 #endif
-
+                if (_screen != NULL) _screen->setBGColor(background);
             }
             catch(std::exception & e)
             {
@@ -245,7 +245,8 @@ bool AppWindow::resize (int width, int height)
         _screen->saveContent();
         if (_screen->resize(width,height))
         {
-            res = _screen->fill(background) && _screen->restoreContent();
+            _screen->setBGColor(background);
+            _screen->restoreContent();
         }
     }
     return res;

@@ -36,7 +36,7 @@ class DisplaySurface : public BaseSurface
 protected:
 
 	static Uint32 flags;
-
+    Color background;
 	//Constructor
 	//Note : The user should not be able to set raw SDL flags manually.
 	DisplaySurface(int width, int height, int bpp, Uint32 flags) throw (std::logic_error);
@@ -57,6 +57,11 @@ public:
   virtual bool resize (int width, int height) = 0;
 	//to update the display
 	virtual bool update(void) = 0;
+
+    //set the backgrund color
+    virtual void setBGColor(const Color & color) { background = color; fill(background);}
+    virtual Color getBGColor () { return background;}
+
 
 	//Maybe in Window only ?
 	bool update(Rect r);

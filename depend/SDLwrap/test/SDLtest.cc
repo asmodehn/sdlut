@@ -52,19 +52,12 @@ int main(int argc, char** argv)
 	cursor.show();
 	Cursor::setCurrent(cursor);
 
-/* We cannot activate SDLDisplay and SDLGLWindow in the same time...
-This is due to sdl design for portability : only one window at the same time
-Be carefull when you use them...
-AML should completely hide this from the user.
-AML should also switch from one to the other with exec() and quit,
-when the configuration file changed...*/
-
 	RGBSurface bitmap (bitmapname);
 
 	int newW=bitmap.getWidth()+60;
 	int newH=bitmap.getHeight()+60;
 
-    App::getInstance().getAppWindow()->setBGColor(Color (255,0,0));
+    App::getInstance().getAppWindow()->setBGColor(Color (128,0,0));
 
 
 	if (! (App::getInstance().getAppWindow()->reset(newW,newH)))
@@ -128,6 +121,8 @@ if(App::getInstance().getAppWindow()->reset())
 		testlog << nl << "loop... " << std::endl;
 			App::getInstance().mainLoop();
 	}
+
+	std::cout << "blabla" << std::endl;
 
 	return 0;
 }

@@ -10,7 +10,7 @@
  *
  * This class implement in C++ the behaviour of SDLDdisplaySurface when the content is 3D (OpenGL).
  *
- * \note should be only used by SDLSurfaceFactory for more safety...
+ * BUG : doesnt handle the resize correctly -> 0x0 access (maybe not from the code here...)
  *
  * \author Alex
  *
@@ -33,6 +33,7 @@ class GLWindow : public DisplaySurface
 {
 
     GLManager * const _glmanager;
+
 public:
 
 	//Constructor
@@ -44,8 +45,11 @@ public:
 
   bool resize (int width, int height);
 
-  //TODO : Save Screen -> backup the screen content in a new RGBSurface AND SAVE THE CURRENT SCENE STATE...
 
+    virtual void setBGColor(const Color & color);
+    virtual Color getBGColor () ;
+
+  //TODO : Save Screen -> backup the screen content in a new RGBSurface AND SAVE THE CURRENT SCENE STATE...
 //Save Screen -> backup the screen content in a new RGBSurface...
 	virtual bool saveContent(void) {return false;}
 	//restore Screen -> blit the saved surface to the center of the display surface

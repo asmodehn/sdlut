@@ -15,7 +15,7 @@ Window::~Window()
 
 bool Window::update(void)
 {
-	return SDL_Flip(_surf) == 0;
+	bool res=(SDL_Flip(_surf) == 0);
 }
 
 Logger & operator << (Logger & ostr, const Window & win)
@@ -71,6 +71,7 @@ bool Window::resize(int width, int height)
         _surf=newSurf;
         res = true;
         //BEWARE : According to the doc, the display surface should never be freed by the caller of SetVideoMode. SDL_Quit will handle that.
+        fill(background);
     }
 
 	return res;
