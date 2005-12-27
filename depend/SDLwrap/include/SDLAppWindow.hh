@@ -31,7 +31,7 @@
  {
 
 //further reference to break dependency cycles
-class EventHandler;
+class EventManager;
 
 class AppWindow
 {
@@ -97,7 +97,7 @@ class AppWindow
 	bool setIcon(std::string iconfilename);// MAYBE version check here ?? { setCaption(_title,icon); }
 	std::string getIconName();
 
-    bool mainLoop(EventHandler & handler);
+    bool mainLoop(EventManager & eventmanager);
 
 };
 

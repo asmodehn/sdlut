@@ -1,5 +1,5 @@
 #include "SDLAppWindow.hh"
-#include "SDLEvent.hh"
+#include "SDLEventManager.hh"
 
 namespace SDL
 {
@@ -252,14 +252,14 @@ bool AppWindow::resize (int width, int height)
     return res;
 }
 
-bool AppWindow::mainLoop(EventHandler & handler)
+bool AppWindow::mainLoop(EventManager & eventmanager)
 {
     bool res = false;
     if (_screen !=NULL)
     {
-        while (!(handler.shouldQuit()))
+        while (!(eventmanager.quitRequested()))
         {
-            Event::handleEvents(handler);
+            eventmanager.handleAll();
 
             _screen->update();
         }

@@ -4,7 +4,7 @@ namespace SDL
 {
 
         App::App(std::string logfilename) :    _manager(NULL),
-                                    _eventhandler(NULL),
+                                    _eventmanager(NULL),
                                  _appwindow(NULL)
         {
             setName();
@@ -16,7 +16,7 @@ namespace SDL
         {
             //MAKE SURE those destructor dont need App. They shouldnt !
             delete _appwindow;
-            delete _eventhandler;
+            delete _eventmanager;
             //this one should be last because it calls SDL_Quit
             delete _manager;
         }
@@ -52,7 +52,7 @@ bool App::initWindow( bool fullscreen,bool opengl, bool resizable, bool noframe)
         if (fullscreen) _appwindow->setFullscreen(true);
         if (resizable) _appwindow->setResizable(true);
         if (noframe) _appwindow->setNoFrame(true);
-        _eventhandler = new EventHandler(_appwindow);
+        _eventmanager = new EventManager(*_appwindow);
         res = true;
     }
     return res;
@@ -60,15 +60,11 @@ bool App::initWindow( bool fullscreen,bool opengl, bool resizable, bool noframe)
 
 bool App::mainLoop()
  {
-     if (_eventhandler != NULL)
+     if (_eventmanager != NULL)
      {
          if ( _appwindow != NULL)
         {
-            if (_eventhandler->_focusedwindow == _appwindow)
-            {
-                return _appwindow->mainLoop(*_eventhandler);
-            }
-            Log << nl << "EventHandler not created against the current AppWindow !";
+                return _appwindow->mainLoop(*_eventmanager);
         }
         else
         {
@@ -77,9 +73,9 @@ bool App::mainLoop()
      }
     else
     {
-        Log << nl << "ERROR : EventHandler @ " << _eventhandler;
+        Log << nl << "ERROR : EventManager @ " << _eventmanager;
     }
-
+    Log  << nl << "An error occured when trying to laucnh the main loop, make sure you have initialized everything." << std::endl;
     Log  << nl <<" Ignoring mainLoop call." << std::endl;
      return false;
 }

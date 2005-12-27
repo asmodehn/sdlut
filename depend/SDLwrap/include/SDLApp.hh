@@ -21,7 +21,7 @@
 
  #include "SDLConfig.hh"
 
-#include "SDLEventHandler.hh"
+#include "SDLEventManager.hh"
 #include "SDLManager.hh"
 #include "SDLAppWindow.hh"
 
@@ -33,7 +33,7 @@
      {
 
         Manager * _manager;
-        EventHandler * _eventhandler;
+        EventManager * _eventmanager;
         AppWindow* _appwindow;
 
 
@@ -66,9 +66,7 @@ public:
 
         //Accessors
         // may return NULL => always test the returned value!
-        EventHandler * getEventHandler() {return _eventhandler;}
-        void setEventHandler(EventHandler * eventhandler)
-        {_eventhandler=eventhandler;}
+        EventManager* getEventManager() {return _eventmanager;}
         AppWindow * getAppWindow() { return _appwindow;}
         Manager* getManager() { return _manager;}
 

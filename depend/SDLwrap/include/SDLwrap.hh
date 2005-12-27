@@ -44,8 +44,9 @@
 /**
   * \defgroup EventHandling
   */
-#include "SDLEvent.hh"
-#include "SDLEventHandler.hh"
+#include "SDLEventManager.hh"
+#include "SDLMouse.hh"
+#include "SDLKeyboard.hh"
 
 /**
   * \defgroup Input

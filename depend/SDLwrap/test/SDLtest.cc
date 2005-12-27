@@ -1,9 +1,5 @@
 #include "SDLwrap.hh"
-#include "Logger.hh"
 
-//#include <unistd.h>
-#include <iostream>
-using namespace std;
 using namespace SDL;
 
 

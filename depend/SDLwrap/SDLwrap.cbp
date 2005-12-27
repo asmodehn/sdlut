@@ -7,6 +7,7 @@
 		<Option makefile="Makefile"/>
 		<Option makefile_is_custom="0"/>
 		<Option default_target="2"/>
+		<Option active_target="2"/>
 		<Option compiler="0"/>
 		<Build>
 			<Target title="staticlib-NoOpenGL">
@@ -44,11 +45,24 @@
 					<Add library="opengl32"/>
 				</Linker>
 			</Target>
-			<Target title="test-debug">
+			<Target title="testInput-debug">
+				<Option output="build\test\SDLtestVideo.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\.deps"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Linker>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testVideo-debug">
 				<Option output="build\test\SDLtest.exe"/>
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
-				<Option deps_output="build\test\dep"/>
+				<Option deps_output="build\test\.deps"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
@@ -693,7 +707,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -752,7 +765,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -791,7 +803,6 @@
 			<Option link="0"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
 			<Option target="loopwave"/>
@@ -828,7 +839,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -866,7 +876,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -899,12 +908,18 @@
 			<Option target="threadwin"/>
 			<Option target="torturethread"/>
 		</Unit>
+		<Unit filename="include\SDLCriticalEvent.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
 		<Unit filename="include\SDLCursor.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -942,7 +957,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -979,84 +993,21 @@
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
-			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
-			<Option target="checkkeys"/>
-			<Option target="graywin"/>
-			<Option target="loopwave"/>
-			<Option target="testalpha"/>
-			<Option target="testbitmap"/>
-			<Option target="testblitspeed"/>
-			<Option target="testcdrom"/>
-			<Option target="testcpuinfo"/>
-			<Option target="testdyngl"/>
-			<Option target="testendian"/>
-			<Option target="testerror"/>
-			<Option target="testgamma"/>
-			<Option target="testgl"/>
-			<Option target="testthread"/>
-			<Option target="testjoystick"/>
-			<Option target="testkeys"/>
-			<Option target="testlock"/>
-			<Option target="testoverlay2"/>
-			<Option target="testoverlay"/>
-			<Option target="testpalette"/>
-			<Option target="testsem"/>
-			<Option target="testsprite"/>
-			<Option target="testtimer"/>
-			<Option target="testtypes"/>
-			<Option target="testver"/>
-			<Option target="testvidinfo"/>
-			<Option target="testwin"/>
-			<Option target="testwm"/>
-			<Option target="threadwin"/>
-			<Option target="torturethread"/>
+			<Option target="staticlib-debug"/>
 		</Unit>
-		<Unit filename="include\SDLEventHandler.hh">
+		<Unit filename="include\SDLEventManager.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
-			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
-			<Option target="checkkeys"/>
-			<Option target="graywin"/>
-			<Option target="loopwave"/>
-			<Option target="testalpha"/>
-			<Option target="testbitmap"/>
-			<Option target="testblitspeed"/>
-			<Option target="testcdrom"/>
-			<Option target="testcpuinfo"/>
-			<Option target="testdyngl"/>
-			<Option target="testendian"/>
-			<Option target="testerror"/>
-			<Option target="testgamma"/>
-			<Option target="testgl"/>
-			<Option target="testthread"/>
-			<Option target="testjoystick"/>
-			<Option target="testkeys"/>
-			<Option target="testlock"/>
-			<Option target="testoverlay2"/>
-			<Option target="testoverlay"/>
-			<Option target="testpalette"/>
-			<Option target="testsem"/>
-			<Option target="testsprite"/>
-			<Option target="testtimer"/>
-			<Option target="testtypes"/>
-			<Option target="testver"/>
-			<Option target="testvidinfo"/>
-			<Option target="testwin"/>
-			<Option target="testwm"/>
-			<Option target="threadwin"/>
-			<Option target="torturethread"/>
+			<Option target="staticlib-debug"/>
 		</Unit>
 		<Unit filename="include\SDLGLManager.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1094,7 +1045,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1127,12 +1077,18 @@
 			<Option target="threadwin"/>
 			<Option target="torturethread"/>
 		</Unit>
+		<Unit filename="include\SDLKeyboard.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
 		<Unit filename="include\SDLManager.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1177,7 +1133,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1215,7 +1170,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1253,7 +1207,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1291,7 +1244,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1329,7 +1281,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1368,7 +1319,6 @@
 			<Option link="0"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
 			<Option target="loopwave"/>
@@ -1405,7 +1355,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1443,7 +1392,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1481,7 +1429,6 @@
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="staticlib-debug"/>
-			<Option target="test-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="checkkeys"/>
 			<Option target="graywin"/>
@@ -1544,6 +1491,11 @@
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="staticlib-debug"/>
 		</Unit>
+		<Unit filename="src\SDLCriticalEvent.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
 		<Unit filename="src\SDLCursor.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
@@ -1556,13 +1508,13 @@
 		</Unit>
 		<Unit filename="src\SDLEvent.cc">
 			<Option compilerVar="CC"/>
-			<Option target="staticlib-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
 		</Unit>
-		<Unit filename="src\SDLEventHandler.cc">
+		<Unit filename="src\SDLEventManager.cc">
 			<Option compilerVar="CC"/>
-			<Option target="staticlib-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
 		</Unit>
 		<Unit filename="src\SDLGLManager.cc">
 			<Option compilerVar="CC"/>
@@ -1621,7 +1573,11 @@
 		</Unit>
 		<Unit filename="test\SDLtest.cc">
 			<Option compilerVar="CC"/>
-			<Option target="test-debug"/>
+			<Option target="testVideo-debug"/>
+		</Unit>
+		<Unit filename="test\SDLtestInput.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testInput-debug"/>
 		</Unit>
 		<Unit filename="test\checkkeys.cc">
 			<Option compilerVar="CC"/>
