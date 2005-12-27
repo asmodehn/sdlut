@@ -46,8 +46,9 @@
 #include <vector>
 #include "Logger.hh"
 
-//Debug Constants
-#define SDLUserInput_DEBUG
+#ifdef DEBUG
+#include <cassert>
+#endif
 
 //REMINDER : For audio, (SDL_mixer) have alook at http://gameprogrammer.com/gpwiki/Audio_lib
 

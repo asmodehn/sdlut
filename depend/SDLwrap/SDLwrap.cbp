@@ -19,8 +19,10 @@
 				<Option projectResourceIncludeDirsRelation="2"/>
 				<Compiler>
 					<Add option="-W"/>
+					<Add option="-g"/>
 					<Add option="-DLOGINDENTLVL=1"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap.noGL\&quot;"/>
+					<Add option="-DDEBUG"/>
 				</Compiler>
 			</Target>
 			<Target title="staticlib-debug">
@@ -39,6 +41,7 @@
 					<Add option="-DLOGINDENTLVL=1"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap.debug\&quot;"/>
 					<Add option="-DHAVE_OPENGL"/>
+					<Add option="-DDEBUG"/>
 				</Compiler>
 				<Linker>
 					<Add library="opengl32"/>
@@ -1524,6 +1527,11 @@
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLKeyboard.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
 		</Unit>
 		<Unit filename="src\SDLManager.cc">
 			<Option compilerVar="CC"/>

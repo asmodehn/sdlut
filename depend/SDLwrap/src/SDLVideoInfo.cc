@@ -29,6 +29,18 @@ std::string VideoInfo::getDriverName(void) const
 	return std::string(name);
 }
 
+//return the SDLPixelFormat for the current video device
+PixelFormat * VideoInfo::getPixelFormat() const
+		{
+#ifdef DEBUG
+        assert(_info);
+        Log << nl << "SDL_VideoInfo @ " << _info << std::endl;
+        assert(_info->vfmt);
+        Log << nl << "SDL_PixelFormat @ " << _info->vfmt << std::endl;
+#endif
+return new PixelFormat(_info->vfmt);
+}
+
 Logger & operator << (Logger & log, const VideoInfo & vinfo)
 {
 	log << nl << "VideoInfo::debug()"  << nl <<

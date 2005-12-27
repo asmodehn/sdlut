@@ -81,7 +81,7 @@ namespace SDL
         //filter to decide if an event is set as critical or not
         Uint8 _criticaltypes;
 
-        AppWindow & _focusedwindow;
+        const AppWindow & _focusedwindow;
 
 //WARNING : the handler must be initialized properly before setting a corresponding type as critical
 GeneralHandler * ghndlr;
@@ -91,7 +91,7 @@ KeyboardHandler * khndlr;
 //UserHandler * uhlndr = NULL;
 
 
-        EventManager(AppWindow appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(NULL),mhndlr(NULL),khndlr(NULL) {}
+        EventManager(const AppWindow & appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(NULL),mhndlr(NULL),khndlr(NULL) {}
         ~EventManager() {}
 
     bool _quitRequested;

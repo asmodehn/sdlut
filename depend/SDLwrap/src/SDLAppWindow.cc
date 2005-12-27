@@ -162,7 +162,11 @@ namespace SDL
         }
         _screen=NULL;
         //setting the static videoInfo to be used by all surfaces...
+
         BaseSurface::_vinfo = _videoinfo;
+#ifdef DEBUG
+        Log << nl << "VideoInfo created @ " << _videoinfo << std::endl;
+#endif
 
         setIcon(_icon);
         setTitle(_title);
@@ -172,10 +176,13 @@ namespace SDL
 
     AppWindow::~AppWindow()
     {
+#ifdef DEBUG
+        Log << nl << " AppWindow Destructor called !" << std::endl;
+#endif
 #ifdef HAVE_OPENGL
         delete _glmanager;
 #endif
-    delete _videoinfo; BaseSurface::_vinfo = NULL;
+        delete _videoinfo; BaseSurface::_vinfo = NULL;
     }
 
 
@@ -236,11 +243,13 @@ namespace SDL
 
     }
 
-bool AppWindow::resize (int width, int height)
+bool AppWindow::resize (int width, int height) const
 {
     bool res = false;
-    if (_screen == NULL ) res=reset (width,height);
-    else
+#ifdef DEBUG
+assert (_screen);
+#endif
+    if (_screen != NULL )
     {
         _screen->saveContent();
         if (_screen->resize(width,height))

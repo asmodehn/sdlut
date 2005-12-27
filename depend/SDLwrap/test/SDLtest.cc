@@ -10,7 +10,6 @@ std::string bitmapname("sample.bmp");
 class MyUserInput : public KeyboardHandler
 {
 public:
-	MyUserInput() : KeyboardHandler() {}
 	virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
 	{
 		switch( keysym.sym ) {

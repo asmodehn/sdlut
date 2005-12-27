@@ -77,8 +77,7 @@ public:
 	std::string getDriverName(void) const;
 
 	//return the SDLPixelFormat for the current video device
-	PixelFormat * getPixelFormat() const
-		{ return new PixelFormat(_info->vfmt); }
+	PixelFormat * getPixelFormat() const;
 
 	//display all detected informations about graphics
 	friend Logger & operator << (Logger & ostr, const VideoInfo & vinfo);

@@ -85,6 +85,12 @@ bool DisplaySurface::checkAvailableSize(void)
 
 int DisplaySurface::getSuggestedBPP(int width, int height)
 {
+#ifdef DEBUG
+    assert( getVideoInfo());
+    Log << nl << "VideoInfo Accessible @ " << getVideoInfo << std::endl;
+    assert( getVideoInfo()->getPixelFormat());
+    Log << nl << "PixelFormat Accessible @ " << getVideoInfo()->getPixelFormat() << std::endl;
+#endif
     return SDL_VideoModeOK(width,height,getVideoInfo()->getPixelFormat()->getBitsPerPixel(),flags);
 }
 

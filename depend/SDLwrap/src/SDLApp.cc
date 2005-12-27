@@ -32,17 +32,21 @@ bool App::initWindow( bool fullscreen,bool opengl, bool resizable, bool noframe)
     bool res = false;
     try
     {
+#ifdef DEBUG
+        Log << nl << "Creating Manager ..." << std::endl;
+#endif
     _manager = new Manager(true);
-    }
-    catch (...)
-    {
-        Log << nl << "FATAL ERROR : Manager cant be created... Exiting" << std::endl;
-            exit (1);
-    }
-    if ( _manager !=NULL )
-    {
-        //more try / catch to do ??
+#ifdef DEBUG
+        Log << nl << "Manager created @ " <<  _manager << std::endl;
+        Log << nl << "Creating AppWindow ..." << std::endl;
+#endif
         _appwindow = new AppWindow(_name,_icon);
+#ifdef DEBUG
+        Log << nl << "AppWindow created @ "<< _appwindow << std::endl;
+        Log << nl << " Setting up AppWindow... " << std::endl;
+#endif
+
+
         //setting the required flags...
     #ifdef HAVE_OPENGL
         if (opengl) _appwindow->setOpenGL(true);
@@ -52,8 +56,22 @@ bool App::initWindow( bool fullscreen,bool opengl, bool resizable, bool noframe)
         if (fullscreen) _appwindow->setFullscreen(true);
         if (resizable) _appwindow->setResizable(true);
         if (noframe) _appwindow->setNoFrame(true);
+
+
+#ifdef DEBUG
+        Log << nl << "Creating EventManager ... " << std::endl;
+#endif
         _eventmanager = new EventManager(*_appwindow);
-        res = true;
+#ifdef DEBUG
+        Log << nl << "EventManager created @ " << _eventmanager << std::endl;
+#endif
+        res=true;
+    }
+    catch (std::exception &e)
+    {
+        Log << nl << "Exception caught : " << e.what() << std::endl;
+        Log << nl << "FATAL ERROR : InitWindow failed... Exiting" << std::endl;
+            exit (1);
     }
     return res;
 }

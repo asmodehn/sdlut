@@ -59,7 +59,7 @@ class AppWindow
         //create the screen
         bool reset( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT);
         //just resize the screen (without changing flags, or bpp)
-        bool resize (int width, int height);
+        bool resize (int width, int height) const;
         DisplaySurface * getDisplay( void ) {return _screen;}
 
         VideoInfo * getVideoInfo( void ) {return _videoinfo;}
