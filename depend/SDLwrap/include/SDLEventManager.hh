@@ -90,15 +90,18 @@ KeyboardHandler * khndlr;
 //JoystickHandler * jhlndr = NULL;
 //UserHandler * uhlndr = NULL;
 
+
         EventManager(AppWindow appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(NULL),mhndlr(NULL),khndlr(NULL) {}
-        virtual ~EventManager() {}
+        ~EventManager() {}
 
     bool _quitRequested;
 
         public :
 
+void setKeyboardHandler(KeyboardHandler * newkhndlr) { khndlr = newkhndlr;}
+
     //method to trigger the app exiting of the mainloop...
-    virtual bool quitRequested() {return _quitRequested;}
+    bool quitRequested() {return _quitRequested;}
 
         //Wait indefinitely for the next available event
 	//return the event found or throw an exception if error.

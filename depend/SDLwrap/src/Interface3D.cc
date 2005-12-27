@@ -34,6 +34,7 @@ bool Interface3D::setBGColor(float r, float g, float b)
     BGColorGreen = g;
     BGColorBlue = b;
     glClearColor(r,g,b, 0.0f);
+    return true;
 }
 
 bool Interface3D::init(int width, int height)

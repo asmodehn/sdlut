@@ -7,14 +7,13 @@ using namespace SDL;
 std::string bitmapname("sample.bmp");
 
 //Defining UserInput
-class MyUserInput : public EventHandler
+class MyUserInput : public KeyboardHandler
 {
 public:
-	MyUserInput() : EventHandler(App::getInstance().getAppWindow()) {}
+	MyUserInput() : KeyboardHandler() {}
 	virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
 	{
 		switch( keysym.sym ) {
-    		case SDLK_ESCAPE: if (pressed==false) _quitRequested=true; break;
     		case SDLK_F5: if (pressed==true) App::getInstance().getAppWindow()->iconify(); break;
     		case SDLK_F6: if (pressed==true) App::getInstance().getAppWindow()->toggleFullScreen(); break;
 	    default: break;
@@ -41,7 +40,7 @@ int main(int argc, char** argv)
 	testlog << nl << " Creating the User Interface... " << std::endl;
 	//UI Creation
 	MyUserInput ui;
-    App::getInstance().setEventHandler(&ui);
+    App::getInstance().getEventManager()->setKeyboardHandler(&ui);
 
     testlog << nl << " Creating the SDL Cursor... " << std::endl;
 	Cursor cursor(blackArrow);
@@ -84,7 +83,7 @@ int main(int argc, char** argv)
 	testlog << nl << " OPENGL activation... " << std::endl;
 
 	MyUserInput ui2; // another ui, since the first is closed ( but not deleted )
-	App::getInstance().setEventHandler(&ui2);
+	App::getInstance().getEventManager()->setKeyboardHandler(&ui2);
 	testlog << nl <<"display reset" << std::endl;
 
 	//GLManager test

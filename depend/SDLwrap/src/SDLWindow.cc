@@ -15,7 +15,7 @@ Window::~Window()
 
 bool Window::update(void)
 {
-	bool res=(SDL_Flip(_surf) == 0);
+	return SDL_Flip(_surf) == 0;
 }
 
 Logger & operator << (Logger & ostr, const Window & win)
