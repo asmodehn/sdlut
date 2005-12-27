@@ -6,7 +6,7 @@
 namespace MxLib
 {
 
-    bool MxScene::add (MxBitmap * bitmap, int posX, int posY)
+    bool MxScene::add (SDL::RGBSurface * bitmap, int posX, int posY)
     {
         bool res = (m_bitmap==NULL);
         if (res)
@@ -98,9 +98,6 @@ namespace MxLib
 
         for (unsigned int i=0;i<m_sprite.size() ;i++ )
             m_sprite[i]->render(m_spritePos[i].getx(),m_spritePos[i].gety());
-
-        if (m_bitmap!=NULL)
-            m_bitmap->render(m_bitmapPosX, m_bitmapPosY);
 
         MxInit::getDisplay()->update();
         //TODO

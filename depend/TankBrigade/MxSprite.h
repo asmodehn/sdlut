@@ -17,7 +17,7 @@ namespace MxLib
         MxScene * m_scene;
         int m_sceneindex;
 
-        MxBitmap & m_BitmapOri;
+        SDL::RGBSurface & m_BitmapOri;
         SDL::Rect m_bboxOri;
 
         bool m_collision;
@@ -35,8 +35,8 @@ namespace MxLib
         }
 
     public:
-        MxSprite (MxBitmap & , unsigned int coordOriX, unsigned int coordOriY, unsigned int size);
-        MxSprite (MxBitmap & , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY);
+        MxSprite (SDL::RGBSurface & , unsigned int coordOriX, unsigned int coordOriY, unsigned int size);
+        MxSprite (SDL::RGBSurface & , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY);
 
 
         unsigned int loadFrame(unsigned int coordOriX, unsigned int coordOriY, unsigned int size)

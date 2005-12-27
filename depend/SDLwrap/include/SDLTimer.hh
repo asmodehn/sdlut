@@ -1,5 +1,5 @@
-#ifndef SDLTIMER_HH
-#define SDLTIMER_HH
+#ifndef SDL_TIMER_HH
+#define SDL_TIMER_HH
 
 #include "SDLConfig.hh"
 

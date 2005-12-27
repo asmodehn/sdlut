@@ -33,10 +33,10 @@ namespace SDL
 
     class GeneralHandler
     {
-        EventManager & _eventmanager;
+        EventManager * _eventmanager;
         public:
 
-        	GeneralHandler(EventManager eventmanager);
+        	GeneralHandler(EventManager * eventmanager);
             virtual ~GeneralHandler() {}
 
         //Callbacks on Window / Display events
@@ -76,6 +76,7 @@ namespace SDL
         friend class App; // to build the unique instance of EventManager
 
         friend class GeneralHandler;
+        friend class KeyboardHandler;
 
         protected:
         //filter to decide if an event is set as critical or not
@@ -91,7 +92,7 @@ KeyboardHandler * khndlr;
 //UserHandler * uhlndr = NULL;
 
 
-        EventManager(const AppWindow & appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(NULL),mhndlr(NULL),khndlr(NULL) {}
+        EventManager(const AppWindow & appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(new GeneralHandler(this)),mhndlr(new MouseHandler()),khndlr(new KeyboardHandler(this)) {}
         ~EventManager() {}
 
     bool _quitRequested;
@@ -99,6 +100,8 @@ KeyboardHandler * khndlr;
         public :
 
 void setKeyboardHandler(KeyboardHandler * newkhndlr) { khndlr = newkhndlr;}
+void setGeneralHandler(GeneralHandler * newghndlr) { ghndlr = newghndlr;}
+void setMouseHandler(MouseHandler * newmhndlr) { mhndlr = newmhndlr;}
 
     //method to trigger the app exiting of the mainloop...
     bool quitRequested() {return _quitRequested;}

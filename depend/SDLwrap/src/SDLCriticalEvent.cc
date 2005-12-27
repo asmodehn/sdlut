@@ -5,17 +5,39 @@
 
 namespace SDL {
 
-
+Logger & operator << (Logger & log, const  EventType & type)
+{
+    switch (type)
+    {
+        case Active : log << "Active"; break;
+        case KeyDown : log << "KeyDown"; break;
+        case KeyUp : log << "KeyUp"; break;
+        case MouseMotion : log << "MouseMotion"; break;
+        case MouseButtonDown: log << "MouseButtonDown"; break;
+        case MouseButtonUp : log << "MouseButtonUp"; break;
+        case JoyAxis : log << "JoyAxis"; break;
+        case JoyBall : log << "JoyBall"; break;
+        case JoyHat : log << "JoyHat"; break;
+        case JoyButtonDown : log << "JoyButtonDown"; break;
+        case JoyButtonUp : log << "JoyButtonUp"; break;
+        case User : log << "User"; break;
+        case Quit : log << "Quit"; break;
+        case SysWM : log << "SysWM"; break;
+        case Resize : log << "Resize"; break;
+        case Expose : log << "Expose"; break;
+    }
+    return log;
+}
 
 CriticalEvent::CriticalEvent(EventType type) : _event()
 {
     //syntax to put in the constructor call to get rid of the warning ?
-    _event.type=type;
+    _event->type=type;
 }
 
 bool CriticalEvent::push()
 {
-	return SDL_PushEvent(&_event) == 0;
+	return SDL_PushEvent(_event) == 0;
 }
 
 int CriticalEvent::push(int number)
@@ -24,10 +46,10 @@ int CriticalEvent::push(int number)
     SDL_Event eventTab[number];
     while ( cur < number )
     {
-        eventTab[cur] = _event;
-        //maybe some arithmetic on pointer can improve that ?
+        eventTab[cur] = *_event;
+        //maybe some arithmetic on pointer can improve that ? ( all pointers to the same event instead of copy the event everywhere ? )
     }
-	return SDL_PeepEvents(eventTab, number, SDL_ADDEVENT, _event.type);
+	return SDL_PeepEvents(eventTab, number, SDL_ADDEVENT, _event->type);
 }
 
 
@@ -68,51 +90,60 @@ int CriticalEvent::push(int number)
 
 EventType CriticalEvent::getType()
 {
-    return static_cast<EventType>(_event.type);
+    return static_cast<EventType>(_event->type);
 }
 
 
 
-bool CriticalEvent::callHandler(GeneralHandler & ghndlr, KeyboardHandler & khndlr, MouseHandler&  mhndlr )
+bool CriticalEvent::callHandler(GeneralHandler * ghndlr, KeyboardHandler * khndlr, MouseHandler*  mhndlr )
 {
 
     bool ev_handled = false;
-		switch(_event.type) {
+		switch(_event->type) {
 			case SDL_ACTIVEEVENT:
-				ev_handled = ghndlr.handleActiveEvent(_event.active.gain == 1, _event.active.state);
+				ev_handled = ghndlr->handleActiveEvent(_event->active.gain == 1, _event->active.state);
 				break;
 			case SDL_KEYDOWN:
-				ev_handled = khndlr.handleKeyPressEvent(_event.key.keysym);
+				ev_handled = khndlr->handleKeyPressEvent(_event->key.keysym);
 				break;
 			case SDL_KEYUP:
-				ev_handled = khndlr.handleKeyReleaseEvent(_event.key.keysym);
+				ev_handled = khndlr->handleKeyReleaseEvent(_event->key.keysym);
 				break;
 			case SDL_MOUSEMOTION:
-				ev_handled = mhndlr.handleMouseMotionEvent(_event.motion.state, _event.motion.x, _event.motion.y, _event.motion.xrel, _event.motion.yrel);
+				ev_handled = mhndlr->handleMouseMotionEvent(_event->motion.state, _event->motion.x, _event->motion.y, _event->motion.xrel, _event->motion.yrel);
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				ev_handled = mhndlr.handleMouseButtonPressEvent(_event.button.button, _event.button.x, _event.button.y);
+				ev_handled = mhndlr->handleMouseButtonPressEvent(_event->button.button, _event->button.x, _event->button.y);
 				break;
 			case SDL_MOUSEBUTTONUP:
-				ev_handled = mhndlr.handleMouseButtonReleaseEvent(_event.button.button, _event.button.x, _event.button.y);
+				ev_handled = mhndlr->handleMouseButtonReleaseEvent(_event->button.button, _event->button.x, _event->button.y);
 				break;
 //			case SDL_JOYAXISMOTION:
-//				ev_handled = jhndlr.handleJoyAxisEvent(_event.jaxis.which, _event.jaxis.axis, _event.jaxis.value);
+//				ev_handled = jhndlr.handleJoyAxisEvent(_event->jaxis.which, _event->jaxis.axis, _event->jaxis.value);
 //				break;
 //			case SDL_JOYBALLMOTION:
-//				ev_handled = jhndlr.handleJoyBallEvent(_event.jball.which, _event.jball.ball, _event.jball.xrel, _event.jball.yrel);
+//				ev_handled = jhndlr.handleJoyBallEvent(_event->jball.which, _event->jball.ball, _event->jball.xrel, _event->jball.yrel);
 //				break;
 //			case SDL_JOYHATMOTION:
-//				ev_handled = jhndlr.handleJoyHatEvent(_event.jhat.which, _event.jhat.hat, _event.jhat.value);
+//				ev_handled = jhndlr.handleJoyHatEvent(_event->jhat.which, _event->jhat.hat, _event->jhat.value);
 //				break;
 //			case SDL_JOYBUTTONDOWN:
-//				ev_handled = jhndlr.handleJoyButtonPressEvent(_event.jbutton.which, _event.jbutton.button);
+//				ev_handled = jhndlr.handleJoyButtonPressEvent(_event->jbutton.which, _event->jbutton.button);
 //				break;
 //			case SDL_JOYBUTTONUP:
-//				ev_handled = jhndlr.handleJoyButtonReleaseEvent(_event.jbutton.which, _event.jbutton.button);
+//				ev_handled = jhndlr.handleJoyButtonReleaseEvent(_event->jbutton.which, _event->jbutton.button);
 //				break;
             case SDL_USEREVENT:
-				ev_handled = ghndlr.handleUserEvent(_event.user.type, _event.user.code,_event.user.data1, _event.user.data2);
+				ev_handled = ghndlr->handleUserEvent(_event->user.type, _event->user.code,_event->user.data1, _event->user.data2);
+				break;
+            case SDL_QUIT:
+				ev_handled = ghndlr->handleQuitEvent();
+				break;
+			case SDL_SYSWMEVENT:
+				ev_handled = ghndlr->handleSysWMEvent();
+				break;
+			case SDL_VIDEORESIZE:
+				ev_handled = ghndlr->handleResizeEvent(_event->resize.w, _event->resize.h);
 				break;
 		}
         return ev_handled;

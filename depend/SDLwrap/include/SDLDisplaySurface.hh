@@ -1,5 +1,5 @@
-#ifndef SDLDISPLAYSURFACE_HH
-#define SDLDISPLAYSURFACE_HH
+#ifndef SDL_DISPLAYSURFACE_HH
+#define SDL_DISPLAYSURFACE_HH
 
 /**
  * \class DisplaySurface

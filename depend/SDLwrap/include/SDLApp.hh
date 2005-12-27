@@ -10,7 +10,6 @@
  *
  * This class is a Meyer's Singleton, therefore should not be derivated.
  *
- * BUG : this one seems to have a problem getting the instance at the end of an opengl window...
  * \author Alex
  *
  * \date 2005/12/24

@@ -1,5 +1,5 @@
-#ifndef SDLCDROM_HH
-#define SDLCDROM_HH
+#ifndef SDL_CDROM_HH
+#define SDL_CDROM_HH
 
 #include "SDLConfig.hh"
 

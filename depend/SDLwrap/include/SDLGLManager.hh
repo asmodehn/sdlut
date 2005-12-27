@@ -1,5 +1,5 @@
-#ifndef SDLGLMANAGER_HH
-#define SDLGLMANAGER_HH
+#ifndef SDL_GLMANAGER_HH
+#define SDL_GLMANAGER_HH
 
 #include "SDLConfig.hh"
 

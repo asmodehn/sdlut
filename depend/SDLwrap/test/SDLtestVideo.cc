@@ -10,6 +10,9 @@ std::string bitmapname("sample.bmp");
 class MyUserInput : public KeyboardHandler
 {
 public:
+    MyUserInput(EventManager * eventmanager) : KeyboardHandler(eventmanager) {}
+    virtual ~MyUserInput() {}
+
 	virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
 	{
 		switch( keysym.sym ) {
@@ -38,7 +41,7 @@ int main(int argc, char** argv)
 
 	testlog << nl << " Creating the User Interface... " << std::endl;
 	//UI Creation
-	MyUserInput ui;
+	MyUserInput ui(App::getInstance().getEventManager());
     App::getInstance().getEventManager()->setKeyboardHandler(&ui);
 
     testlog << nl << " Creating the SDL Cursor... " << std::endl;
@@ -81,7 +84,7 @@ int main(int argc, char** argv)
 
 	testlog << nl << " OPENGL activation... " << std::endl;
 
-	MyUserInput ui2; // another ui, since the first is closed ( but not deleted )
+	MyUserInput ui2(App::getInstance().getEventManager()); // another ui, since the first is closed ( but not deleted )
 	App::getInstance().getEventManager()->setKeyboardHandler(&ui2);
 	testlog << nl <<"display reset" << std::endl;
 
@@ -115,8 +118,6 @@ if(App::getInstance().getAppWindow()->reset())
 		testlog << nl << "loop... " << std::endl;
 			App::getInstance().mainLoop();
 	}
-
-	std::cout << "blabla" << std::endl;
 
 	return 0;
 }

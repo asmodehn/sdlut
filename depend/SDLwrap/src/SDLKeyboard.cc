@@ -1,4 +1,5 @@
 #include "SDLKeyboard.hh"
+#include "SDLEventManager.hh"
 
 namespace SDL {
 
@@ -33,9 +34,20 @@ bool Keyboard::enableKeyRepeat(int delay, int interval)
 }
 
 
+KeyboardHandler::KeyboardHandler(EventManager * eventmanager)
+ :_eventmanager(eventmanager)
+ {
+
+}
+
 bool KeyboardHandler::handleKeyEvent (SDL_keysym &keysym, bool pressed)
 {
-    return false;
+	    bool res = false;
+		switch( keysym.sym ) {
+    		case SDLK_ESCAPE: if (pressed==false) _eventmanager->_quitRequested=true; res=true; break;
+	    default: res=false;
+		}
+		return res;
 }
 
 }

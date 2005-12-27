@@ -1,5 +1,5 @@
-#ifndef SDLOVERLAY
-#define SDLOVERLAY
+#ifndef SDL_OVERLAY_HH
+#define SDL_OVERLAY_HH
 
 #include "SDLConfig.hh"
 #include "SDLRect.hh"

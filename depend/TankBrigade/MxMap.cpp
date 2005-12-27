@@ -16,7 +16,7 @@ namespace MxLib
         return m_spritelist.size()-1;
     }
 
-    int MxMap::loadnewSprite( MxBitmap& bitmap,int x, int y)
+    int MxMap::loadnewSprite( SDL::RGBSurface & bitmap,int x, int y)
     {
         MxSprite * sprite = new MxSprite(bitmap,x,y,m_spriteSize);
         m_spritelist.push_back(sprite);

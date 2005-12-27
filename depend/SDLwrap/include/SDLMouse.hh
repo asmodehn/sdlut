@@ -1,5 +1,5 @@
-#ifndef SDLMOUSE_HH
-#define SDLMOUSE_HH
+#ifndef SDL_MOUSE_HH
+#define SDL_MOUSE_HH
 
 #include "SDLConfig.hh"
 
@@ -60,8 +60,6 @@ protected:
 
 
 public:
-	MouseHandler();
-	virtual	~MouseHandler() {}
 
 	//Callbacks on Mouse Events
 	virtual bool handleMouseMotionEvent (Uint8 state, Uint16 x, Uint16 y,

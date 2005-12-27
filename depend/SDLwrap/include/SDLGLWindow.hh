@@ -1,5 +1,5 @@
-#ifndef SDLGLWINDOW_HH
-#define SDLGLWINDOW_HH
+#ifndef SDL_GLWINDOW_HH
+#define SDL_GLWINDOW_HH
 
 /**
  * \class SDLGLWindow

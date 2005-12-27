@@ -1,5 +1,5 @@
-#ifndef SDLCURSOR_HH
-#define SDLCURSOR_HH
+#ifndef SDL_CURSOR_HH
+#define SDL_CURSOR_HH
 
 #include "SDLConfig.hh"
 #include "SDLPoint.hh"

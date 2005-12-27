@@ -1,5 +1,5 @@
-#ifndef SDLRGBSURFACE_HH
-#define SDLRGBSURFACE_HH
+#ifndef SDL_RGBSURFACE_HH
+#define SDL_RGBSURFACE_HH
 
 /*******************************************************************************
  * Handle a Graphical Surface

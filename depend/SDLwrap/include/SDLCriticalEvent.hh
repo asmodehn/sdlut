@@ -13,7 +13,14 @@ namespace SDL {
  *
  * This class wraps SDL_Event to allow "High Priority" Event manipulation.
  * The related functions wrapped are mostly SDL_PushEvent, and SDL_PeekEvent
+ * This class is aimed to be heavily optimised for fast ( and selective ) event handling.
+ *
+ * For example in a simulation, or a game with really strong requirements on event handling (like traditional one vs one fight game) you might want to run the game event loop as fast, and as much as possible, to get all the critical events as soon as possible and update the game with the best accuracy while only updating the screen when it is needed by the framerate.
+ * Therefore your simulation or game will have "critical" events, those which the state of your game rely on, and normal ones, which are usually only interface related, like a selection, a mouvement on the cursor over the UI or a simple quit
+ *
  * For usual Event Handling you should use the Event Class.
+ *
+ * TODO : Improve this class as much as possible.Have a look there http://gameprogrammer.com/game.html
  *
  * \note should only be used through SDLEventHandler for more safety...
  *
@@ -47,6 +54,9 @@ namespace SDL {
                             Expose = SDL_VIDEOEXPOSE
     } EventType;
 
+Logger & operator << (Logger & log, const  EventType & type);
+
+
 //further reference
 class GeneralHandler;
 class KeyboardHandler;
@@ -58,9 +68,9 @@ class CriticalEvent
     friend class EventManager;
 
     protected :
-    SDL_Event & _event;
+    SDL_Event * const _event;
 
-    explicit CriticalEvent(SDL_Event event) : _event(event) {}
+    explicit CriticalEvent(SDL_Event *const event) : _event(event) {}
     //CriticalEvent() : _event() {}
 
 
@@ -106,7 +116,7 @@ class CriticalEvent
 
 
     //calls the handler coresponding to the event
-    bool callHandler(GeneralHandler & ghndlr, KeyboardHandler & khndlr, MouseHandler&  mhndlr );
+    bool callHandler(GeneralHandler * ghndlr, KeyboardHandler * khndlr, MouseHandler *  mhndlr );
 
 
 

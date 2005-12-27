@@ -1,5 +1,5 @@
-#ifndef SDLWRAP_HH
-#define SDLWRAP_HH
+#ifndef SDL_WRAP_HH
+#define SDL_WRAP_HH
 
 /** This file gather all the header files a user need to include to be able to use SDLwrap
   * So the user just has to include SDLwrap to have full access to the whole wrapper

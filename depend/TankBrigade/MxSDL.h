@@ -12,44 +12,44 @@
 
 namespace MxLib
 {
+//
+//    //singleton to do again properly
+//    class MxInit
+//    {
+//    private :
+//
+//        static MxInit * _instance;
+//
+//    protected :
+//
+//        MxInit(int width = 640, int height = 480) throw (std::logic_error);
+//
+//    public :
+//
+//        static MxInit * init(int width = 640, int height = 480);
+//
+//        static SDL::DisplaySurface * getDisplay(void);
+//
+//
+//    };
 
-    //singleton to do again properly
-    class MxInit
-    {
-    private :
-
-        static MxInit * _instance;
-
-    protected :
-
-        MxInit(int width = 640, int height = 480) throw (std::logic_error);
-
-    public :
-
-        static MxInit * init(int width = 640, int height = 480);
-
-        static SDL::DisplaySurface * getDisplay(void);
-
-
-    };
-
-    class MxBitmap
-    {
-    private :
-        static SDL::SurfaceFactory * sm_factory;
-        unsigned int m_surfindex;
-
-    public :
-        MxBitmap(std::string filename);
-        MxBitmap(std::string filename, const SDL::Color & colorKey);
-
-        void optimize();
-
-        SDL::RGBSurface * getRawSurface();
-
-        bool render (int pixX = 0, int pixY = 0);
-
-    };
+//    class MxBitmap
+//    {
+//    private :
+//        SDL::Surface * sm_factory;
+//        unsigned int m_surfindex;
+//
+//    public :
+//        MxBitmap(std::string filename);
+//        MxBitmap(std::string filename, const SDL::Color & colorKey);
+//
+//        void optimize();
+//
+//        SDL::RGBSurface * getRawSurface();
+//
+//        bool render (int pixX = 0, int pixY = 0);
+//
+//    };
 
 }
 

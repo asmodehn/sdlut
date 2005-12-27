@@ -21,7 +21,7 @@ namespace MxLib
         MxMap(int sizeOfSprite = 32, int mapWidth = 20, int mapHeight = 15);
 
         int loadSprite( const MxSprite* sprite );
-        int loadnewSprite(MxBitmap& bitmap,int x, int y);
+        int loadnewSprite(SDL::RGBSurface & bitmap,int x, int y);
         int placeSprite(int index, int mapX, int mapY);
 
 

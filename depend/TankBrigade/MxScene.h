@@ -20,7 +20,7 @@ namespace MxLib
 				int m_borderleft;
 				int m_borderright;
 
-        MxBitmap * m_bitmap;
+        SDL::RGBSurface * m_bitmap;
         int m_bitmapPosX,m_bitmapPosY;
 
         MxMap * m_map;
@@ -42,7 +42,7 @@ namespace MxLib
         void update ();
 
 
-        bool add (MxBitmap *, int posX = 0, int posY = 0)
+        bool add (SDL::RGBSurface *, int posX = 0, int posY = 0)
         ;
 
         //authorise only one Map

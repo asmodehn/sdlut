@@ -48,7 +48,7 @@
 				</Linker>
 			</Target>
 			<Target title="testInput-debug">
-				<Option output="build\test\SDLtestVideo.exe"/>
+				<Option output="build\test\SDLtestInput.exe"/>
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\.deps"/>
@@ -61,7 +61,7 @@
 				</Linker>
 			</Target>
 			<Target title="testVideo-debug">
-				<Option output="build\test\SDLtest.exe"/>
+				<Option output="build\test\SDLtestVideo.exe"/>
 				<Option working_dir="build\test"/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\.deps"/>
@@ -1462,6 +1462,8 @@
 			<Option target="testwm"/>
 			<Option target="threadwin"/>
 			<Option target="torturethread"/>
+			<Option target="testVideo-debug"/>
+			<Option target="testInput-debug"/>
 		</Unit>
 		<Unit filename="src\Interface3D.cc">
 			<Option compilerVar="CC"/>
@@ -1578,13 +1580,13 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
-		<Unit filename="test\SDLtest.cc">
-			<Option compilerVar="CC"/>
-			<Option target="testVideo-debug"/>
-		</Unit>
 		<Unit filename="test\SDLtestInput.cc">
 			<Option compilerVar="CC"/>
 			<Option target="testInput-debug"/>
+		</Unit>
+		<Unit filename="test\SDLtestVideo.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testVideo-debug"/>
 		</Unit>
 		<Unit filename="test\checkkeys.cc">
 			<Option compilerVar="CC"/>

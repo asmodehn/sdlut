@@ -49,4 +49,15 @@ namespace SDL
         return updatePos() & SDL_BUTTON(b);
     }
 
+
+    	//Callbacks on Mouse Events
+	bool MouseHandler::handleMouseMotionEvent (Uint8 state, Uint16 x, Uint16 y, Sint16 xrel, Sint16 yrel)
+	{
+	    return false;
+	}
+	bool MouseHandler::handleMouseButtonEvent (Uint8 button, Uint16 x, Uint16 y, bool pressed)
+	{
+	    return false;
+	}
+
 }

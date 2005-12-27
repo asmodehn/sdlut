@@ -12,20 +12,20 @@ using namespace MxLib;
 #endif
 #endif
 
-class MyResources
-{
-    MxLib::MxBitmap m_masterbmp;
-
-public :
-    MyResources( std::string masterbmp = "tankbrigade.bmp" )
-            : m_masterbmp(masterbmp)
-    {}
-
-    MxLib::MxBitmap& getBitmap(void)
-    {
-        return m_masterbmp;
-    }
-};
+//class MyResources
+//{
+//    SDL::SDLRGBSurface m_masterbmp;
+//
+//public :
+//    MyResources( std::string masterbmp = "tankbrigade.bmp" )
+//            : m_masterbmp(masterbmp)
+//    {}
+//
+//    MxLib::MxBitmap& getBitmap(void)
+//    {
+//        return m_masterbmp;
+//    }
+//};
 
 //my game : the singleton...
 class MyTankGame
@@ -88,8 +88,8 @@ public:
     //magic number
     static const int size = 8;
 
-    MyBullet( Direction initdir, int initspeed = 6)
-            : MxLib::MxSprite(MyTankGame::Instance().getResources().getBitmap() ,330, 33,8), speed(initspeed), dir(initdir)
+    MyBullet( SDL::RGBSurface & bitmap,Direction initdir, int initspeed = 6)
+            : MxLib::MxSprite(bitmap ,330, 33,8), speed(initspeed), dir(initdir)
     {
         frameset[0]=loadFrame(145,44,7,10);
         frameset[1]=loadFrame(244,44,7,10);
@@ -194,13 +194,13 @@ public :
 
     Direction curdir;
 
-    MyTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
+    MyTank (SDL::RGBSurface & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int size)
             : MxLib::MxSprite(bitmap ,coordOriX, coordOriY,size)
     {
         speed = 3;
         curdir = up;
     }
-    MyTank (MxLib::MxBitmap & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
+    MyTank (SDL::RGBSurface & bitmap , unsigned int coordOriX, unsigned int coordOriY, unsigned int sizeOriX, unsigned int sizeOriY)
             : MxLib::MxSprite(bitmap ,coordOriX, coordOriY,sizeOriX, sizeOriY)
     {
         speed = 3;
@@ -328,8 +328,8 @@ class MyPlayerTank : public MyTank
 public :
 
 
-    MyPlayerTank ()
-            : MyTank(MyTankGame::Instance().getResources().getBitmap(),495,33,32)
+    MyPlayerTank ( SDL::RGBSurface ori)
+            : MyTank(ori,495,33,32)
     {
         upframe[0] = loadFrame(495,33,32);
         upframe[1] = loadFrame(495,66,32);
@@ -385,8 +385,8 @@ class MyEnemyTank : public MyTank
 
 
 public :
-    MyEnemyTank ()
-            : MyTank(MyTankGame::Instance().getResources().getBitmap(),594,165,32)
+    MyEnemyTank (SDL::RGBSurface ori)
+            : MyTank(ori,594,165,32)
     {
         upframe[0] = loadFrame(594,165,32);
         upframe[1] = loadFrame(594,198,32);
@@ -508,7 +508,7 @@ class MyLevel : public MxLib::MxMap
 {
 public :
 
-    MyLevel (MxLib::MxBitmap & bitmap, int tilesize, int Xsize, int Ysize )
+    MyLevel (SDL::RGBSurface & bitmap, int tilesize, int Xsize, int Ysize )
             : MxMap(tilesize,Xsize,Ysize)
     {
         //MAP
@@ -603,9 +603,12 @@ public :
 
 int main()
 {
-    MyTankGame::Instance();
 
-    MxScene scene(0,480,0,640);
+    SDL::App::getInstance().initWindow();
+    SLD::App::getInstance().setName("Tank Brigade");
+    SDL::RGBSurface bitmap("tankbrigade.bmp");
+
+    MxScene scene(bitmap,0,480,0,640);
 
     //    std::cout  << "mxscene ok" << std::endl;
     MyInput input;
@@ -618,12 +621,12 @@ int main()
     */
     //scene.clear();
 
-    MyLevel lvl(MyTankGame::Instance().getResources().getBitmap(),32,20,15);
+    MyLevel lvl(bitmap,32,20,15);
 
 
-    MyEnemyTank bluetank;
+    MyEnemyTank bluetank(bitmap);
     //    std::cout  << "mxsprite ok" << std::endl;
-    MyPlayerTank greentank;
+    MyPlayerTank greentank(bitmap);
     //    std::cout  << "myplayertank ok" << std::endl;
 
     input.setPlayer (&greentank);
@@ -639,13 +642,8 @@ int main()
     scene.add(&greentank, 100, 100);
     //    std::cout  << "scene add tanklpayer ok" << std::endl;
 
-
-    while (!input.closed())
-    {
-        SDL::Event::handleEvents(input);
-        scene.update();
-        scene.display(25);
-    }
+    SLD::App::getInstance().getAppWindow().reset(640,480);
+    MainLoop(input);
 
 }
 

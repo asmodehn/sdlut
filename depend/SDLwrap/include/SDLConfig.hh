@@ -1,5 +1,5 @@
-#ifndef SDLCONFIG_HH
-#define SDLCONFIG_HH
+#ifndef SDL_CONFIG_HH
+#define SDL_CONFIG_HH
 
 //Forced Config
 //#undef HAVE_OPENGL //engine call seems to work... 3D part postponed...
