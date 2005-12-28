@@ -61,6 +61,7 @@ Logger & operator << (Logger & log, const  EventType & type);
 class GeneralHandler;
 class KeyboardHandler;
 class MouseHandler;
+class JoystickHandler;
 
 class CriticalEvent
 {
@@ -116,7 +117,7 @@ class CriticalEvent
 
 
     //calls the handler coresponding to the event
-    bool callHandler(GeneralHandler * ghndlr, KeyboardHandler * khndlr, MouseHandler *  mhndlr );
+    bool callHandler(GeneralHandler * ghndlr, KeyboardHandler * khndlr, MouseHandler *  mhndlr,JoystickHandler*  jhndlr );
 
 
 

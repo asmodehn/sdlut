@@ -7,6 +7,7 @@
 		<Option makefile="Makefile"/>
 		<Option makefile_is_custom="0"/>
 		<Option default_target="2"/>
+		<Option active_target="3"/>
 		<Option compiler="0"/>
 		<Build>
 			<Target title="staticlib-NoOpenGL">
@@ -1079,6 +1080,13 @@
 			<Option target="threadwin"/>
 			<Option target="torturethread"/>
 		</Unit>
+		<Unit filename="include\SDLJoystick.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
 		<Unit filename="include\SDLKeyboard.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -1529,6 +1537,11 @@
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLJoystick.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
 		</Unit>
 		<Unit filename="src\SDLKeyboard.cc">
 			<Option compilerVar="CC"/>

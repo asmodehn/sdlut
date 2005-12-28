@@ -18,6 +18,11 @@ bool GeneralHandler::handleResizeEvent(int w, int h)
         return true;
 }
 
+bool GeneralHandler::handleExposeEvent()
+{
+ return false;
+}
+
 bool GeneralHandler::handleSysWMEvent(void)
 { return false; }
 
@@ -62,7 +67,7 @@ assert(ghndlr);
 assert(khndlr);
 assert(mhndlr);
 #endif
-            if(! cevent.callHandler(ghndlr, khndlr, mhndlr) )
+            if(! cevent.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
                 ghndlr->handleEvent(cevent);
         }
     }
@@ -81,7 +86,7 @@ assert(ghndlr);
 assert(khndlr);
 assert(mhndlr);
 #endif
-            if(! cevent.callHandler(ghndlr, khndlr, mhndlr) )
+            if(! cevent.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
                 ev_handled = ghndlr->handleEvent(cevent);
         }
         return ev_handled;
@@ -105,7 +110,7 @@ assert(ghndlr);
 assert(khndlr);
 assert(mhndlr);
 #endif
-            if(! cevent.callHandler(ghndlr, khndlr, mhndlr) )
+            if(! cevent.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
                 ev_handled = ghndlr->handleEvent(cevent);
         }
         return ev_handled;
@@ -123,7 +128,7 @@ assert(ghndlr);
 assert(khndlr);
 assert(mhndlr);
 #endif
-            if(! event.callHandler(ghndlr, khndlr, mhndlr) )
+            if(! event.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
                 ghndlr->handleEvent(event);
         }
     }
@@ -143,7 +148,7 @@ assert(ghndlr);
 assert(khndlr);
 assert(mhndlr);
 #endif
-            if(! event.callHandler(ghndlr, khndlr, mhndlr) )
+            if(! event.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
                 ev_handled = ghndlr->handleEvent(event);
         }
         return ev_handled;

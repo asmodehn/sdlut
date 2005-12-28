@@ -11,6 +11,7 @@
 
 #include "SDLMouse.hh"
 #include "SDLKeyboard.hh"
+#include "SDLJoystick.hh"
 
 namespace SDL
 {
@@ -42,6 +43,7 @@ namespace SDL
         //Callbacks on Window / Display events
         virtual bool handleActiveEvent(bool gain, Uint8 state);
         virtual bool handleResizeEvent(int w, int h);
+        virtual bool handleExposeEvent();
         //callback on platform-dependent windows manager event
         virtual bool handleSysWMEvent(void);
 
@@ -88,11 +90,10 @@ namespace SDL
 GeneralHandler * ghndlr;
 MouseHandler * mhndlr;
 KeyboardHandler * khndlr;
-//JoystickHandler * jhlndr = NULL;
-//UserHandler * uhlndr = NULL;
+JoystickHandler * jhndlr;
 
 
-        EventManager(const AppWindow & appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(new GeneralHandler(this)),mhndlr(new MouseHandler()),khndlr(new KeyboardHandler(this)), _quitRequested(false) {}
+        EventManager(const AppWindow & appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(new GeneralHandler(this)),mhndlr(new MouseHandler()),khndlr(new KeyboardHandler(this)),jhndlr(new JoystickHandler(this)), _quitRequested(false) {}
         ~EventManager() {}
 
     bool _quitRequested;
@@ -102,6 +103,7 @@ KeyboardHandler * khndlr;
 void setKeyboardHandler(KeyboardHandler * newkhndlr) { khndlr = newkhndlr;}
 void setGeneralHandler(GeneralHandler * newghndlr) { ghndlr = newghndlr;}
 void setMouseHandler(MouseHandler * newmhndlr) { mhndlr = newmhndlr;}
+void setJoystickHandler(JoystickHandler * newjhndlr) { jhndlr = newjhndlr;}
 
     //method to trigger the app exiting of the mainloop...
     bool quitRequested() {return _quitRequested;}
@@ -139,3 +141,4 @@ void setMouseHandler(MouseHandler * newmhndlr) { mhndlr = newmhndlr;}
 }
 
 #endif
+

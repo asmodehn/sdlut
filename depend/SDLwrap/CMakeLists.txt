@@ -100,6 +100,7 @@ ADD_LIBRARY(	SDLWrap
 		include/SDLEventManager.hh src/SDLEventManager.cc
 		include/SDLKeyboard.hh src/SDLKeyboard.cc
 		include/SDLMouse.hh src/SDLMouse.cc
+		include/SDLJoystick.hh src/SDLJoystick.cc
 		include/SDLGLManager.hh src/SDLGLManager.cc
 		include/SDLGLWindow.hh src/SDLGLWindow.cc
 		include/SDLManager.hh src/SDLManager.cc
