@@ -12,16 +12,19 @@ namespace SDL
     bool AppWindow::toggleFullScreen(void)
     {
         //This only works for X11
-#ifndef __MINGW32__ //check for WIN32 instead ??
-        return ( SDL_WM_ToggleFullScreen(_screen->_surf) != 0 ) ;
-#else
-        setFullscreen(true);
-        //This is the workaround for Win32
-        //TODO :
-        // 1)	Copy the screen surface to another (backup...)
-        // 2)	Free the screen surface
-        // 3)	Create a new one with fullscreen set
+#if defined ( __MINGW32__) || defined ( __WIN32__) || defined( WIN32 ) ||  defined( _WINDOWS ) //check for WIN32
+        //workaround for win32 ??
+#ifdef DEBUG
+Log << nl << "Ignoring ToggleFullScreen() on Windows platform..." << std::endl;
+#endif
+        //return setFullscreen(true);
+        //looks like it doesnt work...
         return false;
+#else
+#ifdef DEBUG
+Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std::endl;
+#endif
+        return ( SDL_WM_ToggleFullScreen(_screen->_surf) != 0 ) ;
 #endif
     }
 
@@ -113,10 +116,16 @@ Log << nl << "AppWindow::setFullscreen(" << val << ") called" << std::endl;
         bool res = true;
         if (_screen == NULL )
             DisplaySurface::setFullscreen(val);
-        else if (_screen->isFullScreenset() !=val ) //if called inside mainLoop while screen is active
+        else
+        {
+#ifdef DEBUG
+Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
+#endif
+            if (_screen->isFullScreenset() != val ) //if called inside mainLoop while screen is active
         {
             if (! reset(_screen->getWidth(),_screen->getHeight()))
                 res=false;
+        }
         }
         return res;
     }
@@ -231,6 +240,7 @@ Log << nl << "AppWindow::reset(" << width << "," << height << ") called" << std:
                 else
                 {
 #endif
+                    //_screen = new Window(width, height, _bpp );
                     _screen = new Window(width, height, _bpp );
                     res = (_screen!=NULL);
 #ifdef HAVE_OPENGL

@@ -92,7 +92,7 @@ try : BaseSurface(SDL_LoadBMP(filename.c_str()))
         throw std::logic_error("SDL_LoadBMP returns NULL");
 	}
 	else
-		setColorKey(colorKey, getVideoInfo()->getPixelFormat());
+		setColorKey(colorKey);
 }
 catch (std::exception &e)
 {

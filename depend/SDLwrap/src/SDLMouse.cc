@@ -46,7 +46,7 @@ namespace SDL
 
     bool Mouse::isButtonPressed(Button b)
     {
-        return ( updatePos() & SDL_BUTTON(b) != 0 );
+        return ( ( updatePos() & SDL_BUTTON(b) ) != 0 );
     }
 
 

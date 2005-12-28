@@ -1,5 +1,5 @@
-#ifndef GRAPHICELEMENT_HH
-#define GRAPHICELEMENT_HH
+#ifndef AML_SCENE_HH
+#define AML_SCENE_HH
 
 
 #include "Sprite.hh"

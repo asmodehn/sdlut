@@ -1,5 +1,5 @@
-#ifndef MATH2D_HH
-#define MATH2D_HH
+#ifndef AML_MATH2D_HH
+#define AML_MATH2D_HH
 
 #include <iostream>
 #include <math.h>
