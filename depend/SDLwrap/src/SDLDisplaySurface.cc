@@ -87,7 +87,7 @@ int DisplaySurface::getSuggestedBPP(int width, int height)
 {
 #ifdef DEBUG
     assert( getVideoInfo());
-    Log << nl << "VideoInfo Accessible @ " << getVideoInfo << std::endl;
+    Log << nl << "VideoInfo Accessible @ " << getVideoInfo() << std::endl;
     assert( getVideoInfo()->getPixelFormat());
     Log << nl << "PixelFormat Accessible @ " << getVideoInfo()->getPixelFormat() << std::endl;
 #endif

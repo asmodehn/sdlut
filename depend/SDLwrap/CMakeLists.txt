@@ -60,34 +60,69 @@ ENDIF(SDL_FOUND)
 
 #test for openGL
 IF(OPENGL_FOUND)
+	MESSAGE (STATUS "OpenGL found, adjusting build options..." )
 	ADD_DEFINITIONS(-DHAVE_OPENGL)
 	INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR})
 	ADD_DEFINITIONS(-DLOGPREFIX=\"SDLwrap\")
 ELSE (OPENGL_FOUND)
+	MESSAGE (STATUS "OpenGL not found." )
 	ADD_DEFINITIONS(-DLOGPREFIX=\"SDLwrap.noGL\")
 ENDIF(OPENGL_FOUND)
 
+#Compiler Specific rules
 
-#adding definitions for Logs
-ADD_DEFINITIONS(-DLOGINDENTLVL=1)
 
-#setting up flags depending on platform
-IF(WIN32)
-#TODO : disable the warning in VS about exception specifications.
-ENDIF(WIN32)
+IF(CMAKE_CXX_COMPILER STREQUAL "cl")
+MESSAGE( STATUS "Visual Studio Compiler detected. Adjusting C++ flags...")
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /wd4290 " )
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:msvcrt.lib" )
+ENDIF(CMAKE_CXX_COMPILER STREQUAL "cl")
 
-ADD_LIBRARY(SDLWrap ../Common/src/Logger.cc src/Interface3D.cc src/SDLBaseSurface.cc src/SDLCDRom.cc src/SDLCursor.cc src/SDLDisplaySurface.cc src/SDLEvent.cc src/SDLEventHandler.cc src/SDLGLManager.cc src/SDLGLWindow.cc src/SDLManager.cc src/SDLOverlay.cc src/SDLPixelFormat.cc src/SDLPoint.cc src/SDLRect.cc src/SDLRGBSurface.cc src/SDLVideoInfo.cc src/SDLWindow.cc)
+
+
+#adding definitions for Logs and debug
+ADD_DEFINITIONS(-DLOGINDENTLVL=1 -DDEBUG)
+
+#listing headers as well to have them easily accessible in many IDE, not sure about the effect on the make build...
+ADD_LIBRARY(	SDLWrap 
+		include/SDLWrap.hh
+		include/SDLConfig.hh
+		include/Logger.hh src/Logger.cc
+		include/SDLApp.hh src/SDLApp.cc
+		include/SDLAppWindow.hh src/SDLAppWindow.cc
+		include/Interface3D.hh src/Interface3D.cc
+		include/SDLBaseSurface.hh src/SDLBaseSurface.cc
+		include/SDLCDRom.hh src/SDLCDRom.cc
+		include/SDLCursor.hh src/SDLCursor.cc
+		include/SDLDisplaySurface.hh src/SDLDisplaySurface.cc
+		include/SDLCriticalEvent.hh src/SDLCriticalEvent.cc
+		include/SDLEvent.hh src/SDLEvent.cc
+		include/SDLEventManager.hh src/SDLEventManager.cc
+		include/SDLKeyboard.hh src/SDLKeyboard.cc
+		include/SDLMouse.hh src/SDLMouse.cc
+		include/SDLGLManager.hh src/SDLGLManager.cc
+		include/SDLGLWindow.hh src/SDLGLWindow.cc
+		include/SDLManager.hh src/SDLManager.cc
+		include/SDLOverlay.hh src/SDLOverlay.cc
+		include/SDLPixelFormat.hh src/SDLPixelFormat.cc
+		include/SDLPoint.hh src/SDLPoint.cc
+		include/SDLRect.hh src/SDLRect.cc
+		include/SDLRGBSurface.hh src/SDLRGBSurface.cc
+		include/SDLVideoInfo.hh src/SDLVideoInfo.cc
+		include/SDLWindow.hh src/SDLWindow.cc
+	)
 
 #
 #Adding targets for tests
 #Not in a subdir, because of the actual dependency being the other way around than the directory hierarchy
 #
+#TODO : add custom build command to move the needed files for testing (without installing)...
 
 #linking SDLWrap to all other following libraries
 LINK_LIBRARIES(SDLWrap)
 
-#trying to dynamiccaly link opengl
-ADD_EXECUTABLE(testdyngl test/testdyngl.cc)
+#trying to dynamically link opengl
+ADD_EXECUTABLE(testdyngl  include/SDLWrap.hh test/testdyngl.cc)
 ADD_DEPENDENCIES(testdyngl SDLWrap)
 
 #linking opengl for all other tests if detected
@@ -95,94 +130,97 @@ IF(OPENGL_FOUND)
 	LINK_LIBRARIES (${OPENGL_LIBRARIES})
 ENDIF(OPENGL_FOUND)
 
-ADD_EXECUTABLE(checkkeys test/checkkeys.cc)
+ADD_EXECUTABLE(SDLtestInput include/SDLWrap.hh test/SDLtestInput.cc)
+ADD_DEPENDENCIES(SDLtestInput SDLWrap)
+
+ADD_EXECUTABLE(checkkeys  include/SDLWrap.hh test/checkkeys.cc)
 ADD_DEPENDENCIES(checkkeys SDLWrap)
 
-ADD_EXECUTABLE(graywin test/graywin.cc)
+ADD_EXECUTABLE(graywin  include/SDLWrap.hh test/graywin.cc)
 ADD_DEPENDENCIES(graywin SDLWrap)
 
-ADD_EXECUTABLE(loopwave test/loopwave.cc)
+ADD_EXECUTABLE(loopwave  include/SDLWrap.hh test/loopwave.cc)
 ADD_DEPENDENCIES(loopwave SDLWrap)
 
-ADD_EXECUTABLE(SDLtest test/SDLtest.cc)
-ADD_DEPENDENCIES(SDLtest SDLWrap)
+ADD_EXECUTABLE(SDLtestVideo  include/SDLWrap.hh test/SDLtestVideo.cc)
+ADD_DEPENDENCIES(SDLtestVideo SDLWrap)
 
-ADD_EXECUTABLE(testalpha test/testalpha.cc)
+ADD_EXECUTABLE(testalpha  include/SDLWrap.hh test/testalpha.cc)
 ADD_DEPENDENCIES(testalpha SDLWrap)
 
-ADD_EXECUTABLE(testbitmap test/testbitmap.cc)
+ADD_EXECUTABLE(testbitmap  include/SDLWrap.hh test/testbitmap.cc)
 ADD_DEPENDENCIES(testbitmap SDLWrap)
 
-ADD_EXECUTABLE(testblitspeed test/testblitspeed.cc)
+ADD_EXECUTABLE(testblitspeed include/SDLWrap.hh  test/testblitspeed.cc)
 ADD_DEPENDENCIES(testblitspeed SDLWrap)
 
-ADD_EXECUTABLE(testcdrom test/testcdrom.cc)
+ADD_EXECUTABLE(testcdrom include/SDLWrap.hh  test/testcdrom.cc)
 ADD_DEPENDENCIES(testcdrom SDLWrap)
 
-ADD_EXECUTABLE(testcpuinfo test/testcpuinfo.cc)
+ADD_EXECUTABLE(testcpuinfo  include/SDLWrap.hh test/testcpuinfo.cc)
 ADD_DEPENDENCIES(testcpuinfo SDLWrap)
 
-ADD_EXECUTABLE(testendian test/testendian.cc)
+ADD_EXECUTABLE(testendian  include/SDLWrap.hh test/testendian.cc)
 ADD_DEPENDENCIES(testendian SDLWrap)
 
-ADD_EXECUTABLE(testerror test/testerror.cc)
+ADD_EXECUTABLE(testerror  include/SDLWrap.hh test/testerror.cc)
 ADD_DEPENDENCIES(testerror SDLWrap)
 
-ADD_EXECUTABLE(testgamma test/testgamma.cc)
+ADD_EXECUTABLE(testgamma  include/SDLWrap.hh test/testgamma.cc)
 ADD_DEPENDENCIES(testgamma SDLWrap)
 
-ADD_EXECUTABLE(testgl test/testgl.cc)
+ADD_EXECUTABLE(testgl  include/SDLWrap.hh test/testgl.cc)
 ADD_DEPENDENCIES(testgl SDLWrap)
 
-ADD_EXECUTABLE(testthread test/testthread.cc)
+ADD_EXECUTABLE(testthread  include/SDLWrap.hh test/testthread.cc)
 ADD_DEPENDENCIES(testthread SDLWrap)
 
-ADD_EXECUTABLE(testjoystick test/testjoystick.cc)
+ADD_EXECUTABLE(testjoystick  include/SDLWrap.hh test/testjoystick.cc)
 ADD_DEPENDENCIES(testjoystick SDLWrap)
 
-ADD_EXECUTABLE(testkeys test/testkeys.cc)
+ADD_EXECUTABLE(testkeys include/SDLWrap.hh  test/testkeys.cc)
 ADD_DEPENDENCIES(testkeys SDLWrap)
 
-ADD_EXECUTABLE(testlock test/testlock.cc)
+ADD_EXECUTABLE(testlock include/SDLWrap.hh  test/testlock.cc)
 ADD_DEPENDENCIES(testlock SDLWrap)
 
-ADD_EXECUTABLE(testoverlay2 test/testoverlay2.cc)
+ADD_EXECUTABLE(testoverlay2  include/SDLWrap.hh test/testoverlay2.cc)
 ADD_DEPENDENCIES(testoverlay2 SDLWrap)
 
-ADD_EXECUTABLE(testoverlay test/testoverlay.cc)
+ADD_EXECUTABLE(testoverlay  include/SDLWrap.hh test/testoverlay.cc)
 ADD_DEPENDENCIES(testoverlay SDLWrap)
 
-ADD_EXECUTABLE(testpalette test/testpalette.cc)
+ADD_EXECUTABLE(testpalette include/SDLWrap.hh  test/testpalette.cc)
 ADD_DEPENDENCIES(testpalette SDLWrap)
 
-ADD_EXECUTABLE(testsem test/testsem.cc)
+ADD_EXECUTABLE(testsem include/SDLWrap.hh  test/testsem.cc)
 ADD_DEPENDENCIES(testsem SDLWrap)
 
-ADD_EXECUTABLE(testsprite test/testsprite.cc)
+ADD_EXECUTABLE(testsprite include/SDLWrap.hh  test/testsprite.cc)
 ADD_DEPENDENCIES(testsprite SDLWrap)
 
-ADD_EXECUTABLE(testtimer test/testtimer.cc)
+ADD_EXECUTABLE(testtimer  include/SDLWrap.hh test/testtimer.cc)
 ADD_DEPENDENCIES(testtimer SDLWrap)
 
-ADD_EXECUTABLE(testtypes test/testtypes.cc)
+ADD_EXECUTABLE(testtypes include/SDLWrap.hh  test/testtypes.cc)
 ADD_DEPENDENCIES(testtypes SDLWrap)
 
-ADD_EXECUTABLE(testver test/testver.cc)
+ADD_EXECUTABLE(testver  include/SDLWrap.hh test/testver.cc)
 ADD_DEPENDENCIES(testver SDLWrap)
 
-ADD_EXECUTABLE(testvidinfo test/testvidinfo.cc)
+ADD_EXECUTABLE(testvidinfo  include/SDLWrap.hh test/testvidinfo.cc)
 ADD_DEPENDENCIES(testvidinfo SDLWrap)
 
-ADD_EXECUTABLE(testwin test/testwin.cc)
+ADD_EXECUTABLE(testwin include/SDLWrap.hh  test/testwin.cc)
 ADD_DEPENDENCIES(testwin SDLWrap)
 
-ADD_EXECUTABLE(testwm test/testwm.cc)
+ADD_EXECUTABLE(testwm include/SDLWrap.hh  test/testwm.cc)
 ADD_DEPENDENCIES(testwm SDLWrap)
 
-ADD_EXECUTABLE(threadwin test/threadwin.cc)
+ADD_EXECUTABLE(threadwin  include/SDLWrap.hh test/threadwin.cc)
 ADD_DEPENDENCIES(threadwin SDLWrap)
 
-ADD_EXECUTABLE(torturethread test/torturethread.cc)
+ADD_EXECUTABLE(torturethread include/SDLWrap.hh  test/torturethread.cc)
 ADD_DEPENDENCIES(torturethread SDLWrap)
  
 #
@@ -199,7 +237,7 @@ INSTALL_FILES(/include FILES "^include/*.hh$")
 #ENDIF(DEPEND_SDL)
 
 # installing main shared data
-INSTALL_FILES(/data FILES data/SDL.ico data/sdl_button.gif data/SDL_logo.bmp)
+INSTALL_FILES(/data FILES data/SDL_ico.bmp data/sdl_button.gif data/SDL_logo.bmp)
 
 # installing tests
 INSTALL_TARGETS(/test FILES testdyngl checkkeys graywin loopwave SDLtest testalpha testbitmap testblitspeed testcdrom testcpuinfo testendian testerror testgamma testgl testthread testjoystick testkeys testlock testoverlay2 testoverlay testpalette testsem testsprite testtimer testtypes testver testvidinfo testwin testwm threadwin torturethread)

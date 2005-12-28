@@ -5,9 +5,10 @@
 //#undef HAVE_OPENGL //engine call seems to work... 3D part postponed...
 #undef THREAD
 
-#if defined (_MSC_VER) && (_MSC_VER >= 1020)
-#pragma warning(disable:4290)	// Disable MSVC++ warning: C4290: C++ exception specification ignored.
-#endif
+//#if defined (_MSC_VER) && (_MSC_VER >= 1020)
+//#pragma warning(disable:4290)	// Disable MSVC++ warning: C4290: C++ exception specification ignored.
+//#endif
+//imported into CMake now...
 
 //Normal Setup
 #define DEFAULT_DISPLAY_WIDTH 640
@@ -118,14 +119,14 @@ namespace SDL
     class CPU
     {
         public:
-        static inline bool hasRDTSC() { return SDL_HasRDTSC();}
-        static inline bool hasMMX() { return SDL_HasMMX();}
-        static inline bool hasMMXExt() { return SDL_HasMMXExt(); }
-        static inline bool has3DNow() { return SDL_Has3DNow(); }
-        static inline bool has3DNowExt() { return SDL_Has3DNowExt(); }
-        //static inline bool hasSSE() { return SDL_hasSSE();}
-        //static inline bool hasSSEExt() { return SDL_hasSSEExt();}
-        static inline bool hasAltiVec() { return SDL_HasAltiVec();}
+        static inline bool hasRDTSC() { return ( SDL_HasRDTSC() !=0) ;}
+        static inline bool hasMMX() { return (SDL_HasMMX()!=0);}
+        static inline bool hasMMXExt() { return (SDL_HasMMXExt()!=0); }
+        static inline bool has3DNow() { return (SDL_Has3DNow()!=0); }
+        static inline bool has3DNowExt() { return (SDL_Has3DNowExt()!=0); }
+        //static inline bool hasSSE() { return (SDL_hasSSE()!=0);}
+        //static inline bool hasSSEExt() { return (SDL_hasSSEExt()!=0);}
+        static inline bool hasAltiVec() { return (SDL_HasAltiVec()!=0);}
 
     };
 #endif

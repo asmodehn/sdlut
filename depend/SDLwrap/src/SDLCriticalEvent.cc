@@ -43,7 +43,7 @@ bool CriticalEvent::push()
 int CriticalEvent::push(int number)
 {
     int cur = 0;
-    SDL_Event eventTab[number];
+    SDL_Event * eventTab = new SDL_Event[number];
     while ( cur < number )
     {
         eventTab[cur] = *_event;

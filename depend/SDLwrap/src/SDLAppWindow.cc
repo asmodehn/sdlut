@@ -8,11 +8,12 @@ namespace SDL
         return ( SDL_WM_IconifyWindow() != 0 );
     }
 
+//needs to be redone
     bool AppWindow::toggleFullScreen(void)
     {
         //This only works for X11
 #ifndef __MINGW32__ //check for WIN32 instead ??
-        return ( SDL_WM_ToggleFullScreen(_surf) != 0 ) ;
+        return ( SDL_WM_ToggleFullScreen(_screen->_surf) != 0 ) ;
 #else
         setFullscreen(true);
         //This is the workaround for Win32
@@ -106,6 +107,9 @@ namespace SDL
 
     bool AppWindow::setFullscreen(bool val)
     {
+#ifdef DEBUG
+Log << nl << "AppWindow::setFullscreen(" << val << ") called" << std::endl;
+#endif
         bool res = true;
         if (_screen == NULL )
             DisplaySurface::setFullscreen(val);
@@ -189,6 +193,9 @@ namespace SDL
 
     bool AppWindow::reset( int width, int height)
     {
+#ifdef DEBUG
+Log << nl << "AppWindow::reset(" << width << "," << height << ") called" << std::endl;
+#endif
         bool res = false;
         int _bpp=DisplaySurface::getSuggestedBPP(width, height);
         //but beware about bpp == 0...
@@ -264,6 +271,9 @@ assert (_screen);
 bool AppWindow::mainLoop(EventManager & eventmanager)
 {
     bool res = false;
+#ifdef DEBUG
+assert (_screen);
+#endif
     if (_screen !=NULL)
     {
         while (!(eventmanager.quitRequested()))

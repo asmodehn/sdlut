@@ -92,7 +92,7 @@ KeyboardHandler * khndlr;
 //UserHandler * uhlndr = NULL;
 
 
-        EventManager(const AppWindow & appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(new GeneralHandler(this)),mhndlr(new MouseHandler()),khndlr(new KeyboardHandler(this)) {}
+        EventManager(const AppWindow & appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(new GeneralHandler(this)),mhndlr(new MouseHandler()),khndlr(new KeyboardHandler(this)), _quitRequested(false) {}
         ~EventManager() {}
 
     bool _quitRequested;

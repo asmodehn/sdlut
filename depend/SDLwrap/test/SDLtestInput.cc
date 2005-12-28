@@ -12,6 +12,7 @@ int main( int argc, char* argv[])
     App::getInstance().setName ("SDLtestInput");
 
 //EVENTS INITIALISED ALONG WITH VIDEO... Think about initializins the event by default, without actually creating the window...
+//NOT POSSIBLE : THE EVENTS DONT WORK WITHOUT ANY WINDOW...
     testlog << nl << "Initialising Window..." << std::endl;
 	App::getInstance().initWindow(false,false,true,false);
 
@@ -21,5 +22,6 @@ int main( int argc, char* argv[])
     testlog << nl << "Main Loop..." << std::endl;
     App::getInstance().mainLoop();
 
+	return 0;
 
 }

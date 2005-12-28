@@ -12,4 +12,6 @@ int main(int argc, char *argv[])
     Logger testlog("testver");
 
     testlog << SDL::version << std::endl;
+
+	return 0;
 }

@@ -13,12 +13,12 @@ public:
     MyUserInput(EventManager * eventmanager) : KeyboardHandler(eventmanager) {}
     virtual ~MyUserInput() {}
 
-	virtual bool handleKeyboardEvent (SDL_keysym &keysym, bool pressed)
+	virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
 	{
 		switch( keysym.sym ) {
     		case SDLK_F5: if (pressed==true) App::getInstance().getAppWindow()->iconify(); break;
     		case SDLK_F6: if (pressed==true) App::getInstance().getAppWindow()->toggleFullScreen(); break;
-	    default: break;
+	    default: return false;
 		}
 		return true;
 	}

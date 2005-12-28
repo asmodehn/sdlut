@@ -42,7 +42,7 @@ try	: DisplaySurface(width, height, bpp, flags), _glmanager(glmanager)
 catch (std::exception &e)
 {
     Log << nl << "Exception catched in GLWindow constructor !" << nl << e.what() << std::endl;
-}
+};
 
 bool GLWindow::update(void)
 {
