@@ -31,7 +31,7 @@ class VideoSurface : public BaseSurface
 {
 
 	friend class Overlay;
-	friend class AppWindow;
+	friend class Window;
 
 protected:
 

@@ -22,7 +22,7 @@
   *
   */
 #include "SDLApp.hh"
-#include "SDLAppWindow.hh"
+#include "SDLWindow.hh"
 #include "SDLManager.hh"
 
 /**

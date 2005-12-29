@@ -28,7 +28,7 @@ namespace SDL {
 
 class VideoInfo
 {
-    friend class AppWindow;
+    friend class Window;
 
 private:
 	//Actual VideoInfo pointer

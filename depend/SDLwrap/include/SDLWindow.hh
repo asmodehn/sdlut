@@ -1,8 +1,8 @@
-#ifndef SDL_APPWINDOW_HH
-#define SDL_APPWINDOW_HH
+#ifndef SDL_WINDOW_HH
+#define SDL_WINDOW_HH
 
 /**
- * \class AppWindow
+ * \class Window
  *
  * \ingroup General
  *
@@ -33,7 +33,7 @@
 //further reference to break dependency cycles
 class EventManager;
 
-class AppWindow
+class Window
 {
         friend class App; //to access the constructor
 
@@ -51,10 +51,10 @@ class AppWindow
 
        VideoSurface * _screen;
 
-         AppWindow(std::string title, std::string iconname);
+         Window(std::string title, std::string iconname);
 
          public:
-        ~AppWindow();
+        ~Window();
 
         //create the screen
         bool reset( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT);

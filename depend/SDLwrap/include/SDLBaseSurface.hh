@@ -32,7 +32,7 @@ namespace SDL {
 //The goal is to have _surf and this really tied.
 class BaseSurface
 {
-    friend class AppWindow;
+    friend class Window;
 private:
     static const VideoInfo * _vinfo; ///a usefull static pointer, set to the current VideoInfo by AppWindow
 

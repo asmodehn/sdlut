@@ -5,7 +5,7 @@ namespace SDL
 
     App::App(std::string logfilename) :    _manager(NULL),
             _eventmanager(NULL),
-            _appwindow(NULL)
+            _window(NULL)
     {
         setName();
         setIcon();
@@ -15,7 +15,7 @@ namespace SDL
     App::~App()
     {
         //MAKE SURE those destructor dont need App. They shouldnt !
-        delete _appwindow;
+        delete _window;
         delete _eventmanager;
         //this one should be last because it calls SDL_Quit
         delete _manager;
@@ -43,10 +43,10 @@ namespace SDL
             Log << nl << "Creating AppWindow ..." << std::endl;
 #endif
 
-            _appwindow = new AppWindow(_name,_icon);
+            _window = new Window(_name,_icon);
 #ifdef DEBUG
 
-            Log << nl << "AppWindow created @ "<< _appwindow << std::endl;
+            Log << nl << "AppWindow created @ "<< _window << std::endl;
             Log << nl << " Setting up AppWindow... " << std::endl;
 #endif
 
@@ -55,7 +55,7 @@ namespace SDL
 #ifdef HAVE_OPENGL
 
             if (opengl)
-                _appwindow->setOpenGL(true);
+                _window->setOpenGL(true);
 #else
 
             if(opengl)
@@ -63,11 +63,11 @@ namespace SDL
 #endif
 
             if (fullscreen)
-                _appwindow->setFullscreen(true);
+                _window->setFullscreen(true);
             if (resizable)
-                _appwindow->setResizable(true);
+                _window->setResizable(true);
             if (noframe)
-                _appwindow->setNoFrame(true);
+                _window->setNoFrame(true);
 
 
 #ifdef DEBUG
@@ -75,7 +75,7 @@ namespace SDL
             Log << nl << "Creating EventManager ... " << std::endl;
 #endif
 
-            _eventmanager = new EventManager(*_appwindow);
+            _eventmanager = new EventManager(*_window);
 #ifdef DEBUG
 
             Log << nl << "EventManager created @ " << _eventmanager << std::endl;
@@ -102,20 +102,20 @@ namespace SDL
         if (_eventmanager != NULL)
         {
 #ifdef DEBUG
-            assert(_appwindow);
+            assert(_window);
 #endif
 
-            if ( _appwindow != NULL)
+            if ( _window != NULL)
             {
-                res=_appwindow->mainLoop(*_eventmanager);
+                res=_window->mainLoop(*_eventmanager);
             }
             else
             {
-                Log << nl << "ERROR : AppWindow @ " << _appwindow;
+                Log << nl << "ERROR : AppWindow @ " << _window;
             }
             //Loop finished, the EventManager should be reinitialized
             delete _eventmanager;
-            _eventmanager = new EventManager(*_appwindow);
+            _eventmanager = new EventManager(*_window);
         }
         else
         {

@@ -1,15 +1,15 @@
-#include "SDLAppWindow.hh"
+#include "SDLWindow.hh"
 #include "SDLEventManager.hh"
 
 namespace SDL
 {
-    bool AppWindow::iconify(void)
+    bool Window::iconify(void)
     {
         return ( SDL_WM_IconifyWindow() != 0 );
     }
 
 //needs to be redone
-    bool AppWindow::toggleFullScreen(void)
+    bool Window::toggleFullScreen(void)
     {
         //This only works for X11
 #if defined ( __MINGW32__) || defined ( __WIN32__) || defined( WIN32 ) ||  defined( _WINDOWS ) //check for WIN32
@@ -28,17 +28,17 @@ Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std:
 #endif
     }
 
-    void AppWindow::grabInput()
+    void Window::grabInput()
     {
         SDL_WM_GrabInput( SDL_GRAB_ON );
     }
 
-    void AppWindow::releaseInput()
+    void Window::releaseInput()
     {
         SDL_WM_GrabInput( SDL_GRAB_OFF );
     }
 
-    bool AppWindow::isInputGrabbed()
+    bool Window::isInputGrabbed()
     {
         return SDL_WM_GrabInput( SDL_GRAB_QUERY ) == SDL_GRAB_ON;
     }
@@ -46,7 +46,7 @@ Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std:
 
 
 
-    void AppWindow::setCaption(std::string title, std::string icon)
+    void Window::setCaption(std::string title, std::string icon)
     {
         _title=title;
         _icon=icon;
@@ -54,7 +54,7 @@ Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std:
         //seticon needed or ?
     }
 
-    bool AppWindow::setIcon(std::string iconfilename)
+    bool Window::setIcon(std::string iconfilename)
     {
         bool res=false;
         SDL_Surface * icon=SDL_LoadBMP(iconfilename.c_str());
@@ -72,7 +72,7 @@ Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std:
     }
 
 //old version
-    void AppWindow::getCaption(std::string & title, std::string & icon)
+    void Window::getCaption(std::string & title, std::string & icon)
     {
         char * t="";
         char * i="" ;
@@ -81,21 +81,21 @@ Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std:
         icon=std::string(i);
     }
 
-        std::string AppWindow::getTitle()
+        std::string Window::getTitle()
         {
             char * t = "" ;
             SDL_WM_GetCaption(&t,NULL);
             return std::string(t);
 
         }
-        std::string AppWindow::getIconName()
+        std::string Window::getIconName()
         {
         char * i  = "";
         SDL_WM_GetCaption(NULL,&i);
         return std::string(i);
         }
 
-    bool AppWindow::setResizable(bool val)
+    bool Window::setResizable(bool val)
     {
         bool res = true;
         if (_screen == NULL )
@@ -108,10 +108,10 @@ Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std:
         return res;
     }
 
-    bool AppWindow::setFullscreen(bool val)
+    bool Window::setFullscreen(bool val)
     {
 #ifdef DEBUG
-Log << nl << "AppWindow::setFullscreen(" << val << ") called" << std::endl;
+Log << nl << "Window::setFullscreen(" << val << ") called" << std::endl;
 #endif
         bool res = true;
         if (_screen == NULL )
@@ -130,7 +130,7 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
         return res;
     }
 
-        bool AppWindow::setNoFrame(bool val)
+        bool Window::setNoFrame(bool val)
     {
         bool res = true;
         if (_screen == NULL )
@@ -143,7 +143,7 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
         return res;
     }
 #ifdef HAVE_OPENGL
-    bool AppWindow::setOpenGL(bool val)
+    bool Window::setOpenGL(bool val)
     {
         bool res = true;
         if (_screen == NULL )
@@ -159,7 +159,7 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
 #endif
 
 
-    AppWindow::AppWindow(std::string title,std::string icon)
+    Window::Window(std::string title,std::string icon)
     : _title(title), _icon(icon)
     {
         try
@@ -187,10 +187,10 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
         setBGColor( Color (0,0,0) );
     }
 
-    AppWindow::~AppWindow()
+    Window::~Window()
     {
 #ifdef DEBUG
-        Log << nl << " AppWindow Destructor called !" << std::endl;
+        Log << nl << " Window Destructor called !" << std::endl;
 #endif
 #ifdef HAVE_OPENGL
         delete _glmanager;
@@ -200,10 +200,10 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
 
 
 
-    bool AppWindow::reset( int width, int height)
+    bool Window::reset( int width, int height)
     {
 #ifdef DEBUG
-Log << nl << "AppWindow::reset(" << width << "," << height << ") called" << std::endl;
+Log << nl << "Window::reset(" << width << "," << height << ") called" << std::endl;
 #endif
         bool res = false;
         int _bpp=VideoSurface::getSuggestedBPP(width, height);
@@ -260,7 +260,7 @@ Log << nl << "AppWindow::reset(" << width << "," << height << ") called" << std:
 
     }
 
-bool AppWindow::resize (int width, int height) const
+bool Window::resize (int width, int height) const
 {
     bool res = false;
 #ifdef DEBUG
@@ -278,7 +278,7 @@ assert (_screen);
     return res;
 }
 
-bool AppWindow::mainLoop(EventManager & eventmanager)
+bool Window::mainLoop(EventManager & eventmanager)
 {
     bool res = false;
 #ifdef DEBUG

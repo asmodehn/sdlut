@@ -16,8 +16,8 @@ public:
 	virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
 	{
 		switch( keysym.sym ) {
-    		case SDLK_F5: if (pressed==true) App::getInstance().getAppWindow()->iconify(); break;
-    		case SDLK_F6: if (pressed==true) App::getInstance().getAppWindow()->toggleFullScreen(); break;
+    		case SDLK_F5: if (pressed==true) App::getInstance().getWindow()->iconify(); break;
+    		case SDLK_F6: if (pressed==true) App::getInstance().getWindow()->toggleFullScreen(); break;
 	    default: return false;
 		}
 		return true;
@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 	App::getInstance().initWindow(false,false,true,false);
 
 	//Getting video informations
-	testlog << nl << *App::getInstance().getAppWindow()->getVideoInfo() << std::endl;
+	testlog << nl << *App::getInstance().getWindow()->getVideoInfo() << std::endl;
 
 	testlog << nl << " Creating the User Interface... " << std::endl;
 	//UI Creation
@@ -54,17 +54,17 @@ int main(int argc, char** argv)
 	int newW=bitmap.getWidth()+60;
 	int newH=bitmap.getHeight()+60;
 
-    App::getInstance().getAppWindow()->setBGColor(Color (128,0,0));
+    App::getInstance().getWindow()->setBGColor(Color (128,0,0));
 
 
-	if (! (App::getInstance().getAppWindow()->reset(newW,newH)))
+	if (! (App::getInstance().getWindow()->reset(newW,newH)))
     {
 		testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);
     }
     else
     {
-        VideoSurface* display=App::getInstance().getAppWindow()->getDisplay();
+        VideoSurface* display=App::getInstance().getWindow()->getDisplay();
         testlog << nl << *display << std::endl;
 
 		display->blit(bitmap,Point(30,30));
@@ -89,7 +89,7 @@ int main(int argc, char** argv)
 	testlog << nl <<"display reset" << std::endl;
 
 	//GLManager test
-	GLManager * glman=App::getInstance().getAppWindow()->getGLManager();
+	GLManager * glman=App::getInstance().getWindow()->getGLManager();
 	testlog << nl<<std::boolalpha <<
 			"setRsize(5) " << glman->setRSize(5) << nl <<
 			"setGSize(5) " << glman->setGSize(5) << nl <<
@@ -98,16 +98,16 @@ int main(int argc, char** argv)
 			"setBufferSize(5) " << glman->setBufferSize(12) << nl <<
 			std::endl;
 
-App::getInstance().getAppWindow()->setOpenGL(true);
+App::getInstance().getWindow()->setOpenGL(true);
 
-if(App::getInstance().getAppWindow()->reset())
+if(App::getInstance().getWindow()->reset())
 	{
 
 
 		//GLManager test
 		testlog << nl << *glman << std::endl;
 
-        VideoSurface* display=App::getInstance().getAppWindow()->getDisplay();
+        VideoSurface* display=App::getInstance().getWindow()->getDisplay();
 		testlog << nl << "calling display->debug() " << std::endl;
 		testlog << nl << *display <<std::endl;
 

@@ -37,7 +37,7 @@ namespace SDL {
 //TEst to do on linux, to choose a class behaviour
 class GLManager
 {
-    friend class AppWindow;
+    friend class Window;
 
 protected :
     Interface3D* _glengine;

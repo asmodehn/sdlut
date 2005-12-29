@@ -45,13 +45,13 @@ int main( int argc, char* argv[])
     App::getInstance().getEventManager()->setKeyboardHandler(&ui);
 
 	testlog << nl << "Displaying Window..." << std::endl;
-    App::getInstance().getAppWindow()->reset(640,480);
+    App::getInstance().getWindow()->reset(640,480);
 
     testlog << nl << "Main Loop..." << std::endl;
     App::getInstance().mainLoop();
 
     testlog << nl << "Displaying Window..." << std::endl;
-    App::getInstance().getAppWindow()->reset(640,480);
+    App::getInstance().getWindow()->reset(640,480);
 
     testlog << nl << "Setting up TextInput with UniCode enabled..." << std::endl;
 	TextInputHandler ui2(App::getInstance().getEventManager());

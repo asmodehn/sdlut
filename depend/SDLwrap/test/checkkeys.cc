@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 	SDL::App::getInstance().initWindow(fullscreen);
 
 	/* Set 640x480 video mode */
-	SDL::App::getInstance().getAppWindow()->reset(640,480);
+	SDL::App::getInstance().getWindow()->reset(640,480);
 
 	/* Enable UNICODE translation for keyboard input */
 	SDL_EnableUNICODE(1);

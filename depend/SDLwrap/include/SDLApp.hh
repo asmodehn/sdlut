@@ -22,7 +22,7 @@
 
 #include "SDLEventManager.hh"
 #include "SDLManager.hh"
-#include "SDLAppWindow.hh"
+#include "SDLWindow.hh"
 
 
  namespace SDL
@@ -33,7 +33,7 @@
 
         Manager * _manager;
         EventManager * _eventmanager;
-        AppWindow* _appwindow;
+        Window* _window;
 
 
 
@@ -66,7 +66,7 @@ public:
         //Accessors
         // may return NULL => always test the returned value!
         EventManager* getEventManager() {return _eventmanager;}
-        AppWindow * getAppWindow() { return _appwindow;}
+        Window * getWindow() { return _window;}
         Manager* getManager() { return _manager;}
 
 

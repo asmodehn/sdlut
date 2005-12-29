@@ -89,7 +89,7 @@ ADD_LIBRARY(	SDLWrap
 		include/SDLConfig.hh
 		include/Logger.hh src/Logger.cc
 		include/SDLApp.hh src/SDLApp.cc
-		include/SDLAppWindow.hh src/SDLAppWindow.cc
+		include/SDLWindow.hh src/SDLWindow.cc
 		include/Interface3D.hh src/Interface3D.cc
 		include/SDLBaseSurface.hh src/SDLBaseSurface.cc
 		include/SDLCDRom.hh src/SDLCDRom.cc

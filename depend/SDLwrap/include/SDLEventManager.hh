@@ -4,7 +4,7 @@
 #include "SDLConfig.hh"
 
 
-#include "SDLAppWindow.hh"
+#include "SDLWindow.hh"
 
 #include "SDLEvent.hh"
 #include "SDLCriticalEvent.hh"
@@ -84,7 +84,7 @@ namespace SDL
         //filter to decide if an event is set as critical or not
         Uint8 _criticaltypes;
 
-        const AppWindow & _focusedwindow;
+        const Window & _focusedwindow;
 
 //WARNING : the handler must be initialized properly before setting a corresponding type as critical
 GeneralHandler * ghndlr;
@@ -93,7 +93,7 @@ KeyboardHandler * khndlr;
 JoystickHandler * jhndlr;
 
 
-        EventManager(const AppWindow & appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(new GeneralHandler(this)),mhndlr(new MouseHandler()),khndlr(new KeyboardHandler(this)),jhndlr(new JoystickHandler(this)), _quitRequested(false) {}
+        EventManager(const Window & appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(new GeneralHandler(this)),mhndlr(new MouseHandler()),khndlr(new KeyboardHandler(this)),jhndlr(new JoystickHandler(this)), _quitRequested(false) {}
         ~EventManager() {}
 
     bool _quitRequested;
