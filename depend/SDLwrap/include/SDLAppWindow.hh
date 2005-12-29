@@ -20,7 +20,7 @@
  #include "SDLConfig.hh"
 
 #include "SDLVideoInfo.hh"
- #include "SDLWindow.hh"
+ #include "SDLVideoSurface.hh"
  #ifdef HAVE_OPENGL
  #include "SDLGLManager.hh"
  #include "SDLGLWindow.hh"

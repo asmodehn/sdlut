@@ -230,7 +230,7 @@ Log << nl << "AppWindow::reset(" << width << "," << height << ") called" << std:
             {
                 //REMINDER : SDL_SetVideoMode, takes care of freeing the old surfaces (according to the doc)
 #ifdef HAVE_OPENGL
-                if (SDL_OPENGL & VideoSurface::flags)
+                if (SDL_OPENGL & VideoSurface::_defaultflags)
                 {
                     if (_glmanager->getEngine() == NULL)
                         _glmanager->setEngine();
@@ -241,7 +241,7 @@ Log << nl << "AppWindow::reset(" << width << "," << height << ") called" << std:
                 {
 #endif
                     //_screen = new Window(width, height, _bpp );
-                    _screen = new Window(width, height, _bpp );
+                    _screen = new VideoSurface(width, height, _bpp );
                     res = (_screen!=NULL);
 #ifdef HAVE_OPENGL
 

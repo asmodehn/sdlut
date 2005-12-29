@@ -6,11 +6,11 @@ namespace SDL {
 
 std::vector<int> VideoSurface::availableWidth;
 std::vector<int> VideoSurface::availableHeight;
-Uint32 VideoSurface::flags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
+Uint32 VideoSurface::_defaultflags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
 
 //Constructor
 VideoSurface::VideoSurface(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
-try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
+try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags )),_backupscreen(NULL)
 {
 	if (_surf == NULL)
 	{
@@ -30,6 +30,10 @@ catch (std::exception &e)
 	//TODO : much more explicit error message...
 };
 
+VideoSurface::~VideoSurface()
+{
+        if (_backupscreen !=NULL ) delete _backupscreen;
+}
 
 
 bool VideoSurface::checkAvailableSize( const PixelFormat * fmt )
@@ -39,7 +43,7 @@ bool VideoSurface::checkAvailableSize( const PixelFormat * fmt )
 	//we copy the pixelformat (because of const behaviour...)
 	SDL_PixelFormat* test_fmt= new SDL_PixelFormat( *(fmt->_pformat));
 
-	modes=SDL_ListModes(test_fmt, flags);
+	modes=SDL_ListModes(test_fmt, _defaultflags);
 	if (modes == (SDL_Rect **)0) res=false;
 	else
 	{
@@ -91,7 +95,65 @@ int VideoSurface::getSuggestedBPP(int width, int height)
     assert( getVideoInfo()->getPixelFormat());
     Log << nl << "PixelFormat Accessible @ " << getVideoInfo()->getPixelFormat() << std::endl;
 #endif
-    return SDL_VideoModeOK(width,height,getVideoInfo()->getPixelFormat()->getBitsPerPixel(),flags);
+    return SDL_VideoModeOK(width,height,getVideoInfo()->getPixelFormat()->getBitsPerPixel(),_defaultflags);
+}
+
+bool VideoSurface::update(void)
+{
+	return SDL_Flip(_surf) == 0;
+}
+
+//SaveScreen -> backup the screen content in a RGBSurface...
+bool VideoSurface::saveContent(void)
+{
+    if (_backupscreen != NULL ) delete _backupscreen;
+
+	Log << nl << "Window::saveContent()" << std::endl;
+	// we create a new RGB surface to clone the display...
+	_backupscreen= new RGBSurface(*this);
+
+	return _backupscreen!=NULL;
+}
+
+//restoreScreen -> blit the saved surface to the center of the screen
+bool VideoSurface::restoreContent(void)
+{
+  bool res;
+
+ Log << nl << "Window::restoreContent()" << std::endl;
+
+//to restore the content in the middle of the window
+  Point newpos;
+  newpos.setx( (getWidth()-_backupscreen->getWidth()) / 2 );
+  newpos.sety( (getHeight()-_backupscreen->getHeight()) / 2 );
+
+  Log << nl << "Blitting backupscreen at " << newpos << std::endl;
+  res = blit(*_backupscreen, newpos);
+
+	return res;
+}
+
+
+
+bool VideoSurface::resize(int width, int height)
+{
+    bool res = false;
+    //BEWARE : should match DisplaySurface Constructor code
+  SDL_Surface * newSurf = SDL_SetVideoMode(width,height,getBPP(),getFlags());
+
+	if (newSurf==NULL) //SetVideoMode has failed
+	{
+		Log << "Unable to resize to " << width << " x " << height << " 2D display surface " << nl << GetError();
+	}
+	else //setvideoMode successfull
+    {
+        _surf=newSurf;
+        res = true;
+        //BEWARE : According to the doc, the display surface should never be freed by the caller of SetVideoMode. SDL_Quit will handle that.
+        fill(_background);
+    }
+
+	return res;
 }
 
 

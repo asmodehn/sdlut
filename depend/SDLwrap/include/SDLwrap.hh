@@ -31,7 +31,7 @@
   * \defgroup WindowManager
   */
 #include "SDLVideoInfo.hh"
-#include "SDLWindow.hh"
+#include "SDLVideoSurface.hh"
 #include "SDLGLWindow.hh"
 #include "SDLGLManager.hh"
 #include "SDLColor.hh"

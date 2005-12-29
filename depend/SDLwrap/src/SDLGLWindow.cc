@@ -19,11 +19,11 @@ void SDLGLWindow::disableBlit(void)
 }
 
 //Only valid with HWSurface
-void SDLWindow::enableDoubleBuf(void)
+void SDLGLWindow::enableDoubleBuf(void)
 {
 	_newFlags=_newFlags | SDL_DOUBLEBUF;
 }
-void SDLWindow::disableDoubleBuf(void)
+void SDLGLWindow::disableDoubleBuf(void)
 {
 	_newFlags=_newFlags & !SDL_DOUBLEBUF;
 }
@@ -31,7 +31,7 @@ void SDLWindow::disableDoubleBuf(void)
 */
 
 GLWindow::GLWindow(int width, int height, int bpp, GLManager * const glmanager) throw (std::logic_error)
-try	: VideoSurface(width, height, bpp, flags), _glmanager(glmanager)
+try	: VideoSurface(width, height, bpp, _defaultflags), _glmanager(glmanager)
 {
     assert (_glmanager);
     if (_glmanager->getEngine() != NULL)
@@ -67,7 +67,7 @@ bool GLWindow::resize (int width, int height)
 
     void GLWindow::setBGColor(const Color & color)
     {
-            background = color;
+            _background = color;
              assert(_glmanager);
          	assert(_glmanager->getEngine());
          	_glmanager->getEngine()->setBGColor(static_cast<float> (color.getR() ) / 255.0f, static_cast<float> (color.getG() ) / 255.0f,static_cast<float> (color.getB() ) / 255.0f);
@@ -75,7 +75,7 @@ bool GLWindow::resize (int width, int height)
     //might be improved and secured later...
     Color GLWindow::getBGColor ()
     {
-          return background;
+          return _background;
     }
 
 #endif

@@ -110,7 +110,6 @@ ADD_LIBRARY(	SDLWrap
 		include/SDLRect.hh src/SDLRect.cc
 		include/SDLRGBSurface.hh src/SDLRGBSurface.cc
 		include/SDLVideoInfo.hh src/SDLVideoInfo.cc
-		include/SDLWindow.hh src/SDLWindow.cc
 	)
 
 #

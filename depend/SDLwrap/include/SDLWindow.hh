@@ -32,8 +32,7 @@ class Window : public VideoSurface
 
 protected:
 
-//todo : make it an embedded object not a pointer... might need some improvements in BaseSurface for the creation/copy
-    RGBSurface * _backupscreen;
+
 
     //using the flags form DisplaySurface
 	Window(int width, int height, int bpp) throw (std::logic_error);
@@ -43,8 +42,6 @@ public:
 	//Destructor
 	virtual ~Window();
 
-	//just test if DoubleBuf is set.
-	inline bool isDoubleBufset(void) const {return ( SDL_DOUBLEBUF & _surf->flags ) != 0;}
 
 	bool resize(int width, int height);
 
