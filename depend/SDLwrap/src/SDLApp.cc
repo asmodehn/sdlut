@@ -94,6 +94,7 @@ namespace SDL
 
     bool App::mainLoop()
     {
+        bool res = false;
 #ifdef DEBUG
         assert(_eventmanager);
 #endif
@@ -106,20 +107,26 @@ namespace SDL
 
             if ( _appwindow != NULL)
             {
-                return _appwindow->mainLoop(*_eventmanager);
+                res=_appwindow->mainLoop(*_eventmanager);
             }
             else
             {
                 Log << nl << "ERROR : AppWindow @ " << _appwindow;
             }
+            //Loop finished, the EventManager should be reinitialized
+            delete _eventmanager;
+            _eventmanager = new EventManager(*_appwindow);
         }
         else
         {
             Log << nl << "ERROR : EventManager @ " << _eventmanager;
         }
+        if (!res)
+        {
         Log  << nl << "An error occured when trying to laucnh the main loop, make sure you have initialized everything." << std::endl;
         Log  << nl <<" Ignoring mainLoop call." << std::endl;
-        return false;
+        }
+        return res;
     }
 
 }

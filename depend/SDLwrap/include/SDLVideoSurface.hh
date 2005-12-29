@@ -1,8 +1,8 @@
-#ifndef SDL_DISPLAYSURFACE_HH
-#define SDL_DISPLAYSURFACE_HH
+#ifndef SDL_VideoSurface_HH
+#define SDL_VideoSurface_HH
 
 /**
- * \class DisplaySurface
+ * \class VideoSurface
  *
  * \ingroup Video
  * \ingroup WindowManager
@@ -27,7 +27,7 @@ namespace SDL {
 
 //There can be only one -> Singleton Pattern
 //Must be used via derivated class
-class DisplaySurface : public BaseSurface
+class VideoSurface : public BaseSurface
 {
 
 	friend class Overlay;
@@ -39,14 +39,14 @@ protected:
     Color background;
 	//Constructor
 	//Note : The user should not be able to set raw SDL flags manually.
-	DisplaySurface(int width, int height, int bpp, Uint32 flags) throw (std::logic_error);
+	VideoSurface(int width, int height, int bpp, Uint32 flags) throw (std::logic_error);
 
 public:
 
     static std::vector<int> availableWidth,availableHeight;
 
 	//Destructor
-	virtual ~DisplaySurface() {}
+	virtual ~VideoSurface() {}
 	//this kind of surface shouldnt be deleted by hand. the raw SDL methods takes care of it
 
 //Save Screen -> backup the screen content in a new RGBSurface...
@@ -99,7 +99,7 @@ public:
 	static bool checkAvailableSize( void);
     static int getSuggestedBPP(int width, int height);
 
-	friend Logger & operator << (Logger & log, const DisplaySurface & surf);
+	friend Logger & operator << (Logger & log, const VideoSurface & surf);
 };
 
 } //namespace SDL

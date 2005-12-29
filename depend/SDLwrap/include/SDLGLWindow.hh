@@ -22,14 +22,14 @@
 
 #include "SDLConfig.hh"
 
-#include "SDLDisplaySurface.hh"
+#include "SDLVideoSurface.hh"
 #include "SDLGLManager.hh"
 
 namespace SDL {
 
 #ifdef HAVE_OPENGL
 
-class GLWindow : public DisplaySurface
+class GLWindow : public VideoSurface
 {
 
     GLManager * const _glmanager;

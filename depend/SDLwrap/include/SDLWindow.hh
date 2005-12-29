@@ -21,11 +21,11 @@
  */
 
 #include "SDLConfig.hh"
-#include "SDLDisplaySurface.hh"
+#include "SDLVideoSurface.hh"
 
 namespace SDL {
 
-class Window : public DisplaySurface
+class Window : public VideoSurface
 {
 	//To access the contructor
 	friend class AppWindow;

@@ -99,7 +99,7 @@ Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std:
     {
         bool res = true;
         if (_screen == NULL )
-            DisplaySurface::setResizable(val);
+            VideoSurface::setResizable(val);
         else if (_screen->isResizableset() !=val ) //if called inside mainLoop while screen is active
         {
             if (! reset(_screen->getWidth(),_screen->getHeight()))
@@ -115,7 +115,7 @@ Log << nl << "AppWindow::setFullscreen(" << val << ") called" << std::endl;
 #endif
         bool res = true;
         if (_screen == NULL )
-            DisplaySurface::setFullscreen(val);
+            VideoSurface::setFullscreen(val);
         else
         {
 #ifdef DEBUG
@@ -134,7 +134,7 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
     {
         bool res = true;
         if (_screen == NULL )
-            DisplaySurface::setNoFrame(val);
+            VideoSurface::setNoFrame(val);
         else if (_screen->isNoFrameset() !=val )  //if called inside mainLoop while screen is active
         {
             if (! reset(_screen->getWidth(),_screen->getHeight()))
@@ -147,10 +147,10 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
     {
         bool res = true;
         if (_screen == NULL )
-            DisplaySurface::setOpenGL(val);
+            VideoSurface::setOpenGL(val);
         else if ( _screen->isOpenGLset() !=val ) //if called inside mainLoop while screen is active
         {
-            DisplaySurface::setOpenGL(val);
+            VideoSurface::setOpenGL(val);
             if (! reset(_screen->getWidth(),_screen->getHeight()))
                 res=false;
         }
@@ -206,7 +206,7 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
 Log << nl << "AppWindow::reset(" << width << "," << height << ") called" << std::endl;
 #endif
         bool res = false;
-        int _bpp=DisplaySurface::getSuggestedBPP(width, height);
+        int _bpp=VideoSurface::getSuggestedBPP(width, height);
         //but beware about bpp == 0...
         if (_bpp == 0 )
         {//0 as return code mean the current format is not supported
@@ -230,7 +230,7 @@ Log << nl << "AppWindow::reset(" << width << "," << height << ") called" << std:
             {
                 //REMINDER : SDL_SetVideoMode, takes care of freeing the old surfaces (according to the doc)
 #ifdef HAVE_OPENGL
-                if (SDL_OPENGL & DisplaySurface::flags)
+                if (SDL_OPENGL & VideoSurface::flags)
                 {
                     if (_glmanager->getEngine() == NULL)
                         _glmanager->setEngine();

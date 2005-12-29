@@ -31,7 +31,7 @@ void SDLWindow::disableDoubleBuf(void)
 */
 
 GLWindow::GLWindow(int width, int height, int bpp, GLManager * const glmanager) throw (std::logic_error)
-try	: DisplaySurface(width, height, bpp, flags), _glmanager(glmanager)
+try	: VideoSurface(width, height, bpp, flags), _glmanager(glmanager)
 {
     assert (_glmanager);
     if (_glmanager->getEngine() != NULL)

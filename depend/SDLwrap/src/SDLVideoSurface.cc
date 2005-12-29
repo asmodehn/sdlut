@@ -1,15 +1,15 @@
-#include "SDLDisplaySurface.hh"
+#include "SDLVideoSurface.hh"
 
 //#include <sstream>
 
 namespace SDL {
 
-std::vector<int> DisplaySurface::availableWidth;
-std::vector<int> DisplaySurface::availableHeight;
-Uint32 DisplaySurface::flags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
+std::vector<int> VideoSurface::availableWidth;
+std::vector<int> VideoSurface::availableHeight;
+Uint32 VideoSurface::flags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
 
 //Constructor
-DisplaySurface::DisplaySurface(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
+VideoSurface::VideoSurface(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
 try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
 {
 	if (_surf == NULL)
@@ -25,14 +25,14 @@ try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
 }
 catch (std::exception &e)
 {
-	Log << nl << "Exception catched in DisplaySurface Constructor !!!" << nl <<
+	Log << nl << "Exception catched in VideoSurface Constructor !!!" << nl <<
 		e.what() << nl << GetError() << std::endl;
 	//TODO : much more explicit error message...
 };
 
 
 
-bool DisplaySurface::checkAvailableSize( const PixelFormat * fmt )
+bool VideoSurface::checkAvailableSize( const PixelFormat * fmt )
 {
 	SDL_Rect ** modes;
 	bool res;
@@ -78,12 +78,12 @@ bool DisplaySurface::checkAvailableSize( const PixelFormat * fmt )
 	return res;
 }
 
-bool DisplaySurface::checkAvailableSize(void)
+bool VideoSurface::checkAvailableSize(void)
 {
 	return checkAvailableSize( getVideoInfo()->getPixelFormat());
 }
 
-int DisplaySurface::getSuggestedBPP(int width, int height)
+int VideoSurface::getSuggestedBPP(int width, int height)
 {
 #ifdef DEBUG
     assert( getVideoInfo());
@@ -95,14 +95,14 @@ int DisplaySurface::getSuggestedBPP(int width, int height)
 }
 
 
-bool DisplaySurface::update(Rect r)
+bool VideoSurface::update(Rect r)
 {
 	if (locked()) return false;//to prevent calling while locked
 	else SDL_UpdateRect(_surf, r.getx(), r.gety(), r.getw(), r.geth());
 	return true;
 }
 
-bool DisplaySurface::update(std::vector<Rect> rlist)
+bool VideoSurface::update(std::vector<Rect> rlist)
 {
 	if (locked()) return false;//to prevent calling while locked
 	else
@@ -114,7 +114,7 @@ bool DisplaySurface::update(std::vector<Rect> rlist)
 	return true;
 }
 
-Logger & operator << (Logger & log, const DisplaySurface & surf)
+Logger & operator << (Logger & log, const VideoSurface & surf)
 {
 	//log << static_cast<BaseSurface>(surf);
 	log << nl<<std::boolalpha << "- Fullscreen ? " << surf.isFullScreenset() << nl

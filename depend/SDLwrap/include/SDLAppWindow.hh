@@ -49,7 +49,7 @@ class AppWindow
             GLManager * _glmanager;
         #endif
 
-       DisplaySurface * _screen;
+       VideoSurface * _screen;
 
          AppWindow(std::string title, std::string iconname);
 
@@ -60,7 +60,7 @@ class AppWindow
         bool reset( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT);
         //just resize the screen (without changing flags, or bpp)
         bool resize (int width, int height) const;
-        DisplaySurface * getDisplay( void ) {return _screen;}
+        VideoSurface * getDisplay( void ) {return _screen;}
 
         VideoInfo * getVideoInfo( void ) {return _videoinfo;}
 

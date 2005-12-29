@@ -8,10 +8,11 @@ namespace SDL
 
 class EventManager;
 
+
     class Keyboard
     {
 
-        	//Get a snapshot of the current keyboard state
+    //Get a snapshot of the current keyboard state
 	Uint8* getKeyState (int &numkeys);
 	Uint8* getKeyState (void);
 
@@ -35,13 +36,15 @@ class EventManager;
 
     };
 
+    ///This class is not suitable for Full Text Input. Use TextInput instead.
+    ///However this class is well adapted to key press / release detection, for gaming purpose...
     class KeyboardHandler
     {
-            EventManager * _eventmanager;
+        EventManager * _eventmanager;
         public:
 
-        	KeyboardHandler(EventManager * eventmanager);
-            virtual ~KeyboardHandler() {}
+        KeyboardHandler(EventManager * eventmanager);
+        virtual ~KeyboardHandler() {}
 
         //Callbacks on SDL_KEYUP or SDL_KEYDOWN
         virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed);
@@ -53,6 +56,19 @@ class EventManager;
         {
             return handleKeyEvent (keysym, false);
         }
+
+    };
+
+    ///This class is not suitable for Gaming Input (doesnt detect key releases). Use Keyboard instead.
+    ///However this class is well adapted for accurate text typing, with unicode enabled.
+    class TextInputHandler : public KeyboardHandler
+    {
+        public:
+        TextInputHandler(EventManager * eventmanager);
+        virtual ~TextInputHandler();
+
+        //Callbacks on SDL_KEYUP or SDL_KEYDOWN
+        virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed);
 
     };
 }

@@ -94,7 +94,7 @@ ADD_LIBRARY(	SDLWrap
 		include/SDLBaseSurface.hh src/SDLBaseSurface.cc
 		include/SDLCDRom.hh src/SDLCDRom.cc
 		include/SDLCursor.hh src/SDLCursor.cc
-		include/SDLDisplaySurface.hh src/SDLDisplaySurface.cc
+		include/SDLVideoSurface.hh src/SDLVideoSurface.cc
 		include/SDLCriticalEvent.hh src/SDLCriticalEvent.cc
 		include/SDLEvent.hh src/SDLEvent.cc
 		include/SDLEventManager.hh src/SDLEventManager.cc

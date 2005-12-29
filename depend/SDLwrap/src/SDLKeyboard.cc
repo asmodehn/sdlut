@@ -1,53 +1,110 @@
 #include "SDLKeyboard.hh"
 #include "SDLEventManager.hh"
 
-namespace SDL {
-
-Uint8* Keyboard::getKeyState(int &numkeys)
+namespace SDL
 {
-	return SDL_GetKeyState(&numkeys);
-}
 
-Uint8* Keyboard::getKeyState()
-{
-	return SDL_GetKeyState(0);
-}
+    Uint8* Keyboard::getKeyState(int &numkeys)
+    {
+        return SDL_GetKeyState(&numkeys);
+    }
 
-SDLMod Keyboard::getModState()
-{
-	return SDL_GetModState();
-}
+    Uint8* Keyboard::getKeyState()
+    {
+        return SDL_GetKeyState(0);
+    }
 
-char* Keyboard::getKeyName(SDLKey key)
-{
-	return SDL_GetKeyName(key);
-}
+    SDLMod Keyboard::getModState()
+    {
+        return SDL_GetModState();
+    }
 
-void Keyboard::setModState(SDLMod modstate)
-{
-	SDL_SetModState(modstate);
-}
+    char* Keyboard::getKeyName(SDLKey key)
+    {
+        return SDL_GetKeyName(key);
+    }
 
-bool Keyboard::enableKeyRepeat(int delay, int interval)
-{
-	return SDL_EnableKeyRepeat(delay, interval) == 0;
-}
+    void Keyboard::setModState(SDLMod modstate)
+    {
+        SDL_SetModState(modstate);
+    }
+
+    bool Keyboard::enableKeyRepeat(int delay, int interval)
+    {
+        return SDL_EnableKeyRepeat(delay, interval) == 0;
+    }
 
 
-KeyboardHandler::KeyboardHandler(EventManager * eventmanager)
- :_eventmanager(eventmanager)
- {
+    KeyboardHandler::KeyboardHandler(EventManager * eventmanager)
+            :_eventmanager(eventmanager)
+    {}
 
-}
+    bool KeyboardHandler::handleKeyEvent (SDL_keysym &keysym, bool pressed)
+    {
+        bool res = false;
+        switch( keysym.sym )
+        {
+            case SDLK_ESCAPE:
+            if (pressed==false)
+                _eventmanager->_quitRequested=true;
+            res=true;
+            break;
+            default:
+            res=false;
+        }
+        return res;
+    }
 
-bool KeyboardHandler::handleKeyEvent (SDL_keysym &keysym, bool pressed)
-{
-	    bool res = false;
-		switch( keysym.sym ) {
-    		case SDLK_ESCAPE: if (pressed==false) _eventmanager->_quitRequested=true; res=true; break;
-	    default: res=false;
-		}
-		return res;
-}
+    TextInputHandler::TextInputHandler(EventManager * eventmanager)
+            : KeyboardHandler(eventmanager)
+    {
+        SDL_EnableUNICODE(1);
+    }
+
+    TextInputHandler::~TextInputHandler()
+    {
+        SDL_EnableUNICODE(0);
+    }
+
+
+    bool TextInputHandler::handleKeyEvent (SDL_keysym &keysym, bool pressed)
+    {
+        bool res = false;
+
+        //call the default Keyboard Handler
+        res = KeyboardHandler::handleKeyEvent (keysym,pressed);
+        //get the unicode character
+        if (!res && pressed)
+        {
+            if( (keysym.unicode & 0xff80) == 0)
+            {
+                std::cout << "unicode char : " << char(keysym.unicode & 0x7F) << std::endl;
+                res=true;
+            }
+            else //mess with international codes...
+            {
+                switch( keysym.sym )
+                {
+                    //deal with international characters
+                    default:
+                    res=false;
+                }
+            }
+        }
+        else //pressed = false
+        {
+            switch( keysym.sym )
+            {
+                //deal with other keys for release ( UNICODE doesnt work on released event )
+                default:
+                res=false;
+            }
+        }
+        //TODO on every Event Loop (not critical, and not only keyboard...
+        std::cout << std::flush;
+
+        return res;
+
+    }
 
 }

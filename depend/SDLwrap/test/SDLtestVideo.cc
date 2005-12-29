@@ -64,7 +64,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        DisplaySurface* display=App::getInstance().getAppWindow()->getDisplay();
+        VideoSurface* display=App::getInstance().getAppWindow()->getDisplay();
         testlog << nl << *display << std::endl;
 
 		display->blit(bitmap,Point(30,30));
@@ -107,7 +107,7 @@ if(App::getInstance().getAppWindow()->reset())
 		//GLManager test
 		testlog << nl << *glman << std::endl;
 
-        DisplaySurface* display=App::getInstance().getAppWindow()->getDisplay();
+        VideoSurface* display=App::getInstance().getAppWindow()->getDisplay();
 		testlog << nl << "calling display->debug() " << std::endl;
 		testlog << nl << *display <<std::endl;
 

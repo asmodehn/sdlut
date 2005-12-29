@@ -34,7 +34,6 @@
 #include "SDLWindow.hh"
 #include "SDLGLWindow.hh"
 #include "SDLGLManager.hh"
-#include "SDLSurfaceFactory.hh"
 #include "SDLColor.hh"
 #include "SDLCursor.hh"
 #include "SDLOverlay.hh"

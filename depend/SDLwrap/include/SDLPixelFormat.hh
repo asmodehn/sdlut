@@ -13,7 +13,7 @@ class PixelFormat
 {
 	//because SDLPixelColor needs to access actual SDL_PixelFormat
 	friend class VideoInfo;
-	friend class DisplaySurface;
+	friend class VideoSurface;
 	friend class RGBSurface;
 	friend class BaseSurface;
 

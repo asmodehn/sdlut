@@ -4,7 +4,7 @@
 namespace SDL {
 
 Window::Window(int width, int height, int bpp) throw (std::logic_error)
-: DisplaySurface( width, height, bpp, flags & (~SDL_OPENGL))
+: VideoSurface( width, height, bpp, flags & (~SDL_OPENGL))
 {
     _backupscreen = NULL;
 }

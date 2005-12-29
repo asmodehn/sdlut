@@ -4,6 +4,29 @@ using namespace SDL;
 
 //TODO :akeyboard, mouse, joystick,and general handler that measure some stats on event handling, critical or not.
 
+class  MyKeyboardHandler : public KeyboardHandler
+{
+        public:
+
+        MyKeyboardHandler(EventManager * eventmanager) : KeyboardHandler(eventmanager) {}
+        virtual ~MyKeyboardHandler() {}
+
+        //Callbacks on SDL_KEYUP or SDL_KEYDOWN
+        virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
+        {
+            bool res = false;
+            if ( (res = KeyboardHandler::handleKeyEvent (keysym, pressed) ) == false )
+            switch (keysym.sym)
+            {
+                case SDLK_a : std::cout << "SDL Code : a" << std::endl; res = true; break;
+                case SDLK_q : std::cout << "SDL Code : q" << std::endl; res = true; break;
+                default : res=false;
+            }
+            return res;
+        }
+};
+
+
 int main( int argc, char* argv[])
 {
     Logger testlog ("SDLtestInput");
@@ -16,8 +39,23 @@ int main( int argc, char* argv[])
     testlog << nl << "Initialising Window..." << std::endl;
 	App::getInstance().initWindow(false,false,true,false);
 
+
+    testlog << nl << "Setting up Keyboard..." << std::endl;
+	MyKeyboardHandler ui(App::getInstance().getEventManager());
+    App::getInstance().getEventManager()->setKeyboardHandler(&ui);
+
 	testlog << nl << "Displaying Window..." << std::endl;
     App::getInstance().getAppWindow()->reset(640,480);
+
+    testlog << nl << "Main Loop..." << std::endl;
+    App::getInstance().mainLoop();
+
+    testlog << nl << "Displaying Window..." << std::endl;
+    App::getInstance().getAppWindow()->reset(640,480);
+
+    testlog << nl << "Setting up TextInput with UniCode enabled..." << std::endl;
+	TextInputHandler ui2(App::getInstance().getEventManager());
+    App::getInstance().getEventManager()->setKeyboardHandler(&ui2);
 
     testlog << nl << "Main Loop..." << std::endl;
     App::getInstance().mainLoop();
