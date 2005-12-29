@@ -1,4 +1,4 @@
-#include "SDLGLWindow.hh"
+#include "SDLGLSurface.hh"
 
 
 namespace SDL {
@@ -6,31 +6,31 @@ namespace SDL {
 #ifdef HAVE_OPENGL
 
 /*
-void SDLGLWindow::enableBlit(void)
+void GLSurface::enableBlit(void)
 {
 	_flags=_flags | SDL_OPENGLBLIT;
 	if (initialized) setup();
 }
 
-void SDLGLWindow::disableBlit(void)
+void GLSurface::disableBlit(void)
 {
 	_flags=_flags & !SDL_OPENGLBLIT;
 	if (initialized) setup();
 }
 
 //Only valid with HWSurface
-void SDLGLWindow::enableDoubleBuf(void)
+void GLSurface::enableDoubleBuf(void)
 {
 	_newFlags=_newFlags | SDL_DOUBLEBUF;
 }
-void SDLGLWindow::disableDoubleBuf(void)
+void GLSurface::disableDoubleBuf(void)
 {
 	_newFlags=_newFlags & !SDL_DOUBLEBUF;
 }
 
 */
 
-GLWindow::GLWindow(int width, int height, int bpp, GLManager * const glmanager) throw (std::logic_error)
+GLSurface::GLSurface(int width, int height, int bpp, GLManager * const glmanager) throw (std::logic_error)
 try	: VideoSurface(width, height, bpp, _defaultflags), _glmanager(glmanager)
 {
     assert (_glmanager);
@@ -44,7 +44,7 @@ catch (std::exception &e)
     Log << nl << "Exception catched in GLWindow constructor !" << nl << e.what() << std::endl;
 };
 
-bool GLWindow::update(void)
+bool GLSurface::update(void)
 {
     assert(_glmanager);
 	assert(_glmanager->getEngine());
@@ -56,7 +56,7 @@ bool GLWindow::update(void)
 	return true;
 }
 
-bool GLWindow::resize (int width, int height)
+bool GLSurface::resize (int width, int height)
 {
 
     assert(_glmanager);
@@ -65,7 +65,7 @@ bool GLWindow::resize (int width, int height)
 }
 
 
-    void GLWindow::setBGColor(const Color & color)
+    void GLSurface::setBGColor(const Color & color)
     {
             _background = color;
              assert(_glmanager);
@@ -73,7 +73,7 @@ bool GLWindow::resize (int width, int height)
          	_glmanager->getEngine()->setBGColor(static_cast<float> (color.getR() ) / 255.0f, static_cast<float> (color.getG() ) / 255.0f,static_cast<float> (color.getB() ) / 255.0f);
     }
     //might be improved and secured later...
-    Color GLWindow::getBGColor ()
+    Color GLSurface::getBGColor ()
     {
           return _background;
     }

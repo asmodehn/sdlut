@@ -1,8 +1,8 @@
-#ifndef SDL_GLWINDOW_HH
-#define SDL_GLWINDOW_HH
+#ifndef SDL_GLSURFACE_HH
+#define SDL_GLSURFACE_HH
 
 /**
- * \class SDLGLWindow
+ * \class SDLGLSurface
  *
  * \ingroup Video
  *
@@ -29,7 +29,7 @@ namespace SDL {
 
 #ifdef HAVE_OPENGL
 
-class GLWindow : public VideoSurface
+class GLSurface : public VideoSurface
 {
 
     GLManager * const _glmanager;
@@ -37,9 +37,9 @@ class GLWindow : public VideoSurface
 public:
 
 	//Constructor
-	GLWindow(int width, int height, int bpp,GLManager * const glmanager ) throw (std::logic_error);
+	GLSurface(int width, int height, int bpp,GLManager * const glmanager ) throw (std::logic_error);
 	//Destructor
-	~GLWindow() {}
+	~GLSurface() {}
 
 //	inline bool isOpenGLset(void) const {return ((SDL_OPENGL & _surf->flags) != 0);}
 
@@ -81,4 +81,4 @@ public:
 
 } //namespace SDL
 
-#endif //SDLGLWINDOW_HH
+#endif //SDLGLSURFACE_HH

@@ -32,7 +32,7 @@
   */
 #include "SDLVideoInfo.hh"
 #include "SDLVideoSurface.hh"
-#include "SDLGLWindow.hh"
+#include "SDLGLSurface.hh"
 #include "SDLGLManager.hh"
 #include "SDLColor.hh"
 #include "SDLCursor.hh"

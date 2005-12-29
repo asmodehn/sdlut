@@ -23,7 +23,7 @@
  #include "SDLVideoSurface.hh"
  #ifdef HAVE_OPENGL
  #include "SDLGLManager.hh"
- #include "SDLGLWindow.hh"
+ #include "SDLGLSurface.hh"
  #endif //HAVE_OPENGL
 
 

@@ -234,7 +234,7 @@ Log << nl << "AppWindow::reset(" << width << "," << height << ") called" << std:
                 {
                     if (_glmanager->getEngine() == NULL)
                         _glmanager->setEngine();
-                    _screen = new GLWindow(width, height, _bpp,_glmanager );
+                    _screen = new GLSurface(width, height, _bpp,_glmanager );
                     res= (_screen != NULL);
                 }
                 else

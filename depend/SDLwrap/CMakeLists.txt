@@ -102,7 +102,7 @@ ADD_LIBRARY(	SDLWrap
 		include/SDLMouse.hh src/SDLMouse.cc
 		include/SDLJoystick.hh src/SDLJoystick.cc
 		include/SDLGLManager.hh src/SDLGLManager.cc
-		include/SDLGLWindow.hh src/SDLGLWindow.cc
+		include/SDLGLSurface.hh src/SDLGLSurface.cc
 		include/SDLManager.hh src/SDLManager.cc
 		include/SDLOverlay.hh src/SDLOverlay.cc
 		include/SDLPixelFormat.hh src/SDLPixelFormat.cc
