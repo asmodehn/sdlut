@@ -17,7 +17,7 @@
 
 ///just a LOGPREFIX value to be defined at build time. this way you can have a prefix for the whole project binary (library or executable)
 #ifndef LOGPREFIX
-#define LOGPREFIX "Default Log"
+#define LOGPREFIX "Log"
 #endif
 
 

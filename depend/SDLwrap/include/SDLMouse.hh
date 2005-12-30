@@ -3,6 +3,8 @@
 
 #include "SDLConfig.hh"
 
+#include "SDLPoint.hh"
+
 namespace SDL
 {
 
@@ -12,13 +14,7 @@ namespace SDL
 
     protected:
 
-
-        int _posX, _posY;
-        int _deltaPosX, _deltaPosY;
-        Uint8 updatePos();
-        Uint8 updateDeltaPos();
-
-        Mouse();
+        Mouse() {}
 
     public:
 
@@ -28,10 +24,8 @@ namespace SDL
         }
         Button;
 
-        int getPosX();
-        int getPosY();
-        int getDeltaPosX();
-        int getDeltaPosY();
+        Point getPos();
+        Point getDeltaPos();
 
         bool isButtonPressed(Button b);
 

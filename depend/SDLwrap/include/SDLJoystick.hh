@@ -3,11 +3,40 @@
 
 #include "SDLConfig.hh"
 
+#include "SDLPoint.hh"
+
 namespace SDL {
 
 
     class Joystick
     {
+        SDL_Joystick * const _joystick;
+
+        public :
+
+        static int countAvailable();
+        static bool opened(int index);
+
+        ///update done automatically by events...
+        static void Update();
+
+        //exception if no joystick -> todo asap !
+        Joystick(int index = 0);
+        ~Joystick();
+
+        //maybe this one is better static ?? depend how we intend to use it...
+        std::string getName();
+
+        int getIndex();
+        int numAxes();
+        int numHats();
+        int numButtons();
+
+        signed int getAxisPos(int axis);
+        // to think about the hat :  how to handle the different states
+        bool isButtonPressed(int button);
+        Point getBallDeltaPos(int ball);
+
     };
 
 class JoystickHandler

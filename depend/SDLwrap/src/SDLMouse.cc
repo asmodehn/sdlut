@@ -2,51 +2,23 @@
 
 namespace SDL
 {
-
-
-    Uint8 Mouse::updatePos()
+    Point Mouse::getPos()
     {
-        return SDL_GetMouseState(&_posX,&_posY);
+        int posX,posY;
+        SDL_GetMouseState(&posX,&posY);
+        return Point(posX,posY);
     }
 
-    Uint8 Mouse::updateDeltaPos()
+    Point Mouse::getDeltaPos()
     {
-        return SDL_GetRelativeMouseState(&_deltaPosX,&_deltaPosY);
-    }
-
-
-    Mouse::Mouse()
-    {
-        updatePos();
-        updateDeltaPos();
-    }
-
-    int Mouse::getPosX()
-    {
-        updatePos();
-        return _posX;
-    }
-
-    int Mouse::getPosY()
-    {
-        updatePos();
-        return _posY;
-    }
-
-    int Mouse::getDeltaPosX()
-    {
-        updateDeltaPos();
-        return _deltaPosX;
-    }
-    int Mouse::getDeltaPosY()
-    {
-        updateDeltaPos();
-        return _deltaPosY;
+        int rposX,rposY;
+        SDL_GetRelativeMouseState(&rposX,&rposY);
+        return Point(rposX,rposY);
     }
 
     bool Mouse::isButtonPressed(Button b)
     {
-        return ( ( updatePos() & SDL_BUTTON(b) ) != 0 );
+        return ( ( SDL_GetMouseState(NULL,NULL) & SDL_BUTTON(b) ) != 0 );
     }
 
 
