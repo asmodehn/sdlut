@@ -46,12 +46,7 @@
 #include "SDLEventManager.hh"
 #include "SDLMouse.hh"
 #include "SDLKeyboard.hh"
-
-/**
-  * \defgroup Input
-  */
-
-#include "SDLMouse.hh"
+#include "SDLJoystick.hh"
 
 /**
   * \defgroup Audio
@@ -64,6 +59,7 @@
   * \defgroup Other
   */
 #include "Interface3D.hh"
+#include "Logger.hh"
 
 
 //just a little usefull tip for mingw

@@ -173,7 +173,7 @@ namespace SDL
             Log << nl << "Creating EventManager ... " << std::endl;
 #endif
 
-            _eventmanager = new EventManager(*this);
+            _eventmanager = new EventManager();
 #ifdef DEBUG
 
             Log << nl << "EventManager created @ " << _eventmanager << std::endl;
@@ -336,7 +336,7 @@ namespace SDL
                 }
             //Loop finished, the EventManager should be reinitialized
             delete _eventmanager;
-            _eventmanager = new EventManager(*this);
+            _eventmanager = new EventManager();
         }
         else
         {

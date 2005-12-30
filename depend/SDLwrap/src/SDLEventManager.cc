@@ -1,50 +1,56 @@
 #include "SDLEventManager.hh"
+#include "SDLApp.hh" //for default resize
 
 namespace SDL
 {
 
-GeneralHandler::GeneralHandler(EventManager * eventmanager)
- :_eventmanager(eventmanager)
- {
-}
+    bool GeneralHandler::handleActiveEvent(bool gain, Uint8 state)
+    {
+        return false;
+    }
 
-
-bool GeneralHandler::handleActiveEvent(bool gain, Uint8 state)
-{ return false; }
-
-bool GeneralHandler::handleResizeEvent(int w, int h)
-{
-        _eventmanager->_focusedwindow.resize(w,h);
-        return true;
-}
-
-bool GeneralHandler::handleExposeEvent()
-{
- return false;
-}
-
-bool GeneralHandler::handleSysWMEvent(void)
-{ return false; }
-
-bool GeneralHandler::handleUserEvent(Uint8 type, int code, void* data1, void* data2)
-{ return false; }
-
-bool GeneralHandler::handleQuitEvent(void)
-{
-    _eventmanager->_quitRequested=true;
-    return true;
-}
-
-bool GeneralHandler::handleEvent(CriticalEvent &cevent)
-{
+    bool GeneralHandler::handleResizeEvent(int w, int h)
+    {
 #ifdef DEBUG
-//Getting the details of the Event
-    Log << nl << "Last chance handler detected unhandled Event of type " << cevent.getType() << std::endl;
-    return true;
-#else
-    return false;
+        assert(App::getInstance().getWindow());
 #endif
-}
+
+        App::getInstance().getWindow()->resize(w,h);
+        return true;
+    }
+
+    bool GeneralHandler::handleExposeEvent()
+    {
+        return false;
+    }
+
+    bool GeneralHandler::handleSysWMEvent(void)
+    {
+        return false;
+    }
+
+    bool GeneralHandler::handleUserEvent(Uint8 type, int code, void* data1, void* data2)
+    {
+        return false;
+    }
+
+    bool GeneralHandler::handleQuitEvent(void)
+    {
+        _quitRequested=true;
+        return true;
+    }
+
+    bool GeneralHandler::handleEvent(CriticalEvent &cevent)
+    {
+#ifdef DEBUG
+        //Getting the details of the Event
+        Log << nl << "Last chance handler : " << cevent.getType() << std::endl;
+        return true;
+#else
+
+        return false;
+#endif
+    }
 
 
     Event EventManager::wait () throw(std::logic_error)
@@ -62,11 +68,12 @@ bool GeneralHandler::handleEvent(CriticalEvent &cevent)
         while( SDL_PeepEvents(event,1,SDL_GETEVENT,_criticaltypes))
         {
             CriticalEvent cevent(event);
-            #ifdef DEBUG
-assert(ghndlr);
-assert(khndlr);
-assert(mhndlr);
+#ifdef DEBUG
+            assert(ghndlr);
+            assert(khndlr);
+            assert(mhndlr);
 #endif
+
             if(! cevent.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
                 ghndlr->handleEvent(cevent);
         }
@@ -81,11 +88,12 @@ assert(mhndlr);
         if (SDL_PeepEvents(event,1,SDL_GETEVENT,_criticaltypes) != -1 )
         {
             CriticalEvent cevent(event);
-            #ifdef DEBUG
-assert(ghndlr);
-assert(khndlr);
-assert(mhndlr);
+#ifdef DEBUG
+            assert(ghndlr);
+            assert(khndlr);
+            assert(mhndlr);
 #endif
+
             if(! cevent.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
                 ev_handled = ghndlr->handleEvent(cevent);
         }
@@ -100,16 +108,17 @@ assert(mhndlr);
     {
         SDL_Event* event=new SDL_Event();
 
-            bool ev_handled = false;
-    //to improve
-    if (SDL_PeepEvents(event,1,SDL_GETEVENT,type) != -1 )
+        bool ev_handled = false;
+        //to improve
+        if (SDL_PeepEvents(event,1,SDL_GETEVENT,type) != -1 )
         {
             CriticalEvent cevent(event);
-            #ifdef DEBUG
-assert(ghndlr);
-assert(khndlr);
-assert(mhndlr);
+#ifdef DEBUG
+            assert(ghndlr);
+            assert(khndlr);
+            assert(mhndlr);
 #endif
+
             if(! cevent.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
                 ev_handled = ghndlr->handleEvent(cevent);
         }
@@ -119,15 +128,16 @@ assert(mhndlr);
     //handle all the events in the queue in a loop
     void EventManager::handleAll()
     {
-                SDL_Event* sdlevent=new SDL_Event();
+        SDL_Event* sdlevent=new SDL_Event();
         while( SDL_PollEvent(sdlevent))
         {
             Event event(sdlevent);
 #ifdef DEBUG
-assert(ghndlr);
-assert(khndlr);
-assert(mhndlr);
+            assert(ghndlr);
+            assert(khndlr);
+            assert(mhndlr);
 #endif
+
             if(! event.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
                 ghndlr->handleEvent(event);
         }
@@ -137,17 +147,18 @@ assert(mhndlr);
     bool EventManager::handleNext()
     {
 
-SDL_Event* sdlevent=new SDL_Event();
+        SDL_Event* sdlevent=new SDL_Event();
         bool ev_handled = false;
 
         if( SDL_PollEvent(sdlevent)!= 0)
         {
-                        Event event(sdlevent);
-                        #ifdef DEBUG
-assert(ghndlr);
-assert(khndlr);
-assert(mhndlr);
+            Event event(sdlevent);
+#ifdef DEBUG
+            assert(ghndlr);
+            assert(khndlr);
+            assert(mhndlr);
 #endif
+
             if(! event.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
                 ev_handled = ghndlr->handleEvent(event);
         }

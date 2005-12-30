@@ -40,10 +40,13 @@ class EventManager;
     ///However this class is well adapted to key press / release detection, for gaming purpose...
     class KeyboardHandler
     {
-        EventManager * _eventmanager;
+        friend class EventManager;
+        protected:
+        bool _quitRequested;
+
         public:
 
-        KeyboardHandler(EventManager * eventmanager);
+        KeyboardHandler() : _quitRequested(false){}
         virtual ~KeyboardHandler() {}
 
         //Callbacks on SDL_KEYUP or SDL_KEYDOWN
@@ -64,7 +67,7 @@ class EventManager;
     class TextInputHandler : public KeyboardHandler
     {
         public:
-        TextInputHandler(EventManager * eventmanager);
+        TextInputHandler();
         virtual ~TextInputHandler();
 
         //Callbacks on SDL_KEYUP or SDL_KEYDOWN

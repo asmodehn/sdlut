@@ -3,9 +3,6 @@
 
 #include "SDLConfig.hh"
 
-
-#include "SDLWindow.hh"
-
 #include "SDLEvent.hh"
 #include "SDLCriticalEvent.hh"
 
@@ -16,29 +13,32 @@
 namespace SDL
 {
 
-/**
- * \class GeneralHandler
- *
- * \ingroup EventHandling
- *
- * \brief This class handles general event sin SDLwrap
- *
- * \author Alex
- *
- * \date 2005/12/27
- *
- * Contact: asmodehn@gna.org
- *
- */
- class EventManager;
+    /**
+     * \class GeneralHandler
+     *
+     * \ingroup EventHandling
+     *
+     * \brief This class handles general event sin SDLwrap
+     *
+     * \author Alex
+     *
+     * \date 2005/12/27
+     *
+     * Contact: asmodehn@gna.org
+     *
+     */
 
     class GeneralHandler
     {
-        EventManager * _eventmanager;
-        public:
+        friend class EventManager;
+        bool _quitRequested;
 
-        	GeneralHandler(EventManager * eventmanager);
-            virtual ~GeneralHandler() {}
+    public:
+
+        GeneralHandler() : _quitRequested(false)
+        {}
+        virtual ~GeneralHandler()
+        {}
 
         //Callbacks on Window / Display events
         virtual bool handleActiveEvent(bool gain, Uint8 state);
@@ -58,83 +58,101 @@ namespace SDL
     };
 
     /**
- * \class EventManager
- *
- * \ingroup EventHandling
- *
- * \brief This class manages the event handling in SDLwrap
- *
- * There should always be one and only one EventManager
- *
- * \author Alex
- *
- * \date 2005/12/27
- *
- * Contact: asmodehn@gna.org
- *
- */
+    * \class EventManager
+    *
+    * \ingroup EventHandling
+    *
+    * \brief This class manages the event handling in SDLwrap
+    *
+    * There should always be one and only one EventManager
+    *
+    * \author Alex
+    *
+    * \date 2005/12/27
+    *
+    * Contact: asmodehn@gna.org
+    *
+    */
     class EventManager
     {
         friend class Window; // to build the unique instance of EventManager
 
-        friend class GeneralHandler;
-        friend class KeyboardHandler;
-
-        protected:
+    protected:
         //filter to decide if an event is set as critical or not
         Uint8 _criticaltypes;
 
-        const Window & _focusedwindow;
-
-//WARNING : the handler must be initialized properly before setting a corresponding type as critical
-GeneralHandler * ghndlr;
-MouseHandler * mhndlr;
-KeyboardHandler * khndlr;
-JoystickHandler * jhndlr;
+        //WARNING : the handler must be initialized properly before setting a corresponding type as critical
+        GeneralHandler * ghndlr;
+        MouseHandler * mhndlr;
+        KeyboardHandler * khndlr;
+        JoystickHandler * jhndlr;
 
 
-        EventManager(const Window & appwin)  : _criticaltypes( 0),_focusedwindow(appwin), ghndlr(new GeneralHandler(this)),mhndlr(new MouseHandler()),khndlr(new KeyboardHandler(this)),jhndlr(new JoystickHandler(this)), _quitRequested(false) {}
-        ~EventManager() {}
+        EventManager()  : _criticaltypes( 0), ghndlr(new GeneralHandler()),mhndlr(new MouseHandler()),khndlr(new KeyboardHandler()),jhndlr(new JoystickHandler())
+        {}
+        ~EventManager()
+        {}
 
-    bool _quitRequested;
 
-        public :
 
-void setKeyboardHandler(KeyboardHandler * newkhndlr) { khndlr = newkhndlr;}
-void setGeneralHandler(GeneralHandler * newghndlr) { ghndlr = newghndlr;}
-void setMouseHandler(MouseHandler * newmhndlr) { mhndlr = newmhndlr;}
-void setJoystickHandler(JoystickHandler * newjhndlr) { jhndlr = newjhndlr;}
+    public :
 
-    //method to trigger the app exiting of the mainloop...
-    bool quitRequested() {return _quitRequested;}
+        void setKeyboardHandler(KeyboardHandler * newkhndlr)
+        {
+            khndlr = newkhndlr;
+        }
+        void setGeneralHandler(GeneralHandler * newghndlr)
+        {
+            ghndlr = newghndlr;
+        }
+        void setMouseHandler(MouseHandler * newmhndlr)
+        {
+            mhndlr = newmhndlr;
+        }
+        void setJoystickHandler(JoystickHandler * newjhndlr)
+        {
+            jhndlr = newjhndlr;
+        }
+
+        //method to trigger the app exiting of the mainloop...
+        bool quitRequested()
+        {
+            return ghndlr->_quitRequested || khndlr->_quitRequested || mhndlr->_quitRequested || jhndlr->_quitRequested;
+        }
 
         //Wait indefinitely for the next available event
-	//return the event found or throw an exception if error.
-	Event wait () throw(std::logic_error);
+        //return the event found or throw an exception if error.
+        Event wait () throw(std::logic_error);
 
-	void setCriticalType(EventType type) { _criticaltypes |= type;}
+        void setCriticalType(EventType type)
+        {
+            _criticaltypes |= type;
+        }
 
-	//handle all the critical events in the queue in a loop
-    void handleAllCritical();
+        //handle all the critical events in the queue in a loop
+        void handleAllCritical();
 
-    //handle the next critical event
-    bool handleNextCritical();
+        //handle the next critical event
+        bool handleNextCritical();
 
-    //handle the next event of this type as critical (temporary -> doesnt change the _criticaltypes mask)
-    bool handleNextCritical(EventType type);
+        //handle the next event of this type as critical (temporary -> doesnt change the _criticaltypes mask)
+        bool handleNextCritical(EventType type);
 
-	//handle all the critical events in the queue in a loop
-    void handleAll();
+        //handle all the critical events in the queue in a loop
+        void handleAll();
 
-    //handle the next critical event
-    bool handleNext();
+        //handle the next critical event
+        bool handleNext();
 
-    //handle the next event of this type as critical (temporary -> doesnt change the _criticaltypes mask)
-    bool handleNext(EventType type);
+        //handle the next event of this type as critical (temporary -> doesnt change the _criticaltypes mask)
+        bool handleNext(EventType type);
 
-    //Pump the event loop.
-    //Implicitely called by handleAll() or handleNext() but not by the "critical" methods
-    void pump() { SDL_PumpEvents();}
+        //Pump the event loop.
+        //Implicitely called by handleAll() or handleNext() but not by the "critical" methods
+        void pump()
+        {
+            SDL_PumpEvents();
+        }
 
     };
 

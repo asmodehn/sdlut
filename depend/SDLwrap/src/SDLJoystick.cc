@@ -2,12 +2,6 @@
 
 namespace SDL {
 
-JoystickHandler::JoystickHandler(EventManager * eventmanager)
- :_eventmanager(eventmanager)
- {
-
-}
-
 bool JoystickHandler::handleJoyAxisEvent (Uint8 joystick, Uint8 axis, Sint16 value)
 { return false; }
 

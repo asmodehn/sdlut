@@ -5,18 +5,18 @@
 
 namespace SDL {
 
-class EventManager;
 
     class Joystick
     {
     };
 
 class JoystickHandler
-{
-                EventManager * _eventmanager;
+{friend class EventManager;
+protected:
+        bool _quitRequested;
         public:
 
-        	JoystickHandler(EventManager * eventmanager);
+        	JoystickHandler() : _quitRequested(false){}
             virtual ~JoystickHandler() {}
 
 	//Callbacks on Joystick Events

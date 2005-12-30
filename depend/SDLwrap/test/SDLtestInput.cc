@@ -8,9 +8,6 @@ class  MyKeyboardHandler : public KeyboardHandler
 {
         public:
 
-        MyKeyboardHandler(EventManager * eventmanager) : KeyboardHandler(eventmanager) {}
-        virtual ~MyKeyboardHandler() {}
-
         //Callbacks on SDL_KEYUP or SDL_KEYDOWN
         virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
         {
@@ -41,7 +38,7 @@ int main( int argc, char* argv[])
 
 
     testlog << nl << "Setting up Keyboard..." << std::endl;
-	MyKeyboardHandler ui(App::getInstance().getWindow()->getEventManager());
+	MyKeyboardHandler ui;
     App::getInstance().getWindow()->getEventManager()->setKeyboardHandler(&ui);
 
 	testlog << nl << "Displaying Window..." << std::endl;
@@ -54,7 +51,7 @@ int main( int argc, char* argv[])
     App::getInstance().getWindow()->reset(640,480);
 
     testlog << nl << "Setting up TextInput with UniCode enabled..." << std::endl;
-	TextInputHandler ui2(App::getInstance().getWindow()->getEventManager());
+	TextInputHandler ui2;
     App::getInstance().getWindow()->getEventManager()->setKeyboardHandler(&ui2);
 
     testlog << nl << "Main Loop..." << std::endl;

@@ -34,11 +34,6 @@ namespace SDL
         return SDL_EnableKeyRepeat(delay, interval) == 0;
     }
 
-
-    KeyboardHandler::KeyboardHandler(EventManager * eventmanager)
-            :_eventmanager(eventmanager)
-    {}
-
     bool KeyboardHandler::handleKeyEvent (SDL_keysym &keysym, bool pressed)
     {
         bool res = false;
@@ -46,17 +41,21 @@ namespace SDL
         {
             case SDLK_ESCAPE:
             if (pressed==false)
-                _eventmanager->_quitRequested=true;
-            res=true;
+            {
+#ifdef DEBUG
+    Log << nl << "Quit requested !" << std::endl;
+#endif
+                _quitRequested=true;
+                res=true;
+            }
             break;
             default:
-            res=false;
+            res=false; break;
         }
         return res;
     }
 
-    TextInputHandler::TextInputHandler(EventManager * eventmanager)
-            : KeyboardHandler(eventmanager)
+    TextInputHandler::TextInputHandler()
     {
         SDL_EnableUNICODE(1);
     }

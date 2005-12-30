@@ -20,7 +20,7 @@
 
  #include "SDLConfig.hh"
 
-#include "SDLEventManager.hh"
+
 #include "SDLManager.hh"
 #include "SDLWindow.hh"
 

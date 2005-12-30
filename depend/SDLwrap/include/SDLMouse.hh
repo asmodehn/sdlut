@@ -55,11 +55,14 @@ namespace SDL
  */
 
 class MouseHandler
-{
+{friend class EventManager;
 protected:
-
+    bool _quitRequested;
 
 public:
+
+    MouseHandler()  : _quitRequested(false){}
+    virtual ~MouseHandler() {}
 
 	//Callbacks on Mouse Events
 	virtual bool handleMouseMotionEvent (Uint8 state, Uint16 x, Uint16 y,
