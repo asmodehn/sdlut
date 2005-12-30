@@ -44,6 +44,8 @@ class Window
         std::string _title, _icon;
         Color background;
 
+        //here because Event are initialised along with video...
+        EventManager * _eventmanager;
         VideoInfo * _videoinfo;
        #ifdef HAVE_OPENGL
             GLManager * _glmanager;
@@ -63,6 +65,7 @@ class Window
         VideoSurface * getDisplay( void ) {return _screen;}
 
         VideoInfo * getVideoInfo( void ) {return _videoinfo;}
+EventManager* getEventManager() {return _eventmanager;}
 
         //preset the flags
         bool setResizable(bool val);
@@ -97,7 +100,7 @@ class Window
 	bool setIcon(std::string iconfilename);// MAYBE version check here ?? { setCaption(_title,icon); }
 	std::string getIconName();
 
-    bool mainLoop(EventManager & eventmanager);
+    bool mainLoop();
 
 };
 

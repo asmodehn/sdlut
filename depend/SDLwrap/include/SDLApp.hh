@@ -32,7 +32,7 @@
      {
 
         Manager * _manager;
-        EventManager * _eventmanager;
+
         Window* _window;
 
 
@@ -57,7 +57,7 @@ public:
         void setIcon(std::string appIcon = DEFAULT_WINDOW_ICON) {_icon = appIcon;}
         std::string getIcon() { return _icon;}
 
-        bool initWindow(bool fullscreen = false,bool opengl = false,  bool resizable = true, bool noframe = false);
+        bool initVideo(bool fullscreen = false,bool opengl = false,  bool resizable = true, bool noframe = false);
 
         //Add more when they are tested and working...
         //bool initAudio();
@@ -65,16 +65,8 @@ public:
 
         //Accessors
         // may return NULL => always test the returned value!
-        EventManager* getEventManager() {return _eventmanager;}
         Window * getWindow() { return _window;}
         Manager* getManager() { return _manager;}
-
-
-
-
-        //mainloop with the default minimal eventhandler
-        //calls closeDisplay at the end.
-        bool mainLoop();
 
      };
  }

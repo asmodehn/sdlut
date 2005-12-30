@@ -37,28 +37,28 @@ int main( int argc, char* argv[])
 //EVENTS INITIALISED ALONG WITH VIDEO... Think about initializins the event by default, without actually creating the window...
 //NOT POSSIBLE : THE EVENTS DONT WORK WITHOUT ANY WINDOW...
     testlog << nl << "Initialising Window..." << std::endl;
-	App::getInstance().initWindow(false,false,true,false);
+	App::getInstance().initVideo(false,false,true,false);
 
 
     testlog << nl << "Setting up Keyboard..." << std::endl;
-	MyKeyboardHandler ui(App::getInstance().getEventManager());
-    App::getInstance().getEventManager()->setKeyboardHandler(&ui);
+	MyKeyboardHandler ui(App::getInstance().getWindow()->getEventManager());
+    App::getInstance().getWindow()->getEventManager()->setKeyboardHandler(&ui);
 
 	testlog << nl << "Displaying Window..." << std::endl;
     App::getInstance().getWindow()->reset(640,480);
 
     testlog << nl << "Main Loop..." << std::endl;
-    App::getInstance().mainLoop();
+    App::getInstance().getWindow()->mainLoop();
 
     testlog << nl << "Displaying Window..." << std::endl;
     App::getInstance().getWindow()->reset(640,480);
 
     testlog << nl << "Setting up TextInput with UniCode enabled..." << std::endl;
-	TextInputHandler ui2(App::getInstance().getEventManager());
-    App::getInstance().getEventManager()->setKeyboardHandler(&ui2);
+	TextInputHandler ui2(App::getInstance().getWindow()->getEventManager());
+    App::getInstance().getWindow()->getEventManager()->setKeyboardHandler(&ui2);
 
     testlog << nl << "Main Loop..." << std::endl;
-    App::getInstance().mainLoop();
+    App::getInstance().getWindow()->mainLoop();
 
 	return 0;
 

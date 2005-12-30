@@ -75,7 +75,7 @@ namespace SDL
  */
     class EventManager
     {
-        friend class App; // to build the unique instance of EventManager
+        friend class Window; // to build the unique instance of EventManager
 
         friend class GeneralHandler;
         friend class KeyboardHandler;

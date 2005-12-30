@@ -34,15 +34,15 @@ int main(int argc, char** argv)
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
 	App::getInstance().setName ("SDLtest");
-	App::getInstance().initWindow(false,false,true,false);
+	App::getInstance().initVideo(false,false,true,false);
 
 	//Getting video informations
 	testlog << nl << *App::getInstance().getWindow()->getVideoInfo() << std::endl;
 
 	testlog << nl << " Creating the User Interface... " << std::endl;
 	//UI Creation
-	MyUserInput ui(App::getInstance().getEventManager());
-    App::getInstance().getEventManager()->setKeyboardHandler(&ui);
+	MyUserInput ui(App::getInstance().getWindow()->getEventManager());
+    App::getInstance().getWindow()->getEventManager()->setKeyboardHandler(&ui);
 
     testlog << nl << " Creating the SDL Cursor... " << std::endl;
 	Cursor cursor(blackArrow);
@@ -76,7 +76,7 @@ int main(int argc, char** argv)
 
 		Cursor::warpCurrent(Point(50,50));
 
-        App::getInstance().mainLoop();
+        App::getInstance().getWindow()->mainLoop();
 
 	}
 
@@ -84,8 +84,8 @@ int main(int argc, char** argv)
 
 	testlog << nl << " OPENGL activation... " << std::endl;
 
-	MyUserInput ui2(App::getInstance().getEventManager()); // another ui, since the first is closed ( but not deleted )
-	App::getInstance().getEventManager()->setKeyboardHandler(&ui2);
+	MyUserInput ui2(App::getInstance().getWindow()->getEventManager()); // another ui, since the first is closed ( but not deleted )
+	App::getInstance().getWindow()->getEventManager()->setKeyboardHandler(&ui2);
 	testlog << nl <<"display reset" << std::endl;
 
 	//GLManager test
@@ -116,7 +116,7 @@ if(App::getInstance().getWindow()->reset())
 		testlog << nl << *glman << std::endl;
 
 		testlog << nl << "loop... " << std::endl;
-			App::getInstance().mainLoop();
+			App::getInstance().getWindow()->mainLoop();
 	}
 
 	return 0;

@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 			exit(1);
 		}
 	}
-	SDL::App::getInstance().initWindow(fullscreen);
+	SDL::App::getInstance().initVideo(fullscreen);
 
 	/* Set 640x480 video mode */
 	SDL::App::getInstance().getWindow()->reset(640,480);

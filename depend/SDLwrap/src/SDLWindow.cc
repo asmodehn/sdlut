@@ -8,24 +8,26 @@ namespace SDL
         return ( SDL_WM_IconifyWindow() != 0 );
     }
 
-//needs to be redone
+    //needs to be redone
     bool Window::toggleFullScreen(void)
     {
         //This only works for X11
 #if defined ( __MINGW32__) || defined ( __WIN32__) || defined( WIN32 ) ||  defined( _WINDOWS ) //check for WIN32
         //workaround for win32 ??
 #ifdef DEBUG
-Log << nl << "Ignoring ToggleFullScreen() on Windows platform..." << std::endl;
+        Log << nl << "Ignoring ToggleFullScreen() on Windows platform..." << std::endl;
 #endif
         //return setFullscreen(true);
         //looks like it doesnt work...
         return false;
 #else
 #ifdef DEBUG
-Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std::endl;
+        Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std::endl;
 #endif
+
         return ( SDL_WM_ToggleFullScreen(_screen->_surf) != 0 ) ;
 #endif
+
     }
 
     void Window::grabInput()
@@ -71,7 +73,7 @@ Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std:
         return res;
     }
 
-//old version
+    //old version
     void Window::getCaption(std::string & title, std::string & icon)
     {
         char * t="";
@@ -81,19 +83,19 @@ Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std:
         icon=std::string(i);
     }
 
-        std::string Window::getTitle()
-        {
-            char * t = "" ;
-            SDL_WM_GetCaption(&t,NULL);
-            return std::string(t);
+    std::string Window::getTitle()
+    {
+        char * t = "" ;
+        SDL_WM_GetCaption(&t,NULL);
+        return std::string(t);
 
-        }
-        std::string Window::getIconName()
-        {
+    }
+    std::string Window::getIconName()
+    {
         char * i  = "";
         SDL_WM_GetCaption(NULL,&i);
         return std::string(i);
-        }
+    }
 
     bool Window::setResizable(bool val)
     {
@@ -111,26 +113,28 @@ Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std:
     bool Window::setFullscreen(bool val)
     {
 #ifdef DEBUG
-Log << nl << "Window::setFullscreen(" << val << ") called" << std::endl;
+        Log << nl << "Window::setFullscreen(" << val << ") called" << std::endl;
 #endif
+
         bool res = true;
         if (_screen == NULL )
             VideoSurface::setFullscreen(val);
         else
         {
 #ifdef DEBUG
-Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
+            Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
 #endif
+
             if (_screen->isFullScreenset() != val ) //if called inside mainLoop while screen is active
-        {
-            if (! reset(_screen->getWidth(),_screen->getHeight()))
-                res=false;
-        }
+            {
+                if (! reset(_screen->getWidth(),_screen->getHeight()))
+                    res=false;
+            }
         }
         return res;
     }
 
-        bool Window::setNoFrame(bool val)
+    bool Window::setNoFrame(bool val)
     {
         bool res = true;
         if (_screen == NULL )
@@ -160,14 +164,27 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
 
 
     Window::Window(std::string title,std::string icon)
-    : _title(title), _icon(icon)
+            : _title(title), _icon(icon)
     {
         try
-         {
-             _videoinfo = new VideoInfo();
-             #ifdef HAVE_OPENGL
-                _glmanager = new GLManager();
-            #endif
+        {
+#ifdef DEBUG
+
+            Log << nl << "Creating EventManager ... " << std::endl;
+#endif
+
+            _eventmanager = new EventManager(*this);
+#ifdef DEBUG
+
+            Log << nl << "EventManager created @ " << _eventmanager << std::endl;
+#endif
+
+            _videoinfo = new VideoInfo();
+#ifdef HAVE_OPENGL
+
+            _glmanager = new GLManager();
+#endif
+
         }
         catch (std::exception &e)
         {
@@ -178,6 +195,7 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
 
         BaseSurface::_vinfo = _videoinfo;
 #ifdef DEBUG
+
         Log << nl << "VideoInfo created @ " << _videoinfo << std::endl;
 #endif
 
@@ -193,9 +211,12 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
         Log << nl << " Window Destructor called !" << std::endl;
 #endif
 #ifdef HAVE_OPENGL
+
         delete _glmanager;
 #endif
-        delete _videoinfo; BaseSurface::_vinfo = NULL;
+
+        delete _videoinfo;
+        BaseSurface::_vinfo = NULL;
     }
 
 
@@ -203,8 +224,9 @@ Log << nl << _screen->isFullScreenset() << " != " << val << std::endl;
     bool Window::reset( int width, int height)
     {
 #ifdef DEBUG
-Log << nl << "Window::reset(" << width << "," << height << ") called" << std::endl;
+        Log << nl << "Window::reset(" << width << "," << height << ") called" << std::endl;
 #endif
+
         bool res = false;
         int _bpp=VideoSurface::getSuggestedBPP(width, height);
         //but beware about bpp == 0...
@@ -220,7 +242,7 @@ Log << nl << "Window::reset(" << width << "," << height << ") called" << std::en
         }
         else
             res=true;
-*/
+        */
         //if (res)
         else
         {
@@ -247,7 +269,8 @@ Log << nl << "Window::reset(" << width << "," << height << ") called" << std::en
 
                 }
 #endif
-                if (_screen != NULL) _screen->setBGColor(background);
+                if (_screen != NULL)
+                    _screen->setBGColor(background);
             }
             catch(std::exception & e)
             {
@@ -260,48 +283,72 @@ Log << nl << "Window::reset(" << width << "," << height << ") called" << std::en
 
     }
 
-bool Window::resize (int width, int height) const
-{
-    bool res = false;
+    bool Window::resize (int width, int height) const
+    {
+        bool res = false;
 #ifdef DEBUG
-assert (_screen);
+        assert (_screen);
 #endif
-    if (_screen != NULL )
-    {
-        _screen->saveContent();
-        if (_screen->resize(width,height))
-        {
-            _screen->setBGColor(background);
-            _screen->restoreContent();
-        }
-    }
-    return res;
-}
 
-bool Window::mainLoop(EventManager & eventmanager)
-{
-    bool res = false;
+        if (_screen != NULL )
+        {
+            _screen->saveContent();
+            if (_screen->resize(width,height))
+            {
+                _screen->setBGColor(background);
+                _screen->restoreContent();
+            }
+        }
+        return res;
+    }
+
+    bool Window::mainLoop()
+    {
+        bool res = false;
 #ifdef DEBUG
-assert (_screen);
-#endif
-    if (_screen !=NULL)
-    {
-        while (!(eventmanager.quitRequested()))
-        {
-            eventmanager.handleAll();
 
-            _screen->update();
+        assert(_eventmanager);
+#endif
+
+        if (_eventmanager != NULL)
+        {
+
+#ifdef DEBUG
+                assert (_screen);
+#endif
+
+                if (_screen !=NULL)
+                {
+                    while (!(_eventmanager->quitRequested()))
+                    {
+                        _eventmanager->handleAll();
+
+                        _screen->update();
+                    }
+                    delete _screen; // to delete the SDLWrap class (not the actual video surface in memory...)
+                    _screen = NULL;
+                    res = true;
+                }
+                else
+                {
+                    Log << nl << "ERROR : DisplaySurface @ " << _screen << " can't be used !" << std::endl;
+                    Log  << nl <<" Ignoring mainLoop call." << std::endl;
+                }
+            //Loop finished, the EventManager should be reinitialized
+            delete _eventmanager;
+            _eventmanager = new EventManager(*this);
         }
-        delete _screen; // to delete the SDLWrap class (not the actual video surface in memory...)
-        _screen = NULL;
-        res = true;
+        else
+        {
+            Log << nl << "ERROR : EventManager @ " << _eventmanager;
+        }
+        if (!res)
+        {
+            Log  << nl << "An error occured when trying to laucnh the main loop, make sure you have initialized everything." << std::endl;
+            Log  << nl <<" Ignoring mainLoop call." << std::endl;
+        }
+        return res;
+
     }
-    else
-    {
-        Log << nl << "Display Surface @ " << _screen << " can't be used !" << std::endl;
-        Log  << nl <<" Ignoring mainLoop call." << std::endl;
-    }
-    return res;
-}
 
 }
