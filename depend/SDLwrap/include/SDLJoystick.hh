@@ -7,24 +7,18 @@
 
 namespace SDL {
 
-
     class Joystick
     {
+        friend class JoystickPool;
+        protected:
         SDL_Joystick * const _joystick;
+
+        Joystick(SDL_Joystick * joy) : _joystick(joy) {}
 
         public :
 
-        static int countAvailable();
-        static bool opened(int index);
+        ~Joystick(){}
 
-        ///update done automatically by events...
-        static void Update();
-
-        //exception if no joystick -> todo asap !
-        Joystick(int index = 0);
-        ~Joystick();
-
-        //maybe this one is better static ?? depend how we intend to use it...
         std::string getName();
 
         int getIndex();
@@ -33,20 +27,26 @@ namespace SDL {
         int numButtons();
 
         signed int getAxisPos(int axis);
-        // to think about the hat :  how to handle the different states
+        // to think about the hat :  how to handle the different states and combinations
         bool isButtonPressed(int button);
         Point getBallDeltaPos(int ball);
 
     };
 
-class JoystickHandler
-{friend class EventManager;
-protected:
-        bool _quitRequested;
+class JoystickPool
+{
+        std::vector <Joystick *> _pool;
         public:
 
-        	JoystickHandler() : _quitRequested(false){}
-            virtual ~JoystickHandler() {}
+        JoystickPool();
+        virtual ~JoystickPool();
+
+        int countAvailable();
+        std::string getName(int index);
+        Joystick * getJoystick(int index);
+
+        ///update done automatically by events...
+        void Update();
 
 	//Callbacks on Joystick Events
 	virtual bool handleJoyAxisEvent (Uint8 joystick, Uint8 axis, Sint16 value);
@@ -62,6 +62,7 @@ protected:
 	virtual bool handleJoyHatEvent(Uint8 joystick, Uint8 hat, Uint8 value);
 	virtual bool handleJoyBallEvent(Uint8 joystick, Uint8 ball, Sint16 xrel, Sint16 yrel);
 };
+
 
 }
 

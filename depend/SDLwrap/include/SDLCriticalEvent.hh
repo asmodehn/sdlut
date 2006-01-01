@@ -33,8 +33,6 @@ namespace SDL {
  */
 
 
-
-
     //defining all the events provided by SDL
     typedef enum {  Active = SDL_ACTIVEEVENT,
                             KeyDown = SDL_KEYDOWN,
@@ -59,9 +57,8 @@ Logger & operator << (Logger & log, const  EventType & type);
 
 //further reference
 class GeneralHandler;
-class KeyboardHandler;
-class MouseHandler;
-class JoystickHandler;
+class Keyboard;
+class Mouse;
 
 class CriticalEvent
 {
@@ -117,7 +114,7 @@ class CriticalEvent
 
 
     //calls the handler coresponding to the event
-    bool callHandler(GeneralHandler * ghndlr, KeyboardHandler * khndlr, MouseHandler *  mhndlr,JoystickHandler*  jhndlr );
+    bool callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse *  mhndlr);
 
 
 

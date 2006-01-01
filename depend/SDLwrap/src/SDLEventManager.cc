@@ -74,7 +74,7 @@ namespace SDL
             assert(mhndlr);
 #endif
 
-            if(! cevent.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
+            if(! cevent.callHandler(ghndlr, khndlr, mhndlr) )
                 ghndlr->handleEvent(cevent);
         }
     }
@@ -94,7 +94,7 @@ namespace SDL
             assert(mhndlr);
 #endif
 
-            if(! cevent.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
+            if(! cevent.callHandler(ghndlr, khndlr, mhndlr) )
                 ev_handled = ghndlr->handleEvent(cevent);
         }
         return ev_handled;
@@ -119,7 +119,7 @@ namespace SDL
             assert(mhndlr);
 #endif
 
-            if(! cevent.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
+            if(! cevent.callHandler(ghndlr, khndlr, mhndlr) )
                 ev_handled = ghndlr->handleEvent(cevent);
         }
         return ev_handled;
@@ -138,7 +138,7 @@ namespace SDL
             assert(mhndlr);
 #endif
 
-            if(! event.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
+            if(! event.callHandler(ghndlr, khndlr, mhndlr) )
                 ghndlr->handleEvent(event);
         }
     }
@@ -159,7 +159,7 @@ namespace SDL
             assert(mhndlr);
 #endif
 
-            if(! event.callHandler(ghndlr, khndlr, mhndlr,jhndlr) )
+            if(! event.callHandler(ghndlr, khndlr, mhndlr) )
                 ev_handled = ghndlr->handleEvent(event);
         }
         return ev_handled;

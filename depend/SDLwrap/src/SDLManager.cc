@@ -8,13 +8,20 @@ namespace SDL
     {
         Uint32 flags;
 
-        if (video) flags |= SDL_INIT_VIDEO;
-        if (audio) flags |= SDL_INIT_AUDIO;
-        if (timer) flags |= SDL_INIT_TIMER;
-        if (cdrom) flags |= SDL_INIT_CDROM;
-        if (joystick) flags |= SDL_INIT_JOYSTICK;
-        if (noparachute) flags |= SDL_INIT_NOPARACHUTE;
-        if (eventthread) flags |= SDL_INIT_EVENTTHREAD;
+        if (video)
+            flags |= SDL_INIT_VIDEO;
+        if (audio)
+            flags |= SDL_INIT_AUDIO;
+        if (timer)
+            flags |= SDL_INIT_TIMER;
+        if (cdrom)
+            flags |= SDL_INIT_CDROM;
+        if (joystick)
+            flags |= SDL_INIT_JOYSTICK;
+        if (noparachute)
+            flags |= SDL_INIT_NOPARACHUTE;
+        if (eventthread)
+            flags |= SDL_INIT_EVENTTHREAD;
 
         if (SDL_Init(flags)<0)
         {
@@ -43,76 +50,76 @@ namespace SDL
         Log << nl << "Exception catched in Manager Constructor" << nl << e.what();
     };
 
-        bool enableTimer(void)
-        {
-            return SDL_InitSubSystem(SDL_INIT_TIMER) == 0;
-        }
-         bool enableAudio(void)
-        {
-            return SDL_InitSubSystem(SDL_INIT_AUDIO)== 0;
-        }
-         bool enableVideo(void)
-        {
-            return SDL_InitSubSystem(SDL_INIT_VIDEO)== 0;
-        }
-         bool enableCdrom(void)
-        {
-            return SDL_InitSubSystem(SDL_INIT_CDROM)== 0;
-        }
-         bool enableJoystick(void)
-        {
-            return SDL_InitSubSystem(SDL_INIT_JOYSTICK)== 0;
-        }
-         bool enableEverything(void)
-        {
-            return SDL_InitSubSystem(SDL_INIT_EVERYTHING)== 0;
-        }
-         bool enableNoParachute(void)
-        {
-            return SDL_InitSubSystem(SDL_INIT_NOPARACHUTE)== 0;
-        }
-         bool enableEventThread(void)
-        {
-            return SDL_InitSubSystem(SDL_INIT_EVENTTHREAD)== 0;
-        }
+    bool Manager::enableTimer(void)
+    {
+        return SDL_InitSubSystem(SDL_INIT_TIMER) == 0;
+    }
+    bool Manager::enableAudio(void)
+    {
+        return SDL_InitSubSystem(SDL_INIT_AUDIO)== 0;
+    }
+    bool Manager::enableVideo(void)
+    {
+        return SDL_InitSubSystem(SDL_INIT_VIDEO)== 0;
+    }
+    bool Manager::enableCdrom(void)
+    {
+        return SDL_InitSubSystem(SDL_INIT_CDROM)== 0;
+    }
+    bool Manager::enableJoystick(void)
+    {
+        return SDL_InitSubSystem(SDL_INIT_JOYSTICK)== 0;
+    }
+    bool Manager::enableEverything(void)
+    {
+        return SDL_InitSubSystem(SDL_INIT_EVERYTHING)== 0;
+    }
+    bool Manager::enableNoParachute(void)
+    {
+        return SDL_InitSubSystem(SDL_INIT_NOPARACHUTE)== 0;
+    }
+    bool Manager::enableEventThread(void)
+    {
+        return SDL_InitSubSystem(SDL_INIT_EVENTTHREAD)== 0;
+    }
 
 
     void Manager::disableTimer(void)
     {
-            SDL_QuitSubSystem(SDL_INIT_TIMER);
+        SDL_QuitSubSystem(SDL_INIT_TIMER);
     }
     void Manager::disableAudio(void)
     {
-            SDL_QuitSubSystem(SDL_INIT_AUDIO);
+        SDL_QuitSubSystem(SDL_INIT_AUDIO);
     }
     void Manager::disableVideo(void)
     {
-            SDL_QuitSubSystem(SDL_INIT_VIDEO);
+        SDL_QuitSubSystem(SDL_INIT_VIDEO);
     }
     void Manager::disableCdrom(void)
     {
 
-            SDL_QuitSubSystem(SDL_INIT_CDROM);
+        SDL_QuitSubSystem(SDL_INIT_CDROM);
     }
     void Manager::disableJoystick(void)
     {
 
-            SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
+        SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
     }
     void Manager::disableEverything(void)
     {
 
-            SDL_QuitSubSystem(SDL_INIT_EVERYTHING);
+        SDL_QuitSubSystem(SDL_INIT_EVERYTHING);
     }
     void Manager::disableNoParachute(void)
     {
 
-            SDL_QuitSubSystem(SDL_INIT_NOPARACHUTE);
+        SDL_QuitSubSystem(SDL_INIT_NOPARACHUTE);
     }
     void Manager::disableEventThread(void)
     {
 
-            SDL_QuitSubSystem(SDL_INIT_EVENTTHREAD);
+        SDL_QuitSubSystem(SDL_INIT_EVENTTHREAD);
     }
 
 

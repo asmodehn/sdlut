@@ -3,28 +3,35 @@
 namespace SDL {
 
 
-int Joystick::countAvailable()
+JoystickPool::JoystickPool() : _pool(SDL_NumJoysticks(),static_cast<Joystick*>(NULL))
 {
-    return SDL_NumJoysticks();
 }
 
-bool Joystick::opened(int index)
+JoystickPool::~JoystickPool()
 {
-    return ( SDL_JoystickOpened(index)!=0);
+    for (unsigned int i=0;i< _pool.size();i++)
+        if ( _pool[i] != NULL ) SDL_JoystickClose(_pool[i]->_joystick);
 }
 
-void Joystick::Update()
+int JoystickPool::countAvailable()
+{
+    return _pool.size();
+}
+
+Joystick * JoystickPool::getJoystick(int index)
+{
+    if ( _pool[index] == NULL) _pool[index]=new Joystick(SDL_JoystickOpen(index));
+    return _pool[index];
+}
+
+void JoystickPool::Update()
 {
     SDL_JoystickUpdate();
 }
 
-Joystick::Joystick(int index) : _joystick(SDL_JoystickOpen(index))
+std::string JoystickPool::getName(int index)
 {
-}
-
-Joystick::~Joystick()
-{
-    SDL_JoystickClose(_joystick);
+    return std::string (SDL_JoystickName(index));
 }
 
 std::string Joystick::getName()
@@ -78,16 +85,44 @@ Point Joystick::getBallDeltaPos(int ball)
     }
 }
 
-bool JoystickHandler::handleJoyAxisEvent (Uint8 joystick, Uint8 axis, Sint16 value)
-{ return false; }
+bool JoystickPool::handleJoyAxisEvent (Uint8 joystick, Uint8 axis, Sint16 value)
+{
+#ifdef DEBUG
+    Log << nl << "Joystick n°" << joystick << " axis : " << axis << " value : " << value << std::endl;
+    return true;
+#else
+    return false;
+#endif
+}
 
-bool JoystickHandler::handleJoyButtonEvent (Uint8 joystick, Uint8 button, bool pressed)
-{ return false; }
+bool JoystickPool::handleJoyButtonEvent (Uint8 joystick, Uint8 button, bool pressed)
+{
+#ifdef DEBUG
+    Log << nl << "Joystick n°" << joystick << " button : " << button << " pressed : " << pressed << std::endl;
+    return true;
+#else
+    return false;
+#endif
+}
 
-bool JoystickHandler::handleJoyHatEvent(Uint8 joystick, Uint8 hat, Uint8 value)
-{ return false; }
+bool JoystickPool::handleJoyHatEvent(Uint8 joystick, Uint8 hat, Uint8 value)
+{
+#ifdef DEBUG
+    Log << nl << "Joystick n°" << joystick << " hat : " << hat << " value : " << value << std::endl;
+    return true;
+#else
+    return false;
+#endif
+}
 
-bool JoystickHandler::handleJoyBallEvent(Uint8 joystick, Uint8 ball, Sint16 xrel, Sint16 yrel)
-{ return false; }
+bool JoystickPool::handleJoyBallEvent(Uint8 joystick, Uint8 ball, Sint16 xrel, Sint16 yrel)
+{
+#ifdef DEBUG
+    Log << nl << "Joystick n°" << joystick << " ball : " << ball << " xrel : " << xrel << " yrel : " << yrel << std::endl;
+    return true;
+#else
+    return false;
+#endif
+}
 
 }

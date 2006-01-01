@@ -30,17 +30,24 @@ namespace SDL
         bool res = false;
         try
         {
+            if (_manager == NULL)
+            {
 #ifdef DEBUG
             Log << nl << "Creating Manager ..." << std::endl;
 #endif
-
-            _manager = new Manager(true);
+            _manager = new Manager(true,false,false,false,false,false,false);
 #ifdef DEBUG
-
             Log << nl << "Manager created @ " <<  _manager << std::endl;
+#endif
+            }
+            else
+            {
+                _manager->enableVideo();
+            }
+
+#ifdef DEBUG
             Log << nl << "Creating AppWindow ..." << std::endl;
 #endif
-
             _window = new Window(_name,_icon);
 #ifdef DEBUG
 
@@ -74,11 +81,44 @@ namespace SDL
         catch (std::exception &e)
         {
             Log << nl << "Exception caught : " << e.what() << std::endl;
-            Log << nl << "FATAL ERROR : InitWindow failed... Exiting" << std::endl;
+            Log << nl << "FATAL ERROR : InitVideo failed... Exiting" << std::endl;
             exit (1);
         }
         return res;
     }
+
+bool App::initJoystick()
+{
+    bool res = false;
+            if (_manager == NULL)
+            {
+#ifdef DEBUG
+            Log << nl << "Creating Manager ..." << std::endl;
+#endif
+            try
+            {
+                _manager = new Manager(false,false,false,false,true,false,false);
+                res = true;
+            }
+            catch (std::exception &e)
+            {
+                 Log << nl << "Exception caught : " << e.what() << std::endl;
+                Log << nl << "FATAL ERROR : InitJoystick failed... Exiting" << std::endl;
+                exit (1);
+            }
+#ifdef DEBUG
+            Log << nl << "Manager created @ " <<  _manager << std::endl;
+#endif
+            }
+            else
+            {
+                res = _manager->enableJoystick();
+            }
+
+            if ( res == true ) _jpool = new JoystickPool();
+
+            return res;
+}
 
 }
 

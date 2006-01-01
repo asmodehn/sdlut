@@ -83,12 +83,11 @@ namespace SDL
 
         //WARNING : the handler must be initialized properly before setting a corresponding type as critical
         GeneralHandler * ghndlr;
-        MouseHandler * mhndlr;
-        KeyboardHandler * khndlr;
-        JoystickHandler * jhndlr;
+        Mouse * mhndlr;
+        Keyboard * khndlr;
 
 
-        EventManager()  : _criticaltypes( 0), ghndlr(new GeneralHandler()),mhndlr(new MouseHandler()),khndlr(new KeyboardHandler()),jhndlr(new JoystickHandler())
+        EventManager()  : _criticaltypes( 0), ghndlr(new GeneralHandler()),mhndlr(new Mouse()),khndlr(new Keyboard())
         {}
         ~EventManager()
         {}
@@ -97,7 +96,7 @@ namespace SDL
 
     public :
 
-        void setKeyboardHandler(KeyboardHandler * newkhndlr)
+        void setKeyboard(Keyboard * newkhndlr)
         {
             khndlr = newkhndlr;
         }
@@ -105,19 +104,15 @@ namespace SDL
         {
             ghndlr = newghndlr;
         }
-        void setMouseHandler(MouseHandler * newmhndlr)
+        void setMouse(Mouse * newmhndlr)
         {
             mhndlr = newmhndlr;
-        }
-        void setJoystickHandler(JoystickHandler * newjhndlr)
-        {
-            jhndlr = newjhndlr;
         }
 
         //method to trigger the app exiting of the mainloop...
         bool quitRequested()
         {
-            return ghndlr->_quitRequested || khndlr->_quitRequested || mhndlr->_quitRequested || jhndlr->_quitRequested;
+            return ghndlr->_quitRequested || khndlr->_quitRequested ;
         }
 
         //Wait indefinitely for the next available event

@@ -37,7 +37,7 @@ namespace SDL
         {
             SDL_Quit();
         }
-        bool init(Uint32 flags);
+        //bool init(Uint32 flags);
 
     public:
     //Enablers

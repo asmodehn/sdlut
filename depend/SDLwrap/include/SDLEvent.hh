@@ -17,7 +17,7 @@ namespace SDL
 
             Event(EventType type = User ) : CriticalEvent(type) {}
 
-bool Event::callHandler(GeneralHandler * ghndlr, KeyboardHandler * khndlr, MouseHandler*  mhndlr, JoystickHandler*  jhndlr  );
+bool Event::callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse*  mhndlr);
 
     };
 }

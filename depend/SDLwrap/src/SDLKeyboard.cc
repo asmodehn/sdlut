@@ -34,44 +34,31 @@ namespace SDL
         return SDL_EnableKeyRepeat(delay, interval) == 0;
     }
 
-    bool KeyboardHandler::handleKeyEvent (SDL_keysym &keysym, bool pressed)
+    bool Keyboard::handleKeyEvent (SDL_keysym &keysym, bool pressed)
     {
         bool res = false;
-        switch( keysym.sym )
-        {
-            case SDLK_ESCAPE:
-            if (pressed==false)
-            {
 #ifdef DEBUG
-    Log << nl << "Quit requested !" << std::endl;
+            Log << nl << " Key Name : " << getKeyName(keysym.sym) <<  " pressed : " << pressed << std::endl;
+            res=true;
 #endif
-                _quitRequested=true;
-                res=true;
-            }
-            break;
-            default:
-            res=false; break;
-        }
         return res;
     }
 
-    TextInputHandler::TextInputHandler()
+    TextInput::TextInput()
     {
         SDL_EnableUNICODE(1);
     }
 
-    TextInputHandler::~TextInputHandler()
+    TextInput::~TextInput()
     {
         SDL_EnableUNICODE(0);
     }
 
 
-    bool TextInputHandler::handleKeyEvent (SDL_keysym &keysym, bool pressed)
+    bool TextInput::handleKeyEvent (SDL_keysym &keysym, bool pressed)
     {
         bool res = false;
 
-        //call the default Keyboard Handler
-        res = KeyboardHandler::handleKeyEvent (keysym,pressed);
         //get the unicode character
         if (!res && pressed)
         {
@@ -88,15 +75,6 @@ namespace SDL
                     default:
                     res=false;
                 }
-            }
-        }
-        else //pressed = false
-        {
-            switch( keysym.sym )
-            {
-                //deal with other keys for release ( UNICODE doesnt work on released event )
-                default:
-                res=false;
             }
         }
         //TODO on every Event Loop (not critical, and not only keyboard...

@@ -23,13 +23,23 @@ namespace SDL
 
 
     	//Callbacks on Mouse Events
-	bool MouseHandler::handleMouseMotionEvent (Uint8 state, Uint16 x, Uint16 y, Sint16 xrel, Sint16 yrel)
+	bool Mouse::handleMouseMotionEvent (Uint8 state, Uint16 x, Uint16 y, Sint16 xrel, Sint16 yrel)
 	{
-	    return false;
+	    bool res = false;
+#ifdef DEBUG
+        Log << nl << " State : " << state << ", x : " << x << ", y : " << y << ", xrel : " << xrel << ", yrel : " << yrel << std::endl;
+        res = true;
+#endif
+        return res;
 	}
-	bool MouseHandler::handleMouseButtonEvent (Uint8 button, Uint16 x, Uint16 y, bool pressed)
+	bool Mouse::handleMouseButtonEvent (Uint8 button, Uint16 x, Uint16 y, bool pressed)
 	{
-	    return false;
+	    bool res = false;
+#ifdef DEBUG
+        Log << nl << " Button : " << button << ", x : " << x << ", y : " << y << "pressed : " << pressed << std::endl;
+        res = true;
+#endif
+        return res;
 	}
 
 }
