@@ -33,11 +33,11 @@ namespace SDL
             if (_manager == NULL)
             {
 #ifdef DEBUG
-            Log << nl << "Creating Manager ..." << std::endl;
+            Log << nl << "Creating Manager ...";
 #endif
             _manager = new Manager(true,false,false,false,false,false,false);
 #ifdef DEBUG
-            Log << nl << "Manager created @ " <<  _manager << std::endl;
+            Log << nl << "Manager created @ " <<  _manager ;
 #endif
             }
             else
@@ -46,13 +46,13 @@ namespace SDL
             }
 
 #ifdef DEBUG
-            Log << nl << "Creating AppWindow ..." << std::endl;
+            Log << nl << "Creating AppWindow ..." ;
 #endif
             _window = new Window(_name,_icon);
 #ifdef DEBUG
 
-            Log << nl << "AppWindow created @ "<< _window << std::endl;
-            Log << nl << " Setting up AppWindow... " << std::endl;
+            Log << nl << "AppWindow created @ "<< _window ;
+            Log << nl << " Setting up AppWindow... ";
 #endif
 
 
@@ -116,7 +116,12 @@ bool App::initJoystick()
             }
 
             if ( res == true ) _jpool = new JoystickPool();
+#ifdef DEBUG
+            Log << nl << "Number of Joysticks available : " << _jpool->countAvailable();
 
+            for ( int i=0; i<  _jpool->countAvailable(); i++ )
+                Log << nl << " Joystick " << i << " : " << _jpool->getName(i) ;
+#endif
             return res;
 }
 

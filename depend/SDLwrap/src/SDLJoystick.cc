@@ -3,8 +3,9 @@
 namespace SDL {
 
 
-JoystickPool::JoystickPool() : _pool(SDL_NumJoysticks(),static_cast<Joystick*>(NULL))
+JoystickPool::JoystickPool()
 {
+    _pool.reserve(SDL_NumJoysticks());
 }
 
 JoystickPool::~JoystickPool()
@@ -13,15 +14,26 @@ JoystickPool::~JoystickPool()
         if ( _pool[i] != NULL ) SDL_JoystickClose(_pool[i]->_joystick);
 }
 
+Joystick * JoystickPool::open(int index)
+{
+    if ( _pool[index] ==NULL )
+        _pool[index]=new Joystick(index);
+    return _pool[index];
+}
+
+void JoystickPool::close(int index)
+{
+    if ( _pool[index] !=NULL )
+    {
+        delete _pool[index];
+        _pool[index]=NULL;
+    }
+
+}
+
 int JoystickPool::countAvailable()
 {
     return _pool.size();
-}
-
-Joystick * JoystickPool::getJoystick(int index)
-{
-    if ( _pool[index] == NULL) _pool[index]=new Joystick(SDL_JoystickOpen(index));
-    return _pool[index];
 }
 
 void JoystickPool::Update()
@@ -33,6 +45,18 @@ std::string JoystickPool::getName(int index)
 {
     return std::string (SDL_JoystickName(index));
 }
+
+
+Joystick::Joystick(int index) : _joystick(SDL_JoystickOpen(index))
+{
+}
+
+Joystick::~Joystick()
+{
+    SDL_JoystickClose(_joystick);
+}
+
+
 
 std::string Joystick::getName()
 {

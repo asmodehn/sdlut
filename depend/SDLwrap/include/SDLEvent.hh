@@ -15,9 +15,9 @@ namespace SDL
 
         public:
 
-            Event(EventType type = User ) : CriticalEvent(type) {}
+        Event(EventType type = User ) : CriticalEvent(type) {}
 
-bool Event::callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse*  mhndlr);
+        bool callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse*  mhndlr);
 
     };
 }

@@ -13,11 +13,11 @@ namespace SDL {
         protected:
         SDL_Joystick * const _joystick;
 
-        Joystick(SDL_Joystick * joy) : _joystick(joy) {}
+        Joystick(int index);
 
         public :
 
-        ~Joystick(){}
+        ~Joystick();
 
         std::string getName();
 
@@ -43,7 +43,8 @@ class JoystickPool
 
         int countAvailable();
         std::string getName(int index);
-        Joystick * getJoystick(int index);
+        Joystick * open(int index);
+        void close(int index);
 
         ///update done automatically by events...
         void Update();

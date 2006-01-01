@@ -246,7 +246,7 @@ namespace SDL
         //if (res)
         else
         {
-            Log << nl << "SDL will use " << width << "x" << height << "@" <<_bpp << std::endl;
+            Log << nl << "SDL will use " << width << "x" << height << "@" <<_bpp;
             //create a new screen
             try
             {
@@ -344,7 +344,7 @@ namespace SDL
         }
         if (!res)
         {
-            Log  << nl << "An error occured when trying to laucnh the main loop, make sure you have initialized everything." << std::endl;
+            Log  << nl << "An error occured when trying to launch the main loop, make sure you have initialized everything." << std::endl;
             Log  << nl <<" Ignoring mainLoop call." << std::endl;
         }
         return res;

@@ -71,6 +71,7 @@ public:
         Window * getWindow() { return _window;}
         Manager* getManager() { return _manager;}
         JoystickPool * getJoystickPool() { return _jpool;}
+        void setJoystickPool( JoystickPool * jpool) { _jpool=jpool;}
 
      };
  }

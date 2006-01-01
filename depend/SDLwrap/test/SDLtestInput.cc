@@ -12,7 +12,6 @@ class  MyKeyboard : public Keyboard
         virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
         {
             bool res = false;
-            if ( (res = Keyboard::handleKeyEvent (keysym, pressed) ) == false )
             switch (keysym.sym)
             {
                 case SDLK_ESCAPE:  if (pressed==false)
@@ -24,9 +23,32 @@ class  MyKeyboard : public Keyboard
                 res=true;
             }
             break;
-                case SDLK_a : std::cout << "SDL Code : a" << std::endl; res = true; break;
-                case SDLK_q : std::cout << "SDL Code : q" << std::endl; res = true; break;
-                default : res=false;
+                default : res = Keyboard::handleKeyEvent (keysym, pressed); break;
+            }
+            return res;
+        }
+};
+
+class  MyTextInput : public TextInput
+{
+        public:
+
+        //Callbacks on SDL_KEYUP or SDL_KEYDOWN
+        virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
+        {
+            bool res = false;
+            switch (keysym.sym)
+            {
+                case SDLK_ESCAPE:  if (pressed==false)
+            {
+#ifdef DEBUG
+    Log << nl << "Quit requested !" << std::endl;
+#endif
+                _quitRequested=true;
+                res=true;
+            }
+            break;
+                default : res = TextInput::handleKeyEvent (keysym, pressed); break;
             }
             return res;
         }
@@ -40,30 +62,34 @@ int main( int argc, char* argv[])
     testlog << nl << "Test Input Started !" << std::endl;
     App::getInstance().setName ("SDLtestInput");
 
-//EVENTS INITIALISED ALONG WITH VIDEO... Think about initializins the event by default, without actually creating the window...
-//NOT POSSIBLE : THE EVENTS DONT WORK WITHOUT ANY WINDOW...
-    testlog << nl << "Initialising Window..." << std::endl;
+//NB : THE EVENTS DONT WORK WITHOUT ANY WINDOW...
+    testlog << nl << "Initialising Window...";
 	App::getInstance().initVideo(false,false,true,false);
 
+    testlog << nl << "Enabling Joystick..." ;
+	App::getInstance().initJoystick();
+	testlog << nl << "Opening Joystick 0..." ;
+	if (App::getInstance().getJoystickPool()->countAvailable() > 0);
+        App::getInstance().getJoystickPool()->open(0);
 
-    testlog << nl << "Setting up Keyboard..." << std::endl;
+    testlog << nl << "Setting up Keyboard...";
 	MyKeyboard ui;
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 
-	testlog << nl << "Displaying Window..." << std::endl;
+	testlog << nl << "Displaying Window...";
     App::getInstance().getWindow()->reset(640,480);
 
-    testlog << nl << "Main Loop..." << std::endl;
+    testlog << nl << "Main Loop...";
     App::getInstance().getWindow()->mainLoop();
 
-    testlog << nl << "Displaying Window..." << std::endl;
+    testlog << nl << "Displaying Window...";
     App::getInstance().getWindow()->reset(640,480);
 
-    testlog << nl << "Setting up TextInput with UniCode enabled..." << std::endl;
-	TextInput ui2;
+    testlog << nl << "Setting up TextInput with UniCode enabled...";
+	MyTextInput ui2;
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui2);
 
-    testlog << nl << "Main Loop..." << std::endl;
+    testlog << nl << "Main Loop...";
     App::getInstance().getWindow()->mainLoop();
 
 	return 0;
