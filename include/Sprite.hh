@@ -10,7 +10,7 @@ namespace AML
     {
         friend class Scene;
 
-        static SDL::DisplaySurface * _display;
+        static SDL::VideoSurface * _display;
 
         SDL::RGBSurface _surf;
         int posX, posY;

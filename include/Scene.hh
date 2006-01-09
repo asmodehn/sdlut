@@ -1,7 +1,7 @@
 #ifndef AML_SCENE_HH
 #define AML_SCENE_HH
 
-
+#include "Config.hh"
 #include "Sprite.hh"
 
 namespace AML
@@ -14,16 +14,13 @@ namespace AML
 
         Sprite * _sprite;
 
-        Scene()
-        {
-           Sprite::_display=App::getInstance().getAppWindow()->getDisplay();
-        }
+        Scene();
 
         public:
 
-        put(const Sprite & sprite, int posX, int posY) { _sprite = *sprite; _sprite->setPos(posX,posY);}
+        void put( Sprite sprite, int posX, int posY);
 
-        render() { _sprite->render();}
+        void render();
 
     };
 }

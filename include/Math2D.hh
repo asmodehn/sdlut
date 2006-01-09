@@ -3,8 +3,7 @@
 
 #include <iostream>
 #include <math.h>
-namespace AML
-{
+
 #ifndef M_PI
 #define M_PI 3.14159265
 #endif
@@ -215,7 +214,7 @@ inline std::ostream & operator << (std::ostream & ostr, const Vector2 & u)
 	return ostr;
 }
 
-//TODO LATER : Vector 3 with cross product, and triple scalar product.
-}
+//TODO LATER Math3D: Vector 3 with cross product, and triple scalar product.
+
 
 #endif

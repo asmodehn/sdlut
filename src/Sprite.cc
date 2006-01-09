@@ -2,10 +2,13 @@
 
 namespace AML {
 
-void render()
-        {
-            _display->blit(_sprite,SDL::Point(posX,posY));
-        }
+SDL::VideoSurface * Sprite::_display = NULL ;
+
+void Sprite::render()
+{
+    assert(_display);
+    _display->blit(_surf,SDL::Point(posX,posY));
+}
 
 
 }

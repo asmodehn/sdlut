@@ -21,7 +21,7 @@ namespace AML
         public:
         Window(std::string title, std::string icon, int width, int height);
 
-        getScene() { return _scene;}
+        Scene * getScene() { return _scene;}
         void loop();
     };
 }

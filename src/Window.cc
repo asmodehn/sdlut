@@ -5,16 +5,16 @@ namespace AML
 {
 Window::Window(std::string title, std::string icon, int width, int height)
         {
-          	App::getInstance().setName ( title );
-          	App::getInstance().setIcon( icon);
-            if (App::getInstance().initWindow(false,false,true,false) )
-                App::getInstance().getAppWindow()->reset(width,height);
+          	SDL::App::getInstance().setName ( title );
+          	SDL::App::getInstance().setIcon( icon);
+            if (SDL::App::getInstance().initVideo(false,false,true,false) )
+                SDL::App::getInstance().getWindow()->reset(width,height);
             _scene = new Scene();
         }
 
-Window::loop()
+void Window::loop()
 {
-    App::getInstance().mainLoop();
+    SDL::App::getInstance().getWindow()->mainLoop();
 }
 
 

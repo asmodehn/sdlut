@@ -2,8 +2,6 @@
 #define AML_CONFIG_HH
 //Common include for every AML header
 
-namespace AML
-{
 
 //defining the use of SDLwrap by default
 #ifndef USE_DEPEND_SDLwrap
@@ -12,12 +10,8 @@ namespace AML
 #include "SDLwrap.hh"
 #endif
 
-
-
-
-
-
-
+namespace AML
+{
 
 /**
   * This class manages the global configuration of AML
@@ -26,6 +20,8 @@ namespace AML
 class Config
 {
 //Log to create
+
+
 
 };
 

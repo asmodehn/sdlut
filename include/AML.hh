@@ -7,7 +7,7 @@
 #include "Camera.hh"
 #include "Layer.hh"
 #include "Sprite.hh"
-#include "Display.hh"
+#include "Window.hh"
 
 
 
