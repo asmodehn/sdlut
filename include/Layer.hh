@@ -4,6 +4,10 @@
 namespace AML
 {
 
+
+//A Map Editor
+//http://www.tilemap.co.uk/mappy.php
+
 class Layer //manages sprites
 {
 
