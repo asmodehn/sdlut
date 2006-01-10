@@ -164,7 +164,7 @@ namespace SDL
 
 
     Window::Window(std::string title,std::string icon)
-            : _title(title), _icon(icon)
+            : _title(title), _icon(icon),_background(Color(0,0,0))
     {
         try
         {
@@ -202,7 +202,6 @@ namespace SDL
         setIcon(_icon);
         setTitle(_title);
 
-        setBGColor( Color (0,0,0) );
     }
 
     Window::~Window()
@@ -268,7 +267,7 @@ namespace SDL
                 }
 #endif
                 if (_screen != NULL)
-                    _screen->setBGColor(background);
+                    _screen->setBGColor(_background);
             }
             catch(std::exception & e)
             {
@@ -293,7 +292,7 @@ namespace SDL
             _screen->saveContent();
             if (_screen->resize(width,height))
             {
-                _screen->setBGColor(background);
+                _screen->setBGColor(_background);
                 _screen->restoreContent();
             }
         }

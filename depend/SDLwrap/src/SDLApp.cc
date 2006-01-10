@@ -46,13 +46,13 @@ namespace SDL
             }
 
 #ifdef DEBUG
-            Log << nl << "Creating AppWindow ..." ;
+            Log << nl << "Creating Window ..." ;
 #endif
             _window = new Window(_name,_icon);
 #ifdef DEBUG
 
-            Log << nl << "AppWindow created @ "<< _window ;
-            Log << nl << " Setting up AppWindow... ";
+            Log << nl << "Window created @ "<< _window ;
+            Log << nl << " Setting up Window... ";
 #endif
 
 

@@ -57,7 +57,7 @@ protected:
 
 	//Constructor
 	//Note : The user should not be able to set raw SDL flags manually.
-	VideoSurface(int width, int height, int bpp, Uint32 flags = _defaultflags,Engine * _engine = new Engine()) throw (std::logic_error);
+	VideoSurface(int width, int height, int bpp, Uint32 flags = _defaultflags, Engine * _engine = new Engine()) throw (std::logic_error);
 
 public:
 

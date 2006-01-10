@@ -15,8 +15,9 @@ namespace AML
 
         Sprite * _sprite;
 
-        //inirialise the videosurface pointer in sprite for them to render themselves at their position
         Scene();
+        ~Scene() {}
+
 
         public:
 

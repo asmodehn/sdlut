@@ -42,7 +42,7 @@ namespace SDL
     protected:
 
         std::string _title, _icon;
-        Color background;
+        Color _background;
 
         //here because Event are initialised along with video...
         EventManager * _eventmanager;
@@ -99,11 +99,11 @@ namespace SDL
         //BGColor works only on 2DWindow
         void setBGColor(const Color & color)
         {
-            background = color;
+            _background = color;
         }
         Color getBGColor ()
         {
-            return background;
+            return _background;
         }
 
         //return true on success, false otherwise

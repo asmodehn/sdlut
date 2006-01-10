@@ -9,7 +9,7 @@ namespace SDL
     Uint32 VideoSurface::_defaultflags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
 
     //Constructor
-    VideoSurface::VideoSurface(int width, int height, int bpp, Uint32 flags, Engine * _engine) throw (std::logic_error)
+    VideoSurface::VideoSurface(int width, int height, int bpp, Uint32 flags, Engine * engine) throw (std::logic_error)
     try
     :
         BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
@@ -24,7 +24,7 @@ namespace SDL
         //SDL_WM_SetCaption(_title.c_str(), _icon.c_str());
         //shouldnt be needed if already done before...
         assert (_engine);
-        _engine->init(width, height); // to initialise the engine
+        _engine->init(width, height,this); // to initialise the engine
 
     }
     catch (std::exception &e)
@@ -131,13 +131,18 @@ namespace SDL
 
     bool VideoSurface::setBGColor(const Color & color)
     {
+        bool res = false;
+        Log << nl << "call VideoSurface::setBGColor(" << color << ")" << std::endl;
         if ( _engine != NULL )
         {
             _engine->setBGColor(color);
-//            fill(_engine->_background);
-            return true;
+            res = true;
         }
-        else return false;
+        else
+        {
+            Log << nl << "Engine == NULL" <<std::endl;
+        }
+        return res;
 
     }
 

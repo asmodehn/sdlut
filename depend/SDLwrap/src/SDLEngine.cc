@@ -156,15 +156,16 @@ namespace SDL
     }
     bool Engine::setBGColor(const Color & color)
     {
+        Log << nl << "call Engine::setBGColor(" << color << ")" << std::endl;
         _background=color;
         if (_screen != NULL )
             _screen->fill(_background);
         return true;
     }
 
-    bool Engine::init(int width, int height)
+    bool Engine::init(int width, int height, VideoSurface * display)
     {
-        _screen = App::getInstance().getWindow()->getDisplay();
+        _screen = display;
         if ( _screen != NULL )
             _screen->fill(_background);
         return true;
