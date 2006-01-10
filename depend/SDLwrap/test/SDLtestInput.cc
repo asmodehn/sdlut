@@ -67,10 +67,15 @@ int main( int argc, char* argv[])
 	App::getInstance().initVideo(false,false,true,false);
 
     testlog << nl << "Enabling Joystick..." ;
-	App::getInstance().initJoystick();
-	testlog << nl << "Opening Joystick 0..." ;
-	if (App::getInstance().getJoystickPool()->countAvailable() > 0);
-        App::getInstance().getJoystickPool()->open(0);
+	if (App::getInstance().initJoystick())
+	{
+
+        if (App::getInstance().getJoystickPool()->countAvailable() > 0)
+        {
+            testlog << nl << "Opening Joystick 0..." ;
+            App::getInstance().getJoystickPool()->open(0);
+        }
+	}
 
     testlog << nl << "Setting up Keyboard...";
 	MyKeyboard ui;

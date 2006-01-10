@@ -144,7 +144,10 @@ namespace SDL
 
 #endif
 
-    Engine::Engine() : _screen(NULL), _background(0,0,0)
+//global variable
+std::string defaultlogoname("../data/SDL_logo.bmp");
+
+    Engine::Engine() : _screen(NULL), _backupscreen(NULL), _defaultlogo(defaultlogoname), _background(0,0,0)
     {
         Log << nl << "Engine Constructor called" << std::endl;
     }
@@ -159,7 +162,9 @@ namespace SDL
         Log << nl << "call Engine::setBGColor(" << color << ")" << std::endl;
         _background=color;
         if (_screen != NULL )
+        {
             _screen->fill(_background);
+        }
         return true;
     }
 
@@ -181,10 +186,9 @@ namespace SDL
     //to call only when needed
     void Engine::render(void) const
     {
-        if ( _screen == NULL )
-            Log << nl << "Engine not initialised, the render has been aborted." << std::endl;
+        if ( _screen == NULL ) Log << nl << "Engine not initialised, the render has been aborted." << std::endl;
         _screen->fill(_background);
-        //        Log << nl << "Engine::render()" << std::endl;
+        _screen->blit(_defaultlogo,Point((_screen->getWidth()-_defaultlogo.getWidth())/2,(_screen->getHeight()-_defaultlogo.getHeight())/2));
     }
 
     bool Engine::saveContent(void)
@@ -194,6 +198,7 @@ namespace SDL
 
         Log << nl << "Engine::saveContent()" << std::endl;
         // we create a new RGB surface to clone the display...
+        assert(_screen);
         _backupscreen= new RGBSurface(*_screen);
         return _backupscreen!=NULL;
     }

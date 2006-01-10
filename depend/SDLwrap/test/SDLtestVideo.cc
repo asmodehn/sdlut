@@ -2,10 +2,6 @@
 
 using namespace SDL;
 
-
-//global variable
-std::string bitmapname("sample.bmp");
-
 //Defining UserInput
 class MyUserInput : public Keyboard
 {
@@ -59,15 +55,15 @@ int main(int argc, char** argv)
 	cursor.show();
 	Cursor::setCurrent(cursor);
 
-	RGBSurface bitmap (bitmapname);
-
-	int newW=bitmap.getWidth()+60;
-	int newH=bitmap.getHeight()+60;
+//	RGBSurface bitmap (bitmapname);
+//
+//	int newW=bitmap.getWidth()+60;
+//	int newH=bitmap.getHeight()+60;
 
     App::getInstance().getWindow()->setBGColor(Color (128,0,0));
 
 
-	if (! (App::getInstance().getWindow()->reset(newW,newH)))
+	if (! (App::getInstance().getWindow()->reset()))
     {
 		testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);
@@ -77,12 +73,12 @@ int main(int argc, char** argv)
         VideoSurface* display=App::getInstance().getWindow()->getDisplay();
         testlog << nl << *display << std::endl;
 
-		display->blit(bitmap,Point(30,30));
-
-		RGBSurface smiley("icon.bmp",Color(255,255,255));
-        smiley.optimise(true);
-
-		testlog << nl << std::boolalpha << display->blit(smiley,Point(50,50)) << std::endl;
+//		display->blit(bitmap,Point(30,30));
+//
+//		RGBSurface smiley("icon.bmp",Color(255,255,255));
+//        smiley.optimise(true);
+//
+//		testlog << nl << std::boolalpha << display->blit(smiley,Point(50,50)) << std::endl;
 
 		Cursor::warpCurrent(Point(50,50));
 

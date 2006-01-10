@@ -12,50 +12,59 @@
 #include "SDLColor.hh"
 #include "SDLRGBSurface.hh"
 
-namespace SDL {
-#ifdef HAVE_OPENGL
-class GLEngine
+namespace SDL
 {
-    float BGColorRed,BGColorGreen, BGColorBlue;
+#ifdef HAVE_OPENGL
+    class GLEngine
+    {
+        float BGColorRed,BGColorGreen, BGColorBlue;
 
-	public:
-	GLEngine() :  BGColorRed(0.0f),BGColorGreen(0.0f), BGColorBlue(0.0f){}
-	virtual void render(void) const;
-	virtual bool init(int width, int height);
-	virtual bool resize(int width, int height);
-	virtual bool setBGColor(float r, float g, float b);
-    virtual bool saveContent(void){return true;}
-	virtual bool restoreContent(void){return false;}
-};
+    public:
+        GLEngine() :  BGColorRed(0.0f),BGColorGreen(0.0f), BGColorBlue(0.0f)
+        {}
+        virtual void render(void) const;
+        virtual bool init(int width, int height);
+        virtual bool resize(int width, int height);
+        virtual bool setBGColor(float r, float g, float b);
+        virtual bool saveContent(void)
+        {
+            return true;
+        }
+        virtual bool restoreContent(void)
+        {
+            return false;
+        }
+    };
 
 #endif
 
-//Classes d'interface avec un moteur 2D
-//Meme probleme que precedemment
+    //Classes d'interface avec un moteur 2D
+    //Meme probleme que precedemment
 
-class VideoSurface; //further reference to access the display surface to be able to blit on it
+    class VideoSurface; //further reference to access the display surface to be able to blit on it
 
-class Engine
-{
+    class Engine
+    {
 
-protected:
-    VideoSurface * _screen;
+    protected:
+        VideoSurface * _screen;
 
-    //todo : make it an embedded object not a pointer... might need some improvements in BaseSurface for the creation/copy
-    RGBSurface * _backupscreen;
+        //todo : make it an embedded object not a pointer... might need some improvements in BaseSurface for the creation/copy
+        RGBSurface * _backupscreen;
+        RGBSurface _defaultlogo;
 
-    Color _background;
+        Color _background;
 
-	public:
-	Engine();
-	virtual ~Engine();
-	virtual void render(void) const;
-    virtual bool init(int width, int height, VideoSurface * display);
-    virtual bool resize(int width, int height);
-	virtual bool setBGColor(const Color & color);
-    virtual bool saveContent(void);
-    virtual bool restoreContent(void);
-};
+    public:
+        Engine();
+        virtual ~Engine();
+        virtual void render(void) const;
+        virtual bool init(int width, int height, VideoSurface * display);
+        virtual bool resize(int width, int height);
+        virtual bool setBGColor(const Color & color);
+        virtual bool saveContent(void);
+        virtual bool restoreContent(void);
+    };
 
 }
 

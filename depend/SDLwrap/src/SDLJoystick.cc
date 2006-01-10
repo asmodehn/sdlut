@@ -33,6 +33,7 @@ void JoystickPool::close(int index)
 
 int JoystickPool::countAvailable()
 {
+    Log << nl << "Joystick Pool size = " << _pool.size() << std::endl;
     return _pool.size();
 }
 

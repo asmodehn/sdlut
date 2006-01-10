@@ -282,6 +282,7 @@ namespace SDL
 
     bool Window::resize (int width, int height) const
     {
+        Log << nl << "resizing Window" ;
         bool res = false;
 #ifdef DEBUG
         assert (_screen);
@@ -289,10 +290,14 @@ namespace SDL
 
         if (_screen != NULL )
         {
+            Log << nl << "Savecontent";
             _screen->saveContent();
+            Log << nl << "resize _screen";
             if (_screen->resize(width,height))
             {
+                Log << nl << "setBGColor";
                 _screen->setBGColor(_background);
+                Log << nl << "restoreContent";
                 _screen->restoreContent();
             }
         }

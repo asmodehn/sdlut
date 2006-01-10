@@ -12,7 +12,7 @@ namespace SDL
     VideoSurface::VideoSurface(int width, int height, int bpp, Uint32 flags, Engine * engine) throw (std::logic_error)
     try
     :
-        BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
+        BaseSurface(SDL_SetVideoMode(width,height,bpp,flags )), _engine(engine)
     {
         if (_surf == NULL)
         {
@@ -23,8 +23,8 @@ namespace SDL
         //If a caption has been defined
         //SDL_WM_SetCaption(_title.c_str(), _icon.c_str());
         //shouldnt be needed if already done before...
-        assert (_engine);
-        _engine->init(width, height,this); // to initialise the engine
+        if (_engine != NULL )
+        _engine->init(width, height, this); // to initialise the engine
 
     }
     catch (std::exception &e)
@@ -148,6 +148,7 @@ namespace SDL
 
     bool VideoSurface::resize(int width, int height)
     {
+        Log << nl << " resizing VideoSurface";
         bool res = false;
         //BEWARE : should match DisplaySurface Constructor code
         SDL_Surface * newSurf = SDL_SetVideoMode(width,height,getBPP(),getFlags());
@@ -161,7 +162,10 @@ namespace SDL
             _surf=newSurf;
             res = true;
             //BEWARE : According to the doc, the display surface should never be freed by the caller of SetVideoMode. SDL_Quit will handle that.
-            if (_engine != NULL ) _engine->resize(width,height);
+            if (_engine != NULL ){
+                Log << nl << "Resizing Engine";
+                _engine->resize(width,height);
+            }
         }
 
         return res;
