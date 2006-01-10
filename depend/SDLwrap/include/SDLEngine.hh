@@ -10,6 +10,7 @@
 //(cf UI interface)
 #include "SDLConfig.hh"
 #include "SDLColor.hh"
+#include "SDLRGBSurface.hh"
 
 namespace SDL {
 #ifdef HAVE_OPENGL
@@ -37,6 +38,9 @@ class Engine
 {
     friend class VideoSurface; //to access background color.
 
+
+
+protected:
     Color _background;
 
 	public:
@@ -46,6 +50,8 @@ class Engine
 //	virtual bool init(int width, int height);
 //	virtual bool resize(int width, int height);
 	virtual bool setBGColor(const Color & color);
+    virtual bool saveContent(void);
+    virtual bool restoreContent(void);
 };
 
 }

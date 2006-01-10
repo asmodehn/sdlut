@@ -164,6 +164,16 @@ void Engine::render(void) const
 
 }
 
+bool Engine::saveContent(void)
+{
+    return false;
+}
+
+bool Engine::restoreContent(void)
+{
+    return false;
+}
+
 }
 
 #endif
