@@ -62,7 +62,9 @@ class Window
         bool reset( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT);
         //just resize the screen (without changing flags, or bpp)
         bool resize (int width, int height) const;
+
         VideoSurface * getDisplay( void ) {return _screen;}
+        void setDisplay( VideoSurface * display) { _screen=display;}
 
         VideoInfo * getVideoInfo( void ) {return _videoinfo;}
 EventManager* getEventManager() {return _eventmanager;}

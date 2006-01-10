@@ -24,6 +24,7 @@
 
 #include "SDLVideoSurface.hh"
 #include "SDLGLManager.hh"
+#include "SDLEngine.hh"
 
 namespace SDL {
 
@@ -31,37 +32,39 @@ namespace SDL {
 
 class GLSurface : public VideoSurface
 {
+protected :
 
     GLManager * const _glmanager;
+    GLEngine* _engine;
 
 public:
 
 	//Constructor
-	GLSurface(int width, int height, int bpp,GLManager * const glmanager ) throw (std::logic_error);
+	GLSurface(int width, int height, int bpp,GLManager * const glmanager, GLEngine * glengine = new GLEngine() ) throw (std::logic_error);
 	//Destructor
-	~GLSurface() {}
+	~GLSurface()  {if (_engine !=NULL ) delete _engine;}
+
+    void setEngine(GLEngine * engine = new GLEngine()) {_engine = engine;}
+    GLEngine * getEngine() { return _engine;}
 
 //	inline bool isOpenGLset(void) const {return ((SDL_OPENGL & _surf->flags) != 0);}
 
   bool resize (int width, int height);
 
 
-    virtual void setBGColor(const Color & color);
-    virtual Color getBGColor () ;
+    void setBGColor(const Color & color);
 
   //TODO : Save Screen -> backup the screen content in a new RGBSurface AND SAVE THE CURRENT SCENE STATE...
 //Save Screen -> backup the screen content in a new RGBSurface...
-	virtual bool saveContent(void) {return false;}
+	bool saveContent(void);
 	//restore Screen -> blit the saved surface to the center of the display surface
-	virtual bool restoreContent(void) {return true;}
+	bool restoreContent(void);
 
 	bool update(void);//call scene3D->render
 
 	//TODO : overload Basesurface functions that cannot be used here, because there is NO OPENGL Blit
 	//or overload using opengl textures ...
 
-	//Branch to another 3Dengine
-	//static void set3DEngine(Interface3D* eng) {engine=eng;}
 
 /*******************************************************************************
  * This is not recommended

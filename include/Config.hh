@@ -2,6 +2,7 @@
 #define AML_CONFIG_HH
 //Common include for every AML header
 
+#define AML_LIB
 
 //defining the use of SDLwrap by default
 #ifndef USE_DEPEND_SDLwrap

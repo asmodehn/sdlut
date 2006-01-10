@@ -20,8 +20,6 @@
  *
  */
 
-#include "Interface3D.hh"
-
 namespace SDL {
 
 #ifdef HAVE_OPENGL
@@ -39,13 +37,11 @@ class GLManager
 {
     friend class Window;
 
-protected :
-    Interface3D* _glengine;
-	GLManager() : _glengine(NULL) {}
+	GLManager(){}
 
 public :
 
-    ~GLManager() {delete _glengine;}
+    ~GLManager(){}
 
 	//may be connected with constructor ???
 	bool loadGLLibrary(const std::string & path)
@@ -56,8 +52,7 @@ public :
 	//TODO : I don't know how to manage this....
 	//getProcAddress
 
-    void setEngine(Interface3D * engine = new Interface3D()) {_glengine = engine;}
-    Interface3D * getEngine() { return _glengine;}
+
 
 	//Accessor to GLAttributes
 	//Note : DoubleBuf is managed by GLWindow, like 2D doublebuf

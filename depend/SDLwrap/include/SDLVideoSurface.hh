@@ -7,9 +7,9 @@
  * \ingroup Video
  * \ingroup WindowManager
  *
- * \brief This class is handle a display surface and also the Window Manager behaviour.
+ * \brief This class is handle a video surface.
  *
- * This class has two derivatives depending if your display is 2D or 3D.
+ * This class has a derivative if your display is 3d (OpenGL).
  *
  * \author Alex
  *
@@ -22,6 +22,7 @@
 #include "SDLConfig.hh"
 #include "SDLBaseSurface.hh"
 #include "SDLRGBSurface.hh" //to help with backup of screen surface
+#include "SDLEngine.hh"
 
 namespace SDL {
 
@@ -34,16 +35,18 @@ class VideoSurface : public BaseSurface
 	friend class Window;
 
 protected:
-
 	static Uint32 _defaultflags;
-    Color _background;
+
+    Engine* _engine;
 
     //todo : make it an embedded object not a pointer... might need some improvements in BaseSurface for the creation/copy
+    //maybe in engine instead?
     RGBSurface * _backupscreen;
+
 
 	//Constructor
 	//Note : The user should not be able to set raw SDL flags manually.
-	VideoSurface(int width, int height, int bpp, Uint32 flags = _defaultflags ) throw (std::logic_error);
+	VideoSurface(int width, int height, int bpp, Uint32 flags = _defaultflags, Engine * engine = new Engine() ) throw (std::logic_error);
 
 public:
 
@@ -62,10 +65,11 @@ public:
 	//to update the display
 	virtual bool update(void);
 
-    //set the backgrund color
-    virtual void setBGColor(const Color & color) { _background = color; fill(_background);}
-    virtual Color getBGColor () { return _background;}
+    //set the background color
+    virtual void setBGColor(const Color & color);
 
+    void setEngine(Engine * engine = new Engine()) {_engine = engine;}
+    Engine * getEngine() { return _engine;}
 
 	//Maybe in Window only ?
 	bool update(Rect r);

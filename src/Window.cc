@@ -10,6 +10,7 @@ Window::Window(std::string title, std::string icon, int width, int height)
             if (SDL::App::getInstance().initVideo(false,false,true,false) )
                 SDL::App::getInstance().getWindow()->reset(width,height);
             _scene = new Scene();
+            SDL::App::getInstance().getWindow()->setDisplay
         }
 
 void Window::loop()

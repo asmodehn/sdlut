@@ -1,5 +1,5 @@
 #include "SDLVideoSurface.hh"
-
+#include "SDLEngine.hh"
 //#include <sstream>
 
 namespace SDL {
@@ -9,8 +9,8 @@ std::vector<int> VideoSurface::availableHeight;
 Uint32 VideoSurface::_defaultflags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
 
 //Constructor
-VideoSurface::VideoSurface(int width, int height, int bpp, Uint32 flags) throw (std::logic_error)
-try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags )),_backupscreen(NULL)
+VideoSurface::VideoSurface(int width, int height, int bpp, Uint32 flags, Engine * engine) throw (std::logic_error)
+try : BaseSurface(SDL_SetVideoMode(width,height,bpp,flags )),_engine(engine),_backupscreen(NULL)
 {
 	if (_surf == NULL)
 	{
@@ -100,6 +100,8 @@ int VideoSurface::getSuggestedBPP(int width, int height)
 
 bool VideoSurface::update(void)
 {
+    //fill(_engine->_background);
+    _engine->render();
 	return SDL_Flip(_surf) == 0;
 }
 
@@ -133,7 +135,12 @@ bool VideoSurface::restoreContent(void)
 	return res;
 }
 
-
+void VideoSurface::setBGColor(const Color & color)
+{
+    assert(_engine);
+    _engine->setBGColor(color);
+    fill(_engine->_background);
+}
 
 bool VideoSurface::resize(int width, int height)
 {
@@ -150,7 +157,7 @@ bool VideoSurface::resize(int width, int height)
         _surf=newSurf;
         res = true;
         //BEWARE : According to the doc, the display surface should never be freed by the caller of SetVideoMode. SDL_Quit will handle that.
-        fill(_background);
+        fill(_engine->_background);
     }
 
 	return res;

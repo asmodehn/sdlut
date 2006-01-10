@@ -254,8 +254,6 @@ namespace SDL
 #ifdef HAVE_OPENGL
                 if (SDL_OPENGL & VideoSurface::_defaultflags)
                 {
-                    if (_glmanager->getEngine() == NULL)
-                        _glmanager->setEngine();
                     _screen = new GLSurface(width, height, _bpp,_glmanager );
                     res= (_screen != NULL);
                 }

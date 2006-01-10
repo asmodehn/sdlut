@@ -1,4 +1,4 @@
-#include "Interface3D.hh"
+#include "SDLEngine.hh"
 //This file is here for test purposes only
 //from NeheGL Tutorial
 
@@ -24,11 +24,13 @@
 //   glFrustum(xmin, xmax, ymin, ymax, zNear, zFar);
 //}
 
+namespace SDL
+{
 
 float rtri; // rotation angle
 float rquad; // rotation angle
 
-bool Interface3D::setBGColor(float r, float g, float b)
+bool GLEngine::setBGColor(float r, float g, float b)
 {
     BGColorRed =r,
     BGColorGreen = g;
@@ -37,7 +39,7 @@ bool Interface3D::setBGColor(float r, float g, float b)
     return true;
 }
 
-bool Interface3D::init(int width, int height)
+bool GLEngine::init(int width, int height)
 {
 	//actual init code
   std::cout << " 3D Engine's init" << std::endl;
@@ -51,7 +53,7 @@ bool Interface3D::init(int width, int height)
 	return resize(width,height);
 }
 
-bool Interface3D::resize(int width, int height)
+bool GLEngine::resize(int width, int height)
 {
 	//resize code
 	glViewport(0,0,width,height);						// Reset The Current Viewport
@@ -76,7 +78,7 @@ bool Interface3D::resize(int width, int height)
 }
 
 
-void Interface3D::render(void) const
+void GLEngine::render(void) const
 {
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
 	glLoadIdentity();									// Reset The Current Modelview Matrix
@@ -148,6 +150,20 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Bu
 	rtri+=0.2f;											// Increase The Rotation Variable For The Triangle ( NEW )
 	rquad-=0.15f;										// Decrease The Rotation Variable For The Quad ( NEW )
 										// Keep Going
+}
+
+
+bool Engine::setBGColor(const Color & color)
+{
+    _background=color;
+    return true;
+}
+
+void Engine::render(void) const
+{
+
+}
+
 }
 
 #endif
