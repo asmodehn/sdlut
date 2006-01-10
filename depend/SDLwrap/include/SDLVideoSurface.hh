@@ -26,8 +26,24 @@
 
 namespace SDL {
 
-//There can be only one -> Singleton Pattern
-//Must be used via derivated class
+
+/**
+ * \class Videosurface
+ *
+ * \ingroup Video
+ *
+ * \brief A class to wrap SDL_Surface only when it is a Video one
+ *
+ * This class is meant to be used along with a engine. If there is no Engine provided it will use its own.
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
 class VideoSurface : public BaseSurface
 {
 
@@ -39,14 +55,9 @@ protected:
 
     Engine* _engine;
 
-    //todo : make it an embedded object not a pointer... might need some improvements in BaseSurface for the creation/copy
-    //maybe in engine instead?
-    RGBSurface * _backupscreen;
-
-
 	//Constructor
 	//Note : The user should not be able to set raw SDL flags manually.
-	VideoSurface(int width, int height, int bpp, Uint32 flags = _defaultflags, Engine * engine = new Engine() ) throw (std::logic_error);
+	VideoSurface(int width, int height, int bpp, Uint32 flags = _defaultflags,Engine * _engine = new Engine()) throw (std::logic_error);
 
 public:
 
@@ -66,9 +77,13 @@ public:
 	virtual bool update(void);
 
     //set the background color
-    virtual void setBGColor(const Color & color);
+    virtual bool setBGColor(const Color & color);
 
-    void setEngine(Engine * engine = new Engine()) {_engine = engine;}
+    void setEngine(Engine * engine = new Engine())
+    {
+        Log << nl << "Setting Engine..." ;
+        _engine = engine;
+    }
     Engine * getEngine() { return _engine;}
 
 	//Maybe in Window only ?

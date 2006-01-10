@@ -1,5 +1,4 @@
 #include "SDLVideoSurface.hh"
-#include "SDLEngine.hh"
 //#include <sstream>
 
 namespace SDL
@@ -10,10 +9,10 @@ namespace SDL
     Uint32 VideoSurface::_defaultflags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
 
     //Constructor
-    VideoSurface::VideoSurface(int width, int height, int bpp, Uint32 flags, Engine * engine) throw (std::logic_error)
+    VideoSurface::VideoSurface(int width, int height, int bpp, Uint32 flags, Engine * _engine) throw (std::logic_error)
     try
     :
-        BaseSurface(SDL_SetVideoMode(width,height,bpp,flags )),_engine(engine),_backupscreen(NULL)
+        BaseSurface(SDL_SetVideoMode(width,height,bpp,flags ))
     {
         if (_surf == NULL)
         {
@@ -24,6 +23,8 @@ namespace SDL
         //If a caption has been defined
         //SDL_WM_SetCaption(_title.c_str(), _icon.c_str());
         //shouldnt be needed if already done before...
+        assert (_engine);
+        _engine->init(width, height); // to initialise the engine
 
     }
     catch (std::exception &e)
@@ -35,8 +36,6 @@ namespace SDL
 
     VideoSurface::~VideoSurface()
     {
-        if (_backupscreen !=NULL )
-            delete _backupscreen;
     }
 
 
@@ -107,59 +106,39 @@ namespace SDL
 
     bool VideoSurface::update(void)
     {
-        //fill(_engine->_background);
-        _engine->render();
+        if (_engine !=NULL ) _engine->render();
         return SDL_Flip(_surf) == 0;
     }
 
     //SaveScreen -> backup the screen content in a RGBSurface...
     bool VideoSurface::saveContent(void)
     {
-        bool enginesave=false;
-        //if the engine cant save, then we take a screenshot and use it
-        if (_engine==NULL || (enginesave=_engine->saveContent())==false)
-        {
-            if (_backupscreen != NULL )
-                delete _backupscreen;
-
-            Log << nl << "Window::saveContent()" << std::endl;
-            // we create a new RGB surface to clone the display...
-            _backupscreen= new RGBSurface(*this);
-        }
-
-        return enginesave || _backupscreen!=NULL;
+        if (_engine!=NULL)
+        return _engine->saveContent();
+        else return false;
     }
 
     //restoreScreen -> blit the saved surface to the center of the screen
     bool VideoSurface::restoreContent(void)
     {
-        bool res;
 
-        bool enginerestore=false;
         //if the engine cant save, then we take a screenshot and use it
-        if (_engine==NULL || (enginerestore=_engine->restoreContent())==false)
-        {
-            if (_backupscreen == NULL)
-                return false;
-            Log << nl << "Window::restoreContent()" << std::endl;
-
-            //to restore the content in the middle of the window
-            Point newpos;
-            newpos.setx( (getWidth()-_backupscreen->getWidth()) / 2 );
-            newpos.sety( (getHeight()-_backupscreen->getHeight()) / 2 );
-
-            Log << nl << "Blitting backupscreen at " << newpos << std::endl;
-            res = blit(*_backupscreen, newpos);
-        }
-
-        return enginerestore || res;
+        if (_engine!=NULL )
+            return _engine->restoreContent();
+        else
+         return false;
     }
 
-    void VideoSurface::setBGColor(const Color & color)
+    bool VideoSurface::setBGColor(const Color & color)
     {
-        assert(_engine);
-        _engine->setBGColor(color);
-        fill(_engine->_background);
+        if ( _engine != NULL )
+        {
+            _engine->setBGColor(color);
+//            fill(_engine->_background);
+            return true;
+        }
+        else return false;
+
     }
 
     bool VideoSurface::resize(int width, int height)
@@ -177,7 +156,7 @@ namespace SDL
             _surf=newSurf;
             res = true;
             //BEWARE : According to the doc, the display surface should never be freed by the caller of SetVideoMode. SDL_Quit will handle that.
-            fill(_engine->_background);
+            if (_engine != NULL ) _engine->resize(width,height);
         }
 
         return res;

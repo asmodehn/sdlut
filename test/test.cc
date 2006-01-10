@@ -29,11 +29,11 @@ int main ( int argc, char * argv [])
     testlog << nl << "Creating the window..." << std::endl;
     Window mainWin("AML test", "../data/AML_ico.bmp",640,480);
 
+    testlog << nl << "Setting up the Scene..." << std::endl;
     mainWin.getScene()->put(testbmp, 320, 240);
 
+    testlog << nl << "Starting the main loop..." << std::endl;
     mainWin.loop();
-
-
 
     return 0;
 }

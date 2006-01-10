@@ -36,7 +36,6 @@ namespace SDL
     :
         VideoSurface(width, height, bpp, _defaultflags), _glmanager(glmanager), _engine(glengine)
     {
-        assert (_glmanager);
         if (_engine != NULL)
             _engine->init(getWidth(),getHeight());
         else
@@ -51,7 +50,7 @@ namespace SDL
     {
         assert(_engine);
         _engine->render();
-        //si on a du blit //DEPRECATED
+        //if we got also blit //DEPRECATED
         //SDLDisplay::update();
 
         SDL_GL_SwapBuffers();
@@ -66,10 +65,10 @@ namespace SDL
     }
 
 
-    void GLSurface::setBGColor(const Color & color)
+    bool GLSurface::setBGColor(const Color & color)
     {
         assert(_engine);
-        _engine->setBGColor(static_cast<float> (color.getR() ) / 255.0f, static_cast<float> (color.getG() ) / 255.0f,static_cast<float> (color.getB() ) / 255.0f);
+        return _engine->setBGColor(static_cast<float> (color.getR() ) / 255.0f, static_cast<float> (color.getG() ) / 255.0f,static_cast<float> (color.getB() ) / 255.0f);
     }
 
 

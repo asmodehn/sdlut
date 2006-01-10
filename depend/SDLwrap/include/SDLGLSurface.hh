@@ -52,7 +52,7 @@ public:
   bool resize (int width, int height);
 
 
-    void setBGColor(const Color & color);
+    bool setBGColor(const Color & color);
 
   //TODO : Save Screen -> backup the screen content in a new RGBSurface AND SAVE THE CURRENT SCENE STATE...
 //Save Screen -> backup the screen content in a new RGBSurface...

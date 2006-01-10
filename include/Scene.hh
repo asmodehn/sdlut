@@ -7,7 +7,7 @@
 namespace AML
 {
     //manages layers and the blits
-    class Scene : public SDL::VideoSurface
+    class Scene : public SDL::Engine
     {
         friend class Window;
 
@@ -15,23 +15,20 @@ namespace AML
 
         Sprite * _sprite;
 
+        //inirialise the videosurface pointer in sprite for them to render themselves at their position
         Scene();
-
-        void render();
 
         public:
 
-        void put( Sprite sprite, int posX, int posY);
-
-
+        void put( Sprite sprite, int posX = 0, int posY = 0);
 
         bool resize (int width, int height);
 
         //TODO : SAVE THE CURRENT SCENE STATE...
         bool saveContent(void) {return false;}
-        bool restoreContent(void) {return true;}
+        bool restoreContent(void) {return false;}
 
-        bool update(void);//call render
+        bool render();//call render on all the sprites
 
 
     };

@@ -33,22 +33,25 @@ class GLEngine
 //Classes d'interface avec un moteur 2D
 //Meme probleme que precedemment
 
+class VideoSurface; //further reference to access the display surface to be able to blit on it
 
 class Engine
 {
-    friend class VideoSurface; //to access background color.
-
-
 
 protected:
+    VideoSurface * _screen;
+
+    //todo : make it an embedded object not a pointer... might need some improvements in BaseSurface for the creation/copy
+    RGBSurface * _backupscreen;
+
     Color _background;
 
 	public:
-	Engine() : _background(0,0,0) {}
-	virtual ~Engine() {}
+	Engine();
+	virtual ~Engine();
 	virtual void render(void) const;
-//	virtual bool init(int width, int height);
-//	virtual bool resize(int width, int height);
+    virtual bool init(int width, int height);
+    virtual bool resize(int width, int height);
 	virtual bool setBGColor(const Color & color);
     virtual bool saveContent(void);
     virtual bool restoreContent(void);

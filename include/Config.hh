@@ -14,13 +14,15 @@
 namespace AML
 {
 
+	static Logger Log("AML");
+
 /**
   * This class manages the global configuration of AML
   */
 
 class Config
 {
-//Log to create
+
 
 
 

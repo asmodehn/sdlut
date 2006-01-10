@@ -10,8 +10,6 @@ namespace AML
     {
         friend class Scene;
 
-        static SDL::VideoSurface * _display;
-
         SDL::RGBSurface _surf;
         int posX, posY;
 
@@ -20,9 +18,11 @@ namespace AML
         Sprite(std::string filename) : _surf(filename),posX(0),posY(0)
         {}
 
-        void render();
-
-
+#ifndef HAVE_OPENGL
+        bool render(SDL::VideoSurface * screen);
+#else
+        bool render();
+    #endif
 
         void setPos( int x, int y) {posX=x;posY=y;}
         int getPosX() { return posX;}

@@ -3,9 +3,9 @@
 namespace AML
 {
 
-Scene::Scene()
+Scene::Scene() : SDL::Engine()
 {
-    Sprite::_display=SDL::App::getInstance().getWindow()->getDisplay();
+//    Sprite::_display=SDL::App::getInstance().getWindow()->getDisplay();
 }
 
 void Scene::put(Sprite sprite, int posX, int posY)
@@ -14,9 +14,10 @@ void Scene::put(Sprite sprite, int posX, int posY)
     _sprite->setPos(posX,posY);
 }
 
-void Scene::render()
+bool Scene::render()
 {
-    _sprite->render();
+    Log << nl << Scene::render() << std::endl;
+    return _sprite->render(_screen);
 }
 
 }
