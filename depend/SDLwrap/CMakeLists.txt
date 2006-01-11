@@ -22,7 +22,6 @@ IF ( NOT SDL_FOUND )
 	IF (NOT SDL_LIBRARY_TEMP)
 		SET(SDL_LIBRARY_TEMP "Unused - SDL Not found using the default FindSDL.cmake Module")
 	ENDIF (NOT SDL_LIBRARY_TEMP)
-	
 
 	FILE(GLOB DEPEND_SDL ${SDLWrap_SOURCE_DIR}/depend/SDL-*)
 	IF ( DEPEND_SDL )
@@ -50,10 +49,12 @@ FIND_PACKAGE(OPENGL)
 #Defining Rules for building SDLWrap
 #
 
+INCLUDE_DIRECTORIES(${SDLWrap_SOURCE_DIR}/include )
+
 #test for SDL
 IF(SDL_FOUND)
 	#adding SDL includes to the build
-	INCLUDE_DIRECTORIES(SDLWrap_INCLUDES_FILES ${SDLWrap_SOURCE_DIR}/include ${SDLWrap_SOURCE_DIR}/../Common/include ${SDL_INCLUDE_DIR})
+	INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
 	#adding SDL libraries to the link
 	LINK_LIBRARIES (${SDLMAIN_LIBRARY} ${SDL_LIBRARY})
 ENDIF(SDL_FOUND)
@@ -69,6 +70,7 @@ ELSE (OPENGL_FOUND)
 	ADD_DEFINITIONS(-DLOGPREFIX=\"SDLwrap.noGL\")
 ENDIF(OPENGL_FOUND)
 
+	
 #Compiler Specific rules
 
 
@@ -222,7 +224,13 @@ ADD_DEPENDENCIES(threadwin SDLWrap)
 
 ADD_EXECUTABLE(torturethread include/SDLWrap.hh  test/torturethread.cc)
 ADD_DEPENDENCIES(torturethread SDLWrap)
- 
+
+
+#defining usefull variables to be used by dependant projects.
+SET (SDLWrap_INCLUDE_DIR ${SDLWrap_SOURCE_DIR}/include)
+GET_TARGET_PROPERTY(SDLWrap_LIBRARY SDLWrap LOCATION)
+
+
 #
 #Adding rules for installation
 #
@@ -231,16 +239,21 @@ ADD_DEPENDENCIES(torturethread SDLWrap)
 INSTALL_TARGETS(/. FILES SDLWrap)
 INSTALL_FILES(/include FILES "^include/*.hh$")
 
-# installing dependency if needed
-#IF(DEPEND_SDL)
-#	INSTALL_FILES(/. FILES ${DEPEND_SDL}/lib/SDL.dll ${DEPEND_SDL}/lib/SDL.so)
-#ENDIF(DEPEND_SDL)
+# installing custom dependencies if needed
+IF(DEPEND_SDL)
+	IF (WIN32)
+	INSTALL_FILES(/. FILES ${DEPEND_SDL}/lib/SDL.dll)
+	ELSE (WIN32)
+	INSTALL_FILES(/. FILES ${DEPEND_SDL}/lib/SDL.so)
+	ENDIF (WIN32)
+ENDIF(DEPEND_SDL)
 
 # installing main shared data
-INSTALL_FILES(/data FILES data/SDL_ico.bmp data/sdl_button.gif data/SDL_logo.bmp)
+INSTALL_FILES(/data FILES data/SDL_icon.bmp data/sdl_button.gif data/SDL_logo.bmp)
 
 # installing tests
 INSTALL_TARGETS(/test FILES testdyngl checkkeys graywin loopwave SDLtest testalpha testbitmap testblitspeed testcdrom testcpuinfo testendian testerror testgamma testgl testthread testjoystick testkeys testlock testoverlay2 testoverlay testpalette testsem testsprite testtimer testtypes testver testvidinfo testwin testwm threadwin torturethread)
 
 # installing tests data
 INSTALL_FILES(/test FILES test/icon.bmp test/moose.dat test/picture.xbm test/sail.bmp test/sample.bmp test/sample.wav)
+
