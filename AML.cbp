@@ -19,6 +19,8 @@
 				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="2"/>
 				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-g"/>
 					<Add option="-DLOGPREFIX=\&quot;AML\&quot;"/>
 				</Compiler>
 				<Linker>
@@ -36,6 +38,8 @@
 				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="2"/>
 				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-g"/>
 					<Add option="-DLOGPREFIX=\&quot;AML\&quot;"/>
 				</Compiler>
 				<Linker>
@@ -43,15 +47,18 @@
 				</Linker>
 			</Target>
 			<Target title="test">
-				<Option output="test\AML-test.exe"/>
-				<Option working_dir="test"/>
-				<Option object_output="obj"/>
-				<Option deps_output=".deps"/>
+				<Option output="build\test\AML-test.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\.deps"/>
+				<Option external_deps="build\bin_default\libAML.a;"/>
 				<Option type="1"/>
 				<Option compiler="0"/>
 				<Option projectLinkerOptionsRelation="2"/>
 				<Option projectResourceIncludeDirsRelation="1"/>
 				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-g"/>
 					<Add option="-DLOGPREFIX=\&quot;AML-test\&quot;"/>
 				</Compiler>
 				<Linker>

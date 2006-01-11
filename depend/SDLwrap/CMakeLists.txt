@@ -237,7 +237,7 @@ GET_TARGET_PROPERTY(SDLWrap_LIBRARY SDLWrap LOCATION)
 
 # installing main library
 INSTALL_TARGETS(/. FILES SDLWrap)
-INSTALL_FILES(/include FILES "^include/*.hh$")
+INSTALL_FILES(${SDLWrap_INCLUDE_DIR} "^*.hh$")
 
 # installing custom dependencies if needed
 IF(DEPEND_SDL)
