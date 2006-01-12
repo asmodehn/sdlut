@@ -34,7 +34,7 @@
 #include "SDLVideoSurface.hh"
 #include "SDLGLSurface.hh"
 #include "SDLGLManager.hh"
-#include "SDLEngine.hh"
+//#include "SDLEngine.hh"
 #include "SDLColor.hh"
 #include "SDLCursor.hh"
 #include "SDLOverlay.hh"

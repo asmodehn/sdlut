@@ -294,10 +294,11 @@ IF(DEPEND_SDL)
 ENDIF(DEPEND_SDL)
 
 # installing main shared data
-INSTALL_FILES(/data FILES data/SDL_icon.bmp data/sdl_button.gif data/SDL_logo.bmp)
+INSTALL_FILES(/data FILES data/SDL_icon.bmp data/SDL_logo.bmp )
+#  data/sdl_button.gif 
 
 # installing tests
-INSTALL_TARGETS(/test FILES testdyngl checkkeys graywin loopwave SDLtest testalpha testbitmap testblitspeed testcdrom testcpuinfo testendian testerror testgamma testgl testthread testjoystick testkeys testlock testoverlay2 testoverlay testpalette testsem testsprite testtimer testtypes testver testvidinfo testwin testwm threadwin torturethread)
+INSTALL_TARGETS(/test FILES SDLtestVideo SDLtestInput testdyngl checkkeys graywin loopwave SDLtest testalpha testbitmap testblitspeed testcdrom testcpuinfo testendian testerror testgamma testgl testthread testjoystick testkeys testlock testoverlay2 testoverlay testpalette testsem testsprite testtimer testtypes testver testvidinfo testwin testwm threadwin torturethread)
 
 # installing tests data
 INSTALL_FILES(/test FILES test/icon.bmp test/moose.dat test/picture.xbm test/sail.bmp test/sample.bmp test/sample.wav)

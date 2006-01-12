@@ -16,14 +16,14 @@ namespace AML
         Sprite * _sprite;
 
         Scene();
-        ~Scene() {}
+        ~Scene();
 
 
         public:
 
-        void put( Sprite sprite, int posX = 0, int posY = 0);
-
-        bool resize (int width, int height);
+        void put( Sprite sprite, int posX = 0, int posY = 0);        //bool init(int width, int height, SDL::VideoSurface * display) {}
+//        bool resize (int width, int height);
+//       bool setBGColor(const SDL::Color & color);
 
         //TODO : SAVE THE CURRENT SCENE STATE...
         bool saveContent(void) {return false;}
@@ -31,8 +31,12 @@ namespace AML
 
         bool render();//call render on all the sprites
 
-
     };
+
+
+
 }
+
+
 
 #endif

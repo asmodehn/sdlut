@@ -9,6 +9,18 @@ Scene::Scene() : SDL::Engine()
 //    Sprite::_display=SDL::App::getInstance().getWindow()->getDisplay();
 }
 
+Scene::~Scene()
+{
+}
+
+//bool resize (int width, int height)
+//{
+//}
+//
+//bool setBGColor(const SDL::Color & color)
+//{
+//}
+
 void Scene::put(Sprite sprite, int posX, int posY)
 {
     _sprite = &sprite;
