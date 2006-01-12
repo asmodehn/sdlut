@@ -114,14 +114,33 @@ ADD_LIBRARY(	SDLWrap
 		include/SDLVideoInfo.hh src/SDLVideoInfo.cc
 	)
 
+#copying data files to use when debugging
+CONFIGURE_FILE(${SDLWrap_SOURCE_DIR}/data/SDL_icon.bmp ${SDLWrap_BINARY_DIR}/data/SDL_icon.bmp COPYONLY)
+CONFIGURE_FILE(${SDLWrap_SOURCE_DIR}/data/SDL_logo.bmp ${SDLWrap_BINARY_DIR}/data/SDL_logo.bmp COPYONLY)
+
+#defining usefull variables to be used by dependant projects.
+SET (SDLWrap_INCLUDE_DIR ${SDLWrap_SOURCE_DIR}/include)
+GET_TARGET_PROPERTY(SDLWrap_LIBRARY SDLWrap LOCATION)
+
+#Copying dependencies if needed for debug
+IF(DEPEND_SDL)
+	IF (WIN32)
+		GET_FILENAME_COMPONENT(DEBUG_DIR ${SDLWrap_LIBRARY} PATH)
+		ADD_CUSTOM_COMMAND(TARGET SDLWrap POST_BUILD COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different ${DEPEND_SDL}/lib/SDL.dll ${DEBUG_DIR})
+	ENDIF (WIN32)
+ENDIF(DEPEND_SDL)
+
 #
 #Adding targets for tests
 #Not in a subdir, because of the actual dependency being the other way around than the directory hierarchy
 #
 #TODO : add custom build command to move the needed files for testing (without installing)...
 
-#linking SDLWrap to all other following libraries
+#linking SDLWrap to all other following executables
 LINK_LIBRARIES(SDLWrap)
+
+# TODO : Still need to copy test data for following tests... temporary, while the test still uses raw SDL.
+# Goal : having test using only data/* files...
 
 #trying to dynamically link opengl
 ADD_EXECUTABLE(testdyngl  include/SDLWrap.hh test/testdyngl.cc)
@@ -226,9 +245,7 @@ ADD_EXECUTABLE(torturethread include/SDLWrap.hh  test/torturethread.cc)
 ADD_DEPENDENCIES(torturethread SDLWrap)
 
 
-#defining usefull variables to be used by dependant projects.
-SET (SDLWrap_INCLUDE_DIR ${SDLWrap_SOURCE_DIR}/include)
-GET_TARGET_PROPERTY(SDLWrap_LIBRARY SDLWrap LOCATION)
+
 
 
 #
@@ -237,14 +254,42 @@ GET_TARGET_PROPERTY(SDLWrap_LIBRARY SDLWrap LOCATION)
 
 # installing main library
 INSTALL_TARGETS(/. FILES SDLWrap)
-INSTALL_FILES(${SDLWrap_INCLUDE_DIR} "^*.hh$")
+INSTALL_FILES(/include FILES
+#"^include/*.hh$")
+		include/SDLWrap.hh
+		include/SDLConfig.hh
+		include/Logger.hh
+		include/SDLApp.hh
+		include/SDLWindow.hh
+		include/SDLEngine.hh
+		include/SDLBaseSurface.hh
+		include/SDLCDRom.hh
+		include/SDLCursor.hh
+		include/SDLVideoSurface.hh
+		include/SDLCriticalEvent.hh
+		include/SDLEvent.hh
+		include/SDLEventManager.hh
+		include/SDLKeyboard.hh
+		include/SDLMouse.hh
+		include/SDLJoystick.hh
+		include/SDLGLManager.hh
+		include/SDLGLSurface.hh
+		include/SDLManager.hh
+		include/SDLOverlay.hh
+		include/SDLPixelFormat.hh
+		include/SDLPoint.hh
+		include/SDLRect.hh
+		include/SDLRGBSurface.hh
+		include/SDLVideoInfo.hh)
 
 # installing custom dependencies if needed
 IF(DEPEND_SDL)
 	IF (WIN32)
 	INSTALL_FILES(/. FILES ${DEPEND_SDL}/lib/SDL.dll)
+	INSTALL_FILES(/test FILES ${DEPEND_SDL}/lib/SDL.dll)
 	ELSE (WIN32)
 	INSTALL_FILES(/. FILES ${DEPEND_SDL}/lib/SDL.so)
+	INSTALL_FILES(/test FILES ${DEPEND_SDL}/lib/SDL.so)
 	ENDIF (WIN32)
 ENDIF(DEPEND_SDL)
 
