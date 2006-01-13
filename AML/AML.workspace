@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_workspace_file>
+<CodeBlocks_workspace_file>
+	<Workspace title="AML Workspace">
+		<Project filename="AML.cbp" active="1"/>
+		<Project filename="depend\SDLwrap\SDLwrap.cbp"/>
+	</Workspace>
+</CodeBlocks_workspace_file>

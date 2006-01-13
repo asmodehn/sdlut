@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="1"/>
+	<Project>
+		<Option title="AML"/>
+		<Option makefile="Makefile"/>
+		<Option makefile_is_custom="0"/>
+		<Option default_target="1"/>
+		<Option compiler="0"/>
+		<Build>
+			<Target title="lib_default">
+				<Option output="build\bin_default\libAML.a"/>
+				<Option working_dir=""/>
+				<Option object_output="build\obj_default\"/>
+				<Option deps_output="build\.deps"/>
+				<Option type="2"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="2"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-g"/>
+					<Add option="-DLOGPREFIX=\&quot;AML\&quot;"/>
+				</Compiler>
+				<Linker>
+					<Add library="depend\SDLwrap\build\bin_debug\libSDLwrap.a"/>
+					<Add library="opengl32"/>
+				</Linker>
+			</Target>
+			<Target title="lib_noGL">
+				<Option output="build\bin_noGL\libAML.a"/>
+				<Option working_dir=""/>
+				<Option object_output="build\obj_noGL\"/>
+				<Option deps_output="build\.deps"/>
+				<Option type="2"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="2"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-g"/>
+					<Add option="-DLOGPREFIX=\&quot;AML\&quot;"/>
+				</Compiler>
+				<Linker>
+					<Add library="depend\SDLwrap\build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="test">
+				<Option output="build\test\AML-test.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\.deps"/>
+				<Option external_deps="build\bin_default\libAML.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-g"/>
+					<Add option="-DLOGPREFIX=\&quot;AML-test\&quot;"/>
+				</Compiler>
+				<Linker>
+					<Add library="build\bin_default\libAML.a"/>
+					<Add library="depend\SDLwrap\build\bin_debug\libSDLwrap.a"/>
+					<Add library="opengl32"/>
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall"/>
+			<Add option="-g"/>
+			<Add option="-DLOGINDENTLVL=0"/>
+			<Add directory="include"/>
+			<Add directory="depend\Common\include"/>
+			<Add directory="depend\SDLwrap\include"/>
+		</Compiler>
+		<Linker>
+			<Add library="SDL"/>
+			<Add library="SDLmain"/>
+		</Linker>
+		<Unit filename="data\AML_ico.bmp">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+			<Option target="test"/>
+		</Unit>
+		<Unit filename="data\AML_sprite.bmp">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+			<Option target="test"/>
+		</Unit>
+		<Unit filename="include\AML.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="test"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="include\Camera.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="include\Config.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="include\Layer.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="include\Math2D.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="include\Scene.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="include\Sprite.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="include\Window.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="src\Camera.cc">
+			<Option compilerVar="CC"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="src\Config.cc">
+			<Option compilerVar="CC"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="src\Layer.cc">
+			<Option compilerVar="CC"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="src\Scene.cc">
+			<Option compilerVar="CC"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="src\Sprite.cc">
+			<Option compilerVar="CC"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="src\Window.cc">
+			<Option compilerVar="CC"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="test\test.cc">
+			<Option compilerVar="CC"/>
+			<Option target="test"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
