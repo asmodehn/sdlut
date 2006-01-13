@@ -6,7 +6,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 #ifdef TEST_VGA16 /* Define this if you want to test VGA 16-color video modes */
 #define NUM_COLORS	16

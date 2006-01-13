@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 #ifdef HAVE_OPENGL
 
@@ -824,7 +824,7 @@ int main(int argc, char *argv[])
 }
 
 #else /* HAVE_OPENGL */
-//would be nice if we can put that in SDLwrap.hh
+//would be nice if we can put that in SDL.hh
 #ifdef __MINGW32__
 #ifdef main
 #undef main

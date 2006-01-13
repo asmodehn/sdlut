@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 #define DEFAULT_RESOLUTION	1
 

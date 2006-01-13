@@ -7,7 +7,7 @@
 #include <math.h>
 #include <time.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 #define DEBUG_FLIP 1
 

@@ -6,7 +6,7 @@
 //TODO : MINIMUM VERSION TO BUILD THIS TEST...
 
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 using namespace std;
 using namespace RAGE;

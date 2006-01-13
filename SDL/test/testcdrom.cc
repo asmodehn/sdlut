@@ -6,7 +6,7 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 
 static void PrintStatus(int driveindex, SDL_CD *cdrom)

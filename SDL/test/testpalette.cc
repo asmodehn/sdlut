@@ -15,7 +15,7 @@
 #define M_PI	3.14159265358979323846
 #endif
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 /* screen size */
 #define SCRW 640

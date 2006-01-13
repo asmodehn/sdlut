@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 static SDL_Surface *dest = NULL;
 static SDL_Surface *src = NULL;

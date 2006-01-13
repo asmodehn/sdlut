@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 #include "SDL_mutex.h"
 #include "SDL_thread.h"
 

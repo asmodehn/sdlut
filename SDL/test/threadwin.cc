@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 #include "SDL_thread.h"
 
 /* Are we done yet? */

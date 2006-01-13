@@ -8,7 +8,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 #define FRAME_TICKS	(1000/30)		/* 30 frames/second */
 

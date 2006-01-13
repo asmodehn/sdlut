@@ -1,4 +1,4 @@
-#include "SDLwrap.hh"
+#include "SDL.hh"
 using namespace RAGE;
 using namespace RAGE::SDL;
 

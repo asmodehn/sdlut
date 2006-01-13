@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 #include "picture.xbm"
 
 SDL_Surface *LoadXBM(SDL_Surface *screen, int w, int h, Uint8 *bits)

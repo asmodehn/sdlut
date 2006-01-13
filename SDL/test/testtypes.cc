@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "SDLwrap.hh"
+#include "SDL.hh"
 #include "SDL_types.h"
 
 int main(int argc, char *argv[])

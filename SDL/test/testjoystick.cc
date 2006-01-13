@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 #define SCREEN_WIDTH	640
 #define SCREEN_HEIGHT	480

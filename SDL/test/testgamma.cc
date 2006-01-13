@@ -6,7 +6,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 /* Turn a normal gamma value into an appropriate gamma ramp */
 void CalculateGamma(double gamma, Uint16 *ramp)

@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <signal.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 
 struct {

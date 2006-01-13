@@ -72,7 +72,7 @@ namespace RAGE
 
 namespace SDL
 {
-	static Logger Log("SDLwrap");
+	static Logger Log("RAGE::SDL");
 
 	static inline std::string GetError(void) { return SDL_GetError(); }
 

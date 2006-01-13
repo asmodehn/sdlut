@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 using namespace RAGE;
 
 int main(int argc, char *argv[])

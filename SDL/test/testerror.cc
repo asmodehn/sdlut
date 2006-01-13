@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <signal.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 #include "SDL_thread.h"
 
 static int alive = 0;

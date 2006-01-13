@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 /* Is the cursor visible? */
 static int visible = 1;

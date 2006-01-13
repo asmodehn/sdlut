@@ -9,7 +9,7 @@
 
 #define NOTICE(X)	printf("%s", X);
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 void DrawPict(SDL_Surface *screen, char *bmpfile,
 					int speedy, int flip, int nofade)

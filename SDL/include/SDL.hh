@@ -1,8 +1,8 @@
-#ifndef SDL_WRAP_HH
-#define SDL_WRAP_HH
+#ifndef SDL_HH
+#define SDL_HH
 
-/** This file gather all the header files a user need to include to be able to use SDLwrap
-  * So the user just has to include SDLwrap to have full access to the whole wrapper
+/** This file gather all the header files a user need to include to be able to use RAGE::SDL
+  * So the user just has to include SDL.hh to have full access to the whole RAGE wrapper
   */
 
 /**
@@ -34,7 +34,7 @@
 #include "SDLVideoSurface.hh"
 #include "SDLGLSurface.hh"
 #include "SDLGLManager.hh"
-//#include "SDLEngine.hh"
+#include "SDLEngine.hh"
 #include "SDLColor.hh"
 #include "SDLCursor.hh"
 #include "SDLOverlay.hh"

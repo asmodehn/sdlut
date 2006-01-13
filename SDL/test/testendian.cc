@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 #include "SDL_endian.h"
 
 int main(int argc, char *argv[])

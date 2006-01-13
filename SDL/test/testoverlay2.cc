@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 #define MOOSEPIC_W 64
 #define MOOSEPIC_H 88

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 
 #define NUM_BLITS	10
 #define NUM_UPDATES	500

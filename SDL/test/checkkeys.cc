@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 using namespace RAGE;
 
 static void print_modifiers(void)

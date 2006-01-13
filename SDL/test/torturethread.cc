@@ -6,7 +6,7 @@
 #include <signal.h>
 #include <string.h>
 
-#include "SDLwrap.hh"
+#include "SDL.hh"
 #include "SDL_thread.h"
 
 #define NUMTHREADS 10
