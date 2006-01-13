@@ -1,0 +1,1662 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="1"/>
+	<Project>
+		<Option title="SDLwrap"/>
+		<Option makefile="Makefile"/>
+		<Option makefile_is_custom="0"/>
+		<Option default_target="2"/>
+		<Option compiler="0"/>
+		<Build>
+			<Target title="staticlib-NoOpenGL">
+				<Option output="build\bin_NoGL\libSDLwrap.a"/>
+				<Option working_dir=""/>
+				<Option object_output="build\obj_NoGL\"/>
+				<Option deps_output="build\dep_NoGL"/>
+				<Option type="2"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="2"/>
+				<Compiler>
+					<Add option="-W"/>
+					<Add option="-g"/>
+					<Add option="-DLOGINDENTLVL=1"/>
+					<Add option="-DLOGPREFIX=\&quot;SDLwrap.noGL\&quot;"/>
+					<Add option="-DDEBUG"/>
+				</Compiler>
+			</Target>
+			<Target title="staticlib-debug">
+				<Option output="build\bin_debug\libSDLwrap.a"/>
+				<Option working_dir=""/>
+				<Option object_output="build\obj_debug\"/>
+				<Option deps_output="build\dep_debug\"/>
+				<Option type="2"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectIncludeDirsRelation="0"/>
+				<Option projectResourceIncludeDirsRelation="2"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-g"/>
+					<Add option="-DLOGINDENTLVL=1"/>
+					<Add option="-DLOGPREFIX=\&quot;SDLwrap.debug\&quot;"/>
+					<Add option="-DHAVE_OPENGL"/>
+					<Add option="-DDEBUG"/>
+				</Compiler>
+				<Linker>
+					<Add library="opengl32"/>
+				</Linker>
+			</Target>
+			<Target title="testInput-debug">
+				<Option output="build\test\SDLtestInput.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\.deps"/>
+				<Option external_deps="build\bin_NoGL\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Linker>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testVideo-debug">
+				<Option output="build\test\SDLtestVideo.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\.deps"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectIncludeDirsRelation="0"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Option projectLibDirsRelation="0"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+					<Add option="-DHAVE_OPENGL"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_debug\libSDLwrap.a"/>
+					<Add library="opengl32"/>
+				</Linker>
+			</Target>
+			<Target title="checkkeys">
+				<Option output="build\test\checkkeys.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectIncludeDirsRelation="0"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Option projectLibDirsRelation="0"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="graywin">
+				<Option output="build\test\graywin.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="loopwave">
+				<Option output="build\test\loopwave.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option parameters="sample.wav"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testalpha">
+				<Option output="build\test\testalpha.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testbitmap">
+				<Option output="build\test\testbitmap.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testblitspeed">
+				<Option output="build\test\testblitspeed.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_optimise\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testcdrom">
+				<Option output="build\test\testcdrom.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testcpuinfo">
+				<Option output="build\test\testcpuinfo.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testdyngl">
+				<Option output="build\test\testdyngl.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+					<Add option="-DHAVE_OPENGL"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testendian">
+				<Option output="build\test\testendian.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testerror">
+				<Option output="build\test\testerror.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testgamma">
+				<Option output="build\test\testgamma.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testgl">
+				<Option output="build\test\testgl.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+					<Add option="-DHAVE_OPENGL"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_debug\libSDLwrap.a"/>
+					<Add library="opengl32"/>
+				</Linker>
+			</Target>
+			<Target title="testthread">
+				<Option output="build\test\testthread.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testjoystick">
+				<Option output="build\test\testjoystick.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option parameters="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testkeys">
+				<Option output="build\test\testkeys.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testlock">
+				<Option output="build\test\testlock.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testoverlay2">
+				<Option output="build\test\testoverlay2.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testoverlay">
+				<Option output="build\test\testoverlay.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testpalette">
+				<Option output="build\test\testpalette.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testsem">
+				<Option output="build\test\testsem.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option parameters="42"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testsprite">
+				<Option output="build\test\testsprite.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testtimer">
+				<Option output="build\test\testtimer.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testtypes">
+				<Option output="build\test\testtypes.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testver">
+				<Option output="build\test\testver.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testvidinfo">
+				<Option output="build\test\testvidinfo.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option parameters="-benchmark"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testwin">
+				<Option output="build\test\testwin.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="testwm">
+				<Option output="build\test\testwm.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="threadwin">
+				<Option output="build\test\threadwin.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+			<Target title="torturethread">
+				<Option output="build\test\torturethread.exe"/>
+				<Option working_dir="build\test"/>
+				<Option object_output="build\test\obj"/>
+				<Option deps_output="build\test\dep"/>
+				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectLinkerOptionsRelation="2"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+				<Compiler>
+					<Add option="-Wall"/>
+					<Add option="-pg"/>
+					<Add option="-g"/>
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon"/>
+					<Add library="build\bin_NoGL\libSDLwrap.a"/>
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-W"/>
+			<Add option="-g"/>
+			<Add directory="include"/>
+			<Add directory="..\Common\include"/>
+		</Compiler>
+		<Linker>
+			<Add library="SDL"/>
+			<Add library="SDLmain"/>
+		</Linker>
+		<Unit filename="include\Logger.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLApp.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLBaseSurface.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLCDRom.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLColor.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLConfig.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLCriticalEvent.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLCursor.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLDisplaySurface.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLEngine.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLEvent.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLEventManager.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLGLManager.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLGLSurface.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLJoystick.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLKeyboard.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLManager.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLMouse.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLOverlay.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLPixelFormat.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLPoint.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLRGBSurface.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLRect.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLTimer.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLVideoInfo.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+		</Unit>
+		<Unit filename="include\SDLVideoSurface.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLWindow.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="include\SDLwrap.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="checkkeys"/>
+			<Option target="graywin"/>
+			<Option target="loopwave"/>
+			<Option target="testalpha"/>
+			<Option target="testbitmap"/>
+			<Option target="testblitspeed"/>
+			<Option target="testcdrom"/>
+			<Option target="testcpuinfo"/>
+			<Option target="testdyngl"/>
+			<Option target="testendian"/>
+			<Option target="testerror"/>
+			<Option target="testgamma"/>
+			<Option target="testgl"/>
+			<Option target="testthread"/>
+			<Option target="testjoystick"/>
+			<Option target="testkeys"/>
+			<Option target="testlock"/>
+			<Option target="testoverlay2"/>
+			<Option target="testoverlay"/>
+			<Option target="testpalette"/>
+			<Option target="testsem"/>
+			<Option target="testsprite"/>
+			<Option target="testtimer"/>
+			<Option target="testtypes"/>
+			<Option target="testver"/>
+			<Option target="testvidinfo"/>
+			<Option target="testwin"/>
+			<Option target="testwm"/>
+			<Option target="threadwin"/>
+			<Option target="torturethread"/>
+			<Option target="testVideo-debug"/>
+			<Option target="testInput-debug"/>
+		</Unit>
+		<Unit filename="src\Logger.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLApp.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLBaseSurface.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLCDRom.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLCriticalEvent.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLCursor.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLEngine.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLEvent.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLEventManager.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLGLManager.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLGLSurface.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLJoystick.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLKeyboard.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLManager.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLMouse.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLOverlay.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLPixelFormat.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLPoint.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLRGBSurface.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLRect.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLVideoInfo.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-debug"/>
+			<Option target="staticlib-NoOpenGL"/>
+		</Unit>
+		<Unit filename="src\SDLVideoSurface.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLWindow.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="test\SDLtestInput.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testInput-debug"/>
+		</Unit>
+		<Unit filename="test\SDLtestVideo.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testVideo-debug"/>
+		</Unit>
+		<Unit filename="test\checkkeys.cc">
+			<Option compilerVar="CC"/>
+			<Option target="checkkeys"/>
+		</Unit>
+		<Unit filename="test\graywin.cc">
+			<Option compilerVar="CC"/>
+			<Option target="graywin"/>
+		</Unit>
+		<Unit filename="test\icon.bmp">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="testsprite"/>
+		</Unit>
+		<Unit filename="test\loopwave.cc">
+			<Option compilerVar="CC"/>
+			<Option target="loopwave"/>
+		</Unit>
+		<Unit filename="test\moose.dat">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="testoverlay2"/>
+		</Unit>
+		<Unit filename="test\sail.bmp">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="testpalette"/>
+		</Unit>
+		<Unit filename="test\sample.bmp">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="testoverlay"/>
+			<Option target="testwin"/>
+		</Unit>
+		<Unit filename="test\sample.wav">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="loopwave"/>
+		</Unit>
+		<Unit filename="test\testalpha.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testalpha"/>
+		</Unit>
+		<Unit filename="test\testbitmap.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testbitmap"/>
+		</Unit>
+		<Unit filename="test\testblitspeed.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testblitspeed"/>
+		</Unit>
+		<Unit filename="test\testcdrom.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testcdrom"/>
+		</Unit>
+		<Unit filename="test\testcpuinfo.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testcpuinfo"/>
+		</Unit>
+		<Unit filename="test\testdyngl.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testdyngl"/>
+		</Unit>
+		<Unit filename="test\testendian.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testendian"/>
+		</Unit>
+		<Unit filename="test\testerror.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testerror"/>
+		</Unit>
+		<Unit filename="test\testgamma.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testgamma"/>
+		</Unit>
+		<Unit filename="test\testgl.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testgl"/>
+		</Unit>
+		<Unit filename="test\testjoystick.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testjoystick"/>
+		</Unit>
+		<Unit filename="test\testkeys.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testkeys"/>
+		</Unit>
+		<Unit filename="test\testlock.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testlock"/>
+		</Unit>
+		<Unit filename="test\testoverlay.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testoverlay"/>
+		</Unit>
+		<Unit filename="test\testoverlay2.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testoverlay2"/>
+		</Unit>
+		<Unit filename="test\testpalette.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testpalette"/>
+		</Unit>
+		<Unit filename="test\testsem.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testsem"/>
+		</Unit>
+		<Unit filename="test\testsprite.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testsprite"/>
+		</Unit>
+		<Unit filename="test\testthread.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testthread"/>
+		</Unit>
+		<Unit filename="test\testtimer.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testtimer"/>
+		</Unit>
+		<Unit filename="test\testtypes.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testtypes"/>
+		</Unit>
+		<Unit filename="test\testver.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testver"/>
+		</Unit>
+		<Unit filename="test\testvidinfo.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testvidinfo"/>
+		</Unit>
+		<Unit filename="test\testwin.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testwin"/>
+		</Unit>
+		<Unit filename="test\testwm.cc">
+			<Option compilerVar="CC"/>
+			<Option target="testwm"/>
+		</Unit>
+		<Unit filename="test\threadwin.cc">
+			<Option compilerVar="CC"/>
+			<Option target="threadwin"/>
+		</Unit>
+		<Unit filename="test\torturethread.cc">
+			<Option compilerVar="CC"/>
+			<Option target="torturethread"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
