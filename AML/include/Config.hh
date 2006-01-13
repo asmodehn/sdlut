@@ -8,8 +8,10 @@
 #ifndef USE_DEPEND_SDLwrap
 #define USE_DEPEND_SDLwrap
 //if using SDL (mandatory for now)
-#include "SDLwrap.hh"
+#include "SDL.hh"
 #endif
+
+namespace RAGE {
 
 namespace AML
 {
@@ -28,7 +30,7 @@ class Config
 
 };
 
-
+}
 }
 
 #endif

@@ -1,6 +1,7 @@
 #include "Window.hh"
 
-
+namespace RAGE
+{
 namespace AML
 {
     Window::Window(std::string title, std::string icon, int width, int height)
@@ -20,4 +21,5 @@ namespace AML
     }
 
 
+}
 }

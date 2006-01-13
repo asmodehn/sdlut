@@ -4,6 +4,8 @@
 #include "Config.hh"
 #include <string>
 
+namespace RAGE
+{
 namespace AML
 {
     class Sprite
@@ -29,6 +31,7 @@ namespace AML
         int getPosY() { return posY;}
 
     };
+}
 }
 
 #endif

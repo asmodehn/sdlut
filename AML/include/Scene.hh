@@ -4,6 +4,8 @@
 #include "Config.hh"
 #include "Sprite.hh"
 
+namespace RAGE
+{
 namespace AML
 {
     //manages layers and the blits
@@ -37,6 +39,6 @@ namespace AML
 
 }
 
-
+}
 
 #endif

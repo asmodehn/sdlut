@@ -11,6 +11,7 @@
 #define M_1_PI (1.0 / 3.14159265)
 #endif
 
+namespace RAGE {
 //TODO : template !!! to be able to use int, float, etc...
 class Vector2
 {
@@ -215,6 +216,6 @@ inline std::ostream & operator << (std::ostream & ostr, const Vector2 & u)
 }
 
 //TODO LATER Math3D: Vector 3 with cross product, and triple scalar product.
-
+}
 
 #endif

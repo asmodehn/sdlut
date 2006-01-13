@@ -7,6 +7,8 @@
 
 #include <string>
 
+namespace RAGE
+{
 namespace AML
 {
 
@@ -24,6 +26,7 @@ namespace AML
         Scene * getScene() { return _scene;}
         void loop();
     };
+}
 }
 
 

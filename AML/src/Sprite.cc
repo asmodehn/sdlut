@@ -1,5 +1,7 @@
 #include "Sprite.hh"
 
+namespace RAGE
+{
 namespace AML {
 
 #ifndef HAVE_OPENGL
@@ -17,3 +19,5 @@ bool Sprite::render(SDL::VideoSurface * screen)
 #endif
 
 }
+}
+

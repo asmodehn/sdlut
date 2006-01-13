@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!DOCTYPE CodeBlocks_workspace_file>
 <CodeBlocks_workspace_file>
-	<Workspace title="AML Workspace">
+	<Workspace title="RAGE Workspace">
 		<Project filename="AML\AML.cbp" active="1"/>
-		<Project filename="SDL\SDLwrap.cbp"/>
+		<Project filename="SDL\SDL.cbp"/>
 	</Workspace>
 </CodeBlocks_workspace_file>

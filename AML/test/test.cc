@@ -11,7 +11,8 @@
 #endif
 #endif
 
-using namespace AML;
+using namespace RAGE;
+using namespace RAGE::AML;
 
 int main ( int argc, char * argv [])
 {
@@ -21,13 +22,13 @@ int main ( int argc, char * argv [])
     //testlog << nl << "Loading resources" << std::endl;
     //Resources.loadimage("");
     testlog << nl << "Loading sprite..." << std::endl;
-    Sprite testbmp("../data/AML_ico.bmp");
+    Sprite testbmp("../data/AML_sprite.bmp");
 
     //If using specific input
     //testlog << nl << "Defining Input" << std::endl;
 
     testlog << nl << "Creating the window..." << std::endl;
-    Window mainWin("AML test", "../data/AML_ico.bmp",640,480);
+    Window mainWin("AML test", "../data/AML_icon.bmp",640,480);
 
     testlog << nl << "Setting up the Scene..." << std::endl;
     mainWin.getScene()->put(testbmp, 320, 240);

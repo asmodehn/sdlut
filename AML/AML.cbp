@@ -3,7 +3,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="1"/>
 	<Project>
-		<Option title="AML"/>
+		<Option title="RAGE::AML"/>
 		<Option makefile="Makefile"/>
 		<Option makefile_is_custom="0"/>
 		<Option default_target="1"/>
@@ -24,7 +24,7 @@
 					<Add option="-DLOGPREFIX=\&quot;AML\&quot;"/>
 				</Compiler>
 				<Linker>
-					<Add library="depend\SDLwrap\build\bin_debug\libSDLwrap.a"/>
+					<Add library="..\SDL\build\bin_debug\libSDLwrap.a"/>
 					<Add library="opengl32"/>
 				</Linker>
 			</Target>
@@ -43,7 +43,7 @@
 					<Add option="-DLOGPREFIX=\&quot;AML\&quot;"/>
 				</Compiler>
 				<Linker>
-					<Add library="depend\SDLwrap\build\bin_NoGL\libSDLwrap.a"/>
+					<Add library="..\SDL\build\bin_NoGL\libSDLwrap.a"/>
 				</Linker>
 			</Target>
 			<Target title="test">
@@ -63,7 +63,7 @@
 				</Compiler>
 				<Linker>
 					<Add library="build\bin_default\libAML.a"/>
-					<Add library="depend\SDLwrap\build\bin_debug\libSDLwrap.a"/>
+					<Add library="..\SDL\build\bin_debug\libSDLwrap.a"/>
 					<Add library="opengl32"/>
 				</Linker>
 			</Target>
@@ -73,8 +73,7 @@
 			<Add option="-g"/>
 			<Add option="-DLOGINDENTLVL=0"/>
 			<Add directory="include"/>
-			<Add directory="depend\Common\include"/>
-			<Add directory="depend\SDLwrap\include"/>
+			<Add directory="..\SDL\include"/>
 		</Compiler>
 		<Linker>
 			<Add library="SDL"/>
