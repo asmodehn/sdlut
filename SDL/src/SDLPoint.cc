@@ -1,6 +1,8 @@
 #include "SDLPoint.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     Point& Point::operator=(const Point& p)
@@ -11,5 +13,5 @@ namespace SDL
         _rect->h=0;
         return *this;
     }
-    
-} //namespace SDL
+}
+} //namespace RAGE::SDL

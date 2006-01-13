@@ -1,6 +1,8 @@
 #include "SDLManager.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     Manager::Manager(bool video, bool audio, bool timer, bool cdrom, bool joystick, bool noparachute, bool eventthread) throw (std::logic_error)
@@ -138,5 +140,5 @@ namespace SDL
         return log;
 
     }
-
-}//namespace SDL
+}
+}//namespace RAGE::SDL

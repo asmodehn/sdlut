@@ -10,7 +10,9 @@
 #include "SDLBaseSurface.hh"
 #include "SDLColor.hh"
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 class RGBSurface : public BaseSurface
 {
@@ -84,7 +86,7 @@ public :
 
 
 };
-
-} //namespace SDL
+    }
+} //namespace RAGE::SDL
 
 #endif

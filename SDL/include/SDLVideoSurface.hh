@@ -24,7 +24,9 @@
 #include "SDLRGBSurface.hh" //to help with backup of screen surface
 #include "SDLEngine.hh"
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 
 /**
@@ -124,7 +126,7 @@ public:
 
 	friend Logger & operator << (Logger & log, const VideoSurface & surf);
 };
-
-} //namespace SDL
+    }
+} //namespace RAGE::SDL
 
 #endif

@@ -22,7 +22,9 @@
 #include "SDLConfig.hh"
 
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     //Singleton Class to manage initializations in SDL
@@ -96,7 +98,7 @@ namespace SDL
 	friend Logger & operator << (Logger & log, const Manager & man);
 
     };
-
-}//namespace SDL
+}
+}//namespace RAGE::SDL
 #endif
 

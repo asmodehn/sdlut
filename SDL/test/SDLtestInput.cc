@@ -1,6 +1,6 @@
 #include "SDLwrap.hh"
-
-using namespace SDL;
+using namespace RAGE;
+using namespace RAGE::SDL;
 
 //TODO :akeyboard, mouse, joystick,and general handler that measure some stats on event handling, critical or not.
 

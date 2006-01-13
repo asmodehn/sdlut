@@ -12,7 +12,9 @@
 
 #include "SDLApp.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
 #ifdef HAVE_OPENGL
@@ -218,6 +220,6 @@ std::string defaultlogoname("../data/SDL_logo.bmp");
         Log << nl << "Blitting backupscreen at " << newpos << std::endl;
         return _screen->blit(*_backupscreen, newpos);
     }
-
+}
 }
 

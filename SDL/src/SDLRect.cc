@@ -3,7 +3,9 @@
 #define max( a , b ) a>b?a:b
 //#define ifpositive( a ) a>0?a:0
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     //this computes the intersection of 2 rects, that if the greatest rect contained in both of them
@@ -53,5 +55,5 @@ namespace SDL
 
         return result;
     }
-
-} //namespace SDL
+}
+} //namespace RAGE::SDL

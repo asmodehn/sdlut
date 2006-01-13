@@ -1,6 +1,7 @@
 #include "SDLCursor.hh"
 
-namespace SDL {
+namespace RAGE{
+    namespace SDL {
 
 /* XPMs */
 //TODO : hand & time & reticulum & ...
@@ -147,5 +148,5 @@ catch (std::exception & e)
 	Log << nl << "Exception catched on Cursor Constructor !!!" << nl <<
 		e.what() << nl << GetError() << std::endl;
 }
-
-} //namespace SDL
+    }
+} //namespace RAGE::SDL

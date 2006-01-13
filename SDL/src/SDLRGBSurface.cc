@@ -1,6 +1,8 @@
 #include "SDLRGBSurface.hh"
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 Uint32 RGBSurface::RGBFlags=SDL_SWSURFACE;
 
@@ -233,7 +235,7 @@ int RGBSurface::update(void)
 	SDL_UpdateRects(_surf,_UpdateRectList.size(),UpdateRectList);
 }
 */
+    }
 
-
-} //namespace SDL
+} //namespace RAGE::SDL
 

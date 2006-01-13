@@ -9,6 +9,7 @@
 #include "SDLwrap.hh"
 
 using namespace std;
+using namespace RAGE;
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +20,7 @@ int main(int argc, char *argv[])
 	cout << "MMX Ext" <<  (SDL::CPU::hasMMXExt() ? "detected" : "not detected")<< std::endl;
 	cout << "3DNow " << (SDL::CPU::has3DNow() ? "detected" : "not detected")<< std::endl;
 	cout << "3DNow Ext " << (SDL::CPU::has3DNowExt() ? "detected" : "not detected")<< std::endl;
+	//1.2.9 needed for this one ?
 	//cout << "SSE " << (SDL::CPU::hasSSE() ? "detected" : "not detected")<< std::endl;
 	//cout << "SSE2 " << (SDL::CPU::hasSSE2() ? "detected" : "not detected")<< std::endl;
 	cout << "AltiVec " << (SDL::CPU::hasAltiVec() ? "detected" : "not detected")<< std::endl;

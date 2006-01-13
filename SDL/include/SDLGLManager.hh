@@ -20,7 +20,9 @@
  *
  */
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 #ifdef HAVE_OPENGL
 
@@ -94,6 +96,7 @@ public :
 	friend Logger & operator << (Logger & ostr, const GLManager & glman);
 };
 #endif
-} // namespace SDL
+    }
+} // namespace RAGE::SDL
 
 #endif

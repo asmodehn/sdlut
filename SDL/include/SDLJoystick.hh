@@ -5,7 +5,9 @@
 
 #include "SDLPoint.hh"
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
     class Joystick
     {
@@ -64,7 +66,7 @@ class JoystickPool
 	virtual bool handleJoyBallEvent(Uint8 joystick, Uint8 ball, Sint16 xrel, Sint16 yrel);
 };
 
-
+    }
 }
 
 #endif

@@ -25,7 +25,9 @@
  *
  */
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 //TODO : test it...
 class Overlay
@@ -81,7 +83,7 @@ public :
 		return SDL_DisplayYUVOverlay(_overlay,r._rect) == 0;
 	}
 };
-
+    }
 }
 
 #endif

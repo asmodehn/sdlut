@@ -30,7 +30,9 @@
  *
  */
 
-namespace SDL {
+namespace RAGE
+{
+     namespace SDL {
 //TODO : Color constructor with string ("black", "yellow", "grey", etc. )
 //TODO : Color operator, like + - = etc. (like a vector)
 class RGBColor
@@ -208,6 +210,6 @@ public:
 	}
 
 };
-
-}// namespace SDL
+     }
+}// namespace RAGE::SDL
 #endif

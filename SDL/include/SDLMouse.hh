@@ -5,7 +5,9 @@
 
 #include "SDLPoint.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
 
@@ -64,7 +66,7 @@ namespace SDL
 
     };
 
-
+}
 }
 
 #endif //SDLMOUSE_HH

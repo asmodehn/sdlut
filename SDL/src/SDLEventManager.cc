@@ -1,7 +1,9 @@
 #include "SDLEventManager.hh"
 #include "SDLApp.hh" //for default resize
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     bool GeneralHandler::handleActiveEvent(bool gain, Uint8 state)
@@ -165,5 +167,6 @@ namespace SDL
         return ev_handled;
     }
 
+}
 
 }

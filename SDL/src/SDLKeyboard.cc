@@ -1,7 +1,9 @@
 #include "SDLKeyboard.hh"
 #include "SDLEventManager.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     Uint8* Keyboard::getKeyState(int &numkeys)
@@ -83,5 +85,5 @@ namespace SDL
         return res;
 
     }
-
+}
 }

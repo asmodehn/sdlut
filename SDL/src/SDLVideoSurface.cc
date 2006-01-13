@@ -1,7 +1,9 @@
 #include "SDLVideoSurface.hh"
 //#include <sstream>
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     std::vector<int> VideoSurface::availableWidth;
@@ -205,5 +207,5 @@ namespace SDL
         << "- Double Buffered ? " << surf.isDoubleBufset();
         return log;
     }
-
-} //namespace SDL
+}
+} //namespace RAGE::SDL

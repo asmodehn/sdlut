@@ -24,7 +24,9 @@
 #include "SDLConfig.hh"
 #include "SDLPoint.hh"
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 class Rect : public Point
 {
@@ -102,7 +104,7 @@ public:
 	inline friend std::ostream& operator << (std::ostream& os, const Rect& r)
 		{ return os << "Rect : ( " << r.getx() << ", " << r.gety() << ") W= " << r.getw() << " H= " << r.geth(); }
 };
-
-} //namespace SDL
+    }
+} //namespace RAGE::SDL
 
 #endif

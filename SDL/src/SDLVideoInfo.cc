@@ -1,6 +1,8 @@
 #include "SDLVideoInfo.hh"
 #include "SDLManager.hh"
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 //VideoInfo* VideoInfo::_Instance=NULL;
 
@@ -60,5 +62,5 @@ Logger & operator << (Logger & log, const VideoInfo & vinfo)
 
 	return log;
 }
-
-} //namespace SDL
+    }
+} //namespace RAGE::SDL

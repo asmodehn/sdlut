@@ -21,7 +21,8 @@
 #endif
 
 
-
+namespace RAGE
+{
 
 /**
  * \class Logger
@@ -98,7 +99,7 @@ template<typename M> Logger& Logger::operator<< ( const M & msg)
 	return *this;
 }
 
-
+}
 
 
 #endif

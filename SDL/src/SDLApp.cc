@@ -1,6 +1,8 @@
 #include "SDLApp.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     App::App(std::string logfilename) :    _manager(NULL),
@@ -125,5 +127,6 @@ bool App::initJoystick()
             return res;
 }
 
+}
 }
 

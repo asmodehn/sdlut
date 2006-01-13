@@ -4,7 +4,9 @@
 #include "SDLConfig.hh"
 #include "SDLColor.hh"
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 //to store pixel colors
 typedef Uint32 PixelColor;
@@ -77,7 +79,7 @@ public:
 	RGBAColor getRGBAValue(const PixelColor& color) const ;
 
 };
-
-} //namespace SDL
+    }
+} //namespace RAGE::SDL
 
 #endif

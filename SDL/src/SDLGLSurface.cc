@@ -1,7 +1,9 @@
 #include "SDLGLSurface.hh"
 
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
 #ifdef HAVE_OPENGL
@@ -85,5 +87,5 @@ namespace SDL
     }
 
 #endif
-
-} //namespace SDL
+}
+} //namespace RAGE::SDL

@@ -25,7 +25,9 @@
 #include "SDLVideoInfo.hh"
 #include <cassert>
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 //TODO : make this class pure virtual one (how then?)... and manage creation of _surf with exception
 //in the derivating tree
@@ -155,7 +157,7 @@ public:
     friend Logger & operator << (Logger & ostr, const BaseSurface & surf);
 
 };
-
-} //namespace SDL
+    }
+} //namespace RAGE::SDL
 
 #endif

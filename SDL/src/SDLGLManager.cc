@@ -1,7 +1,9 @@
 #include "SDLGLManager.hh"
 
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 #ifdef HAVE_OPENGL
 
@@ -155,5 +157,5 @@ Logger & operator << (Logger & log, const GLManager & glman)
 }
 
 #endif
-
+    }
 }

@@ -27,7 +27,9 @@
  #endif //HAVE_OPENGL
 
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     //further reference to break dependency cycles
@@ -132,6 +134,6 @@ namespace SDL
         bool mainLoop();
 
     };
-
+}
 }
 #endif

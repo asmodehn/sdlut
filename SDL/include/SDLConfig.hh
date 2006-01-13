@@ -67,6 +67,8 @@
  * Contact: asmodehn@gna.org
  *
  */
+namespace RAGE
+{
 
 namespace SDL
 {
@@ -133,4 +135,6 @@ namespace SDL
 	static Version version;
 
 }
+}
+
 #endif

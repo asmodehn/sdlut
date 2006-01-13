@@ -4,7 +4,8 @@
 #include "SDLMouse.hh"//to access the mouse handler
 #include "SDLApp.hh"//to access the joystick pool
 
-namespace SDL {
+namespace RAGE{
+    namespace SDL {
 
 Logger & operator << (Logger & log, const  EventType & type)
 {
@@ -159,7 +160,7 @@ bool CriticalEvent::callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mous
         return ev_handled;
 }
 
-
+    }
 
 }
 

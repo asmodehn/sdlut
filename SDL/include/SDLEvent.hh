@@ -4,7 +4,9 @@
 #include "SDLConfig.hh"
 #include "SDLCriticalEvent.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     class Event : public CriticalEvent
@@ -21,5 +23,5 @@ namespace SDL
 
     };
 }
-
+}
 #endif

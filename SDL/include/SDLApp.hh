@@ -25,7 +25,9 @@
 #include "SDLWindow.hh"
 #include "SDLJoystick.hh"
 
- namespace SDL
+ namespace RAGE
+ {
+     namespace SDL
  {
 
      class App
@@ -75,5 +77,5 @@ public:
 
      };
  }
-
+ }
  #endif

@@ -26,7 +26,9 @@
 #include "SDLGLManager.hh"
 #include "SDLEngine.hh"
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 #ifdef HAVE_OPENGL
 
@@ -82,6 +84,6 @@ public:
 
 #endif // HAVE_OPENGL
 
-} //namespace SDL
-
+} //namespace RAGE::SDL
+}
 #endif //SDLGLSURFACE_HH

@@ -23,7 +23,8 @@
  *
  */
 
-namespace SDL {
+namespace RAGE{
+    namespace SDL {
 
 typedef enum { arrow, blackArrow } CursorShape;
 
@@ -84,7 +85,7 @@ public :
 	}
 
 };
-
-} //namespace SDL
+    }
+} //namespace RAGE::SDL
 
 #endif

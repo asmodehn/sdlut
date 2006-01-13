@@ -24,7 +24,9 @@
 #include "SDLPixelFormat.hh"
 
 
-namespace SDL {
+namespace RAGE
+{
+     namespace SDL {
 
 class VideoInfo
 {
@@ -82,6 +84,6 @@ public:
 	//display all detected informations about graphics
 	friend Logger & operator << (Logger & ostr, const VideoInfo & vinfo);
 };
-
-} //namespace SDL
+     }
+} //namespace RAGE::SDL
 #endif

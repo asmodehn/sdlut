@@ -3,7 +3,9 @@
 #include "SDLKeyboard.hh" //to access the keyboard handler
 #include "SDLMouse.hh"//to access the mouse handler
 #include "SDLApp.hh"//to access the joystick handler
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
 bool Event::callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse*  mhndlr )
@@ -68,5 +70,5 @@ bool Event::callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse*  mhnd
 		}
         return ev_handled;
 }
-
+}
 }

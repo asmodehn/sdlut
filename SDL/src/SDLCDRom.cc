@@ -1,6 +1,8 @@
 #include "SDLCDRom.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     CDRom::CDRom(int drive ) throw (std::logic_error)
@@ -32,4 +34,5 @@ namespace SDL
     {
         SDL_CDClose(m_drive);
     }
+}
 }

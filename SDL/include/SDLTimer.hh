@@ -3,7 +3,7 @@
 
 #include "SDLConfig.hh"
 
-namespace SDL {
+namespace RAGE::SDL {
 
 class Timer
 {

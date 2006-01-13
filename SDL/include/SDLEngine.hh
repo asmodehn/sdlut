@@ -12,7 +12,9 @@
 #include "SDLColor.hh"
 #include "SDLRGBSurface.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 #ifdef HAVE_OPENGL
     class GLEngine
@@ -65,7 +67,7 @@ namespace SDL
         virtual bool saveContent(void);
         virtual bool restoreContent(void);
     };
-
+}
 }
 
 #endif //SDL_ENGINE_HH

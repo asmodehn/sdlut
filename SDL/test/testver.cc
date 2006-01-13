@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "SDLwrap.hh"
+using namespace RAGE;
 
 int main(int argc, char *argv[])
 {

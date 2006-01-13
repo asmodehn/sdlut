@@ -3,7 +3,9 @@
 
 #include "SDLConfig.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     class CDRom
@@ -20,6 +22,6 @@ namespace SDL
         ~CDRom(void);
     };
 
-
+}
 }
 #endif

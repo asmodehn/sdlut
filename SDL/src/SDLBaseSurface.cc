@@ -1,6 +1,7 @@
 #include "SDLBaseSurface.hh"
 
-namespace SDL {
+namespace RAGE {
+    namespace SDL {
 
 const VideoInfo * BaseSurface::_vinfo = NULL;
 
@@ -203,5 +204,5 @@ Logger & operator << (Logger & log, const BaseSurface & surf)
 				<< "- PreAlloc ? " << surf.isPreAllocset();
     return log;
 }
-
-} //namespace SDL
+    }
+} //namespace RAGE::SDL

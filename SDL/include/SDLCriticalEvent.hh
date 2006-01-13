@@ -2,7 +2,8 @@
 #define SDL_CRITICALEVENT_HH
 
 #include "SDLConfig.hh"
-namespace SDL {
+namespace RAGE{
+    namespace SDL {
 
 /**
  * \class CriticalEvent
@@ -119,7 +120,7 @@ class CriticalEvent
 
 
 };
-
+    }
 }
 
 #endif

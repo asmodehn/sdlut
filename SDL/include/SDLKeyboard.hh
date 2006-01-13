@@ -3,7 +3,9 @@
 
 #include "SDLConfig.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
 class EventManager;
@@ -71,6 +73,7 @@ class EventManager;
         virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed);
 
     };
+}
 }
 
 #endif

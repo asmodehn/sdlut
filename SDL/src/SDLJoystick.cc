@@ -1,6 +1,8 @@
 #include "SDLJoystick.hh"
 
-namespace SDL {
+namespace RAGE
+{
+    namespace SDL {
 
 
 JoystickPool::JoystickPool()
@@ -149,5 +151,5 @@ bool JoystickPool::handleJoyBallEvent(Uint8 joystick, Uint8 ball, Sint16 xrel, S
     return false;
 #endif
 }
-
+    }
 }

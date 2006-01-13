@@ -1,7 +1,9 @@
 #include "SDLWindow.hh"
 #include "SDLEventManager.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
     bool Window::iconify(void)
     {
@@ -352,5 +354,5 @@ namespace SDL
         return res;
 
     }
-
+}
 }

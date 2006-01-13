@@ -1,6 +1,8 @@
 #include "SDLMouse.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
     Point Mouse::getPos()
     {
@@ -41,5 +43,5 @@ namespace SDL
 #endif
         return res;
 	}
-
+}
 }

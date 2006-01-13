@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "SDLwrap.hh"
+using namespace RAGE;
 
 static void print_modifiers(void)
 {

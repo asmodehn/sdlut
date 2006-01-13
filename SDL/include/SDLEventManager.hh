@@ -10,7 +10,9 @@
 #include "SDLKeyboard.hh"
 #include "SDLJoystick.hh"
 
-namespace SDL
+namespace RAGE
+{
+    namespace SDL
 {
 
     /**
@@ -150,7 +152,7 @@ namespace SDL
         }
 
     };
-
+}
 }
 
 #endif

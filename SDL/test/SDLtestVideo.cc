@@ -1,6 +1,6 @@
 #include "SDLwrap.hh"
-
-using namespace SDL;
+using namespace RAGE;
+using namespace RAGE::SDL;
 
 //Defining UserInput
 class MyUserInput : public Keyboard
