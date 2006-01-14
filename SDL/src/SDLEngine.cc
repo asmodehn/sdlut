@@ -170,12 +170,12 @@ std::string defaultlogoname("../data/SDL_logo.bmp");
         return true;
     }
 
-    bool Engine::init(int width, int height, VideoSurface * display)
+    bool Engine::init(int width, int height)
     {
-        _screen = display;
+        _screen = App::getInstance().getWindow()->getDisplay();
         if ( _screen != NULL )
             _screen->fill(_background);
-        return true;
+        return _screen != NULL ;
     }
 
     bool Engine::resize(int width, int height)

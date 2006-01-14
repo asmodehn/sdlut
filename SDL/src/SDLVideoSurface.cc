@@ -11,10 +11,10 @@ namespace RAGE
     Uint32 VideoSurface::_defaultflags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
 
     //Constructor
-    VideoSurface::VideoSurface(int width, int height, int bpp, Uint32 flags, Engine * engine) throw (std::logic_error)
+    VideoSurface::VideoSurface(int width, int height, int bpp, Engine * engine) throw (std::logic_error)
     try
     :
-        BaseSurface(SDL_SetVideoMode(width,height,bpp,flags )), _engine(engine)
+        BaseSurface(SDL_SetVideoMode(width,height,bpp,_defaultflags )), _engine(engine)
     {
         if (_surf == NULL)
         {
@@ -22,11 +22,9 @@ namespace RAGE
             throw std::logic_error("SDL_SetVideoMode() return NULL");
         }
 
-        //If a caption has been defined
-        //SDL_WM_SetCaption(_title.c_str(), _icon.c_str());
-        //shouldnt be needed if already done before...
-        if (_engine != NULL )
-        _engine->init(width, height, this); // to initialise the engine
+
+//        if (_engine != NULL )
+//        _engine->init(width, height); // to initialise the engine
 
     }
     catch (std::exception &e)

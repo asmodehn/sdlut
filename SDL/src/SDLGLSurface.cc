@@ -36,7 +36,7 @@ namespace RAGE
     GLSurface::GLSurface(int width, int height, int bpp, GLManager * const glmanager, GLEngine * glengine ) throw (std::logic_error)
     try
     :
-        VideoSurface(width, height, bpp, _defaultflags,NULL), _glmanager(glmanager), _engine(glengine)
+        VideoSurface(width, height, bpp,NULL), _glmanager(glmanager), _engine(glengine)
     {
         if (_engine != NULL)
             _engine->init(getWidth(),getHeight());

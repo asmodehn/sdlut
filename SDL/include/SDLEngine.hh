@@ -61,7 +61,7 @@ namespace RAGE
         Engine();
         virtual ~Engine();
         virtual void render(void) const;
-        virtual bool init(int width, int height, VideoSurface * display);
+        virtual bool init(int width, int height);
         virtual bool resize(int width, int height);
         virtual bool setBGColor(const Color & color);
         virtual bool saveContent(void);

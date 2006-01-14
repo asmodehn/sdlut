@@ -6,38 +6,44 @@
 
 namespace RAGE
 {
-namespace AML
-{
-    //manages layers and the blits
-    class Scene : public SDL::Engine
+    namespace AML
     {
-        friend class Window;
+        //manages layers and the blits
+        class Scene : public SDL::Engine
+        {
+            friend class Window;
 
         protected:
 
-        Sprite * _sprite;
+            Sprite * _sprite;
 
-        Scene();
-        ~Scene();
+            Scene();
+            ~Scene();
 
 
         public:
 
-        void put( Sprite sprite, int posX = 0, int posY = 0);        //bool init(int width, int height, SDL::VideoSurface * display) {}
-//        bool resize (int width, int height);
-//       bool setBGColor(const SDL::Color & color);
+            void put( Sprite sprite, int posX = 0, int posY = 0);        //bool init(int width, int height, SDL::VideoSurface * display) {}
+            //        bool resize (int width, int height);
+            //       bool setBGColor(const SDL::Color & color);
 
-        //TODO : SAVE THE CURRENT SCENE STATE...
-        bool saveContent(void) {return false;}
-        bool restoreContent(void) {return false;}
+            //TODO : SAVE THE CURRENT SCENE STATE...
+            bool saveContent(void)
+            {
+                return false;
+            }
+            bool restoreContent(void)
+            {
+                return false;
+            }
 
-        bool render();//call render on all the sprites
+            bool render();//call render on all the sprites
 
-    };
+        };
 
 
 
-}
+    }
 
 }
 

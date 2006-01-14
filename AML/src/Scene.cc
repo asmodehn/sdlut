@@ -6,6 +6,7 @@ namespace RAGE
 
         Scene::Scene() : SDL::Engine()
         {
+            Log << nl << "Scene::Scene() called ";
             _sprite=NULL;
             //    Sprite::_display=SDL::App::getInstance().getWindow()->getDisplay();
         }

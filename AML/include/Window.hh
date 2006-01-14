@@ -9,24 +9,27 @@
 
 namespace RAGE
 {
-namespace AML
-{
-
-
-/**
-  * This class manages the Window created by AML
-  */
-    class Window
+    namespace AML
     {
-        Scene * _scene;
+
+
+        /**
+          * This class manages the Window created by AML
+          */
+        class Window
+        {
+            Scene * _scene;
 
         public:
-        Window(std::string title, std::string icon, int width, int height);
+            Window(std::string title, std::string icon, int width, int height);
 
-        Scene * getScene() { return _scene;}
-        void loop();
-    };
-}
+            Scene * getScene()
+            {
+                return _scene;
+            }
+            void loop();
+        };
+    }
 }
 
 

@@ -185,8 +185,9 @@ namespace RAGE
 #ifdef HAVE_OPENGL
 
             _glmanager = new GLManager();
+            _glengine = new GLEngine();
 #endif
-
+            _engine = new Engine();
         }
         catch (std::exception &e)
         {
@@ -220,7 +221,22 @@ namespace RAGE
         BaseSurface::_vinfo = NULL;
     }
 
+void Window::setEngine (Engine *engine)
+{
+    assert(engine);
+    _engine=engine;
+}
 
+#ifdef HAVE_OPENGL
+void Window::setGLEngine (GLEngine* glengine)
+{
+    assert(glengine);
+    _glengine=glengine;
+}
+
+
+
+#endif
 
     bool Window::reset( int width, int height)
     {
@@ -255,19 +271,21 @@ namespace RAGE
 #ifdef HAVE_OPENGL
                 if (SDL_OPENGL & VideoSurface::_defaultflags)
                 {
-                    _screen = new GLSurface(width, height, _bpp,_glmanager );
+                    _screen = new GLSurface(width, height, _bpp,_glmanager, _glengine);
                     res= (_screen != NULL);
+                                        _glengine->init(width,height);
                 }
                 else
                 {
 #endif
-                    //_screen = new Window(width, height, _bpp );
-                    _screen = new VideoSurface(width, height, _bpp );
+                    _screen = new VideoSurface(width, height, _bpp, _engine);
                     res = (_screen!=NULL);
+                                        _engine->init(width,height);
 #ifdef HAVE_OPENGL
 
                 }
 #endif
+
                 if (_screen != NULL)
                     _screen->setBGColor(_background);
             }

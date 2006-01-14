@@ -11,26 +11,27 @@
 #include "SDL.hh"
 #endif
 
-namespace RAGE {
-
-namespace AML
+namespace RAGE
 {
 
-	static Logger Log("AML");
+    namespace AML
+    {
 
-/**
-  * This class manages the global configuration of AML
-  */
+        static Logger Log("RAGE::AML");
 
-class Config
-{
+        /**
+          * This class manages the global configuration of AML
+          */
+
+        class Config
+        {
 
 
 
+        }
+        ;
 
-};
-
-}
+    }
 }
 
 #endif

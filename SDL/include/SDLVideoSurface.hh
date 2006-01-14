@@ -59,7 +59,7 @@ protected:
 
 	//Constructor
 	//Note : The user should not be able to set raw SDL flags manually.
-	VideoSurface(int width, int height, int bpp, Uint32 flags = _defaultflags, Engine * _engine = new Engine()) throw (std::logic_error);
+	VideoSurface(int width, int height, int bpp, Engine * _engine) throw (std::logic_error);
 
 public:
 
@@ -81,8 +81,9 @@ public:
     //set the background color
     virtual bool setBGColor(const Color & color);
 
-    void setEngine(Engine * engine = new Engine())
+    void setEngine(Engine * engine)
     {
+        assert(engine);
         Log << nl << "Setting Engine..." ;
         _engine = engine;
     }
