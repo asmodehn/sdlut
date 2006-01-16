@@ -30,7 +30,7 @@ namespace RAGE
 
         bool Scene::render()
         {
-            Log << nl << Scene::render() << std::endl;
+            Log << nl << "Scene::render()" << std::endl;
             return _sprite=NULL && _sprite->render(_screen);
         }
 

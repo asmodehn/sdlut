@@ -11,9 +11,10 @@ namespace RAGE
             SDL::App::getInstance().setIcon( icon);
             if (SDL::App::getInstance().initVideo(false,false,true,false) )
             {
-                SDL::App::getInstance().getWindow()->reset(width,height);
                 _scene = new Scene();
                 SDL::App::getInstance().getWindow()->setEngine(_scene);
+                SDL::App::getInstance().getWindow()->reset(width,height);
+
             }
         }
 

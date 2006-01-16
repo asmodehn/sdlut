@@ -36,7 +36,7 @@ namespace RAGE
     GLSurface::GLSurface(int width, int height, int bpp, GLManager * const glmanager, GLEngine * glengine ) throw (std::logic_error)
     try
     :
-        VideoSurface(width, height, bpp,NULL), _glmanager(glmanager), _engine(glengine)
+        VideoSurface(width, height, bpp,glengine), _glmanager(glmanager)//, _engine(glengine)
     {
         if (_engine != NULL)
             _engine->init(getWidth(),getHeight());
@@ -61,30 +61,30 @@ namespace RAGE
 
     bool GLSurface::resize (int width, int height)
     {
-
+        //some weird OpenGL stuff happen if we dont do it from here... no idea why...
         assert(_engine);
         return _engine->resize(width,height);
     }
 
-
-    bool GLSurface::setBGColor(const Color & color)
-    {
-        assert(_engine);
-        return _engine->setBGColor(static_cast<float> (color.getR() ) / 255.0f, static_cast<float> (color.getG() ) / 255.0f,static_cast<float> (color.getB() ) / 255.0f);
-    }
-
-
-    bool GLSurface::saveContent(void)
-    {
-        assert(_engine);
-        return _engine->saveContent();
-    }
-
-    bool GLSurface::restoreContent(void)
-    {
-        assert(_engine);
-        return _engine->restoreContent();
-    }
+//
+//    bool GLSurface::setBGColor(const Color & color)
+//    {
+//        assert(_engine);
+//        return _engine->setBGColor(color);
+//    }
+//
+//
+//    bool GLSurface::saveContent(void)
+//    {
+//        assert(_engine);
+//        return _engine->saveContent();
+//    }
+//
+//    bool GLSurface::restoreContent(void)
+//    {
+//        assert(_engine);
+//        return _engine->restoreContent();
+//    }
 
 #endif
 }

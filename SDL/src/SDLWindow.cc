@@ -225,6 +225,11 @@ void Window::setEngine (Engine *engine)
 {
     assert(engine);
     _engine=engine;
+    if (_screen != NULL)
+    {
+        _screen->setEngine(_engine);
+        _engine->init(_screen->getWidth(),_screen->getHeight());
+    }
 }
 
 #ifdef HAVE_OPENGL
@@ -232,10 +237,13 @@ void Window::setGLEngine (GLEngine* glengine)
 {
     assert(glengine);
     _glengine=glengine;
+    if (_screen != NULL)
+        if  (_screen->isOpenGLset() ==true)
+        {
+            _screen->setEngine(_glengine);
+            _glengine->init(_screen->getWidth(),_screen->getHeight());
+        }
 }
-
-
-
 #endif
 
     bool Window::reset( int width, int height)
@@ -273,14 +281,14 @@ void Window::setGLEngine (GLEngine* glengine)
                 {
                     _screen = new GLSurface(width, height, _bpp,_glmanager, _glengine);
                     res= (_screen != NULL);
-                                        _glengine->init(width,height);
+                    if (_glengine !=NULL) _glengine->init(width,height);
                 }
                 else
                 {
 #endif
                     _screen = new VideoSurface(width, height, _bpp, _engine);
                     res = (_screen!=NULL);
-                                        _engine->init(width,height);
+                    if (_engine !=NULL) _engine->init(width,height);
 #ifdef HAVE_OPENGL
 
                 }
@@ -347,7 +355,7 @@ void Window::setGLEngine (GLEngine* glengine)
 
                         _screen->update();
                     }
-                    delete _screen; // to delete the SDLWrap class (not the actual video surface in memory...)
+                    delete _screen; // to delete the wrapper class (not the actual video surface in memory...)
                     _screen = NULL;
                     res = true;
                 }

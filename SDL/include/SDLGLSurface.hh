@@ -37,30 +37,30 @@ class GLSurface : public VideoSurface
 protected :
 
     GLManager * const _glmanager;
-    GLEngine* _engine;
+    //GLEngine* _engine;
 
 public:
 
 	//Constructor
 	GLSurface(int width, int height, int bpp,GLManager * const glmanager, GLEngine * glengine = new GLEngine() ) throw (std::logic_error);
 	//Destructor
-	~GLSurface()  {if (_engine !=NULL ) delete _engine;}
-
-    void setEngine(GLEngine * engine = new GLEngine()) {_engine = engine;}
-    GLEngine * getEngine() { return _engine;}
+	~GLSurface()  {/*if (_engine !=NULL ) delete _engine;*/}
+//
+//    void setEngine(GLEngine * engine = new GLEngine()) {_engine = engine;}
+//    GLEngine * getEngine() { return _engine;}
 
 //	inline bool isOpenGLset(void) const {return ((SDL_OPENGL & _surf->flags) != 0);}
 
   bool resize (int width, int height);
-
-
-    bool setBGColor(const Color & color);
+//
+//
+//    bool setBGColor(const Color & color);
 
   //TODO : Save Screen -> backup the screen content in a new RGBSurface AND SAVE THE CURRENT SCENE STATE...
 //Save Screen -> backup the screen content in a new RGBSurface...
-	bool saveContent(void);
+//	bool saveContent(void);
 	//restore Screen -> blit the saved surface to the center of the display surface
-	bool restoreContent(void);
+//	bool restoreContent(void);
 
 	bool update(void);//call scene3D->render
 
