@@ -6,9 +6,14 @@ namespace RAGE
 
         Scene::Scene() : SDL::Engine()
         {
+#ifdef DEBUG
             Log << nl << "Scene::Scene() called ";
+#endif
             _sprite=NULL;
             //    Sprite::_display=SDL::App::getInstance().getWindow()->getDisplay();
+#ifdef DEBUG
+            Log << nl << "Scene::Scene() done ";
+#endif
         }
 
         Scene::~Scene()
@@ -24,14 +29,28 @@ namespace RAGE
 
         void Scene::put(Sprite sprite, int posX, int posY)
         {
+#ifdef DEBUG
+            Log << nl << "Scene::put() called ... ";
+#endif
             _sprite = &sprite;
             _sprite->setPos(posX,posY);
+#ifdef DEBUG
+            Log << nl << "Scene::put() done. ";
+#endif
         }
 
         bool Scene::render()
         {
-            Log << nl << "Scene::render()" << std::endl;
-            return _sprite=NULL && _sprite->render(_screen);
+#ifdef DEBUG
+            Log << nl << "Scene::render() called ..." << std::endl;
+#endif
+            bool res = false;
+            res = _sprite==NULL && _sprite->render(_screen);
+
+#ifdef DEBUG
+            Log << nl << "Scene::render() done." << std::endl;
+#endif
+            return res;
         }
 
     }

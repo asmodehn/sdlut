@@ -8,6 +8,12 @@ namespace RAGE
     {
         _consoleLog = true;
         _fileLog = false;
+
+#ifdef DEBUG
+
+        std::clog << std::endl << "Logger created : " << _logprefix << std::endl;
+#endif
+
     }
 
     //TO TEST
@@ -17,7 +23,7 @@ namespace RAGE
         _ofstr.open(filename.c_str(),std::ofstream::out | std::ofstream::app);
         if (!_ofstr )
         {
-            operator<< ("LOG ERROR : Failed to open " + filename );
+            operator<< ("Logger ERROR : Failed to open " + filename );
             res=false;
         }
         return res;
@@ -73,5 +79,10 @@ namespace RAGE
     Logger::~Logger()
     {
         flush();
+#ifdef DEBUG
+
+        std::clog << std::endl << "Logger terminated : " << _logprefix << std::endl;
+#endif
+
     }
 }

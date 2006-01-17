@@ -83,9 +83,9 @@ public:
 	void setG(Uint8 ng) { _color->g=ng ;}
 	void setB(Uint8 nb) { _color->b=nb ;}
 
-	Uint8 getR(void) const { return _color->r;}
-	Uint8 getG(void) const { return _color->g;}
-	Uint8 getB(void) const { return _color->b;}
+	unsigned int getR(void) const { return _color->r;}
+	unsigned int getG(void) const { return _color->g;}
+	unsigned int getB(void) const { return _color->b;}
 
 	inline friend std::ostream& operator << (std::ostream& os, const RGBColor& c)
 		{ return os << "RGBColor : R=" << c.getR() << " G=" << c.getG() << " B=" << c.getB() << " "; }
@@ -135,7 +135,7 @@ public:
 
 	void setA(Uint8 na) { _color->unused=na ;}
 
-	Uint8 getA(void) const {return _color->unused;}
+	unsigned int     getA(void) const {return _color->unused;}
 
 	inline friend std::ostream& operator << (std::ostream& os, const RGBAColor& c)
 		{ return os << "RGBColor : R=" << c.getR() << " G=" << c.getG() << " B=" << c.getB() << " A=" << c.getA() << " " ; } //not sure how to derivate that properly... TODO

@@ -6,32 +6,43 @@
 
 namespace RAGE
 {
-namespace AML
-{
-    class Sprite
+    namespace AML
     {
-        friend class Scene;
+        class Sprite
+        {
+            friend class Scene;
 
-        SDL::RGBSurface _surf;
-        int posX, posY;
+            SDL::RGBSurface _surf;
+            int posX, posY;
 
 
         public :
-        Sprite(std::string filename) : _surf(filename),posX(0),posY(0)
-        {}
+            Sprite(std::string filename);
 
 #ifndef HAVE_OPENGL
-        bool render(SDL::VideoSurface * screen);
+
+            bool render(SDL::VideoSurface * screen);
 #else
-        bool render();
-    #endif
 
-        void setPos( int x, int y) {posX=x;posY=y;}
-        int getPosX() { return posX;}
-        int getPosY() { return posY;}
+            bool render();
+#endif
 
-    };
-}
+            void setPos( int x, int y)
+            {
+                posX=x;
+                posY=y;
+            }
+            int getPosX()
+            {
+                return posX;
+            }
+            int getPosY()
+            {
+                return posY;
+            }
+
+        };
+    }
 }
 
 #endif

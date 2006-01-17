@@ -26,64 +26,96 @@
 
 namespace RAGE
 {
-     namespace SDL {
+    namespace SDL
+    {
 
-class VideoInfo
-{
-    friend class Window;
+        class VideoInfo
+        {
+            friend class Window;
 
-private:
-	//Actual VideoInfo pointer
-	//read-only access
-	//the address of the SDL_VideoInfo struct should not change
-	const SDL_VideoInfo* const _info;
+        private:
+            //Actual VideoInfo pointer
+            //read-only access
+            //the address of the SDL_VideoInfo struct should not change
+            const SDL_VideoInfo* const _info;
 
-protected:
+        protected:
+            PixelFormat * _pformat; //dynamically constructed when needed
+            //Constructor
+            VideoInfo() throw (std::logic_error);
 
-	//Constructor
-	VideoInfo() throw (std::logic_error);
+        public:
 
-public:
+            ~VideoInfo();
 
+            //return true if hardware acceleration is enabled
+            inline bool isHWAvailable() const
+            {
+                return _info->hw_available;
+            }
 
-	//return true if hardware acceleration is enabled
-	inline bool isHWAvailable() const { return _info->hw_available; }
+            //return true if a window manager is available
+            inline bool isWMAvailable() const
+            {
+                return _info->wm_available;
+            }
 
-	//return true if a window manager is available
-	inline bool isWMAvailable() const { return _info->wm_available; }
+            //return true if hardware to hardware blits are accelerated
+            inline bool isBlitHWAccelAvailable() const
+            {
+                return _info->blit_hw;
+            }
 
-	//return true if hardware to hardware blits are accelerated
-	inline bool isBlitHWAccelAvailable() const { return _info->blit_hw; }
+            //return true if hardware to hardware colorkey blits are accelerated
+            inline bool isBlitHWCCAccelAvailable() const
+            {
+                return _info->blit_sw_CC;
+            }
 
-	//return true if hardware to hardware colorkey blits are accelerated
-	inline bool isBlitHWCCAccelAvailable() const { return _info->blit_sw_CC; }
+            //return true if hardware to hardware alpha blits are accelerated
+            inline bool isBlitHWAAccelAvailable() const
+            {
+                return _info->blit_sw_A;
+            }
 
-	//return true if hardware to hardware alpha blits are accelerated
-	inline bool isBlitHWAAccelAvailable() const { return _info->blit_sw_A; }
+            //return true if software to hardware blits are accelerated
+            inline bool isBlitSWAccelAvailable() const
+            {
+                return _info->blit_sw;
+            }
 
-	//return true if software to hardware blits are accelerated
-	inline bool isBlitSWAccelAvailable() const { return _info->blit_sw; }
+            //return true if software to hardware colorkey blits are accelerated
+            inline bool isBlitSWCCAccelAvailable() const
+            {
+                return _info->blit_sw_CC;
+            }
 
-	//return true if software to hardware colorkey blits are accelerated
-	inline bool isBlitSWCCAccelAvailable() const { return _info->blit_sw_CC; }
+            //return true if software to hardware alpha blits are accelerated
+            inline bool isBlitSWAAccelAvailable() const
+            {
+                return _info->blit_sw_A;
+            }
 
-	//return true if software to hardware alpha blits are accelerated
-	inline bool isBlitSWAAccelAvailable() const { return _info->blit_sw_A; }
+            //return true if color fills are accelerated
+            inline bool isBlitFillAccelAvailable() const
+            {
+                return _info->blit_fill;
+            }
 
-	//return true if color fills are accelerated
-	inline bool isBlitFillAccelAvailable() const { return _info->blit_fill; }
+            //return the total amount of video memory in kilobytes
+            inline unsigned long videoMemSize() const
+            {
+                return _info->video_mem;
+            }
 
-	//return the total amount of video memory in kilobytes
-	inline unsigned long videoMemSize() const { return _info->video_mem; }
+            std::string getDriverName(void) const;
 
-	std::string getDriverName(void) const;
+            //return the SDLPixelFormat for the current video device
+            PixelFormat * getPixelFormat() const;
 
-	//return the SDLPixelFormat for the current video device
-	PixelFormat * getPixelFormat() const;
-
-	//display all detected informations about graphics
-	friend Logger & operator << (Logger & ostr, const VideoInfo & vinfo);
-};
-     }
+            //display all detected informations about graphics
+            friend Logger & operator << (Logger & ostr, const VideoInfo & vinfo);
+        };
+    }
 } //namespace RAGE::SDL
 #endif

@@ -26,107 +26,195 @@
 
 namespace RAGE
 {
-    namespace SDL {
-
-
-/**
- * \class Videosurface
- *
- * \ingroup Video
- *
- * \brief A class to wrap SDL_Surface only when it is a Video one
- *
- * This class is meant to be used along with a engine. If there is no Engine provided it will use its own.
- *
- * \author Alex
- *
- * \date 2005/10/02
- *
- * Contact: asmodehn@gna.org
- *
- */
-
-class VideoSurface : public BaseSurface
-{
-
-	friend class Overlay;
-	friend class Window;
-
-protected:
-	static Uint32 _defaultflags;
-
-    Engine* _engine;
-
-	//Constructor
-	//Note : The user should not be able to set raw SDL flags manually.
-	VideoSurface(int width, int height, int bpp, Engine * _engine) throw (std::logic_error);
-
-public:
-
-    static std::vector<int> availableWidth,availableHeight;
-
-	//Destructor
-	virtual ~VideoSurface();
-	//this kind of surface shouldnt be deleted by hand. the raw SDL methods takes care of it
-
-//Save Screen -> backup the screen content in a new RGBSurface...
-	virtual bool saveContent(void);
-	//restore Screen -> blit the saved surface to the center of the display surface
-	virtual bool restoreContent(void);
-  //to resize the display
-  virtual bool resize (int width, int height);
-	//to update the display
-	virtual bool update(void);
-
-    //set the background color
-    virtual bool setBGColor(const Color & color);
-
-    void setEngine(Engine * engine)
+    namespace SDL
     {
-        assert(engine);
-        Log << nl << "Setting Engine..." ;
-        _engine = engine;
-    }
-    Engine * getEngine() { return _engine;}
-
-	//Maybe in Window only ?
-	bool update(Rect r);
-	bool update(std::vector<Rect> rlist);
-	//May be using a default value.. depending on what has to be done for GLWindow
 
 
+        /**
+         * \class Videosurface
+         *
+         * \ingroup Video
+         *
+         * \brief A class to wrap SDL_Surface only when it is a Video one
+         *
+         * This class is meant to be used along with a engine. If there is no Engine provided it will use its own.
+         *
+         * \author Alex
+         *
+         * \date 2005/10/02
+         *
+         * Contact: asmodehn@gna.org
+         *
+         */
 
-    //those methods just changes the static flags used on display creation.
-	//use the App::methods to also reset the display.
-	static inline void setOpenGL(bool val)  { if (val) _defaultflags|= SDL_OPENGL; else _defaultflags&= (~SDL_OPENGL) ; }
-	static inline void setFullscreen(bool val)  { if (val) _defaultflags|= SDL_FULLSCREEN; else _defaultflags&= (~SDL_FULLSCREEN) ; }
-	static inline void setResizable(bool val) { if (val) _defaultflags|= SDL_RESIZABLE; else _defaultflags&= (~SDL_RESIZABLE) ;}
-	static inline void setNoFrame(bool val) { if (val) _defaultflags|= SDL_NOFRAME; else _defaultflags&= (~SDL_NOFRAME) ;}
-	static inline void setDoubleBuf(bool val) { if (val) _defaultflags|= SDL_DOUBLEBUF; else _defaultflags&= (~SDL_DOUBLEBUF) ;}
-	static inline void setAnyFormat(bool val) { if (val) _defaultflags|= SDL_ANYFORMAT; else _defaultflags&= (~SDL_ANYFORMAT) ;}
-	static inline void setSWSurface(bool val) { if (val) _defaultflags|= SDL_SWSURFACE; else _defaultflags&= (~SDL_SWSURFACE) ;}
-	static inline void setHWSurface(bool val) { if (val) _defaultflags|= SDL_HWSURFACE; else _defaultflags&= (~SDL_HWSURFACE) ;}
-	static inline void setHWPalette(bool val) { if (val) _defaultflags|= SDL_HWPALETTE; else _defaultflags&= (~SDL_HWPALETTE) ;}
-	static inline void setAsyncBlit(bool val) { if (val) _defaultflags|= SDL_ASYNCBLIT; else _defaultflags&= (~SDL_ASYNCBLIT) ;}
+        class VideoSurface : public BaseSurface
+        {
+
+            friend class Overlay;
+            friend class Window;
+
+        protected:
+            static Uint32 _defaultflags;
+
+            Engine* _engine;
+
+            //Constructor
+            //Note : The user should not be able to set raw SDL flags manually.
+            VideoSurface(int width, int height, int bpp, Engine * _engine) throw (std::logic_error);
+
+        public:
+
+            static std::vector<int> availableWidth,availableHeight;
+
+            //Destructor
+            virtual ~VideoSurface();
+            //this kind of surface shouldnt be deleted by hand. the raw SDL methods takes care of it
+
+            //Save Screen -> backup the screen content in a new RGBSurface...
+            virtual bool saveContent(void);
+            //restore Screen -> blit the saved surface to the center of the display surface
+            virtual bool restoreContent(void);
+            //to resize the display
+            virtual bool resize (int width, int height);
+            //to update the display
+            virtual bool update(void);
+
+            //set the background color
+            virtual bool setBGColor(const Color & color);
+
+            void setEngine(Engine * engine)
+            {
+                assert(engine);
+                Log << nl << "Setting Engine..." ;
+                _engine = engine;
+            }
+            Engine * getEngine()
+            {
+                return _engine;
+            }
+
+            //Maybe in Window only ?
+            bool update(Rect r);
+            bool update(std::vector<Rect> rlist);
+            //May be using a default value.. depending on what has to be done for GLWindow
 
 
-	//Accessors
-	inline bool isOpenGLset(void) const {return ( SDL_OPENGL & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;}
-	inline bool isFullScreenset(void) const {return ( SDL_FULLSCREEN & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;}
-	inline bool isResizableset(void) const {return ( SDL_RESIZABLE & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;}
-	inline bool isNoFrameset(void) const {return ( SDL_NOFRAME & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;}
-	inline bool isAnyFormatset(void) const {return ( SDL_ANYFORMAT & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;}
-	virtual inline bool isDoubleBufset(void) const {return ( SDL_DOUBLEBUF & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;}
-	//unused
-	inline bool isASyncBlitset(void) const {return ( SDL_ASYNCBLIT & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;}
-	inline bool isHWPaletteset(void) const {return ( SDL_HWPALETTE & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;}
 
-	static bool checkAvailableSize( const PixelFormat * fmt );
-	static bool checkAvailableSize( void);
-    static int getSuggestedBPP(int width, int height);
+            //those methods just changes the static flags used on display creation.
+            //use the App::methods to also reset the display.
+            static inline void setOpenGL(bool val)
+            {
+                if (val)
+                    _defaultflags|= SDL_OPENGL;
+                else
+                    _defaultflags&= (~SDL_OPENGL) ;
+            }
+            static inline void setFullscreen(bool val)
+            {
+                if (val)
+                    _defaultflags|= SDL_FULLSCREEN;
+                else
+                    _defaultflags&= (~SDL_FULLSCREEN) ;
+            }
+            static inline void setResizable(bool val)
+            {
+                if (val)
+                    _defaultflags|= SDL_RESIZABLE;
+                else
+                    _defaultflags&= (~SDL_RESIZABLE) ;
+            }
+            static inline void setNoFrame(bool val)
+            {
+                if (val)
+                    _defaultflags|= SDL_NOFRAME;
+                else
+                    _defaultflags&= (~SDL_NOFRAME) ;
+            }
+            static inline void setDoubleBuf(bool val)
+            {
+                if (val)
+                    _defaultflags|= SDL_DOUBLEBUF;
+                else
+                    _defaultflags&= (~SDL_DOUBLEBUF) ;
+            }
+            static inline void setAnyFormat(bool val)
+            {
+                if (val)
+                    _defaultflags|= SDL_ANYFORMAT;
+                else
+                    _defaultflags&= (~SDL_ANYFORMAT) ;
+            }
+            static inline void setSWSurface(bool val)
+            {
+                if (val)
+                    _defaultflags|= SDL_SWSURFACE;
+                else
+                    _defaultflags&= (~SDL_SWSURFACE) ;
+            }
+            static inline void setHWSurface(bool val)
+            {
+                if (val)
+                    _defaultflags|= SDL_HWSURFACE;
+                else
+                    _defaultflags&= (~SDL_HWSURFACE) ;
+            }
+            static inline void setHWPalette(bool val)
+            {
+                if (val)
+                    _defaultflags|= SDL_HWPALETTE;
+                else
+                    _defaultflags&= (~SDL_HWPALETTE) ;
+            }
+            static inline void setAsyncBlit(bool val)
+            {
+                if (val)
+                    _defaultflags|= SDL_ASYNCBLIT;
+                else
+                    _defaultflags&= (~SDL_ASYNCBLIT) ;
+            }
 
-	friend Logger & operator << (Logger & log, const VideoSurface & surf);
-};
+
+            //Accessors
+            inline bool isOpenGLset(void) const
+            {
+                return ( SDL_OPENGL & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+            }
+            inline bool isFullScreenset(void) const
+            {
+                return ( SDL_FULLSCREEN & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+            }
+            inline bool isResizableset(void) const
+            {
+                return ( SDL_RESIZABLE & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+            }
+            inline bool isNoFrameset(void) const
+            {
+                return ( SDL_NOFRAME & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+            }
+            inline bool isAnyFormatset(void) const
+            {
+                return ( SDL_ANYFORMAT & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+            }
+            virtual inline bool isDoubleBufset(void) const
+            {
+                return ( SDL_DOUBLEBUF & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+            }
+            //unused
+            inline bool isASyncBlitset(void) const
+            {
+                return ( SDL_ASYNCBLIT & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+            }
+            inline bool isHWPaletteset(void) const
+            {
+                return ( SDL_HWPALETTE & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+            }
+
+            static bool checkAvailableSize( const PixelFormat * fmt );
+            static bool checkAvailableSize( void);
+            static int getSuggestedBPP(int width, int height);
+
+            friend Logger & operator << (Logger & log, const VideoSurface & surf);
+        };
     }
 } //namespace RAGE::SDL
 

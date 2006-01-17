@@ -8,7 +8,7 @@
  *
  * \brief Manage the global SDL state
  *
- * Singleton to manage SDL. It calls SDL_Quit when deleted
+ * Class to manage SDL. It calls SDL_Quit when deleted
  * Provide also handy access to widely used classes
  *
  * \author Alex
@@ -27,7 +27,7 @@ namespace RAGE
     namespace SDL
 {
 
-    //Singleton Class to manage initializations in SDL
+    //Class to manage initializations in SDL
     class Manager
     {
 
@@ -35,11 +35,7 @@ namespace RAGE
 
     protected:
         Manager(bool video = false, bool audio = false, bool timer = false, bool cdrom = false, bool joystick = false, bool noparachute = false, bool eventthread = false) throw (std::logic_error);
-        ~Manager()
-        {
-            SDL_Quit();
-        }
-        //bool init(Uint32 flags);
+        ~Manager();
 
     public:
     //Enablers

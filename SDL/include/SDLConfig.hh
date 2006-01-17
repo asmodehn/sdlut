@@ -58,7 +58,7 @@
  *
  * \ingroup General
  *
- * \brief This class provides access to both linked and compiled SDL versions
+ * \brief This class provides access to both linked and compiled SDL versions and specific CPU features check...
  *
  * \author Alex
  *
@@ -70,71 +70,53 @@
 namespace RAGE
 {
 
-namespace SDL
-{
-	static Logger Log("RAGE::SDL");
+    namespace SDL
+    {
+            //global, namespace visible, declaration :
+            extern Logger Log;
 
-	static inline std::string GetError(void) { return SDL_GetError(); }
+        std::string GetError(void);
 
-	class Version
-	{
-	    SDL_version _compiled;
-	    SDL_version _linked;
-
-	    public:
-            Version()
+        class Version
         {
-          SDL_VERSION(&_compiled);
-          _linked.major = SDL_Linked_Version()->major;
-          _linked.minor = SDL_Linked_Version()->minor;
-          _linked.patch = SDL_Linked_Version()->patch;
-        }
+            SDL_version _compiled;
+            SDL_version _linked;
 
-	    int getcompiledmajor() const {return _compiled.major; }
-	    int getcompiledminor() const {return _compiled.minor; }
-	    int getcompiledpatch() const {return _compiled.patch; }
+        public:
+            Version();
+            ~Version();
 
-	    int getlinkedmajor() const { return _linked.major; }
-	    int getlinkedminor() const { return _linked.minor; }
-	    int getlinkedpatch() const { return _linked.patch; }
+            int getcompiledmajor() const;
+            int getcompiledminor() const;
+            int getcompiledpatch() const;
+            int getlinkedmajor() const;
+            int getlinkedminor() const;
+            int getlinkedpatch() const;
 
-	    //check if link and compiled matches
-	    bool check() const
-	    {
-#if SDL_VERSION_ATLEAST(1, 2, 0)
-				Log << nl << "Compiled with SDL 1.2 or newer" << std::endl;
-#else
-				Log << nl << "Compiled with SDL older than 1.2" << std::endl;
-#endif
-	    	return (_linked.major == _compiled.major) && (_linked.minor == _compiled.minor) && (_linked.patch == _compiled.patch);
-			}
+            //check if link and compiled matches
+            bool check() const;
 
-	    friend Logger & operator << (Logger& log, const Version & v)
-	    {
-	        log << nl <<"Compiled version: "<< v.getcompiledmajor() <<"."<< v.getcompiledminor() <<"."<< v.getcompiledpatch();
-            log << nl << "Linked version: " << v.getcompiledmajor() <<"."<< v.getcompiledminor() <<"."<< v.getcompiledpatch();
-            return log;
-        }
-	};
+            friend Logger & operator << (Logger& log, const Version & v);
+        };
 
 #if SDL_VERSION_ATLEAST(1, 2, 7)
-    class CPU
-    {
+
+        class CPU
+        {
         public:
-        static inline bool hasRDTSC() { return ( SDL_HasRDTSC() !=0) ;}
-        static inline bool hasMMX() { return (SDL_HasMMX()!=0);}
-        static inline bool hasMMXExt() { return (SDL_HasMMXExt()!=0); }
-        static inline bool has3DNow() { return (SDL_Has3DNow()!=0); }
-        static inline bool has3DNowExt() { return (SDL_Has3DNowExt()!=0); }
-        //static inline bool hasSSE() { return (SDL_hasSSE()!=0);}
-        //static inline bool hasSSEExt() { return (SDL_hasSSEExt()!=0);}
-        static inline bool hasAltiVec() { return (SDL_HasAltiVec()!=0);}
+            static inline bool hasRDTSC();
+            static inline bool hasMMX();
+            static inline bool hasMMXExt();
+            static inline bool has3DNow();
+            static inline bool has3DNowExt();
+            //static inline bool hasSSE();
+            //static inline bool hasSSEExt();
+            static inline bool hasAltiVec();
 
-    };
+        };
 #endif
-	static Version version;
 
-}
+    }
 }
 
 #endif

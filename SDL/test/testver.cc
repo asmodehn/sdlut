@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 {
     Logger testlog("testver");
 
-    testlog << SDL::version << std::endl;
+    testlog <<SDL::App::getInstance().getVersion()<< std::endl;
 
 	return 0;
 }

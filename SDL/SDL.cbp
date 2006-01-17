@@ -7,7 +7,6 @@
 		<Option makefile="Makefile"/>
 		<Option makefile_is_custom="0"/>
 		<Option default_target="2"/>
-		<Option active_target="3"/>
 		<Option compiler="0"/>
 		<Build>
 			<Target title="staticlib-NoOpenGL">
@@ -1415,6 +1414,11 @@
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
 		<Unit filename="src\SDLCDRom.cc">
+			<Option compilerVar="CC"/>
+			<Option target="staticlib-NoOpenGL"/>
+			<Option target="staticlib-debug"/>
+		</Unit>
+		<Unit filename="src\SDLConfig.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-NoOpenGL"/>
 			<Option target="staticlib-debug"/>

@@ -141,7 +141,7 @@ bool GLManager::setAccumASize(int bits)
 
 Logger & operator << (Logger & log, const GLManager & glman)
 {
-  log << nl << "GLManager - debug() : " << nl <<
+  log << nl << "GLManager : " << nl <<
     	"GL Red Size = " << glman.getRSize() << nl <<
 		"GL Green Size = " << glman.getGSize() << nl <<
 		"GL Blue Size = " << glman.getBSize() << nl <<

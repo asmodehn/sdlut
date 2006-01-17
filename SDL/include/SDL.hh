@@ -6,6 +6,12 @@
   */
 
 /**
+  * \defgroup Utils
+  */
+
+#include "Logger.hh"
+
+/**
   * \defgroup General
   * This group provide many classes to make the use of SDL easier
   * Also provide a set of classes to manage the SDL Global functions :
@@ -56,11 +62,7 @@
   * \defgroup Timers
   */
 
-/**
-  * \defgroup Other
-  */
 
-#include "Logger.hh"
 
 
 //just a little usefull tip for mingw

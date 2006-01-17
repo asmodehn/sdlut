@@ -17,7 +17,7 @@ namespace RAGE
     namespace AML
     {
 
-        static Logger Log("RAGE::AML");
+        extern Logger Log;
 
         /**
           * This class manages the global configuration of AML

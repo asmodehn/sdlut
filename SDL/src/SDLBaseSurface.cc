@@ -156,15 +156,7 @@ bool BaseSurface::fill (const PixelColor& color, Rect dest_rect)
 
 bool BaseSurface::blit(const BaseSurface& src, Rect& dest_rect, const Rect& src_rect )
 {
-	/*if (src._surf==NULL) LIB_ERROR("! src._surf NULL !");
-	if (src._surf->pixels==NULL) LIB_ERROR("! src._surf->pixels NULL !");
-	std::cout << "src.debug() " << std::endl;
-	src.debug();
-	if (_surf==NULL) LIB_ERROR("! _surf NULL !");
-	if (_surf->pixels==NULL) LIB_ERROR("! _surf->pixels NULL !");
-	std::cout << "debug() " << std::endl;
-	debug();
-	*/
+
 	bool res=false;
 	switch (SDL_BlitSurface(src._surf, src_rect._rect , _surf, dest_rect._rect))
 	{
@@ -192,16 +184,16 @@ Rect BaseSurface::getClipRect(void) const
 
 Logger & operator << (Logger & log, const BaseSurface & surf)
 {
-	log << nl << "SDL*Surfaces::debug()" << nl
-				<< "- Height = " << surf.getHeight() << nl
-				<< "- Width = " << surf.getWidth() << nl
-				<< "- bpp = " << surf.getBPP() << nl
+	log << nl << "SDLBaseSurface::" << nl
+				<< " - Height = " << surf.getHeight() << nl
+				<< " - Width = " << surf.getWidth() << nl
+				<< " - bpp = " << surf.getBPP() << nl
 				<< std::boolalpha
-				<< "- SW ? " << surf.isSWset() << nl
-				<< "- HW ? " << surf.isHWset() << nl
-				<< "- HWAccel ? " << surf.isHWAccelset() << nl
-				<< "- RLEAccel ? " << surf.isRLEAccelset() << nl
-				<< "- PreAlloc ? " << surf.isPreAllocset();
+				<< " - SW ? " << surf.isSWset() << nl
+				<< " - HW ? " << surf.isHWset() << nl
+				<< " - HWAccel ? " << surf.isHWAccelset() << nl
+				<< " - RLEAccel ? " << surf.isRLEAccelset() << nl
+				<< " - PreAlloc ? " << surf.isPreAllocset();
     return log;
 }
     }

@@ -10,7 +10,7 @@
  *
  * \brief This class is an SDL - OpenGL Manager
  *
- * This singleton implements all the opengl related functions that SDL provides
+ * This class implements all the opengl related functions that SDL provides
  *
  * \author Alex
  *

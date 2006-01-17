@@ -51,7 +51,7 @@ public:
 
 //	inline bool isOpenGLset(void) const {return ((SDL_OPENGL & _surf->flags) != 0);}
 
-  bool resize (int width, int height);
+//  bool resize (int width, int height);
 //
 //
 //    bool setBGColor(const Color & color);

@@ -24,51 +24,95 @@ namespace RAGE
         Engine::Engine() throw (std::logic_error)
         try : _screen(NULL), _backupscreen(NULL), _defaultlogo(defaultlogoname), _background(0,0,0)
         {
-            Log << nl << "Engine Constructor called" << std::endl;
+#ifdef DEBUG
+            Log << nl << "Engine::Engine() called ...";
+#endif
+
+
+#ifdef DEBUG
+            Log << nl << "Engine::Engine() done.";
+#endif
         }
         catch (std::exception & e)
         {
-            Log << nl << e.what() << std::endl;
+            Log << nl
+            << "Engine:: Exception in Constructor !"
+            << nl << e.what() << std::endl;
         }
 
         Engine::~Engine()
         {
+#ifdef DEBUG
+            Log << nl << "Engine::~Engine() called ...";
+#endif
+            _screen = NULL;
             if (_backupscreen !=NULL )
                 delete _backupscreen;
+
+        #ifdef DEBUG
+            Log << nl << "Engine::~Engine() done.";
+#endif
         }
+
         bool Engine::setBGColor(const Color & color)
         {
-            Log << nl << "call Engine::setBGColor(" << color << ")" << std::endl;
+            #ifdef DEBUG
+            Log << nl << "Engine::setBGColor(" << color << ") called ...";
+            #endif
             _background=color;
             if (_screen != NULL )
             {
                 _screen->fill(_background);
             }
+            #ifdef DEBUG
+Log << nl << "Engine::setBGColor(" << color << ") done.";
+#endif
             return true;
         }
 
         bool Engine::init(int width, int height)
         {
+
+#ifdef DEBUG
+            Log << nl << "Engine::init() called ...";
+#endif
             _screen = App::getInstance().getWindow()->getDisplay();
             if ( _screen != NULL )
                 _screen->fill(_background);
+#ifdef DEBUG
+            Log << nl << "Engine::init() done.";
+#endif
             return _screen != NULL ;
         }
 
         bool Engine::resize(int width, int height)
         {
+#ifdef DEBUG
+            Log << nl << "Engine::resize(" << width << ", " << height << ") called ...";
+#endif
             if ( _screen != NULL )
                 _screen->fill(_background);
+
+
+#ifdef DEBUG
+            Log << nl << "Engine::resize(" << width << ", " << height << ") done.";
+#endif
             return true;
         }
 
         //to call only when needed
         void Engine::render(void) const
         {
+#if DEBUG == 2
+            Log << nl << "Engine::render() called ...";
+#endif
             if ( _screen == NULL )
                 Log << nl << "Engine not initialised, the render has been aborted." << std::endl;
             _screen->fill(_background);
             _screen->blit(_defaultlogo,Point((_screen->getWidth()-_defaultlogo.getWidth())/2,(_screen->getHeight()-_defaultlogo.getHeight())/2));
+#if DEBUG == 2
+            Log << nl << "Engine::render() done.";
+#endif
         }
 
         bool Engine::saveContent(void)
@@ -107,18 +151,33 @@ namespace RAGE
         GLEngine::GLEngine() throw(std::logic_error)
         try : Engine()
         {
+#ifdef DEBUG
+            Log << nl << "GLEngine::GLEngine() called ...";
+#endif
+
+
+#ifdef DEBUG
+            Log << nl << "GLEngine::GLEngine() done.";
+#endif
         }
         catch(std::exception & e)
         {
-            Log << nl << "Exception cought in GLEngine()" << std::endl;
-            Log << nl << e.what() << std::endl;
+            Log << nl
+            << "GLEngine:: Exception in Constructor ! "
+            << nl << e.what() << std::endl;
         }
 
         bool GLEngine::setBGColor(const Color & color)
         {
-            Log << nl << "call GLEngine::setBGColor(" << color << ")" << std::endl;
+#ifdef DEBUG
+            Log << nl << "GLEngine::setBGColor(" << color << ") called ..." << std::endl;
+#endif
             _background=color;
             glClearColor(static_cast<float> (color.getR() ) / 255.0f, static_cast<float> (color.getG() ) / 255.0f,static_cast<float> (color.getB() ) / 255.0f,0.0f);
+
+#ifdef DEBUG
+            Log << nl << "GLEngine::setBGColor(" << color << ") done." << std::endl;
+#endif
             return true;
         }
 
