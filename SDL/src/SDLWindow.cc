@@ -185,8 +185,10 @@ namespace RAGE
 #ifdef HAVE_OPENGL
 
             _glmanager = new GLManager();
+            _userglengine=false;
             _glengine = new GLEngine();
 #endif
+            _userengine=false;
             _engine = new Engine();
         }
         catch (std::exception &e)
@@ -213,17 +215,20 @@ namespace RAGE
         Log << nl << " Window Destructor called !" << std::endl;
 #endif
 #ifdef HAVE_OPENGL
-
-        delete _glmanager;
+        if (!_userglengine) delete _glengine, _glengine = NULL;
+        delete _glmanager, _glmanager = NULL;
 #endif
-
-        delete _videoinfo;
+        if (!_userengine) delete _engine, _engine = NULL;
+        delete _videoinfo, _videoinfo = NULL;
         BaseSurface::_vinfo = NULL;
     }
 
 void Window::setEngine (Engine *engine)
 {
+#ifdef DEBUG
+    Log << nl << "Window::setEngine(" << engine << ")";
     assert(engine);
+#endif
     _engine=engine;
     if (_screen != NULL)
     {
@@ -235,10 +240,13 @@ void Window::setEngine (Engine *engine)
 #ifdef HAVE_OPENGL
 void Window::setGLEngine (GLEngine* glengine)
 {
+#ifdef DEBUG
+    Log << nl << "Window::setGLEngine(" << glengine << ")";
     assert(glengine);
+#endif
     _glengine=glengine;
     if (_screen != NULL)
-        if  (_screen->isOpenGLset() ==true)
+        if  (_screen->isOpenGLset())
         {
             _screen->setEngine(_glengine);
             _glengine->init(_screen->getWidth(),_screen->getHeight());

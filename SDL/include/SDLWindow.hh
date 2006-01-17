@@ -52,8 +52,10 @@ namespace RAGE
 #ifdef HAVE_OPENGL
 
         GLManager * _glmanager;
+        bool _userglengine;
         GLEngine* _glengine;
 #endif
+        bool _userengine;
         Engine* _engine;
 
 
@@ -97,10 +99,10 @@ namespace RAGE
             return _glmanager;
         }
         bool setOpenGL(bool val);
-        void setGLEngine(GLEngine * glengine = new GLEngine());
+        void setGLEngine(GLEngine * glengine);
 #endif
 
-        void setEngine(Engine * engine = new Engine());
+        void setEngine(Engine * engine);
         bool setNoFrame(bool val);
 
         //BGColor works only on 2DWindow

@@ -23,68 +23,78 @@
  *
  */
 
-namespace RAGE{
-    namespace SDL {
-
-typedef enum { arrow, blackArrow } CursorShape;
-
-class Cursor
+namespace RAGE
 {
+    namespace SDL
+    {
 
-	friend class Manager;
+        typedef enum
+        {
+            arrow, blackArrow
+        }
+        CursorShape;
 
-	//default shapes for cursor (XPM format)
-	//corresponding to CursorShape
-	static const char* _shape_arrow[];
-	static const char* _shape_blackArrow[];
-	static const char** shapes[2];
-	//set Cursor from XPM
-	static SDL_Cursor *init_system_cursor(const char *image[]);
+        class Cursor
+        {
 
-	//The address of SDL_Cursor structure should not change
-	SDL_Cursor * const _cursor;
+            friend class Manager;
 
-	explicit Cursor(SDL_Cursor * c) : _cursor(c) {}
+            //default shapes for cursor (XPM format)
+            //corresponding to CursorShape
+            static const char* _shape_arrow[];
+            static const char* _shape_blackArrow[];
+            static const char** shapes[2];
+            //set Cursor from XPM
+            static SDL_Cursor *init_system_cursor(const char *image[]);
 
-public :
-	//Constructor
-	Cursor(CursorShape sh = arrow) throw (std::logic_error);
+            //The address of SDL_Cursor structure should not change
+            SDL_Cursor * const _cursor;
 
-	//Destructor
-	~Cursor() {SDL_FreeCursor(_cursor);}
+            explicit Cursor(SDL_Cursor * c) : _cursor(c)
+            {}
 
-	//Static Methods
-	static void setCurrent (const Cursor & cur)
-	{
-		SDL_SetCursor(cur._cursor);
-	}
+        public :
+            //Constructor
+            Cursor(CursorShape sh = arrow) throw (std::logic_error);
 
-	static Cursor getCurrent (void)
-	{
-		return Cursor(SDL_GetCursor());
+            //Destructor
+            ~Cursor()
+            {
+                SDL_FreeCursor(_cursor);
+            }
 
-	}
-	static void warpCurrent (Point p)
-	{
-		SDL_WarpMouse(p.getx(),p.gety());
-		std::cout << "Mouse warped !" << std::endl;
-	}
+            //Static Methods
+            static void setCurrent (const Cursor & cur)
+            {
+                SDL_SetCursor(cur._cursor);
+            }
 
-	//Methods
-	void show(void) // show the current Cursor
-	{
-		SDL_ShowCursor(SDL_ENABLE);
-	}
-	void hide(void) // hide the current Cursor
-	{
-		SDL_ShowCursor(SDL_DISABLE);
-	}
-	bool isVisible(void) // query the cursor - return true if the cursor is visible
-	{
-		return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
-	}
+            static Cursor getCurrent (void)
+            {
+                return Cursor(SDL_GetCursor());
 
-};
+            }
+            static void warpCurrent (Point p)
+            {
+                SDL_WarpMouse(p.getx(),p.gety());
+                std::cout << "Mouse warped !" << std::endl;
+            }
+
+            //Methods
+            void show(void) // show the current Cursor
+            {
+                SDL_ShowCursor(SDL_ENABLE);
+            }
+            void hide(void) // hide the current Cursor
+            {
+                SDL_ShowCursor(SDL_DISABLE);
+            }
+            bool isVisible(void) // query the cursor - return true if the cursor is visible
+            {
+                return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
+            }
+
+        };
     }
 } //namespace RAGE::SDL
 

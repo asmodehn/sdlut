@@ -21,9 +21,14 @@ namespace RAGE
         //global variable
         std::string defaultlogoname("../data/SDL_logo.bmp");
 
-        Engine::Engine() : _screen(NULL), _backupscreen(NULL), _defaultlogo(defaultlogoname), _background(0,0,0)
+        Engine::Engine() throw (std::logic_error)
+        try : _screen(NULL), _backupscreen(NULL), _defaultlogo(defaultlogoname), _background(0,0,0)
         {
             Log << nl << "Engine Constructor called" << std::endl;
+        }
+        catch (std::exception & e)
+        {
+            Log << nl << e.what() << std::endl;
         }
 
         Engine::~Engine()
@@ -98,6 +103,16 @@ namespace RAGE
 
         float rtri; // rotation angle
         float rquad; // rotation angle
+
+        GLEngine::GLEngine() throw(std::logic_error)
+        try : Engine()
+        {
+        }
+        catch(std::exception & e)
+        {
+            Log << nl << "Exception cought in GLEngine()" << std::endl;
+            Log << nl << e.what() << std::endl;
+        }
 
         bool GLEngine::setBGColor(const Color & color)
         {

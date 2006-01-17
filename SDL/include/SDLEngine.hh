@@ -32,7 +32,7 @@ namespace RAGE
         Color _background;
 
     public:
-        Engine();
+        Engine() throw (std::logic_error);
         virtual ~Engine();
         virtual void render(void) const;
         virtual bool init(int width, int height);
@@ -48,8 +48,7 @@ namespace RAGE
     {
 
     public:
-        GLEngine() :  Engine()
-        {}
+        GLEngine() throw (std::logic_error);
         virtual void render(void) const;
         virtual bool init(int width, int height);
         virtual bool resize(int width, int height);
