@@ -86,6 +86,7 @@ namespace RAGE
             {
                 assert(engine);
                 Log << nl << "Setting Engine..." ;
+                Log << nl << typeid(engine).name();
                 _engine = engine;
             }
             Engine * getEngine()
