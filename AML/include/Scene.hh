@@ -23,6 +23,8 @@ namespace RAGE
 
         public:
 
+            std::string  name() const { return "SceneEngine"; }
+
             void put( Sprite sprite, int posX = 0, int posY = 0);        //bool init(int width, int height, SDL::VideoSurface * display) {}
             //        bool resize (int width, int height);
             //       bool setBGColor(const SDL::Color & color);
@@ -37,7 +39,7 @@ namespace RAGE
                 return false;
             }
 
-            bool render();//call render on all the sprites
+            bool render() const ;//call render on all the sprites
 
         };
 

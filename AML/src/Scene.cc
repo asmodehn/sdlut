@@ -39,13 +39,13 @@ namespace RAGE
 #endif
         }
 
-        bool Scene::render()
+        bool Scene::render() const
         {
 #ifdef DEBUG
             Log << nl << "Scene::render() called ..." << std::endl;
 #endif
             bool res = false;
-            res = _sprite==NULL && _sprite->render(_screen);
+            res = _sprite!=NULL && _sprite->render(_screen);
 
 #ifdef DEBUG
             Log << nl << "Scene::render() done." << std::endl;
