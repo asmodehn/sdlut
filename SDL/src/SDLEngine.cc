@@ -101,7 +101,7 @@ Log << nl << "Engine::setBGColor(" << color << ") done.";
         }
 
         //to call only when needed
-        void Engine::render(void) const
+        bool Engine::render(void) const
         {
 #if DEBUG == 2
             Log << nl << "Engine::render() called ...";
@@ -113,6 +113,7 @@ Log << nl << "Engine::setBGColor(" << color << ") done.";
 #if DEBUG == 2
             Log << nl << "Engine::render() done.";
 #endif
+        return true;
         }
 
         bool Engine::saveContent(void)
@@ -220,7 +221,7 @@ Log << nl << "Engine::setBGColor(" << color << ") done.";
         }
 
 
-        void GLEngine::render(void) const
+        bool GLEngine::render(void) const
         {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear Screen And Depth Buffer
             glLoadIdentity();         // Reset The Current Modelview Matrix
@@ -292,6 +293,7 @@ Log << nl << "Engine::setBGColor(" << color << ") done.";
             rtri+=0.2f;           // Increase The Rotation Variable For The Triangle ( NEW )
             rquad-=0.15f;          // Decrease The Rotation Variable For The Quad ( NEW )
             // Keep Going
+            return true;
         }
 
 #endif

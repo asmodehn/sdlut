@@ -246,6 +246,7 @@ namespace RAGE
                 _screen->setEngine(_engine);
                 _engine->init(_screen->getWidth(),_screen->getHeight());
             }
+
 #ifdef DEBUG
             Log << nl << "Window::setEngine(" << engine << ") done.";
 

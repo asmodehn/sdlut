@@ -20,6 +20,11 @@ namespace RAGE
             Log << nl << "VideoSurface::VideoSurface() called ...";
 #endif
 
+            if (_engine!=NULL)
+            {
+                Log << nl << typeid(_engine).name();
+                Log << nl << _engine->name();
+            }
             if (_surf == NULL)
             {
                 Log << nl <<"Unable to set " << width << " x " << height << " display surface : ";
@@ -116,7 +121,10 @@ namespace RAGE
         bool VideoSurface::update(void)
         {
             if (_engine !=NULL )
+            {
+                Log << nl << _engine->name();
                 _engine->render();
+            }
             return SDL_Flip(_surf) == 0;
         }
 
