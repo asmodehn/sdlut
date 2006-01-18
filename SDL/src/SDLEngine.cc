@@ -38,7 +38,7 @@ namespace RAGE
             Log << nl
             << "Engine:: Exception in Constructor !"
             << nl << e.what() << std::endl;
-        }
+        };
 
         Engine::~Engine()
         {
@@ -165,7 +165,7 @@ Log << nl << "Engine::setBGColor(" << color << ") done.";
             Log << nl
             << "GLEngine:: Exception in Constructor ! "
             << nl << e.what() << std::endl;
-        }
+        };
 
         bool GLEngine::setBGColor(const Color & color)
         {
