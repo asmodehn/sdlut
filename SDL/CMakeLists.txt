@@ -1,7 +1,7 @@
 CMAKE_MINIMUM_REQUIRED ( VERSION 2.2)
 
 #Project Definition
-PROJECT(SDLWrap)
+PROJECT(Rage_SDL)
 
 #
 #Checking software dependencies
@@ -16,14 +16,14 @@ FIND_PACKAGE(SDL REQUIRED)
 
 #If not found try to get a custom one (default on Windows)
 IF ( NOT SDL_FOUND )
-	MESSAGE(STATUS "SDL Not Found as a package - checking custom install in " ${SDLWrap_SOURCE_DIR}/depend/SDL-*)
+	MESSAGE(STATUS "SDL Not Found as a package - checking custom install in " ${Rage_SDL_SOURCE_DIR}/depend/SDL-*)
 	
 	#to handle a specific variable used byt the cmake default module (doesnt work ??)
 	IF (NOT SDL_LIBRARY_TEMP)
 		SET(SDL_LIBRARY_TEMP "Unused - SDL Not found using the default FindSDL.cmake Module")
 	ENDIF (NOT SDL_LIBRARY_TEMP)
 
-	FILE(GLOB DEPEND_SDL ${SDLWrap_SOURCE_DIR}/depend/SDL-*)
+	FILE(GLOB DEPEND_SDL ${Rage_SDL_SOURCE_DIR}/depend/SDL-*)
 	IF ( DEPEND_SDL )
 		MESSAGE(STATUS "Custom Install of SDL found in "${DEPEND_SDL})
 	ENDIF ( DEPEND_SDL )
@@ -33,7 +33,7 @@ IF ( NOT SDL_FOUND )
 	FIND_LIBRARY(SDLMAIN_LIBRARY NAMES SDLmain PATHS ${DEPEND_SDL} ${DEPEND_SDL}/lib ${DEPEND_SDL}/src/main)
 	
 	IF ( NOT SDL_INCLUDE_DIR OR NOT SDL_LIBRARY OR NOT SDLMAIN_LIBRARY )
-		MESSAGE( FATAL_ERROR "SDL Not Found ! - Please copy SDL built libraries under ${SDLWrap_SOURCE_DIR}/depend/SDL-*" )
+		MESSAGE( FATAL_ERROR "SDL Not Found ! - Please copy SDL built libraries under ${Rage_SDL_SOURCE_DIR}/depend/SDL-*" )
 	ELSE ( NOT SDL_INCLUDE_DIR OR NOT SDL_LIBRARY OR NOT SDLMAIN_LIBRARY )
 		SET(SDL_FOUND "YES")
 		MESSAGE( STATUS "SDL Found !")
@@ -46,10 +46,10 @@ FIND_PACKAGE(OPENGL)
 
 
 #
-#Defining Rules for building SDLWrap
+#Defining Rules for building Rage_SDL
 #
 
-INCLUDE_DIRECTORIES(${SDLWrap_SOURCE_DIR}/include )
+INCLUDE_DIRECTORIES(${Rage_SDL_SOURCE_DIR}/include )
 
 #test for SDL
 IF(SDL_FOUND)
@@ -86,9 +86,9 @@ ENDIF(CMAKE_CXX_COMPILER STREQUAL "cl")
 ADD_DEFINITIONS(-DLOGINDENTLVL=1 -DDEBUG)
 
 #listing headers as well to have them easily accessible in many IDE, not sure about the effect on the make build...
-ADD_LIBRARY(	SDLWrap 
-		include/SDLWrap.hh
-		include/SDLConfig.hh
+ADD_LIBRARY(	Rage_SDL
+		include/SDL.hh
+		include/SDLConfig.hh src/SDLConfig.cc
 		include/Logger.hh src/Logger.cc
 		include/SDLApp.hh src/SDLApp.cc
 		include/SDLWindow.hh src/SDLWindow.cc
@@ -115,18 +115,18 @@ ADD_LIBRARY(	SDLWrap
 	)
 
 #copying data files to use when debugging
-CONFIGURE_FILE(${SDLWrap_SOURCE_DIR}/data/SDL_icon.bmp ${SDLWrap_BINARY_DIR}/data/SDL_icon.bmp COPYONLY)
-CONFIGURE_FILE(${SDLWrap_SOURCE_DIR}/data/SDL_logo.bmp ${SDLWrap_BINARY_DIR}/data/SDL_logo.bmp COPYONLY)
+CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/SDL_icon.bmp ${Rage_SDL_BINARY_DIR}/data/SDL_icon.bmp COPYONLY)
+CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/SDL_logo.bmp ${Rage_SDL_BINARY_DIR}/data/SDL_logo.bmp COPYONLY)
 
 #defining usefull variables to be used by dependant projects.
-SET (SDLWrap_INCLUDE_DIR ${SDLWrap_SOURCE_DIR}/include)
-GET_TARGET_PROPERTY(SDLWrap_LIBRARY SDLWrap LOCATION)
+SET (Rage_SDL_INCLUDE_DIR ${Rage_SDL_SOURCE_DIR}/include)
+GET_TARGET_PROPERTY(Rage_SDL_LIBRARY Rage_SDL LOCATION)
 
 #Copying dependencies if needed for debug
 IF(DEPEND_SDL)
 	IF (WIN32)
-		GET_FILENAME_COMPONENT(DEBUG_DIR ${SDLWrap_LIBRARY} PATH)
-		ADD_CUSTOM_COMMAND(TARGET SDLWrap POST_BUILD COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different ${DEPEND_SDL}/lib/SDL.dll ${DEBUG_DIR})
+		GET_FILENAME_COMPONENT(DEBUG_DIR ${Rage_SDL_LIBRARY} PATH)
+		ADD_CUSTOM_COMMAND(TARGET Rage_SDL POST_BUILD COMMAND ${CMAKE_COMMAND} ARGS -E copy_if_different ${DEPEND_SDL}/lib/SDL.dll ${DEBUG_DIR})
 	ENDIF (WIN32)
 ENDIF(DEPEND_SDL)
 
@@ -136,113 +136,113 @@ ENDIF(DEPEND_SDL)
 #
 #TODO : add custom build command to move the needed files for testing (without installing)...
 
-#linking SDLWrap to all other following executables
-LINK_LIBRARIES(SDLWrap)
+#linking Rage_SDL to all other following executables
+LINK_LIBRARIES(Rage_SDL)
 
 # TODO : Still need to copy test data for following tests... temporary, while the test still uses raw SDL.
 # Goal : having test using only data/* files...
 
 #trying to dynamically link opengl
-ADD_EXECUTABLE(testdyngl  include/SDLWrap.hh test/testdyngl.cc)
-ADD_DEPENDENCIES(testdyngl SDLWrap)
+ADD_EXECUTABLE(testdyngl  include/SDL.hh test/testdyngl.cc)
+ADD_DEPENDENCIES(testdyngl Rage_SDL)
 
 #linking opengl for all other tests if detected
 IF(OPENGL_FOUND)
 	LINK_LIBRARIES (${OPENGL_LIBRARIES})
 ENDIF(OPENGL_FOUND)
 
-ADD_EXECUTABLE(SDLtestInput include/SDLWrap.hh test/SDLtestInput.cc)
-ADD_DEPENDENCIES(SDLtestInput SDLWrap)
+ADD_EXECUTABLE(SDLtestInput include/SDL.hh test/SDLtestInput.cc)
+ADD_DEPENDENCIES(SDLtestInput Rage_SDL)
 
-ADD_EXECUTABLE(checkkeys  include/SDLWrap.hh test/checkkeys.cc)
-ADD_DEPENDENCIES(checkkeys SDLWrap)
+ADD_EXECUTABLE(checkkeys  include/SDL.hh test/checkkeys.cc)
+ADD_DEPENDENCIES(checkkeys Rage_SDL)
 
-ADD_EXECUTABLE(graywin  include/SDLWrap.hh test/graywin.cc)
-ADD_DEPENDENCIES(graywin SDLWrap)
+ADD_EXECUTABLE(graywin  include/SDL.hh test/graywin.cc)
+ADD_DEPENDENCIES(graywin Rage_SDL)
 
-ADD_EXECUTABLE(loopwave  include/SDLWrap.hh test/loopwave.cc)
-ADD_DEPENDENCIES(loopwave SDLWrap)
+ADD_EXECUTABLE(loopwave  include/SDL.hh test/loopwave.cc)
+ADD_DEPENDENCIES(loopwave Rage_SDL)
 
-ADD_EXECUTABLE(SDLtestVideo  include/SDLWrap.hh test/SDLtestVideo.cc)
-ADD_DEPENDENCIES(SDLtestVideo SDLWrap)
+ADD_EXECUTABLE(SDLtestVideo  include/SDL.hh test/SDLtestVideo.cc)
+ADD_DEPENDENCIES(SDLtestVideo Rage_SDL)
 
-ADD_EXECUTABLE(testalpha  include/SDLWrap.hh test/testalpha.cc)
-ADD_DEPENDENCIES(testalpha SDLWrap)
+ADD_EXECUTABLE(testalpha  include/SDL.hh test/testalpha.cc)
+ADD_DEPENDENCIES(testalpha Rage_SDL)
 
-ADD_EXECUTABLE(testbitmap  include/SDLWrap.hh test/testbitmap.cc)
-ADD_DEPENDENCIES(testbitmap SDLWrap)
+ADD_EXECUTABLE(testbitmap  include/SDL.hh test/testbitmap.cc)
+ADD_DEPENDENCIES(testbitmap Rage_SDL)
 
-ADD_EXECUTABLE(testblitspeed include/SDLWrap.hh  test/testblitspeed.cc)
-ADD_DEPENDENCIES(testblitspeed SDLWrap)
+ADD_EXECUTABLE(testblitspeed include/SDL.hh  test/testblitspeed.cc)
+ADD_DEPENDENCIES(testblitspeed Rage_SDL)
 
-ADD_EXECUTABLE(testcdrom include/SDLWrap.hh  test/testcdrom.cc)
-ADD_DEPENDENCIES(testcdrom SDLWrap)
+ADD_EXECUTABLE(testcdrom include/SDL.hh  test/testcdrom.cc)
+ADD_DEPENDENCIES(testcdrom Rage_SDL)
 
-ADD_EXECUTABLE(testcpuinfo  include/SDLWrap.hh test/testcpuinfo.cc)
-ADD_DEPENDENCIES(testcpuinfo SDLWrap)
+ADD_EXECUTABLE(testcpuinfo  include/SDL.hh test/testcpuinfo.cc)
+ADD_DEPENDENCIES(testcpuinfo Rage_SDL)
 
-ADD_EXECUTABLE(testendian  include/SDLWrap.hh test/testendian.cc)
-ADD_DEPENDENCIES(testendian SDLWrap)
+ADD_EXECUTABLE(testendian  include/SDL.hh test/testendian.cc)
+ADD_DEPENDENCIES(testendian Rage_SDL)
 
-ADD_EXECUTABLE(testerror  include/SDLWrap.hh test/testerror.cc)
-ADD_DEPENDENCIES(testerror SDLWrap)
+ADD_EXECUTABLE(testerror  include/SDL.hh test/testerror.cc)
+ADD_DEPENDENCIES(testerror Rage_SDL)
 
-ADD_EXECUTABLE(testgamma  include/SDLWrap.hh test/testgamma.cc)
-ADD_DEPENDENCIES(testgamma SDLWrap)
+ADD_EXECUTABLE(testgamma  include/SDL.hh test/testgamma.cc)
+ADD_DEPENDENCIES(testgamma Rage_SDL)
 
-ADD_EXECUTABLE(testgl  include/SDLWrap.hh test/testgl.cc)
-ADD_DEPENDENCIES(testgl SDLWrap)
+ADD_EXECUTABLE(testgl  include/SDL.hh test/testgl.cc)
+ADD_DEPENDENCIES(testgl Rage_SDL)
 
-ADD_EXECUTABLE(testthread  include/SDLWrap.hh test/testthread.cc)
-ADD_DEPENDENCIES(testthread SDLWrap)
+ADD_EXECUTABLE(testthread  include/SDL.hh test/testthread.cc)
+ADD_DEPENDENCIES(testthread Rage_SDL)
 
-ADD_EXECUTABLE(testjoystick  include/SDLWrap.hh test/testjoystick.cc)
-ADD_DEPENDENCIES(testjoystick SDLWrap)
+ADD_EXECUTABLE(testjoystick  include/SDL.hh test/testjoystick.cc)
+ADD_DEPENDENCIES(testjoystick Rage_SDL)
 
-ADD_EXECUTABLE(testkeys include/SDLWrap.hh  test/testkeys.cc)
-ADD_DEPENDENCIES(testkeys SDLWrap)
+ADD_EXECUTABLE(testkeys include/SDL.hh  test/testkeys.cc)
+ADD_DEPENDENCIES(testkeys Rage_SDL)
 
-ADD_EXECUTABLE(testlock include/SDLWrap.hh  test/testlock.cc)
-ADD_DEPENDENCIES(testlock SDLWrap)
+ADD_EXECUTABLE(testlock include/SDL.hh  test/testlock.cc)
+ADD_DEPENDENCIES(testlock Rage_SDL)
 
-ADD_EXECUTABLE(testoverlay2  include/SDLWrap.hh test/testoverlay2.cc)
-ADD_DEPENDENCIES(testoverlay2 SDLWrap)
+ADD_EXECUTABLE(testoverlay2  include/SDL.hh test/testoverlay2.cc)
+ADD_DEPENDENCIES(testoverlay2 Rage_SDL)
 
-ADD_EXECUTABLE(testoverlay  include/SDLWrap.hh test/testoverlay.cc)
-ADD_DEPENDENCIES(testoverlay SDLWrap)
+ADD_EXECUTABLE(testoverlay  include/SDL.hh test/testoverlay.cc)
+ADD_DEPENDENCIES(testoverlay Rage_SDL)
 
-ADD_EXECUTABLE(testpalette include/SDLWrap.hh  test/testpalette.cc)
-ADD_DEPENDENCIES(testpalette SDLWrap)
+ADD_EXECUTABLE(testpalette include/SDL.hh  test/testpalette.cc)
+ADD_DEPENDENCIES(testpalette Rage_SDL)
 
-ADD_EXECUTABLE(testsem include/SDLWrap.hh  test/testsem.cc)
-ADD_DEPENDENCIES(testsem SDLWrap)
+ADD_EXECUTABLE(testsem include/SDL.hh  test/testsem.cc)
+ADD_DEPENDENCIES(testsem Rage_SDL)
 
-ADD_EXECUTABLE(testsprite include/SDLWrap.hh  test/testsprite.cc)
-ADD_DEPENDENCIES(testsprite SDLWrap)
+ADD_EXECUTABLE(testsprite include/SDL.hh  test/testsprite.cc)
+ADD_DEPENDENCIES(testsprite Rage_SDL)
 
-ADD_EXECUTABLE(testtimer  include/SDLWrap.hh test/testtimer.cc)
-ADD_DEPENDENCIES(testtimer SDLWrap)
+ADD_EXECUTABLE(testtimer  include/SDL.hh test/testtimer.cc)
+ADD_DEPENDENCIES(testtimer Rage_SDL)
 
-ADD_EXECUTABLE(testtypes include/SDLWrap.hh  test/testtypes.cc)
-ADD_DEPENDENCIES(testtypes SDLWrap)
+ADD_EXECUTABLE(testtypes include/SDL.hh  test/testtypes.cc)
+ADD_DEPENDENCIES(testtypes Rage_SDL)
 
-ADD_EXECUTABLE(testver  include/SDLWrap.hh test/testver.cc)
-ADD_DEPENDENCIES(testver SDLWrap)
+ADD_EXECUTABLE(testver  include/SDL.hh test/testver.cc)
+ADD_DEPENDENCIES(testver Rage_SDL)
 
-ADD_EXECUTABLE(testvidinfo  include/SDLWrap.hh test/testvidinfo.cc)
-ADD_DEPENDENCIES(testvidinfo SDLWrap)
+ADD_EXECUTABLE(testvidinfo  include/SDL.hh test/testvidinfo.cc)
+ADD_DEPENDENCIES(testvidinfo Rage_SDL)
 
-ADD_EXECUTABLE(testwin include/SDLWrap.hh  test/testwin.cc)
-ADD_DEPENDENCIES(testwin SDLWrap)
+ADD_EXECUTABLE(testwin include/SDL.hh  test/testwin.cc)
+ADD_DEPENDENCIES(testwin Rage_SDL)
 
-ADD_EXECUTABLE(testwm include/SDLWrap.hh  test/testwm.cc)
-ADD_DEPENDENCIES(testwm SDLWrap)
+ADD_EXECUTABLE(testwm include/SDL.hh  test/testwm.cc)
+ADD_DEPENDENCIES(testwm Rage_SDL)
 
-ADD_EXECUTABLE(threadwin  include/SDLWrap.hh test/threadwin.cc)
-ADD_DEPENDENCIES(threadwin SDLWrap)
+ADD_EXECUTABLE(threadwin  include/SDL.hh test/threadwin.cc)
+ADD_DEPENDENCIES(threadwin Rage_SDL)
 
-ADD_EXECUTABLE(torturethread include/SDLWrap.hh  test/torturethread.cc)
-ADD_DEPENDENCIES(torturethread SDLWrap)
+ADD_EXECUTABLE(torturethread include/SDL.hh  test/torturethread.cc)
+ADD_DEPENDENCIES(torturethread Rage_SDL)
 
 
 
@@ -253,10 +253,10 @@ ADD_DEPENDENCIES(torturethread SDLWrap)
 #
 
 # installing main library
-INSTALL_TARGETS(/. FILES SDLWrap)
+INSTALL_TARGETS(/. FILES Rage_SDL)
 INSTALL_FILES(/include FILES
 #"^include/*.hh$")
-		include/SDLWrap.hh
+		include/SDL.hh
 		include/SDLConfig.hh
 		include/Logger.hh
 		include/SDLApp.hh
