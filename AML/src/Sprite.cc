@@ -28,19 +28,21 @@ namespace RAGE
 #ifndef HAVE_OPENGL
         bool Sprite::render(SDL::VideoSurface * screen)
         {
-#ifdef DEBUG
-            Log <<  nl << "Sprite::render() called ..." << std::endl;
+#if (DEBUG == 2)
+            Log <<  nl << "Sprite::render("<< screen<<") called ..." << std::endl;
             assert(screen);
 #endif
 
             bool res = false;
 
-
+#if (DEBUG == 2)
+            Log << nl << "blitting at " << SDL::Point(posX,posY);
+#endif
             res =screen->blit(_surf,SDL::Point(posX,posY));
 
-#ifdef DEBUG
+#if (DEBUG == 2)
 
-            Log <<  nl << "Sprite::render() done." << std::endl;
+            Log <<  nl << "Sprite::render("<< screen<<") done." << std::endl;
             assert(screen);
 #endif
 

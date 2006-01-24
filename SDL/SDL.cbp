@@ -1433,11 +1433,6 @@
 			<Option target="staticlib-debug"/>
 			<Option target="staticlib-NoOpenGL"/>
 		</Unit>
-		<Unit filename="src\SDLEngine.cc">
-			<Option compilerVar="CC"/>
-			<Option target="staticlib-NoOpenGL"/>
-			<Option target="staticlib-debug"/>
-		</Unit>
 		<Unit filename="src\SDLEvent.cc">
 			<Option compilerVar="CC"/>
 			<Option target="staticlib-NoOpenGL"/>

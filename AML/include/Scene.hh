@@ -17,13 +17,11 @@ namespace RAGE
 
             Sprite * _sprite;
 
-            Scene(SDL::VideoSurface* display);
+            Scene();
             ~Scene();
 
 
         public:
-
-            std::string  name() const { return "SceneEngine"; }
 
             void put( Sprite sprite, int posX = 0, int posY = 0);        //bool init(int width, int height, SDL::VideoSurface * display) {}
             bool init (int width, int height);

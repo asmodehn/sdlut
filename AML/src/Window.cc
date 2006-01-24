@@ -14,7 +14,7 @@ namespace RAGE
             if (SDL::App::getInstance().initVideo(false,false,true,false) )
             {
                SDL::App::getInstance().getWindow()->reset(width,height);
-                _scene = new Scene(SDL::App::getInstance().getWindow()->getDisplay());
+                _scene = new Scene();
                 SDL::App::getInstance().getWindow()->setEngine(_scene);
 
 

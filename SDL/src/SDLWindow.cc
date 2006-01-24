@@ -405,6 +405,7 @@ namespace RAGE
             if (_screen != NULL)
             {
                 _screen->setEngine(_engine);
+                _engine->_screen=_screen;
             }
 
 #ifdef DEBUG
@@ -426,6 +427,7 @@ namespace RAGE
             if (_screen != NULL&&_screen->isOpenGLset())
                 {
                     _screen->setEngine(_glengine);
+                    _glengine->_screen=_screen;
                 }
 #ifdef DEBUG
             Log << nl << "Window::setGLEngine(" << glengine << ") done.";
@@ -462,6 +464,7 @@ namespace RAGE
                         if ( _screen!=NULL && _glengine != NULL)
                         {
                             res =_screen->setEngine(_glengine);
+                            _glengine->_screen=_screen;
                         }
                     }
                     else
@@ -472,6 +475,7 @@ namespace RAGE
                         if ( _screen!=NULL && _engine != NULL)
                         {
                                                      res =_screen->setEngine(_engine);
+                                                     _engine->_screen=_screen;
                         }
 #ifdef HAVE_OPENGL
 

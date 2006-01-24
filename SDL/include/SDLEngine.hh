@@ -21,15 +21,11 @@ namespace RAGE
         //2D Engine interface
         class Engine
         {
-
+                friend class Window;
         protected:
-            VideoSurface * _screen;
+            VideoSurface * _screen; // to access the display for blit purpose
 
 		public:
-            Engine(VideoSurface * display) throw (std::logic_error)
-            : _screen(display)
-            { }
-            virtual ~Engine() {}
             virtual bool render(void) const = 0;
             virtual bool init(int width, int height) = 0;
             virtual bool resize(int width, int height) = 0;

@@ -4,7 +4,7 @@ namespace RAGE
     namespace AML
     {
 
-        Scene::Scene(SDL::VideoSurface* display) : SDL::Engine(display)
+        Scene::Scene() : SDL::Engine()
         {
 #ifdef DEBUG
             Log << nl << "Scene::Scene() called ";
@@ -44,15 +44,16 @@ namespace RAGE
 
         bool Scene::render() const
         {
-#ifdef DEBUG
+#if (DEBUG == 2)
             Log << nl << "Scene::render() called ..." << std::endl;
 #endif
             bool res = false;
             res = _sprite!=NULL && _sprite->render(_screen);
 
-#ifdef DEBUG
+#if (DEBUG == 2)
             Log << nl << "Scene::render() done." << std::endl;
 #endif
+
             return res;
         }
 

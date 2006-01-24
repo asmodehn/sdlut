@@ -20,7 +20,7 @@ namespace RAGE
     bool Logger::setLogfile( const std::string & filename)
     {
         bool res=true;
-        _ofstr.open(filename.c_str(),std::ofstream::out | std::ofstream::app);
+        _ofstr.open(filename.c_str(),std::ofstream::out);
         if (!_ofstr )
         {
             operator<< ("Logger ERROR : Failed to open " + filename );
