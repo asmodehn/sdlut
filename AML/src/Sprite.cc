@@ -5,7 +5,7 @@ namespace RAGE
     namespace AML
     {
 
-        Sprite::Sprite(std::string filename)
+        Sprite::Sprite(std::string filename) throw (std::logic_error)
         try : _surf(filename),posX(0),posY(0)
         {
 #ifdef DEBUG
@@ -35,10 +35,11 @@ namespace RAGE
 
             bool res = false;
 
+            SDL::Point p(posX,posY);
 #if (DEBUG == 2)
-            Log << nl << "blitting at " << SDL::Point(posX,posY);
+            Log << nl << "blitting at " << p;
 #endif
-            res =screen->blit(_surf,SDL::Point(posX,posY));
+            res =screen->blit(_surf,p);
 
 #if (DEBUG == 2)
 

@@ -18,7 +18,7 @@ namespace RAGE
             Sprite * _sprite;
 
             Scene();
-            ~Scene();
+            virtual ~Scene();
 
 
         public:

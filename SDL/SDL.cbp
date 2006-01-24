@@ -7,6 +7,7 @@
 		<Option makefile="Makefile"/>
 		<Option makefile_is_custom="0"/>
 		<Option default_target="2"/>
+		<Option active_target="3"/>
 		<Option compiler="0"/>
 		<Build>
 			<Target title="staticlib-NoOpenGL">
@@ -23,7 +24,7 @@
 					<Add option="-g"/>
 					<Add option="-DLOGINDENTLVL=1"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap.noGL\&quot;"/>
-					<Add option="-DDEBUG"/>
+					<Add option="-DDEBUG=2"/>
 				</Compiler>
 			</Target>
 			<Target title="staticlib-debug">
@@ -42,7 +43,7 @@
 					<Add option="-DLOGINDENTLVL=1"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap.debug\&quot;"/>
 					<Add option="-DHAVE_OPENGL"/>
-					<Add option="-DDEBUG"/>
+					<Add option="-DDEBUG=2"/>
 				</Compiler>
 				<Linker>
 					<Add library="opengl32"/>

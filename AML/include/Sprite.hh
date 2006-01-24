@@ -17,7 +17,7 @@ namespace RAGE
 
 
         public :
-            Sprite(std::string filename);
+            Sprite(std::string filename) throw (std::logic_error);
 
 #ifndef HAVE_OPENGL
 

@@ -4,7 +4,7 @@ namespace RAGE
     namespace AML
     {
 
-        Scene::Scene() : SDL::Engine()
+        Scene::Scene()
         {
 #ifdef DEBUG
             Log << nl << "Scene::Scene() called ";
