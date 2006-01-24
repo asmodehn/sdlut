@@ -127,7 +127,7 @@ namespace RAGE
             //WM methods
         protected:
 
-            void setCaption(std::string title = DEFAULT_WINDOW_TITLE, std::string icon = DEFAULT_WINDOW_ICON);
+            void setCaption(std::string title = DEFAULT_WINDOW_TITLE, std::string icon = "");
             //oldversion
             void getCaption(std::string & title, std::string & icon);
         public :

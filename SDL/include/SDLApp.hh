@@ -62,7 +62,7 @@ namespace RAGE
             {
                 return _name;
             }
-            void setIcon(std::string appIcon = DEFAULT_WINDOW_ICON)
+            void setIcon(std::string appIcon = "")
             {
                 _icon = appIcon;
             }
