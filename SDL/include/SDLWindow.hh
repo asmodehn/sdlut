@@ -56,7 +56,7 @@ namespace RAGE
 
             GLManager * _glmanager;
             bool _userglengine;
-            GLEngine* _glengine;
+            Engine* _glengine;
 #endif
 
 
@@ -77,10 +77,10 @@ namespace RAGE
             {
                 return _screen;
             }
-            void setDisplay( VideoSurface * display)
-            {
-                _screen=display;
-            }
+//            void setDisplay( VideoSurface * display)
+//            {
+//                _screen=display;
+//            }
 
             VideoInfo * getVideoInfo( void )
             {
@@ -101,7 +101,7 @@ namespace RAGE
                 return _glmanager;
             }
             bool setOpenGL(bool val);
-            void setGLEngine(GLEngine * glengine);
+            void setGLEngine(Engine * glengine);
 #endif
 
             void setEngine(Engine * engine);

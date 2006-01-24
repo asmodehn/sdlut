@@ -236,15 +236,13 @@ namespace RAGE
         {
 #ifdef DEBUG
             Log << nl << "Window::setEngine(" << engine << ") called ...";
-            assert(engine);
 #endif
-
+            assert(engine);
             _userengine=true;
             _engine=engine;
             if (_screen != NULL)
             {
                 _screen->setEngine(_engine);
-                _engine->init(_screen->getWidth(),_screen->getHeight());
             }
 
 #ifdef DEBUG
@@ -255,20 +253,17 @@ namespace RAGE
         }
 
 #ifdef HAVE_OPENGL
-        void Window::setGLEngine (GLEngine* glengine)
+        void Window::setGLEngine (Engine* glengine)
         {
 #ifdef DEBUG
             Log << nl << "Window::setGLEngine(" << glengine << ") called ...";
-            assert(glengine);
 #endif
-
-            _userglengine = true;
+            assert(glengine);
+			_userglengine=true;
             _glengine=glengine;
-            if (_screen != NULL)
-                if  (_screen->isOpenGLset())
+            if (_screen != NULL&&_screen->isOpenGLset())
                 {
                     _screen->setEngine(_glengine);
-                    _glengine->init(_screen->getWidth(),_screen->getHeight());
                 }
 #ifdef DEBUG
             Log << nl << "Window::setGLEngine(" << glengine << ") done.";
@@ -301,37 +296,31 @@ namespace RAGE
                     //if opengl support compiled and opengl enable on screen then initialise it
                     if ( (SDL_OPENGL & VideoSurface::_defaultflags) !=0 )
                     {
-                        if (_glengine == NULL)
+                        _screen = new GLSurface(width, height, _bpp,_glmanager);
+                        if ( _screen!=NULL && _glengine != NULL)
                         {
-                            _userglengine=false;
-                            _glengine = new GLEngine();
+                            res =_screen->setEngine(_glengine);
                         }
-
-
-                        _screen = new GLSurface(width, height, _bpp,_glmanager, _glengine);
-                        res= (_screen != NULL);
-                        if (res && _glengine !=NULL)
-                            _glengine->init(_screen->getWidth(),_screen->getHeight());
                     }
                     else
                     {
 #endif
-                        if (_engine == NULL)
+
+                        _screen = new VideoSurface(width, height, _bpp);
+                        if ( _screen!=NULL && _engine != NULL)
                         {
-                            _userengine=false;
-                            _engine = new Engine();
+                                                     res =_screen->setEngine(_engine);
                         }
-                        _screen = new VideoSurface(width, height, _bpp, _engine);
-                        res = (_screen!=NULL);
-                        if (res && _engine !=NULL)
-                            _engine->init(_screen->getWidth(),_screen->getHeight());
 #ifdef HAVE_OPENGL
 
                     }
 #endif
 
                     if (_screen != NULL)
+                    {
                         _screen->setBGColor(_background);
+                        res=true;
+                    }
                 }
                 catch(std::exception & e)
                 {
@@ -357,16 +346,7 @@ namespace RAGE
             bool res = false;
             if (_screen != NULL )
             {
-                Log << nl << "Savecontent";
-                _screen->saveContent();
-                Log << nl << "resize _screen";
-                if (_screen->resize(width,height))
-                {
-                    Log << nl << "setBGColor";
-                    _screen->setBGColor(_background);
-                    Log << nl << "restoreContent";
-                    _screen->restoreContent();
-                }
+                _screen->resize(width,height);
             }
 
 #ifdef DEBUG

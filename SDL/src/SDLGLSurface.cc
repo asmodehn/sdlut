@@ -8,44 +8,16 @@ namespace RAGE
 
 #ifdef HAVE_OPENGL
 
-        /*
-        void GLSurface::enableBlit(void)
-        {
-         _flags=_flags | SDL_OPENGLBLIT;
-         if (initialized) setup();
-        }
-
-        void GLSurface::disableBlit(void)
-        {
-         _flags=_flags & !SDL_OPENGLBLIT;
-         if (initialized) setup();
-        }
-
-        //Only valid with HWSurface
-        void GLSurface::enableDoubleBuf(void)
-        {
-         _newFlags=_newFlags | SDL_DOUBLEBUF;
-        }
-        void GLSurface::disableDoubleBuf(void)
-        {
-         _newFlags=_newFlags & !SDL_DOUBLEBUF;
-        }
-
-        */
-
-        GLSurface::GLSurface(int width, int height, int bpp, GLManager * const glmanager, GLEngine * glengine ) throw (std::logic_error)
+        GLSurface::GLSurface(int width, int height, int bpp, GLManager * const glmanager) throw (std::logic_error)
         try
-:
-            VideoSurface(width, height, bpp,glengine), _glmanager(glmanager)//, _engine(glengine)
+        :
+            VideoSurface(width, height, bpp), _glmanager(glmanager)
         {
 #ifdef DEBUG
             Log << nl << "GLSurface::GLSurface() called ...";
 #endif
 
-            if (_engine != NULL)
-                _engine->init(getWidth(),getHeight());
-            else
-                throw std::logic_error("GLSurface:: Engine pointer missing properly --> aborting GLWindow Constructor!");
+            glClearColor(static_cast<float> (_background.getR() ) / 255.0f, static_cast<float> (_background.getG() ) / 255.0f,static_cast<float> (_background.getB() ) / 255.0f, 0.0f);    // Black Background
 
 #ifdef DEBUG
 
@@ -60,41 +32,69 @@ namespace RAGE
 
         bool GLSurface::update(void)
         {
-            assert(_engine);
-            _engine->render();
+#if (DEBUG == 2)
+            Log << nl << "GLSurface::update() called...";
+#endif
+
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            if (_engine !=NULL)
+			{
+                _engine->render();
+            }
             //if we got also blit //DEPRECATED
             //SDLDisplay::update();
 
             SDL_GL_SwapBuffers();
+
+
+#if (DEBUG == 2)
+
+            Log << nl << "GLSurface::update() done.";
+#endif
+
             return true;
         }
 
-//        bool GLSurface::resize (int width, int height)
-//        {
-//            //some weird OpenGL stuff happen if we dont do it from here... no idea why...
-//            assert(_engine);
-//            return _engine->resize(width,height);
-//        }
 
-        //
-        //    bool GLSurface::setBGColor(const Color & color)
-        //    {
-        //        assert(_engine);
-        //        return _engine->setBGColor(color);
-        //    }
-        //
-        //
-        //    bool GLSurface::saveContent(void)
-        //    {
-        //        assert(_engine);
-        //        return _engine->saveContent();
-        //    }
-        //
-        //    bool GLSurface::restoreContent(void)
-        //    {
-        //        assert(_engine);
-        //        return _engine->restoreContent();
-        //    }
+
+
+        bool GLSurface::resize (int width, int height)
+        {
+			bool res = false;
+            //some weird OpenGL stuff happen if we dont do it from here... no idea why...
+            if (_engine == NULL)
+			{	            glViewport(0,0,width,height);      // Reset The Current Viewport
+							glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			res = true;
+			}
+			else
+			{
+				res = _engine->resize(width,height);
+			}
+			return res;
+        }
+
+
+        bool GLSurface::setBGColor(const Color & color)
+        {
+#ifdef DEBUG
+            Log << nl << "GLSurface::setBGColor(" << color << ") called ...";
+#endif
+
+            bool res = false;
+
+            _background=color;
+            glClearColor(static_cast<float> (color.getR() ) / 255.0f, static_cast<float> (color.getG() ) / 255.0f,static_cast<float> (color.getB() ) / 255.0f,0.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+#ifdef DEBUG
+
+            Log << nl << "GLSurface::setBGColor(" << color << ") done.";
+#endif
+
+            return res;
+
+        }
+
 
 #endif
 

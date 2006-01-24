@@ -17,7 +17,7 @@ namespace RAGE
 
             Sprite * _sprite;
 
-            Scene();
+            Scene(SDL::VideoSurface* display);
             ~Scene();
 
 
@@ -26,18 +26,8 @@ namespace RAGE
             std::string  name() const { return "SceneEngine"; }
 
             void put( Sprite sprite, int posX = 0, int posY = 0);        //bool init(int width, int height, SDL::VideoSurface * display) {}
-            //        bool resize (int width, int height);
-            //       bool setBGColor(const SDL::Color & color);
-
-            //TODO : SAVE THE CURRENT SCENE STATE...
-            bool saveContent(void)
-            {
-                return false;
-            }
-            bool restoreContent(void)
-            {
-                return false;
-            }
+            bool init (int width, int height);
+            bool resize (int width, int height);
 
             bool render() const ;//call render on all the sprites
 

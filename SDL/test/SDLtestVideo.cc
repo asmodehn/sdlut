@@ -61,7 +61,7 @@ int main(int argc, char** argv)
 //	int newH=bitmap.getHeight()+60;
 
     App::getInstance().getWindow()->setBGColor(Color (128,0,0));
-
+    //App::getInstance().getWindow()->setEngine(new Engine());
 
 	if (! (App::getInstance().getWindow()->reset()))
     {
@@ -94,6 +94,7 @@ int main(int argc, char** argv)
 	App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui2);
 	testlog << nl <<"display reset" << std::endl;
 
+    //App::getInstance().getWindow()->setGLEngine(new GLEngine());
 	//GLManager test
 	GLManager * glman=App::getInstance().getWindow()->getGLManager();
 	testlog << nl<<std::boolalpha <<
@@ -127,3 +128,5 @@ if(App::getInstance().getWindow()->reset())
 
 	return 0;
 }
+
+

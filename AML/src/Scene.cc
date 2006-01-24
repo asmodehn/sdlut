@@ -4,7 +4,7 @@ namespace RAGE
     namespace AML
     {
 
-        Scene::Scene() : SDL::Engine()
+        Scene::Scene(SDL::VideoSurface* display) : SDL::Engine(display)
         {
 #ifdef DEBUG
             Log << nl << "Scene::Scene() called ";
@@ -19,13 +19,16 @@ namespace RAGE
         Scene::~Scene()
         {}
 
-        //bool resize (int width, int height)
-        //{
-        //}
-        //
-        //bool setBGColor(const SDL::Color & color)
-        //{
-        //}
+        bool Scene::init (int width, int height)
+        {
+            return true;
+        }
+
+        bool Scene::resize (int width, int height)
+        {
+            return true;
+        }
+
 
         void Scene::put(Sprite sprite, int posX, int posY)
         {

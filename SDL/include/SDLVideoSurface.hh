@@ -53,14 +53,19 @@ namespace RAGE
             friend class Overlay;
             friend class Window;
 
+
         protected:
             static Uint32 _defaultflags;
 
+            Color _background;
+
             Engine* _engine;
+
+
 
             //Constructor
             //Note : The user should not be able to set raw SDL flags manually.
-            VideoSurface(int width, int height, int bpp, Engine * _engine) throw (std::logic_error);
+            VideoSurface(int width, int height, int bpp) throw (std::logic_error);
 
         public:
 
@@ -70,10 +75,6 @@ namespace RAGE
             virtual ~VideoSurface();
             //this kind of surface shouldnt be deleted by hand. the raw SDL methods takes care of it
 
-            //Save Screen -> backup the screen content in a new RGBSurface...
-            virtual bool saveContent(void);
-            //restore Screen -> blit the saved surface to the center of the display surface
-            virtual bool restoreContent(void);
             //to resize the display
             virtual bool resize (int width, int height);
             //to update the display
@@ -82,14 +83,8 @@ namespace RAGE
             //set the background color
             virtual bool setBGColor(const Color & color);
 
-            void setEngine(Engine * engine)
-            {
-                assert(engine);
-                Log << nl << "Setting Engine..." ;
-                Log << nl << typeid(engine).name();
-                _engine = engine;
-            }
-            Engine * getEngine()
+            bool setEngine(Engine * engine);
+           inline Engine * getEngine()
             {
                 return _engine;
             }

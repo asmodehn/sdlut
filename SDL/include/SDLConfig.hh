@@ -104,14 +104,14 @@ namespace RAGE
         class CPU
         {
         public:
-            static inline bool hasRDTSC();
-            static inline bool hasMMX();
-            static inline bool hasMMXExt();
-            static inline bool has3DNow();
-            static inline bool has3DNowExt();
-            //static inline bool hasSSE();
-            //static inline bool hasSSEExt();
-            static inline bool hasAltiVec();
+            static bool hasRDTSC();
+            static bool hasMMX();
+            static bool hasMMXExt();
+            static bool has3DNow();
+            static bool has3DNowExt();
+            //static bool hasSSE();
+            //static bool hasSSEExt();
+            static bool hasAltiVec();
 
         };
 #endif

@@ -5,7 +5,8 @@ namespace RAGE
     namespace AML
     {
 
-        Sprite::Sprite(std::string filename) : _surf(filename),posX(0),posY(0)
+        Sprite::Sprite(std::string filename)
+        try : _surf(filename),posX(0),posY(0)
         {
 #ifdef DEBUG
             Log << nl << "Sprite::Sprite() called ...";
@@ -17,6 +18,10 @@ namespace RAGE
             Log << nl << "Sprite::Sprite() done.";
 #endif
 
+        }
+        catch (std::exception & e)
+        {
+            Log << nl << "Exception in Sprite constructor ! " << nl << e.what ();
         }
 
 
