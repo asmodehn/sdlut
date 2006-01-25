@@ -1,0 +1,25 @@
+Logbook (overview, details, conversation interface, quest interface, ..)
+Attrition Rate for weapons and armor/shields
+Criticals wounds/hits/blocks
+SPELL Interface
+Global masterisation formula (increase, decrease definition)
+Combat follow up
+PARTICULAR items
+Enchant items (Overview, Details, Interface)
+Party (Overview, Details)
+Personnal Market
+Guilds (Overview, Details, Evolution)
+Cities (Overview, Details, Progression)
+Perks
+Modification of skill interface to add Masterisation
+MOVEMENT POSSIBLE/SWIM/WATER
+Sign ?
+
+Modification of magic interface to add Body/Spirit magic and light/Death magic ???
+ARMORS Tweaks : global armor or localised armor ?
+Move resistance to armor?
+Rename wweapon into attack and armor/shield to defense ?
+Armor divided in parts or a full set in one part ??
+
+
+

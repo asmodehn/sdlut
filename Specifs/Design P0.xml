@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<article lang="fr-FR">
+<para>Design Document for</para>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para>- Project 0 -</para>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para>A game by Asmodehn, XorfacX, and AceMelchior</para>
+<para/>
+<para/><sect1><title>Design History</title><sect2><title>Version 0.1 by Asmodehn</title>
+<para>First version, expected to be read by other involved people, modified and so on....</para></sect2><sect2><title>Version 0.2 by XorfacX</title>
+<para>A real version ;)</para>
+<para>Currently writing...</para></sect2></sect1><sect1><title/></sect1><sect1><title>Game Overview</title><sect2><title>Philosophy</title>
+<para>Here are the point about general idea about designing this game.</para><sect3><title>Philosophical point #1</title>
+<para>This game intends to be a role playing game in a permanent world, as many other MMORPG we can see on the Internet. But without many bad points about those :</para>
+<orderedlist>
+<listitem>
+<para>When the player is not connected, his own avatar is still in the game, doing his profession, or something the player wanted him to do. This imply to be very carefully because the player must not be disappointed if his character do something annoying when he is not connected.</para>
+</listitem>
+<listitem>
+<para>To avoid some congestion on area of the map(s), every player will have different quest to achieve. But these are for the same destiny : rediscover the whole world.</para>
+</listitem>
+<listitem>
+<para>Anonymous player can connect themselves to this world, but instead of controlling intelligent creature, they control animals for a limited time, to do some funny actions (like destroying everything ;-) ).</para>
+</listitem>
+<listitem>
+<para>This game is supposed to be evolutive. It means player, when they are playing, know only a little part of all the possibilities of the game. Developers are supposed to code mechanism to make world as evolutive as possible.</para>
+</listitem>
+<listitem>
+<para>In this game we have to manage a whole world. It mean ecosystems for meteo, reproduction of animals, money system between intelligent people, etc.</para>
+</listitem>
+</orderedlist>
+<para>This game is in fact a simulated fantasy world in a paleolithic ambiance...</para>
+<para>And this world must live as time flows without player interaction...</para></sect3><sect3><title>Philosophical point #2</title>
+<para>This game is trying to be the base of a new game engine, which can have many graphical interface, from 2D, to 3D, with many possibility between...</para>
+<para>To achieve this goal we need to think about a physical and comportemental model and mechanism, independently from visualization.</para>
+<para>In the other hand, those model must be upgradable without interfering with the current execution of the game...</para>
+<para>The main reason for that point, is the diversity of platforms usable in the world to play, nowadays.</para>
+<para>So this game must have at the very end Web interface, and heavy client interface, 2D, 2.5D, and 3D</para>
+<para>This game is a test for those new concepts.</para></sect3></sect2><sect2><title>Common Questions</title>
+<para/><sect3><title>What is the game?</title>
+<para>This game is an MMORPG in a paleolithic world. As anonymous players can play with ancient animals (like dinosaurs derivate), registered players can control people with special abilities to forge their destiny, in this unsure world.</para>
+<para/></sect3><sect3><title>Why create this game?</title>
+<para/>
+<para>This game use some new concepts that are able to change the way people plays. And this game will be designed for many many platform, that mean you will be able to play it everywhere.</para>
+<para/></sect3><sect3><title>Where does the game take place?</title>
+<para/>
+<para>In a Solar system somewhere in the universe a planet named “XXXXX” by his inhabitants is full of living creatures. In these creature we find some we can compare to “human beings” some to “saurians” and many other ones, too many to name them one by one, but each has his duty on this planet. The vegetation can also be very dangerous, and every one has to be very carefull to survive...</para>
+<para/></sect3><sect3><title>What do I control?</title>
+<para/>
+<para>The player will control one unique caracter at a time.You will be able to create as many caracter as you want and this caracters will be saved on the server for one year. 4 caracters can be stored on server at the same time. The objective is to develop one caracter from his creation to his death if this happen.</para>
+<para/></sect3><sect3><title>What is the main focus?</title>
+<para/>
+<para>It's simple, you've to live your life in this huge world and survive to become what ever you want. There is no final goal but to live in an evolutive world.</para>
+<para/></sect3><sect3><title>What’s different?</title>
+<para>The game really intended to be like reality with additional thing (like magic). It's not a part of the reality, it'd the reality itself. You can do what ever you want from your caracter like being a rogue or a king. It's simply decide by your actions and by how other perceive these actions.</para>
+<para/>
+<para>The team work will be an important part of the game. Like in reality you can do things by yourself but when you want to do things that impact the whole world you really need helps from others. An example of this is that if there will be static town and city, there will be city managed entirely by people from the defense to the food production.</para>
+<para/>
+<para>Interraction between NPC/PC and PC/PC will be unique. Players will be able to give quests to others people ! If you kill someone, there will be automated quest generated to solve the murder and if it solve you'll better begin run because an entire land will be after you and everyone will know what you've done.</para>
+<para/>
+<para>A real justive system. Like mentioned before the justice system will be very important and the game. Like in reality you can do what you want : kill someone or rob a diamon but there will be a ;)</para>
+<para>The justice system will be represented by two factions, NPC players and PC players.</para>
+<para/>
+<para>Simple gameplay: create a new charecter won't be a difficult time anymore. You chose your race, yous symbol, you adjust your settings and then you can begin. Becoming and explorateur, an aventurer or a robber or the 3 at the same time will be your choiced and only yours.</para></sect3></sect2></sect1><sect1><title>Feature Set</title>
+<para/><sect2><title>General Features</title>
+<para>Really huge world : an entire planet to explore.</para>
+<para>3D graphic engine based on a real physik engine to really feel te game.</para>
+<para>You play a real life in every acpects of it : job, death, ... </para>
+<para/>
+<para/></sect2><sect2><title>Multiplayer Features</title>
+<para>Unlimited amout of player (depends of bandwith).</para>
+<para>Every country on the same server.</para>
+<para>Advanced transport system</para>
+<para>Personnal markets</para>
+<para/>
+<para/></sect2><sect2><title>Gameplay</title>
+<para/>
+<para>Simple caracter creation.</para>
+<para>Every caracter is unique.</para>
+<para>Easy to understand game.</para>
+<para>Advanced job system.</para>
+<para>Real justice system.</para>
+<para>Comunity development.</para>
+<para>Enjoyable magic use</para>
+<para>Complete rule set designe for video game</para>
+<para/></sect2></sect1><sect1><title>The Game World</title>
+<para/><sect2><title>Overview</title>
+<para/>
+<para>The game take place on the planet XXX.</para>
+<para>Many years ago a comet crashed on the surface of the ocean and all coast where submerged.</para>
+<para/>
+<para/>
+<para>This cataclysm was the begin of the a period knows as the dark age. The world was separated in many island which all centered on themself to rebuild theirs civilizations.</para>
+<para/>
+<para>After some time some merchant decided to open trade road between not far distant island and a nation compose by the 8 (?) known species begun to emerge. This nation was called XXX and everything was fine inside cities.</para>
+<para/>
+<para>Outside cities the world was hostile and no one want to go far from define trade road that's why people lost memories of others part of the world.</para>
+<para/>
+<para>But the prosperity come again and now a new generation is borned. This generation wants to explore the world and validate all legends and songs theirs ancestors talk about. </para>
+<para/>
+<para>It's your generation and it owns you to decided what you will become and how you'll influence the world.</para>
+<para/></sect2><sect2><title>Island world</title>
+<para/>
+<para>The island topography allow developpers to introduce has many content has they want.</para>
+<para>The player will have the enjoyable experience to discover a completly new world no one has explored before him and job like cartographers will have a very important part to extend gaming for everyone.</para>
+<para/>
+<para/>
+<para/></sect2><sect2><title>Evolutive World</title>
+<para/>
+<para>From the first day of play the world will have his own life with his inhabitant. That means that a player who begin at day 1 and a player who play at day 100 will evolve in a completly different world with different quest, faction, monsters...</para>
+<para/></sect2><sect2><title/></sect2><sect2><title>The Physical World</title>
+<para/><sect3><title>Overview</title>
+<para>The game take place in a paléolithic world with many different land types like : mountain, see, jungle, forest, volcanic, snow, meadow and many more.</para>
+<para/>
+<para>The are habitable land and hostile land. On habitable land you can construc a town if there is not already a city present. For example you can construct a small camp in a cave if you want or develop a real city on a fertile meadow with your pals.</para>
+<para/></sect3><sect3><title>Key Locations</title>
+<para/>
+<para>The nation is composed by 9 town on 9 different island. There is one town for each race and a town, the capital, where all races are represented.</para>
+<para/>
+<para>The capital is the focus point : everyone begin here and you can find all common things to buy. </para>
+<para>The others 8 cities have race specific quests and equipements.</para>
+<para/></sect3><sect3><title>Travel</title>
+<para/>
+<para>You can travel by feet, horse and swim.</para>
+<para>You can fly if you have magic powers that allow you to do this.</para>
+<para/>
+<para>If you are tired of walking there are boat company beetween island or magical teleportation between magic guild. There are teleport scrool two if you know where you want to go but it not always work be prepared.</para>
+<para/></sect3><sect3><title>Scale</title>
+<para>1 km in the game = represent 24 'real' km</para>
+<para/>
+<para>Describe the scale that you will use to represent the world. Scale is important!</para>
+<para/></sect3><sect3><title>Objects</title>
+<para/>
+<para>Describe the different objects that can be found in the world.</para>
+<para/>
+<para>See the “Objects Appendix” for a list of all the objects found in the world.</para>
+<para/></sect3><sect3><title>Weather / Climate</title>
+<para/>
+<para>Every weather you can imagine are represented in the world from big sun to snow tempest and cyclon.</para>
+<para/>
+<para>Everything can happen in the world like volcanic erruption, crumble, flood, mud river and many more so the be preapre to deal with it.</para>
+<para/>
+<para>The wind will have a great influence on archer and air based spell.</para>
+<para/>
+<para>The weather will influence spellcasting. An ice spell will cost more mana on a desert land but will deal more damage to enemy because they used to encounter hot things but not cold things for example.</para>
+<para/></sect3><sect3><title>Day and Night</title>
+<para/>
+<para>Real day/night cycle which evolve with seasons (and with orbit modifications due to the comet impact)</para>
+<para/></sect3><sect3><title>Time</title>
+<para>1 hour = 24h game hours</para>
+<para/></sect3></sect2><sect2><title/></sect2></sect1><sect1><title>The World Layout</title>
+<para/><sect2><title>Overview</title>
+<para/>
+<para>Provide an overview here.</para>
+<para/></sect2><sect2><title>World Layout Detail #1</title>
+<para/></sect2><sect2><title>World Layout Detail #2</title></sect2></sect1><sect1><title>Players Caracters</title>
+<para/><sect2><title>Overview</title>
+<para/>
+<para>A caracter is defined by his sexe, his species, his aparence, his attributes, his aptitudes, his perk and his sign.</para>
+<para/>
+<para>The player begun with 5 health.</para>
+<para/>
+<para>During the game the aparence of the caracter will evolve. Like the game world, the PC take age during and has adventure and experience that modify his physical aparence.</para>
+<para/>
+<para>Real world influence : as the PvP is fully implemented in the game and in order to prevent hardcore gamers to become too quickly powerful, each caracter cannot be played more than 10 real hours a day. It's implemented like this : if you play 1 to 6 hours in one day (real time not game time), no impact but the caracter must sleep 5 real hours to be fully restaured; from 6 to 8 hours, the caracter suffer a small penality on his attributes and must sleep 6 real hours; beetween 8 and 10 hours, the caracter is getting really tired and suffer a big penality and must sleep 8 to 10 real hours; after 10 hours of playing, the caracter is completly exausted, cannot move at all and must sleep for 10 real hours. It will be exponentially implemented.</para></sect2><sect2><title>Character Creation</title>
+<para>The creation process is a combination that let enjoy the game quickly but which allow the player to create a unique alter ego.</para>
+<para/>
+<para>The player first choose the species, sex and apparence of his caracter.</para>
+<para/>
+<para>Then he must determine the attributes of his caracter. The default value of an attribute is 5, so the player can increase or decrease each attribute between 3 and 7 with an attribute sum that must be equal to 25 (5X5).</para>
+<para/>
+<para>Finaly the player must choose a sign that will give extra life or special powers for example.</para></sect2><sect2><title>Attributes</title>
+<para>There are 5 major attributes in the game and 15 sub attributes:</para>
+<para/>
+<para>Strengh (STR) : determine damaged inflincted with melee weapons and crossbows; how must the PC can carry and physical resistance</para>
+<para/>
+<para>Constitution (CON) : determine health of the PC, his disease resistance and poison resistance.</para>
+<para/>
+<para>Dexterity (DEX) : determine the precision in aiming, the damage done with bows and throw weapons and the moving speed of the caracter.</para>
+<para/>
+<para>Intelligence (INT) : determine acces to spell and magic circle, the resistance to magic and the spell damage.</para>
+<para/>
+<para>Charism (CHA) : determine the merchant capacity of the caracter, the strengh of clerical/druidic spells, NPC influence for quests.</para>
+<para/></sect2><sect2><title>Skills</title>
+<para>Description</para>
+<para>%</para><sect3><title>Bare Hands</title>
+<para>Value between 1 and 100 that determine how you are agile with your hands and feets; your chance of critical hit. Increase this skill will increase Throw Weapon as well when you are not on the same ladder level but with double cost in level points.</para></sect3><sect3><title>One handed Weapon</title>
+<para>Value between 1 and 100 that determine how you handle one handed weapon; your attitude when you carry this weapon type; critical hit and block chance. Increase this skill will increase Two Handed Weapon as well when you are not on the same ladder level but with double cost in level points.</para></sect3><sect3><title>Two handed Weapon</title>
+<para>Value between 1 and 100 that determine how you handle two handed weapon; your attitude when you carry this weapon type; critical hit and block chance. Increase this skill will increase One Handed Weapon as well when you are not on the same ladder level but with double cost in level points.</para></sect3><sect3><title>Shield</title>
+<para>Value between 1 and 100 that determine how you handle shields; your attitude when you carry shields; chance of critical block.</para></sect3><sect3><title>Crossbow</title>
+<para>Value between 1 and 100 that determine how you handle Crossbows; your attitude when you carry this weapon type; critical hit chance.</para></sect3><sect3><title>Bow</title>
+<para>Value between 1 and 100 that determine how you handle bows; your attitude when you carry this weapon type; critical hit chance.</para></sect3><sect3><title>Throw Weapon</title>
+<para>Value between 1 and 100 that determine how you handle throw weapons; your attitude when you carry this weapon type; critical hit chance.</para></sect3><sect3><title>Magic</title>
+<para>Value that determine your maximum mana. 1 magic point = 5 mana point</para></sect3><sect3><title>Skills Lader</title>
+<para>Each skills, except the Magic skill, have a ladder.</para>
+<para/>
+<para>The more you advance in the ladder, the more you gain control of your skills. This will give you bonuses to how you weild and use your skills in speed, fluently and dexterity but change the way you carry your weapon or your shield visualy.</para>
+<para/>
+<para>More over, when you gain access to a new level of the ladder you unlock potential combo relative to the skill in which you have advance. To learn these combo you need to find a teacher that will teach you this combo.</para>
+<para>After you have unlock and learn combo, to use it you need to be in condition to use it. That's mean to use a one handed combo you need a one handed weapon equip and to use a level 2 one handed combo you need to be at least level 2 in your one handed masterisation (see masterisation section for more info)</para>
+<para>Each combo use some of your mana and when your mana is depleted you can't use your combo anymore until you recharge.</para>
+<para/>
+<para>Skill Ladder</para>
+<para>Level 1 "Trainee" : skill value 0% to 35% </para>
+<para>Level 2 "Accustomed" : skill value 35% to 60%</para>
+<para>Level 3 "Master" : skill value 60% to 80%</para>
+<para>Level 4 "Veterans" : skill value 80% to 95%</para>
+<para>Level 5 "Grand Master" : skill value more than 95%</para>
+<para/></sect3></sect2><sect2><title>Perks</title>
+<para>Combat perk</para>
+<para>magic perks</para>
+<para>others</para></sect2><sect2><title>Species</title>
+<para>There are many species in the world of XXX and many have disapeared and have been lost after the cataclysm. The original version of the game will allow the player to choose between 5 differents races : human, dwarf, elf, troll, goblin and every possible mix between them like half-elf for example. In the future more race will be added to the list when they will be discovered by gamers.</para>
+<para/>
+<para>The caracther species will affect NPC and monsters reactions as well as his initial capacities.</para>
+<para/>
+<para>All species know a common language and have their own languages too. Others species languages than your natural language will be avaible as perk.</para>
+<para/>
+<para>Some NPC will have a better reaction in front of someone who speak their natural language and sometimes quests will be language relative in order to promotee party playing and reality feelings.</para>
+<para/></sect2><sect2><title>Sex</title>
+<para>The caracter's sex play an important part in the game. Not only because it has an influence on caracter initial statistic but also because they are sex relative perks.</para>
+<para/>
+<para>More over has you'll see below, you don't play only one PC but with this choice, it will decide the future of your family and descendance.</para></sect2><sect2><title>Sign</title>
+<para>The sign of a caracter is chosen during caracter creation and represent the caracter type. It can't be change during the game. It refletcs the caracter initial mind but it won't be penalized if the player change his mind after some playing hours.</para>
+<para/>
+<para>There will be 12 sign :</para>
+<para/>
+<para>Evolution</para>
+<para>When PC are created the game give them an initial random age in function of their specie and sex wich correspond to the adolescence of each species. For example if te player decide to create a true human female, his caracter will begin the game between 12 and 16 years old.</para>
+<para/>
+<para>Has the time pass the world evolve and the caracter become older and evolve through all different stage of the life from his adolescence to his death.</para>
+<para/>
+<para>Caracters will be able to marry with others PC or NPC and have children who will become playable to one of the member of the family or NPC if no one wants to play them.</para>
+<para/>
+<para>When a caracter die definitivly, all his possessions are transmited to his family. Like that even if you find and super rare item and that you store it in a chest inside your house, your children, wife, husband will herit it and you will be able to continue the game with one of your child for example.</para></sect2></sect1><sect1><title>Non Players Caracters</title><sect2><title>Overview</title>
+<para>There are two type of NPC : monsters type and "Intelligent" NPC.</para>
+<para/>
+<para>Like with PC, "Intelligent" NPC evolve has the time pass. They getting older and have children (or not) with others NPC and even with PC. "Intelligent" NPC represent the population off the world and are played by the A.I. There are as many types of NPC than PC type. You can encounter merchant, cartographer, robber and many more during the gameplay.</para>
+<para/>
+<para>Monsters known a certain evolution two. But they have theirs own nature. There are many type of monsters which all have their caracteristics. Some hunt alone, others live in tribes, ...</para></sect2><sect2><title>Intelligent NPC</title>
+<para>They represents living people. They all have theirs own life exactly like PC have theirs.</para>
+<para>A merchant will only sell during a define period of time and sometimes if something happen to him, he wont sell anything.</para>
+<para>If you sell something usable to the NPC and if he found an interrest in using it, you can be sure he will use it.</para>
+<para>Robbers will try to steal stuff from PC and PC as well.</para>
+<para>They are all managed by and advanced A.I. And if some quest have scripted elements, they A.I. Will handle the rest by itself to give the player a realistic life experience.</para></sect2><sect2><title>Monsters</title>
+<para>Monsters represent every NPC that is generally hostile to the player.</para>
+<para>They live inside defines area but sometimes moves to others. Many species of monster have yet to be discoverred in the unknow part of the world.</para>
+<para/>
+<para>Some type of monsters will be playbale by people who want to try the game without creating a caracter. They will be "demo" monsters and will allow people to experiment the game before playing it. It will give them the oportunity two discover the game before register it and so they'll know if they want to play it or no. Even so for real PC, it will be very fun so see monsters played by human attacking theirs villages just for the fun and will give a completly new experience to gamers.</para></sect2></sect1><sect1><title>Weapons</title><sect2><title>Overview</title>
+<para>They are many types of weapons it the game. They can be divided in two categories : melee weapon and distant weapons. Both of them will be usable by every players in function odf theirs attribute and aptitude.</para>
+<para/>
+<para>They have different cataracteristics : </para>
+<para>&lt;WEAPON&gt;</para>
+<para>&lt;aspect file&gt;&lt;/aspect file&gt;</para>
+<para>&lt;name&gt;&lt;/name&gt;</para>
+<para>&lt;damage inflicted min&gt;&lt;/damage inflicted min&gt;</para>
+<para>&lt;damage inflicted max&gt;&lt;/damage inflicted max&gt;</para>
+<para>&lt;hit distance&gt;&lt;/hit distance&gt;</para>
+<para>&lt;enchantable power&gt;&lt;/enchantable power&gt;</para>
+<para>&lt;magic attributes&gt;&lt;/magic attributes&gt;</para>
+<para>&lt;local masterisation&gt;&lt;/local masterisation&gt;</para>
+<para>&lt;type = common&gt;</para>
+<para/>
+<para>&lt;/type = common&gt;</para>
+<para>&lt;type = set&gt;</para>
+<para>&lt;set name&gt;&lt;/set name&gt;</para>
+<para>&lt;set masterisation&gt;&lt;/set masterisation&gt;</para>
+<para>&lt;/type =s et&gt;</para>
+<para>&lt;type = unique&gt;</para>
+<para>&lt;affinity&gt;&lt;/affinity&gt;</para>
+<para>&lt;/type = unique&gt;</para>
+<para>&lt;needs to equip&gt;&lt;/needs to equip&gt;</para>
+<para>&lt;critical multiplier&gt;&lt;/critical multiplier&gt;</para>
+<para>&lt;/WEAPON&gt;</para>
+<para/>
+<para>Real damage inflicted by weapons will depends of the attributes and skills of the PC. Some perks will have an influence two.</para>
+<para/>
+<para>The way to used them and theirs efficiency will be attributes and will based as well. A master in one handed will use a short sword with much more efficiency than an novice one handed with a better one handed weapon even if this novice has the strenght to weild the better weapon.</para>
+<para/>
+<para>Weapon have all a critical hit multiplier that will be used in case of critical hit (see skills section).</para>
+<para/>
+<para>Weapons can be enchant in various ways (see item/enchant section).</para>
+<para/></sect2><sect2><title>Melee Weapons</title>
+<para>Melee weapons are used by close combat fighters. </para>
+<para/>
+<para>Melee weapon can be divided into 2 categories : one handed and two handed.</para>
+<para/>
+<para>There main attributes is the Strengh. One point in strengh will generate one point of damage.</para>
+<para/>
+<para>The damage inflicted by this type of weapons is depending on the weapons damage caracteristics, the strengh of the player and some perks wich can boost the use of certains weapons. </para>
+<para/>
+<para>Chance to make a critical hit depends of the value of the skills of the user (see skill section).</para>
+<para/>
+<para>Melee Weapons can also be used to block attacked. </para>
+<para/>
+<para>attrition rate</para>
+<para/>
+<para>Formula</para>
+<para>Weapon Damage = Weapon Damage (random between min and max)*attrition rate*hit surface</para>
+<para/>
+<para>Strengh Damage = Str Value</para>
+<para/>
+<para>Normal Damage = Str Damage + Weapon Damage + Perks modifications + magics modifications</para>
+<para/>
+<para>Normal Damage when blocked (by shields or weapons) = Str Damage + Perks modifications + magics modifications</para>
+<para/>
+<para>Critical Damage = (1+Skill value/100) * Weapon Critical Multiplier * Normal Damage</para>
+<para/></sect2><sect2><title>Distant Weapons</title>
+<para>Distant weapons are represented by bow, crossbow and throw weapons. They are used by ranged fighters.</para>
+<para/>
+<para>There main attribute is the Dexterity for bow and throw weapon and strengh for crossbow.</para>
+<para/>
+<para>The damage inflicted by this type of weapons is depending on the weapons damage caracteristics, the main attributes and some perks wich can boost the use of certains weapons.</para>
+<para/>
+<para>Chance to make a critical hit depends of the value of the skills of the user (see skill section). </para>
+<para/>
+<para>For bow and throw weapon the distance of hit will depends of the weapons caracteristics and a mix between the strengh and the dexterity of the PC. The weapon hit distant are given for a the minimum required to equip the wepon.</para>
+<para/>
+<para>attrition rate</para>
+<para/>
+<para>Crossbow formula</para>
+<para>Normal Damage = Str + Weapon Damage (random between min and max) + Perks modifications</para>
+<para>Critical Damage = (1+Skill value) * Weapon Critical Multiplier * Normal Damage</para>
+<para/>
+<para>Bow and throw weapons Formula</para>
+<para>Normal Damage = Dex + Weapon Damage (random between min and max) + Perks modifications</para>
+<para>Critical Damage = (1+Skill value) * Weapon Critical Multiplier * Normal Damage</para>
+<para>Hit distance = Weapon Hit Distance – max((min required to equip² - Str*Dex)/100), 2*min required  to equip)</para>
+<para/>
+<para/></sect2></sect1><sect1><title>Armors</title><sect2><title>Overview</title>
+<para>Armors are weapons opposite. They are here to prevent inflicted damage to the wearer of the armor,</para>
+<para>They can be separate into two main categories body armors and shields. Body Armors are design to absord damage inflicted by melee and distant weapon. Shields are design to absorb part of the damage and block attacked.</para>
+<para/>
+<para>Like weapons, armors can also be enchant (see item/enchant section).</para>
+<para/></sect2><sect2><title>Body Armors</title>
+<para>Body armor are divided into 6 parts that cover the whole body. These parts are feets, lower legs, upper legs, belt, torso, arms, and hands. The combination of all these parts form the armor the player.</para>
+<para/>
+<para>Each part has its owned caracteristics : armor value/cm², the resistance to attrition, the attrition rate and finally the resistance to each type of magic.</para>
+<para/>
+<para>When a weapon hit one of these parts, the damage will be calculated using this parts caracteristics and not a whole armor caracteristics that will means nothing.</para>
+<para/>
+<para>The attrition rate is calculated using the resistance to attrition value.</para>
+<para/>
+<para/>
+<para>Formula :</para>
+<para>attrition rate = current attrition rate - resistance to attrition value*real damage</para>
+<para/>
+<para>damage absorb = armor value/cm² * hit surface + Perks modifications + magics modifications</para>
+<para/>
+<para>if damage inflicted &gt; 5 * damage absorb =&gt; critical wound</para>
+<para/></sect2><sect2><title>Shields</title>
+<para>Like body armor, shields are design to absorb a part of the damage inflicted by the weapon. They have the same caracteristics than armor parts : armor value/cm², the resistance to attrition, the attrition rate, finally the resistance to each type of magic and the masterisation value.</para>
+<para/>
+<para>If the melee attack is blocked by the shield, only the strengh is used to calculate the damage inflicted by the attack and not the 'weapons damage' (see weapons formula).</para>
+<para>Ine the case of a distant attack, if the shield block the attack, damage inflicted is only the magic damage (like explosive arrows for example) with a reduction due to the protective surface of the shield.</para>
+<para/>
+<para>The attrition rate is calculated using the resistance to attrition value.</para>
+<para/>
+<para>The critical block</para>
+<para/>
+<para>Formula :</para>
+<para>attrition rate = current attrition rate - resistance to attrition value*real damage</para>
+<para/>
+<para>damage absorb = armor value/cm² * hit surface + Perks modifications + magics modifications</para>
+<para/>
+<para>if damage inflicted &gt; 5 * damage absorb =&gt; critical wound</para>
+<para/>
+<para/>
+<para/>
+<para/></sect2></sect1><sect1><title>Magic</title><sect2><title>Overview</title>
+<para>Magic is divided into 4 differents branchs of magics : air, earth, fire, water.</para>
+<para>Each magic is divided into 5 circle. Each circle allow the access to certain spell of the magic branch relative (see appendice spell for a list of spell included in each magic branch circle level)</para>
+<para/></sect2><sect2><title>Spells</title>
+<para>To learn a certain circle there are 2 conditions : learn the previous circle (except for the circle) and have the minimum necessary for this circle in the INT caracteristic.</para>
+<para>When these 2 conditions are completed, you need to find a master that can train you to this circle level and if you have the skill points necassary you can learn the new circle.</para>
+<para/>
+<para>1st Circle : 20 INT needed, 10 SP to learn</para>
+<para>2nd Circle : 45 INT needed, 25 SP to learn</para>
+<para>3rd Circle : 75 INT needed, 45 SP to learn</para>
+<para>4st Circle : 120 INT needed, 70 SP to learn</para>
+<para>5th Circle : 160 INT needed, 100 SP to learn</para>
+<para/>
+<para>The magic caracteristic correspond to the maximum mana that the user can dispose when he is fully restored. 1 magic point = 5 mana point.</para>
+<para/>
+<para>To use a spell your current mana value must be superior or equal to the mana necessary to use it.</para>
+<para/>
+<para>Spells have some caracteristics : </para>
+<para>&lt;SPELL&gt;</para>
+<para>&lt;spell_type = combat&gt;</para>
+<para>&lt;damage inflicted/cm²&gt;&lt;/damage inflicted/cm²&gt;</para>
+<para>&lt;hit surface&gt;&lt;/hit surface&gt;</para>
+<para>&lt;/spell_type = combat&gt;</para>
+<para>&lt;spell_type = heal&gt;</para>
+<para>&lt;nb of hit point healed&gt;&lt;/nb of hit point healed&gt; (if 0 it means all)</para>
+<para>&lt;/spell_type = heal&gt;</para>
+<para>&lt;spell_type = resist&gt;</para>
+<para>&lt;value of resistance added (+/-)&gt;&lt;/value of resistance added (+/-)&gt;</para>
+<para>&lt;type of resistance&gt;&lt;/type of resistance&gt;</para>
+<para>&lt;/spell_type = resist&gt;</para>
+<para>&lt;spell_type = summon&gt;</para>
+<para>&lt;name of summon&gt;&lt;/name of summon&gt;</para>
+<para>&lt;hit point of summon&gt;&lt;/hit point of summon&gt;</para>
+<para>&lt;mana point&gt;&lt;/mana point&gt;</para>
+<para>&lt;resistance of summon&gt;&lt;/resistance of summon&gt;</para>
+<para>&lt;damage type&gt;&lt;/damage type&gt;</para>
+<para>&lt;damage inflicted by summon&gt;</para>
+<para>&lt;/spell_type = summon&gt;</para>
+<para>&lt;spell_type = other&gt;</para>
+<para>&lt;desc&gt;&lt;/desc&gt;</para>
+<para>&lt;/spell_type = other&gt;</para>
+<para>&lt;mana necessary to cast&gt;&lt;/mana necessary to cast&gt;</para>
+<para>&lt;masterisation value (%)&gt;&lt;/masterisation value (%)&gt;</para>
+<para>&lt;/SPELL&gt;</para>
+<para/>
+<para>The masterisation value evolve as the user used the spell.</para>
+<para>It begins at 0% and increase for 0.01% each time the user use the corresponding spell.</para>
+<para>It decrease as the time pass : after a month without the spell, the masterisation begin to decrease for 0.01% / day. In order to increase the spell masterisation again, you'll need to used the spell once for each day of no use. for example after 36 days without using the spell, the masterisation as decrease for 0.05%, so in order to have the same masterisation again you'll need to use the spell 41times : 36 to stop the decrease and 5 to regain 0.05%.</para>
+<para>(TO TWEAK !!!)</para>
+<para/>
+<para>Each spell is represented by a rune that you need to find/buy in order to launch the new spell.</para><sect3><title>Combat Spells</title>
+<para>Formula</para>
+<para>In case of no block</para>
+<para>Spell damage = damage inflicted/cm² * surface of damage on armor * (1+(INT value-INT nesssary to know the spell circle)/100) * (1 + masterisation value / 100)</para>
+<para/>
+<para>In case of shield block</para>
+<para>Spell damage = damage inflicted/cm² * (surface of damage on armor - surface of damage on shield) * (1+(INT value-INT nesssary to know the spell circle)/100) * (1 + masterisation value / 100)</para></sect3><sect3><title>Heal Spells</title>
+<para>Formula :</para>
+<para>if nb of hit point healed = 0</para>
+<para>then</para>
+<para>hit point restore = all</para>
+<para>else</para>
+<para>hit point restore = nb of hit point healed * (1+(INT value-INT nesssary to know the spell circle)/100) * (1 + masterisation value / 100)</para>
+<para>endif </para></sect3><sect3><title>Resistance Spells</title>
+<para/></sect3><sect3><title>Summon Spells</title>
+<para/></sect3><sect3><title>Other Spells</title>
+<para/>
+<para>Spell Combination</para>
+<para>In order to augment spell damage and/or the hit surface or the heal value etc.., if you have the mana necessary, you can combine each spell with itself and it will double, triple, etc the damage and the hit surface. These are called duplicated spells.</para>
+<para>For example, combine three 4th spell of the 1st circle of the fire branch, it will be called a duplicated two 4th spell, 1st circle, fire branch aka D2/4/1/f or DD/4/1/f. The original spell is D0/4/1/f or simply 4/1/f.</para>
+<para>To duplicate spells you need to use the spell combination keyboard touch.</para>
+<para/>
+<para>The same way, if you know spells from different magic branch you can combine them to create a new spell type. To combine spells from different branch of magic, spells used for the combinaison must combine well and you need to know the exact combination of spell in make the 'new' spell work.</para>
+<para>For example you can need the 2nd spell from the 3st circle from the fire branch that you need to combine with a duplicated one 3rd spell from the 1st circle of the earth branch in order to make the spell work. And so, if you combine the fire spell with a simple 3/1/e the spell will failed.</para>
+<para>To combine spells you need to use the spell combination keyboard touch.</para>
+<para/>
+<para>These various combination allow magic users two use an unlimited spell panel.</para>
+<para/></sect3></sect2><sect2><title>Spell Casting</title>
+<para>To cast spells your avatar must say the exact combination. To achieve this, you need to write down the exact combination with the keyboard. To facilitate the use of spell, you will be allow to assign a keyboard touch (!) to each of the magic branch.</para>
+<para/>
+<para>Example :</para>
+<orderedlist>
+<listitem>
+<para>you want to use the spell Cauterize wich is the 4th spell of the 1st circle of fire =&gt; you must write : 41f using your keyboard if f is the key assign to thge fire branch.</para>
+<para/>
+</listitem>
+</orderedlist>
+<orderedlist>
+<listitem>
+<para>You want to make a duplicated one fire arrow =&gt; write down : D131f or D31f</para>
+<para/>
+</listitem>
+</orderedlist>
+<orderedlist>
+<listitem>
+<para>You want to combine the 2nd spell from the 3st circle from the fire branch that you need to combine with a duplicated one 3rd spell from the 1st circle of the earth branch =&gt; Write down : 23f*D31e and not 23fD31e that will launch the two spell without combining them</para>
+</listitem>
+</orderedlist>
+<para/>
+<para/>
+<para>[TO TWEAK : it seems very hard to use in combat !!]</para>
+<para/>
+<para>You can stock spells in object in order to launch them quickly in a middle of a battle (see enchant object section).</para>
+<para/></sect2><sect2><title>Spell interface</title>
+<para>circle to choose magic branch</para>
+<para>circle to choose magic circle in this branch</para>
+<para>Circle yo choose the spell if you know it. Each clik on the spell represent a level in duplicate : 3 clik =&gt; a duplicate two spell.</para>
+<para>Combinate button that allow to combinate the spell with a different spell.</para>
+<para>Launch button when the spell is ready.</para>
+<para/>
+<para>EXAMPLE FIGURE HERE</para></sect2></sect1><sect1><title>Masterisation</title><sect2><title>Overwiew</title>
+<para>The masterisation value represent how your avatar is accustomed to a skill or an item. The Global Masterisation represent the practice with one skill and the local masterisation is the practice of one item family.</para></sect2><sect2><title>Global masterisation</title>
+<para/></sect2><sect2><title>Local masterisation</title>
+<para/></sect2><sect2><title/>
+<para/></sect2></sect1><sect1><title>Criticals</title><sect2><title>Overwiew</title>
+<para/></sect2><sect2><title>Critical Hit</title>
+<para/></sect2><sect2><title>Critical Wound</title>
+<para/></sect2><sect2><title>Critical Miss</title>
+<para/></sect2></sect1><sect1><title>Combat follow up</title>
+<para>
+<para/>
+<para/>
+<para>Test if the distant to hit allow the player to touch the opponent</para>
+<para>Nothing happen</para>
+<para>Missed</para>
+<para>Touched</para>
+<para>random jet to know if it's a critical hit or not depending on the player skill in the weapon he use</para>
+<para/>
+<para/>
+<para>Critical hit</para>
+<para>Normal hit</para>
+<para>The physic determine if the weapon is blocked by another weapon or a shield</para>
+<para/> </para></sect1><sect1><title/></sect1><sect1><title>Equipement</title></sect1><sect1><title>Others items</title><sect2><title>Overwiew</title>
+<para/></sect2><sect2><title>Set Items</title><sect3><title>Overview</title>
+<para/></sect3><sect3><title>Set masterisation</title>
+<para/>
+<para/></sect3></sect2><sect2><title>Unique Items</title><sect3><title>Overview</title>
+<para/></sect3><sect3><title>Affinity</title>
+<para/></sect3></sect2><sect2><title>Various Items</title>
+<para/></sect2></sect1><sect1><title>Enchant items</title></sect1><sect1><title>Experience</title>
+<para/><sect2><title>Overview</title>
+<para/>
+<para>Overview of experience system used in game.</para>
+<para/></sect2><sect2><title>Details</title></sect2><sect2><title>Levels</title></sect2></sect1><sect1><title>Trade</title><sect2><title>Overview</title>
+<para>Used money : gold pieces</para>
+<para>All merchant have an illimited stock of gold to facilitate transaction with players.</para>
+<para>Usually all merchant buy article at the same price from the gamers and sell at the same price too. In some case merchants will only be avaible after a quest or if you know the native language of the merchant. These merchant will have specials items and specials sell/buy values.</para>
+<para>Each merchant sell different items in function of his types. For example the are food merchant, weapon merchant, magic merchant, ...</para>
+<para/></sect2><sect2><title>Trade Session :</title>
+<para>Trade sessions are initiate between a merchant and a player when the player talk to the merchant. They are closed when you quit talking to him.</para>
+<para/>
+<para>During a trade session, sold items can be bought immediatly again at the same price that the players sells them to evitate sell error. This is the same case to bought items.</para>
+<para/>
+<para>When you quit the trade session, sold items is immediatly equiped by the merchant if he is better than his actual equipement and if he had the minimal caracteristics to equip it. If sold items are not good to the merchant, they become avaible to other players.</para>
+<para/></sect2><sect2><title>Personnal market:</title>
+<para>You can open your own merchant with you own prices........</para>
+<para>TO BE DEFINED</para></sect2></sect1><sect1><title>Guilds</title><sect2><title>Overview</title></sect2><sect2><title>Evolution</title></sect2></sect1><sect1><title>Cities</title></sect1><sect1><title>User Interface</title>
+<para/><sect2><title>Overview</title>
+<para/>
+<para>Provide some sort of an overview to your interface and same as all the previous sections, break down the components of the UI below.</para>
+<para/></sect2><sect2><title>User Interface Detail #1</title>
+<para/></sect2><sect2><title>User Interface Detail #2</title></sect2></sect1><sect1><title>Multiplayer Game</title>
+<para/><sect2><title>Overview</title>
+<para/>
+<para>Describe how the multiplayer game will work in a few sentences and then go into details below.</para>
+<para/></sect2><sect2><title>Max Players</title>
+<para/>
+<para>Describe how many players can play at once or whatever.</para></sect2><sect2><title/></sect2><sect2><title>Servers</title>
+<para/>
+<para>Is your game client-server or peer-to-peer or whatever.</para>
+<para/></sect2><sect2><title>Customization</title>
+<para/>
+<para>Describe how the players can customize the multiplayer experience.</para>
+<para/></sect2><sect2><title>Internet</title>
+<para/>
+<para>Describe how your game will work over the internet.</para>
+<para/></sect2><sect2><title>Gaming Sites</title>
+<para/>
+<para>Describe what gaming sites you want to support and what technology you intend to use to achieve this. Perhaps Dplay or TCP/IP or whatever. It is probably a good idea to break the tech stuff out into a separate area, you decide.</para>
+<para/></sect2><sect2><title>Persistence</title>
+<para/>
+<para>Describe if your world is persistent or not.</para>
+<para/></sect2><sect2><title>Saving and Loading</title>
+<para/>
+<para>Explain how you can save a multiplayer game and then reload it. If you can or why this is not possible.</para></sect2></sect1><sect1><title>Physic Engine</title><sect2><title/><sect3><title>Overview</title></sect3></sect2><sect2><title/><sect3><title>Specifications</title></sect3></sect2></sect1><sect1><title>Rendering System</title>
+<para/><sect2><title/><sect3><title>Overview</title>
+<para/>
+<para>Give an overview of how your game will be rendered and then go into detail in the following paragraphs.</para>
+<para/></sect3></sect2><sect2><title/><sect3><title>2D/3D Rendering</title>
+<para/>
+<para>Describe what sort of 2D/3D rendering engine will be used.</para>
+<para/></sect3></sect2><sect2><title>Camera</title>
+<para>Overview</para>
+<para/>
+<para>Describe the way the camera will work and then go into details if the camera is very complicated in sub sections.</para>
+<para/><sect3><title>Camera Detail #1</title>
+<para/>
+<para>The camera will move around like this and that.</para>
+<para/></sect3><sect3><title>Camera Detail #2</title>
+<para/>
+<para>The camera will sometimes move like this in this special circumstance.</para>
+<para/></sect3></sect2><sect2><title>Game Engine</title><sect3><title>Overview</title>
+<para/>
+<para>Describe the game engine in general.</para>
+<para/></sect3><sect3><title>Game Engine Detail #1</title>
+<para/>
+<para>The game engine will keep track of everything in the world like such and such.</para>
+<para/></sect3><sect3><title>Water</title>
+<para/>
+<para>There will be a lot of water in the world beacause we are in an island world so sea and river will be represented in every aspect and will look beautiful.</para>
+<para/></sect3><sect3><title>Collision Detection</title>
+<para/>
+<para>Collision will be handle entirely by the physic engine (see section for details)</para>
+<para/>
+<para/>
+<para/></sect3></sect2><sect2><title>Lighting Models</title>
+<para/><sect3><title>Overview</title>
+<para/>
+<para>Describe the lighting model you are going to use and then go into the different aspects of it below.</para>
+<para/></sect3><sect3><title>Lighting Model Detail #1</title>
+<para/>
+<para>We are using the xyz technique to light our world.</para>
+<para/></sect3><sect3><title>Lighting Model Detail #2</title>
+<para/>
+<para>We won’t be lighting the eggplants in the game because they are purple.</para></sect3></sect2><sect2><title>Character Rendering</title>
+<para/></sect2><sect2><title>Overview</title>
+<para/>
+<para>Provide an overview as to how your characters will be rendered. You may have decided to include this elsewhere or break it out to provide more detail to a specific reader.</para>
+<para/></sect2><sect2><title>Character Rendering Detail #1</title>
+<para/></sect2><sect2><title>Character Rendering Detail #2</title></sect2></sect1><sect1><title>Musical Scores and Sound Effects</title><sect2><title/><sect3><title/></sect3></sect2><sect2><title>Overview</title>
+<para/>
+<para>This should probably be broken down into two sections but I think you get the point.</para>
+<para/></sect2><sect2><title>Red Book Audio</title>
+<para/>
+<para>If you are using Red Book then describe what your plan is here. If not, what are you using?</para>
+<para/></sect2><sect2><title>3D Sound</title>
+<para/>
+<para>Talk about what sort of sound APIs you are going to use or not use as the case may be.</para>
+<para/></sect2><sect2><title>Sound Design</title>
+<para/>
+<para>Take a shot at what you are going to do for sound design at this early stage. Hey, good to let your reader know what you are thinking.</para></sect2></sect1><sect1><title>World Editing</title>
+<para/><sect2><title>Overview</title>
+<para/>
+<para>Provide an overview about the world editor.</para>
+<para/></sect2><sect2><title>World Editing Detail #1</title>
+<para/></sect2><sect2><title>World Editing Detail #2</title></sect2></sect1><sect1><title>Extra Miscellaneous Stuff</title>
+<para/><sect2><title>Overview</title>
+<para/>
+<para>Drop anything you are working on and don’t have a good home for here.</para>
+<para/></sect2><sect2><title>Junk I am working on…</title>
+<para/>
+<para>Possible evolution : the earth has begun to slowly move from his orbit and now the climatic condition has begun to deteriore. A glacial era is about to begun and change everything. </para>
+<para/>
+<para>Possible evolution : The orbit is completly deteriore and glacial era will follow high temperature era in short period (few years).</para>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/></sect2></sect1><sect1><title>“XYZ Appendix”</title>
+<para/>
+<para>Provide a brief description of what this appendix is for and then get down to business and provide data to the reader.</para>
+<para/>
+<para>Here are a few examples of some of the appendices in my latest design…</para>
+<para/></sect1><sect1><title>“Objects Appendix”</title>
+<para/></sect1><sect1><title>“User Interface Appendix”</title>
+<para/></sect1><sect1><title>“Networking Appendix”</title>
+<para/></sect1><sect1><title>“Character Rendering and Animation Appendix”</title>
+<para/></sect1><sect1><title>“Story Appendix”</title>
+<para/>
+<para>Okay, that’s it. I wanted to spend more time on this and really make it a great roadmap for putting a game design together. Unfortunately it would take a ton of time and that is something that we don’t have enough of in this business. I think you get the idea anyhow. Also, don’t get the impression that I think a design should provide the information in any particular order, this just happened to be the way it fell out of my head when I sat down. Change this template any way you want and if you feel you have improved on it, send it back to me and I can pass it out as an alternative to anyone that asks me in the future.</para>
+<para/>
+<para>Good luck and all that!</para>
+<para/>
+<para>Chris Taylor</para>
+<para/></sect1></article>
