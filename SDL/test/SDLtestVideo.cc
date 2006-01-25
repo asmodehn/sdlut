@@ -46,7 +46,7 @@ class MyEngine : public Engine
 {
     RGBSurface _defaultlogo;
 public:
-    MyEngine() : _defaultlogo("../data/SDL_logo.bmp")
+    MyEngine() : _defaultlogo("data/SDL_logo.bmp")
     { }
 
     virtual ~MyEngine(){}

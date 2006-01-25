@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE CodeBlocks_project_file>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="1"/>
+	<Project>
+		<Option title="Project0"/>
+		<Option makefile="Makefile"/>
+		<Option makefile_is_custom="0"/>
+		<Option compiler="0"/>
+		<Build>
+			<Target title="default">
+				<Option output="build\Project0.exe"/>
+				<Option working_dir="."/>
+				<Option object_output="build\obj"/>
+				<Option deps_output=".deps"/>
+				<Option external_deps="..\SDL\build\bin_debug\libSDLwrap.a;"/>
+				<Option type="1"/>
+				<Option compiler="0"/>
+				<Option projectResourceIncludeDirsRelation="1"/>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall"/>
+			<Add option="-g"/>
+			<Add option="-DLOGPREFIX=\&quot;Project0\&quot;"/>
+			<Add directory="include"/>
+			<Add directory="..\SDL\include"/>
+		</Compiler>
+		<Linker>
+			<Add library="..\SDL\build\bin_debug\libSDLwrap.a"/>
+			<Add library="opengl32"/>
+			<Add library="SDL"/>
+			<Add library="SDLmain"/>
+		</Linker>
+		<Unit filename="src\example.cc">
+			<Option compilerVar="CC"/>
+			<Option target="default"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
