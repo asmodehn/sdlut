@@ -50,7 +50,7 @@
 			</Target>
 			<Target title="test">
 				<Option output="build\test\AML-test.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\.deps"/>
 				<Option external_deps="build\bin_default\libAML.a;"/>

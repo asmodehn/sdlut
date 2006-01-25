@@ -7,7 +7,6 @@
 		<Option makefile="Makefile"/>
 		<Option makefile_is_custom="0"/>
 		<Option default_target="2"/>
-		<Option active_target="3"/>
 		<Option compiler="0"/>
 		<Build>
 			<Target title="staticlib-NoOpenGL">
@@ -51,7 +50,7 @@
 			</Target>
 			<Target title="testInput-debug">
 				<Option output="build\test\SDLtestInput.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\.deps"/>
 				<Option external_deps="build\bin_NoGL\libSDLwrap.a;"/>
@@ -65,7 +64,7 @@
 			</Target>
 			<Target title="testVideo-debug">
 				<Option output="build\test\SDLtestVideo.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\.deps"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -89,7 +88,7 @@
 			</Target>
 			<Target title="checkkeys">
 				<Option output="build\test\checkkeys.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -111,7 +110,7 @@
 			</Target>
 			<Target title="graywin">
 				<Option output="build\test\graywin.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -131,7 +130,7 @@
 			</Target>
 			<Target title="loopwave">
 				<Option output="build\test\loopwave.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -152,7 +151,7 @@
 			</Target>
 			<Target title="testalpha">
 				<Option output="build\test\testalpha.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -172,7 +171,7 @@
 			</Target>
 			<Target title="testbitmap">
 				<Option output="build\test\testbitmap.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -184,6 +183,7 @@
 					<Add option="-Wall"/>
 					<Add option="-pg"/>
 					<Add option="-g"/>
+					<Add directory="data"/>
 				</Compiler>
 				<Linker>
 					<Add option="-pg -lgmon"/>
@@ -192,7 +192,7 @@
 			</Target>
 			<Target title="testblitspeed">
 				<Option output="build\test\testblitspeed.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_optimise\libSDLwrap.a;"/>
@@ -212,7 +212,7 @@
 			</Target>
 			<Target title="testcdrom">
 				<Option output="build\test\testcdrom.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -232,7 +232,7 @@
 			</Target>
 			<Target title="testcpuinfo">
 				<Option output="build\test\testcpuinfo.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -252,7 +252,7 @@
 			</Target>
 			<Target title="testdyngl">
 				<Option output="build\test\testdyngl.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -273,7 +273,7 @@
 			</Target>
 			<Target title="testendian">
 				<Option output="build\test\testendian.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -293,7 +293,7 @@
 			</Target>
 			<Target title="testerror">
 				<Option output="build\test\testerror.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -313,7 +313,7 @@
 			</Target>
 			<Target title="testgamma">
 				<Option output="build\test\testgamma.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -333,7 +333,7 @@
 			</Target>
 			<Target title="testgl">
 				<Option output="build\test\testgl.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -355,7 +355,7 @@
 			</Target>
 			<Target title="testthread">
 				<Option output="build\test\testthread.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -375,7 +375,7 @@
 			</Target>
 			<Target title="testjoystick">
 				<Option output="build\test\testjoystick.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -396,7 +396,7 @@
 			</Target>
 			<Target title="testkeys">
 				<Option output="build\test\testkeys.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -416,7 +416,7 @@
 			</Target>
 			<Target title="testlock">
 				<Option output="build\test\testlock.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -436,7 +436,7 @@
 			</Target>
 			<Target title="testoverlay2">
 				<Option output="build\test\testoverlay2.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -456,7 +456,7 @@
 			</Target>
 			<Target title="testoverlay">
 				<Option output="build\test\testoverlay.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -476,7 +476,7 @@
 			</Target>
 			<Target title="testpalette">
 				<Option output="build\test\testpalette.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -517,7 +517,7 @@
 			</Target>
 			<Target title="testsprite">
 				<Option output="build\test\testsprite.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -537,7 +537,7 @@
 			</Target>
 			<Target title="testtimer">
 				<Option output="build\test\testtimer.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -557,7 +557,7 @@
 			</Target>
 			<Target title="testtypes">
 				<Option output="build\test\testtypes.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -577,7 +577,7 @@
 			</Target>
 			<Target title="testver">
 				<Option output="build\test\testver.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -597,7 +597,7 @@
 			</Target>
 			<Target title="testvidinfo">
 				<Option output="build\test\testvidinfo.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -618,7 +618,7 @@
 			</Target>
 			<Target title="testwin">
 				<Option output="build\test\testwin.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -658,7 +658,7 @@
 			</Target>
 			<Target title="threadwin">
 				<Option output="build\test\threadwin.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
@@ -678,7 +678,7 @@
 			</Target>
 			<Target title="torturethread">
 				<Option output="build\test\torturethread.exe"/>
-				<Option working_dir="build\test"/>
+				<Option working_dir="."/>
 				<Option object_output="build\test\obj"/>
 				<Option deps_output="build\test\dep"/>
 				<Option external_deps="build\bin_debug\libSDLwrap.a;"/>
