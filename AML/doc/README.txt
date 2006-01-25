@@ -8,9 +8,7 @@ This is a Developer README for AML
 
 - Exceptions must be used wisely. Some sort of design pattern using exception to manage C wrapping in C++ has been used in SDLwrap... try to follow the idea. No exception should happen in main part of code. Idealy the core of AML should be fault tolerant ;)
 
-- In the future we want to be able to choose the library we will depend upon. So everything in "depend/[libname]wrap" folder is tied to the library used, and everything in the root folder should be as independant as possible from the library used.
-
-- The wrapping layer for each library should idealy do the same test than the library has, but using the wrap...
+- In the future we want to be able to choose the library we will depend upon. CMake will manage the builds and dependencies checking...
 
 - To test AML, simple little games should be done ( tetris, pacman, invaders, etc. )
 
@@ -22,14 +20,17 @@ This is a Developer README for AML
 2) Development help |
 ---------------------
 
-- One might consider looking at pygame, the SDL wrapping for python. Good samples of code... One part should be in SDLWrap (only wrapping SDL), the other part should be in AML(more high level, like 2d engine, etc.)
-
+- One might consider looking at pygame, the SDL wrapping for python. Good samples of code... 
+- check the possiblity to use other existing software output for game contents, like TileStudio, Mappy, etc.
 
 --------------------------
 Libraries for the future ?
 --------------------------
 
 Considering SDL2.0 docs, there are annex librairies we will have to manage in the future
+
+The SDL Standard libs will be wrapped in the RAGE::SDL part.
+The rest of it will be done in AML.
 
 SDL_draw
 SDL_ttf
