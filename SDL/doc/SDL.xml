@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD Simplified DocBook XML V1.0//EN"
+"http://www.oasis-open.org/docbook/xml/simple/1.0/sdocbook.dtd">
+<article>
+  <title>RAGE::SDL : The C++ wrapper for SDL</title>
+
+  <section>
+    <title>Features</title>
+
+    <para>This library is mostly a C++ portable layer over the <ulink
+    url="http://www.libsdl.org">Smart DirectMedia Library</ulink>. The aim is
+    to have a C++ interface to SDL. Users should be able to use it simply and
+    have at least a "default consistent behaviour".</para>
+
+    <para>AS soon as the wrapping of SDL is complete, we will start looking at
+    wrapping all the SDL "Standard Libs" in the same way.</para>
+
+    <section>
+      <title>Graphic Interface</title>
+
+      <para>The graphic interface is a pure virtual class called "Engine". you
+      need to derivate it with you own if you want to be able to display
+      something in your SDL window. You can use either OpenGL functions or
+      RAGE::SDL 2D functions, providing you created the Window with the
+      correct settings.</para>
+
+      <para>If you are using 2D functions you might want to the Video
+      Interface inside the Engine.</para>
+    </section>
+
+    <section>
+      <title>Input Interface</title>
+
+      <para>The input interface is made by EventManager, Joystick, Keyboard,
+      Mouse. You will probably need to extend them to implement the behaviour
+      you want.</para>
+    </section>
+
+    <section>
+      <title>Audio Interface</title>
+
+      <para>None yet.</para>
+    </section>
+
+    <section>
+      <title>Video Interface</title>
+
+      <para>The video Interface is made by RGBSurface, VideoSurface and
+      GLSurface mostly.</para>
+    </section>
+
+    <section>
+      <title>OS Functions</title>
+
+      <para>None yet</para>
+
+      <section>
+        <title>Timer</title>
+
+        <para>None yet</para>
+      </section>
+
+      <section>
+        <title>Threads</title>
+
+        <para>None yet</para>
+      </section>
+
+      <section>
+        <title>RWOps</title>
+
+        <para>None yet</para>
+      </section>
+    </section>
+
+    <section>
+      <title>Common Core Components</title>
+
+      <para>This is a list of usefull features added only for the need of this
+      C++ wrapper. But still they might be usefull somewhere else, and are not
+      really related to the main subject fo the C++ wrapper</para>
+
+      <section>
+        <title>Logger</title>
+
+        <para>The Logger class is the only feature that was needed so
+        far.</para>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>Dependencies</title>
+
+    <para>- <ulink url="http://www.libsdl.org">SDL</ulink>
+    <emphasis>mandatory.</emphasis></para>
+
+    <para>To come :</para>
+
+    <para>- SDL_image</para>
+
+    <para>- SDL_mixer</para>
+
+    <para>- SDL_net</para>
+
+    <para>- SDL_ttf</para>
+
+    <para>- SDL_rtf</para>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>How to build, test and install</title>
+
+    <para></para>
+
+    <section>
+      <title>Code::Blocks build</title>
+
+      <para>I am personnaly using CodeBlocks on windows with mingw to build
+      RAGE::SDL. However it misses a dependency checking for the libraries
+      needed. At the moment it is not a big problem as only SDL is needed. But
+      while we will add more dependencies CMake will be used to have a
+      consistent way of building RAGE::SDL.</para>
+    </section>
+
+    <section>
+      <title>Makefile build</title>
+
+      <para><emphasis>Makefiles can be generated from Cmake for most of the
+      unix platforms. Not tested yet.</emphasis></para>
+    </section>
+
+    <section>
+      <title>CMake build</title>
+
+      <para>If you dont use either Codeblocks, or make files, and want to be
+      able to build RAGE::SDL using your own favorite environment, try the
+      CMake build. It generates files for most of the compilers / build
+      system.</para>
+
+      <para>The good thing with CMake is that it will check the dependencies
+      available on your system and help you to configure your system for
+      development.</para>
+    </section>
+
+    <section>
+      <title>Testing RAGE::SDL</title>
+
+      <para>There are a few test that are usefull to test the C++ wrapper.
+      most of them are still the old SDL tests, not yet using the wrapper...
+      lots of work to do.</para>
+    </section>
+
+    <section>
+      <title>Installing RAGE::SDL</title>
+
+      <para>RAGE::SDL will be built as a dynamic library or a static library.
+      Right now only the static library is built</para>
+    </section>
+
+    <section>
+      <title>Using RAGE::SDL</title>
+
+      <para>The online generated doc is available <ulink
+      url="doxygen/html">here</ulink>, thanks to <ulink
+      url="http://www.doxygen.org">Doxygen</ulink>.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Source overview : UML Diagrams</title>
+
+    <para></para>
+
+    <section>
+      <title>Overview</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Detailed</title>
+
+      <para></para>
+    </section>
+  </section>
+</article>
