@@ -49,6 +49,8 @@ public:
     MyEngine() : _defaultlogo("../data/SDL_logo.bmp")
     { }
 
+    virtual ~MyEngine(){}
+
     bool init(int width, int height)
     {}
 
