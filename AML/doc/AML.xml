@@ -9,7 +9,7 @@
 
     <para>This library is mostly a C++ portable layer over many different
     multimedia libraries. The aim is to have a common interface to the
-    different libraries out there. People should be able to use it simply and
+    different libraries out there. Users should be able to use it simply and
     have at least a "default consistent behaviour". This default behaviour
     must balance efficiency, usability and nice end-user experience.</para>
 
@@ -44,7 +44,8 @@
 
       <para>The core components of this graphic engine are "Sprite", "Layer"
       (as a set of sprite), and "Camera"... A collision between two sprites
-      can happen inside the same layer only.</para>
+      can happen inside the same layer only. <emphasis>to be
+      refined...</emphasis></para>
 
       <para>- A simple interface with the OS Window Manager, to be able to
       display 2D ( or 3D ) content in the window manager and link the
@@ -122,8 +123,8 @@
       <para>- <ulink url="http://www.libsdl.org">SDL</ulink>
       <emphasis>mandatory.</emphasis></para>
 
-      <para>The SDL library is used via a C++ wrapper : <link
-      linkend="???">SDLWrap</link></para>
+      <para>The SDL library is used via a C++ wrapper : <ulink
+      url="sdl/">RAGE::SDL</ulink></para>
     </section>
 
     <section>
@@ -172,14 +173,17 @@
       <title>Code::Blocks build</title>
 
       <para>I am personnaly using CodeBlocks on windows with mingw to build
-      AML. However it misses a dependency checking for the libraries
-      needed.</para>
+      AML. However it misses a dependency checking for the libraries needed.
+      At the moment it is not a big problem as only SDL is needed. But while
+      we will add more dependencies CMake will be used to have a consistent
+      way of building AML.</para>
     </section>
 
     <section>
       <title>Makefile build</title>
 
-      <para><emphasis>TODO</emphasis></para>
+      <para><emphasis>Makefiles can be generated from Cmake for most of the
+      unix platforms. Not tested yet.</emphasis></para>
     </section>
 
     <section>
@@ -210,9 +214,9 @@
     <section>
       <title>Using AML</title>
 
-      <para>The online generated doc is available <link
-      linkend="???">here</link>, thanks to <link
-      linkend="www.doxygen.org">Doxygen</link>.</para>
+      <para>The online generated doc is available <ulink
+      url="doxygen/html">here</ulink>, thanks to <ulink
+      url="http://www.doxygen.org">Doxygen</ulink>.</para>
     </section>
   </section>
 
