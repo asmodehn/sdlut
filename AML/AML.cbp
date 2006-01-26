@@ -22,7 +22,7 @@
 					<Add option="-Wall"/>
 					<Add option="-g"/>
 					<Add option="-DLOGPREFIX=\&quot;AML\&quot;"/>
-					<Add option="-DDEBUG=2"/>
+					<Add option="-DDEBUG"/>
 				</Compiler>
 				<Linker>
 					<Add library="..\SDL\build\bin_debug\libSDLwrap.a"/>
@@ -42,7 +42,7 @@
 					<Add option="-Wall"/>
 					<Add option="-g"/>
 					<Add option="-DLOGPREFIX=\&quot;AML\&quot;"/>
-					<Add option="-DDEBUG=2"/>
+					<Add option="-DDEBUG"/>
 				</Compiler>
 				<Linker>
 					<Add library="..\SDL\build\bin_NoGL\libSDLwrap.a"/>

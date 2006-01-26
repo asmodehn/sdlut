@@ -23,7 +23,7 @@
 					<Add option="-g"/>
 					<Add option="-DLOGINDENTLVL=1"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap.noGL\&quot;"/>
-					<Add option="-DDEBUG=2"/>
+					<Add option="-DDEBUG"/>
 				</Compiler>
 			</Target>
 			<Target title="staticlib-debug">
@@ -42,7 +42,7 @@
 					<Add option="-DLOGINDENTLVL=1"/>
 					<Add option="-DLOGPREFIX=\&quot;SDLwrap.debug\&quot;"/>
 					<Add option="-DHAVE_OPENGL"/>
-					<Add option="-DDEBUG=2"/>
+					<Add option="-DDEBUG"/>
 				</Compiler>
 				<Linker>
 					<Add library="opengl32"/>

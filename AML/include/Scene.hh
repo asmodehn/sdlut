@@ -23,7 +23,7 @@ namespace RAGE
 
         public:
 
-            void put( Sprite sprite, int posX = 0, int posY = 0);        //bool init(int width, int height, SDL::VideoSurface * display) {}
+            void put( Sprite* sprite, int posX = 0, int posY = 0);        //bool init(int width, int height, SDL::VideoSurface * display) {}
             bool init (int width, int height);
             bool resize (int width, int height);
 

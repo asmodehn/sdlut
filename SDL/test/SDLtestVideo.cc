@@ -44,25 +44,37 @@ public:
 
 class MyEngine : public Engine
 {
-    RGBSurface _defaultlogo;
+
+    RGBSurface _defaultlogocopy;
 public:
-    MyEngine() : _defaultlogo("data/SDL_logo.bmp")
-    { }
+    MyEngine()
+    {
+        RGBSurface _defaultlogo("data/SDL_logo.bmp");
+        Log << nl << "Assignment ... TEST";
+        _defaultlogocopy = _defaultlogo;
+        Log << nl << "Assignment... END";
+    }
 
     virtual ~MyEngine(){}
 
     bool init(int width, int height)
-    {}
+    {
+            Log << nl << _defaultlogocopy;
+            return true;
+    }
 
     bool resize(int width, int height)
-    {}
+    {return true;}
 
     bool render(void) const
     {
         bool res = false;
         if ( _screen != NULL )
         {
-            res= _screen->blit(_defaultlogo,Point((_screen->getWidth()-_defaultlogo.getWidth())/2,(_screen->getHeight()-_defaultlogo.getHeight())/2));
+            Log << nl<< "Copie TEST";
+            RGBSurface _defaultlogocopy2(_defaultlogocopy);
+            Log << nl << "Copie END";
+            res= _screen->blit(_defaultlogocopy2,Point((_screen->getWidth()-_defaultlogocopy2.getWidth())/2,(_screen->getHeight()-_defaultlogocopy2.getHeight())/2));
         }
 
         return res;

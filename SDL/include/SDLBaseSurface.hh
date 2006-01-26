@@ -91,6 +91,11 @@ namespace RAGE
             BaseSurface(const BaseSurface & s) throw (std::logic_error);
             BaseSurface(const BaseSurface & s , Uint32 flags, PixelFormat pfmt) throw (std::logic_error);
 
+
+            /** \brief assignement operator overload.
+            */
+            BaseSurface& operator=(const BaseSurface& s);
+
             inline Uint32 getFlags(void) const
             {
                 return _surf->flags;
@@ -116,6 +121,7 @@ namespace RAGE
             }
             inline int getBPP(void) const
             {
+                assert(_surf->format);
                 return _surf->format->BitsPerPixel;
             }
             inline bool isSWset(void) const

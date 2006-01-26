@@ -31,12 +31,12 @@ namespace RAGE
         }
 
 
-        void Scene::put(Sprite sprite, int posX, int posY)
+        void Scene::put(Sprite * sprite, int posX, int posY)
         {
 #ifdef DEBUG
             Log << nl << "Scene::put() called ... ";
 #endif
-            _sprite = &sprite;
+            _sprite = sprite;
             _sprite->setPos(posX,posY);
 #ifdef DEBUG
             Log << nl << "Scene::put() done. ";
@@ -49,7 +49,7 @@ namespace RAGE
             Log << nl << "Scene::render() called ..." << std::endl;
 #endif
             bool res = false;
-            res = _sprite!=NULL && _sprite->render(_screen);
+            res = _sprite->render(_screen);
 
 #if (DEBUG == 2)
             Log << nl << "Scene::render() done." << std::endl;

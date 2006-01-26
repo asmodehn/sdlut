@@ -25,7 +25,7 @@ namespace RAGE
 
         class Config
         {
-
+public:
             Config() {
                         Log.enableFileLog("Rage_AML.log");
             }

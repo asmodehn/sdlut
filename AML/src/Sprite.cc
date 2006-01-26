@@ -29,9 +29,28 @@ namespace RAGE
             Log << nl << "Exception in Sprite constructor ! " << nl << e.what ();
         }
 
+Sprite::Sprite(const Sprite &s)
+: _surf(s._surf), _psurf(new SDL::RGBSurface(*s._psurf)), posX(0), posY(0)
+{
+    Log << nl << "Sprite Copy !!!";
+}
+
+Sprite& Sprite::operator=(const Sprite &s)
+{
+        Log << nl << "Sprite Assign !!!";
+    if (this != &s)
+    {
+        delete _psurf;
+        _surf = s._surf;
+        _psurf = new SDL::RGBSurface(*s._psurf);
+        posX=0;posY=0;
+    }
+    return *this;
+}
+
 
 #ifndef HAVE_OPENGL
-        bool Sprite::render(SDL::VideoSurface * screen)
+        bool Sprite::render(SDL::VideoSurface * screen) const
         {
 #if (DEBUG == 2)
             Log <<  nl << "Sprite::render("<< screen<<") called ..." << std::endl;
@@ -47,7 +66,7 @@ namespace RAGE
 #endif
 
             res =screen->blit(_surf,p);
-            //res =screen->blit(*_psurf,p);
+//            res =screen->blit(*_psurf,p);
 #if (DEBUG == 2)
 
             Log <<  nl << "Sprite::render("<< screen<<") done." << std::endl;
@@ -57,7 +76,7 @@ namespace RAGE
             return res;
         }
 #else
-        bool Sprite::render()
+        bool Sprite::render() const
         {}
 #endif
 

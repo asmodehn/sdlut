@@ -9,7 +9,7 @@ namespace RAGE
 
         RGBSurface::RGBSurface(int width, int height, int bpp) throw (std::logic_error)
         try
-        :
+:
             BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
         {
 #ifdef DEBUG
@@ -29,6 +29,7 @@ namespace RAGE
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << width << ", " << height << ", " << bpp << ") done.";
 #endif
+
         }
         catch (std::exception &e)
         {
@@ -39,7 +40,7 @@ namespace RAGE
 
         RGBSurface::RGBSurface(void* pixeldata, int depth, int pitch, int width, int height) throw (std::logic_error)
         try
-        :
+:
             BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitch, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
         {
 #ifdef DEBUG
@@ -54,6 +55,7 @@ namespace RAGE
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width << ", " <<height << ") done.";
 #endif
+
         }
         catch (std::exception &e)
         {
@@ -64,7 +66,7 @@ namespace RAGE
 
         RGBSurface::RGBSurface(const Color & color, int width, int height, int bpp )throw (std::logic_error)
         try
-        :
+:
             BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
         {
 #ifdef DEBUG
@@ -84,6 +86,7 @@ namespace RAGE
 
             Log << nl << "RGBSurface::RGBSurface(" << color << ", " << width << ", " <<height << ", " << bpp << ") done.";
 #endif
+
         }
         catch (std::exception &e)
         {
@@ -94,7 +97,7 @@ namespace RAGE
 
         RGBSurface::RGBSurface( std::string filename )throw (std::logic_error)
         try
-        :
+:
             BaseSurface(SDL_LoadBMP(filename.c_str()))
         {
 #ifdef DEBUG
@@ -123,7 +126,7 @@ namespace RAGE
 
         RGBSurface::RGBSurface( std::string filename, const Color & colorKey )throw (std::logic_error)
         try
-        :
+:
             BaseSurface(SDL_LoadBMP(filename.c_str()))
         {
 #ifdef DEBUG
@@ -142,6 +145,7 @@ namespace RAGE
 
             Log << nl << "RGBSurface::RGBSurface(" << filename << ", " << colorKey << ") done.";
 #endif
+
         }
         catch (std::exception &e)
         {
@@ -200,7 +204,7 @@ namespace RAGE
 
         RGBSurface::RGBSurface(const RGBSurface & s ) throw (std::logic_error)
         try
-        :
+:
             BaseSurface(s)
         {
 #ifdef DEBUG
@@ -208,8 +212,10 @@ namespace RAGE
 #endif
 
 #ifdef DEBUG
+
             Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << _surf << " created.";
 #endif
+
         }
         catch (std::exception &e)
         {
@@ -217,9 +223,18 @@ namespace RAGE
             e.what() << nl << GetError() << std::endl;
         };
 
-         RGBSurface::RGBSurface(const BaseSurface & s ) throw (std::logic_error)
+        RGBSurface& RGBSurface::operator=(const RGBSurface& s)
+        {
+            if (this != &s)
+            {
+                this->BaseSurface::operator=(s);
+            }
+            return *this;
+        }
+
+        RGBSurface::RGBSurface(const BaseSurface & s ) throw (std::logic_error)
         try
-        :
+:
             BaseSurface(s)
         {
 #ifdef DEBUG
@@ -227,8 +242,10 @@ namespace RAGE
 #endif
 
 #ifdef DEBUG
+
             Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << _surf << " created.";
 #endif
+
         }
         catch (std::exception &e)
         {
@@ -236,6 +253,14 @@ namespace RAGE
             e.what() << nl << GetError() << std::endl;
         };
 
+        RGBSurface& RGBSurface::operator=(const BaseSurface& s)
+        {
+            if (this != &s)
+            {
+                this->BaseSurface::operator=(s);
+            }
+            return *this;
+        }
         /*
         RGBSurface::RGBSurface(const RGBSurface & s , bool cloning, bool toDisplay, bool alpha) throw (std::logic_error)
         try : SDLBaseSurface(s,cloning,toDisplay,alpha)
@@ -322,7 +347,22 @@ namespace RAGE
          SDL_UpdateRects(_surf,_UpdateRectList.size(),UpdateRectList);
         }
         */
-    }
 
+        Logger & operator << (Logger & log, const RGBSurface & surf)
+        {
+            log << nl << "RGBSurface::" << nl
+            << " - Height = " << surf.getHeight() << nl
+            << " - Width = " << surf.getWidth() << nl
+            << " - bpp = " << surf.getBPP() << nl
+            << std::boolalpha
+            << " - SW ? " << surf.isSWset() << nl
+            << " - HW ? " << surf.isHWset() << nl
+            << " - HWAccel ? " << surf.isHWAccelset() << nl
+            << " - RLEAccel ? " << surf.isRLEAccelset() << nl
+            << " - PreAlloc ? " << surf.isPreAllocset();
+            return log;
+        }
+
+    }
 } //namespace RAGE::SDL
 

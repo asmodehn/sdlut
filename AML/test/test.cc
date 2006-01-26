@@ -16,6 +16,8 @@ using namespace RAGE::AML;
 
 int main ( int argc, char * argv [])
 {
+    Config c; //temporary just to get the log
+
     Logger testlog("AMLtest.log");
 
     //If using external resources :
@@ -31,7 +33,7 @@ int main ( int argc, char * argv [])
     Window mainWin("AML test", "data/AML_icon.bmp",640,480);
 
     testlog << nl << "Setting up the Scene..." << std::endl;
-    mainWin.getScene()->put(testbmp, 320, 240);
+    mainWin.getScene()->put(&testbmp, 320, 240);
 
     testlog << nl << "Starting the main loop..." << std::endl;
     mainWin.loop();

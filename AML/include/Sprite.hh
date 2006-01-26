@@ -19,13 +19,15 @@ namespace RAGE
 
         public :
             Sprite(std::string filename) throw (std::logic_error);
+            Sprite(const Sprite &);
+            Sprite& operator=(const Sprite &);
 
 #ifndef HAVE_OPENGL
 
-            bool render(SDL::VideoSurface * screen);
+            bool render(SDL::VideoSurface * screen)const;
 #else
 
-            bool render();
+            bool render()const;
 #endif
 
             void setPos( int x, int y)

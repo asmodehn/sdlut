@@ -62,9 +62,11 @@ protected : //the client should not access to flags...
 public :
 	//should be used as the copy constructor. But should also be able to get DisplaySurface as input...
     RGBSurface(const RGBSurface & s ) throw (std::logic_error);
+    RGBSurface& operator=(const RGBSurface& s);
     //Conversion constructor
     //NB : will get called if the Surface is not RGB only.
     RGBSurface(const BaseSurface & s ) throw (std::logic_error);
+    RGBSurface& operator=(const BaseSurface& s);
 
 	//not sure if this is useful or not, but the default copy constructor has to be properly overloaded
 	//RGBSurface(const RGBSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
@@ -88,7 +90,7 @@ public :
 
 	bool optimise(bool alpha = false);
 
-
+            friend Logger & operator << (Logger & ostr, const RGBSurface & surf);
 };
     }
 } //namespace RAGE::SDL

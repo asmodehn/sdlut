@@ -39,12 +39,8 @@ namespace RAGE
             Log << nl << "BaseSurface::BaseSurface(" << &s << ") called...";
 #endif
 
-            _surf=SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*(s._surf->format)),s._surf->flags); // copy to deal with const... maybe a const cast should be ok...
-            // _surf=SDL_CreateRGBSurface(s._surf->flags, s.getWidth(), s.getHeight(), s._surf->format->BitsPerPixel, s._surf->format->Rmask, s._surf->format->Gmask, s._surf->format->Bmask, s._surf->format->Amask);
-
-
-            //std::cerr << "SDL::BaseSurface Copy Called" << std::endl;
-            const std::string errstr = "SDL_ConvertSurface" ; //: "SDL_CreateRGBSurface";
+            _surf=SDL_ConvertSurface(s._surf,s._surf->format,s._surf->flags);
+const std::string errstr = "SDL_ConvertSurface";
             if(_surf == NULL)
             {
                 Log << nl << "Unable to copy the RGBsurface" ;
@@ -61,6 +57,16 @@ namespace RAGE
             e.what() << nl << GetError();
         };
 
+BaseSurface& BaseSurface::operator=(const BaseSurface& s)
+{
+    if (this != &s) {  // make sure not same object
+            _surf=SDL_ConvertSurface(s._surf,s._surf->format,s._surf->flags); //deep copy...
+            if (_surf ==NULL)
+                Log << nl << "Unable to copy the BaseSurface : error in SDL_ConvertSurface -> " << GetError() ;
+    }
+    return *this;
+}
+
         BaseSurface::BaseSurface(const BaseSurface & s ,Uint32 flags, PixelFormat pfmt) throw (std::logic_error)
         try
         :
@@ -70,10 +76,8 @@ namespace RAGE
             Log << nl << "BaseSurface::BaseSurface(const BaseSurface & s,Uint32 flags, PixelFormat pfmt) called...";
 #endif
 
-            _surf=SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*(pfmt._pformat)),flags); // copy to deal with const... maybe a const cast should be ok...
+            _surf=SDL_ConvertSurface(s._surf,const_cast<SDL_PixelFormat *>(pfmt._pformat),flags); //SDL shouldnt modify the pixel format at all
 
-
-            //std::cerr << "SDL::BaseSurface Copy Called" << std::endl;
             const std::string errstr = "SDL_ConvertSurface";
             if(_surf == NULL)
             {
@@ -194,6 +198,12 @@ Log << nl << "BaseSurface::fill (const PixelColor& color," << dest_rect << ") do
 Log << nl << "BaseSurface::blit (const BaseSurface& src," << dest_rect << ", " << src_rect << ") called...";
 #endif
             bool res=false;
+#ifdef DEBUG
+            //to make sure the SDL surface is completely usable
+            assert(_surf->format);
+            assert(src._surf->format);
+#endif
+
             switch (SDL_BlitSurface(src._surf, src_rect._rect , _surf, dest_rect._rect))
             {
                 case 0 :

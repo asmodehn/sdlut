@@ -44,7 +44,7 @@ namespace RAGE
 #endif
 
             delete _pformat;
-            delete _info;
+//            delete _info; //shouldnt need that, should be managed by SDL
 
 #ifdef DEBUG
 
