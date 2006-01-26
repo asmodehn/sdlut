@@ -92,7 +92,7 @@ ADD_LIBRARY(	Rage_SDL
 		include/Logger.hh src/Logger.cc
 		include/SDLApp.hh src/SDLApp.cc
 		include/SDLWindow.hh src/SDLWindow.cc
-		include/SDLEngine.hh src/SDLEngine.cc
+		include/SDLEngine.hh
 		include/SDLBaseSurface.hh src/SDLBaseSurface.cc
 		include/SDLCDRom.hh src/SDLCDRom.cc
 		include/SDLCursor.hh src/SDLCursor.cc

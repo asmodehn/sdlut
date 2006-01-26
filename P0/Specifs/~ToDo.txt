@@ -1,3 +1,4 @@
+Jobs( overview, details with evolution, Jobs/perk)
 Logbook (overview, details, conversation interface, quest interface, ..)
 Attrition Rate for weapons and armor/shields
 Criticals wounds/hits/blocks
