@@ -49,10 +49,14 @@ public:
     virtual ~MyEngine(){}
 
     bool init(int width, int height)
-    {}
+    {
+		return true;
+	}
 
     bool resize(int width, int height)
-    {}
+	{
+		return true;
+	}
 
     bool render(void) const
     {
