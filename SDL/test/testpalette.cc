@@ -168,7 +168,7 @@ int main(int argc, char **argv)
 	return 1;
     }
 
-    if(!(boat[0] = SDL_LoadBMP("sail.bmp")))
+    if(!(boat[0] = SDL_LoadBMP("data/sail.bmp")))
 	sdlerr("loading sail.bmp");
     /* We've chosen magenta (#ff00ff) as colour key for the boat */
     SDL_SetColorKey(boat[0], SDL_SRCCOLORKEY | SDL_RLEACCEL,

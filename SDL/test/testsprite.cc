@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* Load the sprite */
-	if ( LoadSprite(screen, "icon.bmp") < 0 ) {
+	if ( LoadSprite(screen, "data/icon.bmp") < 0 ) {
 		exit(1);
 	}
 

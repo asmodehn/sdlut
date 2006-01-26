@@ -476,7 +476,7 @@ int main(int argc, char **argv)
 	SDL_WM_SetCaption("SDL test overlay", "testoverlay");
 
 	/* Load picture */
-	bmpfile=(argv[1]?argv[1]:const_cast<char*>("sample.bmp"));
+	bmpfile=(argv[1]?argv[1]:const_cast<char*>("data/sample.bmp"));
 	pic = SDL_LoadBMP(bmpfile);
 	if ( pic == NULL ) {
 		fprintf(stderr, "Couldn't load %s: %s\n", bmpfile,

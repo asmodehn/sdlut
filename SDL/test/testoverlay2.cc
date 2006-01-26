@@ -388,7 +388,7 @@ int main(int argc, char **argv)
     }
 
     /* load the trojan moose images */
-    handle=SDL_RWFromFile("moose.dat", "rb");
+    handle=SDL_RWFromFile("data/moose.dat", "rb");
     if (handle==NULL)
     {
         fprintf(stderr, "Can't find the file moose.dat !\n");

@@ -22,7 +22,7 @@ void DrawPict(SDL_Surface *screen, char *bmpfile,
 
 	/* Load the image into a surface */
 	if ( bmpfile == NULL ) {
-		bmpfile = "sample.bmp";		/* Sample image */
+		bmpfile = "data/sample.bmp";		/* Sample image */
 	}
 fprintf(stderr, "Loading picture: %s\n", bmpfile);
 	picture = SDL_LoadBMP(bmpfile);

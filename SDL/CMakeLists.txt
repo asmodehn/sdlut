@@ -117,6 +117,13 @@ ADD_LIBRARY(	Rage_SDL
 #copying data files to use when debugging
 CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/SDL_icon.bmp ${Rage_SDL_BINARY_DIR}/data/SDL_icon.bmp COPYONLY)
 CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/SDL_logo.bmp ${Rage_SDL_BINARY_DIR}/data/SDL_logo.bmp COPYONLY)
+CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/icon.bmp ${Rage_SDL_BINARY_DIR}/data/icon.bmp COPYONLY)
+CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/moose.dat ${Rage_SDL_BINARY_DIR}/data/moose.dat COPYONLY)
+CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/picture.xbm ${Rage_SDL_BINARY_DIR}/data/picture.xbm COPYONLY)
+CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/sail.bmp ${Rage_SDL_BINARY_DIR}/data/sail.bmp COPYONLY)
+CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/sample.bmp ${Rage_SDL_BINARY_DIR}/data/sample.bmp COPYONLY)
+CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/sample.wav ${Rage_SDL_BINARY_DIR}/data/sample.wav COPYONLY)
+CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/sdl_button.gif ${Rage_SDL_BINARY_DIR}/data/sdl_button.gif COPYONLY)
 
 #defining usefull variables to be used by dependant projects.
 SET (Rage_SDL_INCLUDE_DIR ${Rage_SDL_SOURCE_DIR}/include)
@@ -130,17 +137,8 @@ IF(DEPEND_SDL)
 	ENDIF (WIN32)
 ENDIF(DEPEND_SDL)
 
-#
-#Adding targets for tests
-#Not in a subdir, because of the actual dependency being the other way around than the directory hierarchy
-#
-#TODO : add custom build command to move the needed files for testing (without installing)...
-
 #linking Rage_SDL to all other following executables
 LINK_LIBRARIES(Rage_SDL)
-
-# TODO : Still need to copy test data for following tests... temporary, while the test still uses raw SDL.
-# Goal : having test using only data/* files...
 
 #trying to dynamically link opengl
 ADD_EXECUTABLE(testdyngl  include/SDL.hh test/testdyngl.cc)
@@ -169,8 +167,11 @@ ADD_DEPENDENCIES(SDLtestVideo Rage_SDL)
 ADD_EXECUTABLE(testalpha  include/SDL.hh test/testalpha.cc)
 ADD_DEPENDENCIES(testalpha Rage_SDL)
 
+SET (OLD_INCLUDES ${INCLUDE_DIRECTORIES})
+INCLUDE_DIRECTORIES(${Rage_SDL_SOURCE_DIR}/data )
 ADD_EXECUTABLE(testbitmap  include/SDL.hh test/testbitmap.cc)
 ADD_DEPENDENCIES(testbitmap Rage_SDL)
+SET (INCLUDE_DIRECTORIES ${OLD_INCLUDES})
 
 ADD_EXECUTABLE(testblitspeed include/SDL.hh  test/testblitspeed.cc)
 ADD_DEPENDENCIES(testblitspeed Rage_SDL)
