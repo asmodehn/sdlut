@@ -13,6 +13,7 @@ namespace RAGE
             friend class Scene;
 
             SDL::RGBSurface _surf;
+            SDL::RGBSurface * _psurf;
             int posX, posY;
 
 

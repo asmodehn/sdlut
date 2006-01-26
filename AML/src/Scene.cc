@@ -3,7 +3,6 @@ namespace RAGE
 {
     namespace AML
     {
-
         Scene::Scene()
         {
 #ifdef DEBUG
@@ -14,6 +13,7 @@ namespace RAGE
 #ifdef DEBUG
             Log << nl << "Scene::Scene() done ";
 #endif
+
         }
 
         Scene::~Scene()

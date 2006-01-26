@@ -6,7 +6,7 @@ namespace RAGE
     {
 
         Sprite::Sprite(std::string filename) throw (std::logic_error)
-        try : _surf(filename),posX(0),posY(0)
+        try : _surf(filename),_psurf(new SDL::RGBSurface(filename)),posX(0),posY(0)
         {
 #ifdef DEBUG
             Log << nl << "Sprite::Sprite() called ...";
@@ -39,8 +39,8 @@ namespace RAGE
 #if (DEBUG == 2)
             Log << nl << "blitting at " << p;
 #endif
-            res =screen->blit(_surf,p);
-
+            //res =screen->blit(_surf,p);
+            res =screen->blit(*_psurf,p);
 #if (DEBUG == 2)
 
             Log <<  nl << "Sprite::render("<< screen<<") done." << std::endl;
