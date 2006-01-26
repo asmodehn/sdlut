@@ -36,7 +36,7 @@ namespace RAGE
             locks(0)
         {
 #ifdef DEBUG
-            Log << nl << "BaseSurface::BaseSurface(const BaseSurface & s) called...";
+            Log << nl << "BaseSurface::BaseSurface(" << &s << ") called...";
 #endif
 
             _surf=SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*(s._surf->format)),s._surf->flags); // copy to deal with const... maybe a const cast should be ok...
@@ -51,7 +51,7 @@ namespace RAGE
                 throw std::logic_error(errstr + " returns NULL");
             }
 #ifdef DEBUG
-            Log << nl << "BaseSurface::BaseSurface(const BaseSurface & s) done.";
+            Log << nl << "BaseSurface::BaseSurface(" << &s << ") done.";
 #endif
 
         }

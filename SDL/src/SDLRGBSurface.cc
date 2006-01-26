@@ -198,16 +198,41 @@ namespace RAGE
         //  e.what() << nl << GetError() << std::endl;
         //};
 
-        RGBSurface::RGBSurface(const BaseSurface & s ) throw (std::logic_error)
+        RGBSurface::RGBSurface(const RGBSurface & s ) throw (std::logic_error)
         try
         :
             BaseSurface(s)
         {
-            Log << nl << "SDL_Surface created @ " << _surf << std::endl;
+#ifdef DEBUG
+            Log << nl << "RGBSurface::RGBSurface(" << &s << ") called.";
+#endif
+
+#ifdef DEBUG
+            Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << _surf << " created.";
+#endif
         }
         catch (std::exception &e)
         {
             Log << nl << "Exception catched in RGBSurface Copy Constructor !!!" << nl <<
+            e.what() << nl << GetError() << std::endl;
+        };
+
+         RGBSurface::RGBSurface(const BaseSurface & s ) throw (std::logic_error)
+        try
+        :
+            BaseSurface(s)
+        {
+#ifdef DEBUG
+            Log << nl << "RGBSurface::RGBSurface(" << &s << ") called.";
+#endif
+
+#ifdef DEBUG
+            Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << _surf << " created.";
+#endif
+        }
+        catch (std::exception &e)
+        {
+            Log << nl << "Exception catched in RGBSurface Conversion Constructor !!!" << nl <<
             e.what() << nl << GetError() << std::endl;
         };
 

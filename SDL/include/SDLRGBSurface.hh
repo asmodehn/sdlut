@@ -44,8 +44,9 @@ protected : //the client should not access to flags...
 	RGBSurface( void * pixeldata, int depth, int pitch, int width, int height ) throw (std::logic_error);
 
 public :
-	//creates surface from file, copying its content...
+    //default constructor
 	RGBSurface( const RGBColor & color = Color (0,0,0),  int width = DEFAULT_RGB_WIDTH, int height = DEFAULT_RGB_HEIGHT, int bpp = DEFAULT_RGB_BPP )throw (std::logic_error);
+    //creates surface from file, copying its content...
 	RGBSurface( std::string filename )throw (std::logic_error);
 	RGBSurface( std::string filename, const RGBColor & colorKey )throw (std::logic_error);
 
@@ -59,8 +60,11 @@ protected : //the client should not access to flags...
   //RGBSurface(const RGBSurface & s ) throw (std::logic_error);
 
 public :
-	//should be used as the default copy constructor. But should also be able to get DisplaySurface as input...
-  RGBSurface(const BaseSurface & s ) throw (std::logic_error);
+	//should be used as the copy constructor. But should also be able to get DisplaySurface as input...
+    RGBSurface(const RGBSurface & s ) throw (std::logic_error);
+    //Conversion constructor
+    //NB : will get called if the Surface is not RGB only.
+    RGBSurface(const BaseSurface & s ) throw (std::logic_error);
 
 	//not sure if this is useful or not, but the default copy constructor has to be properly overloaded
 	//RGBSurface(const RGBSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);

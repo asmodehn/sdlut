@@ -4,12 +4,13 @@ namespace RAGE
     namespace AML
     {
         Scene::Scene()
+        : _sprite(NULL)
         {
 #ifdef DEBUG
             Log << nl << "Scene::Scene() called ";
 #endif
-            _sprite=NULL;
-            //    Sprite::_display=SDL::App::getInstance().getWindow()->getDisplay();
+
+
 #ifdef DEBUG
             Log << nl << "Scene::Scene() done ";
 #endif
