@@ -1,30 +1,29 @@
 CMAKE_MINIMUM_REQUIRED ( VERSION 2.2)
 
 #Project Definition
-PROJECT(AML)
+PROJECT(Rage_AML)
 
 #
 #Checking software dependencies
 #
-
 
 INCLUDE (${CMAKE_ROOT}/Modules/FindOpenGL.cmake)
 
 #check for openGL
 FIND_PACKAGE(OPENGL)
 
-#checking that dependencies have been built in the right place.
-SUBDIRS(depend/SDLWrap depend/SDLWrap/cbuild)
+#calling cmake for SDL
+ADD_SUBDIRECTORY(../SDL SDL_cbuild EXCLUDE_FROM_ALL)
 
 #
 #Defining Rules for building AML
 #
 
 #compiler generic config
-INCLUDE_DIRECTORIES(AML_INCLUDES_FILES ${AML_SOURCE_DIR}/include ${SDLWrap_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${Rage_AML_SOURCE_DIR}/include ../SDL/include)
 
 #adding SDL libraries to the link
-LINK_LIBRARIES (${SDLMAIN_LIBRARY} ${SDL_LIBRARY})
+LINK_LIBRARIES (${SDLMAIN_LIBRARY} ${SDL_LIBRARY} ${Rage_SDL_LIBRARY})
 
 
 #Compiler Specific rules
@@ -40,7 +39,7 @@ ENDIF(CMAKE_CXX_COMPILER STREQUAL "cl")
 ADD_DEFINITIONS(-DLOGINDENTLVL=0 -DDEBUG)
 
 #listing headers as well to have them easily accessible in many IDE, not sure about the effect on the make build...
-ADD_LIBRARY(	AML
+ADD_LIBRARY(	Rage_AML
 		include/AML.hh
 		include/Config.hh
 		include/Camera.hh src/Camera.cc
@@ -51,6 +50,8 @@ ADD_LIBRARY(	AML
 		include/Window.hh src/Window.cc
 	)
 
+ADD_DEPENDENCIES(Rage_AML Rage_SDL)
+
 #
 #Adding targets for tests
 #Not in a subdir, because of the actual dependency being the other way around than the directory hierarchy
@@ -58,7 +59,7 @@ ADD_LIBRARY(	AML
 #TODO : add custom build command to move the needed files for testing (without installing)...
 
 #linking SDLWrap to all other following libraries
-LINK_LIBRARIES(AML)
+LINK_LIBRARIES(Rage_AML)
 
 #linking opengl for all other tests if detected
 IF(OPENGL_FOUND)
@@ -66,7 +67,7 @@ IF(OPENGL_FOUND)
 ENDIF(OPENGL_FOUND)
 
 ADD_EXECUTABLE(AMLtest include/AML.hh test/test.cc)
-ADD_DEPENDENCIES(AMLtest AML)
+ADD_DEPENDENCIES(AMLtest Rage_AML)
 
 #
 #Adding rules for installation

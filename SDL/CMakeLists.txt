@@ -85,33 +85,59 @@ ENDIF(CMAKE_CXX_COMPILER STREQUAL "cl")
 #adding definitions for Logs and debug
 ADD_DEFINITIONS(-DLOGINDENTLVL=1 -DDEBUG)
 
-#listing headers as well to have them easily accessible in many IDE, not sure about the effect on the make build...
-ADD_LIBRARY(	Rage_SDL
+SET(Rage_SDL_INCLUDE_FILES
 		include/SDL.hh
-		include/SDLConfig.hh src/SDLConfig.cc
-		include/Logger.hh src/Logger.cc
-		include/SDLApp.hh src/SDLApp.cc
-		include/SDLWindow.hh src/SDLWindow.cc
+		include/SDLConfig.hh
+		include/Logger.hh
+		include/SDLApp.hh
+		include/SDLWindow.hh
 		include/SDLEngine.hh
-		include/SDLBaseSurface.hh src/SDLBaseSurface.cc
-		include/SDLCDRom.hh src/SDLCDRom.cc
-		include/SDLCursor.hh src/SDLCursor.cc
-		include/SDLVideoSurface.hh src/SDLVideoSurface.cc
-		include/SDLCriticalEvent.hh src/SDLCriticalEvent.cc
-		include/SDLEvent.hh src/SDLEvent.cc
-		include/SDLEventManager.hh src/SDLEventManager.cc
-		include/SDLKeyboard.hh src/SDLKeyboard.cc
-		include/SDLMouse.hh src/SDLMouse.cc
-		include/SDLJoystick.hh src/SDLJoystick.cc
-		include/SDLGLManager.hh src/SDLGLManager.cc
-		include/SDLGLSurface.hh src/SDLGLSurface.cc
-		include/SDLManager.hh src/SDLManager.cc
-		include/SDLOverlay.hh src/SDLOverlay.cc
-		include/SDLPixelFormat.hh src/SDLPixelFormat.cc
-		include/SDLPoint.hh src/SDLPoint.cc
-		include/SDLRect.hh src/SDLRect.cc
-		include/SDLRGBSurface.hh src/SDLRGBSurface.cc
-		include/SDLVideoInfo.hh src/SDLVideoInfo.cc
+		include/SDLBaseSurface.hh
+		include/SDLCDRom.hh
+		include/SDLCursor.hh
+		include/SDLVideoSurface.hh
+		include/SDLCriticalEvent.hh
+		include/SDLEvent.hh
+		include/SDLEventManager.hh
+		include/SDLKeyboard.hh
+		include/SDLMouse.hh
+		include/SDLJoystick.hh
+		include/SDLGLManager.hh
+		include/SDLGLSurface.hh
+		include/SDLManager.hh
+		include/SDLOverlay.hh
+		include/SDLPixelFormat.hh
+		include/SDLPoint.hh
+		include/SDLRect.hh
+		include/SDLRGBSurface.hh
+		include/SDLVideoInfo.hh
+		)
+
+#listing headers as well to have them easily accessible in many IDE, not sure about the effect on the make build...
+ADD_LIBRARY(	Rage_SDL ${Rage_SDL_INCLUDE_FILES}
+		src/SDLConfig.cc
+		src/Logger.cc
+		src/SDLApp.cc
+		src/SDLWindow.cc
+		src/SDLBaseSurface.cc
+		src/SDLCDRom.cc
+		src/SDLCursor.cc
+		src/SDLVideoSurface.cc
+		src/SDLCriticalEvent.cc
+		src/SDLEvent.cc
+		src/SDLEventManager.cc
+		src/SDLKeyboard.cc
+		src/SDLMouse.cc
+		src/SDLJoystick.cc
+		src/SDLGLManager.cc
+		src/SDLGLSurface.cc
+		src/SDLManager.cc
+		src/SDLOverlay.cc
+		src/SDLPixelFormat.cc
+		src/SDLPoint.cc
+		src/SDLRect.cc
+		src/SDLRGBSurface.cc
+		src/SDLVideoInfo.cc
 	)
 
 #copying data files to use when debugging
@@ -125,8 +151,8 @@ CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/sample.bmp ${Rage_SDL_BINARY_DIR}/dat
 CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/sample.wav ${Rage_SDL_BINARY_DIR}/data/sample.wav COPYONLY)
 CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/sdl_button.gif ${Rage_SDL_BINARY_DIR}/data/sdl_button.gif COPYONLY)
 
-#defining usefull variables to be used by dependant projects.
-SET (Rage_SDL_INCLUDE_DIR ${Rage_SDL_SOURCE_DIR}/include)
+
+#defining usefull variables.
 GET_TARGET_PROPERTY(Rage_SDL_LIBRARY Rage_SDL LOCATION)
 
 #Copying dependencies if needed for debug
