@@ -25,6 +25,9 @@ int main ( int argc, char * argv [])
     //Resources.loadimage("");
     testlog << nl << "Loading sprite..." << std::endl;
     Sprite testbmp("data/AML_sprite.bmp");
+    testbmp.setPos(320, 240);
+    Sprite test1 = testbmp; test1.setPos(50,50);
+    Sprite test2 = testbmp;test2.setPos(500,500);
 
     //If using specific input
     //testlog << nl << "Defining Input" << std::endl;
@@ -33,7 +36,9 @@ int main ( int argc, char * argv [])
     Window mainWin("AML test", "data/AML_icon.bmp",640,480);
 
     testlog << nl << "Setting up the Scene..." << std::endl;
-    mainWin.getScene()->put(&testbmp, 320, 240);
+    mainWin.getScene()->put(&testbmp);
+    mainWin.getScene()->put(&test1);
+    mainWin.getScene()->put(&test2);
 
     testlog << nl << "Starting the main loop..." << std::endl;
     mainWin.loop();

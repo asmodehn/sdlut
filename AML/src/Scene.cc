@@ -4,7 +4,6 @@ namespace RAGE
     namespace AML
     {
         Scene::Scene()
-        : _sprite(NULL)
         {
 #ifdef DEBUG
             Log << nl << "Scene::Scene() called ";
@@ -12,6 +11,7 @@ namespace RAGE
 
 
 #ifdef DEBUG
+
             Log << nl << "Scene::Scene() done ";
 #endif
 
@@ -31,16 +31,18 @@ namespace RAGE
         }
 
 
-        void Scene::put(Sprite * sprite, int posX, int posY)
+        void Scene::put(Sprite * sprite)
         {
 #ifdef DEBUG
             Log << nl << "Scene::put() called ... ";
 #endif
-            _sprite = sprite;
-            _sprite->setPos(posX,posY);
+
+            _spritelist.push_back(sprite);
 #ifdef DEBUG
+
             Log << nl << "Scene::put() done. ";
 #endif
+
         }
 
         bool Scene::render() const
@@ -48,8 +50,12 @@ namespace RAGE
 #if (DEBUG == 2)
             Log << nl << "Scene::render() called ..." << std::endl;
 #endif
-            bool res = false;
-            res = _sprite->render(_screen);
+
+            bool res = true;
+            for (std::list<Sprite*>::const_iterator it = _spritelist.begin() ; it != _spritelist.end() ; it++ )
+            {
+                res = res && (*it)->render(_screen);
+            }
 
 #if (DEBUG == 2)
             Log << nl << "Scene::render() done." << std::endl;
