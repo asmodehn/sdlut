@@ -14,6 +14,33 @@
 using namespace RAGE;
 using namespace RAGE::AML;
 
+class MyKeyboard : public SDL::Keyboard
+{
+    bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
+    {
+    bool res = false;
+            switch (keysym.sym)
+            {
+                case SDLK_ESCAPE:  if (pressed==false)
+            {
+#ifdef DEBUG
+    Log << nl << "Quit requested !" << std::endl;
+#endif
+                _quitRequested=true;
+                res=true;
+            }
+            break;
+            case SDLK_UP : break;
+            case SDLK_DOWN : break;
+            case SDLK_LEFT : break;
+            case SDLK_RIGHT : break;
+                default : res = SDL::Keyboard::handleKeyEvent (keysym, pressed); break;
+            }
+            return res;
+        }
+};
+
+
 int main ( int argc, char * argv [])
 {
     Config c; //temporary just to get the log

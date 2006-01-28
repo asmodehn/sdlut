@@ -30,10 +30,19 @@ namespace RAGE
             bool render()const;
 #endif
 
+//temporary
+void randmove()
+{
+    setPos(posX+(rand() % 10) -5,posY+ (rand() % 10) -5 );
+
+}
+
+            //absolute pixel position (at the moment)
             void setPos( int x, int y)
             {
-                posX=x;
-                posY=y;
+
+                posX=x >0 ? x: 0;
+                posY=y > 0 ? y : 0;
             }
             int getPosX()
             {

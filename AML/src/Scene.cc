@@ -55,6 +55,7 @@ namespace RAGE
             for (std::list<Sprite*>::const_iterator it = _spritelist.begin() ; it != _spritelist.end() ; it++ )
             {
                 res = res && (*it)->render(_screen);
+                const_cast<Sprite*>(*it)->randmove();//tmp
             }
 
 #if (DEBUG == 2)
