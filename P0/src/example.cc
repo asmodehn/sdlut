@@ -9,25 +9,24 @@ class MyUserInput : public Keyboard
 {
 public:
 
-    virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
+    virtual bool handleKeyEvent (const Sym &s, bool pressed)
     {
         bool res = false;
-        if (! (res = Keyboard::handleKeyEvent(keysym,pressed)))
-            switch( keysym.sym )
+            switch( s.getKey() )
             {
-                case SDLK_ESCAPE:
+                case KEscape:
                 if (pressed==false)
                 {
                     _quitRequested=true;
                     res=true;
                 }
                 break;
-                case SDLK_F5:
+                case K5:
                 if (pressed==true)
                     App::getInstance().getWindow()->iconify();
                 res = true;
                 break;
-                case SDLK_F6:
+                case KF6:
                 if (pressed==true)
                     App::getInstance().getWindow()->toggleFullScreen();
                 res = true;

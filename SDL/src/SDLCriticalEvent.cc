@@ -106,10 +106,10 @@ bool CriticalEvent::callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mous
 				ev_handled = ghndlr->handleActiveEvent(_event->active.gain == 1, _event->active.state);
 				break;
 			case SDL_KEYDOWN:
-				ev_handled = khndlr->handleKeyPressEvent(_event->key.keysym);
+				ev_handled = khndlr->handleKeyPressEvent(static_cast<Keyboard::Sym>(_event->key.keysym));
 				break;
 			case SDL_KEYUP:
-				ev_handled = khndlr->handleKeyReleaseEvent(_event->key.keysym);
+				ev_handled = khndlr->handleKeyReleaseEvent(static_cast<Keyboard::Sym>(_event->key.keysym));
 				break;
 			case SDL_MOUSEMOTION:
 				ev_handled = mhndlr->handleMouseMotionEvent(_event->motion.state, _event->motion.x, _event->motion.y, _event->motion.xrel, _event->motion.yrel);

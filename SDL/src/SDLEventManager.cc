@@ -44,7 +44,7 @@ namespace RAGE
 
     bool GeneralHandler::handleEvent(CriticalEvent &cevent)
     {
-#ifdef DEBUG
+#if (DEBUG ==2)
         //Getting the details of the Event
         Log << nl << "Last chance handler : " << cevent.getType() << std::endl;
         return true;

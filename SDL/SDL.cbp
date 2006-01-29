@@ -7,6 +7,7 @@
 		<Option makefile="Makefile"/>
 		<Option makefile_is_custom="0"/>
 		<Option default_target="2"/>
+		<Option active_target="3"/>
 		<Option compiler="0"/>
 		<Build>
 			<Target title="staticlib-NoOpenGL">
@@ -930,43 +931,6 @@
 			<Option target="staticlib-debug"/>
 		</Unit>
 		<Unit filename="include\SDLCursor.hh">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="staticlib-debug"/>
-			<Option target="staticlib-NoOpenGL"/>
-			<Option target="checkkeys"/>
-			<Option target="graywin"/>
-			<Option target="loopwave"/>
-			<Option target="testalpha"/>
-			<Option target="testbitmap"/>
-			<Option target="testblitspeed"/>
-			<Option target="testcdrom"/>
-			<Option target="testcpuinfo"/>
-			<Option target="testdyngl"/>
-			<Option target="testendian"/>
-			<Option target="testerror"/>
-			<Option target="testgamma"/>
-			<Option target="testgl"/>
-			<Option target="testthread"/>
-			<Option target="testjoystick"/>
-			<Option target="testkeys"/>
-			<Option target="testlock"/>
-			<Option target="testoverlay2"/>
-			<Option target="testoverlay"/>
-			<Option target="testpalette"/>
-			<Option target="testsem"/>
-			<Option target="testsprite"/>
-			<Option target="testtimer"/>
-			<Option target="testtypes"/>
-			<Option target="testver"/>
-			<Option target="testvidinfo"/>
-			<Option target="testwin"/>
-			<Option target="testwm"/>
-			<Option target="threadwin"/>
-			<Option target="torturethread"/>
-		</Unit>
-		<Unit filename="include\SDLDisplaySurface.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>

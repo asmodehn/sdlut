@@ -9,12 +9,12 @@ class  MyKeyboard : public Keyboard
         public:
 
         //Callbacks on SDL_KEYUP or SDL_KEYDOWN
-        virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
+        virtual bool handleKeyEvent (const Sym &s, bool pressed)
         {
             bool res = false;
-            switch (keysym.sym)
+            switch (s.getKey())
             {
-                case SDLK_ESCAPE:  if (pressed==false)
+                case KEscape :  if (pressed==false)
             {
 #ifdef DEBUG
     Log << nl << "Quit requested !" << std::endl;
@@ -23,7 +23,7 @@ class  MyKeyboard : public Keyboard
                 res=true;
             }
             break;
-                default : res = Keyboard::handleKeyEvent (keysym, pressed); break;
+                default : Log << nl << " Key Name : " << getKeyName(s.getKey()) <<  " pressed : " << pressed; res=true; break;
             }
             return res;
         }
@@ -34,12 +34,12 @@ class  MyTextInput : public TextInput
         public:
 
         //Callbacks on SDL_KEYUP or SDL_KEYDOWN
-        virtual bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
+        virtual bool handleKeyEvent (const Sym &s, bool pressed)
         {
             bool res = false;
-            switch (keysym.sym)
+            switch (s.getKey())
             {
-                case SDLK_ESCAPE:  if (pressed==false)
+                case KEscape:  if (pressed==false)
             {
 #ifdef DEBUG
     Log << nl << "Quit requested !" << std::endl;
@@ -48,7 +48,7 @@ class  MyTextInput : public TextInput
                 res=true;
             }
             break;
-                default : res = TextInput::handleKeyEvent (keysym, pressed); break;
+                default : res = TextInput::handleKeyEvent (s, pressed); break;
             }
             return res;
         }

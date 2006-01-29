@@ -17,10 +17,10 @@ bool Event::callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse*  mhnd
 				ev_handled = ghndlr->handleActiveEvent(_event->active.gain == 1, _event->active.state);
 				break;
 			case SDL_KEYDOWN:
-				ev_handled = khndlr->handleKeyPressEvent(_event->key.keysym);
+				ev_handled = khndlr == NULL ? false : khndlr->handleKeyPressEvent(_event->key.keysym);
 				break;
 			case SDL_KEYUP:
-				ev_handled = khndlr->handleKeyReleaseEvent(_event->key.keysym);
+				ev_handled = khndlr == NULL ? false : khndlr->handleKeyReleaseEvent(_event->key.keysym);
 				break;
 			case SDL_MOUSEMOTION:
 				ev_handled = mhndlr->handleMouseMotionEvent(_event->motion.state, _event->motion.x, _event->motion.y, _event->motion.xrel, _event->motion.yrel);

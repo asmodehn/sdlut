@@ -18,7 +18,8 @@ namespace RAGE
          * The related functions wrapped are mostly SDL_PushEvent, and SDL_PeekEvent
          * This class is aimed to be heavily optimised for fast ( and selective ) event handling.
          *
-         * For example in a simulation, or a game with really strong requirements on event handling (like traditional one vs one fight game) you might want to run the game event loop as fast, and as much as possible, to get all the critical events as soon as possible and update the game with the best accuracy while only updating the screen when it is needed by the framerate.
+         * For example in a simulation, or a game with really strong requirements on event handling (like traditional one vs one fight game) you might want to run the game event loop as fast, and as much as possible,
+         * to get all the critical events as soon as possible and update the game with the best accuracy while only updating the screen when it is needed by the desired framerate.
          * Therefore your simulation or game will have "critical" events, those which the state of your game rely on, and normal ones, which are usually only interface related, like a selection, a mouvement on the cursor over the UI or a simple quit
          *
          * For usual Event Handling you should use the Event Class.

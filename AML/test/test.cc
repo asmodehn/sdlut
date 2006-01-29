@@ -17,18 +17,17 @@ using namespace RAGE::AML;
 class MySprite : public Sprite
 {
 
-    public:
+public:
     MySprite(std::string filename)
-    : Sprite (filename)
+            : Sprite (filename)
     {
-
     }
 
-bool render (SDL::VideoSurface *screen) const
-{
-    bool res = Sprite::render(screen);
-    return res;
-}
+    bool render (SDL::VideoSurface *screen) const
+    {
+        bool res = Sprite::render(screen);
+        return res;
+    }
 
 
 };
@@ -36,35 +35,62 @@ bool render (SDL::VideoSurface *screen) const
 class MyKeyboard : public SDL::Keyboard
 {
     Sprite * _activesprite;
-    public:
+public:
 
     void setActive(Sprite * s)
     {
         _activesprite=s;
     }
 
-    bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
+    bool handleKeyEvent (const Sym &s, bool pressed)
     {
-    bool res = false;
-            switch (keysym.sym)
-            {
-                case SDLK_ESCAPE:  if (pressed==false)
+        bool res = false;
+        switch (s.getKey())
+        {
+            case KEscape:
+            if (pressed==false)
             {
 #ifdef DEBUG
-    Log << nl << "Quit requested !" << std::endl;
+                Log << nl << "Quit requested !" << std::endl;
 #endif
+
                 _quitRequested=true;
                 res=true;
             }
             break;
-            case SDLK_UP : _activesprite->setPos(_activesprite->getPosX(),_activesprite->getPosY() -5); break;
-            case SDLK_DOWN : _activesprite->setPos(_activesprite->getPosX(),_activesprite->getPosY() + 5 ); break;
-            case SDLK_LEFT : _activesprite->setPos(_activesprite->getPosX() -5,_activesprite->getPosY());break;
-            case SDLK_RIGHT : _activesprite->setPos(_activesprite->getPosX() +5,_activesprite->getPosY()); break;
-                default : res = SDL::Keyboard::handleKeyEvent (keysym, pressed); break;
+            case KUp :
+            if (pressed)
+            {
+                _activesprite->setPos(_activesprite->getPosX(),_activesprite->getPosY() -5);
+                res = true;
             }
-            return res;
+            break;
+            case KDown :
+            if (pressed)
+            {
+                _activesprite->setPos(_activesprite->getPosX(),_activesprite->getPosY() + 5 );
+                res = true;
+            }
+            break;
+            case KLeft :
+            if (pressed)
+            {
+                _activesprite->setPos(_activesprite->getPosX() -5,_activesprite->getPosY());
+                res = true;
+            }
+            break;
+            case KRight :
+            if (pressed)
+            {
+                _activesprite->setPos(_activesprite->getPosX() +5,_activesprite->getPosY());
+                res = true;
+            }
+            break;
+            default :
+            break;
         }
+        return res;
+    }
 };
 
 

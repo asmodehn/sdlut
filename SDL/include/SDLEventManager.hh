@@ -89,7 +89,7 @@ namespace RAGE
         Keyboard * khndlr;
 
 
-        EventManager()  : _criticaltypes( 0), ghndlr(new GeneralHandler()),mhndlr(new Mouse()),khndlr(new Keyboard())
+        EventManager()  : _criticaltypes( 0), ghndlr(new GeneralHandler()),mhndlr(new Mouse()), khndlr(NULL)
         {}
         ~EventManager()
         {}
