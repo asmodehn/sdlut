@@ -38,12 +38,18 @@ namespace RAGE
 #endif
 
             _spritelist.push_back(sprite);
+            _spritelist.unique ();//make sure we have only different sprites ( different pointers)
 #ifdef DEBUG
 
             Log << nl << "Scene::put() done. ";
 #endif
 
         }
+
+                    void Scene::remove( Sprite* sprite)
+                    {
+                        _spritelist.remove (sprite);
+                    }
 
         bool Scene::render() const
         {
@@ -55,7 +61,7 @@ namespace RAGE
             for (std::list<Sprite*>::const_iterator it = _spritelist.begin() ; it != _spritelist.end() ; it++ )
             {
                 res = res && (*it)->render(_screen);
-                const_cast<Sprite*>(*it)->randmove();//tmp
+
             }
 
 #if (DEBUG == 2)

@@ -11,8 +11,13 @@ namespace RAGE
         class Sprite
         {
             friend class Scene;
+            static const int minX = 0;
+            static const int minY = 0;
+            static const int maxX = 640;
+            static const int maxY = 480;
 
-            SDL::RGBSurface _surf;
+        protected:
+
             SDL::RGBSurface * _psurf;
             int posX, posY;
 
@@ -20,29 +25,30 @@ namespace RAGE
         public :
             Sprite(std::string filename) throw (std::logic_error);
             Sprite(const Sprite &);
+            virtual ~Sprite()
+            {}
             Sprite& operator=(const Sprite &);
+
+
+            bool operator == (const Sprite & s);
+            bool operator != (const Sprite & s)
+            {
+                return !(operator==(s));
+            }
 
 #ifndef HAVE_OPENGL
 
-            bool render(SDL::VideoSurface * screen)const;
+            virtual bool render(SDL::VideoSurface * screen)const;
 #else
 
-            bool render()const;
+            virtual bool render()const;
 #endif
-
-//temporary
-void randmove()
-{
-    setPos(posX+(rand() % 10) -5,posY+ (rand() % 10) -5 );
-
-}
 
             //absolute pixel position (at the moment)
             void setPos( int x, int y)
             {
-
-                posX=x >0 ? x: 0;
-                posY=y > 0 ? y : 0;
+                posX=(x >minX ? x: minX)< maxX ? x : maxX;
+                posY=(y > minY ? y : minY)< maxY ? y : maxY;
             }
             int getPosX()
             {

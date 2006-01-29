@@ -14,8 +14,35 @@
 using namespace RAGE;
 using namespace RAGE::AML;
 
+class MySprite : public Sprite
+{
+
+    public:
+    MySprite(std::string filename)
+    : Sprite (filename)
+    {
+
+    }
+
+bool render (SDL::VideoSurface *screen) const
+{
+    bool res = Sprite::render(screen);
+    return res;
+}
+
+
+};
+
 class MyKeyboard : public SDL::Keyboard
 {
+    Sprite * _activesprite;
+    public:
+
+    void setActive(Sprite * s)
+    {
+        _activesprite=s;
+    }
+
     bool handleKeyEvent (SDL_keysym &keysym, bool pressed)
     {
     bool res = false;
@@ -30,15 +57,17 @@ class MyKeyboard : public SDL::Keyboard
                 res=true;
             }
             break;
-            case SDLK_UP : break;
-            case SDLK_DOWN : break;
-            case SDLK_LEFT : break;
-            case SDLK_RIGHT : break;
+            case SDLK_UP : _activesprite->setPos(_activesprite->getPosX(),_activesprite->getPosY() -5); break;
+            case SDLK_DOWN : _activesprite->setPos(_activesprite->getPosX(),_activesprite->getPosY() + 5 ); break;
+            case SDLK_LEFT : _activesprite->setPos(_activesprite->getPosX() -5,_activesprite->getPosY());break;
+            case SDLK_RIGHT : _activesprite->setPos(_activesprite->getPosX() +5,_activesprite->getPosY()); break;
                 default : res = SDL::Keyboard::handleKeyEvent (keysym, pressed); break;
             }
             return res;
         }
 };
+
+
 
 
 int main ( int argc, char * argv [])
@@ -51,21 +80,22 @@ int main ( int argc, char * argv [])
     //testlog << nl << "Loading resources" << std::endl;
     //Resources.loadimage("");
     testlog << nl << "Loading sprite..." << std::endl;
-    Sprite testbmp("data/AML_sprite.bmp");
+    MySprite testbmp("data/AML_sprite.bmp");
     testbmp.setPos(320, 240);
-    Sprite test1 = testbmp; test1.setPos(50,50);
-    Sprite test2 = testbmp;test2.setPos(500,500);
 
     //If using specific input
     //testlog << nl << "Defining Input" << std::endl;
+    MyKeyboard * mykeyb = new MyKeyboard();
+    mykeyb->setActive(&testbmp);
 
     testlog << nl << "Creating the window..." << std::endl;
     Window mainWin("AML test", "data/AML_icon.bmp",640,480);
 
+
+    SDL::App::getInstance().getWindow()->getEventManager()-> setKeyboard(mykeyb);
+
     testlog << nl << "Setting up the Scene..." << std::endl;
     mainWin.getScene()->put(&testbmp);
-    mainWin.getScene()->put(&test1);
-    mainWin.getScene()->put(&test2);
 
     testlog << nl << "Starting the main loop..." << std::endl;
     mainWin.loop();

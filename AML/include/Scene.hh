@@ -25,6 +25,7 @@ namespace RAGE
         public:
 
             void put( Sprite* sprite);
+            void remove( Sprite* sprite);
             bool init (int width, int height);
             bool resize (int width, int height);
 

@@ -7,8 +7,7 @@ namespace RAGE
 
         Sprite::Sprite(std::string filename) throw (std::logic_error)
         try
-        :
-            _surf(filename),
+:
             _psurf(new SDL::RGBSurface(filename)),
             posX(0),
             posY(0)
@@ -29,25 +28,29 @@ namespace RAGE
             Log << nl << "Exception in Sprite constructor ! " << nl << e.what ();
         }
 
-Sprite::Sprite(const Sprite &s)
-: _surf(s._surf), _psurf(new SDL::RGBSurface(*s._psurf)), posX(0), posY(0)
-{
-    Log << nl << "Sprite Copy !!!";
-}
+        Sprite::Sprite(const Sprite &s)
+                : _psurf(new SDL::RGBSurface(*s._psurf)), posX(0), posY(0)
+        {
+            Log << nl << "Sprite Copy !!!";
+        }
 
-Sprite& Sprite::operator=(const Sprite &s)
-{
-        Log << nl << "Sprite Assign !!!";
-    if (this != &s)
-    {
-        delete _psurf;
-        _surf = s._surf;
-        _psurf = new SDL::RGBSurface(*s._psurf);
-        posX=0;posY=0;
-    }
-    return *this;
-}
+        Sprite& Sprite::operator=(const Sprite &s)
+        {
+            Log << nl << "Sprite Assign !!!";
+            if (this != &s)
+            {
+                delete _psurf;
+                _psurf = new SDL::RGBSurface(*s._psurf);
+                posX=0;
+                posY=0;
+            }
+            return *this;
+        }
 
+        bool Sprite::operator == (const Sprite & s)
+        {
+            return posX == s.posX && posY == s.posY && _psurf == s._psurf;
+        }
 
 #ifndef HAVE_OPENGL
         bool Sprite::render(SDL::VideoSurface * screen) const
@@ -65,8 +68,8 @@ Sprite& Sprite::operator=(const Sprite &s)
             Log << nl << "blitting at " << p;
 #endif
 
-            res =screen->blit(_surf,p);
-//            res =screen->blit(*_psurf,p);
+            //res =screen->blit(_surf,p);
+            res =screen->blit(*_psurf,p);
 #if (DEBUG == 2)
 
             Log <<  nl << "Sprite::render("<< screen<<") done." << std::endl;
@@ -77,7 +80,7 @@ Sprite& Sprite::operator=(const Sprite &s)
         }
 #else
         bool Sprite::render() const
-        {}
+            {}
 #endif
 
     }
