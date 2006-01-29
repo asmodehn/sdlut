@@ -72,7 +72,7 @@ namespace RAGE
             CriticalEvent cevent(event);
 #ifdef DEBUG
             assert(ghndlr);
-            assert(khndlr);
+//            assert(khndlr);
             assert(mhndlr);
 #endif
 
@@ -92,7 +92,7 @@ namespace RAGE
             CriticalEvent cevent(event);
 #ifdef DEBUG
             assert(ghndlr);
-            assert(khndlr);
+//            assert(khndlr);
             assert(mhndlr);
 #endif
 
@@ -117,7 +117,7 @@ namespace RAGE
             CriticalEvent cevent(event);
 #ifdef DEBUG
             assert(ghndlr);
-            assert(khndlr);
+//            assert(khndlr);
             assert(mhndlr);
 #endif
 
@@ -136,7 +136,7 @@ namespace RAGE
             Event event(sdlevent);
 #ifdef DEBUG
             assert(ghndlr);
-            assert(khndlr);
+//            assert(khndlr);
             assert(mhndlr);
 #endif
 
@@ -157,7 +157,7 @@ namespace RAGE
             Event event(sdlevent);
 #ifdef DEBUG
             assert(ghndlr);
-            assert(khndlr);
+//            assert(khndlr);
             assert(mhndlr);
 #endif
 

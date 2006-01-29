@@ -2,8 +2,9 @@
 <!DOCTYPE CodeBlocks_workspace_file>
 <CodeBlocks_workspace_file>
 	<Workspace title="RAGE Workspace">
-		<Project filename="SDL\SDL.cbp" active="1"/>
+		<Project filename="SDL\SDL.cbp"/>
 		<Project filename="AML\AML.cbp"/>
 		<Project filename="P0\Project0.cbp"/>
+		<Project filename="AML\examples\TankBrigade.cbp" active="1"/>
 	</Workspace>
 </CodeBlocks_workspace_file>
