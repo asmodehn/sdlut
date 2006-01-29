@@ -23,7 +23,7 @@ namespace RAGE
 
 
         public :
-            Sprite(std::string filename) throw (std::logic_error);
+            Sprite(std::string filename, SDL::Color c) throw (std::logic_error);
             Sprite(const Sprite &);
             virtual ~Sprite()
             {}

@@ -5,10 +5,10 @@ namespace RAGE
     namespace AML
     {
 
-        Sprite::Sprite(std::string filename) throw (std::logic_error)
+        Sprite::Sprite(std::string filename, SDL::Color c) throw (std::logic_error)
         try
 :
-            _psurf(new SDL::RGBSurface(filename)),
+            _psurf(new SDL::RGBSurface(filename,c)),
             posX(0),
             posY(0)
         {

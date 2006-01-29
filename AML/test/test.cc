@@ -18,8 +18,8 @@ class MySprite : public Sprite
 {
 
 public:
-    MySprite(std::string filename)
-            : Sprite (filename)
+    MySprite(std::string filename, SDL::Color c)
+            : Sprite (filename,c)
     {
     }
 
@@ -106,7 +106,7 @@ int main ( int argc, char * argv [])
     //testlog << nl << "Loading resources" << std::endl;
     //Resources.loadimage("");
     testlog << nl << "Loading sprite..." << std::endl;
-    MySprite testbmp("data/AML_sprite.bmp");
+    MySprite testbmp("data/AML_sprite.bmp",SDL::Color(255,255,255));
     testbmp.setPos(320, 240);
 
     //If using specific input
