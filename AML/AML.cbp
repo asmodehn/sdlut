@@ -119,6 +119,13 @@
 			<Option target="lib_default"/>
 			<Option target="lib_noGL"/>
 		</Unit>
+		<Unit filename="include\Image.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
 		<Unit filename="include\Layer.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -160,6 +167,11 @@
 			<Option target="lib_noGL"/>
 		</Unit>
 		<Unit filename="src\Config.cc">
+			<Option compilerVar="CC"/>
+			<Option target="lib_default"/>
+			<Option target="lib_noGL"/>
+		</Unit>
+		<Unit filename="src\Image.cc">
 			<Option compilerVar="CC"/>
 			<Option target="lib_default"/>
 			<Option target="lib_noGL"/>

@@ -2,6 +2,7 @@
 #define AML_SPRITE_HH
 
 #include "Config.hh"
+#include "Image.hh"
 #include <string>
 
 namespace RAGE
@@ -18,12 +19,12 @@ namespace RAGE
 
         protected:
 
-            SDL::RGBSurface * _psurf;
+            const Image & _img;
             int posX, posY;
 
 
         public :
-            Sprite(std::string filename, SDL::Color c) throw (std::logic_error);
+            Sprite(const Image &) throw (std::logic_error);
             Sprite(const Sprite &);
             virtual ~Sprite()
             {}

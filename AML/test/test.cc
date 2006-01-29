@@ -18,10 +18,7 @@ class MySprite : public Sprite
 {
 
 public:
-    MySprite(std::string filename, SDL::Color c)
-            : Sprite (filename,c)
-    {
-    }
+ MySprite (const Image& img) : Sprite(img) {}
 
     bool render (SDL::VideoSurface *screen) const
     {
@@ -106,7 +103,8 @@ int main ( int argc, char * argv [])
     //testlog << nl << "Loading resources" << std::endl;
     //Resources.loadimage("");
     testlog << nl << "Loading sprite..." << std::endl;
-    MySprite testbmp("data/AML_sprite.bmp",SDL::Color(255,255,255));
+    Image img("data/AML_sprite.bmp",SDL::Color(255,255,255));
+    MySprite testbmp(img);
     testbmp.setPos(320, 240);
 
     //If using specific input

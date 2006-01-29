@@ -5,21 +5,21 @@ namespace RAGE
     namespace AML
     {
 
-        Sprite::Sprite(std::string filename, SDL::Color c) throw (std::logic_error)
+        Sprite::Sprite(const Image & img) throw (std::logic_error)
         try
 :
-            _psurf(new SDL::RGBSurface(filename,c)),
+            _img (img),
             posX(0),
             posY(0)
         {
 #ifdef DEBUG
-            Log << nl << "Sprite::Sprite("<<filename <<") called ...";
+            Log << nl << "Sprite::Sprite() called ...";
 #endif
 
 
 #ifdef DEBUG
 
-            Log << nl << "Sprite::Sprite("<<filename <<") done.";
+            Log << nl << "Sprite::Sprite() done.";
 #endif
 
         }
@@ -29,7 +29,7 @@ namespace RAGE
         }
 
         Sprite::Sprite(const Sprite &s)
-                : _psurf(new SDL::RGBSurface(*s._psurf)), posX(0), posY(0)
+                : _img (s._img), posX( s.posX), posY(s.posY)
         {
             Log << nl << "Sprite Copy !!!";
         }
@@ -39,17 +39,16 @@ namespace RAGE
             Log << nl << "Sprite Assign !!!";
             if (this != &s)
             {
-                delete _psurf;
-                _psurf = new SDL::RGBSurface(*s._psurf);
-                posX=0;
-                posY=0;
+//               _img = s._img;
+                posX= s.posX;
+                posY= s.posY;
             }
             return *this;
         }
 
         bool Sprite::operator == (const Sprite & s)
         {
-            return posX == s.posX && posY == s.posY && _psurf == s._psurf;
+            return posX == s.posX && posY == s.posY ;//&& _img == s._img;
         }
 
 #ifndef HAVE_OPENGL
@@ -68,8 +67,7 @@ namespace RAGE
             Log << nl << "blitting at " << p;
 #endif
 
-            //res =screen->blit(_surf,p);
-            res =screen->blit(*_psurf,p);
+            res =_img.display(screen, p);
 #if (DEBUG == 2)
 
             Log <<  nl << "Sprite::render("<< screen<<") done." << std::endl;
