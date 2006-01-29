@@ -20,11 +20,11 @@ class MySprite : public Sprite
 public:
  MySprite (const Image& img) : Sprite(img) {}
 
-    bool render (SDL::VideoSurface *screen) const
-    {
-        bool res = Sprite::render(screen);
-        return res;
-    }
+//    bool render (SDL::VideoSurface *screen) const
+//    {
+//        bool res = Sprite::render(screen);
+//        return res;
+//    }
 
 
 };
@@ -58,28 +58,28 @@ public:
             case KUp :
             if (pressed)
             {
-                _activesprite->setPos(_activesprite->getPosX(),_activesprite->getPosY() -5);
+                _activesprite->setPos(_activesprite->getPos().getx(),_activesprite->getPos().gety() -5);
                 res = true;
             }
             break;
             case KDown :
             if (pressed)
             {
-                _activesprite->setPos(_activesprite->getPosX(),_activesprite->getPosY() + 5 );
+                _activesprite->setPos(_activesprite->getPos().getx(),_activesprite->getPos().gety() + 5 );
                 res = true;
             }
             break;
             case KLeft :
             if (pressed)
             {
-                _activesprite->setPos(_activesprite->getPosX() -5,_activesprite->getPosY());
+                _activesprite->setPos(_activesprite->getPos().getx() -5,_activesprite->getPos().gety());
                 res = true;
             }
             break;
             case KRight :
             if (pressed)
             {
-                _activesprite->setPos(_activesprite->getPosX() +5,_activesprite->getPosY());
+                _activesprite->setPos(_activesprite->getPos().getx() +5,_activesprite->getPos().gety());
                 res = true;
             }
             break;

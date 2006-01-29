@@ -4,13 +4,35 @@ namespace RAGE
 {
     namespace AML
     {
-
         Sprite::Sprite(const Image & img) throw (std::logic_error)
         try
 :
             _img (img),
-            posX(0),
-            posY(0)
+            _ori(img.getSize()),
+            _pos(0,0)
+        {
+#ifdef DEBUG
+            Log << nl << "Sprite::Sprite() called ...";
+#endif
+
+
+#ifdef DEBUG
+
+            Log << nl << "Sprite::Sprite() done.";
+#endif
+
+        }
+        catch (std::exception & e)
+        {
+            Log << nl << "Exception in Sprite constructor ! " << nl << e.what ();
+        }
+
+        Sprite::Sprite(const Image & img, SDL::Rect ori) throw (std::logic_error)
+        try
+:
+            _img (img),
+            _ori(ori),
+            _pos(0,0)
         {
 #ifdef DEBUG
             Log << nl << "Sprite::Sprite() called ...";
@@ -29,7 +51,7 @@ namespace RAGE
         }
 
         Sprite::Sprite(const Sprite &s)
-                : _img (s._img), posX( s.posX), posY(s.posY)
+                : _img (s._img), _ori(s._ori),_pos( s._pos)
         {
             Log << nl << "Sprite Copy !!!";
         }
@@ -39,16 +61,15 @@ namespace RAGE
             Log << nl << "Sprite Assign !!!";
             if (this != &s)
             {
-//               _img = s._img;
-                posX= s.posX;
-                posY= s.posY;
+                _ori = s._ori;
+                _pos = s._pos;
             }
             return *this;
         }
 
         bool Sprite::operator == (const Sprite & s)
         {
-            return posX == s.posX && posY == s.posY ;//&& _img == s._img;
+            return _pos == s._pos && _ori == s._ori;
         }
 
 #ifndef HAVE_OPENGL
@@ -61,13 +82,12 @@ namespace RAGE
 
             bool res = false;
 
-            SDL::Point p(posX,posY);
 #if (DEBUG == 2)
 
-            Log << nl << "blitting at " << p;
+            Log << nl << "blitting at " << _pos;
 #endif
 
-            res =_img.display(screen, p);
+            res =_img.display(screen, _ori, _pos);
 #if (DEBUG == 2)
 
             Log <<  nl << "Sprite::render("<< screen<<") done." << std::endl;

@@ -117,6 +117,11 @@ namespace RAGE
                 return *this;
             }
 
+            inline bool operator==(const Point & p)
+            {
+                return _rect->x == p.getx() && _rect->y == p.gety();
+            }
+
             inline friend std::ostream& operator << (std::ostream& os, const Point& p)
             {
                 return os << "Point : ( " << p.getx() << ", " << p.gety() << " )";

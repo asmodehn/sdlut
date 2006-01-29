@@ -119,6 +119,11 @@ namespace RAGE
             {
                 return _surf->w;
             }
+            Rect getSize() const
+            {
+                return Rect(getHeight(),getWidth());
+            }
+
             inline int getBPP(void) const
             {
                 assert(_surf->format);

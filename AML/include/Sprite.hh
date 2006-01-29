@@ -20,11 +20,13 @@ namespace RAGE
         protected:
 
             const Image & _img;
-            int posX, posY;
+            SDL::Rect _ori;
+            SDL::Point _pos;
 
 
         public :
-            Sprite(const Image &) throw (std::logic_error);
+        Sprite(const Image & img) throw (std::logic_error);
+            Sprite(const Image &, SDL::Rect ori ) throw (std::logic_error);
             Sprite(const Sprite &);
             virtual ~Sprite()
             {}
@@ -48,17 +50,18 @@ namespace RAGE
             //absolute pixel position (at the moment)
             void setPos( int x, int y)
             {
-                posX=(x >minX ? x: minX)< maxX ? x : maxX;
-                posY=(y > minY ? y : minY)< maxY ? y : maxY;
+                _pos.setx((x >minX ? x: minX)< maxX ? x : maxX);
+                _pos.sety((y > minY ? y : minY)< maxY ? y : maxY);
             }
-            int getPosX()
+            SDL::Point getPos()
             {
-                return posX;
+                return _pos;
             }
-            int getPosY()
-            {
-                return posY;
-            }
+
+//            void move (int x, int y)
+//            {
+//
+//            }
 
         };
     }

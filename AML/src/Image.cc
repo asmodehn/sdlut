@@ -17,9 +17,9 @@ void Image::setColorKey(SDL::Color c)
     _surf.setColorKey(c);
 }
 
-bool Image::display(SDL::VideoSurface * screen, SDL::Point pos) const
+bool Image::display(SDL::VideoSurface * screen,const SDL::Rect  & ori, const SDL::Point & pos) const
 {
-    return screen->blit(_surf,pos);
+    return screen->blit(_surf,pos,ori);
 }
 
 

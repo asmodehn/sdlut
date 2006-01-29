@@ -46,10 +46,10 @@ namespace RAGE
 
         }
 
-                    void Scene::remove( Sprite* sprite)
-                    {
-                        _spritelist.remove (sprite);
-                    }
+        void Scene::remove( Sprite* sprite)
+        {
+            _spritelist.remove (sprite);
+        }
 
         bool Scene::render() const
         {

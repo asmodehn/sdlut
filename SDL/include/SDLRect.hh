@@ -100,6 +100,11 @@ public:
 	//TODO growCenter, growCorner, rotate90, rotate180, rotate270
 
 	//TODO tests operators :  != == <= < >= > (about size of the area only)
+            inline bool operator==(const Rect & r)
+            {
+                return _rect->w == r.getw() && _rect->h == r.geth();
+            }
+
 
 	inline friend std::ostream& operator << (std::ostream& os, const Rect& r)
 		{ return os << "Rect : ( " << r.getx() << ", " << r.gety() << ") W= " << r.getw() << " H= " << r.geth(); }
