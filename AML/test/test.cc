@@ -14,20 +14,20 @@
 using namespace RAGE;
 using namespace RAGE::AML;
 
-class MySprite : public Sprite
-{
-
-public:
- MySprite (const Image& img) : Sprite(img) {}
-
-//    bool render (SDL::VideoSurface *screen) const
-//    {
-//        bool res = Sprite::render(screen);
-//        return res;
-//    }
-
-
-};
+//class MySprite : public Sprite
+//{
+//
+//public:
+// MySprite (const Image& img) : Sprite(img) {}
+//
+////    bool render (SDL::VideoSurface *screen) const
+////    {
+////        bool res = Sprite::render(screen);
+////        return res;
+////    }
+//
+//
+//};
 
 class MyKeyboard : public SDL::Keyboard
 {
@@ -104,7 +104,7 @@ int main ( int argc, char * argv [])
     //Resources.loadimage("");
     testlog << nl << "Loading sprite..." << std::endl;
     Image img("data/AML_sprite.bmp",SDL::Color(255,255,255));
-    MySprite testbmp(img);
+    Sprite testbmp(img);
     testbmp.setPos(320, 240);
 
     //If using specific input

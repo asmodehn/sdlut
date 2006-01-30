@@ -26,7 +26,7 @@ namespace RAGE
 
         public :
         Sprite(const Image & img) throw (std::logic_error);
-            Sprite(const Image &, SDL::Rect ori ) throw (std::logic_error);
+            Sprite(const Image &, std::string ID ) throw (std::logic_error);
             Sprite(const Sprite &);
             virtual ~Sprite()
             {}

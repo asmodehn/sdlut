@@ -90,9 +90,6 @@ namespace RAGE
                 _rect->y+=y;
             };
 
-            //TODO : tests operators == , X< X> Y< Y> ( cf old vector operator overloading...)
-
-            //TODO : assignement operators if default doesnt work... (= copy)
             Point& operator=(const Point&);
 
             //and others like + - etc...
@@ -116,7 +113,7 @@ namespace RAGE
                 _rect->y -= p.gety();
                 return *this;
             }
-
+//TODO : tests operators == , X< X> Y< Y> ( cf old vector operator overloading for example...)
             inline bool operator==(const Point & p)
             {
                 return _rect->x == p.getx() && _rect->y == p.gety();

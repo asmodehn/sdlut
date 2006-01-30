@@ -68,6 +68,8 @@ public:
 		_rect->h=r.geth();
 	}
 
+    Rect& Rect::operator=(const Rect& p);
+
 	void setw(unsigned int nw ) { _rect->w=nw; }
 	void seth(unsigned int nh ) { _rect->h=nh; }
 

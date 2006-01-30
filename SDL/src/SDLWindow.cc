@@ -394,6 +394,14 @@ namespace RAGE
 
         }
 
+            //BGColor works only on 2DWindow
+            void Window::setBGColor(const Color & color)
+            {
+                _background = color;
+                if (_screen != NULL)
+                    _screen->setBGColor(_background);
+            }
+
         void Window::setEngine (Engine *engine)
         {
 #ifdef DEBUG
@@ -435,6 +443,9 @@ namespace RAGE
 
         }
 #endif
+
+
+
 
         bool Window::reset( int width, int height)
         {

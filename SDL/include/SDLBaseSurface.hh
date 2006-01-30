@@ -121,7 +121,7 @@ namespace RAGE
             }
             Rect getSize() const
             {
-                return Rect(getHeight(),getWidth());
+                return Rect(getWidth(),getHeight());
             }
 
             inline int getBPP(void) const

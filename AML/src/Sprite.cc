@@ -27,18 +27,18 @@ namespace RAGE
             Log << nl << "Exception in Sprite constructor ! " << nl << e.what ();
         }
 
-        Sprite::Sprite(const Image & img, SDL::Rect ori) throw (std::logic_error)
+        Sprite::Sprite(const Image & img, std::string spriteID) throw (std::logic_error)
         try
 :
             _img (img),
-            _ori(ori),
             _pos(0,0)
         {
 #ifdef DEBUG
             Log << nl << "Sprite::Sprite() called ...";
 #endif
 
-
+        _ori = _img.getComponent(spriteID,0,0);
+        Log << nl << _ori;
 #ifdef DEBUG
 
             Log << nl << "Sprite::Sprite() done.";

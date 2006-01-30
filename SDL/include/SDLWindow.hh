@@ -107,11 +107,7 @@ namespace RAGE
             void setEngine(Engine * engine);
             bool setNoFrame(bool val);
 
-            //BGColor works only on 2DWindow
-            void setBGColor(const Color & color)
-            {
-                _background = color;
-            }
+            void setBGColor(const Color & color);
             Color getBGColor ()
             {
                 return _background;

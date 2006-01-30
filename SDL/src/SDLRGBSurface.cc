@@ -318,6 +318,7 @@ namespace RAGE
 
         bool RGBSurface::optimise(bool alpha)
         {
+            assert(_surf);
             bool res;
             SDL_Surface * optsurf;
             if ( alpha )
