@@ -126,23 +126,40 @@
     </section>
 
     <section>
-      <title>Makefile build</title>
-
-      <para><emphasis>Makefiles can be generated from Cmake for most of the
-      unix platforms. Not tested yet.</emphasis></para>
-    </section>
-
-    <section>
       <title>CMake build</title>
 
-      <para>If you dont use either Codeblocks, or make files, and want to be
-      able to build RAGE::SDL using your own favorite environment, try the
-      CMake build. It generates files for most of the compilers / build
-      system.</para>
+      <para>If you want to be able to build RAGE::SDL using your own favorite
+      environment, try the CMake build. It generates files for most of the
+      compilers / build system.</para>
 
       <para>The good thing with CMake is that it will check the dependencies
       available on your system and help you to configure your system for
       development.</para>
+
+      <para></para>
+
+      <para><emphasis role="bold">Setting up the build environment to work
+      with CMake :</emphasis></para>
+
+      <para>- <emphasis role="bold">Windows</emphasis> : I advise MS Visual
+      Express 8 2005, as it is free, just need to register. You will need to
+      install the platform SDK and make sure the directories are correctly
+      setup, cf. Microsoft Website</para>
+
+      <para>If something goes wrong (cmake doesnt detect your cl.exe properly)
+      try <literal>cmake --debug-trycompile</literal> it will output a
+      VSProject that you can try to open and build with VStudio, and find out
+      what happens...</para>
+
+      <para>temporary note : with cmake 2.2.3, you might need to install SQL
+      to have the minimum required library to build the test project. This
+      should be fixed in 2.2.4.</para>
+
+      <para>- <emphasis role="bold">Unix/Linux</emphasis> : just need to have
+      GNUmake installed which is pretty standard (or really easy to get) on
+      every Unix/Linux I am aware of ^^.</para>
+
+      <para></para>
     </section>
 
     <section>
