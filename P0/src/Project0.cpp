@@ -21,7 +21,7 @@ SDL_Event event;
 SDL_Rect _monster[1];
 SDL_Rect _character[1];
 
-//Create surface from an image function and optimized image to the desired format
+//Create surface from an image function and optimized image to the desired format with white color as transparent color
 SDL_Surface *create_surface( std::string filename ) 
 {
     //Temporary storage for the Surface that's loaded
@@ -48,8 +48,8 @@ SDL_Surface *create_surface( std::string filename )
 		//If the image was optimized just fine
         if( optimizedSurface != NULL )
         {
-            //Set all pixels of color 0x00FFFF to be transparent
-            SDL_SetColorKey( optimizedSurface, SDL_RLEACCEL | SDL_SRCCOLORKEY, 0x00FFFF );
+            //Set all pixels of color 0xFFFFFF (white) to be transparent
+            SDL_SetColorKey( optimizedSurface, SDL_RLEACCEL | SDL_SRCCOLORKEY, 0xFFFFFF );
         }
     }
     
