@@ -14,12 +14,17 @@ SDL_Surface *_characters_list = NULL;
 SDL_Surface *_background = NULL;
 SDL_Surface *_screen = NULL;
 
-//The event structure that will be used
-SDL_Event event;
-
 //The portions of the sprite map to be blitted
 SDL_Rect _monster[1];
 SDL_Rect _character[1];
+SDL_Rect _character_bg[1];
+
+//The event structure that will be used
+SDL_Event event;
+
+//Enable UniCode
+//SDL_EnableUNICODE()
+
 
 //Create surface from an image function and optimized image to the desired format with white color as transparent color
 SDL_Surface *create_surface( std::string filename ) 
@@ -72,7 +77,7 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
 }
 
 //Initialisation
-bool Init()
+bool InitWindows()
 {
     //Initialize all SDL sub systems
     if( SDL_Init( SDL_INIT_EVERYTHING ) == -1 )
@@ -173,10 +178,9 @@ public:
     }
 };
 */
-//
-//
-//
-//Clean All
+
+
+//Clean Up Surface
 void Clean_Up()
 {
 	SDL_FreeSurface(_monsters_list);
@@ -191,31 +195,46 @@ int main( int argc, char* args[] )
 	bool quit = false;
 
 	//Initialize
-	if( Init() == false ) { return 1; }
+	if( InitWindows() == false ) { 
+		printf("Init failed");
+		return 1;
+	}
 	//Load the files
-	if( Load_Files() == false ) { return 1; }
+	if( Load_Files() == false ) {
+		printf("File load failed");
+		return 1;
+	}
 
+	//Initial Positions
+	int _x_pos_character = 250; int _y_pos_character = 200;
+	int _x_pos_monster = 180; int _y_pos_monster = 140;
 	
-     //Monster Clip definition range for the top left (Random monster from the 5th line)
+     //Monster Clip definition range for the top left (Random monster from the 7th line)
     _monster[0].x = 32 * (rand()%8);
 	_monster[0].y = 32*6;
     _monster[0].w = 32;
     _monster[0].h = 32;
 
-	//Monster Clip definition range for the top left
+	//Character Clip definition range for the top left
     _character[0].x = 5*32;
     _character[0].y = 3*32;
     _character[0].w = 32;
     _character[0].h = 32;
 
+	//Character Background Clip definition range for the top left
+    _character_bg[0].x = _x_pos_character;
+    _character_bg[0].y = _y_pos_character;
+    _character_bg[0].w = 32;
+    _character_bg[0].h = 32;
+
     //Apply the background to the screen
     apply_surface(0, 0, _background, _screen );
     
     //Apply monsters to the screen
-    apply_surface(180, 140, _monsters_list, _screen, &_monster[0]);
+    apply_surface(_x_pos_monster, _y_pos_monster, _monsters_list, _screen, &_monster[0]);
 
     //Apply character to the screen
-	apply_surface(250, 200, _characters_list, _screen, &_character[0]);
+	apply_surface(_x_pos_character, _y_pos_character, _characters_list, _screen, &_character[0]);
 
     //Update the screen
     if( SDL_Flip(_screen) == -1 )
@@ -224,17 +243,129 @@ int main( int argc, char* args[] )
     }
 
 
-    //Loop until close of the windows using the cross
+    //Loop until close of the windows using the cross or escape key
 	while( quit == false )
 	{
 		//While there's an event to handle
 		while( SDL_PollEvent( &event ) )
 		{
-		//If the user has Xed out the window
-			if( event.type == SDL_QUIT )
+			//Keyboard Management variable initialisation
+			SDL_KeyboardEvent *key = &event.key;			//Key pressed
+			SDLMod modifier = key->keysym.mod;				//Modifiers
+			Uint8 *keystates = SDL_GetKeyState( NULL );		//Keys State
+
+			//Switch witch test if there is an event
+			switch(event.type)
 			{
-				//Quit the program
-				quit = true;
+				case SDL_KEYDOWN:
+				case SDL_KEYUP:
+					
+					//Define Character BG position before moving to later used this to renew the BG over the character in case of mouvment
+					_character_bg[0].x = _x_pos_character;
+					_character_bg[0].y = _y_pos_character;
+
+					//Print Key state: pressed or released
+					if (key->type == SDL_KEYUP)
+					{ printf("RELEASED: "); }
+					else
+					{ printf("PRESSED: "); }
+
+					//Print all modifiers: alt, ctrl, ...
+					if( modifier & KMOD_NUM ) printf( "NUMLOCK " );
+					if( modifier & KMOD_CAPS ) printf( "CAPSLOCK " );
+					if( modifier & KMOD_MODE ) printf( "MODE " );
+					if( modifier & KMOD_LCTRL ) printf( "LCTRL " );
+					if( modifier & KMOD_RCTRL ) printf( "RCTRL " );
+					if( modifier & KMOD_LSHIFT ) printf( "LSHIFT " );
+					if( modifier & KMOD_RSHIFT ) printf( "RSHIFT " );
+					if( modifier & KMOD_LALT ) printf( "LALT " );
+					if( modifier & KMOD_RALT ) printf( "RALT " );
+					if( modifier & KMOD_LMETA ) printf( "LMETA " );
+					if( modifier & KMOD_RMETA ) printf( "RMETA " );
+
+					//Print key pressed
+					printf( "%s\n", SDL_GetKeyName(key->keysym.sym));
+	
+
+					//Check the keystates
+					if( keystates[ SDLK_ESCAPE ] )
+					{
+						quit = true;
+					}
+					if( keystates[ SDLK_UP ])
+						{
+							//Clear Character off the screen by adding the BG over him
+							apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
+
+							//Move the character on the screen
+							_y_pos_character = _y_pos_character - 32;
+							apply_surface(_x_pos_character, _y_pos_character, _characters_list, _screen, &_character[0]);
+							
+							//Update Screen
+							if( SDL_Flip(_screen) == -1 )
+							{
+								printf("Failed to update the screen");
+								return 1;    
+							}
+						}
+					if( keystates[ SDLK_DOWN ])
+						{
+							//Clear Character off the screen by adding the BG over him
+							apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
+
+							//Move the character on the screen
+							_y_pos_character = _y_pos_character + 32;
+							apply_surface(_x_pos_character, _y_pos_character, _characters_list, _screen, &_character[0]);
+							
+							//Update Screen
+							if( SDL_Flip(_screen) == -1 )
+							{
+								printf("Failed to update the screen");
+								return 1;    
+							}
+						}
+					if( keystates[ SDLK_RIGHT ])
+						{
+							//Clear Character off the screen by adding the BG over him
+							apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
+
+							//Move the character on the screen
+							_x_pos_character = _x_pos_character + 32;
+							apply_surface(_x_pos_character, _y_pos_character, _characters_list, _screen, &_character[0]);
+							
+							//Update Screen
+							if( SDL_Flip(_screen) == -1 )
+							{
+								printf("Failed to update the screen");
+								return 1;    
+							}
+						}
+					if( keystates[ SDLK_LEFT ])
+						{
+							//Clear Character off the screen by adding the BG over him
+							apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
+
+							//Move the character on the screen
+							_x_pos_character = _x_pos_character - 32;
+							apply_surface(_x_pos_character, _y_pos_character, _characters_list, _screen, &_character[0]);
+							
+							//Update Screen
+							if( SDL_Flip(_screen) == -1 )
+							{
+								printf("Failed to update the screen");
+								return 1;    
+							}
+						}
+
+					break;
+				//If the user has Xed out the window
+				case SDL_QUIT:
+					quit = true;
+					break;
+				//Default: do not quit !
+				default:
+					quit = false;
+					break;
 			}
 		}
 	}
@@ -243,8 +374,8 @@ int main( int argc, char* args[] )
 	Clean_Up();
 	    
     //Quit SDL
-    SDL_Quit();
-    
+	SDL_Quit();
+
     return 0;    
 }
 
