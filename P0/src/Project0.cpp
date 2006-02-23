@@ -250,6 +250,7 @@ int main( int argc, char* args[] )
 		while( SDL_PollEvent( &event ) )
 		{
 			//Keyboard Management variable initialisation
+			const Sym &s
 			SDL_KeyboardEvent *key = &event.key;			//Key pressed
 			SDLMod modifier = key->keysym.mod;				//Modifiers
 			Uint8 *keystates = SDL_GetKeyState( NULL );		//Keys State
@@ -292,10 +293,16 @@ int main( int argc, char* args[] )
 					{
 						quit = true;
 					}
-					if( keystates[ SDLK_UP ])
+					if( keystates[SDLK_UP])
 						{
 							//Clear Character off the screen by adding the BG over him
 							apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
+
+							//Diagonal check
+							if( keystates[SDLK_LEFT])
+								_x_pos_character = _x_pos_character - 32;
+							if( keystates[SDLK_RIGHT])
+								_x_pos_character = _x_pos_character + 32;
 
 							//Move the character on the screen
 							_y_pos_character = _y_pos_character - 32;
@@ -307,11 +314,19 @@ int main( int argc, char* args[] )
 								printf("Failed to update the screen");
 								return 1;    
 							}
+							keystates = SDL_GetKeyState( NULL );
+							break;
 						}
-					if( keystates[ SDLK_DOWN ])
+					if( keystates[SDLK_DOWN])
 						{
 							//Clear Character off the screen by adding the BG over him
 							apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
+
+							//Diagonal check
+							if( keystates[SDLK_LEFT])
+								_x_pos_character = _x_pos_character - 32;
+							if( keystates[SDLK_RIGHT])
+								_x_pos_character = _x_pos_character + 32;
 
 							//Move the character on the screen
 							_y_pos_character = _y_pos_character + 32;
@@ -323,8 +338,10 @@ int main( int argc, char* args[] )
 								printf("Failed to update the screen");
 								return 1;    
 							}
+							keystates = SDL_GetKeyState( NULL );
+							break;
 						}
-					if( keystates[ SDLK_RIGHT ])
+					if( keystates[SDLK_RIGHT] &! keystates[SDLK_UP] &! keystates[SDLK_DOWN])
 						{
 							//Clear Character off the screen by adding the BG over him
 							apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
@@ -339,8 +356,10 @@ int main( int argc, char* args[] )
 								printf("Failed to update the screen");
 								return 1;    
 							}
+							keystates = SDL_GetKeyState( NULL );
+							break;
 						}
-					if( keystates[ SDLK_LEFT ])
+					if( keystates[SDLK_LEFT] &! keystates[SDLK_UP] &! keystates[SDLK_DOWN])
 						{
 							//Clear Character off the screen by adding the BG over him
 							apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
@@ -355,6 +374,8 @@ int main( int argc, char* args[] )
 								printf("Failed to update the screen");
 								return 1;    
 							}
+							keystates = SDL_GetKeyState( NULL );
+							break;
 						}
 
 					break;
