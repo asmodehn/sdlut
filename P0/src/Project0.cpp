@@ -8,8 +8,12 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int SCREEN_BPP = 32;
 
+//The dimensions of the level
+const int LEVEL_WIDTH = 1280;
+const int LEVEL_HEIGHT = 1280;
+
 //The frame rate
-const int FRAMES_PER_SECOND = 10;
+const int FRAMES_PER_SECOND = 15;
 
 //The dimensions of the Character
 const int CH_WIDTH = 32;
@@ -26,13 +30,17 @@ SDL_Surface *_screen = NULL;
 //The portions of the sprite map to be blitted
 SDL_Rect _monster[1];
 SDL_Rect _character[1];
-SDL_Rect _character_bg[1];
+SDL_Rect _bg[1];
 
-//Monster Collision Box
+//Collisions Box
+SDL_Rect Character_collision_box;
 SDL_Rect Monster_collision_box;
 
 //The event structure that will be used
 SDL_Event event;
+
+//Camera def initialized in the top right corner and with the width and height of the screen
+SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 //Enable UniCode
 //SDL_EnableUNICODE()
@@ -134,6 +142,21 @@ bool check_collision(SDL_Rect &A, SDL_Rect &B)
     return true;
 }
 
+//Gnerate Background
+void generate_bg()
+{
+	int i=0, j=0;
+	while (i<(SCREEN_WIDTH/32))
+	{
+		while (j<(SCREEN_HEIGHT/32))
+		{
+			apply_surface(i*32, j*32, _background, _screen, &_bg[0]);
+			j++;
+		}
+		i++;
+		j=0;
+	}
+}
 //Initialization
 bool InitWindows()
 {
@@ -164,7 +187,7 @@ bool Load_Files()
     //Load the sprites
     _monsters_list = create_surface( "data/Monsters5.bmp" );
 	_characters_list = create_surface ("data/Characters.bmp");
-    _background = create_surface( "data/background.bmp" );
+    _background = create_surface( "data/tankbrigade.bmp" );
     
     //If there was an problem loading sprites
     if( _monsters_list == NULL ) { return false; }
@@ -188,10 +211,10 @@ class Monster
     private:
     //The X and Y offsets of the Monster
     int x, y;
-    
-    //The velocity of the Monster
+
+	//The velocity of the Monster
     int xVel, yVel;
-	
+    
 	public:
 	//The collision boxes of the Monster
     SDL_Rect collision_box;
@@ -199,8 +222,8 @@ class Monster
     //Initializes the variables
     Monster(int X, int Y);
     
-    //Takes key presses and adjusts the Monster's velocity
-    bool input_mgt(SDL_Event &event);
+    //Takes key presses and adjust things accordingly
+    void move();
     
     //Shows the Monster on the screen
     void show(SDL_Surface *screen);
@@ -209,16 +232,60 @@ class Monster
 Monster::Monster(int X, int Y)
 {
     //Initial position
-	collision_box.x = X;
-    collision_box.y = Y;
-    
-    //Initial velocity
+	x = X;
+    y = Y;
+
+	//Initial velocity
     xVel = 0;
     yVel = 0;
 
 	//Collision Box Definition : The collision box has the size of the monster
+	collision_box.x = X;
+    collision_box.y = Y;
     collision_box.w = MO_WIDTH;
     collision_box.h = MO_HEIGHT;
+}
+//Move monster randomly
+void Monster::move()
+{
+	//move only if a random number is below 10 (This speed down monster movement)
+	if (rand()%200 <= 10) 
+	{
+		//Random x mvt
+		xVel = ((rand()%3-1)*MO_WIDTH);
+
+		//Move the monster left or right and his collision box
+		x  += xVel;
+		collision_box.x  = x;
+
+		//If the Character went too far to the left or right or in case of collision with the npc
+		if((collision_box.x < 0) || (collision_box.x + MO_WIDTH > LEVEL_WIDTH) || (check_collision(collision_box, Character_collision_box)))
+		{
+			//move back
+			x -= xVel;
+			collision_box.x = x;    
+		}
+
+		//Random y mvt
+		yVel = ((rand()%3-1)*MO_HEIGHT);
+		
+		//Move the monster up or down and his collision box
+		y += yVel;
+		collision_box.y = y;
+
+		//If the Character went too far up or down or in case of collision with the npc
+		if((collision_box.y < 0) || (collision_box.y + MO_HEIGHT > LEVEL_HEIGHT) || (check_collision(collision_box, Character_collision_box)))
+		{
+			//move back
+			y -= yVel;
+			collision_box.y = y;    
+		}
+	}
+}
+//Show monster on the screen
+void Monster::show(SDL_Surface *screen)
+{
+	apply_surface(x - camera.x, y - camera.y, _monsters_list, screen, &_monster[0]);
 }
 //Character Class
 class Character
@@ -237,25 +304,32 @@ class Character
     //Initializes the variables
     Character(int X, int Y);
     
-    //Takes key presses and adjusts the velocity
+    //Takes key presses and adjust things accordingly
     bool input_mgt(SDL_Event &event);
 
+	//Move the Character
+	void move();
+
     //Shows the character on the screen
-    void show( SDL_Surface *screen );
-	//void show();
+    void show(SDL_Surface *screen);
+	
+	//Camera which follow the Character
+    void following_camera();
 };
 //Initialization
 Character::Character(int X, int Y)
 {
     //Initial position
-	collision_box.x = X;
-    collision_box.y = Y;
+	x = X;
+	y = Y;
     
     //Initial velocity
     xVel = 0;
     yVel = 0;
 
 	//Collision Box Definition : The collision box has the size of the character
+	collision_box.x = X;
+    collision_box.y = Y;
     collision_box.w = CH_WIDTH;
     collision_box.h = CH_HEIGHT;
 }
@@ -318,50 +392,60 @@ bool Character::input_mgt( SDL_Event &event )
 }
 
 //Show the Character on the screen
-void Character::show(SDL_Surface *screen)
+void Character::move()
 {
-
-	//Define Character BG position before moving to later used this to renew the BG over the character in case of mouvment
-	_character_bg[0].w = CH_WIDTH;
-    _character_bg[0].h = CH_HEIGHT;
-	_character_bg[0].x = x;
-	_character_bg[0].y = y;
-
-	//Clear Character off the screen by adding the BG over him
-	apply_surface(x, y, _background, screen, &_character_bg[0]);
-
-	
-	//Define Character BG position before moving to later used this to renew the BG over the character in case of mouvment
-	_character_bg[0].w = CH_WIDTH;
-    _character_bg[0].h = CH_HEIGHT;
-	_character_bg[0].x = collision_box.x;
-	_character_bg[0].y = collision_box.y;
-
-	//Clear Character off the screen by adding the BG over him
-	apply_surface(collision_box.x, collision_box.y, _background, screen, &_character_bg[0]);
-						
-    //Move the Character left or right
-    collision_box.x  += xVel;
+    //Move the Character left or right and his collision box
+	x  += xVel;
+    collision_box.x  = x;
     
-    //If the Character went too far to the left or right
-	if((collision_box.x < 0) || (collision_box.x + CH_WIDTH > SCREEN_WIDTH) || (check_collision(collision_box, Monster_collision_box)))
+    //If the Character went too far to the left or right or in case of collision with the npc
+	if((collision_box.x < 0) || (collision_box.x + CH_WIDTH > LEVEL_WIDTH) || (check_collision(collision_box, Monster_collision_box)))
 	{
         //move back
-        collision_box.x -= xVel;    
+		x -= xVel;
+        collision_box.x = x;    
     }
     
-    //Move the Character up or down
-    collision_box.y += yVel;
+    //Move the Character up or down and his collision box
+	y += yVel;
+    collision_box.y = y;
     
-    //If the Character went too far up or down
-	if((collision_box.y < 0) || (collision_box.y + CH_HEIGHT > SCREEN_HEIGHT) || (check_collision(collision_box, Monster_collision_box)))
+    //If the Character went too far up or down or in case of collision with the npc
+	if((collision_box.y < 0) || (collision_box.y + CH_HEIGHT > LEVEL_HEIGHT) || (check_collision(collision_box, Monster_collision_box)))
     {
         //move back
-        collision_box.y -= yVel;    
+		y -= yVel;
+        collision_box.y = y;    
     }
-
-    //show the Character
-	apply_surface(collision_box.x, collision_box.y, _characters_list, screen, &_character[0]);
+}
+//Show the Character on the screen
+void Character::show(SDL_Surface *screen)
+{
+	apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character[0]);
+}
+//Managed the camera
+void Character::following_camera()
+{
+    //Center the camera over the Character
+    camera.x = (x + CH_WIDTH / 2) - SCREEN_WIDTH / 2;
+    camera.y = (y + CH_HEIGHT / 2) - SCREEN_HEIGHT / 2;
+    //Keep the camera in bounds.
+    if(camera.x < 0)
+    {
+        camera.x = 0;    
+    }
+    if(camera.y < 0)
+    {
+        camera.y = 0;    
+    }
+    if(camera.x > LEVEL_WIDTH - camera.w)
+    {
+        camera.x = LEVEL_WIDTH - camera.w;    
+    }
+    if(camera.y > LEVEL_HEIGHT - camera.h)
+    {
+        camera.y = LEVEL_HEIGHT - camera.h;    
+    }    
 }
 //Timer for FPS management
 class Timer
@@ -493,7 +577,7 @@ int main( int argc, char* args[] )
 	
 	//Create Charactre & Monster
     Character myCharacter(192, 224);
-	Monster myMonster(160, 160);
+	Monster myMonster(256, 288);
 
 	//The frames rate regulator
     Timer fps;
@@ -509,28 +593,24 @@ int main( int argc, char* args[] )
 		return 1;
 	}
 
+	//Background Clip definition range for the top left ()
+    _bg[0].x = 198;
+	_bg[0].y = 132;
+    _bg[0].w = 32;
+    _bg[0].h = 32;
+
      //Monster Clip definition range for the top left (Random monster from the 7th line)
-    _monster[0].x = 32 * (rand()%8);
-	_monster[0].y = 32*6;
-    _monster[0].w = 32;
-    _monster[0].h = 32;
+    _monster[0].x = MO_WIDTH * (rand()%8);
+	_monster[0].y = MO_HEIGHT*6;
+    _monster[0].w = MO_WIDTH;
+    _monster[0].h = MO_HEIGHT;
 
-	//Static Monster collision Box for the moment
-	Monster_collision_box = myMonster.collision_box;
-
+	//Character Clip definition range for the top left (6eme colonne, 4eme ligne)
     _character[0].x = 5*CH_WIDTH;
     _character[0].y = 3*CH_HEIGHT;
     _character[0].w = CH_WIDTH;
     _character[0].h = CH_HEIGHT;
-
-    //Apply the background to the screen
-    apply_surface(0, 0, _background, _screen );
-	//Fill the screen white
-	//SDL_FillRect( _screen, &_screen->clip_rect, SDL_MapRGB( _screen->format, 0xFF, 0xFF, 0xFF ) );
     
-    //Apply monsters to the screen
-    apply_surface(160, 160, _monsters_list, _screen, &_monster[0]);
-
 	//Update the screen
     if( SDL_Flip(_screen) == -1 )
     {
@@ -557,9 +637,31 @@ int main( int argc, char* args[] )
             }
 		}
 
+		//Collisions Box to check if monster collide with npc or npc collide with monster
+		Character_collision_box = myCharacter.collision_box;
+		Monster_collision_box = myMonster.collision_box;
+
+		//Move the character
+		myCharacter.move();
+
+		//Move the chracter
+		myMonster.move();
+
+		//Set the camera
+        myCharacter.following_camera();
+
+		//Generate the background to the screen
+		generate_bg();
+		//apply_surface(0, 0, _background, _screen, &camera );
+		//Fill the screen white
+		//SDL_FillRect( _screen, &_screen->clip_rect, SDL_MapRGB( _screen->format, 0xFF, 0xFF, 0xFF ) );
+
 		//Show the Character on the screen
 		myCharacter.show(_screen);
-        
+
+		//Apply monsters to the screenn
+		myMonster.show(_screen);
+
 		//Update the screen
 		if( SDL_Flip(_screen) == -1 )
 		{
