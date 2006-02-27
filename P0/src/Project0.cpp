@@ -14,6 +14,8 @@ const int FRAMES_PER_SECOND = 10;
 //The dimensions of the Character
 const int CH_WIDTH = 32;
 const int CH_HEIGHT = 32;
+const int MO_WIDTH = 32;
+const int MO_HEIGHT = 32;
 
 //The surfaces that will be used
 SDL_Surface *_monsters_list = NULL;
@@ -25,6 +27,9 @@ SDL_Surface *_screen = NULL;
 SDL_Rect _monster[1];
 SDL_Rect _character[1];
 SDL_Rect _character_bg[1];
+
+//Monster Collision Box
+SDL_Rect Monster_collision_box;
 
 //The event structure that will be used
 SDL_Event event;
@@ -83,6 +88,52 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
     SDL_BlitSurface( source, clip, destination, &Offset );
 }
 
+//To check colission (small beginning of a physical engine^^)
+bool check_collision(SDL_Rect &A, SDL_Rect &B)
+{
+        //The sides of the rectangles
+    int leftA, leftB;
+    int rightA, rightB;
+    int topA, topB;
+    int bottomA, bottomB;
+
+    //Calculate the sides of rect A
+    leftA = A.x;
+    rightA = A.x + A.w;
+    topA = A.y;
+    bottomA = A.y + A.h;
+        
+    //Calculate the sides of rect B
+    leftB = B.x;
+    rightB = B.x + B.w;
+    topB = B.y;
+    bottomB = B.y + B.h;
+            
+    //If any of the sides from A are outside of B
+    if( bottomA <= topB )
+    {
+        return false;
+    }
+    
+    if( topA >= bottomB )
+    {
+        return false;
+    }
+    
+    if( rightA <= leftB )
+    {
+        return false;
+    }
+    
+    if( leftA >= rightB )
+    {
+        return false;
+    }
+    
+    //If none of the sides from A are outside B
+    return true;
+}
+
 //Initialization
 bool InitWindows()
 {
@@ -102,7 +153,7 @@ bool InitWindows()
     }
     
     //Set the window caption
-    SDL_WM_SetCaption( "Project 0 - v0.01", NULL );
+    SDL_WM_SetCaption( "Project 0 - 2D - v0.01", NULL );
 
     //If eveything loads fine
     return true;    
@@ -123,69 +174,6 @@ bool Load_Files()
     //If eveything loaded fine
     return true;    
 }
-//
-//
-//ALEX KEYBOARD *******************************
-//
-/*class MyKeyboard : public SDL::Keyboard
-{
-    Sprite * _activesprite;
-public:
-
-    void setActive(Sprite * s)
-    {
-        _activesprite=s;
-    }
-
-    bool handleKeyEvent (const Sym &s, bool pressed)
-    {
-        bool res = false;
-        switch (s.getKey())
-        {
-            case KEscape:
-            if (pressed==false)
-            {
-                _quitRequested=true;
-                res=true;
-            }
-            break;
-            case KUp :
-            if (pressed)
-            {
-                _activesprite->setPos(_activesprite->getPos().getx(),_activesprite->getPos().gety() -5);
-                res = true;
-            }
-            break;
-            case KDown :
-            if (pressed)
-            {
-                _activesprite->setPos(_activesprite->getPos().getx(),_activesprite->getPos().gety() + 5 );
-                res = true;
-            }
-            break;
-            case KLeft :
-            if (pressed)
-            {
-                _activesprite->setPos(_activesprite->getPos().getx() -5,_activesprite->getPos().gety());
-                res = true;
-            }
-            break;
-            case KRight :
-            if (pressed)
-            {
-                _activesprite->setPos(_activesprite->getPos().getx() +5,_activesprite->getPos().gety());
-                res = true;
-            }
-            break;
-            default :
-            break;
-        }
-        return res;
-    }
-};
-*/
-
-
 //Clean Up Surface
 void Clean_Up()
 {
@@ -198,63 +186,78 @@ void Clean_Up()
 class Monster
 {
     private:
-    //The X and Y offsets of the dot
+    //The X and Y offsets of the Monster
     int x, y;
     
-    //The velocity of the dot
+    //The velocity of the Monster
     int xVel, yVel;
-    
-    public:
+	
+	public:
+	//The collision boxes of the Monster
+    SDL_Rect collision_box;
+
     //Initializes the variables
-    Monster();
+    Monster(int X, int Y);
     
-    //Takes key presses and adjusts the dot's velocity
-    bool input_mgt( SDL_Event &event );
+    //Takes key presses and adjusts the Monster's velocity
+    bool input_mgt(SDL_Event &event);
     
-    //Shows the dot on the screen
-    void show( SDL_Surface *screen );
+    //Shows the Monster on the screen
+    void show(SDL_Surface *screen);
 };
 //Initialization
-Monster::Monster()
+Monster::Monster(int X, int Y)
 {
     //Initial position
-    x = 180;
-    y = 140;
+	collision_box.x = X;
+    collision_box.y = Y;
     
     //Initial velocity
     xVel = 0;
     yVel = 0;
+
+	//Collision Box Definition : The collision box has the size of the monster
+    collision_box.w = MO_WIDTH;
+    collision_box.h = MO_HEIGHT;
 }
-/**********************Character**********************/
+//Character Class
 class Character
 {
     private:
-    //The X and Y offsets of the dot
+    //The X and Y offsets of the Character
     int x, y;
     
-    //The velocity of the dot
+    //The velocity of the Character
     int xVel, yVel;
-    
-    public:
+
+	public:
+	//The collision boxes of the Character
+    SDL_Rect collision_box;
+
     //Initializes the variables
-    Character();
+    Character(int X, int Y);
     
     //Takes key presses and adjusts the velocity
-    bool input_mgt( SDL_Event &event );
-    
-    //Shows the dot on the screen
+    bool input_mgt(SDL_Event &event);
+
+    //Shows the character on the screen
     void show( SDL_Surface *screen );
+	//void show();
 };
 //Initialization
-Character::Character()
+Character::Character(int X, int Y)
 {
     //Initial position
-    x = 250;
-    y = 200;
+	collision_box.x = X;
+    collision_box.y = Y;
     
     //Initial velocity
     xVel = 0;
     yVel = 0;
+
+	//Collision Box Definition : The collision box has the size of the character
+    collision_box.w = CH_WIDTH;
+    collision_box.h = CH_HEIGHT;
 }
 // input Management
 bool Character::input_mgt( SDL_Event &event )
@@ -267,16 +270,16 @@ bool Character::input_mgt( SDL_Event &event )
         switch( event.key.keysym.sym )
         {
             case SDLK_UP:
-				yVel -= CH_HEIGHT / 2;
+				yVel -= CH_HEIGHT;
 				break;
             case SDLK_DOWN:
-				yVel += CH_HEIGHT / 2;
+				yVel += CH_HEIGHT;
 				break;
             case SDLK_LEFT:
-				xVel -= CH_WIDTH / 2;
+				xVel -= CH_WIDTH;
 				break;
             case SDLK_RIGHT:
-				xVel += CH_WIDTH / 2;
+				xVel += CH_WIDTH;
 				break;
 			//Esc Key Pressed
 			case SDLK_ESCAPE:
@@ -295,16 +298,16 @@ bool Character::input_mgt( SDL_Event &event )
         switch( event.key.keysym.sym )
         {
             case SDLK_UP:
-				yVel += CH_HEIGHT / 2;
+				yVel += CH_HEIGHT;
 				break;
             case SDLK_DOWN:
-				yVel -= CH_HEIGHT / 2;
+				yVel -= CH_HEIGHT;
 				break;
             case SDLK_LEFT:
-				xVel += CH_WIDTH / 2;
+				xVel += CH_WIDTH;
 				break;
             case SDLK_RIGHT:
-				xVel -= CH_WIDTH / 2;
+				xVel -= CH_WIDTH;
 				break;
 			default:
 				quit = false;
@@ -315,8 +318,9 @@ bool Character::input_mgt( SDL_Event &event )
 }
 
 //Show the Character on the screen
-void Character::show( SDL_Surface *screen )
+void Character::show(SDL_Surface *screen)
 {
+
 	//Define Character BG position before moving to later used this to renew the BG over the character in case of mouvment
 	_character_bg[0].w = CH_WIDTH;
     _character_bg[0].h = CH_HEIGHT;
@@ -324,33 +328,41 @@ void Character::show( SDL_Surface *screen )
 	_character_bg[0].y = y;
 
 	//Clear Character off the screen by adding the BG over him
-	apply_surface(x, y, _background, _screen, &_character_bg[0]);
+	apply_surface(x, y, _background, screen, &_character_bg[0]);
+
+	
+	//Define Character BG position before moving to later used this to renew the BG over the character in case of mouvment
+	_character_bg[0].w = CH_WIDTH;
+    _character_bg[0].h = CH_HEIGHT;
+	_character_bg[0].x = collision_box.x;
+	_character_bg[0].y = collision_box.y;
+
+	//Clear Character off the screen by adding the BG over him
+	apply_surface(collision_box.x, collision_box.y, _background, screen, &_character_bg[0]);
 						
     //Move the Character left or right
-    x += xVel;
+    collision_box.x  += xVel;
     
     //If the Character went too far to the left or right
-    if( ( x < 0 ) || ( x + CH_WIDTH > SCREEN_WIDTH ) )
-    {
+	if((collision_box.x < 0) || (collision_box.x + CH_WIDTH > SCREEN_WIDTH) || (check_collision(collision_box, Monster_collision_box)))
+	{
         //move back
-        x -= xVel;    
+        collision_box.x -= xVel;    
     }
     
     //Move the Character up or down
-    y += yVel;
+    collision_box.y += yVel;
     
     //If the Character went too far up or down
-    if( ( y < 0 ) || ( y + CH_HEIGHT > SCREEN_HEIGHT ) )
+	if((collision_box.y < 0) || (collision_box.y + CH_HEIGHT > SCREEN_HEIGHT) || (check_collision(collision_box, Monster_collision_box)))
     {
         //move back
-        y -= yVel;    
+        collision_box.y -= yVel;    
     }
-    
+
     //show the Character
-	apply_surface(x, y, _characters_list, _screen, &_character[0]);
+	apply_surface(collision_box.x, collision_box.y, _characters_list, screen, &_character[0]);
 }
-
-
 //Timer for FPS management
 class Timer
 {
@@ -480,8 +492,8 @@ int main( int argc, char* args[] )
 	bool quit = false;
 	
 	//Create Charactre & Monster
-    Character myCharacter;
-	Monster myMonster;
+    Character myCharacter(192, 224);
+	Monster myMonster(160, 160);
 
 	//The frames rate regulator
     Timer fps;
@@ -497,38 +509,29 @@ int main( int argc, char* args[] )
 		return 1;
 	}
 
-	//Initial Positions
-	/*int _x_pos_character = 250; int _y_pos_character = 200;
-	int _x_pos_monster = 180; int _y_pos_monster = 140;*/
-	
      //Monster Clip definition range for the top left (Random monster from the 7th line)
     _monster[0].x = 32 * (rand()%8);
 	_monster[0].y = 32*6;
     _monster[0].w = 32;
     _monster[0].h = 32;
 
-	//Character Clip definition range for the top left
+	//Static Monster collision Box for the moment
+	Monster_collision_box = myMonster.collision_box;
+
     _character[0].x = 5*CH_WIDTH;
     _character[0].y = 3*CH_HEIGHT;
     _character[0].w = CH_WIDTH;
     _character[0].h = CH_HEIGHT;
 
-	//Character Background Clip definition range for the top left
-   /*_character_bg[0].x = _x_pos_character;
-    _character_bg[0].y = _y_pos_character;
-    _character_bg[0].w = 32;
-    _character_bg[0].h = 32;*/
-	
     //Apply the background to the screen
     apply_surface(0, 0, _background, _screen );
+	//Fill the screen white
+	//SDL_FillRect( _screen, &_screen->clip_rect, SDL_MapRGB( _screen->format, 0xFF, 0xFF, 0xFF ) );
     
     //Apply monsters to the screen
-    apply_surface(180, 140, _monsters_list, _screen, &_monster[0]);
+    apply_surface(160, 160, _monsters_list, _screen, &_monster[0]);
 
-    //Apply character to the screen
-	//apply_surface(_x_pos_character, _y_pos_character, _characters_list, _screen, &_character[0]);
-
-    //Update the screen
+	//Update the screen
     if( SDL_Flip(_screen) == -1 )
     {
         return 1;    
@@ -570,143 +573,7 @@ int main( int argc, char* args[] )
         }
 	}
 
-
- //   //Loop until close of the windows using the cross or escape key
-	//while( quit == false )
-	//{
-	//	//While there's an event to handle
-	//	while( SDL_PollEvent( &event ) )
-	//	{
-	//		//Keyboard Management variable initialisation
-	//		SDLKey _KeySym = event.key.keysym.sym;
-	//
-	//		//Define Character BG position before moving to later used this to renew the BG over the character in case of mouvment
-	//		_character_bg[0].x = myCharacter.x;
-	//		_character_bg[0].y = myCharacter.y;
-
-	//		//When a Key is pressed
-	//		if( event.type == SDL_KEYDOWN ) {
-	//			//Check which key is pressed than act accordingly
-	//			switch( _KeySym ) {
-	//				
-	//				//Up Key Pressed
-	//				case SDLK_UP:
-	//					//Clear Character off the screen by adding the BG over him
-	//					apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
-
-	//					/*//Diagonal check
-	//					if(_KeySym = SDLK_LEFT)
-	//						_x_pos_character = _x_pos_character - 32;
-	//					if(_KeySym = SDLK_RIGHT)
-	//						_x_pos_character = _x_pos_character + 32;*/
-
-	//					//Move the character on the screen
-	//					_y_pos_character = _y_pos_character - 32;
-	//					apply_surface(_x_pos_character, _y_pos_character, _characters_list, _screen, &_character[0]);
-	//					
-	//					//Update Screen
-	//					if( SDL_Flip(_screen) == -1 )
-	//					{
-	//						printf("Failed to update the screen");
-	//						return 1;    
-	//					}
-	//					break;
-	//				
-	//				//Down Key Pressed
-	//				case SDLK_DOWN:
-	//					//Clear Character off the screen by adding the BG over him
-	//					apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
-
-	//					/*//Diagonal check
-	//					if(_KeySym = SDLK_LEFT)
-	//						_x_pos_character = _x_pos_character - 32;
-	//					if(_KeySym = SDLK_RIGHT)
-	//						_x_pos_character = _x_pos_character + 32;*/
-
-	//					//Move the character on the screen
-	//					_y_pos_character = _y_pos_character + 32;
-	//					apply_surface(_x_pos_character, _y_pos_character, _characters_list, _screen, &_character[0]);
-	//					
-	//					//Update Screen
-	//					if( SDL_Flip(_screen) == -1 )
-	//					{
-	//						printf("Failed to update the screen");
-	//						return 1;    
-	//					}
-	//					break;
-
-	//				//Left Key Pressed
-	//				case SDLK_LEFT:
-	//					//Clear Character off the screen by adding the BG over him
-	//					apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
-
-	//					/*//Diagonal check
-	//					if(_KeySym = SDLK_UP)
-	//						_y_pos_character = _y_pos_character - 32;
-	//					if(_KeySym = SDLK_DOWN)
-	//						_y_pos_character = _y_pos_character + 32;*/
-
-	//					//Move the character on the screen
-	//					_x_pos_character = _x_pos_character - 32;
-	//					apply_surface(_x_pos_character, _y_pos_character, _characters_list, _screen, &_character[0]);
-	//					
-	//					//Update Screen
-	//					if( SDL_Flip(_screen) == -1 )
-	//					{
-	//						printf("Failed to update the screen");
-	//						return 1;    
-	//					}
-	//					break;
-
-	//				//Right Key Pressed
-	//				case SDLK_RIGHT:
-	//					//Clear Character off the screen by adding the BG over him
-	//					apply_surface(_x_pos_character, _y_pos_character, _background, _screen, &_character_bg[0]);
-	//					
-	//					/*//Diagonal check
-	//					if(_KeySym = SDLK_UP)
-	//						_y_pos_character = _y_pos_character - 32;
-	//					if(_KeySym = SDLK_DOWN)
-	//						_y_pos_character = _y_pos_character + 32;*/
-
-	//					//Move the character on the screen
-	//					_x_pos_character = _x_pos_character + 32;
-	//					apply_surface(_x_pos_character, _y_pos_character, _characters_list, _screen, &_character[0]);
-	//					
-	//					//Update Screen
-	//					if( SDL_Flip(_screen) == -1 )
-	//					{
-	//						printf("Failed to update the screen");
-	//						return 1;    
-	//					}
-	//					break; 
-
-	//				//Esc Key Pressed
-	//				case SDLK_ESCAPE:
-	//					quit = true;
-	//					break;
-
-	//				//Default:,do not quit !
-	//				default:
-	//					quit = false;
-	//					break;
-	//			}
-	//		}
-	//		
-	//		//When a Key is released
-	//		else if( event.type == SDL_KEYUP ) {
-	//		//Nothing for the moment 
-	//		}
-	//		//When the windows is closed
-	//		else if( event.type == SDL_QUIT )
-	//		{
-	//			//Quit the program
-	//			quit = true;
-	//		}
-	//	}
-	//}
-
-    //Clean everything before exit the program
+	//Clean Before Exit
 	Clean_Up();
 	    
     //Quit SDL
