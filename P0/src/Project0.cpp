@@ -21,6 +21,12 @@ const int CH_HEIGHT = 32;
 const int MO_WIDTH = 32;
 const int MO_HEIGHT = 32;
 
+//The direction status of the character
+const int CH_RIGHT = 0;
+const int CH_LEFT = 1;
+const int CH_DOWN = 2;
+const int CH_UP = 3;
+
 //The surfaces that will be used
 SDL_Surface *_monsters_list = NULL;
 SDL_Surface *_characters_list = NULL;
@@ -29,7 +35,12 @@ SDL_Surface *_screen = NULL;
 
 //The portions of the sprite map to be blitted
 SDL_Rect _monster[1];
-SDL_Rect _character[1];
+
+SDL_Rect _character_right_attack[3];
+SDL_Rect _character_left_attack[3];
+SDL_Rect _character_down_attack[3];
+SDL_Rect _character_up_attack[3];
+
 SDL_Rect _bg[1];
 
 //Collisions Box
@@ -186,7 +197,8 @@ bool Load_Files()
 {
     //Load the sprites
     _monsters_list = create_surface( "data/Monsters5.bmp" );
-	_characters_list = create_surface ("data/Characters.bmp");
+	//_characters_list = create_surface ("data/Characters.bmp");
+	_characters_list = create_surface ("data/Character_Fighter.bmp");
     _background = create_surface( "data/tankbrigade.bmp" );
     
     //If there was an problem loading sprites
@@ -225,8 +237,8 @@ class Monster
     //Takes key presses and adjust things accordingly
     void move();
     
-    //Shows the Monster on the screen
-    void show(SDL_Surface *screen);
+    //Shows the Monster movement on the screen
+    void move_animation(SDL_Surface *screen);
 };
 //Initialization
 Monster::Monster(int X, int Y)
@@ -283,7 +295,7 @@ void Monster::move()
 	}
 }
 //Show monster on the screen
-void Monster::show(SDL_Surface *screen)
+void Monster::move_animation(SDL_Surface *screen)
 {
 	apply_surface(x - camera.x, y - camera.y, _monsters_list, screen, &_monster[0]);
 }
@@ -296,6 +308,10 @@ class Character
     
     //The velocity of the Character
     int xVel, yVel;
+
+	//animation variables
+    int frame, status;
+
 
 	public:
 	//The collision boxes of the Character
@@ -310,8 +326,11 @@ class Character
 	//Move the Character
 	void move();
 
-    //Shows the character on the screen
-    void show(SDL_Surface *screen);
+    //Shows the character movement on the screen
+    void move_animation(SDL_Surface *screen);
+
+	//Shows the character attack on the screen
+    void attack_animation(SDL_Surface *screen);
 	
 	//Camera which follow the Character
     void following_camera();
@@ -326,6 +345,10 @@ Character::Character(int X, int Y)
     //Initial velocity
     xVel = 0;
     yVel = 0;
+
+	//Initialize animation variables
+    frame = 0;
+    status = CH_RIGHT;
 
 	//Collision Box Definition : The collision box has the size of the character
 	collision_box.x = X;
@@ -419,9 +442,51 @@ void Character::move()
     }
 }
 //Show the Character on the screen
-void Character::show(SDL_Surface *screen)
+void Character::move_animation(SDL_Surface *screen)
 {
-	apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character[0]);
+	//If CH is moving left
+    if( xVel < 0 )
+    {
+        status = CH_LEFT;
+    }
+    //If CH is moving right
+    else if( xVel > 0 )
+    {
+        status = CH_RIGHT;
+    }
+    //If CH is moving down
+    else if ( yVel > 0 )
+    {
+        status = CH_DOWN;  
+    }
+	//If CH is moving up
+	else if( yVel < 0 )
+	{
+	    status = CH_UP;
+	}
+  
+    //Show the character in his good position
+    if( status == CH_RIGHT )
+    {
+		apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_right_attack[0]);
+    }
+    else if( status == CH_LEFT )
+    {
+        apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_left_attack[0]);
+    }
+	else if( status == CH_DOWN )
+    {
+        apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_down_attack[0]);
+    }
+	else if( status == CH_UP )
+    {
+        apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_up_attack[0]);
+    }
+}
+//Attack animation
+void Character::attack_animation(SDL_Surface *screen)
+{
+
 }
 //Managed the camera
 void Character::following_camera()
@@ -605,11 +670,70 @@ int main( int argc, char* args[] )
     _monster[0].w = MO_WIDTH;
     _monster[0].h = MO_HEIGHT;
 
-	//Character Clip definition range for the top left (6eme colonne, 4eme ligne)
-    _character[0].x = 5*CH_WIDTH;
-    _character[0].y = 3*CH_HEIGHT;
-    _character[0].w = CH_WIDTH;
-    _character[0].h = CH_HEIGHT;
+	//Character Clip definition
+	_character_left_attack[0].x = 0;
+    _character_left_attack[0].y = 0;
+    _character_left_attack[0].w = CH_WIDTH;
+    _character_left_attack[0].h = CH_HEIGHT;
+    
+    _character_left_attack[1].x = CH_WIDTH;
+    _character_left_attack[1].y = 0;
+    _character_left_attack[1].w = CH_WIDTH;
+    _character_left_attack[1].h = CH_HEIGHT;
+    
+    _character_left_attack[2].x = CH_WIDTH * 2;
+    _character_left_attack[2].y = 0;
+    _character_left_attack[2].w = CH_WIDTH;
+    _character_left_attack[2].h = CH_HEIGHT;
+    
+
+    _character_right_attack[0].x = 0;
+    _character_right_attack[0].y = CH_HEIGHT;
+    _character_right_attack[0].w = CH_WIDTH;
+    _character_right_attack[0].h = CH_HEIGHT;
+    
+    _character_right_attack[1].x = CH_WIDTH;
+    _character_right_attack[1].y = CH_HEIGHT;
+    _character_right_attack[1].w = CH_WIDTH;
+    _character_right_attack[1].h = CH_HEIGHT;
+    
+    _character_right_attack[2].x = CH_WIDTH * 2;
+    _character_right_attack[2].y = CH_HEIGHT;
+    _character_right_attack[2].w = CH_WIDTH;
+    _character_right_attack[2].h = CH_HEIGHT;
+
+
+	_character_down_attack[0].x = 0;
+    _character_down_attack[0].y = CH_HEIGHT*2;
+    _character_down_attack[0].w = CH_WIDTH;
+    _character_down_attack[0].h = CH_HEIGHT;
+    
+    _character_down_attack[1].x = CH_WIDTH;
+    _character_down_attack[1].y = CH_HEIGHT*2;
+    _character_down_attack[1].w = CH_WIDTH;
+    _character_down_attack[1].h = CH_HEIGHT;
+    
+    _character_down_attack[2].x = CH_WIDTH * 2;
+    _character_down_attack[2].y = CH_HEIGHT*2;
+    _character_down_attack[2].w = CH_WIDTH;
+    _character_down_attack[2].h = CH_HEIGHT;
+    
+
+    _character_up_attack[0].x = 0;
+    _character_up_attack[0].y = CH_HEIGHT*3;
+    _character_up_attack[0].w = CH_WIDTH;
+    _character_up_attack[0].h = CH_HEIGHT;
+    
+    _character_up_attack[1].x = CH_WIDTH;
+    _character_up_attack[1].y = CH_HEIGHT*3;
+    _character_up_attack[1].w = CH_WIDTH;
+    _character_up_attack[1].h = CH_HEIGHT;
+    
+    _character_up_attack[2].x = CH_WIDTH * 2;
+    _character_up_attack[2].y = CH_HEIGHT*3;
+    _character_up_attack[2].w = CH_WIDTH;
+    _character_up_attack[2].h = CH_HEIGHT;
+
     
 	//Update the screen
     if( SDL_Flip(_screen) == -1 )
@@ -657,10 +781,10 @@ int main( int argc, char* args[] )
 		//SDL_FillRect( _screen, &_screen->clip_rect, SDL_MapRGB( _screen->format, 0xFF, 0xFF, 0xFF ) );
 
 		//Show the Character on the screen
-		myCharacter.show(_screen);
+		myCharacter.move_animation(_screen);
 
 		//Apply monsters to the screenn
-		myMonster.show(_screen);
+		myMonster.move_animation(_screen);
 
 		//Update the screen
 		if( SDL_Flip(_screen) == -1 )
