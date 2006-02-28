@@ -13,7 +13,7 @@ const int LEVEL_WIDTH = 1280;
 const int LEVEL_HEIGHT = 1280;
 
 //The frame rate
-const int FRAMES_PER_SECOND = 15;
+const int FRAMES_PER_SECOND = 10;
 
 //The dimensions of the Character
 const int CH_WIDTH = 32;
@@ -488,7 +488,7 @@ bool Character::input_mgt( SDL_Event &event )
         //Adjust the velocity
         switch( event.key.keysym.sym )
         {
-			//Movements Keys
+			//Moves Keys
             case SDLK_KP8:
 				yVel -= CH_HEIGHT;
 				break;
@@ -531,6 +531,7 @@ bool Character::input_mgt( SDL_Event &event )
         //Adjust the velocity
         switch( event.key.keysym.sym )
         {
+			//Moves Keys
             case SDLK_KP8:
 				yVel += CH_HEIGHT;
 				break;
@@ -624,32 +625,31 @@ void Character::move_animation(SDL_Surface *screen)
 void Character::attack_animation(SDL_Surface *screen)
 {
 	//The attack speed regulator
-    Timer attack_regulator;
-	attack_regulator.start();
+    //Timer attack_regulator;
+	//attack_regulator.start();
 
 	//Show the good attack in function of the position
-    if( status == CH_RIGHT )********************************************
-    {
-		apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[0]);
+    if( status == CH_RIGHT )
+	{
+		/*apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[0]);
 		
 		apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
 		apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[1]);
-		SDL_Delay(333);
+		SDL_Delay(100);
 		
-		apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+		apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);*/
 		apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[2]);
-		SDL_Delay(333);
+		SDL_Delay(300);
 
 		
-		apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+		/*apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
 		apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[0]);
-		SDL_Delay(333);
+		SDL_Delay(100);*/
 		/*while( attack_regulator.get_ticks() < 150 )
         {
             //wait    
-        }
-		attack_regulator.stop();*/
-		*************************************************
+        }*/
+		//attack_regulator.stop();
     }
     else if( status == CH_LEFT )
     {
