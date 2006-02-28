@@ -32,8 +32,8 @@
 			<Add library="SDL"/>
 			<Add library="SDLmain"/>
 		</Linker>
-		<Unit filename="src\example.cc">
-			<Option compilerVar="CC"/>
+		<Unit filename="src\Project0.cpp">
+			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>
 	</Project>

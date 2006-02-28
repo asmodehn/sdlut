@@ -217,6 +217,128 @@ void Clean_Up()
 	SDL_FreeSurface(_background);
 	SDL_FreeSurface(_screen);
 }
+//Timer for FPS management
+class Timer
+{
+    private:
+    //The clock time when the timer started
+    int startTicks;
+    
+    //The ticks stored when the timer was paused
+    int pausedTicks;
+    
+    //The timer status
+    bool paused;
+    bool started;
+    
+    public:
+    //Initializes variables
+    Timer();
+    
+    //The various clock actions
+    void start();
+    void stop();
+    void pause();
+    void unpause();
+    
+    //Get the number of ticks since the timer started
+    //Or gets the number of ticks when the timer was paused
+    int get_ticks();
+    
+    //Checks the status of the timer
+    bool is_started();
+    bool is_paused();    
+};
+Timer::Timer()
+{
+    //Initialize the variables
+    startTicks = 0;
+    pausedTicks = 0;
+    paused = false;
+    started = false;    
+}
+
+void Timer::start()
+{
+    //Start the timer
+    started = true;
+    
+    //Unpause the timer
+    paused = false;
+    
+    //Get the current clock time
+    startTicks = SDL_GetTicks();    
+}
+
+void Timer::stop()
+{
+    //Stop the timer
+    started = false;
+    
+    //Unpause the timer
+    paused = false;    
+}
+
+void Timer::pause()
+{
+    //If the timer is running and isn't already paused
+    if( ( started == true ) && ( paused == false ) )
+    {
+        //Pause the timer
+        paused = true;
+    
+        //Calculate the paused ticks
+        pausedTicks = SDL_GetTicks() - startTicks;
+    }
+}
+
+void Timer::unpause()
+{
+    //If the timer is paused
+    if( paused == true )
+    {
+        //Unpause the timer
+        paused = false;
+    
+        //Reset the starting ticks
+        startTicks = SDL_GetTicks() - pausedTicks;
+        
+        //Reset the paused ticks
+        pausedTicks = 0;
+    }
+}
+
+int Timer::get_ticks()
+{
+    //If the timer is running
+    if( started == true )
+    {
+        //If the timer is paused
+        if( paused == true )
+        {
+            //Return the number of ticks when the the timer was paused
+            return pausedTicks;
+        }
+        else
+        {
+            //Return the current time minus the start time
+            return SDL_GetTicks() - startTicks;
+        }    
+    }
+    
+    //If the timer isn't running return 0
+    return 0;    
+}
+
+bool Timer::is_started()
+{
+    return started;    
+}
+
+bool Timer::is_paused()
+{
+    return paused;    
+}
 //The Monster
 class Monster
 {
@@ -366,18 +488,33 @@ bool Character::input_mgt( SDL_Event &event )
         //Adjust the velocity
         switch( event.key.keysym.sym )
         {
-            case SDLK_UP:
+			//Movements Keys
+            case SDLK_KP8:
 				yVel -= CH_HEIGHT;
 				break;
-            case SDLK_DOWN:
+            case SDLK_KP5:
 				yVel += CH_HEIGHT;
 				break;
-            case SDLK_LEFT:
+            case SDLK_KP7:
 				xVel -= CH_WIDTH;
 				break;
-            case SDLK_RIGHT:
+            case SDLK_KP9:
 				xVel += CH_WIDTH;
 				break;
+
+			//Attacks Keys
+			case SDLK_KP_DIVIDE: //Melee
+				attack_animation(_screen);
+				break;
+            case SDLK_KP_MULTIPLY:		//Distant
+				//To DO *******
+				break;
+
+			//Leave/appears on the Battlefield and save but do not quit
+			case SDLK_KP_ENTER:
+				//To DO *******
+				break;
+
 			//Esc Key Pressed
 			case SDLK_ESCAPE:
 				quit = true;
@@ -394,16 +531,16 @@ bool Character::input_mgt( SDL_Event &event )
         //Adjust the velocity
         switch( event.key.keysym.sym )
         {
-            case SDLK_UP:
+            case SDLK_KP8:
 				yVel += CH_HEIGHT;
 				break;
-            case SDLK_DOWN:
+            case SDLK_KP5:
 				yVel -= CH_HEIGHT;
 				break;
-            case SDLK_LEFT:
+            case SDLK_KP7:
 				xVel += CH_WIDTH;
 				break;
-            case SDLK_RIGHT:
+            case SDLK_KP9:
 				xVel -= CH_WIDTH;
 				break;
 			default:
@@ -486,7 +623,46 @@ void Character::move_animation(SDL_Surface *screen)
 //Attack animation
 void Character::attack_animation(SDL_Surface *screen)
 {
+	//The attack speed regulator
+    Timer attack_regulator;
+	attack_regulator.start();
 
+	//Show the good attack in function of the position
+    if( status == CH_RIGHT )********************************************
+    {
+		apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[0]);
+		
+		apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+		apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[1]);
+		SDL_Delay(333);
+		
+		apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+		apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[2]);
+		SDL_Delay(333);
+
+		
+		apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+		apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[0]);
+		SDL_Delay(333);
+		/*while( attack_regulator.get_ticks() < 150 )
+        {
+            //wait    
+        }
+		attack_regulator.stop();*/
+		*************************************************
+    }
+    else if( status == CH_LEFT )
+    {
+        apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_left_attack[0]);
+    }
+	else if( status == CH_DOWN )
+    {
+        apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_down_attack[0]);
+    }
+	else if( status == CH_UP )
+    {
+        apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_up_attack[0]);
+    }
 }
 //Managed the camera
 void Character::following_camera()
@@ -511,128 +687,6 @@ void Character::following_camera()
     {
         camera.y = LEVEL_HEIGHT - camera.h;    
     }    
-}
-//Timer for FPS management
-class Timer
-{
-    private:
-    //The clock time when the timer started
-    int startTicks;
-    
-    //The ticks stored when the timer was paused
-    int pausedTicks;
-    
-    //The timer status
-    bool paused;
-    bool started;
-    
-    public:
-    //Initializes variables
-    Timer();
-    
-    //The various clock actions
-    void start();
-    void stop();
-    void pause();
-    void unpause();
-    
-    //Get the number of ticks since the timer started
-    //Or gets the number of ticks when the timer was paused
-    int get_ticks();
-    
-    //Checks the status of the timer
-    bool is_started();
-    bool is_paused();    
-};
-Timer::Timer()
-{
-    //Initialize the variables
-    startTicks = 0;
-    pausedTicks = 0;
-    paused = false;
-    started = false;    
-}
-
-void Timer::start()
-{
-    //Start the timer
-    started = true;
-    
-    //Unpause the timer
-    paused = false;
-    
-    //Get the current clock time
-    startTicks = SDL_GetTicks();    
-}
-
-void Timer::stop()
-{
-    //Stop the timer
-    started = false;
-    
-    //Unpause the timer
-    paused = false;    
-}
-
-void Timer::pause()
-{
-    //If the timer is running and isn't already paused
-    if( ( started == true ) && ( paused == false ) )
-    {
-        //Pause the timer
-        paused = true;
-    
-        //Calculate the paused ticks
-        pausedTicks = SDL_GetTicks() - startTicks;
-    }
-}
-
-void Timer::unpause()
-{
-    //If the timer is paused
-    if( paused == true )
-    {
-        //Unpause the timer
-        paused = false;
-    
-        //Reset the starting ticks
-        startTicks = SDL_GetTicks() - pausedTicks;
-        
-        //Reset the paused ticks
-        pausedTicks = 0;
-    }
-}
-
-int Timer::get_ticks()
-{
-    //If the timer is running
-    if( started == true )
-    {
-        //If the timer is paused
-        if( paused == true )
-        {
-            //Return the number of ticks when the the timer was paused
-            return pausedTicks;
-        }
-        else
-        {
-            //Return the current time minus the start time
-            return SDL_GetTicks() - startTicks;
-        }    
-    }
-    
-    //If the timer isn't running return 0
-    return 0;    
-}
-
-bool Timer::is_started()
-{
-    return started;    
-}
-
-bool Timer::is_paused()
-{
-    return paused;    
 }
 //Main
 int main( int argc, char* args[] )
