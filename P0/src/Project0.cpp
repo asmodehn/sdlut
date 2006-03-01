@@ -432,7 +432,8 @@ class Character
     int xVel, yVel;
 
 	//animation variables
-    int frame, status;
+    int frame, move_status;
+	bool attack_status;
 
 
 	public:
@@ -470,7 +471,8 @@ Character::Character(int X, int Y)
 
 	//Initialize animation variables
     frame = 0;
-    status = CH_RIGHT;
+    move_status = CH_RIGHT;
+	attack_status = false; //false = 0
 
 	//Collision Box Definition : The collision box has the size of the character
 	collision_box.x = X;
@@ -504,7 +506,7 @@ bool Character::input_mgt( SDL_Event &event )
 
 			//Attacks Keys
 			case SDLK_KP_DIVIDE: //Melee
-				attack_animation(_screen);
+				attack_status = true;
 				break;
             case SDLK_KP_MULTIPLY:		//Distant
 				//To DO *******
@@ -585,38 +587,38 @@ void Character::move_animation(SDL_Surface *screen)
 	//If CH is moving left
     if( xVel < 0 )
     {
-        status = CH_LEFT;
+        move_status = CH_LEFT;
     }
     //If CH is moving right
     else if( xVel > 0 )
     {
-        status = CH_RIGHT;
+        move_status = CH_RIGHT;
     }
     //If CH is moving down
     else if ( yVel > 0 )
     {
-        status = CH_DOWN;  
+        move_status = CH_DOWN;  
     }
 	//If CH is moving up
 	else if( yVel < 0 )
 	{
-	    status = CH_UP;
+	    move_status = CH_UP;
 	}
   
     //Show the character in his good position
-    if( status == CH_RIGHT )
+    if( move_status == CH_RIGHT )
     {
 		apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_right_attack[0]);
     }
-    else if( status == CH_LEFT )
+    else if( move_status == CH_LEFT )
     {
         apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_left_attack[0]);
     }
-	else if( status == CH_DOWN )
+	else if( move_status == CH_DOWN )
     {
         apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_down_attack[0]);
     }
-	else if( status == CH_UP )
+	else if( move_status == CH_UP )
     {
         apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_up_attack[0]);
     }
@@ -624,45 +626,107 @@ void Character::move_animation(SDL_Surface *screen)
 //Attack animation
 void Character::attack_animation(SDL_Surface *screen)
 {
+	//If the player has pushed the attack key => launch animation attack
+	if (attack_status == true)
+	{
+
 	//The attack speed regulator
-    //Timer attack_regulator;
-	//attack_regulator.start();
+    Timer attack_regulator;
+	attack_regulator.start();
 
 	//Show the good attack in function of the position
-    if( status == CH_RIGHT )
-	{
-		/*apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[0]);
-		
-		apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
-		apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[1]);
-		SDL_Delay(100);
-		
-		apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);*/
-		apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[2]);
-		SDL_Delay(300);
+		if( move_status == CH_RIGHT )
+		{
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[0]);
 
-		
-		/*apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
-		apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[0]);
-		SDL_Delay(100);*/
-		/*while( attack_regulator.get_ticks() < 150 )
-        {
-            //wait    
-        }*/
-		//attack_regulator.stop();
-    }
-    else if( status == CH_LEFT )
-    {
-        apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_left_attack[0]);
-    }
-	else if( status == CH_DOWN )
-    {
-        apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_down_attack[0]);
-    }
-	else if( status == CH_UP )
-    {
-        apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_up_attack[0]);
-    }
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[1]);
+			while( attack_regulator.get_ticks() < 150 )
+			{
+				//wait    
+			}
+
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[2]);
+			attack_regulator.start();
+			while( attack_regulator.get_ticks() < 300 )
+			{
+				//wait    
+			}
+			
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[0]);
+		}
+		else if( move_status == CH_LEFT )
+		{
+			apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_left_attack[0]);
+
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_left_attack[1]);
+			while( attack_regulator.get_ticks() < 150 )
+			{
+				//wait    
+			}
+
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_left_attack[2]);
+			attack_regulator.start();
+			while( attack_regulator.get_ticks() < 300 )
+			{
+				//wait    
+			}
+			
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_left_attack[0]);
+		}
+		else if( move_status == CH_DOWN )
+		{
+			apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_down_attack[0]);
+
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_down_attack[1]);
+			while( attack_regulator.get_ticks() < 150 )
+			{
+				//wait    
+			}
+
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_down_attack[2]);
+			attack_regulator.start();
+			while( attack_regulator.get_ticks() < 300 )
+			{
+				//wait    
+			}
+			
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_down_attack[0]);
+		}
+		else if( move_status == CH_UP )
+		{
+			apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_up_attack[0]);
+
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_up_attack[1]);
+			while( attack_regulator.get_ticks() < 150 )
+			{
+				//wait    
+			}
+
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_up_attack[2]);
+			attack_regulator.start();
+			while( attack_regulator.get_ticks() < 300 )
+			{
+				//wait    
+			}
+			
+			//apply_surface(x - camera.x, y - camera.y, _background, _screen, &_bg[0]);
+			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_up_attack[0]);
+		}
+		//attack has been done => reset the status and stop the timer
+		attack_regulator.stop();
+		attack_status = false;
+	}
 }
 //Managed the camera
 void Character::following_camera()
@@ -833,6 +897,9 @@ int main( int argc, char* args[] )
 		//apply_surface(0, 0, _background, _screen, &camera );
 		//Fill the screen white
 		//SDL_FillRect( _screen, &_screen->clip_rect, SDL_MapRGB( _screen->format, 0xFF, 0xFF, 0xFF ) );
+
+		//Show character attack animation
+		myCharacter.attack_animation(_screen);
 
 		//Show the Character on the screen
 		myCharacter.move_animation(_screen);
