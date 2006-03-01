@@ -437,8 +437,8 @@ class Character
 
 
 	public:
-	//The collision boxes of the Character
-    SDL_Rect collision_box;
+	//The collision boxes of the Character and his attack colliosion box
+    SDL_Rect collision_box, attack_collision_box;
 
     //Initializes the variables
     Character(int X, int Y);
@@ -451,6 +451,9 @@ class Character
 
     //Shows the character movement on the screen
     void move_animation(SDL_Surface *screen);
+
+	//Manage the character attack
+	void attack();
 
 	//Shows the character attack on the screen
     void attack_animation(SDL_Surface *screen);
@@ -470,7 +473,7 @@ Character::Character(int X, int Y)
     yVel = 0;
 
 	//Initialize animation variables
-    frame = 0;
+    frame = 0;  // for future moves animation
     move_status = CH_RIGHT;
 	attack_status = false; //false = 0
 
@@ -479,6 +482,12 @@ Character::Character(int X, int Y)
     collision_box.y = Y;
     collision_box.w = CH_WIDTH;
     collision_box.h = CH_HEIGHT;
+
+	//Attack collsion box: currently in the same place of the character
+	attack_collision_box.x = X;
+    attack_collision_box.y = Y;
+    attack_collision_box.w = CH_WIDTH;
+    attack_collision_box.h = CH_HEIGHT;
 }
 // input Management
 bool Character::input_mgt( SDL_Event &event )
@@ -623,6 +632,80 @@ void Character::move_animation(SDL_Surface *screen)
         apply_surface(x - camera.x, y - camera.y, _characters_list, screen, &_character_up_attack[0]);
     }
 }
+//Handle character attack on monsters
+void Character::attack()
+{
+	//If the player has pushed the attack key => check if attack was seccessfull or not and act accordingly
+	if (attack_status == true)
+	{
+		//First, check attack direction
+		if( move_status == CH_RIGHT )
+		{
+			//move the collision box right of the character
+			attack_collision_box.x = collision_box.x + CH_WIDTH;
+			attack_collision_box.y = collision_box.y;
+
+			//check if collision between monster and attack
+			if (check_collision(attack_collision_box, Monster_collision_box))
+			{
+				printf("attack succesfull\n");
+			}
+			else
+			{
+				printf("attack failed\n");
+			}
+		}
+		else if( move_status == CH_LEFT )
+		{
+			//move the collision box left of the character
+			attack_collision_box.x = collision_box.x - CH_WIDTH;
+			attack_collision_box.y = collision_box.y;
+
+			//check if collision between monster and attack
+			if (check_collision(attack_collision_box, Monster_collision_box))
+			{
+				printf("attack succesfull\n");
+			}
+			else
+			{
+				printf("attack failed\n");
+			}
+		}
+		else if( move_status == CH_DOWN )
+		{
+			//move the collision box down of the character
+			attack_collision_box.x = collision_box.x;
+			attack_collision_box.y = collision_box.y + CH_HEIGHT;
+
+			//check if collision between monster and attack
+			if (check_collision(attack_collision_box, Monster_collision_box))
+			{
+				printf("attack succesfull\n");
+			}
+			else
+			{
+				printf("attack failed\n");
+			}
+		}
+		else if( move_status == CH_UP )
+		{
+			//move the collision box up of the character
+			attack_collision_box.x = collision_box.x;
+			attack_collision_box.y = collision_box.y - CH_WIDTH;
+
+			//check if collision between monster and attack
+			if (check_collision(attack_collision_box, Monster_collision_box))
+			{
+				printf("attack succesfull\n");
+			}
+			else
+			{
+				printf("attack failed\n");
+			}
+		}
+
+	}
+}
 //Attack animation
 void Character::attack_animation(SDL_Surface *screen)
 {
@@ -634,7 +717,7 @@ void Character::attack_animation(SDL_Surface *screen)
     Timer attack_regulator;
 	attack_regulator.start();
 
-	//Show the good attack in function of the position
+		//Show the good attack in function of the position
 		if( move_status == CH_RIGHT )
 		{
 			apply_surface(x - camera.x, y - camera.y, _characters_list, _screen, &_character_right_attack[0]);
@@ -760,7 +843,11 @@ int main( int argc, char* args[] )
 	
 	//Create Charactre & Monster
     Character myCharacter(192, 224);
-	Monster myMonster(256, 288);
+	Monster myMonster(224, 224);
+
+	//Collisions Box to check if monster collide with npc or npc collide with monster
+	Character_collision_box = myCharacter.collision_box;
+	Monster_collision_box = myMonster.collision_box;
 
 	//The frames rate regulator
     Timer fps;
@@ -879,15 +966,20 @@ int main( int argc, char* args[] )
             }
 		}
 
-		//Collisions Box to check if monster collide with npc or npc collide with monster
-		Character_collision_box = myCharacter.collision_box;
-		Monster_collision_box = myMonster.collision_box;
-
 		//Move the character
 		myCharacter.move();
 
-		//Move the chracter
+		//Update Character Collisions Box after move
+		Character_collision_box = myCharacter.collision_box;
+
+		//Handle attacks
+		myCharacter.attack();
+
+		//Move the Monster
 		myMonster.move();
+
+		//Update Monster Collisions Box after move
+		Monster_collision_box = myMonster.collision_box;
 
 		//Set the camera
         myCharacter.following_camera();
@@ -898,11 +990,11 @@ int main( int argc, char* args[] )
 		//Fill the screen white
 		//SDL_FillRect( _screen, &_screen->clip_rect, SDL_MapRGB( _screen->format, 0xFF, 0xFF, 0xFF ) );
 
-		//Show character attack animation
-		myCharacter.attack_animation(_screen);
-
 		//Show the Character on the screen
 		myCharacter.move_animation(_screen);
+		
+		//Show character attack animation
+		myCharacter.attack_animation(_screen);
 
 		//Apply monsters to the screenn
 		myMonster.move_animation(_screen);
