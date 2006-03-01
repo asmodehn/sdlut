@@ -32,7 +32,17 @@
 			<Add library="SDL"/>
 			<Add library="SDLmain"/>
 		</Linker>
+		<Unit filename="include\Timer.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\Project0.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\Timer.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>
