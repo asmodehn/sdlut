@@ -1,7 +1,9 @@
 
 #include "SDL.hh"
-//#include "SDL_image.h"
+#include "SDL_image.h"
 #include <string>
+
+#include "Timer.hh"
 
 //The attributes of the window
 const int SCREEN_WIDTH = 640;
@@ -67,10 +69,8 @@ SDL_Surface *create_surface( std::string filename )
     SDL_Surface* optimizedSurface = NULL;
     
     //Load the image
-    loadedSurface = SDL_LoadBMP( filename.c_str() );
-
-	/*************DEVRAIS PERMETTRE LE LOAD DE DIFFERENT TYPE D'IMAGE AUTRE KE BMP => VOIR AVEC ALEX**/
-	//loadedSurface = IMG_Load( filename.c_str() );
+    //loadedSurface = SDL_LoadBMP( filename.c_str() );
+	loadedSurface = IMG_Load( filename.c_str() );
     
     //If nothing went wrong in loading the image
     if( loadedSurface != NULL )
@@ -217,128 +217,7 @@ void Clean_Up()
 	SDL_FreeSurface(_background);
 	SDL_FreeSurface(_screen);
 }
-//Timer for FPS management
-class Timer
-{
-    private:
-    //The clock time when the timer started
-    int startTicks;
-    
-    //The ticks stored when the timer was paused
-    int pausedTicks;
-    
-    //The timer status
-    bool paused;
-    bool started;
-    
-    public:
-    //Initializes variables
-    Timer();
-    
-    //The various clock actions
-    void start();
-    void stop();
-    void pause();
-    void unpause();
-    
-    //Get the number of ticks since the timer started
-    //Or gets the number of ticks when the timer was paused
-    int get_ticks();
-    
-    //Checks the status of the timer
-    bool is_started();
-    bool is_paused();    
-};
-Timer::Timer()
-{
-    //Initialize the variables
-    startTicks = 0;
-    pausedTicks = 0;
-    paused = false;
-    started = false;    
-}
 
-void Timer::start()
-{
-    //Start the timer
-    started = true;
-    
-    //Unpause the timer
-    paused = false;
-    
-    //Get the current clock time
-    startTicks = SDL_GetTicks();    
-}
-
-void Timer::stop()
-{
-    //Stop the timer
-    started = false;
-    
-    //Unpause the timer
-    paused = false;    
-}
-
-void Timer::pause()
-{
-    //If the timer is running and isn't already paused
-    if( ( started == true ) && ( paused == false ) )
-    {
-        //Pause the timer
-        paused = true;
-    
-        //Calculate the paused ticks
-        pausedTicks = SDL_GetTicks() - startTicks;
-    }
-}
-
-void Timer::unpause()
-{
-    //If the timer is paused
-    if( paused == true )
-    {
-        //Unpause the timer
-        paused = false;
-    
-        //Reset the starting ticks
-        startTicks = SDL_GetTicks() - pausedTicks;
-        
-        //Reset the paused ticks
-        pausedTicks = 0;
-    }
-}
-
-int Timer::get_ticks()
-{
-    //If the timer is running
-    if( started == true )
-    {
-        //If the timer is paused
-        if( paused == true )
-        {
-            //Return the number of ticks when the the timer was paused
-            return pausedTicks;
-        }
-        else
-        {
-            //Return the current time minus the start time
-            return SDL_GetTicks() - startTicks;
-        }    
-    }
-    
-    //If the timer isn't running return 0
-    return 0;    
-}
-
-bool Timer::is_started()
-{
-    return started;    
-}
-
-bool Timer::is_paused()
-{
-    return paused;    
-}
 //The Monster
 class Monster
 {
