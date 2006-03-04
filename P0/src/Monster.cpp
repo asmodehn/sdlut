@@ -1,11 +1,14 @@
 #include "Monster.hh"
 
 //Initialization
-Monster::Monster(int X, int Y)
+Monster::Monster(int X, int Y, SDL_Surface *Screen_Surface)
 {
     //Initial position
 	x = X;
     y = Y;
+
+	//Display Surface
+	screen = Screen_Surface;
 	
 	//Monster Sprite
 	_monsters_list = NULL;
@@ -66,8 +69,8 @@ void Monster::move(SDL_Rect &_CharacterCollisionbox)
 		y += yVel;
 		collision_box.y = y;
 
-		//If the Character went too far up or down or in case of collision with the npc
-		if((collision_box.y < 0) || (collision_box.y + MO_HEIGHT > LEVEL_HEIGHT) || (check_collision(collision_box, _CharacterCollisionbox)))
+		//If the Character went too far up or down (the -32 is here for the status bar) or in case of collision with the npc
+		if((collision_box.y < 0) || (collision_box.y + MO_HEIGHT > LEVEL_HEIGHT-32) || (check_collision(collision_box, _CharacterCollisionbox)))
 		{
 			//move back
 			y -= yVel;
@@ -76,7 +79,7 @@ void Monster::move(SDL_Rect &_CharacterCollisionbox)
 	}
 }
 //Show monster on the screen
-void Monster::move_animation(SDL_Surface *screen, SDL_Rect camera)
+void Monster::move_animation(SDL_Rect camera)
 {
 	apply_surface(x - camera.x, y - camera.y, _monsters_list, screen, &_monster[0]);
 }

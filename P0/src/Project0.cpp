@@ -112,7 +112,7 @@ void generate_bg()
 	int i=0, j=0;
 	while (i<(SCREEN_WIDTH/32))
 	{
-		while (j<(SCREEN_HEIGHT/32))
+		while (j<(SCREEN_HEIGHT/32-1)) //the -1 is here in order to not apply bg on the last line of the screen: the status bar
 		{
 			apply_surface(i*32, j*32, _background, _screen, &_bg[0]);
 			j++;
@@ -135,6 +135,12 @@ bool InitWindows()
     
     //If there was in error in setting up the screen
     if( _screen == NULL )
+    {
+        return false;    
+    }
+
+	//Initialize SDL_ttf
+    if( TTF_Init() == -1 )
     {
         return false;    
     }
@@ -186,8 +192,8 @@ int main( int argc, char* args[] )
 		return 1;
 	}
 
-	//Create Character & check if nothing went wrong
-    Character* myCharacter = new Character(192, 224);
+	//Create Character & initialized it
+    Character* myCharacter = new Character(192, 224, _screen);
 	if( myCharacter->Init() == false)
 	{
 		printf("Init Character failed\n");
@@ -195,8 +201,8 @@ int main( int argc, char* args[] )
 		return 1;
 	}
 
-	//Create Monster & check if nothing went wrong
-	Monster* myMonster = new Monster(224, 224);
+	//Create Monster & initialized it
+	Monster* myMonster = new Monster(224, 224, _screen);
 	if( myMonster->Init() == false)
 	{
 		printf("Init Monster failed\n");
@@ -255,13 +261,13 @@ int main( int argc, char* args[] )
 		//SDL_FillRect( _screen, &_screen->clip_rect, SDL_MapRGB( _screen->format, 0xFF, 0xFF, 0xFF ) );
 
 		//Show the Character on the screen
-		myCharacter->move_animation(_screen);
+		myCharacter->move_animation();
 		
 		//Show character attack animation
-		myCharacter->attack_animation(_screen);
+		myCharacter->attack_animation();
 
 		//Apply monsters to the screenn
-		myMonster->move_animation(_screen, myCharacter->camera);
+		myMonster->move_animation(myCharacter->camera);
 
 		//Update the screen
 		if( SDL_Flip(_screen) == -1 )
@@ -280,7 +286,10 @@ int main( int argc, char* args[] )
 	//delete myCharacter;
 	//delete myMonster;
 	Clean_Up();
-	    
+	
+	//Quit SDL_ttf
+    TTF_Quit();
+
     //Quit SDL
 	SDL_Quit();
 

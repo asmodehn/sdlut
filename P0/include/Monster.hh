@@ -10,6 +10,9 @@ class Monster
     //The X and Y offsets of the Monster
     int x, y;
 
+	//Display Surface
+	SDL_Surface *screen;
+
 	//Monster Tile
 	SDL_Surface *_monsters_list;
 
@@ -24,7 +27,7 @@ class Monster
     SDL_Rect collision_box;
 
     //Initializes the variables
-    Monster(int X, int Y);
+    Monster(int X, int Y, SDL_Surface *screen);
 
 	//Destructor
 	~Monster();
@@ -36,7 +39,7 @@ class Monster
     void move(SDL_Rect &_CharacterCollisionbox);
     
     //Shows the Monster movement on the screen
-    void move_animation(SDL_Surface *screen, SDL_Rect camera);
+    void move_animation( SDL_Rect camera);
 };
 
 #endif

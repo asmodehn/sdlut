@@ -9,6 +9,9 @@ class Character
     private:
 		//The X and Y offsets of the Character
 		int x, y;
+
+		//Display Surface
+		SDL_Surface *screen;
 	    
 		//Chracter tile
 		SDL_Surface *_characters_list;
@@ -26,11 +29,17 @@ class Character
 		int frame, move_status;
 		bool attack_status;
 
+		//Attack msg, font & color
+		SDL_Surface *attack_msg_hit;
+		SDL_Surface *attack_msg_miss;
+		TTF_Font *attack_font;
+		SDL_Color attack_Text_Color;
+
 
 	public:
 
 		//Initializes the variables
-		Character(int X, int Y);
+		Character(int X, int Y, SDL_Surface *Screen_Surface);
 		
 		//The Camera that follow the character
 		SDL_Rect camera;
@@ -51,13 +60,13 @@ class Character
 		void Character::move(SDL_Rect &_MonsterCollisionbox);
 
 		//Shows the character movement on the screen
-		void move_animation(SDL_Surface *screen);
+		void move_animation();
 
 		//Manage the character attack
 		void attack(SDL_Rect &_MonsterCollisionBoxToBeKilled);
 
 		//Shows the character attack on the screen
-		void attack_animation(SDL_Surface *screen);
+		void attack_animation();
 		
 		//Camera which follow the Character
 		void following_camera();
