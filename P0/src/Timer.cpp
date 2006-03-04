@@ -1,4 +1,3 @@
-#include "SDL.hh"
 #include "Timer.hh"
 
 Timer::Timer()
