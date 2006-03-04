@@ -32,6 +32,7 @@
 			<Add library="SDL"/>
 			<Add library="SDLmain"/>
 			<Add library="SDL_image"/>
+			<Add library="SDL_ttf"/>
 		</Linker>
 		<Unit filename="include\Character.hh">
 			<Option compilerVar=""/>
