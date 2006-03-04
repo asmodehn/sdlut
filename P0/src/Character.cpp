@@ -110,7 +110,7 @@ Character::~Character()
 //Surface Initialiation
 bool Character::Init()
 {
-	_characters_list = create_surface ("data/Character_Fighter.bmp");
+	_characters_list = create_surface("data/Character_Fighter.bmp");
 	if( _characters_list == NULL ) { return false; }
 	return true;
 }

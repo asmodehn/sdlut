@@ -35,34 +35,6 @@ const int CH_LEFT = 1;
 const int CH_DOWN = 2;
 const int CH_UP = 3;
 
-
-////The surfaces that will be used
-//SDL_Surface *_monsters_list = NULL;
-//SDL_Surface *_characters_list = NULL;
-//SDL_Surface *_background = NULL;
-//SDL_Surface *_screen = NULL;
-//
-////The portions of the sprite map to be blitted
-//SDL_Rect _monster[1];
-//
-//SDL_Rect _character_right_attack[3];
-//SDL_Rect _character_left_attack[3];
-//SDL_Rect _character_down_attack[3];
-//SDL_Rect _character_up_attack[3];
-//
-//SDL_Rect _bg[1];
-//
-//
-////Collisions Box
-//SDL_Rect Character_collision_box;
-//SDL_Rect Monster_collision_box;
-//
-////The event structure that will be used
-//SDL_Event event;
-
-//Camera def initialized in the top right corner and with the width and height of the screen
-//SDL_Rect camera;// = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-
 //Enable UniCode
 //SDL_EnableUNICODE()
 

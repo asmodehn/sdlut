@@ -1,31 +1,15 @@
 #include "Project0.hh"
 
 //The surfaces that will be used
-//SDL_Surface *_monsters_list = NULL;
-//SDL_Surface *_characters_list = NULL;
 SDL_Surface *_background = NULL;
 SDL_Surface *_screen = NULL;
 
-//The portions of the sprite map to be blitted
-//SDL_Rect _monster[1];
-
-//SDL_Rect _character_right_attack[3];
-//SDL_Rect _character_left_attack[3];
-//SDL_Rect _character_down_attack[3];
-//SDL_Rect _character_up_attack[3];
-
+//Background Clip
 SDL_Rect _bg[1];
 
 
-//Collisions Box
-//SDL_Rect Character_collision_box;
-//SDL_Rect Monster_collision_box;
-
 //The event structure that will be used
 SDL_Event event;
-
-//Camera def initialized in the top right corner and with the width and height of the screen
-//SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
 
 //Create surface from an image function and optimized image to the desired format with white color as transparent color
@@ -79,7 +63,7 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
 //To check colission (small beginning of a physical engine^^)
 bool check_collision(SDL_Rect &A, SDL_Rect &B)
 {
-        //The sides of the rectangles
+    //The sides of the rectangles
     int leftA, leftB;
     int rightA, rightB;
     int topA, topB;
@@ -184,42 +168,39 @@ int main( int argc, char* args[] )
 	//Make sure the program waits for a quit
 	bool quit = false;
 
-	//Camera initial Definition
-	//camera.x = 0;
-	//camera.y = 0;
-	//camera.w = SCREEN_WIDTH;
-	//camera.h = SCREEN_HEIGHT;
-	
+	//The frames rate regulator
+    Timer fps;
+
+	//Initialize
+	if( InitWindows() == false )
+	{ 
+		printf("Init Windows failed\n");
+		SDL_Delay(2000);
+		return 1;
+	}
+	//Load the files
+	if( Load_Files() == false )
+	{
+		printf("File load failed\n");
+		SDL_Delay(2000);
+		return 1;
+	}
+
 	//Create Character & check if nothing went wrong
     Character* myCharacter = new Character(192, 224);
-	if( myCharacter->Init() == false) {
-		printf("Init Character failed");
+	if( myCharacter->Init() == false)
+	{
+		printf("Init Character failed\n");
+		SDL_Delay(2000);
 		return 1;
 	}
 
 	//Create Monster & check if nothing went wrong
 	Monster* myMonster = new Monster(224, 224);
-	if( myMonster->Init() == false) {
+	if( myMonster->Init() == false)
+	{
 		printf("Init Monster failed\n");
-		return 1;
-	}
-
-
-	//Collisions Box to check if monster collide with npc or npc collide with monster
-	//Character_collision_box = myCharacter.collision_box;
-	//Monster_collision_box = myMonster.collision_box;
-
-	//The frames rate regulator
-    Timer fps;
-
-	//Initialize
-	if( InitWindows() == false ) { 
-		printf("Init failed\n");
-		return 1;
-	}
-	//Load the files
-	if( Load_Files() == false ) {
-		printf("File load failed\n");
+		SDL_Delay(2000);
 		return 1;
 	}
 
@@ -259,24 +240,17 @@ int main( int argc, char* args[] )
 		//Move the character
 		myCharacter->move(myMonster->collision_box);
 
-		//Update Character Collisions Box after move
-		//Character_collision_box = myCharacter.collision_box;
-
 		//Handle attacks
 		myCharacter->attack(myMonster->collision_box);
 
 		//Move the Monster
 		myMonster->move(myCharacter->collision_box);
 
-		//Update Monster Collisions Box after move
-		//Monster_collision_box = myMonster.collision_box;
-
 		//Set the camera
         myCharacter->following_camera();
 
 		//Generate the background to the screen
 		generate_bg();
-		//apply_surface(0, 0, _background, _screen, &camera );
 		//Fill the screen white
 		//SDL_FillRect( _screen, &_screen->clip_rect, SDL_MapRGB( _screen->format, 0xFF, 0xFF, 0xFF ) );
 
