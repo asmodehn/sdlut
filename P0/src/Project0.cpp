@@ -7,6 +7,9 @@ SDL_Surface *_screen = NULL;
 //Background Clip
 SDL_Rect _bg[1];
 
+//Number of monster
+int number_of_monsters = 20;
+
 //The event structure that will be used
 SDL_Event event;
 
@@ -99,22 +102,11 @@ int main( int argc, char* args[] )
 	//Monster vector which will contains all monsters
 	std::vector<Monster*> Monster_vector;
 
-	int number_of_monster = 20;
-	for(int i=0; i < number_of_monster; i++)
-	{
-		//Create Monster & initialized it
-		Monster* myMonster = new Monster(32 * random(0,39), 32 * random(0,39), _screen);
-		if( myMonster->Init() == false)
-		{
-			printf("Init Monster failed\n");
-			SDL_Delay(2000);
-			return 1;
-		}
+	//Initialize the factory
+	Monster_Factory* myMonster_Factory = new Monster_Factory(number_of_monsters, _screen);
 
-		//store the monster at the end of the vector
-		Monster_vector.push_back(myMonster);
-					
-	}
+	//Create all the monsters
+	Monster_vector = myMonster_Factory->Create_Monsters();
 
 	//Create Character & initialized it
     Character* myCharacter = new Character(192, 224, _screen, Monster_vector);
@@ -168,18 +160,13 @@ int main( int argc, char* args[] )
 		myCharacter->attack();
 
 		//Move Monsters
-		for(int i=0; i < Monster_vector.size(); i++)
-		{
-			Monster_vector[i]->move(myCharacter->collision_box);		
-		}
+		myMonster_Factory->Move_Monsters(myCharacter->collision_box);
 
 		//Set the camera
         myCharacter->following_camera();
 
 		//Generate the background to the screen
 		generate_bg();
-		//Fill the screen white
-		//SDL_FillRect( _screen, &_screen->clip_rect, SDL_MapRGB( _screen->format, 0xFF, 0xFF, 0xFF ) );
 
 		//Show the Character on the screen
 		myCharacter->move_animation();
@@ -188,10 +175,11 @@ int main( int argc, char* args[] )
 		myCharacter->attack_animation();
 
 		//Apply monsters to the screen
-		for(int i=0; i < Monster_vector.size(); i++)
+		myMonster_Factory->Move_Monsters_Animation(myCharacter->camera);
+		/*for(int i=0; i < Monster_vector.size(); i++)
 		{
 			Monster_vector[i]->move_animation(myCharacter->camera);		
-		}
+		}*/
 
 		//Update the screen
 		if( SDL_Flip(_screen) == -1 )

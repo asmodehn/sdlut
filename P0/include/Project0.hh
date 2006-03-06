@@ -4,6 +4,7 @@
 #include "Timer.hh"
 #include "Monster.hh"
 #include "Character.hh"
+#include "Monster_Factory.hh"
 
 //Gnerate Background
 void generate_bg();

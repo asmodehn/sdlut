@@ -75,6 +75,7 @@ Monster::Monster(const Monster& ToCopy)
 Monster::~Monster()
 {
 	SDL_FreeSurface(_monsters_list);
+	SDL_FreeSurface(screen);
 }
 //Surface Initialiation
 bool Monster::Init()
@@ -87,7 +88,7 @@ bool Monster::Init()
 void Monster::move(SDL_Rect &_CharacterCollisionbox)
 {
 	//move only if a random number is below 10 (This speed down monster movement)
-	if (rand()%200 <= 15) 
+	if (rand()%200 <= 13) 
 	{
 		//Random x mvt
 		xVel = ((rand()%3-1)*MO_WIDTH);

@@ -52,6 +52,12 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="include\Monster_Factory.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="include\Project0.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -73,6 +79,10 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\Monster.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\Monster_Factory.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>

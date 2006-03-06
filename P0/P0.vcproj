@@ -193,6 +193,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Monster_Factory.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Project0.cpp"
 				>
 			</File>
@@ -216,6 +220,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Monster.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Monster_Factory.hh"
 				>
 			</File>
 			<File

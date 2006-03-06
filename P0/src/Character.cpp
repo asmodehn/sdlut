@@ -113,9 +113,9 @@ Character::~Character()
 	//Close the font that was used
     TTF_CloseFont(attack_font);
 
-
 	//Free the surface
 	SDL_FreeSurface(_characters_list);
+	SDL_FreeSurface(screen);
 }
 //Character Initialiation
 bool Character::Init()
