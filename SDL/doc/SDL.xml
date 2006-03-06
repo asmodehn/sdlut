@@ -95,7 +95,7 @@
     <para>- <ulink url="http://www.libsdl.org">SDL</ulink>
     <emphasis>mandatory.</emphasis></para>
 
-    <para>To come :</para>
+    <para>optional :</para>
 
     <para>- SDL_image</para>
 
@@ -116,6 +116,23 @@
     <para></para>
 
     <section>
+      <title>Getting all needed Dependencies</title>
+
+      <para>The only mandatory dependency is SDL. All the other ones are
+      optional.</para>
+
+      <para>On Linux / Unix systems, there are usually a package system that
+      enables you to download those dependencies. Just use it. It will install
+      the files in the standard places and the CMake build should detect them
+      automatically.</para>
+
+      <para>On Windows, you will have to do it manually. Just choose or create
+      a folder where to put them, and include the folders containing the
+      libraries in your %PATH%. Then when using CMake to build you will just
+      have to manually specify the include directory.</para>
+    </section>
+
+    <section>
       <title>Code::Blocks build</title>
 
       <para>I am personnaly using CodeBlocks on windows with mingw to build
@@ -134,7 +151,8 @@
 
       <para>The good thing with CMake is that it will check the dependencies
       available on your system and help you to configure your system for
-      development.</para>
+      development, and it works natively on windows, no emulation layer
+      needed.</para>
 
       <para></para>
 
@@ -155,9 +173,10 @@
       to have the minimum required library to build the test project. This
       should be fixed in 2.2.4.</para>
 
-      <para>- <emphasis role="bold">Unix/Linux</emphasis> : just need to have
-      GNUmake installed which is pretty standard (or really easy to get) on
-      every Unix/Linux I am aware of ^^.</para>
+      <para>- <emphasis role="bold">Unix/Linux</emphasis> : You just need to
+      have GNUmake installed which is pretty standard (or really easy to get)
+      on every Unix/Linux I am aware of ^^. Then install CMake with you
+      package system.</para>
 
       <para></para>
     </section>
