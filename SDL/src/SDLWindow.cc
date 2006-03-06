@@ -223,6 +223,7 @@ namespace RAGE
         {
             bool res=false;
             SDL_Surface * icon;
+            ///TODO : This should use an RGB Surface to avoid code duplication
             if (iconfilename != "" ) icon=SDL_LoadBMP(iconfilename.c_str());
             else icon = SDL_LoadBMP(DEFAULT_WINDOW_ICON); // todo : use embedded resource...
             if ( icon != NULL )

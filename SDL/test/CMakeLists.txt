@@ -108,6 +108,9 @@ ADD_DEPENDENCIES(threadwin Rage_SDL)
 ADD_EXECUTABLE(torturethread torturethread.cc)
 ADD_DEPENDENCIES(torturethread Rage_SDL)
 
+# SET_TARGET_PROPERTIES ( testdyngl SDLtestInput checkkeys graywin loopwave SDLtestVideo testalpha testbitmap testblitspeed testcdrom testcpuinfo testendian testerror testgamma testgl testthread testjoystick testkeys testlock testoverlay2 testoverlay testpalette testsem testsprite testtimer testtypes testver testvidinfo testwin testwm threadwin torturethread
+# 												PROPERTIES WORKING_DIR $(Rage_SDL_SOURCE_DIR) )
+
 # installing tests
 INSTALL_TARGETS(/test FILES SDLtestVideo SDLtestInput testdyngl checkkeys graywin loopwave SDLtest testalpha testbitmap testblitspeed testcdrom testcpuinfo testendian testerror testgamma testgl testthread testjoystick testkeys testlock testoverlay2 testoverlay testpalette testsem testsprite testtimer testtypes testver testvidinfo testwin testwm threadwin torturethread)
 

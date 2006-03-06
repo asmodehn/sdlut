@@ -21,9 +21,11 @@ ENDIF(NOT SDL_FOUND )
 
 #check for openGL
 FIND_PACKAGE(OPENGL)
-IF ( NOT OPENGL_FOUND )
-	MESSAGE(SEND_ERROR "OPENGL Not Found - please specify manually")
-ENDIF ( NOT OPENGL_FOUND )
+#opengl optional
+
+#check for sdl_image
+FIND_PACKAGE(SDL_image)
+#sdl_imageoptional
 
 
 #
@@ -35,6 +37,7 @@ ADD_DEFINITIONS(-DLOGPREFIX=\"Rage_SDL\")
 
 #test for SDL
 IF(SDL_FOUND)
+	MESSAGE (STATUS "SDL found, adjusting build options..." )
 	#adding SDL includes to the build
 	INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
 	#adding SDL libraries to the link
@@ -50,6 +53,8 @@ ELSE (OPENGL_FOUND)
 	MESSAGE (STATUS "OpenGL not found." )
 ENDIF(OPENGL_FOUND)
 
+#test for sdl_image
+#todo
 	
 #Compiler Specific rules
 IF(CMAKE_CXX_COMPILER STREQUAL "cl")
