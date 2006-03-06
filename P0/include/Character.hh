@@ -1,7 +1,9 @@
 #ifndef Character_HH
 #define Character_HH
 
-#include "Project0.hh"
+#include "Base.hh"
+#include "Monster.hh"
+#include "Timer.hh"
 
 //Character Class
 class Character
@@ -35,11 +37,14 @@ class Character
 		TTF_Font *attack_font;
 		SDL_Color attack_Text_Color;
 
+		//Monster Vector which allow the character to know exactly all monsters on the battlefield
+		std::vector<Monster*> Monster_Vector;
+
 
 	public:
 
 		//Initializes the variables
-		Character(int X, int Y, SDL_Surface *Screen_Surface);
+		Character(int X, int Y, SDL_Surface *Screen_Surface, std::vector<Monster*> _Monster_Vector);
 		
 		//The Camera that follow the character
 		SDL_Rect camera;
@@ -57,13 +62,13 @@ class Character
 		bool input_mgt(SDL_Event &event);
 
 		//Move the Character and check collision with the collisionbox of the monster in parameter
-		void Character::move(SDL_Rect &_MonsterCollisionbox);
+		void Character::move();
 
 		//Shows the character movement on the screen
 		void move_animation();
 
 		//Manage the character attack
-		void attack(SDL_Rect &_MonsterCollisionBoxToBeKilled);
+		void attack();
 
 		//Shows the character attack on the screen
 		void attack_animation();

@@ -1,7 +1,7 @@
 #include "Character.hh"
 
-//Initialization
-Character::Character(int X, int Y, SDL_Surface *Screen_Surface)
+//Initialization construtor
+Character::Character(int X, int Y, SDL_Surface *Screen_Surface, std::vector<Monster*> _Monster_Vector)
 {
     //Initial position
 	x = X;
@@ -104,6 +104,8 @@ Character::Character(int X, int Y, SDL_Surface *Screen_Surface)
     attack_collision_box.y = Y;
     attack_collision_box.w = CH_WIDTH;
     attack_collision_box.h = CH_HEIGHT;
+
+	Monster_Vector = _Monster_Vector; 
 }
 //Destructor
 Character::~Character()
@@ -214,31 +216,52 @@ bool Character::input_mgt( SDL_Event &event )
 }
 
 //Show the Character on the screen
-void Character::move(SDL_Rect &_MonsterCollisionbox)
+void Character::move()
 {
     //Move the Character left or right and his collision box
 	x  += xVel;
     collision_box.x  = x;
     
-    //If the Character went too far to the left or right or in case of collision with the npc
-	if((collision_box.x < 0) || (collision_box.x + CH_WIDTH > LEVEL_WIDTH) || (check_collision(collision_box, _MonsterCollisionbox)))
+    //If the Character went too far to the left or right
+	if( (collision_box.x < 0) || (collision_box.x + CH_WIDTH > LEVEL_WIDTH) )
 	{
         //move back
 		x -= xVel;
         collision_box.x = x;    
     }
+
+	//Collision with monster when moving on the x axis
+	for(int i=0; i < Monster_Vector.size(); i++)
+	{
+		if (check_collision(collision_box, Monster_Vector[i]->collision_box))
+		{
+			x -= xVel;
+			collision_box.x = x;
+			break;
+		}
+	}
     
     //Move the Character up or down and his collision box
 	y += yVel;
     collision_box.y = y;
     
-    //If the Character went too far up or down (the -32 is here for the status bar) or in case of collision with the npc
-	if((collision_box.y < 0) || (collision_box.y + CH_HEIGHT > LEVEL_HEIGHT-32) || (check_collision(collision_box, _MonsterCollisionbox)))
+    //If the Character went too far up or down (the -32 is here for the status bar)
+	if((collision_box.y < 0) || (collision_box.y + CH_HEIGHT > LEVEL_HEIGHT-32) )
     {
         //move back
 		y -= yVel;
         collision_box.y = y;    
     }
+	//Collision with monster when moving on the y axis
+	for(int i=0; i < Monster_Vector.size(); i++)
+	{
+		if (check_collision(collision_box, Monster_Vector[i]->collision_box))
+		{
+			y -= yVel;
+			collision_box.y = y;
+			break;
+		}
+	}
 }
 //Show the Character on the screen
 void Character::move_animation()
@@ -283,11 +306,14 @@ void Character::move_animation()
     }
 }
 //Handle character attack on monsters
-void Character::attack(SDL_Rect &_MonsterCollisionBoxToBeKilled)
+void Character::attack()
 {
 	//If the player has pushed the attack key => check if attack was seccessfull or not and act accordingly
 	if (attack_status == true)
 	{
+		//By default consider that no attack was successfull
+		bool attack_successfull = false;
+
 		//First, check attack direction
 		if( move_status == CH_RIGHT )
 		{
@@ -313,11 +339,24 @@ void Character::attack(SDL_Rect &_MonsterCollisionBoxToBeKilled)
 			attack_collision_box.x = collision_box.x;
 			attack_collision_box.y = collision_box.y - CH_WIDTH;
 		}
-
+		
+		//Clean the status Bar (last line of the screen)
 		SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00) );
 
-		//check if collision between monster and attack now that the attack_collision_box has been moved
-		if (check_collision(attack_collision_box, _MonsterCollisionBoxToBeKilled))
+
+		//Check attack with all monsters inside the vector and return true if one of the monster was hit
+		for(int i=0; i < Monster_Vector.size(); i++)
+		{
+			//check if collision between monster and attack now that the attack_collision_box has been moved
+			if (check_collision(attack_collision_box, Monster_Vector[i]->collision_box))
+			{
+				attack_successfull = true;
+				break;
+			}			
+		}
+
+		//If a monster was hit displayed the msg, if no display miss msg
+		if (attack_successfull)
 		{
 			apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_hit, screen );
 			printf("attack succesfull\n");
@@ -327,7 +366,6 @@ void Character::attack(SDL_Rect &_MonsterCollisionBoxToBeKilled)
 			apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_miss, screen );
 			printf("attack failed\n");
 		}
-
 	}
 }
 //Attack animation

@@ -7,104 +7,8 @@ SDL_Surface *_screen = NULL;
 //Background Clip
 SDL_Rect _bg[1];
 
-
 //The event structure that will be used
 SDL_Event event;
-
-
-//Create surface from an image function and optimized image to the desired format with white color as transparent color
-SDL_Surface *create_surface( std::string filename ) 
-{
-    //Temporary storage for the Surface that's loaded
-    SDL_Surface* loadedSurface = NULL;
-    
-    //The optimized Surface that will be used
-    SDL_Surface* optimizedSurface = NULL;
-    
-    //Load the image
-    //loadedSurface = SDL_LoadBMP( filename.c_str() );
-	loadedSurface = IMG_Load( filename.c_str() );
-    
-    //If nothing went wrong in loading the image
-    if( loadedSurface != NULL )
-    {
-        //Create an optimized Surface
-        optimizedSurface = SDL_DisplayFormat( loadedSurface );
-        
-        //Free the old image
-        SDL_FreeSurface( loadedSurface );
-		
-		//If the image was optimized just fine
-        if( optimizedSurface != NULL )
-        {
-            //Set all pixels of color 0xFFFFFF (white) to be transparent
-            SDL_SetColorKey( optimizedSurface, SDL_RLEACCEL | SDL_SRCCOLORKEY, 0xFFFFFF );
-        }
-    }
-    
-    //Return the optimized image
-    return optimizedSurface;
-}
-
-//Surface blitting function wich blit a piece of a surface or the whole surface if no Rect area is defined
-void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
-{
-    //Make a temporary rect to hold the offsets
-    SDL_Rect Offset;
-    
-    //Give the offsets to the rect
-    Offset.x = x;
-    Offset.y = y;
-    
-    //Blit the surface
-    SDL_BlitSurface( source, clip, destination, &Offset );
-}
-
-//To check colission (small beginning of a physical engine^^)
-bool check_collision(SDL_Rect &A, SDL_Rect &B)
-{
-    //The sides of the rectangles
-    int leftA, leftB;
-    int rightA, rightB;
-    int topA, topB;
-    int bottomA, bottomB;
-
-    //Calculate the sides of rect A
-    leftA = A.x;
-    rightA = A.x + A.w;
-    topA = A.y;
-    bottomA = A.y + A.h;
-        
-    //Calculate the sides of rect B
-    leftB = B.x;
-    rightB = B.x + B.w;
-    topB = B.y;
-    bottomB = B.y + B.h;
-            
-    //If any of the sides from A are outside of B
-    if( bottomA <= topB )
-    {
-        return false;
-    }
-    
-    if( topA >= bottomB )
-    {
-        return false;
-    }
-    
-    if( rightA <= leftB )
-    {
-        return false;
-    }
-    
-    if( leftA >= rightB )
-    {
-        return false;
-    }
-    
-    //If none of the sides from A are outside B
-    return true;
-}
 
 //Gnerate Background
 void generate_bg()
@@ -192,8 +96,30 @@ int main( int argc, char* args[] )
 		return 1;
 	}
 
+	//Monster vector which will contains all monsters
+	std::vector<Monster*> Monster_vector;
+
+	int number_of_monster = 20;
+	for(int i=0; i < number_of_monster; i++)
+	{
+		//Create Monster & initialized it
+		Monster* myMonster = new Monster(32 * random(0,39), 32 * random(0,39), _screen);
+		if( myMonster->Init() == false)
+		{
+			printf("Init Monster failed\n");
+			SDL_Delay(2000);
+			return 1;
+		}
+
+		//store the monster at the end of the vector
+		Monster_vector.push_back(myMonster);
+					
+	}
+
 	//Create Character & initialized it
-    Character* myCharacter = new Character(192, 224, _screen);
+    Character* myCharacter = new Character(192, 224, _screen, Monster_vector);
+	//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_vector);
+		
 	if( myCharacter->Init() == false)
 	{
 		printf("Init Character failed\n");
@@ -201,14 +127,6 @@ int main( int argc, char* args[] )
 		return 1;
 	}
 
-	//Create Monster & initialized it
-	Monster* myMonster = new Monster(224, 224, _screen);
-	if( myMonster->Init() == false)
-	{
-		printf("Init Monster failed\n");
-		SDL_Delay(2000);
-		return 1;
-	}
 
 	//Background Clip definition range for the top left ()
     _bg[0].x = 198;
@@ -244,13 +162,16 @@ int main( int argc, char* args[] )
 		}
 
 		//Move the character
-		myCharacter->move(myMonster->collision_box);
+		myCharacter->move();
 
 		//Handle attacks
-		myCharacter->attack(myMonster->collision_box);
+		myCharacter->attack();
 
-		//Move the Monster
-		myMonster->move(myCharacter->collision_box);
+		//Move Monsters
+		for(int i=0; i < Monster_vector.size(); i++)
+		{
+			Monster_vector[i]->move(myCharacter->collision_box);		
+		}
 
 		//Set the camera
         myCharacter->following_camera();
@@ -266,8 +187,11 @@ int main( int argc, char* args[] )
 		//Show character attack animation
 		myCharacter->attack_animation();
 
-		//Apply monsters to the screenn
-		myMonster->move_animation(myCharacter->camera);
+		//Apply monsters to the screen
+		for(int i=0; i < Monster_vector.size(); i++)
+		{
+			Monster_vector[i]->move_animation(myCharacter->camera);		
+		}
 
 		//Update the screen
 		if( SDL_Flip(_screen) == -1 )

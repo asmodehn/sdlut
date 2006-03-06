@@ -1,7 +1,7 @@
 #ifndef Timer_HH
 #define Timer_HH
 
-#include "Project0.hh"
+#include "Base.hh"
 
 //Timer for FPS management
 class Timer

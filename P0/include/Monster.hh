@@ -1,7 +1,7 @@
 #ifndef Monster_HH
 #define Monster_HH
 
-#include "Project0.hh"
+#include "Base.hh"
 
 //The Monster
 class Monster
@@ -26,8 +26,14 @@ class Monster
 	//The collision boxes of the Monster
     SDL_Rect collision_box;
 
-    //Initializes the variables
+	//Default construtor
+	Monster();
+
+    //Constructor that initialize the variables
     Monster(int X, int Y, SDL_Surface *screen);
+
+	//Copy construtor
+	Monster(const Monster& ToCopy);
 
 	//Destructor
 	~Monster();
