@@ -126,10 +126,24 @@
       the files in the standard places and the CMake build should detect them
       automatically.</para>
 
-      <para>On Windows, you will have to do it manually. Just choose or create
-      a folder where to put them, and include the folders containing the
-      libraries in your %PATH%. Then when using CMake to build you will just
-      have to manually specify the include directory.</para>
+      <para>On Windows, you will have to do it manually. Get the dependencies
+      from the web. </para>
+
+      <para>Then define specific environment variables : </para>
+
+      <para>For SDL : SDLDIR must contain the directory where you installed
+      SDL,</para>
+
+      <para>For SDL_image : SDLIMAGE_DIR must contain the directory where you
+      installed SDL.</para>
+
+      <para>CMake should now detect your librairies. If it doesnt you will
+      have to pass the value manually.</para>
+
+      <para>To be able to run your executable you need to have the directory
+      containing the .dll in your PATH.</para>
+
+      <para></para>
     </section>
 
     <section>

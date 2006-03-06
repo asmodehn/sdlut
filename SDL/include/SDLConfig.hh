@@ -5,11 +5,6 @@
 //#undef HAVE_OPENGL //engine call seems to work... 3D part postponed...
 #undef THREAD
 
-//#if defined (_MSC_VER) && (_MSC_VER >= 1020)
-//#pragma warning(disable:4290)	// Disable MSVC++ warning: C4290: C++ exception specification ignored.
-//#endif
-//imported into CMake now...
-
 //Normal Setup
 #define DEFAULT_DISPLAY_WIDTH 640
 #define DEFAULT_DISPLAY_HEIGHT 480
@@ -30,6 +25,10 @@
 #include <SDL_opengl.h>
 
 //Conditionals
+
+#ifdef HAVE_SDLIMAGE
+#include "SDL_image.h"
+#endif
 
 #ifdef THREAD
 #include <SDL_thread.h>

@@ -25,7 +25,7 @@ FIND_PACKAGE(OPENGL)
 
 #check for sdl_image
 FIND_PACKAGE(SDL_image)
-#sdl_imageoptional
+#sdl_image optional
 
 
 #
@@ -52,9 +52,17 @@ IF(OPENGL_FOUND)
 ELSE (OPENGL_FOUND)
 	MESSAGE (STATUS "OpenGL not found." )
 ENDIF(OPENGL_FOUND)
+#linking late to test dynamic linking of opengl libs
 
 #test for sdl_image
-#todo
+IF(SDLIMAGE_FOUND)
+	MESSAGE (STATUS "SDL_image found, adjusting build options..." )
+	ADD_DEFINITIONS(-DHAVE_SDLIMAGE)
+	INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
+	LINK_LIBRARIES (${SDLIMAGE_LIBRARY})
+ELSE (SDLIMAGE_FOUND)
+	MESSAGE (STATUS "SDL_image not found." )
+ENDIF(SDLIMAGE_FOUND)
 	
 #Compiler Specific rules
 IF(CMAKE_CXX_COMPILER STREQUAL "cl")
@@ -70,6 +78,7 @@ ADD_DEFINITIONS(-DLOGINDENTLVL=1 -DDEBUG)
 
 INCLUDE_DIRECTORIES(include)
 INSTALL_FILES(/include include)
+
 ADD_SUBDIRECTORY(src)
 
 SET(BUILD_TESTS ON CACHE BOOL "Wether or not you want the project to include the tests executables")
@@ -83,6 +92,6 @@ ENDIF(BUILD_TESTS)
 #defining usefull variables.
 #GET_TARGET_PROPERTY(Rage_SDL_LIBRARY Rage_SDL LOCATION)
 #SET(Rage_SDL_INCLUDE ${Rage_SDL_SOURCE_DIR}/include)
-
+#todo set the dependencies
 
 

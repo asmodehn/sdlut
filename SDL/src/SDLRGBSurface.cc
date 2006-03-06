@@ -96,10 +96,14 @@ namespace RAGE
         };
 
         RGBSurface::RGBSurface( std::string filename )throw (std::logic_error)
-        try
-:
-            BaseSurface(SDL_LoadBMP(filename.c_str()))
+			try :
+#ifdef HAVE_SDLIMAGE
+			BaseSurface(IMG_Load(filename.c_str()))
+#else
+			BaseSurface(SDL_LoadBMP(filename.c_str()))
+#endif
         {
+
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << filename<< ") called...";
 #endif
@@ -109,7 +113,12 @@ namespace RAGE
             if(_surf == NULL)
             {
                 Log << nl << "Unable to set rgb surface from " << filename << std::endl;
-                throw std::logic_error("SDL_LoadBMP returns NULL");
+                throw std::logic_error(
+#ifdef HAVE_SDLIMAGE
+					"IMG_Load returns NULL");
+#else
+					"SDL_LoadBMP returns NULL");
+#endif
             }
 
 #ifdef DEBUG
