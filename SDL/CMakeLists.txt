@@ -27,6 +27,9 @@ FIND_PACKAGE(OPENGL)
 FIND_PACKAGE(SDL_image)
 #sdl_image optional
 
+#check for sdl_ttf
+FIND_PACKAGE(SDL_ttf)
+#sdl_ttf optional
 
 #
 #Defining Rules for building Rage_SDL
@@ -64,6 +67,16 @@ ELSE (SDLIMAGE_FOUND)
 	MESSAGE (STATUS "SDL_image not found." )
 ENDIF(SDLIMAGE_FOUND)
 	
+#test for sdl_ttf
+IF(SDLTTF_FOUND)
+	MESSAGE (STATUS "SDL_ttf found, adjusting build options..." )
+	ADD_DEFINITIONS(-DHAVE_SDLTTF)
+	INCLUDE_DIRECTORIES(${SDLTTF_INCLUDE_DIR})
+	LINK_LIBRARIES (${SDLTTF_LIBRARY})
+ELSE (SDLTTF_FOUND)
+	MESSAGE (STATUS "SDL_ttf not found." )
+ENDIF(SDLTTF_FOUND)	
+	
 #Compiler Specific rules
 IF(CMAKE_CXX_COMPILER STREQUAL "cl")
 MESSAGE( STATUS "Visual Studio Compiler detected. Adjusting C++ flags...")
@@ -81,7 +94,7 @@ INSTALL_FILES(/include include)
 
 ADD_SUBDIRECTORY(src)
 
-SET(BUILD_TESTS ON CACHE BOOL "Wether or not you want the project to include the tests executables")
+SET(BUILD_TESTS OFF CACHE BOOL "Wether or not you want the project to include the tests executables")
 
 ADD_SUBDIRECTORY(data)
 
