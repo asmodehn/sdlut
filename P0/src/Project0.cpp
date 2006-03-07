@@ -159,6 +159,12 @@ int main( int argc, char* args[] )
 		//Handle attacks
 		myCharacter->attack();
 
+		//Remove Dead monsters from the vector
+		Monster_vector = myMonster_Factory->Remove_Dead_Monsters();
+
+		//Update the knowledge of the character regarding monsters
+		myCharacter->Update_Monster_Knowledge(Monster_vector);
+
 		//Move Monsters
 		myMonster_Factory->Move_Monsters(myCharacter->collision_box);
 
@@ -176,10 +182,6 @@ int main( int argc, char* args[] )
 
 		//Apply monsters to the screen
 		myMonster_Factory->Move_Monsters_Animation(myCharacter->camera);
-		/*for(int i=0; i < Monster_vector.size(); i++)
-		{
-			Monster_vector[i]->move_animation(myCharacter->camera);		
-		}*/
 
 		//Update the screen
 		if( SDL_Flip(_screen) == -1 )

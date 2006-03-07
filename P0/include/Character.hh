@@ -44,7 +44,7 @@ class Character
 	public:
 
 		//Initializes the variables
-		Character(int X, int Y, SDL_Surface *Screen_Surface, std::vector<Monster*> _Monster_Vector);
+		Character(int X, int Y, SDL_Surface *Screen_Surface, std::vector<Monster*> monster_vector);
 		
 		//The Camera that follow the character
 		SDL_Rect camera;
@@ -75,6 +75,9 @@ class Character
 		
 		//Camera which follow the Character
 		void following_camera();
+
+		//Update charaster's monster knowledge of monster presents on the battlefield (in case of one monster has been killed for example)
+		void Update_Monster_Knowledge (std::vector<Monster*> monster_vector);
 };
 
 #endif

@@ -32,7 +32,10 @@ class Monster_Factory
 		void Move_Monsters(SDL_Rect &Character_Collision_Box);
 
 		//Invoke all monsters movements animation on the screen
-		void Monster_Factory::Move_Monsters_Animation(SDL_Rect Camera);
+		void Move_Monsters_Animation(SDL_Rect Camera);
+
+		//Remove all monster with dead status from the monster vector container
+		std::vector<Monster*> Remove_Dead_Monsters();
 
 };
 

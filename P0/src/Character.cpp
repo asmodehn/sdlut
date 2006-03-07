@@ -1,7 +1,7 @@
 #include "Character.hh"
 
 //Initialization construtor
-Character::Character(int X, int Y, SDL_Surface *Screen_Surface, std::vector<Monster*> _Monster_Vector)
+Character::Character(int X, int Y, SDL_Surface *Screen_Surface, std::vector<Monster*> monster_vector)
 {
     //Initial position
 	x = X;
@@ -105,7 +105,7 @@ Character::Character(int X, int Y, SDL_Surface *Screen_Surface, std::vector<Mons
     attack_collision_box.w = CH_WIDTH;
     attack_collision_box.h = CH_HEIGHT;
 
-	Monster_Vector = _Monster_Vector; 
+	Monster_Vector = monster_vector; 
 }
 //Destructor
 Character::~Character()
@@ -350,7 +350,11 @@ void Character::attack()
 			//check if collision between monster and attack now that the attack_collision_box has been moved
 			if (check_collision(attack_collision_box, Monster_Vector[i]->collision_box))
 			{
+				//One monster has been hit so modify the attack_successfull status...
 				attack_successfull = true;
+				//...Change the monster status to false aka monster dead...
+				Monster_Vector[i]->Alive_Status = false;
+				//...Than leave the check in order to touch only one monster at a timer.
 				break;
 			}			
 		}
@@ -496,4 +500,14 @@ void Character::following_camera()
     {
         camera.y = LEVEL_HEIGHT - camera.h;    
     }    
+}
+
+//Update charaster's monster knowledge of monster presents on the battlefield
+void Character::Update_Monster_Knowledge(std::vector<Monster*> monster_vector)
+{
+	//Update only if the two vector have not the same size (only here to gain execution speed when vector will have an important size)
+	if (monster_vector.size() != Monster_Vector.size())
+	{
+		Monster_Vector = monster_vector;
+	}
 }

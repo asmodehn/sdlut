@@ -20,7 +20,6 @@ Monster_Factory::~Monster_Factory()
 //Create Monster Method which create has many monsters has desired
 std::vector<Monster*> Monster_Factory::Create_Monsters()
 {
-
 	//Loop until desired number of monsters has been reached
 	for(int i=0; i < Number_Of_Monsters; i++)
 	{
@@ -57,4 +56,23 @@ void Monster_Factory::Move_Monsters_Animation(SDL_Rect Camera)
 	{
 		Monster_Vector[i]->move_animation(Camera);		
 	}
+}
+//Method that will remove all monster with Alive_Status status to false (aka dead monsters) from the monster vector container
+std::vector<Monster*> Monster_Factory::Remove_Dead_Monsters()
+{
+	//Loop on all the vector
+	for(int i=0; i < Monster_Vector.size(); i++)
+	{
+		//Check if Alive_Status is false
+		if (Monster_Vector[i]->Alive_Status == false)
+		{
+			//remove the monster from the scope (only the ième monster at a time)
+			Monster_Vector.erase(Monster_Vector.begin()+i, Monster_Vector.begin()+i+1);
+
+			//Then go back of one in the loop because elements has been shifted
+			i--;
+		}
+	}
+	//Finally return the new Vector with only alive monsters
+	return Monster_Vector;
 }

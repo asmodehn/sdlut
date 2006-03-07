@@ -28,6 +28,9 @@ Monster::Monster()
     collision_box.y = 0;
     collision_box.w = MO_WIDTH;
     collision_box.h = MO_HEIGHT;
+
+	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
+	Alive_Status = true;
 }
 //Full Construtor
 Monster::Monster(int X, int Y, SDL_Surface *Screen_Surface)
@@ -57,6 +60,9 @@ Monster::Monster(int X, int Y, SDL_Surface *Screen_Surface)
     collision_box.y = Y;
     collision_box.w = MO_WIDTH;
     collision_box.h = MO_HEIGHT;
+
+	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
+	Alive_Status = true;
 }
 //Copy construtor
 Monster::Monster(const Monster& ToCopy)
