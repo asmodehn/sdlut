@@ -34,6 +34,10 @@ const int CH_LEFT = 1;
 const int CH_DOWN = 2;
 const int CH_UP = 3;
 
+//monsters const
+const int INITIAL_MONSTERS = 15;
+const int MAX_MONSTERS_SIMULTANEOUSLY = 30;
+
 //Enable UniCode
 //SDL_EnableUNICODE()
 

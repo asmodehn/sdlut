@@ -17,24 +17,31 @@ Monster_Factory::~Monster_Factory()
 {
 	SDL_FreeSurface(Screen);
 }
-//Create Monster Method which create has many monsters has desired
+//Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
+bool Monster_Factory::Create_One_Monster()
+{
+	//Create Monster & initialized it
+	Monster* myMonster = new Monster(32 * random(0,39), 32 * random(0,39), Screen);
+	//Check initialization
+	if( myMonster->Init() == false)
+	{
+		return false;
+	}
+	//store the monster at the end of the vector
+	Monster_Vector.push_back(myMonster);
+	return true;
+
+}
+//Create Monsters Method which create as many monsters has desired
 std::vector<Monster*> Monster_Factory::Create_Monsters()
 {
 	//Loop until desired number of monsters has been reached
 	for(int i=0; i < Number_Of_Monsters; i++)
 	{
-		//Create Monster & initialized it
-		Monster* myMonster = new Monster(32 * random(0,39), 32 * random(0,39), Screen);
-		//Check initialization
-		if( myMonster->Init() == false)
+		if ( Create_One_Monster() == false )
 		{
-			printf("Init Monster %i failed\n", i+1);
+			printf("Init Monster %i failed\n", i);
 			SDL_Delay(2000);
-			//return 1;
-		}
-		else {
-			//store the monster at the end of the vector
-			Monster_Vector.push_back(myMonster);
 		}
 	}
 
@@ -74,5 +81,27 @@ std::vector<Monster*> Monster_Factory::Remove_Dead_Monsters()
 		}
 	}
 	//Finally return the new Vector with only alive monsters
+	return Monster_Vector;
+}
+
+//Generate new monsters until max monster has been reached
+std::vector<Monster*> Monster_Factory::Generate_New_Monster()
+{
+	int temp = 0;
+	
+	//The more the monster on the battlefield, the less there a chance a new one is generated until we reached the MAX_MONSTERS_SIMULTANEOUSLY constant
+	temp = random(1, MAX_MONSTERS_SIMULTANEOUSLY);
+	
+	if (temp > Monster_Vector.size())
+	{
+		//Monster generation
+		if ( Create_One_Monster() == false )
+		{
+			printf("New Monster Generation failed\n");
+			SDL_Delay(2000);
+		}
+	}
+	
+	//Finally return the new Vector wth eventual new monsters
 	return Monster_Vector;
 }

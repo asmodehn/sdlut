@@ -7,9 +7,6 @@ SDL_Surface *_screen = NULL;
 //Background Clip
 SDL_Rect _bg[1];
 
-//Number of monster
-int number_of_monsters = 20;
-
 //The event structure that will be used
 SDL_Event event;
 
@@ -103,7 +100,7 @@ int main( int argc, char* args[] )
 	std::vector<Monster*> Monster_vector;
 
 	//Initialize the factory
-	Monster_Factory* myMonster_Factory = new Monster_Factory(number_of_monsters, _screen);
+	Monster_Factory* myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS, _screen);
 
 	//Create all the monsters
 	Monster_vector = myMonster_Factory->Create_Monsters();
@@ -159,10 +156,8 @@ int main( int argc, char* args[] )
 		//Handle attacks
 		myCharacter->attack();
 
-		//Remove Dead monsters from the vector
+		//Remove Dead monsters from the vector and inform the character 
 		Monster_vector = myMonster_Factory->Remove_Dead_Monsters();
-
-		//Update the knowledge of the character regarding monsters
 		myCharacter->Update_Monster_Knowledge(Monster_vector);
 
 		//Move Monsters
@@ -188,6 +183,10 @@ int main( int argc, char* args[] )
 		{
 			return 1;    
 		}
+
+		//Eventually generate new monster and inform the character
+		Monster_vector = myMonster_Factory->Generate_New_Monster();
+		myCharacter->Update_Monster_Knowledge(Monster_vector);
 
 		//Cap the frame rate
         while( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )

@@ -11,8 +11,12 @@ class Monster_Factory
 
 		int Number_Of_Monsters;
 		SDL_Surface *Screen;
-		//Monster Vector
+		
+		//Monster Vector which contains all monsters present on the battlefield and all theirs infos
 		std::vector<Monster*> Monster_Vector;
+
+		//Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
+		bool Create_One_Monster();
 
 	public:
 
@@ -36,6 +40,9 @@ class Monster_Factory
 
 		//Remove all monster with dead status from the monster vector container
 		std::vector<Monster*> Remove_Dead_Monsters();
+
+		//Generate new monsters until max monster has been reached
+		std::vector<Monster*> Generate_New_Monster();
 
 };
 
