@@ -36,7 +36,7 @@ bool Monster_Factory::Create_One_Monster()
 std::vector<Monster*> Monster_Factory::Create_Monsters()
 {
 	//Loop until desired number of monsters has been reached
-	for(int i=0; i < Number_Of_Monsters; i++)
+	for(int i=1; i <= Number_Of_Monsters; i++)
 	{
 		if ( Create_One_Monster() == false )
 		{

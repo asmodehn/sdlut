@@ -3,7 +3,7 @@
 
 #include "Timer.hh"
 #include "Monster.hh"
-#include "Character.hh"
+#include "Character_Base.hh"
 #include "Monster_Factory.hh"
 
 //Gnerate Background

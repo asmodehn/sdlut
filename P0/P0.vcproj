@@ -185,7 +185,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\Character.cpp"
+				RelativePath=".\src\Character_Base.cpp"
 				>
 			</File>
 			<File
@@ -215,7 +215,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\Character.hh"
+				RelativePath=".\include\Character_Base.hh"
 				>
 			</File>
 			<File

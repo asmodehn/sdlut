@@ -106,12 +106,13 @@ int main( int argc, char* args[] )
 	Monster_vector = myMonster_Factory->Create_Monsters();
 
 	//Create Character & initialized it
-    Character* myCharacter = new Character(192, 224, _screen, Monster_vector);
+    Character_Base* myCharacter = new Character_Base(192, 224, _screen, Monster_vector);
 	//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_vector);
-		
+	
+	//Init of the character (surface, msgs)
 	if( myCharacter->Init() == false)
 	{
-		printf("Init Character failed\n");
+		printf("Character Init failed\n");
 		SDL_Delay(2000);
 		return 1;
 	}
@@ -150,11 +151,15 @@ int main( int argc, char* args[] )
             }
 		}
 
+		//Update the graphic style of the character
+		myCharacter->Update_Graphic_Style();
+
+
 		//Move the character
 		myCharacter->move();
 
 		//Handle attacks
-		myCharacter->attack();
+		int Character_Hit_Distance = myCharacter->attack();
 
 		//Remove Dead monsters from the vector and inform the character 
 		Monster_vector = myMonster_Factory->Remove_Dead_Monsters();
@@ -173,7 +178,7 @@ int main( int argc, char* args[] )
 		myCharacter->move_animation();
 		
 		//Show character attack animation
-		myCharacter->attack_animation();
+		myCharacter->attack_animation(Character_Hit_Distance);
 
 		//Apply monsters to the screen
 		myMonster_Factory->Move_Monsters_Animation(myCharacter->camera);
