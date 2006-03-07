@@ -152,21 +152,26 @@ bool Character::input_mgt( SDL_Event &event )
         switch( event.key.keysym.sym )
         {
 			//Moves Keys
-            case SDLK_KP8:
+			case SDLK_KP8:
+			case SDLK_UP:
 				yVel -= CH_HEIGHT;
 				break;
-            case SDLK_KP5:
+			case SDLK_KP5:
+			case SDLK_DOWN:
 				yVel += CH_HEIGHT;
 				break;
-            case SDLK_KP7:
+			case SDLK_KP7:
+			case SDLK_LEFT:
 				xVel -= CH_WIDTH;
 				break;
-            case SDLK_KP9:
+			case SDLK_KP9:
+			case SDLK_RIGHT:
 				xVel += CH_WIDTH;
 				break;
 
 			//Attacks Keys
-			case SDLK_KP_DIVIDE: //Melee
+			case SDLK_KP_DIVIDE:
+			case SDLK_SPACE: //Melee
 				attack_status = true;
 				break;
             case SDLK_KP_MULTIPLY:		//Distant
@@ -196,15 +201,19 @@ bool Character::input_mgt( SDL_Event &event )
         {
 			//Moves Keys
             case SDLK_KP8:
+			case SDLK_UP:
 				yVel += CH_HEIGHT;
 				break;
             case SDLK_KP5:
+			case SDLK_DOWN:
 				yVel -= CH_HEIGHT;
 				break;
             case SDLK_KP7:
+			case SDLK_LEFT:
 				xVel += CH_WIDTH;
 				break;
             case SDLK_KP9:
+			case SDLK_RIGHT:
 				xVel -= CH_WIDTH;
 				break;
 			default:
