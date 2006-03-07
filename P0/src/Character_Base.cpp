@@ -244,24 +244,30 @@ bool Character_Base::input_mgt( SDL_Event &event )
         {
 			//Moves Keys
             case SDLK_KP8:
+			case SDLK_UP:
 				yVel -= CH_HEIGHT;
 				break;
             case SDLK_KP5:
+			case SDLK_DOWN:
 				yVel += CH_HEIGHT;
 				break;
             case SDLK_KP7:
+			case SDLK_LEFT:
 				xVel -= CH_WIDTH;
 				break;
             case SDLK_KP9:
+			case SDLK_RIGHT:
 				xVel += CH_WIDTH;
 				break;
 
 			//Attacks Key
 			case SDLK_KP_DIVIDE:
+			case SDLK_RCTRL:
 				attack_status = true;
 				break;
 			//Change weapon style by looping between the available styles (2 for the moment)
             case SDLK_KP_MULTIPLY:
+			case SDLK_RSHIFT:
 				attack_style++;
 				if (attack_style > 2) { attack_style = 1; }
 				break;
@@ -289,15 +295,19 @@ bool Character_Base::input_mgt( SDL_Event &event )
         {
 			//Moves Keys
             case SDLK_KP8:
+			case SDLK_UP:
 				yVel += CH_HEIGHT;
 				break;
             case SDLK_KP5:
+			case SDLK_DOWN:
 				yVel -= CH_HEIGHT;
 				break;
             case SDLK_KP7:
+			case SDLK_LEFT:
 				xVel += CH_WIDTH;
 				break;
             case SDLK_KP9:
+			case SDLK_RIGHT:
 				xVel -= CH_WIDTH;
 				break;
 			default:
