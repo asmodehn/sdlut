@@ -16,7 +16,7 @@ class Monster_Factory
 		std::vector<Monster*> Monster_Vector;
 
 		//Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
-		bool Create_One_Monster();
+		bool Create_One_Monster(int Character_X, int Character_Y);
 
 	public:
 
@@ -30,7 +30,7 @@ class Monster_Factory
 		~Monster_Factory();
 
 		//Create Monster Method which create has many monsters has desired
-		std::vector<Monster*> Create_Monsters();
+		std::vector<Monster*> Create_Monsters(int Character_X, int Character_Y);
 
 		//Invoke all monsters movements
 		void Move_Monsters(SDL_Rect &Character_Collision_Box);
@@ -42,7 +42,7 @@ class Monster_Factory
 		std::vector<Monster*> Remove_Dead_Monsters();
 
 		//Generate new monsters until max monster has been reached
-		std::vector<Monster*> Generate_New_Monster();
+		std::vector<Monster*> Generate_New_Monster(int Character_X, int Character_Y);
 
 };
 

@@ -28,6 +28,10 @@ const int CH_HEIGHT = 32;
 const int MO_WIDTH = 32;
 const int MO_HEIGHT = 32;
 
+//Initial Chracter position
+const int CH_INITIAL_X = 192;
+const int CH_INITIAL_Y = 224;
+
 //The direction status of the character
 const int CH_RIGHT = 0;
 const int CH_LEFT = 1;

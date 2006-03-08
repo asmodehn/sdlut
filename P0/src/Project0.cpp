@@ -103,10 +103,10 @@ int main( int argc, char* args[] )
 	Monster_Factory* myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS, _screen);
 
 	//Create all the monsters
-	Monster_vector = myMonster_Factory->Create_Monsters();
+	Monster_vector = myMonster_Factory->Create_Monsters(CH_INITIAL_X, CH_INITIAL_Y);
 
 	//Create Character & initialized it
-    Character_Base* myCharacter = new Character_Base(192, 224, _screen, Monster_vector);
+    Character_Base* myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, _screen, Monster_vector);
 	//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_vector);
 	
 	//Init of the character (surface, msgs)
@@ -125,11 +125,11 @@ int main( int argc, char* args[] )
     _bg[0].h = 32;
 
 	    
-	//Update the screen
+	/*//Update the screen
     if( SDL_Flip(_screen) == -1 )
     {
         return 1;    
-    }
+    }*/
 
 	//Loop until close of the windows using the cross or escape key
 	while(quit == false)
@@ -153,7 +153,6 @@ int main( int argc, char* args[] )
 
 		//Update the graphic style of the character
 		myCharacter->Update_Graphic_Style();
-
 
 		//Move the character
 		myCharacter->move();
@@ -190,7 +189,7 @@ int main( int argc, char* args[] )
 		}
 
 		//Eventually generate new monster and inform the character
-		Monster_vector = myMonster_Factory->Generate_New_Monster();
+		Monster_vector = myMonster_Factory->Generate_New_Monster(myCharacter->collision_box.x, myCharacter->collision_box.y);
 		myCharacter->Update_Monster_Knowledge(Monster_vector);
 
 		//Cap the frame rate

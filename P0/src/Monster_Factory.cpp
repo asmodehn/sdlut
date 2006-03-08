@@ -18,10 +18,26 @@ Monster_Factory::~Monster_Factory()
 	SDL_FreeSurface(Screen);
 }
 //Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
-bool Monster_Factory::Create_One_Monster()
+bool Monster_Factory::Create_One_Monster(int Character_X, int Character_Y)
 {
+	//Determine monster creation position
+	int x = 0, y = 0;
+
+	//Check if monster is not too near of the character if so try again: monsters can't born in the 3 square radius near the character
+	x = random(0,39);
+	while ( (x >= (Character_X/32 - 3)) && (x <= (Character_X/32 + 3)) )
+	{
+		x = random(0,39);
+	}
+
+	y = random(0,39);
+	while ( (y >= (Character_Y/32 - 3)) && (y <= (Character_Y/32 + 3)) )
+	{
+		y = random(0,39);
+	}
+
 	//Create Monster & initialized it
-	Monster* myMonster = new Monster(32 * random(0,39), 32 * random(0,39), Screen);
+	Monster* myMonster = new Monster(32 * x, 32 * y, Screen);
 	//Check initialization
 	if( myMonster->Init() == false)
 	{
@@ -33,12 +49,12 @@ bool Monster_Factory::Create_One_Monster()
 
 }
 //Create Monsters Method which create as many monsters has desired
-std::vector<Monster*> Monster_Factory::Create_Monsters()
+std::vector<Monster*> Monster_Factory::Create_Monsters(int Character_X, int Character_Y)
 {
 	//Loop until desired number of monsters has been reached
 	for(int i=1; i <= Number_Of_Monsters; i++)
 	{
-		if ( Create_One_Monster() == false )
+		if ( Create_One_Monster(Character_X, Character_Y) == false )
 		{
 			printf("Init Monster %i failed\n", i);
 			SDL_Delay(2000);
@@ -85,17 +101,16 @@ std::vector<Monster*> Monster_Factory::Remove_Dead_Monsters()
 }
 
 //Generate new monsters until max monster has been reached
-std::vector<Monster*> Monster_Factory::Generate_New_Monster()
+std::vector<Monster*> Monster_Factory::Generate_New_Monster(int Character_X, int Character_Y)
 {
 	int temp = 0;
 	
 	//The more the monster on the battlefield, the less there a chance a new one is generated until we reached the MAX_MONSTERS_SIMULTANEOUSLY constant
 	temp = random(1, MAX_MONSTERS_SIMULTANEOUSLY);
-	
 	if (temp > Monster_Vector.size())
 	{
 		//Monster generation
-		if ( Create_One_Monster() == false )
+		if ( Create_One_Monster(Character_X, Character_Y) == false )
 		{
 			printf("New Monster Generation failed\n");
 			SDL_Delay(2000);
