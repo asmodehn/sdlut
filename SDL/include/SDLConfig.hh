@@ -30,6 +30,10 @@
 #include "SDL_image.h"
 #endif
 
+#ifdef HAVE_SDLTTF
+#include "SDL_ttf.h"
+#endif
+
 #ifdef THREAD
 #include <SDL_thread.h>
 #endif
