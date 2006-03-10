@@ -28,29 +28,42 @@ void generate_bg()
 //Initialization
 bool InitWindows()
 {
-    //Initialize all SDL sub systems
-    if( SDL_Init( SDL_INIT_EVERYTHING ) == -1 )
-    {
-        return false;    
+	//Set windows name
+	RAGE::SDL::App::getInstance().setName("Project 0 - 2D - v0.01");
+	//SDL_WM_SetCaption( "Project 0 - 2D - v0.01", NULL );
+
+	//Initialize SDL Video
+    if (! RAGE::SDL::App::getInstance().initVideo(false,false,false,false) )
+		//SDL_Init( SDL_INIT_EVERYTHING )
+	{
+        return false;
     }
-    
-    //Set up the screen
-    _screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
-    
-    //If there was in error in setting up the screen
-    if( _screen == NULL )
-    {
-        return false;    
+
+	//Create the screen surface
+	if (! RAGE::SDL::App::getInstance().getWindow()->reset(SCREEN_WIDTH, SCREEN_HEIGHT) )
+		//_screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
+	{
+        return false;
     }
+
+	//Get a pointer to the SDL surface currently displayed
+	_screen = SDL_GetVideoSurface();
+	if( _screen == NULL )
+    {
+		P0_Logger << " Get Video Surface Failed : " << SDL_GetError() << std::endl;
+        return false;
+    }
+	P0_Logger << " Get Video Surface : OK " << std::endl;
 
 	//Initialize SDL_ttf
     if( TTF_Init() == -1 )
     {
-        return false;    
+		P0_Logger << " TTF Error : " << TTF_GetError() << std::endl;
+        return false;
     }
-    
-    //Set the window caption
-    SDL_WM_SetCaption( "Project 0 - 2D - v0.01", NULL );
+	P0_Logger << " TTF Init : OK " << std::endl;
+
+
 
     //If eveything loads fine
     return true;    
@@ -59,7 +72,7 @@ bool InitWindows()
 bool Load_Files()
 {
 
-    _background = create_surface( "data/tankbrigade.bmp" );
+    _background = create_surface( "data/tankbrigade.bmp", 0xFFFFFF );
  	if( _background == NULL ) { return false; }
     
     //If eveything loaded fine
@@ -84,38 +97,46 @@ int main( int argc, char* args[] )
 	//Initialize
 	if( InitWindows() == false )
 	{ 
-		printf("Init Windows failed\n");
+		P0_Logger << " Init Windows failed... " << std::endl;
 		SDL_Delay(2000);
 		return 1;
 	}
+	P0_Logger << " Windows Init: OK " << std::endl;
+
 	//Load the files
 	if( Load_Files() == false )
 	{
-		printf("File load failed\n");
+		P0_Logger << " Loading File Failed... " << std::endl;
 		SDL_Delay(2000);
 		return 1;
 	}
+	P0_Logger << " File Load: OK " << std::endl;
 
 	//Monster vector which will contains all monsters
 	std::vector<Monster*> Monster_vector;
+	P0_Logger << " Monster Vector Creation: OK " << std::endl;
 
 	//Initialize the factory
 	Monster_Factory* myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS, _screen);
+	P0_Logger << " Monster Factory Init: OK " << std::endl;
 
 	//Create all the monsters
 	Monster_vector = myMonster_Factory->Create_Monsters(CH_INITIAL_X, CH_INITIAL_Y);
+	P0_Logger << " Initial Monster Creation: OK " << std::endl;
 
 	//Create Character & initialized it
     Character_Base* myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, _screen, Monster_vector);
 	//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_vector);
+	P0_Logger << " Character Creation: OK " << std::endl;
 	
 	//Init of the character (surface, msgs)
 	if( myCharacter->Init() == false)
 	{
-		printf("Character Init failed\n");
+		P0_Logger << " Character Init Failed... " << std::endl;
 		SDL_Delay(2000);
 		return 1;
 	}
+	P0_Logger << " Character Init: OK " << std::endl;
 
 
 	//Background Clip definition range for the top left ()
@@ -150,6 +171,7 @@ int main( int argc, char* args[] )
                 quit = true;
             }
 		}
+		//quit = RAGE::SDL::App::getInstance().getWindow()->mainLoop();
 
 		//Update the graphic style of the character
 		myCharacter->Update_Graphic_Style();

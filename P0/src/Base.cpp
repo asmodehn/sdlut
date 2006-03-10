@@ -1,7 +1,7 @@
 #include "Base.hh"
 
 //Create surface from an image function and optimized image to the desired format with white color as transparent color
-SDL_Surface *create_surface( std::string filename ) 
+SDL_Surface *create_surface( std::string filename, Uint32 transparent_color ) 
 {
     //Temporary storage for the Surface that's loaded
     SDL_Surface* loadedSurface = NULL;
@@ -26,7 +26,7 @@ SDL_Surface *create_surface( std::string filename )
         if( optimizedSurface != NULL )
         {
             //Set all pixels of color 0xFFFFFF (white) to be transparent
-            SDL_SetColorKey( optimizedSurface, SDL_RLEACCEL | SDL_SRCCOLORKEY, 0xFFFFFF );
+            SDL_SetColorKey( optimizedSurface, SDL_RLEACCEL | SDL_SRCCOLORKEY, transparent_color );
         }
     }
     

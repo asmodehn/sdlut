@@ -175,18 +175,18 @@ bool Character_Base::Init()
 		return false; }
 
 	//Surfaces
-	Characters_Tile_Melee = create_surface("data/Character_Fighter.bmp");
+	Characters_Tile_Melee = create_surface("data/Character_Fighter.bmp", 0xFFFFFF);
 	if( Characters_Tile_Melee == NULL ) {
 		return false; }
 
-	Characters_Tile_Distant = create_surface("data/Character_Archer.bmp");
+	Characters_Tile_Distant = create_surface("data/Character_Archer.bmp", 0xFFFFFF);
 	if( Characters_Tile_Distant == NULL ) {
 		return false; }
 
 	Characters_Tile = Characters_Tile_Melee;
 
 	//Arrow surface
-	Arrow_Tile = create_surface("data/Arrow.bmp");
+	Arrow_Tile = create_surface("data/Arrow.bmp", 0xFFFFFF);
 	if( Arrow_Tile == NULL ) {
 		return false; }
 
@@ -447,12 +447,12 @@ int Character_Base::attack()
 		if (attack_successfull)
 		{
 			apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_hit, screen );
-			printf("attack succesfull\n");
+			//printf("attack succesfull\n");
 		}
 		else
 		{
 			apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_miss, screen );
-			printf("attack failed\n");
+			//printf("attack failed\n");
 		}
 	}
 

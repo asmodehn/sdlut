@@ -86,7 +86,7 @@ Monster::~Monster()
 //Surface Initialiation
 bool Monster::Init()
 {
-	_monsters_list = create_surface( "data/Monsters5.bmp" );
+	_monsters_list = create_surface( "data/Monsters5.bmp", 0xFFFFFF );
 	if( _monsters_list == NULL ) { return false; }
 	return true;
 }

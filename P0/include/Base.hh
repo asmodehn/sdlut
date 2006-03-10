@@ -42,12 +42,12 @@ const int CH_UP = 3;
 const int INITIAL_MONSTERS = 15;
 const int MAX_MONSTERS_SIMULTANEOUSLY = 30;
 
-//Enable UniCode
-//SDL_EnableUNICODE()
+//Logger windows
+static RAGE::Logger P0_Logger("P0 Log");
 
 
-//Create surface from an image function and optimized image to the desired format with white color as transparent color
-SDL_Surface *create_surface( std::string filename );
+//Create surface from an image function and optimized image to the desired format with the desired color as transparent color
+SDL_Surface *create_surface( std::string filename, Uint32 transparent_color );
 //Surface blitting function wich blit a piece of a surface or the whole surface if no Rect area is defined
 void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL );
 //To check colission (small beginning of a physical engine^^)
