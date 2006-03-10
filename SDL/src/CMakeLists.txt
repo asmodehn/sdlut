@@ -23,6 +23,7 @@ ADD_LIBRARY(	Rage_SDL ../include/SDL.hh
 		SDLRGBSurface.cc ../include/SDLRGBSurface.hh
 		SDLVideoInfo.cc ../include/SDLVideoInfo.hh
 		SDLWindow.cc ../include/SDLWindow.hh
+		SDLRWOps.cc ../include/SDLRWOps.hh
 		SDLFont.cc ../include/SDLFont.hh
 	)
 

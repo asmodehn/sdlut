@@ -4,6 +4,12 @@
 
 #include "SDLConfig.hh"
 
+namespace RAGE
+{
+    namespace SDL
+    {
+
+
 /**
  * \class Font
  *
@@ -33,5 +39,7 @@ class Font {
 
 };
 
+	}
+}
 
 #endif
