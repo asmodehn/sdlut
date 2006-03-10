@@ -3,7 +3,6 @@ ADD_LIBRARY(	Rage_SDL ../include/SDL.hh
 		SDLConfig.cc ../include/SDLConfig.hh
 		Logger.cc ../include/Logger.hh
 		SDLApp.cc ../include/SDLApp.hh
-		SDLWindow.cc ../include/SDLWindow.hh
 		SDLBaseSurface.cc ../include/SDLBaseSurface.hh
 		SDLCDRom.cc ../include/SDLCDRom.hh
 		SDLCursor.cc ../include/SDLCursor.hh
@@ -23,6 +22,8 @@ ADD_LIBRARY(	Rage_SDL ../include/SDL.hh
 		SDLRect.cc ../include/SDLRect.hh
 		SDLRGBSurface.cc ../include/SDLRGBSurface.hh
 		SDLVideoInfo.cc ../include/SDLVideoInfo.hh
+		SDLWindow.cc ../include/SDLWindow.hh
+		SDLFont.cc ../include/SDLFont.hh
 	)
 
 
