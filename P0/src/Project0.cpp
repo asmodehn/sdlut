@@ -48,8 +48,10 @@ bool InitWindows()
 	P0_Logger << " Init Video : OK " << std::endl;
 
 	//Create the screen surface
-	if (! RAGE::SDL::App::getInstance().getWindow()->reset(SCREEN_WIDTH, SCREEN_HEIGHT) )
-		//_screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
+	Screen = RAGE::SDL::App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
+	//_screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
+	if (Screen == NULL  )
+		
 	{
 		P0_Logger << " Create Surface Failed : " << SDL_GetError() << std::endl;
         return false;
@@ -64,10 +66,6 @@ bool InitWindows()
         return false;
     }
 	P0_Logger << " Get Video Surface : OK " << std::endl;
-
-
-	Screen = RAGE::SDL::App::getInstance().getWindow()->getDisplay();
-
 
 	//Initialize SDL_ttf
     if( TTF_Init() == -1 )
@@ -88,6 +86,7 @@ bool Load_Files()
 	//Background = create_surface( "data/tankbrigade.bmp", 0xFFFFFF );
 	Background = RAGE::SDL::RGBSurface("data/tankbrigade.bmp");
 
+	Background.setColorKey((0xFF, 0xFF, 0xFF));
     /*_background = create_surface( "data/tankbrigade.bmp", 0xFFFFFF );
  	if( _background == NULL ) { return false; }*/
     
