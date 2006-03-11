@@ -194,7 +194,7 @@ namespace RAGE
             }
             bool fill (const PixelColor& color, Rect dest_rect);
 
-            //Blit src surface into the current surface
+            //Blit src surface on this surface
             inline bool blit (const BaseSurface& src, const Point& dest_pos=Point())
             {
                 Rect dest_rect(dest_pos);

@@ -82,13 +82,13 @@ int main( int argc, char* argv[])
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 
 	testlog << nl << "Displaying Window...";
-    App::getInstance().getWindow()->reset(640,480);
+    App::getInstance().getWindow()->resetDisplay(640,480);
 
     testlog << nl << "Main Loop...";
     App::getInstance().getWindow()->mainLoop();
 
     testlog << nl << "Displaying Window...";
-    App::getInstance().getWindow()->reset(640,480);
+    App::getInstance().getWindow()->resetDisplay(640,480);
 
     testlog << nl << "Setting up TextInput with UniCode enabled...";
 	MyTextInput ui2;

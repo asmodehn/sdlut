@@ -270,7 +270,7 @@ namespace RAGE
                 VideoSurface::setResizable(val);
             else if (_screen->isResizableset() !=val ) //if called inside mainLoop while screen is active
             {
-                if (! reset(_screen->getWidth(),_screen->getHeight()))
+                if (! resetDisplay(_screen->getWidth(),_screen->getHeight()))
                     res=false;
             }
             return res;
@@ -293,7 +293,7 @@ namespace RAGE
 
                 if (_screen->isFullScreenset() != val ) //if called inside mainLoop while screen is active
                 {
-                    if (! reset(_screen->getWidth(),_screen->getHeight()))
+                    if (! resetDisplay(_screen->getWidth(),_screen->getHeight()))
                         res=false;
                 }
             }
@@ -307,7 +307,7 @@ namespace RAGE
                 VideoSurface::setNoFrame(val);
             else if (_screen->isNoFrameset() !=val )  //if called inside mainLoop while screen is active
             {
-                if (! reset(_screen->getWidth(),_screen->getHeight()))
+                if (! resetDisplay(_screen->getWidth(),_screen->getHeight()))
                     res=false;
             }
             return res;
@@ -321,7 +321,7 @@ namespace RAGE
             else if ( _screen->isOpenGLset() !=val ) //if called inside mainLoop while screen is active
             {
                 VideoSurface::setOpenGL(val);
-                if (! reset(_screen->getWidth(),_screen->getHeight()))
+                if (! resetDisplay(_screen->getWidth(),_screen->getHeight()))
                     res=false;
             }
             return res;
@@ -448,7 +448,7 @@ namespace RAGE
 
 
 
-        bool Window::reset( int width, int height)
+        VideoSurface* Window::resetDisplay( int width, int height)
         {
 #ifdef DEBUG
             Log << nl << "Window::reset(" << width << "," << height << ") called ..." << std::endl;
@@ -509,11 +509,12 @@ namespace RAGE
             Log << nl << "Window::reset(" << width << "," << height << ") done." << std::endl;
 #endif
 
-            return res;
+            //return res;
+			return _screen;
 
         }
 
-        bool Window::resize (int width, int height) const
+        VideoSurface* Window::resizeDisplay (int width, int height) const
         {
 
 #ifdef DEBUG
@@ -531,7 +532,8 @@ namespace RAGE
             Log << nl << "Window::resize() done.";
 #endif
 
-            return res;
+            //return res;
+			return _screen;
         }
 
         bool Window::mainLoop()

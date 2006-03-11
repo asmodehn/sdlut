@@ -68,10 +68,12 @@ namespace RAGE
         public:
             ~Window();
 
-            //create the screen
-            bool reset( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT);
+            //create the screen or reset it if needed because some parameters changed
+			//returns NULL if no screen available
+            VideoSurface * resetDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT);
             //just resize the screen (without changing flags, or bpp)
-            bool resize (int width, int height) const;
+			//returns NULL if no screen available
+            VideoSurface * resizeDisplay (int width, int height) const;
 
             VideoSurface * getDisplay( void )
             {

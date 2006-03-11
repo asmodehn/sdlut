@@ -17,7 +17,7 @@ namespace RAGE
         assert(App::getInstance().getWindow());
 #endif
 
-        App::getInstance().getWindow()->resize(w,h);
+        App::getInstance().getWindow()->resizeDisplay(w,h);
         return true;
     }
 

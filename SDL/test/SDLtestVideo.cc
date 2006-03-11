@@ -238,7 +238,7 @@ int main(int argc, char** argv)
     App::getInstance().getWindow()->setBGColor(Color (128,0,0));
     App::getInstance().getWindow()->setEngine(new MyEngine());
 
-    if (! (App::getInstance().getWindow()->reset()))
+    if (! (App::getInstance().getWindow()->resetDisplay()))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);
@@ -282,7 +282,7 @@ int main(int argc, char** argv)
 
     App::getInstance().getWindow()->setOpenGL(true);
 
-    if(App::getInstance().getWindow()->reset())
+    if(App::getInstance().getWindow()->resetDisplay())
     {
 
 
