@@ -33,6 +33,11 @@ class Font {
 
 #ifdef HAVE_SDLTTF
         TTF_Font * _font;
+
+//		TTF_OpenFont
+//(13:16:55) XorfacX: et TTF_RenderText_Solid
+//(13:17:57) XorfacX: et evidemt TTF_Font*
+
 #endif
 
 

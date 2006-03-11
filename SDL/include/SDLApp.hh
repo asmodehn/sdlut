@@ -77,6 +77,7 @@ namespace RAGE
             bool initJoystick();
 
             //Add more when they are tested and working...
+			bool initText();
             //bool initAudio();
             //bool initTimer();
 

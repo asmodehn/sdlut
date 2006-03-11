@@ -32,6 +32,21 @@ namespace RAGE
             return instance;
         }
 
+		bool App::initText()
+		{
+#ifdef HAVE_SDLTTF
+			//Initialize SDL_ttf
+			if( TTF_Init() == -1 )
+			{
+				Log << " TTF Error : " << TTF_GetError() << std::endl;
+				return false;
+			}
+			return true;
+#endif
+			return false;
+			
+		}
+
         bool App::initVideo( bool fullscreen,bool opengl, bool resizable, bool noframe)
         {
             bool res = false;
