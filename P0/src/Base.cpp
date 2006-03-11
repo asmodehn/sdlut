@@ -1,5 +1,7 @@
 #include "Base.hh"
 
+RAGE::Logger P0_Logger("P0 Log");
+
 //Create surface from an image function and optimized image to the desired format with white color as transparent color
 SDL_Surface *create_surface( std::string filename, Uint32 transparent_color ) 
 {

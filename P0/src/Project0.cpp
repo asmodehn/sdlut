@@ -1,11 +1,16 @@
 #include "Project0.hh"
 
-//The surfaces that will be used
-SDL_Surface *_background = NULL;
+//The VideoSurfaces that will be used
+//SDL_Surface *_background = NULL;
 SDL_Surface *_screen = NULL;
 
+RAGE::SDL::VideoSurface* Screen = NULL;
+RAGE::SDL::RGBSurface Background;
+
 //Background Clip
-SDL_Rect _bg[1];
+//SDL_Rect _bg[1];
+
+RAGE::SDL::Rect BG_Clip[1];
 
 //The event structure that will be used
 SDL_Event event;
@@ -18,7 +23,8 @@ void generate_bg()
 	{
 		while (j<(SCREEN_HEIGHT/32-1)) //the -1 is here in order to not apply bg on the last line of the screen: the status bar
 		{
-			apply_surface(i*32, j*32, _background, _screen, &_bg[0]);
+			Screen->blit(Background, RAGE::SDL::Point::Point(i*32, j*32), BG_Clip[0]);
+			//apply_surface(i*32, j*32, _background, _screen, &_bg[0]);
 			j++;
 		}
 		i++;
@@ -36,15 +42,19 @@ bool InitWindows()
     if (! RAGE::SDL::App::getInstance().initVideo(false,false,false,false) )
 		//SDL_Init( SDL_INIT_EVERYTHING )
 	{
+		P0_Logger << " SDL Init Video Failed : " << SDL_GetError() << std::endl;
         return false;
     }
+	P0_Logger << " Init Video : OK " << std::endl;
 
 	//Create the screen surface
 	if (! RAGE::SDL::App::getInstance().getWindow()->reset(SCREEN_WIDTH, SCREEN_HEIGHT) )
 		//_screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
 	{
+		P0_Logger << " Create Surface Failed : " << SDL_GetError() << std::endl;
         return false;
     }
+	P0_Logger << " Video Surface Creation : OK " << std::endl;
 
 	//Get a pointer to the SDL surface currently displayed
 	_screen = SDL_GetVideoSurface();
@@ -54,6 +64,10 @@ bool InitWindows()
         return false;
     }
 	P0_Logger << " Get Video Surface : OK " << std::endl;
+
+
+	Screen = RAGE::SDL::App::getInstance().getWindow()->getDisplay();
+
 
 	//Initialize SDL_ttf
     if( TTF_Init() == -1 )
@@ -71,9 +85,11 @@ bool InitWindows()
 //Load Images Files
 bool Load_Files()
 {
+	//Background = create_surface( "data/tankbrigade.bmp", 0xFFFFFF );
+	Background = RAGE::SDL::RGBSurface("data/tankbrigade.bmp");
 
-    _background = create_surface( "data/tankbrigade.bmp", 0xFFFFFF );
- 	if( _background == NULL ) { return false; }
+    /*_background = create_surface( "data/tankbrigade.bmp", 0xFFFFFF );
+ 	if( _background == NULL ) { return false; }*/
     
     //If eveything loaded fine
     return true;    
@@ -81,7 +97,7 @@ bool Load_Files()
 //Clean Up Surface
 void Clean_Up()
 {
-	SDL_FreeSurface(_background);
+	//SDL_FreeSurface(_background);
 	SDL_FreeSurface(_screen);
 }
 
@@ -140,10 +156,15 @@ int main( int argc, char* args[] )
 
 
 	//Background Clip definition range for the top left ()
-    _bg[0].x = 198;
+   /* _bg[0].x = 198;
 	_bg[0].y = 132;
     _bg[0].w = 32;
-    _bg[0].h = 32;
+    _bg[0].h = 32;*/
+
+	BG_Clip->setx(198);
+	BG_Clip->sety(132);
+	BG_Clip->setw(32);
+	BG_Clip->seth(32);
 
 	    
 	/*//Update the screen

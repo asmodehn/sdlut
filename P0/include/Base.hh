@@ -43,7 +43,7 @@ const int INITIAL_MONSTERS = 15;
 const int MAX_MONSTERS_SIMULTANEOUSLY = 30;
 
 //Logger windows
-static RAGE::Logger P0_Logger("P0 Log");
+extern RAGE::Logger P0_Logger;
 
 
 //Create surface from an image function and optimized image to the desired format with the desired color as transparent color

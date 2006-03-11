@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\SDL\include;include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -64,7 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="SDL.lib SDLmain.lib ..\SDL\build\debug\Rage_SDL.lib opengl32.lib SDL_image.lib SDL_ttf.lib"
+				AdditionalOptions="SDL.lib SDLmain.lib ..\SDL\build\src\debug\Rage_SDL.lib opengl32.lib SDL_image.lib SDL_ttf.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
