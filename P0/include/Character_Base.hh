@@ -14,17 +14,18 @@ class Character_Base
 
 		//Display Surface
 		SDL_Surface *screen;
+		VideoSurface* Screen;
 	    
 		//Character tiles
-		SDL_Surface *Characters_Tile;
-		SDL_Surface *Characters_Tile_Melee;
-		SDL_Surface *Characters_Tile_Distant;
+		RGBSurface Characters_Tile;
+		RGBSurface Characters_Tile_Melee;
+		RGBSurface Characters_Tile_Distant;
 
 		//Character Clips
-		SDL_Rect _character_right_attack[3];
-		SDL_Rect _character_left_attack[3];
-		SDL_Rect _character_down_attack[3];
-		SDL_Rect _character_up_attack[3];
+		Rect _character_right_attack[3];
+		Rect _character_left_attack[3];
+		Rect _character_down_attack[3];
+		Rect _character_up_attack[3];
 
 		//The velocity of the Character
 		int xVel, yVel;
@@ -50,11 +51,11 @@ class Character_Base
 		int attack_style; //Manage the style of attack 
 
 		/***Arrow***/
-		SDL_Surface *Arrow_Tile;
-		SDL_Rect Arrow_Left[1];
-		SDL_Rect Arrow_Right[1];
-		SDL_Rect Arrow_Down[1];
-		SDL_Rect Arrow_Up[1];
+		RGBSurface Arrow_Tile;
+		Rect Arrow_Left[1];
+		Rect Arrow_Right[1];
+		Rect Arrow_Down[1];
+		Rect Arrow_Up[1];
 
 		/***Methods***/
 		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
@@ -63,13 +64,13 @@ class Character_Base
 	public:
 
 		//Initializes the variables
-		Character_Base(int X, int Y, SDL_Surface *Screen_Surface, std::vector<Monster*> monster_vector);
+		Character_Base(int X, int Y, SDL_Surface *Screen_Surface_old, VideoSurface* Screen_Surface, std::vector<Monster*> monster_vector);
 		
 		//The Camera that follow the character
-		SDL_Rect camera;
+		Rect Camera;
 
 		//The collision boxes of the Character and his attack colliosion box
-		SDL_Rect collision_box, attack_collision_box;
+		Rect collision_box, attack_collision_box;
 
 		//Destructor which free the surface 
 		~Character_Base();

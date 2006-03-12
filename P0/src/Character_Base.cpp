@@ -1,87 +1,83 @@
 #include "Character_Base.hh"
 
 //Initialization construtor
-Character_Base::Character_Base(int X, int Y, SDL_Surface *Screen_Surface, std::vector<Monster*> monster_vector)
+Character_Base::Character_Base(int X, int Y, SDL_Surface *Screen_Surface_old, VideoSurface* Screen_Surface, std::vector<Monster*> monster_vector)
 {
     //Initial position
 	x = X;
 	y = Y;
 
 	//Display Surface
-	screen = Screen_Surface;
+	screen = Screen_Surface_old;
+	Screen = Screen_Surface;
     
     //Initial velocity
     xVel = 0;
     yVel = 0;
 
-	//Character Tile
-	Characters_Tile = NULL;
-	Characters_Tile_Melee = NULL;
-	Characters_Tile_Distant = NULL;
-
 	//Character Clips definition
-	_character_left_attack[0].x = 0;
-    _character_left_attack[0].y = 0;
-    _character_left_attack[0].w = CH_WIDTH;
-    _character_left_attack[0].h = CH_HEIGHT;
-    
-    _character_left_attack[1].x = CH_WIDTH;
-    _character_left_attack[1].y = 0;
-    _character_left_attack[1].w = CH_WIDTH;
-    _character_left_attack[1].h = CH_HEIGHT;
-    
-    _character_left_attack[2].x = CH_WIDTH * 2;
-    _character_left_attack[2].y = 0;
-    _character_left_attack[2].w = CH_WIDTH;
-    _character_left_attack[2].h = CH_HEIGHT;
-    
+	_character_left_attack[0].setx(0);
+	_character_left_attack[0].sety(0);
+	_character_left_attack[0].setw(CH_WIDTH);
+	_character_left_attack[0].seth(CH_HEIGHT);
 
-    _character_right_attack[0].x = 0;
-    _character_right_attack[0].y = CH_HEIGHT;
-    _character_right_attack[0].w = CH_WIDTH;
-    _character_right_attack[0].h = CH_HEIGHT;
-    
-    _character_right_attack[1].x = CH_WIDTH;
-    _character_right_attack[1].y = CH_HEIGHT;
-    _character_right_attack[1].w = CH_WIDTH;
-    _character_right_attack[1].h = CH_HEIGHT;
-    
-    _character_right_attack[2].x = CH_WIDTH * 2;
-    _character_right_attack[2].y = CH_HEIGHT;
-    _character_right_attack[2].w = CH_WIDTH;
-    _character_right_attack[2].h = CH_HEIGHT;
+	_character_left_attack[1].setx(CH_WIDTH);
+    _character_left_attack[1].sety(0);
+    _character_left_attack[1].setw(CH_WIDTH);
+    _character_left_attack[1].seth(CH_HEIGHT);
+
+	_character_left_attack[2].setx(CH_WIDTH * 2);
+    _character_left_attack[2].sety(0);
+    _character_left_attack[2].setw(CH_WIDTH);
+    _character_left_attack[2].seth(CH_HEIGHT);
 
 
-	_character_down_attack[0].x = 0;
-    _character_down_attack[0].y = CH_HEIGHT*2;
-    _character_down_attack[0].w = CH_WIDTH;
-    _character_down_attack[0].h = CH_HEIGHT;
+    _character_right_attack[0].setx(0);
+    _character_right_attack[0].sety(CH_HEIGHT);
+    _character_right_attack[0].setw(CH_WIDTH);
+    _character_right_attack[0].seth(CH_HEIGHT);
     
-    _character_down_attack[1].x = CH_WIDTH;
-    _character_down_attack[1].y = CH_HEIGHT*2;
-    _character_down_attack[1].w = CH_WIDTH;
-    _character_down_attack[1].h = CH_HEIGHT;
+    _character_right_attack[1].setx(CH_WIDTH);
+    _character_right_attack[1].sety(CH_HEIGHT);
+    _character_right_attack[1].setw(CH_WIDTH);
+    _character_right_attack[1].seth(CH_HEIGHT);
     
-    _character_down_attack[2].x = CH_WIDTH * 2;
-    _character_down_attack[2].y = CH_HEIGHT*2;
-    _character_down_attack[2].w = CH_WIDTH;
-    _character_down_attack[2].h = CH_HEIGHT;
+    _character_right_attack[2].setx(CH_WIDTH * 2);
+    _character_right_attack[2].sety(CH_HEIGHT);
+    _character_right_attack[2].setw(CH_WIDTH);
+    _character_right_attack[2].seth(CH_HEIGHT);
+
+
+	_character_down_attack[0].setx(0);
+    _character_down_attack[0].sety(CH_HEIGHT*2);
+    _character_down_attack[0].setw(CH_WIDTH);
+    _character_down_attack[0].seth(CH_HEIGHT);
+    
+    _character_down_attack[1].setx(CH_WIDTH);
+    _character_down_attack[1].sety(CH_HEIGHT*2);
+    _character_down_attack[1].setw(CH_WIDTH);
+    _character_down_attack[1].seth(CH_HEIGHT);
+    
+    _character_down_attack[2].setx(CH_WIDTH * 2);
+    _character_down_attack[2].sety(CH_HEIGHT*2);
+    _character_down_attack[2].setw(CH_WIDTH);
+    _character_down_attack[2].seth(CH_HEIGHT);
     
 
-    _character_up_attack[0].x = 0;
-    _character_up_attack[0].y = CH_HEIGHT*3;
-    _character_up_attack[0].w = CH_WIDTH;
-    _character_up_attack[0].h = CH_HEIGHT;
+    _character_up_attack[0].setx(0);
+    _character_up_attack[0].sety(CH_HEIGHT*3);
+    _character_up_attack[0].setw(CH_WIDTH);
+    _character_up_attack[0].seth(CH_HEIGHT);
     
-    _character_up_attack[1].x = CH_WIDTH;
-    _character_up_attack[1].y = CH_HEIGHT*3;
-    _character_up_attack[1].w = CH_WIDTH;
-    _character_up_attack[1].h = CH_HEIGHT;
+    _character_up_attack[1].setx(CH_WIDTH);
+    _character_up_attack[1].sety(CH_HEIGHT*3);
+    _character_up_attack[1].setw(CH_WIDTH);
+    _character_up_attack[1].seth(CH_HEIGHT);
     
-    _character_up_attack[2].x = CH_WIDTH * 2;
-    _character_up_attack[2].y = CH_HEIGHT*3;
-    _character_up_attack[2].w = CH_WIDTH;
-    _character_up_attack[2].h = CH_HEIGHT;
+    _character_up_attack[2].setx(CH_WIDTH * 2);
+    _character_up_attack[2].sety(CH_HEIGHT*3);
+    _character_up_attack[2].setw(CH_WIDTH);
+    _character_up_attack[2].seth(CH_HEIGHT);
 
 	//Initialize animation variables
     frame = 0;  // for future moves animation
@@ -92,23 +88,23 @@ Character_Base::Character_Base(int X, int Y, SDL_Surface *Screen_Surface, std::v
 	attack_style = 1; //0: nothing (future dev), 1: Melee attack (default), 2: Distant attack, 3: magic attack (future dev)
 
 	//Camera: at the begining it's in the top left corner of the level
-	//camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-	camera.x = 0;
-	camera.y = 0;
-	camera.w = SCREEN_WIDTH;
-	camera.h = SCREEN_HEIGHT;
+	//Camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+	Camera.setx(0);
+	Camera.sety(0);
+	Camera.setw(SCREEN_WIDTH);
+	Camera.seth(SCREEN_HEIGHT);
 
 	//Collision Box Definition: The collision box has the size of the character
-	collision_box.x = X;
-    collision_box.y = Y;
-    collision_box.w = CH_WIDTH;
-    collision_box.h = CH_HEIGHT;
+	collision_box.setx(X);
+    collision_box.sety(Y);
+    collision_box.setw(CH_WIDTH);
+    collision_box.seth(CH_HEIGHT);
 
 	//Attack collsion box: currently in the same place of the character
-	attack_collision_box.x = X;
-    attack_collision_box.y = Y;
-    attack_collision_box.w = CH_WIDTH;
-    attack_collision_box.h = CH_HEIGHT;
+	attack_collision_box.setx(X);
+    attack_collision_box.sety(Y);
+    attack_collision_box.setw(CH_WIDTH);
+    attack_collision_box.seth(CH_HEIGHT);
 
 	//Msgs displayed in the status bar
 	attack_msg_hit = NULL;
@@ -122,27 +118,25 @@ Character_Base::Character_Base(int X, int Y, SDL_Surface *Screen_Surface, std::v
 	Monster_Vector = monster_vector; 
 
 	/****Arrow***/
-	Arrow_Tile = NULL;
+	Arrow_Left[0].setx(0);
+    Arrow_Left[0].sety(0);
+    Arrow_Left[0].setw(CH_WIDTH);
+    Arrow_Left[0].seth(CH_HEIGHT);
 
-	Arrow_Left[0].x = 0;
-    Arrow_Left[0].y = 0;
-    Arrow_Left[0].w = CH_WIDTH;
-    Arrow_Left[0].h = CH_HEIGHT;
+	Arrow_Right[0].setx(0);
+    Arrow_Right[0].sety(CH_HEIGHT);
+    Arrow_Right[0].setw(CH_WIDTH);
+    Arrow_Right[0].seth(CH_HEIGHT);
 
-	Arrow_Right[0].x = 0;
-    Arrow_Right[0].y = CH_HEIGHT;
-    Arrow_Right[0].w = CH_WIDTH;
-    Arrow_Right[0].h = CH_HEIGHT;
+	Arrow_Down[0].setx(0);
+    Arrow_Down[0].sety(CH_HEIGHT*2);
+    Arrow_Down[0].setw(CH_WIDTH);
+    Arrow_Down[0].seth(CH_HEIGHT);
 
-	Arrow_Down[0].x = 0;
-    Arrow_Down[0].y = CH_HEIGHT*2;
-    Arrow_Down[0].w = CH_WIDTH;
-    Arrow_Down[0].h = CH_HEIGHT;
-
-	Arrow_Up[0].x = 0;
-    Arrow_Up[0].y = CH_HEIGHT*3;
-    Arrow_Up[0].w = CH_WIDTH;
-    Arrow_Up[0].h = CH_HEIGHT;
+	Arrow_Up[0].setx(0);
+    Arrow_Up[0].sety(CH_HEIGHT*3);
+    Arrow_Up[0].setw(CH_WIDTH);
+    Arrow_Up[0].seth(CH_HEIGHT);
 }
 //Destructor
 Character_Base::~Character_Base()
@@ -159,10 +153,12 @@ Character_Base::~Character_Base()
 	SDL_FreeSurface(attack_distant_msg_miss);
 
 	//Free the surface
-	SDL_FreeSurface(Characters_Tile);
-	SDL_FreeSurface(Characters_Tile_Melee);
-	SDL_FreeSurface(Characters_Tile_Distant);
-	SDL_FreeSurface(Arrow_Tile);
+	/*Characters_Tile.~BaseSurface();
+	Characters_Tile_Melee.~BaseSurface();
+	Characters_Tile_Distant.~BaseSurface();
+	Arrow_Tile.~BaseSurface();*/
+	Screen->~VideoSurface();
+
 	SDL_FreeSurface(screen);
 }
 //Init of the character
@@ -170,25 +166,24 @@ bool Character_Base::Init()
 {
 	//Fight Msgs Style
 	attack_Text_Color.b = 255; attack_Text_Color.g = 255; attack_Text_Color.r = 255;
+	//Font AttackMsg_Font = Font("data/ECHELON.TTF", 28);
 	attack_font = TTF_OpenFont( "data/ECHELON.TTF", 28 );
 	if (attack_font == NULL)  {
 		return false; }
 
 	//Surfaces
-	Characters_Tile_Melee = create_surface("data/Character_Fighter.bmp", 0xFFFFFF);
+	Characters_Tile_Melee = RGBSurface("data/Character_Fighter.bmp", (0xFF, 0xFF, 0xFF));
+	//Characters_Tile_Melee.setColorKey((0xFF, 0xFF, 0xFF));
+	/*Characters_Tile_Melee = create_surface("data/Character_Fighter.bmp", 0xFFFFFF);
 	if( Characters_Tile_Melee == NULL ) {
-		return false; }
+		return false; }*/
 
-	Characters_Tile_Distant = create_surface("data/Character_Archer.bmp", 0xFFFFFF);
-	if( Characters_Tile_Distant == NULL ) {
-		return false; }
+	Characters_Tile_Distant = RGBSurface("data/Character_Archer.bmp", (0xFF, 0xFF, 0xFF));
 
-	Characters_Tile = Characters_Tile_Melee;
+	Characters_Tile = Characters_Tile_Melee; //Default tile: the melee tile
 
 	//Arrow surface
-	Arrow_Tile = create_surface("data/Arrow.bmp", 0xFFFFFF);
-	if( Arrow_Tile == NULL ) {
-		return false; }
+	Arrow_Tile = RGBSurface("data/Arrow.bmp", (0xFF, 0xFF, 0xFF));
 
 	//Msgs (by default melee type)
 	attack_melee_msg_hit = NULL;
@@ -310,6 +305,10 @@ bool Character_Base::input_mgt( SDL_Event &event )
 			case SDLK_RIGHT:
 				xVel -= CH_WIDTH;
 				break;
+			//Esc Key Pressed
+			case SDLK_ESCAPE:
+				quit = true;
+				break;
 			default:
 				quit = false;
 				break;
@@ -323,14 +322,14 @@ void Character_Base::move()
 {
     //Move the Character left or right and his collision box
 	x  += xVel;
-    collision_box.x  = x;
+    collision_box.setx(x);
     
     //If the Character went too far to the left or right
-	if( (collision_box.x < 0) || (collision_box.x + CH_WIDTH > LEVEL_WIDTH) )
+	if( (collision_box.getx() < 0) || (collision_box.getx() + CH_WIDTH > LEVEL_WIDTH) )
 	{
         //move back
 		x -= xVel;
-        collision_box.x = x;    
+        collision_box.setx(x);    
     }
 
 	//Collision with monster when moving on the x axis
@@ -339,21 +338,21 @@ void Character_Base::move()
 		if (check_collision(collision_box, Monster_Vector[i]->collision_box))
 		{
 			x -= xVel;
-			collision_box.x = x;
+			collision_box.setx(x);
 			break;
 		}
 	}
     
     //Move the Character up or down and his collision box
 	y += yVel;
-    collision_box.y = y;
+    collision_box.sety(y);
     
     //If the Character went too far up or down (the -32 is here for the status bar)
-	if((collision_box.y < 0) || (collision_box.y + CH_HEIGHT > LEVEL_HEIGHT-32) )
+	if((collision_box.gety() < 0) || (collision_box.gety() + CH_HEIGHT > LEVEL_HEIGHT-32) )
     {
         //move back
 		y -= yVel;
-        collision_box.y = y;    
+        collision_box.sety(y);    
     }
 	//Collision with monster when moving on the y axis
 	for(int i=0; i < Monster_Vector.size(); i++)
@@ -361,7 +360,7 @@ void Character_Base::move()
 		if (check_collision(collision_box, Monster_Vector[i]->collision_box))
 		{
 			y -= yVel;
-			collision_box.y = y;
+			collision_box.sety(y);
 			break;
 		}
 	}
@@ -393,19 +392,20 @@ void Character_Base::move_animation()
     //Show the character in his good position
     if( move_status == CH_RIGHT )
     {
-		apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[0]);
+		Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
+		//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[0]);
     }
     else if( move_status == CH_LEFT )
     {
-        apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_left_attack[0]);
+		Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
     }
 	else if( move_status == CH_DOWN )
     {
-        apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_down_attack[0]);
+		Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
     }
 	else if( move_status == CH_UP )
     {
-        apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_up_attack[0]);
+		Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
     }
 }
 //Handle character attack on monsters for all attack style
@@ -466,26 +466,26 @@ bool Character_Base::attack_check_status(int collision_box_movement)
 	if( move_status == CH_RIGHT )
 	{
 		//move the collision box right of the character
-		attack_collision_box.x = collision_box.x + (CH_WIDTH * collision_box_movement);
-		attack_collision_box.y = collision_box.y;
+		attack_collision_box.setx ( collision_box.getx() + (CH_WIDTH * collision_box_movement) );
+		attack_collision_box.sety ( collision_box.gety());
 	}
 	else if( move_status == CH_LEFT )
 	{
 		//move the collision box left of the character
-		attack_collision_box.x = collision_box.x - (CH_WIDTH * collision_box_movement);
-		attack_collision_box.y = collision_box.y;
+		attack_collision_box.setx( collision_box.getx() - (CH_WIDTH * collision_box_movement) );
+		attack_collision_box.sety( collision_box.gety() );
 	}
 	else if( move_status == CH_DOWN )
 	{
 		//move the collision box down of the character
-		attack_collision_box.x = collision_box.x;
-		attack_collision_box.y = collision_box.y + (CH_HEIGHT * collision_box_movement);
+		attack_collision_box.setx( collision_box.getx() );
+		attack_collision_box.sety( collision_box.gety() + (CH_HEIGHT * collision_box_movement) );
 	}
 	else if( move_status == CH_UP )
 	{
 		//move the collision box up of the character
-		attack_collision_box.x = collision_box.x;
-		attack_collision_box.y = collision_box.y - (CH_WIDTH * collision_box_movement);
+		attack_collision_box.setx( collision_box.getx() );
+		attack_collision_box.sety( collision_box.gety() - (CH_WIDTH * collision_box_movement) );
 	}
 	
 
@@ -523,91 +523,107 @@ void Character_Base::attack_animation(int character_hit_distance)
 			//Show the good attack in function of the position
 			if( move_status == CH_RIGHT )
 			{
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[0]);
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[1]);
+				/*apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[0]);
 
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[1]);
+				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[1]);*/
 				while( attack_regulator.get_ticks() < 150 )
 				{
 					//wait    
 				}
 
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[2]);
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[2]);
+				//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[2]);
 				attack_regulator.start();
 				while( attack_regulator.get_ticks() < 300 )
 				{
 					//wait    
 				}
 				
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[0]);
+				//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[0]);
 			}
 			else if( move_status == CH_LEFT )
 			{
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_left_attack[0]);
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[1]);
+				/*apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_left_attack[0]);
 
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_left_attack[1]);
+				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_left_attack[1]);*/
 				while( attack_regulator.get_ticks() < 150 )
 				{
 					//wait    
 				}
 
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[2]);
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_left_attack[2]);
+				//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_left_attack[2]);
 				attack_regulator.start();
 				while( attack_regulator.get_ticks() < 300 )
 				{
 					//wait    
 				}
 				
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_left_attack[0]);
+				//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_left_attack[0]);
 			}
 			else if( move_status == CH_DOWN )
 			{
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_down_attack[0]);
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[1]);
+				/*apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_down_attack[0]);
 
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_down_attack[1]);
+				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_down_attack[1]);*/
 				while( attack_regulator.get_ticks() < 150 )
 				{
 					//wait    
 				}
 
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[2]);
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_down_attack[2]);
+				//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_down_attack[2]);
 				attack_regulator.start();
 				while( attack_regulator.get_ticks() < 300 )
 				{
 					//wait    
 				}
 				
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_down_attack[0]);
+				//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_down_attack[0]);
 			}
 			else if( move_status == CH_UP )
 			{
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_up_attack[0]);
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[1]);
+				/*apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_up_attack[0]);
 
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_up_attack[1]);
+				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_up_attack[1]);*/
 				while( attack_regulator.get_ticks() < 150 )
 				{
 					//wait    
 				}
 
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[2]);
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_up_attack[2]);
-				attack_regulator.start();
+				//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_up_attack[2]);
+				//attack_regulator.start();
 				while( attack_regulator.get_ticks() < 300 )
 				{
 					//wait    
 				}
 				
+				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
 				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_up_attack[0]);
+				//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_up_attack[0]);
 			}
 		}
 		// Distant Style
@@ -619,7 +635,8 @@ void Character_Base::attack_animation(int character_hit_distance)
 				//Show the good arrow in function of the position
 				if( move_status == CH_RIGHT )
 				{
-					apply_surface(x - camera.x + (i * CH_WIDTH), y - camera.y, Arrow_Tile, screen, &Arrow_Right[0]);
+					Screen->blit(Arrow_Tile, Point::Point(x - Camera.getx() + (i * CH_WIDTH), y - Camera.gety()), Arrow_Right[0]);
+					//apply_surface(x - camera.x + (i * CH_WIDTH), y - camera.y, Arrow_Tile, screen, &Arrow_Right[0]);
 					attack_regulator.start();
 					while( attack_regulator.get_ticks() < 200 )
 					{
@@ -628,7 +645,8 @@ void Character_Base::attack_animation(int character_hit_distance)
 				}
 				else if( move_status == CH_LEFT )
 				{
-					apply_surface(x - camera.x - (i * CH_WIDTH), y - camera.y, Arrow_Tile, screen, &Arrow_Left[0]);
+					Screen->blit(Arrow_Tile, Point::Point(x - Camera.getx() - (i * CH_WIDTH), y - Camera.gety()), Arrow_Left[0]);
+					//apply_surface(x - camera.x - (i * CH_WIDTH), y - camera.y, Arrow_Tile, screen, &Arrow_Left[0]);
 					attack_regulator.start();
 					while( attack_regulator.get_ticks() < 200 )
 					{
@@ -637,7 +655,8 @@ void Character_Base::attack_animation(int character_hit_distance)
 				}
 				else if( move_status == CH_DOWN )
 				{
-					apply_surface(x - camera.x, y - camera.y + (i * CH_HEIGHT), Arrow_Tile, screen, &Arrow_Down[0]);
+					Screen->blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() + (i * CH_HEIGHT)), Arrow_Down[0]);
+					//apply_surface(x - camera.x, y - camera.y + (i * CH_HEIGHT), Arrow_Tile, screen, &Arrow_Down[0]);
 					attack_regulator.start();
 					while( attack_regulator.get_ticks() < 200 )
 					{
@@ -646,7 +665,8 @@ void Character_Base::attack_animation(int character_hit_distance)
 				}
 				else if( move_status == CH_UP )
 				{
-					apply_surface(x - camera.x, y - camera.y - (i * CH_HEIGHT), Arrow_Tile, screen, &Arrow_Up[0]);
+					Screen->blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() - (i * CH_HEIGHT)), Arrow_Up[0]);
+					//apply_surface(x - camera.x, y - camera.y - (i * CH_HEIGHT), Arrow_Tile, screen, &Arrow_Up[0]);
 					attack_regulator.start();
 					while( attack_regulator.get_ticks() < 200 )
 					{
@@ -665,24 +685,24 @@ void Character_Base::attack_animation(int character_hit_distance)
 void Character_Base::following_camera()
 {
     //Center the camera over the Character
-    camera.x = (x + CH_WIDTH / 2) - SCREEN_WIDTH / 2;
-    camera.y = (y + CH_HEIGHT / 2) - SCREEN_HEIGHT / 2;
+    Camera.setx( (x + CH_WIDTH / 2) - SCREEN_WIDTH / 2 );
+    Camera.sety( (y + CH_HEIGHT / 2) - SCREEN_HEIGHT / 2 );
     //Keep the camera in bounds.
-    if(camera.x < 0)
+    if(Camera.getx() < 0)
     {
-        camera.x = 0;    
+        Camera.setx(0);    
     }
-    if(camera.y < 0)
+    if(Camera.gety() < 0)
     {
-        camera.y = 0;    
+        Camera.sety(0);    
     }
-    if(camera.x > LEVEL_WIDTH - camera.w)
+    if( Camera.getx() > (LEVEL_WIDTH - Camera.getw()) )
     {
-        camera.x = LEVEL_WIDTH - camera.w;    
+        Camera.setx(LEVEL_WIDTH - Camera.getw());    
     }
-    if(camera.y > LEVEL_HEIGHT - camera.h)
+    if(Camera.gety() > (LEVEL_HEIGHT - Camera.geth()) )
     {
-        camera.y = LEVEL_HEIGHT - camera.h;    
+        Camera.sety(LEVEL_HEIGHT - Camera.geth());    
     }    
 }
 

@@ -1,16 +1,13 @@
 #include "Project0.hh"
 
 //The VideoSurfaces that will be used
-//SDL_Surface *_background = NULL;
 SDL_Surface *_screen = NULL;
 
-RAGE::SDL::VideoSurface* Screen = NULL;
-RAGE::SDL::RGBSurface Background;
+VideoSurface* Screen = NULL;
+RGBSurface Background;
 
 //Background Clip
-//SDL_Rect _bg[1];
-
-RAGE::SDL::Rect BG_Clip[1];
+Rect BG_Clip[1];
 
 //The event structure that will be used
 SDL_Event event;
@@ -23,7 +20,7 @@ void generate_bg()
 	{
 		while (j<(SCREEN_HEIGHT/32-1)) //the -1 is here in order to not apply bg on the last line of the screen: the status bar
 		{
-			Screen->blit(Background, RAGE::SDL::Point::Point(i*32, j*32), BG_Clip[0]);
+			Screen->blit(Background, Point::Point(i*32, j*32), BG_Clip[0]);
 			//apply_surface(i*32, j*32, _background, _screen, &_bg[0]);
 			j++;
 		}
@@ -35,11 +32,11 @@ void generate_bg()
 bool InitWindows()
 {
 	//Set windows name
-	RAGE::SDL::App::getInstance().setName("Project 0 - 2D - v0.01");
+	App::getInstance().setName("Project 0 - 2D - v0.01");
 	//SDL_WM_SetCaption( "Project 0 - 2D - v0.01", NULL );
 
 	//Initialize SDL Video
-    if (! RAGE::SDL::App::getInstance().initVideo(false,false,false,false) )
+    if (! App::getInstance().initVideo(false,false,false,false) )
 		//SDL_Init( SDL_INIT_EVERYTHING )
 	{
 		P0_Logger << " SDL Init Video Failed : " << SDL_GetError() << std::endl;
@@ -48,10 +45,9 @@ bool InitWindows()
 	P0_Logger << " Init Video : OK " << std::endl;
 
 	//Create the screen surface
-	Screen = RAGE::SDL::App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
+	Screen = App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
 	//_screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
 	if (Screen == NULL  )
-		
 	{
 		P0_Logger << " Create Surface Failed : " << SDL_GetError() << std::endl;
         return false;
@@ -68,7 +64,8 @@ bool InitWindows()
 	P0_Logger << " Get Video Surface : OK " << std::endl;
 
 	//Initialize SDL_ttf
-    if( TTF_Init() == -1 )
+	if (! App::getInstance().initText())
+		//if( TTF_Init() == -1 )
     {
 		P0_Logger << " TTF Error : " << TTF_GetError() << std::endl;
         return false;
@@ -81,23 +78,21 @@ bool InitWindows()
     return true;    
 }
 //Load Images Files
-bool Load_Files()
+void Load_Files()
 {
-	//Background = create_surface( "data/tankbrigade.bmp", 0xFFFFFF );
-	Background = RAGE::SDL::RGBSurface("data/tankbrigade.bmp");
-
+	//Create rgbsurface that will be the BG with white color as transparent
+	Background = RGBSurface("data/tankbrigade.bmp", (0xFF, 0xFF, 0xFF));
 	Background.setColorKey((0xFF, 0xFF, 0xFF));
-    /*_background = create_surface( "data/tankbrigade.bmp", 0xFFFFFF );
- 	if( _background == NULL ) { return false; }*/
-    
-    //If eveything loaded fine
-    return true;    
+	P0_Logger << " Background Surface Loaded : OK " << std::endl;
+  
 }
 //Clean Up Surface
 void Clean_Up()
 {
+	//Background.~RGBSurface();
 	//SDL_FreeSurface(_background);
 	SDL_FreeSurface(_screen);
+	Screen->~VideoSurface();
 }
 
 //Main
@@ -119,12 +114,7 @@ int main( int argc, char* args[] )
 	P0_Logger << " Windows Init: OK " << std::endl;
 
 	//Load the files
-	if( Load_Files() == false )
-	{
-		P0_Logger << " Loading File Failed... " << std::endl;
-		SDL_Delay(2000);
-		return 1;
-	}
+	Load_Files();
 	P0_Logger << " File Load: OK " << std::endl;
 
 	//Monster vector which will contains all monsters
@@ -132,7 +122,7 @@ int main( int argc, char* args[] )
 	P0_Logger << " Monster Vector Creation: OK " << std::endl;
 
 	//Initialize the factory
-	Monster_Factory* myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS, _screen);
+	Monster_Factory* myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS, Screen);
 	P0_Logger << " Monster Factory Init: OK " << std::endl;
 
 	//Create all the monsters
@@ -140,7 +130,7 @@ int main( int argc, char* args[] )
 	P0_Logger << " Initial Monster Creation: OK " << std::endl;
 
 	//Create Character & initialized it
-    Character_Base* myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, _screen, Monster_vector);
+    Character_Base* myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, _screen, Screen, Monster_vector);
 	//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_vector);
 	P0_Logger << " Character Creation: OK " << std::endl;
 	
@@ -154,23 +144,11 @@ int main( int argc, char* args[] )
 	P0_Logger << " Character Init: OK " << std::endl;
 
 
-	//Background Clip definition range for the top left ()
-   /* _bg[0].x = 198;
-	_bg[0].y = 132;
-    _bg[0].w = 32;
-    _bg[0].h = 32;*/
-
+	//Background Clip definition range from the top left
 	BG_Clip->setx(198);
 	BG_Clip->sety(132);
 	BG_Clip->setw(32);
 	BG_Clip->seth(32);
-
-	    
-	/*//Update the screen
-    if( SDL_Flip(_screen) == -1 )
-    {
-        return 1;    
-    }*/
 
 	//Loop until close of the windows using the cross or escape key
 	while(quit == false)
@@ -190,8 +168,10 @@ int main( int argc, char* args[] )
             {
                 quit = true;
             }
+			//Leave if esc was pressed
+			if (quit == true) {break;}
 		}
-		//quit = RAGE::SDL::App::getInstance().getWindow()->mainLoop();
+		//quit = App::getInstance().getWindow()->mainLoop();
 
 		//Update the graphic style of the character
 		myCharacter->Update_Graphic_Style();
@@ -222,7 +202,7 @@ int main( int argc, char* args[] )
 		myCharacter->attack_animation(Character_Hit_Distance);
 
 		//Apply monsters to the screen
-		myMonster_Factory->Move_Monsters_Animation(myCharacter->camera);
+		myMonster_Factory->Move_Monsters_Animation(myCharacter->Camera);
 
 		//Update the screen
 		if( SDL_Flip(_screen) == -1 )
@@ -231,7 +211,7 @@ int main( int argc, char* args[] )
 		}
 
 		//Eventually generate new monster and inform the character
-		Monster_vector = myMonster_Factory->Generate_New_Monster(myCharacter->collision_box.x, myCharacter->collision_box.y);
+		Monster_vector = myMonster_Factory->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety() );
 		myCharacter->Update_Monster_Knowledge(Monster_vector);
 
 		//Cap the frame rate
@@ -244,6 +224,8 @@ int main( int argc, char* args[] )
 	//Clean Before Exit
 	//delete myCharacter;
 	//delete myMonster;
+	//myMonster_Factory->~Monster_Factory();
+	//myCharacter->~Character_Base();
 	Clean_Up();
 	
 	//Quit SDL_ttf

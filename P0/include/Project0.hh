@@ -11,7 +11,7 @@ void generate_bg();
 //Initialization
 bool InitWindows();
 //Load Images Files
-bool Load_Files();
+void Load_Files();
 //Clean Up Surface
 void Clean_Up();
 

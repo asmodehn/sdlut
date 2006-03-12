@@ -7,15 +7,15 @@ Monster_Factory::Monster_Factory()
 	Screen = NULL;
 }
 //Constructor
-Monster_Factory::Monster_Factory(int number_of_monsters, SDL_Surface *screen_surface)
+Monster_Factory::Monster_Factory(int number_of_monsters, VideoSurface* Screen_Surface)
 {
 	Number_Of_Monsters = number_of_monsters;
-	Screen = screen_surface;
+	Screen = Screen_Surface;
 }
 //Destructor
 Monster_Factory::~Monster_Factory()
 {
-	SDL_FreeSurface(Screen);
+	Screen->~VideoSurface();
 }
 //Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
 bool Monster_Factory::Create_One_Monster(int Character_X, int Character_Y)
@@ -38,11 +38,7 @@ bool Monster_Factory::Create_One_Monster(int Character_X, int Character_Y)
 
 	//Create Monster & initialized it
 	Monster* myMonster = new Monster(32 * x, 32 * y, Screen);
-	//Check initialization
-	if( myMonster->Init() == false)
-	{
-		return false;
-	}
+
 	//store the monster at the end of the vector
 	Monster_Vector.push_back(myMonster);
 	return true;
@@ -64,7 +60,7 @@ std::vector<Monster*> Monster_Factory::Create_Monsters(int Character_X, int Char
 	return Monster_Vector;
 }
 //Invoke all monsters movements
-void Monster_Factory::Move_Monsters(SDL_Rect &Character_Collision_Box)
+void Monster_Factory::Move_Monsters(Rect Character_Collision_Box)
 {
 	//Move Monsters
 	for(int i=0; i < Monster_Vector.size(); i++)
@@ -73,7 +69,7 @@ void Monster_Factory::Move_Monsters(SDL_Rect &Character_Collision_Box)
 	}
 }
 //Invoke all monsters movements animation on the screen
-void Monster_Factory::Move_Monsters_Animation(SDL_Rect Camera)
+void Monster_Factory::Move_Monsters_Animation(Rect Camera)
 {
 	for(int i=0; i < Monster_Vector.size(); i++)
 	{

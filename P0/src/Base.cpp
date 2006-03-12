@@ -51,7 +51,7 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
 }
 
 //To check colission (small beginning of a physical engine^^)
-bool check_collision(SDL_Rect &A, SDL_Rect &B)
+bool check_collision(Rect A, Rect B)
 {
     //The sides of the rectangles
     int leftA, leftB;
@@ -60,16 +60,16 @@ bool check_collision(SDL_Rect &A, SDL_Rect &B)
     int bottomA, bottomB;
 
     //Calculate the sides of rect A
-    leftA = A.x;
-    rightA = A.x + A.w;
-    topA = A.y;
-    bottomA = A.y + A.h;
+    leftA = A.getx();
+    rightA = A.getx() + A.getw();
+    topA = A.gety();
+    bottomA = A.gety() + A.geth();
         
     //Calculate the sides of rect B
-    leftB = B.x;
-    rightB = B.x + B.w;
-    topB = B.y;
-    bottomB = B.y + B.h;
+    leftB = B.getx();
+    rightB = B.getx() + B.getw();
+    topB = B.gety();
+    bottomB = B.gety() + B.geth();
             
     //If any of the sides from A are outside of B
     if( bottomA <= topB )
