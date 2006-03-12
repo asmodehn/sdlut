@@ -24,6 +24,7 @@
 //TODO : NO_OPENGL option in build
 #include <SDL_opengl.h>
 
+
 //Conditionals
 
 #ifdef HAVE_SDLIMAGE
@@ -41,6 +42,7 @@
 #if SDL_VERSION_ATLEAST(1, 2, 7)
 #include "SDL_cpuinfo.h"
 #endif
+
 
 //utils
 #include <iostream>
@@ -78,7 +80,19 @@ namespace RAGE
             //global, namespace visible, declaration :
             extern Logger Log;
 
-        std::string GetError(void);
+typedef enum
+{
+	Main
+#ifdef HAVE_SDLIMAGE
+	,Image
+#endif
+#ifdef HAVE_SDLTTF
+	,TTF
+#endif
+}Module;
+
+
+        std::string GetError(Module = Main);
 
         class Version
         {

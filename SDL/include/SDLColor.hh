@@ -88,6 +88,11 @@ namespace RAGE
                     delete _color;
             }
 
+			SDL_Color get_SDL()
+			{
+				return *_color;
+			}
+
             void setR(Uint8 nr)
             {
                 _color->r=nr ;

@@ -17,8 +17,13 @@ namespace RAGE
             if (!Log.enableFileLog(logfilename))
                 throw std::logic_error("Log file creation FAILED !");
         }
+
         App::~App()
         {
+#ifdef HAVE_SDLTTF
+			if (TTF_WasInit())
+				TTF_Quit();
+#endif
             //MAKE SURE those destructor dont need App. They shouldnt !
             delete _window, _window = NULL;
             //this one should be last because it calls SDL_Quit
@@ -38,7 +43,7 @@ namespace RAGE
 			//Initialize SDL_ttf
 			if( TTF_Init() == -1 )
 			{
-				Log << " TTF Error : " << TTF_GetError() << std::endl;
+				Log << " TTF Error : " << GetError(TTF) << std::endl;
 				return false;
 			}
 			return true;

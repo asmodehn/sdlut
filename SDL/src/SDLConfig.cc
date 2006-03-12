@@ -8,9 +8,14 @@ namespace RAGE
 
         Logger Log("RAGE::SDL");
 
-        std::string GetError(void)
+        std::string GetError(Module mod)
         {
-            return SDL_GetError();
+			if (mod == Main)
+				return SDL_GetError();
+#ifdef HAVE_SDLTTF
+			if (mod == TTF)
+				return TTF_GetError();
+#endif
         }
 
         Version::Version()

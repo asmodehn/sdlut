@@ -3,6 +3,7 @@
 
 
 #include "SDLConfig.hh"
+#include "SDLColor.hh"
 
 namespace RAGE
 {
@@ -31,12 +32,23 @@ namespace RAGE
 
 class Font {
 
-#ifdef HAVE_SDLTTF
-        TTF_Font * _font;
+	friend class RGBSurface; // to access render()
 
-//		TTF_OpenFont
-//(13:16:55) XorfacX: et TTF_RenderText_Solid
-//(13:17:57) XorfacX: et evidemt TTF_Font*
+public:
+	typedef enum { Solid, Shaded, Blended } RenderMode;
+
+#ifdef HAVE_SDLTTF
+private:
+        TTF_Font * _font;
+protected:
+	//The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
+	//Are all those different way of rendering text really usefull ??
+	SDL_Surface* render(std::string text, Color c, RenderMode mode, Color bgc = Color()) const;
+
+public:
+	Font(std::string filename, int ptsize = 16) throw (std::logic_error);
+	~Font();
+	
 
 #endif
 

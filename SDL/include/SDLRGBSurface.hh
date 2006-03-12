@@ -9,6 +9,7 @@
 
 #include "SDLBaseSurface.hh"
 #include "SDLColor.hh"
+#include "SDLFont.hh"
 
 namespace RAGE
 {
@@ -49,6 +50,10 @@ public :
     //creates surface from file, copying its content...
 	RGBSurface( std::string filename )throw (std::logic_error);
 	RGBSurface( std::string filename, const RGBColor & colorKey )throw (std::logic_error);
+	//creates a surface from a text (solid or blended mode).
+	RGBSurface ( const Font & font, std::string text, Color color, bool blended = false);
+	//creates a surface from a text (shaded mode).
+	RGBSurface ( const Font & font, std::string text, Color color, RGBColor bgcolor);
 
 protected : //the client should not access to flags...
 
