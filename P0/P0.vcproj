@@ -189,6 +189,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Input_Management.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Monster.cpp"
 				>
 			</File>
@@ -216,6 +220,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Character_Base.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Input_Management.hh"
 				>
 			</File>
 			<File

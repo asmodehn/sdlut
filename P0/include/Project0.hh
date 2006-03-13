@@ -5,6 +5,7 @@
 #include "Monster.hh"
 #include "Character_Base.hh"
 #include "Monster_Factory.hh"
+#include "Input_Management.hh"
 
 //Gnerate Background
 void generate_bg();

@@ -177,13 +177,9 @@ bool Character_Base::Init()
 	/*Characters_Tile_Melee = create_surface("data/Character_Fighter.bmp", 0xFFFFFF);
 	if( Characters_Tile_Melee == NULL ) {
 		return false; }*/
-
 	Characters_Tile_Distant = RGBSurface("data/Character_Archer.bmp", (0xFF, 0xFF, 0xFF));
-
 	Characters_Tile = Characters_Tile_Melee; //Default tile: the melee tile
-
-	//Arrow surface
-	Arrow_Tile = RGBSurface("data/Arrow.bmp", (0xFF, 0xFF, 0xFF));
+	Arrow_Tile = RGBSurface("data/Arrow.bmp", (0xFF, 0xFF, 0xFF)); //Arrow surface
 
 	//Msgs (by default melee type)
 	attack_melee_msg_hit = NULL;
@@ -218,6 +214,7 @@ void Character_Base::Update_Graphic_Style()
 		Characters_Tile = Characters_Tile_Melee;
 		attack_msg_hit = attack_melee_msg_hit;
 		attack_msg_miss = attack_melee_msg_miss;
+		//P0_Logger << " Graphic Style Updated To Melee Style : OK " << std::endl;
 	}
 	// Distant Style
 	else if (attack_style == 2)
@@ -225,6 +222,7 @@ void Character_Base::Update_Graphic_Style()
 		Characters_Tile = Characters_Tile_Distant;
 		attack_msg_hit = attack_distant_msg_hit;
 		attack_msg_miss = attack_distant_msg_miss;
+		//P0_Logger << " Graphic Style Updated To Distant Style : OK " << std::endl;
 	}
 }
 // input Management
@@ -447,12 +445,12 @@ int Character_Base::attack()
 		if (attack_successfull)
 		{
 			apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_hit, screen );
-			//printf("attack succesfull\n");
+			P0_Logger << " >>> Monster Hit <<< " << std::endl;
 		}
 		else
 		{
 			apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_miss, screen );
-			//printf("attack failed\n");
+			P0_Logger << " >>> Monster Miss <<< " << std::endl;
 		}
 	}
 
@@ -499,7 +497,7 @@ bool Character_Base::attack_check_status(int collision_box_movement)
 			_attack_successfull = true;
 			//...Change the monster status to false aka monster dead...
 			Monster_Vector[i]->Alive_Status = false;
-			//...Than leave the check in order to touch only one monster at a timer.
+			//...Than leave the check in order to touch only one monster at a time.
 			break;
 		}			
 	}

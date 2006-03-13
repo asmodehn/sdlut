@@ -57,26 +57,71 @@ class Character_Base
 		Rect Arrow_Down[1];
 		Rect Arrow_Up[1];
 
-		/***Methods***/
 		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
 		bool attack_check_status(int collision_box_movement);
 
 	public:
 
-		//Initializes the variables
-		Character_Base(int X, int Y, SDL_Surface *Screen_Surface_old, VideoSurface* Screen_Surface, std::vector<Monster*> monster_vector);
-		
+		/****Variables****/
+
 		//The Camera that follow the character
 		Rect Camera;
 
 		//The collision boxes of the Character and his attack colliosion box
 		Rect collision_box, attack_collision_box;
 
+
+		/****Definitions****/
+
+		//Initializes the variables
+		Character_Base(int X, int Y, SDL_Surface *Screen_Surface_old, VideoSurface* Screen_Surface, std::vector<Monster*> monster_vector);
+
+		//Init of the character (surface, msgs)
+		bool Init();
+
 		//Destructor which free the surface 
 		~Character_Base();
 		
-		//Init of the character (surface, msgs)
-		bool Init();
+
+		/****Wrapper****/
+
+		void Set_xVel(int new_xVel )
+        {
+            xVel=new_xVel;
+        }
+		void Set_yVel(int new_yVel )
+        {
+            yVel=new_yVel;
+        }
+		//Define if the player has push the attack Key
+		void Set_Attack_Status(int new_attack_status )
+        {
+            attack_status=new_attack_status;
+        }
+		void Set_Attack_Style(int new_attack_style )
+        {
+            attack_style=new_attack_style;
+        }
+
+        int Get_xVel() const
+        {
+            return xVel;
+        }
+        int Get_yVel() const
+        {
+            return yVel;
+        }
+		int Get_Attack_Status() const
+        {
+            return attack_status;
+        }
+        int Get_Attack_Style() const
+        {
+            return attack_style;
+        }
+
+
+		/****Methods****/
 
 		//Update the graphic regarding the attack style
 		void Update_Graphic_Style();

@@ -18,7 +18,7 @@ void generate_bg()
 	int i=0, j=0;
 	while (i<(SCREEN_WIDTH/32))
 	{
-		while (j<(SCREEN_HEIGHT/32-1)) //the -1 is here in order to not apply bg on the last line of the screen: the status bar
+		while (j<(SCREEN_HEIGHT/32 - 1)) //the -1 is here in order to not apply bg on the last line of the screen: the status bar
 		{
 			Screen->blit(Background, Point::Point(i*32, j*32), BG_Clip[0]);
 			//apply_surface(i*32, j*32, _background, _screen, &_bg[0]);
@@ -101,6 +101,12 @@ int main( int argc, char* args[] )
 	//Make sure the program waits for a quit
 	bool quit = false;
 
+	//Background Clip definition range from the top left
+	BG_Clip->setx(198);
+	BG_Clip->sety(132);
+	BG_Clip->setw(32);
+	BG_Clip->seth(32);
+
 	//The frames rate regulator
     Timer fps;
 
@@ -143,12 +149,11 @@ int main( int argc, char* args[] )
 	}
 	P0_Logger << " Character Init: OK " << std::endl;
 
-
-	//Background Clip definition range from the top left
-	BG_Clip->setx(198);
-	BG_Clip->sety(132);
-	BG_Clip->setw(32);
-	BG_Clip->seth(32);
+	//UserKeyboardInput Mgt
+    KeyboardInput myKeyboardInput;
+	myKeyboardInput.Character_Knowledge(myCharacter);
+    App::getInstance().getWindow()->getEventManager()->setKeyboard(&myKeyboardInput);
+	//App::getInstance().getWindow()->mainLoop();
 
 	//Loop until close of the windows using the cross or escape key
 	while(quit == false)
