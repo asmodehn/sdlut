@@ -84,7 +84,19 @@ SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /wd4290 " )
 SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:msvcrt.lib" )
 ENDIF(CMAKE_CXX_COMPILER STREQUAL "cl")
 
+#to put the SVN Revision number in the build
+find_program( SVNVERSION
+  svnversion
+  /usr/local/bin
+  /usr/bin
+)
 
+macro( svn_repository_version DESTVAR TOPDIR )
+  exec_program( ${SVNVERSION} ${TOPDIR} ARGS "." OUTPUT_VARIABLE ${DESTVAR} )
+endmacro( svn_repository_version )
+
+svn_repository_version( SVNREV ${Rage_SDL_SOURCE_DIR} )
+#think about where it s better to use SVNREV...
 
 #adding definitions for Logs and debug
 ADD_DEFINITIONS(-DLOGINDENTLVL=1 -DDEBUG)
