@@ -78,6 +78,9 @@ public :
 
 	static void setFlags(bool SWSURFACE = false, bool HWSURFACE = true, bool SRCCOLORKEY = false, bool SRCALPHA = false);
 
+	//Destructor
+	~RGBSurface(){}
+
     bool setColorKey(const RGBColor &, bool rleAccel = true);
 
 

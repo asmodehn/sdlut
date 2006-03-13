@@ -48,7 +48,7 @@ class MyEngine : public Engine
 public:
     MyEngine()
     {
-        RGBSurface _defaultlogo("data/SDL_logo.bmp");
+        RGBSurface _defaultlogo("data/SDL_logo.bmp",Color(0xFF,0xFF,0xff));
         Log << nl << "Assignment ... TEST";
         _defaultlogocopy = _defaultlogo;
         Log << nl << "Assignment... END";

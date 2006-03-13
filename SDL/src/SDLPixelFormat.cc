@@ -34,6 +34,9 @@ namespace RAGE
         {
             //copy the format because we don't want it to be modified...
             SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
+#ifdef DEBUG
+		Log << "Calling SDL_MapRGB(fmt, "<<val.getR()<< ", " <<val.getG()<<", "<<val.getB()<<") ...";
+#endif
             return SDL_MapRGB(fmt, val.getR(), val.getG(), val.getB());
         }
 
@@ -41,7 +44,10 @@ namespace RAGE
         {
             //copy the format because we don't want it to be modified...
             SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
-            return SDL_MapRGBA(fmt, val.getR(), val.getG(), val.getB(), val.getA());
+#ifdef DEBUG
+		Log << "Calling SDL_MapRGB(fmt, "<<val.getR()<< ", " <<val.getG()<<", "<<val.getB()<<", "<<val.getA()<<") ...";
+#endif
+			return SDL_MapRGBA(fmt, val.getR(), val.getG(), val.getB(), val.getA());
         }
 
         RGBColor PixelFormat::getRGBValue(const PixelColor& color) const
