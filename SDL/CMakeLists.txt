@@ -7,9 +7,6 @@ PROJECT(Rage_SDL)
 #Checking software dependencies
 #
 
-INCLUDE (${CMAKE_ROOT}/Modules/FindSDL.cmake)
-INCLUDE (${CMAKE_ROOT}/Modules/FindOpenGL.cmake)
-
 #Default Check for SDL
 MESSAGE(STATUS "Checking for SDL")
 FIND_PACKAGE(SDL REQUIRED)
