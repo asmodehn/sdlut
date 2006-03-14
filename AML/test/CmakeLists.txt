@@ -1,0 +1,13 @@
+CMAKE_MINIMUM_REQUIRED ( VERSION 2.2)
+
+
+#linking SDLWrap to all other following targets
+LINK_LIBRARIES(Rage_AML)
+
+#linking opengl for all other tests if detected
+IF(OPENGL_FOUND)
+	LINK_LIBRARIES (${OPENGL_LIBRARIES})
+ENDIF(OPENGL_FOUND)
+
+ADD_EXECUTABLE(AMLtest include/AML.hh test/test.cc)
+ADD_DEPENDENCIES(AMLtest Rage_AML)
