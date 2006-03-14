@@ -20,6 +20,8 @@
 
 //Mandatory
 #include <SDL.h>
+//Mandatory because we use RWOps for the wrapper, and we even wrap it
+#include <SDL_rwops.h>
 //Mandatory because we also wrap OpenGL
 //TODO : NO_OPENGL option in build
 #include <SDL_opengl.h>

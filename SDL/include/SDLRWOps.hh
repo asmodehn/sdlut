@@ -27,6 +27,24 @@ namespace RAGE
 
         class RWOps
         {
+
+			typedef enum {Set = SEEK_SET, Cur = SEEK_CUR, End = SEEK_END }Seek;
+
+			SDL_RWops * _rwops;
+		protected:
+			RWOps() throw (std::logic_error);
+		public:
+			RWOps(const std::string & file, const char *mode) throw (std::logic_error);
+			RWOps(FILE *fp, int autoclose) throw (std::logic_error);
+			RWOps(void *mem, int size) throw (std::logic_error);
+			RWOps(const void *mem, int size) throw (std::logic_error);
+			~RWOps();
+
+			/*int Seek(int offset,Seek start);
+			Tell();
+			read();
+			write();
+			close();*/
         };
 
     }
