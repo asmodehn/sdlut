@@ -172,14 +172,14 @@ bool Character_Base::Init()
 		return false; }
 
 	//Surfaces
-	Characters_Tile_Melee = RGBSurface("data/Character_Fighter.bmp", (0xFF, 0xFF, 0xFF));
+	Characters_Tile_Melee = RGBSurface("data/Character_Fighter.bmp", Color(0xFF, 0xFF, 0xFF));
 	//Characters_Tile_Melee.setColorKey((0xFF, 0xFF, 0xFF));
 	/*Characters_Tile_Melee = create_surface("data/Character_Fighter.bmp", 0xFFFFFF);
 	if( Characters_Tile_Melee == NULL ) {
 		return false; }*/
-	Characters_Tile_Distant = RGBSurface("data/Character_Archer.bmp", (0xFF, 0xFF, 0xFF));
+	Characters_Tile_Distant = RGBSurface("data/Character_Archer.bmp", Color(0xFF, 0xFF, 0xFF));
 	Characters_Tile = Characters_Tile_Melee; //Default tile: the melee tile
-	Arrow_Tile = RGBSurface("data/Arrow.bmp", (0xFF, 0xFF, 0xFF)); //Arrow surface
+	Arrow_Tile = RGBSurface("data/Arrow.bmp", Color(0xFF, 0xFF, 0xFF)); //Arrow surface
 
 	//Msgs (by default melee type)
 	attack_melee_msg_hit = NULL;

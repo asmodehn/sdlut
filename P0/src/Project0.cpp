@@ -81,8 +81,8 @@ bool InitWindows()
 void Load_Files()
 {
 	//Create rgbsurface that will be the BG with white color as transparent
-	Background = RGBSurface("data/tankbrigade.bmp", (0xFF, 0xFF, 0xFF));
-	Background.setColorKey((0xFF, 0xFF, 0xFF));
+	Background = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
+	//Background.setColorKey((0xFF, 0xFF, 0xFF));
 	P0_Logger << " Background Surface Loaded : OK " << std::endl;
   
 }
