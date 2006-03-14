@@ -7,9 +7,9 @@ namespace RAGE
 namespace SDL
 {
 Font::Font(std::string filename, int ptsize)
-try : _font(TTF_OpenFont(filename.c_str(),ptsize))
+try : _font(NULL)
 {
-	if(!_font) {
+	if((_font=TTF_OpenFont(filename.c_str(),ptsize))==NULL) {
 		throw("TTF_OpenFont: " + GetError(TTF));
     }
 }
