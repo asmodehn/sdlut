@@ -7,7 +7,7 @@ Monster::Monster()
 	x = 0;
     y = 0;
 
-	//Monster Tile Surface
+	//Monster Tile Surface with white transparent
 	_monsters_list = RGBSurface("data/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
 
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
@@ -76,7 +76,8 @@ Monster::Monster(const Monster& ToCopy)
 //Destructor
 Monster::~Monster()
 {
-	/*_monsters_list.~BaseSurface();*/
+	_monsters_list.~RGBSurface();
+	Screen->~VideoSurface();
 	//SDL_FreeSurface(_monsters_list);
 	//SDL_FreeSurface(screen);
 }

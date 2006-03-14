@@ -153,10 +153,10 @@ Character_Base::~Character_Base()
 	SDL_FreeSurface(attack_distant_msg_miss);
 
 	//Free the surface
-	/*Characters_Tile.~BaseSurface();
-	Characters_Tile_Melee.~BaseSurface();
-	Characters_Tile_Distant.~BaseSurface();
-	Arrow_Tile.~BaseSurface();*/
+	Characters_Tile.~RGBSurface();
+	Characters_Tile_Melee.~RGBSurface();
+	Characters_Tile_Distant.~RGBSurface();
+	Arrow_Tile.~RGBSurface();
 	Screen->~VideoSurface();
 
 	SDL_FreeSurface(screen);
