@@ -16,6 +16,7 @@ namespace RAGE
 			if (mod == TTF)
 				return TTF_GetError();
 #endif
+			return std::string("Wrong call to RAGE::SDL::GetError()"); // shouldnt happen since we have a default value for mod
         }
 
         Version::Version()

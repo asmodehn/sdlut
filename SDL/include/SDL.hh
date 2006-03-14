@@ -60,10 +60,15 @@
   * \defgroup CDROM
   * \defgroup Threads
   * \defgroup Timers
+  */
+/**
   * \defgroup RWOps
+  */
+#include "SDLRWOps.hh"
+/**
   * \defgroup Text
   */
-
+#include "SDLFont.hh"
 
 
 
