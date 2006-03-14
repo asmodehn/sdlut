@@ -136,7 +136,11 @@ namespace RAGE
         RGBSurface::RGBSurface( std::string filename, const Color & colorKey )throw (std::logic_error)
         try
 :
-            BaseSurface(SDL_LoadBMP(filename.c_str()))
+#ifdef HAVE_SDLIMAGE
+			BaseSurface(IMG_Load(filename.c_str()))
+#else
+			BaseSurface(SDL_LoadBMP(filename.c_str()))
+#endif
         {
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << filename << ", " << colorKey << ") called...";
