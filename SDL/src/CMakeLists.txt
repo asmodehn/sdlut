@@ -1,5 +1,5 @@
 #adding with headers just to have them in generated projects
-ADD_LIBRARY(	Rage_SDL ../include/SDL.hh ../include/SDLColor.hh
+ADD_LIBRARY(	Rage_SDL ../include/SDL.hh ../include/SDLColor.hh ../include/SDLEngine.hh
 		SDLConfig.cc ../include/SDLConfig.hh
 		Logger.cc ../include/Logger.hh
 		SDLApp.cc ../include/SDLApp.hh

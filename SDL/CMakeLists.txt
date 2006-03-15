@@ -96,7 +96,17 @@ svn_repository_version( SVNREV ${Rage_SDL_SOURCE_DIR} )
 #think about where it s better to use SVNREV...
 
 #adding definitions for Logs and debug
-ADD_DEFINITIONS(-DLOGINDENTLVL=1 -DDEBUG)
+
+
+ADD_DEFINITIONS(-DLOGINDENTLVL=1)
+
+SET(Custom_Debug_Mode OFF CACHE BOOL "Wether or not you want the project to be build with extra Log output")
+
+IF (Custom_Debug_Mode)
+	ADD_DEFINITIONS(-DDEBUG)
+ENDIF(Custom_Debug_Mode)
+
+
 
 INCLUDE_DIRECTORIES(include)
 INSTALL_FILES(/include include)
