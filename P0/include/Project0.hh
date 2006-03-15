@@ -1,7 +1,6 @@
 #ifndef Project0_HH
 #define Project0_HH
 
-#include "Timer.hh"
 #include "Monster.hh"
 #include "Character_Base.hh"
 #include "Monster_Factory.hh"

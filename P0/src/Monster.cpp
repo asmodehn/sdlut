@@ -77,7 +77,7 @@ Monster::Monster(const Monster& ToCopy)
 Monster::~Monster()
 {
 	_monsters_list.~RGBSurface();
-	Screen->~VideoSurface();
+	delete Screen;
 	//SDL_FreeSurface(_monsters_list);
 	//SDL_FreeSurface(screen);
 }

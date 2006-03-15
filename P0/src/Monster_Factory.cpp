@@ -15,7 +15,7 @@ Monster_Factory::Monster_Factory(int number_of_monsters, VideoSurface* Screen_Su
 //Destructor
 Monster_Factory::~Monster_Factory()
 {
-	Screen->~VideoSurface();
+	delete Screen;
 }
 //Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
 bool Monster_Factory::Create_One_Monster(int Character_X, int Character_Y)
@@ -53,7 +53,7 @@ std::vector<Monster*> Monster_Factory::Create_Monsters(int Character_X, int Char
 		if ( Create_One_Monster(Character_X, Character_Y) == false )
 		{
 			printf("Init Monster %i failed\n", i);
-			SDL_Delay(2000);
+			Timer::delay(2000);
 		}
 	}
 
@@ -109,7 +109,7 @@ std::vector<Monster*> Monster_Factory::Generate_New_Monster(int Character_X, int
 		if ( Create_One_Monster(Character_X, Character_Y) == false )
 		{
 			printf("New Monster Generation failed\n");
-			SDL_Delay(2000);
+			Timer::delay(2000);
 		}
 	}
 	

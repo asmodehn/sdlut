@@ -157,7 +157,7 @@ Character_Base::~Character_Base()
 	Characters_Tile_Melee.~RGBSurface();
 	Characters_Tile_Distant.~RGBSurface();
 	Arrow_Tile.~RGBSurface();
-	Screen->~VideoSurface();
+	delete Screen;
 
 	SDL_FreeSurface(screen);
 }
@@ -173,10 +173,6 @@ bool Character_Base::Init()
 
 	//Surfaces
 	Characters_Tile_Melee = RGBSurface("data/Character_Fighter.bmp", Color(0xFF, 0xFF, 0xFF));
-	//Characters_Tile_Melee.setColorKey((0xFF, 0xFF, 0xFF));
-	/*Characters_Tile_Melee = create_surface("data/Character_Fighter.bmp", 0xFFFFFF);
-	if( Characters_Tile_Melee == NULL ) {
-		return false; }*/
 	Characters_Tile_Distant = RGBSurface("data/Character_Archer.bmp", Color(0xFF, 0xFF, 0xFF));
 	Characters_Tile = Characters_Tile_Melee; //Default tile: the melee tile
 	Arrow_Tile = RGBSurface("data/Arrow.bmp", Color(0xFF, 0xFF, 0xFF)); //Arrow surface
@@ -439,7 +435,8 @@ int Character_Base::attack()
 
 		/*****Display MSG on the status bar *****/
 		//Clean the status Bar (last line of the screen)
-		SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00) );
+		Screen->fill(Color(0x00, 0x00, 0x00));
+		//SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00) );
 
 		//If a monster was hit displayed the msg, if no display miss msg
 		if (attack_successfull)

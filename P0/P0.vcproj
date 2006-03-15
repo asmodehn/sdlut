@@ -64,7 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="SDL.lib SDLmain.lib ..\SDL\build\src\debug\Rage_SDL.lib opengl32.lib SDL_image.lib SDL_ttf.lib"
+				AdditionalOptions="SDL.lib SDLmain.lib ..\SDL\build\src\debug\Rage_SDL.lib opengl32.lib SDL_image.lib SDL_ttf.lib /NODEFAULTLIB:msvcrt.lib SDL_net.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
@@ -204,10 +204,6 @@
 				RelativePath=".\src\Project0.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\src\Timer.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Headers"
@@ -238,16 +234,20 @@
 				RelativePath=".\include\Project0.hh"
 				>
 			</File>
-			<File
-				RelativePath=".\include\Timer.hh"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Datas"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\data\Arrow.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\data\Character_Archer.bmp"
+				>
+			</File>
 			<File
 				RelativePath=".\data\Character_Fighter.bmp"
 				>

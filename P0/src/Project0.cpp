@@ -12,6 +12,85 @@ Rect BG_Clip[1];
 //The event structure that will be used
 SDL_Event event;
 
+//engine Class : No idea whats used for be neccessary for mainloop
+class TheEngine : public Engine
+{
+private:
+    //RGBSurface _defaultlogocopy;
+
+public:
+    TheEngine()
+    {
+		//Set windows name
+		App::getInstance().setName("Project 0 - 2D - v0.01");
+        //RGBSurface _defaultlogo("data/SDL_logo.bmp", Color(0xFF,0xFF,0xFF));
+        //_defaultlogocopy = _defaultlogo;
+    }
+
+    virtual ~TheEngine(){}
+
+    bool init(int width, int height)
+    { 
+		//Initialize SDL Video
+		if (! App::getInstance().initVideo(false,false,false,false) )
+			//SDL_Init( SDL_INIT_EVERYTHING )
+		{
+			P0_Logger << " SDL Init Video Failed : " << GetError() << std::endl;
+			return false;
+		}
+		P0_Logger << " Init Video : OK " << std::endl;
+
+		//Create the screen surface
+		Screen = App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
+		//_screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
+		if (Screen == NULL  )
+		{
+			P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
+			return false;
+		}
+		P0_Logger << " Video Surface Creation : OK " << std::endl;
+
+		//Get a pointer to the SDL surface currently displayed
+		/*_screen = SDL_GetVideoSurface();
+		if( _screen == NULL )
+		{
+			P0_Logger << " Get Video Surface Failed : " << GetError() << std::endl;
+			return false;
+		}
+		P0_Logger << " Get Video Surface : OK " << std::endl;*/
+
+		//Initialize SDL_ttf
+		if (! App::getInstance().initText())
+			//if( TTF_Init() == -1 )
+		{
+			//P0_Logger << " TTF Error : " << GetError(TTF ) << std::endl;
+			return false;
+		}
+		P0_Logger << " TTF Init : OK " << std::endl;
+
+		//If eveything loads fine
+		return true;  
+	}
+
+    bool resize(int width, int height)
+    { return true; }
+
+    bool render(void) const
+    {
+		//Generate the background to the screen
+		generate_bg();
+	
+        /*bool res = false;
+        if ( _screen != NULL )
+        {
+            RGBSurface _defaultlogocopy2(_defaultlogocopy);
+            res= _screen->blit(_defaultlogocopy2,Point((_screen->getWidth()-_defaultlogocopy2.getWidth())/2,(_screen->getHeight()-_defaultlogocopy2.getHeight())/2));
+        }
+
+        return res;*/
+		return true;
+    }
+};
 //Gnerate Background
 void generate_bg()
 {
@@ -39,7 +118,7 @@ bool InitWindows()
     if (! App::getInstance().initVideo(false,false,false,false) )
 		//SDL_Init( SDL_INIT_EVERYTHING )
 	{
-		P0_Logger << " SDL Init Video Failed : " << SDL_GetError() << std::endl;
+		P0_Logger << " SDL Init Video Failed : " << GetError() << std::endl;
         return false;
     }
 	P0_Logger << " Init Video : OK " << std::endl;
@@ -49,7 +128,7 @@ bool InitWindows()
 	//_screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
 	if (Screen == NULL  )
 	{
-		P0_Logger << " Create Surface Failed : " << SDL_GetError() << std::endl;
+		P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
         return false;
     }
 	P0_Logger << " Video Surface Creation : OK " << std::endl;
@@ -58,7 +137,7 @@ bool InitWindows()
 	_screen = SDL_GetVideoSurface();
 	if( _screen == NULL )
     {
-		P0_Logger << " Get Video Surface Failed : " << SDL_GetError() << std::endl;
+		P0_Logger << " Get Video Surface Failed : " << GetError() << std::endl;
         return false;
     }
 	P0_Logger << " Get Video Surface : OK " << std::endl;
@@ -67,12 +146,10 @@ bool InitWindows()
 	if (! App::getInstance().initText())
 		//if( TTF_Init() == -1 )
     {
-		P0_Logger << " TTF Error : " << TTF_GetError() << std::endl;
+//		P0_Logger << " TTF Error : " << GetError(Module(TTF)) << std::endl;
         return false;
     }
 	P0_Logger << " TTF Init : OK " << std::endl;
-
-
 
     //If eveything loads fine
     return true;    
@@ -92,7 +169,7 @@ void Clean_Up()
 	//Background.~RGBSurface();
 	//SDL_FreeSurface(_background);
 	SDL_FreeSurface(_screen);
-	Screen->~VideoSurface();
+	delete Screen;
 }
 
 //Main
@@ -108,13 +185,14 @@ int main( int argc, char* args[] )
 	BG_Clip->seth(32);
 
 	//The frames rate regulator
-    Timer fps;
+	Timer fps;
 
 	//Initialize
 	if( InitWindows() == false )
 	{ 
 		P0_Logger << " Init Windows failed... " << std::endl;
-		SDL_Delay(2000);
+		Timer::delay(2000);
+		//SDL_Delay(2000);
 		return 1;
 	}
 	P0_Logger << " Windows Init: OK " << std::endl;
@@ -144,7 +222,7 @@ int main( int argc, char* args[] )
 	if( myCharacter->Init() == false)
 	{
 		P0_Logger << " Character Init Failed... " << std::endl;
-		SDL_Delay(2000);
+		Timer::delay(2000);
 		return 1;
 	}
 	P0_Logger << " Character Init: OK " << std::endl;
@@ -153,7 +231,15 @@ int main( int argc, char* args[] )
     KeyboardInput myKeyboardInput;
 	myKeyboardInput.Character_Knowledge(myCharacter);
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&myKeyboardInput);
-	//App::getInstance().getWindow()->mainLoop();
+	/*App::getInstance().getWindow()->setEngine(new TheEngine());
+	App::getInstance().getWindow()->mainLoop();*/
+
+
+	/*if(SDLNet_Init()==-1) {
+		P0_Logger << " SDL_Net Init Failed " << std::endl;
+		return 1;
+	}
+	P0_Logger << " SDL_Net Init : OK " << std::endl;*/
 
 	//Loop until close of the windows using the cross or escape key
 	while(quit == false)
@@ -233,6 +319,9 @@ int main( int argc, char* args[] )
 	//myCharacter->~Character_Base();
 	Clean_Up();
 	
+	//Quit SDl_NEt
+	//SDLNet_Quit();
+
 	//Quit SDL_ttf
     TTF_Quit();
 

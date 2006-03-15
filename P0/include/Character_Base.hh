@@ -3,7 +3,6 @@
 
 #include "Base.hh"
 #include "Monster.hh"
-#include "Timer.hh"
 
 //Character Class
 class Character_Base
