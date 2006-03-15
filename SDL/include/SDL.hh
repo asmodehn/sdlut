@@ -59,8 +59,11 @@
   * \defgroup Audio
   * \defgroup CDROM
   * \defgroup Threads
-  * \defgroup Timers
+  * /
+/**
+  defgroup Timers
   */
+#include "SDLTimer.hh"
 /**
   * \defgroup RWOps
   */
