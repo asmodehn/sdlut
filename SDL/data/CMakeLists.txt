@@ -24,8 +24,9 @@ CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/sail.bmp ${Rage_SDL_BINARY_DIR}/test/
 CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/sample.bmp ${Rage_SDL_BINARY_DIR}/test/data/sample.bmp COPYONLY)
 CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/sample.wav ${Rage_SDL_BINARY_DIR}/test/data/sample.wav COPYONLY)
 CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/sdl_button.gif ${Rage_SDL_BINARY_DIR}/test/data/sdl_button.gif COPYONLY)
+CONFIGURE_FILE(${Rage_SDL_SOURCE_DIR}/data/echelon.ttf ${Rage_SDL_BINARY_DIR}/test/data/echelon.ttf COPYONLY)
 
 # installing tests data
-INSTALL_FILES(/data FILES data/SDL_logo.bmo data/icon.bmp data/moose.dat data/picture.xbm data/sail.bmp data/sample.bmp data/sample.wav)
+INSTALL_FILES(/data FILES data/SDL_logo.bmo data/icon.bmp data/moose.dat data/picture.xbm data/sail.bmp data/sample.bmp data/sample.wav data/echelon.ttf)
 
 ENDIF(BUILD_TESTS)
