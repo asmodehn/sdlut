@@ -45,13 +45,21 @@ class MyEngine : public Engine
 {
 
     RGBSurface _defaultlogocopy;
+	Font _font;
+	RGBSurface _text;
+
 public:
     MyEngine()
+		: _font("data/ECHELON.ttf",16)
     {
         RGBSurface _defaultlogo("data/SDL_logo.bmp",Color(0xFF,0xFF,0xff));
         Log << nl << "Assignment ... TEST";
         _defaultlogocopy = _defaultlogo;
         Log << nl << "Assignment... END";
+
+		RGBSurface _text(_font,"Blahblahblah",Color(0,0,255),RGBColor(0,0xFF,0));
+
+
     }
 
     virtual ~MyEngine(){}
@@ -74,6 +82,8 @@ public:
             RGBSurface _defaultlogocopy2(_defaultlogocopy);
             Log << nl << "Copie END";
             res= _screen->blit(_defaultlogocopy2,Point((_screen->getWidth()-_defaultlogocopy2.getWidth())/2,(_screen->getHeight()-_defaultlogocopy2.getHeight())/2));
+
+			res= _screen->blit(_text,Point(20,20));
         }
 
         return res;
@@ -235,8 +245,11 @@ int main(int argc, char** argv)
     // int newW=bitmap.getWidth()+60;
     // int newH=bitmap.getHeight()+60;
 
+	App::getInstance().initText(); //to do before using the Engine
+
     App::getInstance().getWindow()->setBGColor(Color (128,0,0));
     App::getInstance().getWindow()->setEngine(new MyEngine());
+
 
     if (! (App::getInstance().getWindow()->resetDisplay()))
     {
