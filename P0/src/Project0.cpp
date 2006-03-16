@@ -50,20 +50,11 @@ public:
 		}
 		P0_Logger << " Video Surface Creation : OK " << std::endl;
 
-		//Get a pointer to the SDL surface currently displayed
-		/*_screen = SDL_GetVideoSurface();
-		if( _screen == NULL )
-		{
-			P0_Logger << " Get Video Surface Failed : " << GetError() << std::endl;
-			return false;
-		}
-		P0_Logger << " Get Video Surface : OK " << std::endl;*/
-
 		//Initialize SDL_ttf
 		if (! App::getInstance().initText())
 			//if( TTF_Init() == -1 )
 		{
-			//P0_Logger << " TTF Error : " << GetError(TTF ) << std::endl;
+			P0_Logger << " TTF Error : " << GetError(TTF) << std::endl;
 			return false;
 		}
 		P0_Logger << " TTF Init : OK " << std::endl;
@@ -91,7 +82,7 @@ public:
 		return true;
     }
 };
-//Gnerate Background
+//Generate Background
 void generate_bg()
 {
 	int i=0, j=0;
@@ -150,7 +141,7 @@ bool InitWindows()
 	if (! App::getInstance().initText())
 		//if( TTF_Init() == -1 )
     {
-//		P0_Logger << " TTF Error : " << GetError(Module(TTF)) << std::endl;
+		P0_Logger << " TTF Error : " << GetError(TTF) << std::endl;
         return false;
     }
 	P0_Logger << " TTF Init : OK " << std::endl;
@@ -179,6 +170,9 @@ void Clean_Up()
 //Main
 int main( int argc, char* args[] )
 {
+	//Init the rand method using the current time in order to generate more random number
+	srand( (unsigned)time( NULL ) );
+
 	//Make sure the program waits for a quit
 	bool quit = false;
 
@@ -305,7 +299,7 @@ int main( int argc, char* args[] )
 			return 1;    
 		}
 		//Update the whole screen
-		/*if (! Screen->update( Rect(0,0,0,0) ) )
+		/*if (! Screen->update() )
 		//SDL_Flip(_screen)
 		//SDL_UpdateRect(_screen, 0, 0, 0, 0);
 		{
