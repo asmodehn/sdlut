@@ -12,7 +12,7 @@ Rect BG_Clip[1];
 //The event structure that will be used
 SDL_Event event;
 
-//engine Class : No idea whats used for be neccessary for mainloop
+//engine Class : No idea whats used for but neccessary for mainloop
 class TheEngine : public Engine
 {
 private:
@@ -99,13 +99,17 @@ void generate_bg()
 	{
 		while (j<(SCREEN_HEIGHT/32 - 1)) //the -1 is here in order to not apply bg on the last line of the screen: the status bar
 		{
-			Screen->blit(Background, Point::Point(i*32, j*32), BG_Clip[0]);
+			if (! Screen->blit(Background, Point::Point(i*32, j*32), BG_Clip[0]) )
 			//apply_surface(i*32, j*32, _background, _screen, &_bg[0]);
+			{
+				P0_Logger << " Background Generation Failed " << GetError() << std::endl;
+			}
 			j++;
 		}
 		i++;
 		j=0;
 	}
+	//P0_Logger << " Background Generation : OK " << std::endl;
 }
 //Initialization
 bool InitWindows()
@@ -214,7 +218,7 @@ int main( int argc, char* args[] )
 	P0_Logger << " Initial Monster Creation: OK " << std::endl;
 
 	//Create Character & initialized it
-    Character_Base* myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, _screen, Screen, Monster_vector);
+    Character_Base* myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, Screen, Monster_vector);
 	//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_vector);
 	P0_Logger << " Character Creation: OK " << std::endl;
 	
@@ -300,6 +304,13 @@ int main( int argc, char* args[] )
 		{
 			return 1;    
 		}
+		//Update the whole screen
+		/*if (! Screen->update( Rect(0,0,0,0) ) )
+		//SDL_Flip(_screen)
+		//SDL_UpdateRect(_screen, 0, 0, 0, 0);
+		{
+			return 1;    
+		}*/
 
 		//Eventually generate new monster and inform the character
 		Monster_vector = myMonster_Factory->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety() );
@@ -321,9 +332,6 @@ int main( int argc, char* args[] )
 	
 	//Quit SDl_NEt
 	//SDLNet_Quit();
-
-	//Quit SDL_ttf
-    TTF_Quit();
 
     //Quit SDL
 	SDL_Quit();

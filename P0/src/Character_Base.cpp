@@ -1,14 +1,13 @@
 #include "Character_Base.hh"
 
 //Initialization construtor
-Character_Base::Character_Base(int X, int Y, SDL_Surface *Screen_Surface_old, VideoSurface* Screen_Surface, std::vector<Monster*> monster_vector)
+Character_Base::Character_Base(int X, int Y, VideoSurface* Screen_Surface, std::vector<Monster*> monster_vector)
 {
     //Initial position
 	x = X;
 	y = Y;
 
 	//Display Surface
-	screen = Screen_Surface_old;
 	Screen = Screen_Surface;
     
     //Initial velocity
@@ -107,12 +106,7 @@ Character_Base::Character_Base(int X, int Y, SDL_Surface *Screen_Surface_old, Vi
     attack_collision_box.seth(CH_HEIGHT);
 
 	//Msgs displayed in the status bar
-	attack_msg_hit = NULL;
-	attack_msg_miss = NULL;
-	attack_melee_msg_hit = NULL;
-	attack_melee_msg_miss = NULL;
-	attack_distant_msg_hit = NULL;
-	attack_distant_msg_miss = NULL;
+
 
 	//The monster vector that containt all monsters
 	Monster_Vector = monster_vector; 
@@ -141,16 +135,13 @@ Character_Base::Character_Base(int X, int Y, SDL_Surface *Screen_Surface_old, Vi
 //Destructor
 Character_Base::~Character_Base()
 {
-	//Close the font that was used
-    TTF_CloseFont(attack_font);
-
 	//Free the msgs
-	SDL_FreeSurface(attack_msg_hit);
-	SDL_FreeSurface(attack_msg_miss);
-	SDL_FreeSurface(attack_melee_msg_hit);
-	SDL_FreeSurface(attack_melee_msg_miss);
-	SDL_FreeSurface(attack_distant_msg_hit);
-	SDL_FreeSurface(attack_distant_msg_miss);
+	attack_msg_hit.~RGBSurface();
+	attack_msg_miss.~RGBSurface();
+	attack_melee_msg_hit.~RGBSurface();
+	attack_melee_msg_miss.~RGBSurface();
+	attack_distant_msg_hit.~RGBSurface();
+	attack_distant_msg_miss.~RGBSurface();
 
 	//Free the surface
 	Characters_Tile.~RGBSurface();
@@ -158,45 +149,26 @@ Character_Base::~Character_Base()
 	Characters_Tile_Distant.~RGBSurface();
 	Arrow_Tile.~RGBSurface();
 	delete Screen;
-
-	SDL_FreeSurface(screen);
 }
 //Init of the character
 bool Character_Base::Init()
 {
-	//Fight Msgs Style
-	attack_Text_Color.b = 255; attack_Text_Color.g = 255; attack_Text_Color.r = 255;
-	//Font AttackMsg_Font = Font("data/ECHELON.TTF", 28);
-	attack_font = TTF_OpenFont( "data/ECHELON.TTF", 28 );
-	if (attack_font == NULL)  {
-		return false; }
-
-	//Surfaces
+	//Characters Surfaces
 	Characters_Tile_Melee = RGBSurface("data/Character_Fighter.bmp", Color(0xFF, 0xFF, 0xFF));
 	Characters_Tile_Distant = RGBSurface("data/Character_Archer.bmp", Color(0xFF, 0xFF, 0xFF));
 	Characters_Tile = Characters_Tile_Melee; //Default tile: the melee tile
-	Arrow_Tile = RGBSurface("data/Arrow.bmp", Color(0xFF, 0xFF, 0xFF)); //Arrow surface
+	//Arrow surface
+	Arrow_Tile = RGBSurface("data/Arrow.bmp", Color(0xFF, 0xFF, 0xFF));
 
-	//Msgs (by default melee type)
-	attack_melee_msg_hit = NULL;
-	attack_melee_msg_hit = TTF_RenderText_Solid( attack_font, "Melee Hit", attack_Text_Color );
-	if( attack_melee_msg_hit == NULL ) {
-		return false; }
+	//Fight Msgs Style
+	Font AttackMsg_Font("data/ECHELON.TTF", 28);
 
-	attack_distant_msg_hit = NULL;
-	attack_distant_msg_hit = TTF_RenderText_Solid( attack_font, "Distant Hit", attack_Text_Color );
-	if( attack_distant_msg_hit == NULL ) {
-		return false; }
-	
-	attack_melee_msg_miss = NULL;
-	attack_melee_msg_miss = TTF_RenderText_Solid( attack_font, "Melee Miss", attack_Text_Color );
-	if( attack_melee_msg_miss == NULL ) {
-		return false; }
+	//Msgs displayed in the status bar
+	attack_melee_msg_hit = RGBSurface(AttackMsg_Font, "Melee Hit", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
+	attack_distant_msg_hit = RGBSurface(AttackMsg_Font, "Distant Hit", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
+	attack_melee_msg_miss = RGBSurface(AttackMsg_Font, "Melee Miss", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
+	attack_distant_msg_miss = RGBSurface(AttackMsg_Font, "Distant Miss", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
 
-	attack_distant_msg_miss = NULL;
-	attack_distant_msg_miss = TTF_RenderText_Solid( attack_font, "Distant Miss", attack_Text_Color );
-	if( attack_distant_msg_miss == NULL ) {
-		return false; }
 
 	//Everything went fine
 	return true;
@@ -441,12 +413,14 @@ int Character_Base::attack()
 		//If a monster was hit displayed the msg, if no display miss msg
 		if (attack_successfull)
 		{
-			apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_hit, screen );
+			Screen->blit( attack_msg_hit, Point::Point(5, SCREEN_HEIGHT - 30) );
+			//apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_hit, screen );
 			P0_Logger << " >>> Monster Hit <<< " << std::endl;
 		}
 		else
 		{
-			apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_miss, screen );
+			Screen->blit( attack_msg_miss, Point::Point(5, SCREEN_HEIGHT - 30) );
+			//apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_miss, screen );
 			P0_Logger << " >>> Monster Miss <<< " << std::endl;
 		}
 	}

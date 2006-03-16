@@ -12,7 +12,6 @@ class Character_Base
 		int x, y;
 
 		//Display Surface
-		SDL_Surface *screen;
 		VideoSurface* Screen;
 	    
 		//Character tiles
@@ -33,14 +32,13 @@ class Character_Base
 		int frame, move_status;
 
 		//Attack msg, font & color
-		SDL_Surface *attack_msg_hit;
-		SDL_Surface *attack_msg_miss;
-		SDL_Surface *attack_melee_msg_hit;
-		SDL_Surface *attack_melee_msg_miss;
-		SDL_Surface *attack_distant_msg_hit;
-		SDL_Surface *attack_distant_msg_miss;
-		TTF_Font *attack_font;
-		SDL_Color attack_Text_Color;
+		RGBSurface attack_msg_hit;
+		RGBSurface attack_msg_miss;
+		RGBSurface attack_melee_msg_hit;
+		RGBSurface attack_melee_msg_miss;
+		RGBSurface attack_distant_msg_hit;
+		RGBSurface attack_distant_msg_miss;
+		//Font AttackMsg_Font(28);
 
 		//Monster Vector which allow the character to know exactly all monsters on the battlefield
 		std::vector<Monster*> Monster_Vector;
@@ -73,7 +71,7 @@ class Character_Base
 		/****Definitions****/
 
 		//Initializes the variables
-		Character_Base(int X, int Y, SDL_Surface *Screen_Surface_old, VideoSurface* Screen_Surface, std::vector<Monster*> monster_vector);
+		Character_Base(int X, int Y, VideoSurface* Screen_Surface, std::vector<Monster*> monster_vector);
 
 		//Init of the character (surface, msgs)
 		bool Init();
