@@ -37,20 +37,18 @@ class Font {
 public:
 	typedef enum { Solid, Shaded, Blended } RenderMode;
 
-#ifdef HAVE_SDLTTF
 private:
-        TTF_Font * _font;
+        class TTFFont * _font;//private class to handle SDL_ttf detection and use or not
+
 protected:
 	//The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-	//Are all those different way of rendering text really usefull ??
 	SDL_Surface* render(std::string text, Color c, RenderMode mode, Color bgc = Color()) const;
 
 public:
+	Font( int ptsize = 16) throw (std::logic_error);
 	Font(std::string filename, int ptsize = 16) throw (std::logic_error);
 	~Font();
-	
 
-#endif
 
 
 

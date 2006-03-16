@@ -10,13 +10,20 @@ namespace RAGE
 
         std::string GetError(Module mod)
         {
+			bool error = false;
+			std::string res;
 			if (mod == Main)
-				return SDL_GetError();
-#ifdef HAVE_SDLTTF
+				res = SDL_GetError();
 			if (mod == TTF)
-				return TTF_GetError();
+#ifdef HAVE_SDLTTF
+				res = TTF_GetError();
+#else
+				res = "RAGE::SDL not build with SDL_ttf !"; error=true;
 #endif
-			return std::string("Wrong call to RAGE::SDL::GetError()"); // shouldnt happen since we have a default value for mod
+			if (error)
+				res = "Wrong call to RAGE::SDL::GetError()" ;
+
+			return res; // shouldnt happen since we have a default value for mod
         }
 
         Version::Version()

@@ -50,16 +50,12 @@ class MyEngine : public Engine
 
 public:
     MyEngine()
-		: _font("data/ECHELON.ttf",16)
+		: _font("data/ECHELON.ttf",16),_text(_font,"Blahblahblah",Color(0,0,255),RGBColor(0,0xFF,0))
     {
         RGBSurface _defaultlogo("data/SDL_logo.bmp",Color(0xFF,0xFF,0xff));
         Log << nl << "Assignment ... TEST";
         _defaultlogocopy = _defaultlogo;
         Log << nl << "Assignment... END";
-
-		RGBSurface _text(_font,"Blahblahblah",Color(0,0,255),RGBColor(0,0xFF,0));
-
-
     }
 
     virtual ~MyEngine(){}

@@ -82,15 +82,14 @@ namespace RAGE
             //global, namespace visible, declaration :
             extern Logger Log;
 
+			//list of supported optional modules...
+			//if those modules are used and there are not linked with RAGE::SDL, an error message will be returned.
 typedef enum
 {
 	Main
-#ifdef HAVE_SDLIMAGE
 	,Image
-#endif
-#ifdef HAVE_SDLTTF
 	,TTF
-#endif
+	,Net
 }Module;
 
 
