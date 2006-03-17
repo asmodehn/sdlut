@@ -161,7 +161,8 @@ bool Character_Base::Init()
 	Arrow_Tile = RGBSurface("data/Arrow.bmp", Color(0xFF, 0xFF, 0xFF));
 
 	//Fight Msgs Style
-	Font AttackMsg_Font("data/ECHELON.TTF", 28);
+	//Font AttackMsg_Font("data/ECHELON.TTF", 28);
+	Font AttackMsg_Font("data/SlimSansSerif.ttf", 28);
 
 	//Msgs displayed in the status bar
 	attack_melee_msg_hit = RGBSurface(AttackMsg_Font, "Melee Hit", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
