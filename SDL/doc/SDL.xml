@@ -2,30 +2,37 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD Simplified DocBook XML V1.0//EN"
 "http://www.oasis-open.org/docbook/xml/simple/1.0/sdocbook.dtd">
 <article>
-  <title>RAGE::SDL : The C++ wrapper for SDL</title>
+  <title>RAGE::SDL : The SDL Utility Toolkit</title>
 
   <section>
     <title>Features</title>
 
     <para>This library is mostly a C++ portable layer over the <ulink
     url="http://www.libsdl.org">Smart DirectMedia Library</ulink>. The aim is
-    to have a C++ interface to SDL. Users should be able to use it simply and
-    have at least a "default consistent behaviour".</para>
+    to have a Object Oriented interface to SDL to be used for simple
+    applications, working a bit like GLUT work for OpenGL. Just defining few
+    functions, and off you go ! but still be able to use a stable
+    object-oriented framework around the SDL libraries.</para>
 
-    <para>AS soon as the wrapping of SDL is complete, we will start looking at
-    wrapping all the SDL "Standard Libs" in the same way.</para>
+    <para>Users should be able to use it easily and have at least a "default
+    consistent behaviour" while logging acurately what happening inside if
+    needed, while advanced user can redefine and tune every bits of behaviour
+    of the library.</para>
+
+    <para>Along with SDL others libraries will be added as optional, on build
+    time or with dynamic binding. These are SDL_image, SDL_ttf, SDL_sound,
+    SDL_image and SDL_Net.</para>
 
     <section>
       <title>Graphic Interface</title>
 
-      <para>The graphic interface is a pure virtual class called "Engine". you
-      need to derivate it with you own if you want to be able to display
-      something in your SDL window. You can use either OpenGL functions or
-      RAGE::SDL 2D functions, providing you created the Window with the
-      correct settings.</para>
+      <para>The graphic interface consist of a pure virtual class called
+      "Engine". You need to derivate it with you own if you want to be able to
+      display something in your SDL window. You can use either OpenGL
+      functions or RAGE::SDL 2D functions, providing you created the Window
+      with the correct settings.</para>
 
-      <para>If you are using 2D functions you might want to the Video
-      Interface inside the Engine.</para>
+      <para>If you dont provide you own, a default Engine will be used.</para>
     </section>
 
     <section>
@@ -50,6 +57,13 @@
     </section>
 
     <section>
+      <title>Text Interface</title>
+
+      <para>The Text interface is provided by the Font class that enables you
+      to render text in an RGBSurface.</para>
+    </section>
+
+    <section>
       <title>OS Functions</title>
 
       <para>None yet</para>
@@ -57,7 +71,7 @@
       <section>
         <title>Timer</title>
 
-        <para>None yet</para>
+        <para>A Timer class with some usefull functions.</para>
       </section>
 
       <section>
@@ -69,7 +83,7 @@
       <section>
         <title>RWOps</title>
 
-        <para>None yet</para>
+        <para>A RWOps classwith some functions.</para>
       </section>
     </section>
 
@@ -78,7 +92,7 @@
 
       <para>This is a list of usefull features added only for the need of this
       C++ wrapper. But still they might be usefull somewhere else, and are not
-      really related to the main subject fo the C++ wrapper</para>
+      really related to the main subject fo the Utility Toolkit</para>
 
       <section>
         <title>Logger</title>
@@ -97,15 +111,16 @@
 
     <para>optional :</para>
 
-    <para>- SDL_image</para>
+    <para>- SDL_image : provide more image file format to the library.</para>
 
-    <para>- SDL_mixer</para>
+    <para>- SDL_mixer : provide more possibility using sounds with the
+    library.</para>
 
-    <para>- SDL_net</para>
+    <para>- SDL_net : provide Network features to the library.</para>
 
-    <para>- SDL_ttf</para>
+    <para>- SDL_ttf : provide support for loading and using Font files.</para>
 
-    <para>- SDL_rtf</para>
+    <para>- SDL_sound : provide more sound file format to the library.</para>
 
     <para></para>
   </section>
@@ -121,21 +136,44 @@
       <para>The only mandatory dependency is SDL. All the other ones are
       optional.</para>
 
+      <para></para>
+
       <para>On Linux / Unix systems, there are usually a package system that
       enables you to download those dependencies. Just use it. It will install
       the files in the standard places and the CMake build should detect them
       automatically.</para>
 
-      <para>On Windows, you will have to do it manually. Get the dependencies
-      from the web. </para>
+      <para></para>
 
-      <para>Then define specific environment variables : </para>
+      <para>On Windows, you will have to do it manually. Get the dependencies
+      from the web.</para>
+
+      <para>Then define specific environment variables (CMake 2.2):</para>
 
       <para>For SDL : SDLDIR must contain the directory where you installed
       SDL,</para>
 
-      <para>For SDL_image : SDLIMAGE_DIR must contain the directory where you
-      installed SDL.</para>
+      <para>For SDL_image : SDLIMAGEDIR must contain the directory where you
+      installed SDL_image.</para>
+
+      <para>For SDL_mixer : SDLMIXERDIR must contain the directory where you
+      installed SDL_mixer.</para>
+
+      <para>For SDL_net : SDLNETDIR must contain the directory where you
+      installed SDL_net.</para>
+
+      <para>For SDL_ttf : SDLTTFDIR must contain the directory where you
+      installed SDL_ttf.</para>
+
+      <para>For SDL_sound : SDLSOUNDDIR must contain the directory where you
+      installed SDL_sound.</para>
+
+      <para>With Cmake &gt;= 2.4 you will only need to define few variables
+      :</para>
+
+      <para></para>
+
+      <para></para>
 
       <para>CMake should now detect your librairies. If it doesnt you will
       have to pass the value manually.</para>
@@ -149,24 +187,24 @@
     <section>
       <title>Code::Blocks build</title>
 
-      <para>I am personnaly using CodeBlocks on windows with mingw to build
-      RAGE::SDL. However it misses a dependency checking for the libraries
-      needed. At the moment it is not a big problem as only SDL is needed. But
-      while we will add more dependencies CMake will be used to have a
-      consistent way of building RAGE::SDL.</para>
+      <para>Code::Blocks build are not actually used anymore. Most of them are
+      using the CMake buildchain. They will be removed as soon as the CMake
+      buildchain is available for every project.</para>
     </section>
 
     <section>
       <title>CMake build</title>
 
-      <para>If you want to be able to build RAGE::SDL using your own favorite
-      environment, try the CMake build. It generates files for most of the
-      compilers / build system.</para>
+      <para>The CMake build generates files for most of the compilers / build
+      systems.</para>
 
       <para>The good thing with CMake is that it will check the dependencies
       available on your system and help you to configure your system for
       development, and it works natively on windows, no emulation layer
-      needed.</para>
+      needed, which result in smaller built files.</para>
+
+      <para>It also relies on traditional GNUmake on Unix which is definitely
+      a good thing, even if we havnt tested it on Unix yet.</para>
 
       <para></para>
 
@@ -174,7 +212,7 @@
       with CMake :</emphasis></para>
 
       <para>- <emphasis role="bold">Windows</emphasis> : I advise MS Visual
-      Express 8 2005, as it is free, just need to register. You will need to
+      Express 8 2005, as it is free, just need to register. You might need to
       install the platform SDK and make sure the directories are correctly
       setup, cf. Microsoft Website</para>
 
@@ -200,14 +238,14 @@
 
       <para>There are a few test that are usefull to test the C++ wrapper.
       most of them are still the old SDL tests, not yet using the wrapper...
-      lots of work to do.</para>
+      lots of work to do here.</para>
     </section>
 
     <section>
       <title>Installing RAGE::SDL</title>
 
       <para>RAGE::SDL will be built as a dynamic library or a static library.
-      Right now only the static library is built</para>
+      Right now only the static library is built.</para>
     </section>
 
     <section>
