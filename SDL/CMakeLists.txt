@@ -33,6 +33,10 @@ FIND_PACKAGE(SDL_mixer)
 #sdl_mixer optional
 
 #check for sdl_net
+FIND_PACKAGE(SDL_sound)
+#sdl_net optional
+
+#check for sdl_net
 FIND_PACKAGE(SDL_net)
 #sdl_net optional
 
@@ -91,6 +95,16 @@ IF(SDLMIXER_FOUND)
 ELSE (SDLMIXER_FOUND)
 	MESSAGE (STATUS "SDL_mixer not found." )
 ENDIF(SDLMIXER_FOUND)
+
+#test for sdl_sound
+IF(SDLSOUND_FOUND)
+	MESSAGE (STATUS "SDL_sound found, adjusting build options..." )
+	ADD_DEFINITIONS(-DHAVE_SDLSOUND)
+	INCLUDE_DIRECTORIES(${SDLSOUND_INCLUDE_DIR})
+	LINK_LIBRARIES (${SDLSOUND_LIBRARY})
+ELSE (SDLSOUND_FOUND)
+	MESSAGE (STATUS "SDL_sound not found." )
+ENDIF(SDLSOUND_FOUND)
 
 #test for sdl_net
 IF(SDLNET_FOUND)
