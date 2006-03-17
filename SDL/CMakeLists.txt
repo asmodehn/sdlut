@@ -28,6 +28,14 @@ FIND_PACKAGE(SDL_image)
 FIND_PACKAGE(SDL_ttf)
 #sdl_ttf optional
 
+#check for sdl_mixer
+FIND_PACKAGE(SDL_mixer)
+#sdl_mixer optional
+
+#check for sdl_net
+FIND_PACKAGE(SDL_net)
+#sdl_net optional
+
 #
 #Defining Rules for building Rage_SDL
 #
@@ -72,7 +80,27 @@ IF(SDLTTF_FOUND)
 	LINK_LIBRARIES (${SDLTTF_LIBRARY})
 ELSE (SDLTTF_FOUND)
 	MESSAGE (STATUS "SDL_ttf not found." )
-ENDIF(SDLTTF_FOUND)	
+ENDIF(SDLTTF_FOUND)
+
+#test for sdl_mixer
+IF(SDLMIXER_FOUND)
+	MESSAGE (STATUS "SDL_mixer found, adjusting build options..." )
+	ADD_DEFINITIONS(-DHAVE_SDLMIXER)
+	INCLUDE_DIRECTORIES(${SDLMIXER_INCLUDE_DIR})
+	LINK_LIBRARIES (${SDLMIXER_LIBRARY})
+ELSE (SDLMIXER_FOUND)
+	MESSAGE (STATUS "SDL_mixer not found." )
+ENDIF(SDLMIXER_FOUND)
+
+#test for sdl_net
+IF(SDLNET_FOUND)
+	MESSAGE (STATUS "SDL_Net found, adjusting build options..." )
+	ADD_DEFINITIONS(-DHAVE_SDLNET)
+	INCLUDE_DIRECTORIES(${SDLNET_INCLUDE_DIR})
+	LINK_LIBRARIES (${SDLNET_LIBRARY})
+ELSE (SDLNET_FOUND)
+	MESSAGE (STATUS "SDL_Net not found." )
+ENDIF(SDLNET_FOUND)	
 	
 #Compiler Specific rules
 IF(CMAKE_CXX_COMPILER STREQUAL "cl")
