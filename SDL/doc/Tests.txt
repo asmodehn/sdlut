@@ -1,0 +1,72 @@
+Tests for SDL : (one test for each documented function, as much as possible...)
+General :
+
+- dynamic loading of Opengl + testOpenGL
+- dynamic detection and loading of dependencies (SDL_image, SDL_ttf, SDL_mixer, SDL_sound, SDL_Net) + simple tests for each
+
+Video :
+
+- Normal display (BMP)
+- OpenGL display (BMP)
+- Overlay display (BMP)
+- Cursor test
+- sprite blitting performance test
+
+Window Management :
+
+- WM test
+
+Event :
+
+- Keyboard Input test
+- Mouse Input test
+
+Joystick :
+
+- Joystick Input test
+
+Audio :
+
+- Wav player
+
+CDRom :
+
+- CD Player
+
+Multi threaded programming :
+
+- Traditional example of concurent programming (producer / consumer, reader / writer, etc.)
+
+Timer :
+
+- chronometer with timeout
+
+RWOps :
+
+- RW2File dumper + reload
+- RW2code dumper + reload
+
+
+Tests for SDL_image :
+
+- png loader
+- jpg loader
+
+Tests for SDL_ttf :
+
+- ttf loader
+
+Tests for SDL_mixer :
+
+- sampler
+
+Tests for SDL_sound :
+
+- mp3 loader
+- ogg loader
+
+Tests for SDL_Net :
+
+- chat p2p
+- chat client
+- chat server
