@@ -149,7 +149,7 @@ IF (Custom_Debug_Mode)
 ENDIF(Custom_Debug_Mode)
 
 
-
+#what to build
 INCLUDE_DIRECTORIES(include)
 INSTALL_FILES(/include include)
 
@@ -162,6 +162,10 @@ ADD_SUBDIRECTORY(data)
 IF (BUILD_TESTS)
 	ADD_SUBDIRECTORY(test)
 ENDIF(BUILD_TESTS)
+
+#where to put them
+SET(LIBRARY_OUTPUT_PATH ${Rage_SDL_SOURCE_DIR}/bin CACHE STRING "Ouput directories for built libraries")
+SET(EXECUTABLE_OUTPUT_PATH ${Rage_SDL_SOURCE_DIR}/bin CACHE STRING "Output directories for built executables")
 
 #defining usefull variables.
 #GET_TARGET_PROPERTY(Rage_SDL_LIBRARY Rage_SDL LOCATION)
