@@ -81,11 +81,6 @@ public:
     }
 };
 
-#include <math.h>
-//if not define by math (why ??)
-#ifndef M_PI
-#define M_PI  3.14159265358979323846
-#endif
 
 //Main Program
 int main(int argc, char** argv)
@@ -145,46 +140,6 @@ int main(int argc, char** argv)
         App::getInstance().getWindow()->mainLoop();
 
     }
-
-    //First test ended : go on to test OPENGL
-
-    testlog << nl << " OPENGL activation... " << std::endl;
-
-    MyUserInput ui2; // another ui, since the first is closed ( but not deleted )
-    App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui2);
-    testlog << nl <<"display reset" << std::endl;
-
-    //GLManager test
-    GLManager * glman=App::getInstance().getWindow()->getGLManager();
-    testlog << nl<<std::boolalpha <<
-    "setRsize(5) " << glman->setRSize(5) << nl <<
-    "setGSize(5) " << glman->setGSize(5) << nl <<
-    "setBSize(5) " << glman->setBSize(5) << nl <<
-    "setASize(5) " << glman->setASize(5) << nl <<
-    "setBufferSize(5) " << glman->setBufferSize(12) << nl <<
-    std::endl;
-
-    App::getInstance().getWindow()->setOpenGL(true,new DefaultGLEngine());
-
-    if(App::getInstance().getWindow()->resetDisplay())
-    {
-
-
-        //GLManager test
-        testlog << nl << *glman << std::endl;
-
-        VideoSurface* display=App::getInstance().getWindow()->getDisplay();
-        testlog << nl << "calling display->debug() " << std::endl;
-        testlog << nl << *display <<std::endl;
-
-        testlog << nl << std::boolalpha << " setDepthSize(16) " << glman->setDepthSize(16) << std::endl;
-
-        testlog << nl << *glman << std::endl;
-
-        testlog << nl << "loop... " << std::endl;
-        App::getInstance().getWindow()->mainLoop();
-    }
-
     return 0;
 }
 
