@@ -555,8 +555,10 @@ namespace RAGE
                 {
                     while (!(_eventmanager->quitRequested()))
                     {
+						//handling all the events
                         _eventmanager->handleAll();
-
+						
+						//Call to engine for update and refresh screen
                         _screen->update();
                     }
                     delete _screen; // to delete the wrapper class (not the actual video surface in memory...)
