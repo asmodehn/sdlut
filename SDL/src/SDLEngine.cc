@@ -6,17 +6,10 @@ namespace RAGE
     namespace SDL
     {
 
-			//this is run just before the render
-		bool DefaultEngine::prerender(void)
-		{return true;}
-
 			//this render function should not modify the engine
-		bool DefaultEngine::render(VideoSurface* screen) const
-		{return true;}
-
-			//this is run just after the render, and refresh of the screen
-		bool DefaultEngine::postrender(void)
-		{return true;}
+		void DefaultEngine::render(VideoSurface* screen) const
+		{
+		}
 
 			//to initialise the engine, just called once before any render
 		bool DefaultEngine::init(int width, int height)
@@ -44,14 +37,13 @@ namespace RAGE
 
 
 			//this is run just before the render
-		bool DefaultGLEngine::prerender(void)
+		void DefaultGLEngine::prerender(void)
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear Screen And Depth Buffer
-			return true;
 		}
 
 			//this render function should not modify the engine
-		bool DefaultGLEngine::render(VideoSurface* screen) const
+		void DefaultGLEngine::render(VideoSurface* screen) const
 		{
 			//This default rendering should be something with OpenGL logo...
 			//TODO
@@ -129,12 +121,7 @@ namespace RAGE
 			rtri+=0.2f;           // Increase The Rotation Variable For The Triangle ( NEW )
 			rquad-=0.15f;          // Decrease The Rotation Variable For The Quad ( NEW )
 			// Keep Going
-			return true;
 		}
-
-			//this is run just after the render, and refresh of the screen
-		bool DefaultGLEngine::postrender(void)
-		{return true;}
 
 			//to initialise the engine, just called once before any render
 		bool DefaultGLEngine::init(int width, int height)

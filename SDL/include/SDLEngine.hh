@@ -20,13 +20,13 @@ namespace RAGE
 
 		public:
 			//this is run just before the render
-			virtual bool prerender(void) = 0;
+			virtual void prerender(void) {}
 
 			//this render function should not modify the engine
-            virtual bool render(VideoSurface* screen) const = 0;
+            virtual void render(VideoSurface* screen) const = 0;
 
 			//this is run just after the render, and refresh of the screen
-			virtual bool postrender(void) = 0;
+			virtual void postrender(void) {}
 
 			//to initialise the engine, just called once before any render
             virtual bool init(int width, int height) = 0;
@@ -39,14 +39,9 @@ namespace RAGE
 		class DefaultEngine : public Engine
         {
 			public:
-			//this is run just before the render
-			virtual bool prerender(void);
 
 			//this render function should not modify the engine
-            virtual bool render(VideoSurface* screen) const;
-
-			//this is run just after the render, and refresh of the screen
-			virtual bool postrender(void);
+            virtual void render(VideoSurface* screen) const;
 
 			//to initialise the engine, just called once before any render
             virtual bool init(int width, int height);
@@ -61,13 +56,10 @@ namespace RAGE
         {
 			public:
 			//this is run just before the render
-			virtual bool prerender(void);
+			virtual void prerender(void);
 
 			//this render function should not modify the engine
-            virtual bool render(VideoSurface* screen) const;
-
-			//this is run just after the render, and refresh of the screen
-			virtual bool postrender(void);
+            virtual void render(VideoSurface* screen) const;
 
 			//to initialise the engine, just called once before any render
             virtual bool init(int width, int height);
