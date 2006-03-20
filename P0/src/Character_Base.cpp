@@ -375,7 +375,7 @@ void Character_Base::move_animation()
 		Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
     }
 }
-//Handle character attack on monsters for all attack style
+//Handle character attack on monsters for all attack style and return the distance where the attack took place (in case of a distant attack for example)
 int Character_Base::attack()
 {
 	int Hit_Distance = 0; //The Hit distane is the distance between the character and the monster by default the Melee Hit Distance
@@ -482,40 +482,35 @@ void Character_Base::attack_animation(int character_hit_distance)
 	//If the player has pushed the attack key => launch animation attack
 	if (attack_status == true)
 	{
-
-	//The attack speed regulator
-    Timer attack_regulator;
-	attack_regulator.start();
-
 		// Melee Style (character_hit_distance = 1 so do not care)
 		if (attack_style == 1)
 		{
 			//Show the good attack in function of the position
 			if( move_status == CH_RIGHT )
 			{
-				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
-				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[1]);
-				/*apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[0]);
-
-				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[1]);*/
-				while( attack_regulator.get_ticks() < 150 )
+				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
+				//Timer not started then start it
+				if ( attack_regulator.get_ticks() == 0 )
 				{
-					//wait    
+					attack_regulator.start();
 				}
-
-				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[2]);
-				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[2]);
-				attack_regulator.start();
-				while( attack_regulator.get_ticks() < 300 )
+				//First frame of the aattack anim until the timer reach 350ms
+				if ( attack_regulator.get_ticks() <= 350 )
 				{
-					//wait    
+					attack_regulator.start();
+					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[1]);
 				}
-				
-				Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
-				//apply_surface(x - camera.x, y - camera.y, _background, screen, &_bg[0]);
-				//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[0]);
+				//2nd frame of the attack animation between 350ms & 700ms
+				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
+				{					
+					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[2]);
+				}
+				//The timer is now over the 700ms, we have finished the attack animation so we get back to the initial frame that is the normal display 
+				if ( attack_regulator.get_ticks() > 700 )
+				{
+					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
+					attack_regulator.stop();
+				}		
 			}
 			else if( move_status == CH_LEFT )
 			{

@@ -9,7 +9,7 @@
 //Gnerate Background
 void generate_bg();
 //Initialization
-bool InitWindows();
+bool InitEverything();
 //Load Images Files
 void Load_Files();
 //Clean Up Surface

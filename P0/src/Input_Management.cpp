@@ -21,7 +21,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 	//InGame
 	else if (Global_Game_State == 3)
 	{
-		/*switch( s.getKey() )
+		switch( s.getKey() )
 		{
 			//Moves Keys
 			case KKp8:
@@ -62,8 +62,8 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 			case KEscape:
 				Global_Game_State = 4;//Escape Menu called
 				break;
-		}*/
-		//return quit;
+		}
+		return quit;
 	}
 	//Escape menu when in game (Paused Character While The world Continu to live)
 	else if (Global_Game_State == 4)
