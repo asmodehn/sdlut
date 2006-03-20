@@ -1,5 +1,6 @@
 #adding with headers just to have them in generated projects
-ADD_LIBRARY(	Rage_SDL ../include/SDL.hh ../include/SDLColor.hh ../include/SDLEngine.hh
+ADD_LIBRARY(	Rage_SDL ../include/SDL.hh ../include/SDLColor.hh 
+		SDLEngine.cc ../include/SDLEngine.hh
 		SDLConfig.cc ../include/SDLConfig.hh
 		Logger.cc ../include/Logger.hh
 		SDLApp.cc ../include/SDLApp.hh
@@ -14,7 +15,6 @@ ADD_LIBRARY(	Rage_SDL ../include/SDL.hh ../include/SDLColor.hh ../include/SDLEng
 		SDLMouse.cc ../include/SDLMouse.hh
 		SDLJoystick.cc ../include/SDLJoystick.hh
 		SDLGLManager.cc ../include/SDLGLManager.hh
-		SDLGLSurface.cc ../include/SDLGLSurface.hh
 		SDLManager.cc ../include/SDLManager.hh
 		SDLOverlay.cc ../include/SDLOverlay.hh
 		SDLPixelFormat.cc ../include/SDLPixelFormat.hh

@@ -187,7 +187,7 @@ namespace RAGE
 
             Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std::endl;
 #endif
-
+			//TODO : get rid of it.
             return ( SDL_WM_ToggleFullScreen(_screen->_surf) != 0 ) ;
 #endif
 
@@ -313,14 +313,20 @@ namespace RAGE
             return res;
         }
 #ifdef HAVE_OPENGL
-        bool Window::setOpenGL(bool val)
+        bool Window::setOpenGL(bool val, Engine* glengine)
         {
             bool res = true;
             if (_screen == NULL )
-                VideoSurface::setOpenGL(val);
+			{
+				VideoSurface::setOpenGL(val);
+				if (_userengine) delete _engine;
+				_engine = glengine;
+			}
             else if ( _screen->isOpenGLset() !=val ) //if called inside mainLoop while screen is active
             {
                 VideoSurface::setOpenGL(val);
+				if (_userengine) delete _engine;
+				_engine = glengine;
                 if (! resetDisplay(_screen->getWidth(),_screen->getHeight()))
                     res=false;
             }
@@ -330,10 +336,7 @@ namespace RAGE
 
 
         Window::Window(std::string title,std::string icon)
-                : _title(title), _icon(icon),_background(Color(0,0,0)),_engine(NULL)
-#ifdef HAVE_OPENGL
-                ,_glengine(NULL)
-#endif
+                : _title(title), _icon(icon),_background(Color(0,0,0))
         {
 #ifdef DEBUG
             Log << nl << "Window::Window(" << title << ", " << icon << ") called ..." ;
@@ -345,11 +348,11 @@ namespace RAGE
                 _videoinfo = new VideoInfo();
 #ifdef HAVE_OPENGL
 
-                _userglengine=false;
                 _glmanager = new GLManager();
 
 #endif
 
+				_engine = new DefaultEngine();
                 _userengine=false;
 
             }
@@ -379,8 +382,6 @@ namespace RAGE
 #endif
 #ifdef HAVE_OPENGL
 
-            if (!_userglengine)
-                delete _glengine, _glengine = NULL;
             delete _glmanager, _glmanager = NULL;
 #endif
 
@@ -395,12 +396,27 @@ namespace RAGE
 
         }
 
-            //BGColor works only on 2DWindow
+
             void Window::setBGColor(const Color & color)
             {
                 _background = color;
                 if (_screen != NULL)
-                    _screen->setBGColor(_background);
+				{
+#ifdef HAVE_OPENGL
+					if (_screen->isOpenGLset())
+					{
+						glClearColor(static_cast<float> (_background.getR() ) / 255.0f, static_cast<float> (_background.getG() ) / 255.0f,static_cast<float> (_background.getB() ) / 255.0f,0.0f);
+						glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+					}
+					else
+					{
+#endif
+						_screen->fill(_background);
+#ifdef HAVE_OPENGL
+					}
+#endif
+				}
             }
 
         void Window::setEngine (Engine *engine)
@@ -411,11 +427,6 @@ namespace RAGE
             assert(engine);
             _userengine=true;
             _engine=engine;
-            if (_screen != NULL)
-            {
-                _screen->setEngine(_engine);
-                _engine->_screen=_screen;
-            }
 
 #ifdef DEBUG
             Log << nl << "Window::setEngine(" << engine << ") done.";
@@ -423,30 +434,6 @@ namespace RAGE
 #endif
 
         }
-
-#ifdef HAVE_OPENGL
-        void Window::setGLEngine (Engine* glengine)
-        {
-#ifdef DEBUG
-            Log << nl << "Window::setGLEngine(" << glengine << ") called ...";
-#endif
-            assert(glengine);
-			_userglengine=true;
-            _glengine=glengine;
-            if (_screen != NULL&&_screen->isOpenGLset())
-                {
-                    _screen->setEngine(_glengine);
-                    _glengine->_screen=_screen;
-                }
-#ifdef DEBUG
-            Log << nl << "Window::setGLEngine(" << glengine << ") done.";
-#endif
-
-        }
-#endif
-
-
-
 
         VideoSurface* Window::resetDisplay( int width, int height)
         {
@@ -468,37 +455,8 @@ namespace RAGE
                 try
                 {
                     //REMINDER : SDL_SetVideoMode, takes care of freeing the old surfaces (according to the doc)
-#ifdef HAVE_OPENGL
-                    //if opengl support compiled and opengl enable on screen then initialise it
-                    if ( (SDL_OPENGL & VideoSurface::_defaultflags) !=0 )
-                    {
-                        _screen = new GLSurface(width, height, _bpp,_glmanager);
-                        if ( _screen!=NULL && _glengine != NULL)
-                        {
-                            res =_screen->setEngine(_glengine);
-                            _glengine->_screen=_screen;
-                        }
-                    }
-                    else
-                    {
-#endif
-
                         _screen = new VideoSurface(width, height, _bpp);
-                        if ( _screen!=NULL && _engine != NULL)
-                        {
-                                                     res =_screen->setEngine(_engine);
-                                                     _engine->_screen=_screen;
-                        }
-#ifdef HAVE_OPENGL
-
-                    }
-#endif
-
-                    if (_screen != NULL)
-                    {
-                        _screen->setBGColor(_background);
-                        res=true;
-                    }
+                        setBGColor(_background);
                 }
                 catch(std::exception & e)
                 {
@@ -526,6 +484,7 @@ namespace RAGE
             if (_screen != NULL )
             {
                 _screen->resize(width,height);
+				_engine->resize(width,height);
             }
 
 #ifdef DEBUG
@@ -553,14 +512,21 @@ namespace RAGE
 
                 if (_screen !=NULL)
                 {
-                    while (!(_eventmanager->quitRequested()))
-                    {
-						//handling all the events
-                        _eventmanager->handleAll();
-						
-						//Call to engine for update and refresh screen
-                        _screen->update();
-                    }
+	                    while (!(_eventmanager->quitRequested()))
+						{
+							//handling all the events
+							_eventmanager->handleAll();
+	
+							//calling engine for prerender and render events
+							_engine->prerender();
+							_engine->render(_screen);
+							
+							//refresh screen
+							_screen->refresh();
+	
+							//calling engine for postrender events
+							_engine ->postrender();
+						}
                     delete _screen; // to delete the wrapper class (not the actual video surface in memory...)
                     _screen = NULL;
                     res = true;

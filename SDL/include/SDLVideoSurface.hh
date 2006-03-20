@@ -22,7 +22,7 @@
 #include "SDLConfig.hh"
 #include "SDLBaseSurface.hh"
 #include "SDLRGBSurface.hh" //to help with backup of screen surface
-#include "SDLEngine.hh"
+
 
 namespace RAGE
 {
@@ -59,7 +59,6 @@ namespace RAGE
 
             Color _background;
 
-            Engine* _engine;
 
 
 
@@ -77,17 +76,11 @@ namespace RAGE
 
             //to resize the display
             virtual bool resize (int width, int height);
-            //to update the display
-            virtual bool update(void);
+            //to flip the videosurface
+            virtual bool refresh(void);
 
             //set the background color
             virtual bool setBGColor(const Color & color);
-
-            bool setEngine(Engine * engine);
-           inline Engine * getEngine()
-            {
-                return _engine;
-            }
 
             //Maybe in Window only ?
             bool update(Rect r);

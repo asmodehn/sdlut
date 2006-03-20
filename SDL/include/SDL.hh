@@ -38,7 +38,6 @@
   */
 #include "SDLVideoInfo.hh"
 #include "SDLVideoSurface.hh"
-#include "SDLGLSurface.hh"
 #include "SDLGLManager.hh"
 #include "SDLEngine.hh"
 #include "SDLColor.hh"

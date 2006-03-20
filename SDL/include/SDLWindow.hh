@@ -18,12 +18,11 @@
  */
 
 #include "SDLConfig.hh"
-
+#include "SDLEngine.hh"
 #include "SDLVideoInfo.hh"
  #include "SDLVideoSurface.hh"
  #ifdef HAVE_OPENGL
  #include "SDLGLManager.hh"
- #include "SDLGLSurface.hh"
  #endif //HAVE_OPENGL
 
 
@@ -55,8 +54,6 @@ namespace RAGE
 #ifdef HAVE_OPENGL
 
             GLManager * _glmanager;
-            bool _userglengine;
-            Engine* _glengine;
 #endif
 
 
@@ -102,8 +99,7 @@ namespace RAGE
             {
                 return _glmanager;
             }
-            bool setOpenGL(bool val);
-            void setGLEngine(Engine * glengine);
+            bool setOpenGL(bool val, Engine* glengine = new DefaultGLEngine());
 #endif
 
             void setEngine(Engine * engine);

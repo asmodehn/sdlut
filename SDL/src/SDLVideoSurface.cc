@@ -14,7 +14,7 @@ namespace RAGE
         VideoSurface::VideoSurface(int width, int height, int bpp) throw (std::logic_error)
         try
         :
-            BaseSurface(SDL_SetVideoMode(width,height,bpp,_defaultflags )),_background(0,0,0), _engine(NULL)
+            BaseSurface(SDL_SetVideoMode(width,height,bpp,_defaultflags )),_background(0,0,0)
         {
 #ifdef DEBUG
             Log << nl << "VideoSurface::VideoSurface() called ...";
@@ -114,45 +114,19 @@ namespace RAGE
         }
 
 
-            bool VideoSurface::setEngine(Engine * engine)
-            {
-                assert(engine);
-                _engine = engine;
-                return _engine->init(getWidth(),getHeight());
-            }
-
-        bool VideoSurface::update(void)
+        bool VideoSurface::refresh(void)
         {
-
-            fill(_background);
-            if (_engine !=NULL )
-            {
-                _engine->render();
-            }
-            return SDL_Flip(_surf) == 0;
+#ifdef HAVE_OPENGL
+			if (isOpenGLset())
+			{
+				SDL_GL_SwapBuffers(); return true;
+			}
+			else
+#endif //HAVE_OPENGL
+				return SDL_Flip(_surf) == 0;
         }
 
-
-        bool VideoSurface::setBGColor(const Color & color)
-        {
-#ifdef DEBUG
-            Log << nl << "VideoSurface::setBGColor(" << color << ") called ...";
-#endif
-
-            bool res = false;
-
-            _background=color;
-            res = fill(_background);
-
-#ifdef DEBUG
-
-            Log << nl << "VideoSurface::setBGColor(" << color << ") done.";
-#endif
-
-            return res;
-
-        }
-
+//TODO : rethink about that again...
         bool VideoSurface::resize(int width, int height)
         {
 
@@ -160,49 +134,26 @@ namespace RAGE
             Log << nl << "VideoSurface::resize(" << width << ", " << height << ") called...";
 #endif
 
-            bool res = false;
-
-            RGBSurface* _backupscreen;
-
-            //if no engine that means no render loop implemented, we save the old screen
-            if (_engine ==NULL)
-            {
-                // we create a new RGB surface to clone the display...
-                _backupscreen= new RGBSurface(*this);
-            }
             //BEWARE : should match DisplaySurface Constructor code
             SDL_Surface * newSurf = SDL_SetVideoMode(width,height,getBPP(),getFlags());
 
             if (newSurf==NULL) //SetVideoMode has failed
             {
                 Log << "Unable to resize to " << width << " x " << height << " 2D display surface " << nl << GetError();
+				
+#ifdef DEBUG
+        Log << nl << "VideoSurface::resize(" << width << ", " << height << ") failed.";
+#endif
                 return false;
             }
             assert(newSurf); // should be always OK
             _surf=newSurf;
-            res = fill(_background);
-            //BEWARE : According to the doc, the display surface should never be freed by the caller of SetVideoMode. SDL_Quit will handle that.
-            if (_engine == NULL )
-            {
-                if (_backupscreen !=NULL) //if no engine, we blit the old surface on the new screen surface
-                {
-                    //to restore the content in the middle of the window
-                    Point newpos;
-                    newpos.setx( (getWidth()-_backupscreen->getWidth()) / 2 );
-                    newpos.sety( (getHeight()-_backupscreen->getHeight()) / 2 );
-                    res = res && blit(*_backupscreen, newpos);
-                }
-            }
-            else
-            {
-                res = res && _engine->resize(width,height);
-            }
 
 #ifdef DEBUG
-        Log << nl << "VideoSurface::resize(" << width << ", " << height << ") done.";
+        Log << nl << "VideoSurface::resize(" << width << ", " << height << ") succeeded.";
 #endif
 
-        return res;
+        return true;
     }
 
 
