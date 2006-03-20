@@ -79,9 +79,6 @@ namespace RAGE
             //to flip the videosurface
             virtual bool refresh(void);
 
-            //set the background color
-            virtual bool setBGColor(const Color & color);
-
             //Maybe in Window only ?
             bool update(Rect r);
             bool update(std::vector<Rect> rlist);
