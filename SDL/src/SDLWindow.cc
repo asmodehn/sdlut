@@ -397,9 +397,8 @@ namespace RAGE
         }
 
 
-            void Window::setBGColor(const Color & color)
+            void Window::applyBGColor() const
             {
-                _background = color;
                 if (_screen != NULL)
 				{
 #ifdef HAVE_OPENGL
@@ -456,7 +455,8 @@ namespace RAGE
                 {
                     //REMINDER : SDL_SetVideoMode, takes care of freeing the old surfaces (according to the doc)
                         _screen = new VideoSurface(width, height, _bpp);
-                        setBGColor(_background);
+						_engine->init(width, height);
+                        applyBGColor();
                 }
                 catch(std::exception & e)
                 {
@@ -485,6 +485,7 @@ namespace RAGE
             {
                 _screen->resize(width,height);
 				_engine->resize(width,height);
+				applyBGColor();
             }
 
 #ifdef DEBUG
@@ -508,6 +509,7 @@ namespace RAGE
 
 #ifdef DEBUG
                 assert (_screen);
+				assert (_engine);
 #endif
 
                 if (_screen !=NULL)

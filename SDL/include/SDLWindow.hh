@@ -67,9 +67,11 @@ namespace RAGE
 
             //create the screen or reset it if needed because some parameters changed
 			//returns NULL if no screen available
+			// calls Engine->init();
             VideoSurface * resetDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT);
             //just resize the screen (without changing flags, or bpp)
 			//returns NULL if no screen available
+			// calls Engine->resize();
             VideoSurface * resizeDisplay (int width, int height) const;
 
             VideoSurface * getDisplay( void )
@@ -105,7 +107,14 @@ namespace RAGE
             void setEngine(Engine * engine);
             bool setNoFrame(bool val);
 
-            void setBGColor(const Color & color);
+            void setBGColor(const Color & color)
+			{
+				_background = color;
+			}
+			
+			//fill the VideoSurface with the BGColor
+			void applyBGColor() const;
+
             Color getBGColor ()
             {
                 return _background;
@@ -134,6 +143,7 @@ namespace RAGE
             bool setIcon(std::string iconfilename);// MAYBE version check here ?? { setCaption(_title,icon); }
             std::string getIconName();
 
+			//Handles the event, and Call engine->prerender, engie ->render() and engine->postrender()
             bool mainLoop();
 
         };
