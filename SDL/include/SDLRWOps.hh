@@ -2,6 +2,7 @@
 #define SDLRWOPS_HH
 
 #include "SDLConfig.hh"
+#include <fstream>
 
 namespace RAGE
 {
@@ -45,6 +46,9 @@ namespace RAGE
 			read();
 			write();
 			close();*/
+
+			bool dumpCode(const std::string & filename, const std::string & id);
+
         };
 
     }

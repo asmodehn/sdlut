@@ -68,5 +68,43 @@ namespace RAGE {
 		{
 			SDL_FreeRW(_rwops);
 		}
+
+		bool RWOps::dumpCode(const std::string & filename, const std::string & id)
+		{
+			
+			std::ofstream dumpfile(filename.c_str());
+
+			dumpfile << "const unsigned char "<< id <<"[] = {";
+
+			const char HexTable[] = "0123456789abcdef";
+			const int BytesPerLine = 20;
+			
+			
+			//getting length of the RWOps in memory
+			unsigned int length=SDL_RWseek(_rwops,0,SEEK_END);
+			
+			unsigned char* ch = new unsigned char[length];
+			//reading 16-bytes blocks (arbitrary choice...
+			int bytes = SDL_RWread( _rwops, ch ,16,length/16) ;
+
+			
+			for (int i=0 ; i< bytes; i++)
+			{
+				if ( bytes % BytesPerLine == 0 )
+					dumpfile << "\n\t";
+				dumpfile << "'\\x";
+				dumpfile.put(HexTable[ ( (ch[i]) >> 4 ) & 0x0f ]);
+				dumpfile.put(HexTable[ (ch[i]) & 0x0f ]);
+				dumpfile << "',";
+				bytes ++;
+			}
+
+			dumpfile << "\n};" << std::endl;
+			
+			dumpfile.close();
+			return true;
+		}
+
+
 	}
 }
