@@ -59,6 +59,8 @@ namespace RAGE
             }
             //could be useless if exception handle is well coded in the heriting tree
 
+			
+
             //TODO : delete this, already in SDL_Surface structure
             //To manage locks
             unsigned int locks;
@@ -111,6 +113,13 @@ namespace RAGE
             }
 
             ///Accessors
+
+			//usefull to get the SDL structure without no risk of modifying it
+			SDL_Surface get_SDL() const
+			{
+				return *_surf;
+			}
+
             inline int getHeight(void) const
             {
                 return _surf->h;

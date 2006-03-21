@@ -164,8 +164,8 @@ IF (BUILD_TESTS)
 ENDIF(BUILD_TESTS)
 
 #where to put them
-SET(LIBRARY_OUTPUT_PATH ${Rage_SDL_SOURCE_DIR}/bin CACHE STRING "Ouput directories for built libraries")
-SET(EXECUTABLE_OUTPUT_PATH ${Rage_SDL_SOURCE_DIR}/lib CACHE STRING "Output directories for built executables")
+SET(LIBRARY_OUTPUT_PATH ${Rage_SDL_SOURCE_DIR}/lib CACHE STRING "Ouput directories for built libraries")
+SET(EXECUTABLE_OUTPUT_PATH ${Rage_SDL_SOURCE_DIR}/bin CACHE STRING "Output directories for built executables")
 
 #defining usefull variables.
 #GET_TARGET_PROPERTY(Rage_SDL_LIBRARY Rage_SDL LOCATION)

@@ -167,6 +167,47 @@ namespace RAGE
             //TODO : much more explicit error message...
         };
 
+
+		RGBSurface::RGBSurface (const RWOps & rwops) throw (std::logic_error)
+        try
+:
+#ifdef HAVE_SDLIMAGE
+			BaseSurface(IMG_Load_RW(&(rwops.get_SDL()),0))
+#else
+			BaseSurface(SDL_LoadBMP_RW(&(rwops.get_SDL()),0))
+#endif
+        {
+#ifdef DEBUG
+            Log << nl << "RGBSurface::RGBSurface(RWOps) called...";
+#endif
+            //std::cerr << "RGBSurface Constructor Called" << std::endl;
+            //TODO : support for other format than BMP with SDL_image
+            if(_surf == NULL)
+            {
+                Log << nl << "Unable to set rgb surface from RWOps ";
+				
+#ifdef HAVE_SDLIMAGE
+			    throw std::logic_error("IMG_Load_RW returns NULL");
+#else
+	          throw std::logic_error("SDL_LoadBMP_RW returns NULL");
+#endif
+      
+            }
+#ifdef DEBUG
+
+            Log << nl << "RGBSurface::RGBSurface(RWOps) done.";
+#endif
+
+        }
+        catch (std::exception &e)
+        {
+            Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
+            e.what() << nl << GetError();
+            //TODO : much more explicit error message...
+        };
+
+
+
 	//creates a surface from a text (solid or blended mode).
 		RGBSurface::RGBSurface ( const Font & font, std::string text, RGBColor color, bool blended)
 			try : BaseSurface(font.render(text, color, blended? Font::Blended : Font::Solid ))

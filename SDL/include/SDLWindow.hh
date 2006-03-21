@@ -31,6 +31,8 @@ namespace RAGE
     namespace SDL
     {
 
+		extern const unsigned char _defaultIcon[];
+
         //further reference to break dependency cycles
         class EventManager;
 
@@ -38,11 +40,11 @@ namespace RAGE
         {
             friend class App; //to access the constructor
 
-
+			
 
         protected:
 
-            std::string _title, _icon;
+            std::string _title, _iconname;
             Color _background;
 
             //here because Event are initialised along with video...
@@ -56,11 +58,10 @@ namespace RAGE
             GLManager * _glmanager;
 #endif
 
-
-
             VideoSurface * _screen;
+			RGBSurface _icon;
 
-            Window(std::string title, std::string iconname);
+            Window(std::string title); // TODO :: add the icon here
 
         public:
             ~Window();
@@ -135,9 +136,9 @@ namespace RAGE
 
         protected:
 
-            void setCaption(std::string title = DEFAULT_WINDOW_TITLE, std::string icon = "");
+            void setCaption(std::string title = DEFAULT_WINDOW_TITLE, std::string iconname = "");
             //oldversion
-            void getCaption(std::string & title, std::string & icon);
+            void getCaption(std::string & title, std::string & iconname);
 
         public :
             inline void setTitle(std::string title)
@@ -145,8 +146,8 @@ namespace RAGE
                 setCaption(title);
             }
             std::string getTitle();
-            //to improve (mask, colorkey, loading wrapped Surface, etc.)
-            bool setIcon(std::string iconfilename);// MAYBE version check here ?? { setCaption(_title,icon); }
+
+            void setIcon(const RGBSurface & icon);
             std::string getIconName();
 
 			//Handles the event, and Call engine->prerender, engie ->render() and engine->postrender()

@@ -82,21 +82,24 @@ namespace RAGE {
 			
 			//getting length of the RWOps in memory
 			unsigned int length=SDL_RWseek(_rwops,0,SEEK_END);
+			SDL_RWseek(_rwops,0,SEEK_SET);
 			
 			unsigned char* ch = new unsigned char[length];
-			//reading 16-bytes blocks (arbitrary choice...
-			int bytes = SDL_RWread( _rwops, ch ,16,length/16) ;
+			//reading 16-bytes blocks (arbitrary choice...)
+			int blocks = SDL_RWread( _rwops, ch ,16,length/16) ;
 
-			
-			for (int i=0 ; i< bytes; i++)
+#ifdef DEBUG
+			Log << nl << blocks << " 16-bytes blocks read";
+#endif
+
+			for (int i=0 ; i< blocks * 16; i++)
 			{
-				if ( bytes % BytesPerLine == 0 )
+				if ( i % BytesPerLine == 0 )
 					dumpfile << "\n\t";
 				dumpfile << "'\\x";
 				dumpfile.put(HexTable[ ( (ch[i]) >> 4 ) & 0x0f ]);
 				dumpfile.put(HexTable[ (ch[i]) & 0x0f ]);
 				dumpfile << "',";
-				bytes ++;
 			}
 
 			dumpfile << "\n};" << std::endl;

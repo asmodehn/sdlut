@@ -5,7 +5,7 @@ namespace RAGE
 {
     namespace SDL
     {
-        static const unsigned char defaulticon[] = {
+     static const unsigned char _defaultIcon[] = {
 	'\x42','\x4d','\x36','\x0c','\x00','\x00','\x00','\x00','\x00','\x00','\x36','\x00','\x00','\x00','\x28','\x00','\x00','\x00','\x20','\x00',
 	'\x00','\x00','\x20','\x00','\x00','\x00','\x01','\x00','\x18','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x75','\x0a',
 	'\x00','\x00','\x75','\x0a','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x40','\x20','\x20','\x40','\x20','\x20',
@@ -162,8 +162,8 @@ namespace RAGE
 	'\x40','\x20','\x20','\x40','\x20','\x20','\x40','\x20','\x20','\x40','\x20','\x20','\x40','\x20','\x20','\x40','\x20','\x20','\x48','\x20',
 	'\x20','\x48','\x20','\x20','\x50','\x24','\x28','\x58','\x28','\x28','\x60','\x2c','\x30','\x60','\x2c','\x30','\x68','\x30','\x30','\x60',
 	'\x2c','\x30','\x50','\x24','\x28','\x48','\x20','\x20','\x48','\x20','\x20','\x40','\x20','\x20','\x40','\x20','\x20','\x40','\x20','\x20',
-	'\x40','\x20','\x20','\x40','\x20','\x20',
 };
+
 
         bool Window::iconify(void)
         {
@@ -188,42 +188,28 @@ namespace RAGE
 
 
 
-        void Window::setCaption(std::string title, std::string icon)
+        void Window::setCaption(std::string title, std::string iconname)
         {
             _title=title;
-            _icon=icon;
-            SDL_WM_SetCaption(_title.c_str(), _icon.c_str());
+            _iconname=iconname;
+            SDL_WM_SetCaption(_title.c_str(), _iconname.c_str());
             //seticon needed or ?
         }
 
-        bool Window::setIcon(std::string iconfilename)
+        void Window::setIcon(const RGBSurface & icon)
         {
-            bool res=false;
-            SDL_Surface * icon;
-            ///TODO : This should use an RGB Surface to avoid code duplication
-            if (iconfilename != "" ) icon=SDL_LoadBMP(iconfilename.c_str());
-            else icon = SDL_LoadBMP(DEFAULT_WINDOW_ICON); // todo : use embedded resource...
-            if ( icon != NULL )
-            {
-                _icon=iconfilename;
-                SDL_WM_SetIcon( icon , NULL);
-                res = true;
-            }
-            else
-            {
-                Log << nl << "Unable to load the icon " << iconfilename << " : " << GetError() << std::endl;
-            }
-            return res;
+			_icon = icon;
+            SDL_WM_SetIcon( & (_icon.get_SDL()) , NULL);
         }
 
         //old version
-        void Window::getCaption(std::string & title, std::string & icon)
+        void Window::getCaption(std::string & title, std::string & iconname)
         {
             char * t="";
             char * i="" ;
             SDL_WM_GetCaption(&t,&i);
             title=std::string(t);
-            icon=std::string(i);
+            iconname=std::string(i);
         }
 
         std::string Window::getTitle()
@@ -315,11 +301,11 @@ namespace RAGE
 #endif
 
 
-        Window::Window(std::string title,std::string icon)
-                : _title(title), _icon(icon),_background(Color(0,0,0))
+        Window::Window(std::string title)
+                : _title(title),_background(Color(0,0,0))
         {
 #ifdef DEBUG
-            Log << nl << "Window::Window(" << title << ", " << icon << ") called ..." ;
+            Log << nl << "Window::Window(" << title << ") called ..." ;
 #endif
 
             try
@@ -345,12 +331,13 @@ namespace RAGE
 
             BaseSurface::_vinfo = _videoinfo;
 
-            setIcon(_icon);
+			RWOps iconrwops( _defaultIcon, sizeof(_defaultIcon));
+            setIcon(RGBSurface(iconrwops));
             setTitle(_title);
 
 #ifdef DEBUG
 
-            Log << nl << "Window::Window(" << title << ", " << icon << ") done @ "<< this ;
+            Log << nl << "Window::Window(" << title << ") done @ "<< this ;
 #endif
 
         }

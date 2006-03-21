@@ -88,7 +88,7 @@ namespace RAGE
                     delete _color;
             }
 
-			SDL_Color get_SDL()
+			SDL_Color get_SDL() const
 			{
 				return *_color;
 			}

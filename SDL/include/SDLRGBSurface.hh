@@ -10,6 +10,7 @@
 #include "SDLBaseSurface.hh"
 #include "SDLColor.hh"
 #include "SDLFont.hh"
+#include "SDLRWOps.hh"
 
 namespace RAGE
 {
@@ -54,15 +55,8 @@ public :
 	RGBSurface ( const Font & font, std::string text, Color color, bool blended = false);
 	//creates a surface from a text (shaded mode).
 	RGBSurface ( const Font & font, std::string text, Color color, RGBColor bgcolor);
-
-protected : //the client should not access to flags...
-
-	//Copy Constructor and cloning constructors...
-	//RGBSurface(const RGBSurface &, bool cloneToDisplay = false, bool alpha = false) throw (std::logic_error);
-	//Clone To display should be in Factory...
-  //RGBSurface(const RGBSurface & s , const SDL::PixelFormat & fmt, Uint32 flags, bool cloning = false) throw (std::logic_error);
-	//no pixel format use the one from the surface
-  //RGBSurface(const RGBSurface & s ) throw (std::logic_error);
+	//creates a surface from a RWOps containing a image.
+	RGBSurface (const RWOps & rwops)  throw (std::logic_error); //TODO : add optional format
 
 public :
 	//should be used as the copy constructor. But should also be able to get DisplaySurface as input...
@@ -98,7 +92,8 @@ public :
 
 	bool optimise(bool alpha = false);
 
-            friend Logger & operator << (Logger & ostr, const RGBSurface & surf);
+    friend Logger & operator << (Logger & ostr, const RGBSurface & surf);
+
 };
     }
 } //namespace RAGE::SDL

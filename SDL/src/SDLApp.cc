@@ -66,7 +66,7 @@ namespace RAGE
                     _manager->enableVideo();
                 }
 
-                _window = new Window(_name,_icon);
+                _window = new Window(_name);
 
 
                 //setting the required flags...

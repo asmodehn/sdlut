@@ -41,6 +41,11 @@ namespace RAGE
 			RWOps(const void *mem, int size) throw (std::logic_error);
 			~RWOps();
 
+			SDL_RWops get_SDL() const
+			{
+				return *_rwops;
+			}
+
 			/*int Seek(int offset,Seek start);
 			Tell();
 			read();
