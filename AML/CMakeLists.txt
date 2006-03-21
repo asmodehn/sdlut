@@ -7,8 +7,7 @@ PROJECT(Rage_AML)
 #Checking software dependencies
 #
 
-INCLUDE (${CMAKE_ROOT}/Modules/FindOpenGL.cmake)
-INCLUDE (../SDL/Cmake/FindRage_SDL.cmake)
+SET(CMAKE_MODULE_PATH ../SDL/CMake)
 
 #check for openGL
 FIND_PACKAGE(OPENGL)
