@@ -170,29 +170,6 @@ namespace RAGE
             return ( SDL_WM_IconifyWindow() != 0 );
         }
 
-        //needs to be redone
-        bool Window::toggleFullScreen(void)
-        {
-            //This only works for X11
-#if defined ( __MINGW32__) || defined ( __WIN32__) || defined( WIN32 ) ||  defined( _WINDOWS ) //check for WIN32
-            //workaround for win32 ??
-#ifdef DEBUG
-            Log << nl << "Ignoring ToggleFullScreen() on Windows platform..." << std::endl;
-#endif
-            //return setFullscreen(true);
-            //looks like it doesnt work...
-            return false;
-#else
-#ifdef DEBUG
-
-            Log << nl << "Calling SDL_WM_ToggleFullScreen(" << _screen->_surf << ")" << std::endl;
-#endif
-			//TODO : get rid of it.
-            return ( SDL_WM_ToggleFullScreen(_screen->_surf) != 0 ) ;
-#endif
-
-        }
-
         void Window::grabInput()
         {
             SDL_WM_GrabInput( SDL_GRAB_ON );
@@ -270,6 +247,7 @@ namespace RAGE
                 VideoSurface::setResizable(val);
             else if (_screen->isResizableset() !=val ) //if called inside mainLoop while screen is active
             {
+				VideoSurface::setResizable(val);
                 if (! resetDisplay(_screen->getWidth(),_screen->getHeight()))
                     res=false;
             }
@@ -293,6 +271,7 @@ namespace RAGE
 
                 if (_screen->isFullScreenset() != val ) //if called inside mainLoop while screen is active
                 {
+					VideoSurface::setFullscreen(val);
                     if (! resetDisplay(_screen->getWidth(),_screen->getHeight()))
                         res=false;
                 }
@@ -307,6 +286,7 @@ namespace RAGE
                 VideoSurface::setNoFrame(val);
             else if (_screen->isNoFrameset() !=val )  //if called inside mainLoop while screen is active
             {
+				VideoSurface::setNoFrame(val);
                 if (! resetDisplay(_screen->getWidth(),_screen->getHeight()))
                     res=false;
             }

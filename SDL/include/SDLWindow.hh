@@ -92,7 +92,8 @@ namespace RAGE
                 return _eventmanager;
             }
 
-            //preset the flags
+
+            //preset or "dynamically change" properies of the display...
             bool setResizable(bool val);
             bool setFullscreen(bool val);
 #ifdef HAVE_OPENGL
@@ -103,10 +104,16 @@ namespace RAGE
             }
             bool setOpenGL(bool val, Engine* glengine = new DefaultGLEngine());
 #endif
-
-            void setEngine(Engine * engine);
             bool setNoFrame(bool val);
 
+			//to check the current properties of the display
+			bool isFullscreen() {return _screen->isFullScreenset();}
+			bool isResizable() {return _screen->isResizableset();}
+			bool isOpenGL() {return _screen->isOpenGLset();}
+			bool isNoFrame() {return _screen->isNoFrameset();}
+
+
+            void setEngine(Engine * engine);
             void setBGColor(const Color & color)
 			{
 				_background = color;
@@ -122,17 +129,16 @@ namespace RAGE
 
             //return true on success, false otherwise
             bool iconify(void);
-            bool toggleFullScreen(void);
             void grabInput(void);
             void releaseInput(void);
             bool isInputGrabbed(void);
 
-            //WM methods
         protected:
 
             void setCaption(std::string title = DEFAULT_WINDOW_TITLE, std::string icon = "");
             //oldversion
             void getCaption(std::string & title, std::string & icon);
+
         public :
             inline void setTitle(std::string title)
             {
