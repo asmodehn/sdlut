@@ -3,7 +3,7 @@
 //The VideoSurfaces that will be used
 //SDL_Surface *_screen = NULL;
 
-VideoSurface *_screen = NULL;
+VideoSurface *Screen = NULL;
 RGBSurface Background;
 
 //Background Clip
@@ -20,12 +20,15 @@ private:
 	Character_Base* myCharacter;
 	//Monster vector which will contains all monsters
 	std::vector<Monster*> Monster_vector;
+	VideoSurface *screen;
+	int Character_Hit_Distance;
 
 public:
-	VideoSurface *_screen;
 
-    TheEngine()
+    TheEngine(VideoSurface *_screen)
     {
+		screen = _screen;
+		Character_Hit_Distance = 0;
 		P0_Logger << " \nTheEngine Creator Used\n " << std::endl;
     }
 
@@ -39,7 +42,7 @@ public:
 		P0_Logger << " Background Surface Loaded : OK " << std::endl;
 
 		//Initialize the factory
-		myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS, _screen);
+		myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS, screen);
 		P0_Logger << " Monster Factory Init: OK " << std::endl;
 
 		//Create all the monsters
@@ -47,7 +50,7 @@ public:
 		P0_Logger << " Monster Vector Fill: OK " << std::endl;
 
 		//Create Character & initialized it
-		myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, _screen, Monster_vector);
+		myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, screen, Monster_vector);
 		//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_vector);
 		P0_Logger << " Character Creation: OK " << std::endl;
 		
@@ -67,17 +70,9 @@ public:
     bool resize(int width, int height)
     { return true; }
 
-    //The mainloop will loop using this method and so will generate everything that is displayed because the screen is flip automaticly with at the end of each cycle
-	bool render(void) const
-    {
-		//The frames rate regulator
-		Timer fps;
-
-		//Start the FPS management
-        fps.start();
-
-		/*****PRE RENDER*****/
-
+    //Everything that must be calculated before the display on the screen must be defined in this method and then will be called my the mainloop each cycle
+	void prerender(void)
+	{
 		//Update the graphic style of the character
 		myCharacter->Update_Graphic_Style();
 
@@ -85,10 +80,10 @@ public:
 		myCharacter->move();
 
 		//Handle attacks
-		int Character_Hit_Distance = myCharacter->attack();
+		Character_Hit_Distance = myCharacter->attack();
 
 		//Remove Dead monsters from the vector and inform the character 
-		//Monster_vector = myMonster_Factory->Remove_Dead_Monsters();
+		Monster_vector = myMonster_Factory->Remove_Dead_Monsters();
 		myCharacter->Update_Monster_Knowledge(Monster_vector);
 
 		//Move Monsters
@@ -96,6 +91,15 @@ public:
 
 		//Set the camera
         myCharacter->following_camera();
+	}
+	//Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
+	void render(VideoSurface* screen) const
+    {
+		//The frames rate regulator
+		Timer fps;
+
+		//Start the FPS management
+        fps.start();
 
 		/*****RENDER*****/
 
@@ -111,13 +115,7 @@ public:
 		//Apply monsters to the screen
 		myMonster_Factory->Move_Monsters_Animation(myCharacter->Camera);
 
-		//Flip
-
-		/*****POST RENDER*****/
-
-		//Eventually generate new monster and inform the character
-		//Monster_vector = myMonster_Factory->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety() );
-		myCharacter->Update_Monster_Knowledge(Monster_vector);
+		//Auto Flip by the mainloop here
 
 		/*****END RENDER*****/
 
@@ -129,10 +127,17 @@ public:
 
 
 		P0_Logger << " \n TheEngine Render Used\n " << std::endl;
-	
-		return true;
     }
 
+	//Finally the post render method will be used by each cycle of mainloop after the draw of the screen. It designed to contain evrytinhg that will be updated after the render of the screen surface
+	void postrender(void)
+	{
+		//Eventually generate new monster and inform the character
+		Monster_vector = myMonster_Factory->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety() );
+		myCharacter->Update_Monster_Knowledge(Monster_vector);
+	}
+
+	//Return the character
 	Character_Base* Get_Character()
 	{
 		return myCharacter;
@@ -147,7 +152,7 @@ void generate_bg()
 	{
 		while (j<(SCREEN_HEIGHT/32 - 1)) //the -1 is here in order to not apply bg on the last line of the screen: the status bar
 		{
-			if (! _screen->blit(Background, Point::Point(i*32, j*32), BG_Clip[0]) )
+			if (! Screen->blit(Background, Point::Point(i*32, j*32), BG_Clip[0]) )
 			//apply_surface(i*32, j*32, _background, _screen, &_bg[0]);
 			{
 				P0_Logger << " Background Generation Failed " << GetError() << std::endl;
@@ -176,9 +181,9 @@ bool InitEverything()
 	P0_Logger << " Init Video : OK " << std::endl;
 
 	//Create the screen surface
-	_screen = App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
+	Screen = App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
 	//_screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
-	if (_screen == NULL  )
+	if (Screen == NULL  )
 	{
 		P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
         return false;
@@ -241,7 +246,7 @@ int main( int argc, char* args[] )
 	P0_Logger << "-> Windows, SDL, SDL_TTF And VideoSurface Where Initialized Successfully <-" << std::endl;
 
 	//Create the game engine, initialized it and affect it to the windows
-	TheEngine* myEngine = new TheEngine();
+	TheEngine* myEngine = new TheEngine(Screen);
 	App::getInstance().getWindow()->setEngine(myEngine);
 
 	//Create the keyboard input management, inform it of the character and then affect the keyboard management to the windows

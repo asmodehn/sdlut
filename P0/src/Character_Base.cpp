@@ -510,7 +510,17 @@ void Character_Base::attack_animation(int character_hit_distance)
 				{
 					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
 					attack_regulator.stop();
-				}		
+				}
+
+				/*SDL_AddTimer( 0, CallBackFrame, 1);
+				SDL_AddTimer( (350/10)*10, CallBackFrame, 2);
+				SDL_AddTimer( (700/10)*10, CallBackFrame, 0);
+
+				Uint32 CallBackFrame(Uint32 interval, void *param)
+				{
+					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[param]);
+				}*/
+
 			}
 			else if( move_status == CH_LEFT )
 			{
