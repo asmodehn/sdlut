@@ -332,7 +332,8 @@ namespace RAGE
             BaseSurface::_vinfo = _videoinfo;
 
 			RWOps iconrwops( _defaultIcon, sizeof(_defaultIcon));
-            setIcon(RGBSurface(iconrwops));
+			//comment until it's fixed
+            //setIcon(RGBSurface(iconrwops));
             setTitle(_title);
 
 #ifdef DEBUG
