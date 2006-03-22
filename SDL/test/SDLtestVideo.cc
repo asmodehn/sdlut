@@ -52,9 +52,9 @@ public:
     MyEngine()
 		: _font("data/ECHELON.ttf",16),_text(_font,"Blahblahblah",Color(0,0,255),RGBColor(0,0xFF,0))
     {
-        RGBSurface _defaultlogo("data/SDL_logo.bmp",Color(0xFF,0xFF,0xff));
+        //RGBSurface _defaultlogo("data/SDL_logo.bmp",Color(0xFF,0xFF,0xff));
         Log << nl << "Assignment ... TEST";
-        _defaultlogocopy = _defaultlogo;
+        _defaultlogocopy = RGBSurface("data/SDL_logo.bmp",Color(0xFF,0xFF,0xff));
         Log << nl << "Assignment... END";
     }
 
