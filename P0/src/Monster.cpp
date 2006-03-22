@@ -30,14 +30,11 @@ Monster::Monster()
 	Alive_Status = true;
 }
 //Full Construtor
-Monster::Monster(int X, int Y, VideoSurface* Screen_Surface)
+Monster::Monster(int X, int Y)
 {
     //Initial position
 	x = X;
     y = Y;
-
-	//Display Surface
-	Screen = Screen_Surface;
 
 	//Monster Tile Surface
 	_monsters_list = RGBSurface("data/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
@@ -66,7 +63,6 @@ Monster::Monster(const Monster& ToCopy)
 {
 	x = ToCopy.x;
 	y = ToCopy.y;
-	Screen = ToCopy.Screen;
 	_monsters_list = ToCopy._monsters_list;
 	_monster[0] = ToCopy._monster[0];
 	xVel = ToCopy.xVel;
@@ -77,9 +73,6 @@ Monster::Monster(const Monster& ToCopy)
 Monster::~Monster()
 {
 	_monsters_list.~RGBSurface();
-	delete Screen;
-	//SDL_FreeSurface(_monsters_list);
-	//SDL_FreeSurface(screen);
 }
 //Move monster randomly
 void Monster::move(Rect CharacterCollisionbox)
@@ -119,7 +112,7 @@ void Monster::move(Rect CharacterCollisionbox)
 	}
 }
 //Show monster on the screen
-void Monster::move_animation(Rect Camera)
+void Monster::move_animation(Rect Camera, VideoSurface* Screen)
 {
 	//Display the monster only if visible in the Camera range minus the status bar at the bottom
 	if ( (Camera.getx() <= x) && (x < Camera.getx() + Camera.getw()) && (Camera.gety() <= y) && (y < Camera.gety() + Camera.geth() - 32) )

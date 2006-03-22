@@ -4,18 +4,15 @@
 Monster_Factory::Monster_Factory()
 {
 	Number_Of_Monsters = 0;
-	Screen = NULL;
 }
 //Constructor
-Monster_Factory::Monster_Factory(int number_of_monsters, VideoSurface* Screen_Surface)
+Monster_Factory::Monster_Factory(int number_of_monsters)
 {
 	Number_Of_Monsters = number_of_monsters;
-	Screen = Screen_Surface;
 }
 //Destructor
 Monster_Factory::~Monster_Factory()
 {
-	delete Screen;
 }
 //Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
 bool Monster_Factory::Create_One_Monster(int Character_X, int Character_Y)
@@ -37,7 +34,7 @@ bool Monster_Factory::Create_One_Monster(int Character_X, int Character_Y)
 	}
 
 	//Create Monster & initialized it
-	Monster* myMonster = new Monster(32 * x, 32 * y, Screen);
+	Monster* myMonster = new Monster(32 * x, 32 * y);
 
 	//store the monster at the end of the vector
 	Monster_Vector.push_back(myMonster);
@@ -69,11 +66,11 @@ void Monster_Factory::Move_Monsters(Rect Character_Collision_Box)
 	}
 }
 //Invoke all monsters movements animation on the screen
-void Monster_Factory::Move_Monsters_Animation(Rect Camera)
+void Monster_Factory::Move_Monsters_Animation(Rect Camera, VideoSurface* Screen)
 {
 	for(int i=0; i < Monster_Vector.size(); i++)
 	{
-		Monster_Vector[i]->move_animation(Camera);		
+		Monster_Vector[i]->move_animation(Camera, Screen);		
 	}
 }
 //Method that will remove all monster with Alive_Status status to false (aka dead monsters) from the monster vector container

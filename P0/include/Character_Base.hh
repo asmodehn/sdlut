@@ -11,9 +11,6 @@ class Character_Base
 		//The X and Y offsets of the Character
 		int x, y;
 
-		//Display Surface
-		VideoSurface* Screen;
-	    
 		//Character tiles
 		RGBSurface Characters_Tile;
 		RGBSurface Characters_Tile_Melee;
@@ -46,6 +43,7 @@ class Character_Base
 		//Fight variables
 		bool attack_status; //Attack yes or no 
 		int attack_style; //Manage the style of attack 
+		bool attack_successfull; //Manage the attack displayed msg
 
 		/***Arrow***/
 		RGBSurface Arrow_Tile;
@@ -74,7 +72,7 @@ class Character_Base
 		/****Definitions****/
 
 		//Initializes the variables
-		Character_Base(int X, int Y, VideoSurface* Screen_Surface, std::vector<Monster*> monster_vector);
+		Character_Base(int X, int Y, std::vector<Monster*> monster_vector);
 
 		//Init of the character (surface, msgs)
 		bool Init();
@@ -133,13 +131,16 @@ class Character_Base
 		void move();
 
 		//Shows the character movement on the screen
-		void move_animation();
+		void move_animation(VideoSurface* Screen);
 
 		//Manage the character attack
 		int attack();
 
 		//Shows the character attack on the screen
-		void attack_animation(int character_hit_distance);
+		void attack_animation(int character_hit_distance, VideoSurface* Screen);
+
+		//Display attack msg on the status bar (hit or miss)
+		void Display_Attack_Msg(VideoSurface* Screen);
 		
 		//Camera which follow the Character
 		void following_camera();

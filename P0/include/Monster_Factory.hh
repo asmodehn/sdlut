@@ -9,8 +9,8 @@ class Monster_Factory
 {
 	private:
 
+		//How many monster must be generated
 		int Number_Of_Monsters;
-		VideoSurface* Screen;
 		
 		//Monster Vector which contains all monsters present on the battlefield and all theirs infos
 		std::vector<Monster*> Monster_Vector;
@@ -24,7 +24,7 @@ class Monster_Factory
 		Monster_Factory();
 
 		//Constructor
-		Monster_Factory(int number_of_monsters, VideoSurface* Screen_Surface);
+		Monster_Factory(int number_of_monsters);
 
 		//Destructor
 		~Monster_Factory();
@@ -36,7 +36,7 @@ class Monster_Factory
 		void Move_Monsters(Rect Character_Collision_Box);
 
 		//Invoke all monsters movements animation on the screen
-		void Move_Monsters_Animation(Rect Camera);
+		void Move_Monsters_Animation(Rect Camera, VideoSurface* Screen);
 
 		//Remove all monster with dead status from the monster vector container
 		std::vector<Monster*> Remove_Dead_Monsters();

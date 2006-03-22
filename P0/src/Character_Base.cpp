@@ -1,14 +1,11 @@
 #include "Character_Base.hh"
 
 //Initialization construtor
-Character_Base::Character_Base(int X, int Y, VideoSurface* Screen_Surface, std::vector<Monster*> monster_vector)
+Character_Base::Character_Base(int X, int Y, std::vector<Monster*> monster_vector)
 {
     //Initial position
 	x = X;
 	y = Y;
-
-	//Display Surface
-	Screen = Screen_Surface;
     
     //Initial velocity
     xVel = 0;
@@ -85,6 +82,7 @@ Character_Base::Character_Base(int X, int Y, VideoSurface* Screen_Surface, std::
 	//Attack variable
 	attack_status = false; //false = 0
 	attack_style = 1; //0: nothing (future dev), 1: Melee attack (default), 2: Distant attack, 3: magic attack (future dev)
+	attack_successfull = false; //Tells if a monster has been hit, by default no
 
 	//Camera: at the begining it's in the top left corner of the level
 	//Camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
@@ -148,7 +146,6 @@ Character_Base::~Character_Base()
 	Characters_Tile_Melee.~RGBSurface();
 	Characters_Tile_Distant.~RGBSurface();
 	Arrow_Tile.~RGBSurface();
-	delete Screen;
 }
 //Init of the character
 bool Character_Base::Init()
@@ -333,7 +330,7 @@ void Character_Base::move()
 	}
 }
 //Show the Character on the screen
-void Character_Base::move_animation()
+void Character_Base::move_animation(VideoSurface* Screen)
 {
 	//If CH is moving left
     if( xVel < 0 )
@@ -360,7 +357,6 @@ void Character_Base::move_animation()
     if( move_status == CH_RIGHT )
     {
 		Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
-		//apply_surface(x - camera.x, y - camera.y, Characters_Tile, screen, &_character_right_attack[0]);
     }
     else if( move_status == CH_LEFT )
     {
@@ -403,26 +399,6 @@ int Character_Base::attack()
 					break;
 				}
 			}
-		}
-		
-
-		/*****Display MSG on the status bar *****/
-		//Clean the status Bar (last line of the screen)
-		Screen->fill(Color(0x00, 0x00, 0x00));
-		//SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00) );
-
-		//If a monster was hit displayed the msg, if no display miss msg
-		if (attack_successfull)
-		{
-			Screen->blit( attack_msg_hit, Point::Point(5, SCREEN_HEIGHT - 30) );
-			//apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_hit, screen );
-			P0_Logger << " >>> Monster Hit <<< " << std::endl;
-		}
-		else
-		{
-			Screen->blit( attack_msg_miss, Point::Point(5, SCREEN_HEIGHT - 30) );
-			//apply_surface( 5, SCREEN_HEIGHT - 30, attack_msg_miss, screen );
-			P0_Logger << " >>> Monster Miss <<< " << std::endl;
 		}
 	}
 
@@ -477,7 +453,7 @@ bool Character_Base::attack_check_status(int collision_box_movement)
 	return _attack_successfull;
 }
 //Attack animation regarding of the style
-void Character_Base::attack_animation(int character_hit_distance)
+void Character_Base::attack_animation(int character_hit_distance, VideoSurface* Screen)
 {
 	//If the player has pushed the attack key => launch animation attack
 	if (attack_status == true)
@@ -494,7 +470,7 @@ void Character_Base::attack_animation(int character_hit_distance)
 				{
 					attack_regulator.start();
 				}
-				//First frame of the aattack anim until the timer reach 350ms
+				//First frame of the attack anim until the timer reach 350ms
 				if ( attack_regulator.get_ticks() <= 350 )
 				{
 					attack_regulator.start();
@@ -655,6 +631,26 @@ void Character_Base::attack_animation(int character_hit_distance)
 		attack_regulator.stop();
 		attack_status = false;
 	}
+}
+//Display attack msg on the status bar (hit or miss)
+void Character_Base::Display_Attack_Msg(VideoSurface* Screen)
+{
+		/*****Display MSG on the status bar *****/
+		//Clean the status Bar (last line of the screen)
+		Screen->fill(Color(0x00, 0x00, 0x00));
+		//SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00) );
+
+		//If a monster was been hit displayed the hit msg, if no display miss msg
+		if (attack_successfull)
+		{
+			Screen->blit( attack_msg_hit, Point::Point(5, SCREEN_HEIGHT - 30) );
+			P0_Logger << " >>> Monster Hit <<< " << std::endl;
+		}
+		else
+		{
+			Screen->blit( attack_msg_miss, Point::Point(5, SCREEN_HEIGHT - 30) );
+			P0_Logger << " >>> Monster Miss <<< " << std::endl;
+		}
 }
 //Managed the camera
 void Character_Base::following_camera()

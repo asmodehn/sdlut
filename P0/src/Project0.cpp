@@ -3,7 +3,7 @@
 //The VideoSurfaces that will be used
 //SDL_Surface *_screen = NULL;
 
-VideoSurface *Screen = NULL;
+//VideoSurface *Screen = NULL;
 RGBSurface Background;
 
 //Background Clip
@@ -20,16 +20,13 @@ private:
 	Character_Base* myCharacter;
 	//Monster vector which will contains all monsters
 	std::vector<Monster*> Monster_vector;
-	VideoSurface *screen;
 	int Character_Hit_Distance;
 
 public:
 
-    TheEngine(VideoSurface *_screen)
+    TheEngine()
     {
-		screen = _screen;
 		Character_Hit_Distance = 0;
-		P0_Logger << " \nTheEngine Creator Used\n " << std::endl;
     }
 
     virtual ~TheEngine(){}
@@ -42,7 +39,7 @@ public:
 		P0_Logger << " Background Surface Loaded : OK " << std::endl;
 
 		//Initialize the factory
-		myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS, screen);
+		myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS);
 		P0_Logger << " Monster Factory Init: OK " << std::endl;
 
 		//Create all the monsters
@@ -50,7 +47,7 @@ public:
 		P0_Logger << " Monster Vector Fill: OK " << std::endl;
 
 		//Create Character & initialized it
-		myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, screen, Monster_vector);
+		myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, Monster_vector);
 		//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_vector);
 		P0_Logger << " Character Creation: OK " << std::endl;
 		
@@ -104,16 +101,19 @@ public:
 		/*****RENDER*****/
 
 		//Generate the background to the screen
-		generate_bg();
+		generate_bg(screen);
 
 		//Show the Character on the screen
-		myCharacter->move_animation();
+		myCharacter->move_animation(screen);
 		
 		//Show character attack animation
-		myCharacter->attack_animation(Character_Hit_Distance);
+		myCharacter->attack_animation(Character_Hit_Distance, screen);
+
+		//Display attack msg
+		myCharacter->Display_Attack_Msg(screen);
 
 		//Apply monsters to the screen
-		myMonster_Factory->Move_Monsters_Animation(myCharacter->Camera);
+		myMonster_Factory->Move_Monsters_Animation(myCharacter->Camera, screen);
 
 		//Auto Flip by the mainloop here
 
@@ -145,7 +145,7 @@ public:
 };
 
 //Generate Background
-void generate_bg()
+void generate_bg(VideoSurface* Screen)
 {
 	int i=0, j=0;
 	while (i<(SCREEN_WIDTH/32))
@@ -153,7 +153,6 @@ void generate_bg()
 		while (j<(SCREEN_HEIGHT/32 - 1)) //the -1 is here in order to not apply bg on the last line of the screen: the status bar
 		{
 			if (! Screen->blit(Background, Point::Point(i*32, j*32), BG_Clip[0]) )
-			//apply_surface(i*32, j*32, _background, _screen, &_bg[0]);
 			{
 				P0_Logger << " Background Generation Failed " << GetError() << std::endl;
 			}
@@ -181,9 +180,9 @@ bool InitEverything()
 	P0_Logger << " Init Video : OK " << std::endl;
 
 	//Create the screen surface
-	Screen = App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
+	//Screen = App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
 	//_screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
-	if (Screen == NULL  )
+	if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
 	{
 		P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
         return false;
@@ -246,7 +245,7 @@ int main( int argc, char* args[] )
 	P0_Logger << "-> Windows, SDL, SDL_TTF And VideoSurface Where Initialized Successfully <-" << std::endl;
 
 	//Create the game engine, initialized it and affect it to the windows
-	TheEngine* myEngine = new TheEngine(Screen);
+	TheEngine* myEngine = new TheEngine();
 	App::getInstance().getWindow()->setEngine(myEngine);
 
 	//Create the keyboard input management, inform it of the character and then affect the keyboard management to the windows

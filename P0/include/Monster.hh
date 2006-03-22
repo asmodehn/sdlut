@@ -10,9 +10,6 @@ class Monster
 		//The X and Y offsets of the Monster
 		int x, y;
 
-		//Display Surface
-		VideoSurface* Screen;
-
 		//Monster Tile
 		RGBSurface _monsters_list;
 
@@ -33,7 +30,7 @@ class Monster
 		Monster();
 
 		//Constructor that initialize the variables
-		Monster(int X, int Y, VideoSurface *Screen_Surface);
+		Monster(int X, int Y);
 
 		//Copy construtor
 		Monster(const Monster& ToCopy);
@@ -45,7 +42,7 @@ class Monster
 		void move(Rect CharacterCollisionbox);
 	    
 		//Shows the Monster movement on the screen
-		void move_animation(Rect Camera);
+		void move_animation(Rect Camera, VideoSurface* Screen);
 };
 
 #endif

@@ -7,7 +7,7 @@
 #include "Input_Management.hh"
 
 //Gnerate Background
-void generate_bg();
+void generate_bg(VideoSurface* Screen_Surface);
 //Initialization
 bool InitEverything();
 //Load Images Files
