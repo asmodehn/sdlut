@@ -36,7 +36,11 @@ namespace RAGE
 			RWOps() throw (std::logic_error);
 		public:
 			RWOps(const std::string & file, const char *mode) throw (std::logic_error);
-			RWOps(FILE *fp, int autoclose) throw (std::logic_error);
+			
+			//this one is not safe to use on Win32 platforms ( dll properties of SDL and libc have to match... tricky heh ?)
+			//might be useless to have it then
+			//RWOps(FILE *fp, int autoclose) throw (std::logic_error);
+			
 			RWOps(void *mem, int size) throw (std::logic_error);
 			RWOps(const void *mem, int size) throw (std::logic_error);
 			~RWOps();

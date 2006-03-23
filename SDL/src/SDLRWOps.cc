@@ -28,17 +28,17 @@ namespace RAGE {
 			Log << "Exception cought in RWOps Constructor : " << e.what();
 		};
 
-		RWOps::RWOps(FILE *fp, int autoclose) throw (std::logic_error)
-				try : _rwops(NULL)
-		{
-			if(NULL==(_rwops=SDL_RWFromFP(fp,autoclose)))
-				throw std::logic_error("Initialising RWOps from FP failed");
+		//RWOps::RWOps(FILE *fp, int autoclose) throw (std::logic_error)
+		//		try : _rwops(NULL)
+		//{
+		//	if(NULL==(_rwops=SDL_RWFromFP(fp,autoclose)))
+		//		throw std::logic_error("Initialising RWOps from FP failed");
 
-		}
-		catch (std::exception & e)
-		{
-			Log << "Exception cought in RWOps Constructor : " << e.what();
-		};
+		//}
+		//catch (std::exception & e)
+		//{
+		//	Log << "Exception cought in RWOps Constructor : " << e.what();
+		//};
 
 		RWOps::RWOps(void *mem, int size) throw (std::logic_error)
 			try : _rwops(NULL)
@@ -74,8 +74,7 @@ namespace RAGE {
 			
 			std::ofstream dumpfile(filename.c_str());
 
-			dumpfile << "const unsigned char "<< id <<"[] = {";
-
+			
 			const char HexTable[] = "0123456789abcdef";
 			const int BytesPerLine = 20;
 			
@@ -91,6 +90,8 @@ namespace RAGE {
 #ifdef DEBUG
 			Log << nl << blocks << " 16-bytes blocks read";
 #endif
+
+			dumpfile << "const unsigned char "<< id <<"["<< length <<"] = {";
 
 			for (int i=0 ; i< blocks * 16; i++)
 			{

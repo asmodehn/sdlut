@@ -184,7 +184,7 @@ namespace RAGE
             //TODO : support for other format than BMP with SDL_image
             if(_surf == NULL)
             {
-                Log << nl << "Unable to set rgb surface from RWOps ";
+				Log << nl << "Error : Unable to set rgb surface from RWOps ";
 				
 #ifdef HAVE_SDLIMAGE
 			    throw std::logic_error("IMG_Load_RW returns NULL");
