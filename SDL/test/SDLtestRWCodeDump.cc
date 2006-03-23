@@ -2,7 +2,7 @@
 using namespace RAGE;
 using namespace RAGE::SDL;
 
-#include <sys/stat.h>
+//#include <sys/stat.h>
 
 
 //Main Program
@@ -13,9 +13,9 @@ int main(int argc, char** argv)
     App::getInstance().setName ("SDLtest");
     App::getInstance().initVideo(false,false,true,false);
 
-	RWOps iconfile("data/SDL_icon.bmp","rb");
+	RWOps iconfile("data/SDL_icon.png","rb");
 
-	iconfile.dumpCode("SDL_icon.c","_defaultIcon");
+	iconfile.dumpCode("SDL_icon_png.c","_defaultIcon");
 
   
   /*Tests form Tutorial about RWOps...*/

@@ -20,7 +20,7 @@ namespace RAGE {
 				try : _rwops(NULL)
 		{
 			if(NULL==(_rwops=SDL_RWFromFile(file.c_str(),mode)))
-				throw std::logic_error("Initialising RWOps from " + file +" failed");
+				throw std::logic_error("Initialising RWOps from " + file +" failed" + GetError());
 
 		}
 		catch (std::exception & e)

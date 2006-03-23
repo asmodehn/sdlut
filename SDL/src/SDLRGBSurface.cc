@@ -172,9 +172,9 @@ namespace RAGE
         try
 :
 #ifdef HAVE_SDLIMAGE
-			BaseSurface(IMG_Load_RW(&(rwops.get_SDL()),0))
+			BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0))
 #else
-			BaseSurface(SDL_LoadBMP_RW(&(rwops.get_SDL()),0))
+			BaseSurface(SDL_LoadBMP_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0))
 #endif
         {
 #ifdef DEBUG

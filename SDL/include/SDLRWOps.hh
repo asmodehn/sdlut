@@ -50,6 +50,11 @@ namespace RAGE
 				return *_rwops;
 			}
 
+			const SDL_RWops * get_pSDL() const
+			{
+				return _rwops;
+			}
+
 			/*int Seek(int offset,Seek start);
 			Tell();
 			read();
