@@ -6,7 +6,7 @@ namespace RAGE
     namespace SDL
     {
    
-#ifdef DISABLED_FOR_NOW_HAVE_SDLIMAGE
+#ifdef HAVE_SDLIMAGE
 
 	//icon in png format
 	static const unsigned char _defaultIcon[1858] = {
