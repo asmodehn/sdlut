@@ -27,13 +27,8 @@ public:
     TheEngine()
     {
 		Character_Hit_Distance = 0;
-    }
 
-    virtual ~TheEngine(){}
-
-    bool init(int width, int height)
-    {
-		//Create rgbsurface that will be the BG with white color as transparent
+				//Create rgbsurface that will be the BG with white color as transparent
 		Background = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
 		//Background.setColorKey((0xFF, 0xFF, 0xFF));
 		P0_Logger << " Background Surface Loaded : OK " << std::endl;
@@ -56,11 +51,18 @@ public:
 		{
 			P0_Logger << " Character Init Failed... " << std::endl;
 			Timer::delay(2000);
-			return 1;
+			exit(1);
 		}
 		P0_Logger << " Character Init: OK " << std::endl;
 
-		P0_Logger << " \nEngine Init Successfully\n " << std::endl;
+		P0_Logger << " \nEngine CONSTRUCTED Successfully\n " << std::endl;
+
+    }
+
+    virtual ~TheEngine(){}
+
+    bool init(int width, int height)
+    {
 		return true;
 	}
 

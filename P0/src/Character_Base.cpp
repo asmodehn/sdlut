@@ -133,19 +133,19 @@ Character_Base::Character_Base(int X, int Y, std::vector<Monster*> monster_vecto
 //Destructor
 Character_Base::~Character_Base()
 {
-	//Free the msgs
-	attack_msg_hit.~RGBSurface();
-	attack_msg_miss.~RGBSurface();
-	attack_melee_msg_hit.~RGBSurface();
-	attack_melee_msg_miss.~RGBSurface();
-	attack_distant_msg_hit.~RGBSurface();
-	attack_distant_msg_miss.~RGBSurface();
+	////Free the msgs
+	//attack_msg_hit.~RGBSurface();
+	//attack_msg_miss.~RGBSurface();
+	//attack_melee_msg_hit.~RGBSurface();
+	//attack_melee_msg_miss.~RGBSurface();
+	//attack_distant_msg_hit.~RGBSurface();
+	//attack_distant_msg_miss.~RGBSurface();
 
-	//Free the surface
-	Characters_Tile.~RGBSurface();
-	Characters_Tile_Melee.~RGBSurface();
-	Characters_Tile_Distant.~RGBSurface();
-	Arrow_Tile.~RGBSurface();
+	////Free the surface
+	//Characters_Tile.~RGBSurface();
+	//Characters_Tile_Melee.~RGBSurface();
+	//Characters_Tile_Distant.~RGBSurface();
+	//Arrow_Tile.~RGBSurface();
 }
 //Init of the character
 bool Character_Base::Init()

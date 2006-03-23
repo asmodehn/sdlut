@@ -53,7 +53,7 @@ int main(int argc, char** argv)
     //Setup example
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
-    App::getInstance().setName ("SDLtest");
+	App::getInstance().setName ("RAGE::SDL test - OpenGL");
     App::getInstance().initVideo(false,false,true,false);
 
     //Getting video informations
