@@ -1,19 +1,16 @@
 #
-#	Library data
+#	Library data -> None : should be embedded in the lib.
 #
 
-#copying data files to use when debugging
-CONFIGURE_FILE(SDL_icon.bmp ${LIBRARY_OUTPUT_PATH}/data/SDL_icon.bmp COPYONLY)
-# we wil get rid of this when we will have the RWOps wrapped so we can embed that in the source code :)
-
-# installing main shared data
-INSTALL_FILES(/data FILES data/SDL_icon.bmp )
 
 #
 # Library tests data
 #
 
 IF(BUILD_TESTS)
+
+#temp
+CONFIGURE_FILE(SDL_logo.bmp ${EXECUTABLE_OUTPUT_PATH}/data/samplefont.bmp COPYONLY)
 
 #copying data files to use when debugging
 CONFIGURE_FILE(SDL_logo.bmp ${EXECUTABLE_OUTPUT_PATH}/data/SDL_logo.bmp COPYONLY)
