@@ -11,6 +11,14 @@ class Character_Base
 		//The X and Y offsets of the Character
 		int x, y;
 
+		//The velocity of the Character
+		int xVel, yVel;
+
+		//Fight variables
+		bool attack_status; //Attack yes or no 
+		int attack_style; //Manage the style of attack 
+		bool attack_successfull; //Manage the attack displayed msg
+
 		//Character tiles
 		RGBSurface Characters_Tile;
 		RGBSurface Characters_Tile_Melee;
@@ -21,9 +29,6 @@ class Character_Base
 		Rect _character_left_attack[3];
 		Rect _character_down_attack[3];
 		Rect _character_up_attack[3];
-
-		//The velocity of the Character
-		int xVel, yVel;
 
 		//animation variables
 		int frame, move_status;
@@ -39,11 +44,6 @@ class Character_Base
 
 		//Monster Vector which allow the character to know exactly all monsters on the battlefield
 		std::vector<Monster*> Monster_Vector;
-
-		//Fight variables
-		bool attack_status; //Attack yes or no 
-		int attack_style; //Manage the style of attack 
-		bool attack_successfull; //Manage the attack displayed msg
 
 		/***Arrow***/
 		RGBSurface Arrow_Tile;
@@ -73,9 +73,6 @@ class Character_Base
 
 		//Initializes the variables
 		Character_Base(int X, int Y, std::vector<Monster*> monster_vector);
-
-		//Init of the character (surface, msgs)
-		bool Init();
 
 		//Destructor which free the surface 
 		~Character_Base();

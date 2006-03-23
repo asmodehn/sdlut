@@ -1,11 +1,14 @@
 #include "Input_Management.hh"
 
-void KeyboardInput::Character_Knowledge(Character_Base* character)
+//Construtor
+KeyboardInput::KeyboardInput(Character_Base* character)
 {
 	Character_Base* Character = character;
-	Character->Init();
 }
-
+//Destructor
+KeyboardInput::~KeyboardInput()
+{
+}
 bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 {
 	bool quit = false;
@@ -42,19 +45,19 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				break;
 
 			//Attacks Key
-			case KDivide:
+			case KKDivide:
 			case KRctrl:
 				Character->Set_Attack_Status(true);
 				break;
 			//Change weapon style by looping between the available styles (2 for the moment)
-			case KMultiply:
+			case KKMultiply:
 			case KRShift:
 				Character->Set_Attack_Style( Character->Get_Attack_Style() + 1 );
 				if (Character->Get_Attack_Style() > 2) { Character->Set_Attack_Style(1); }
 				break;
 
 			//Leave/appears on the Battlefield and save but do not quit
-			case KEnter:
+			case KKEnter:
 				//To DO *******
 				break;
 

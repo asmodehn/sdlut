@@ -28,7 +28,7 @@ public:
     {
 		Character_Hit_Distance = 0;
 
-				//Create rgbsurface that will be the BG with white color as transparent
+		//Create rgbsurface that will be the BG with white color as transparent
 		Background = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
 		//Background.setColorKey((0xFF, 0xFF, 0xFF));
 		P0_Logger << " Background Surface Loaded : OK " << std::endl;
@@ -46,26 +46,19 @@ public:
 		//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_vector);
 		P0_Logger << " Character Creation: OK " << std::endl;
 		
-		//Init of the character (surface, msgs)
-		if( myCharacter->Init() == false)
-		{
-			P0_Logger << " Character Init Failed... " << std::endl;
-			Timer::delay(2000);
-			exit(1);
-		}
-		P0_Logger << " Character Init: OK " << std::endl;
-
 		P0_Logger << " \nEngine CONSTRUCTED Successfully\n " << std::endl;
 
     }
 
     virtual ~TheEngine(){}
 
+	//Methods that is used when resetdisplay is called and not to initialize the engine like is name could let think. Its used to update the engine only when the windows settings change
     bool init(int width, int height)
     {
 		return true;
 	}
 
+	//Called when the windows is resized and if the engine need to be updated
     bool resize(int width, int height)
     { return true; }
 
@@ -163,7 +156,7 @@ void generate_bg(VideoSurface* Screen)
 		i++;
 		j=0;
 	}
-	//P0_Logger << " Background Generation : OK " << std::endl;
+	P0_Logger << " Background Generation : OK " << std::endl;
 }
 //Initialization of the windows, SDL, SDL_TTF, the surface
 bool InitEverything()
@@ -251,8 +244,8 @@ int main( int argc, char* args[] )
 	App::getInstance().getWindow()->setEngine(myEngine);
 
 	//Create the keyboard input management, inform it of the character and then affect the keyboard management to the windows
-    KeyboardInput myKeyboardInput;
-	myKeyboardInput.Character_Knowledge(myEngine->Get_Character());
+    KeyboardInput myKeyboardInput(myEngine->Get_Character());
+	//myKeyboardInput.Character_Knowledge(myEngine->Get_Character());
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&myKeyboardInput);
 
 

@@ -129,27 +129,9 @@ Character_Base::Character_Base(int X, int Y, std::vector<Monster*> monster_vecto
     Arrow_Up[0].sety(CH_HEIGHT*3);
     Arrow_Up[0].setw(CH_WIDTH);
     Arrow_Up[0].seth(CH_HEIGHT);
-}
-//Destructor
-Character_Base::~Character_Base()
-{
-	////Free the msgs
-	//attack_msg_hit.~RGBSurface();
-	//attack_msg_miss.~RGBSurface();
-	//attack_melee_msg_hit.~RGBSurface();
-	//attack_melee_msg_miss.~RGBSurface();
-	//attack_distant_msg_hit.~RGBSurface();
-	//attack_distant_msg_miss.~RGBSurface();
 
-	////Free the surface
-	//Characters_Tile.~RGBSurface();
-	//Characters_Tile_Melee.~RGBSurface();
-	//Characters_Tile_Distant.~RGBSurface();
-	//Arrow_Tile.~RGBSurface();
-}
-//Init of the character
-bool Character_Base::Init()
-{
+
+	/****Surfaces****/
 	//Characters Surfaces
 	Characters_Tile_Melee = RGBSurface("data/Character_Fighter.bmp", Color(0xFF, 0xFF, 0xFF));
 	Characters_Tile_Distant = RGBSurface("data/Character_Archer.bmp", Color(0xFF, 0xFF, 0xFF));
@@ -166,10 +148,23 @@ bool Character_Base::Init()
 	attack_distant_msg_hit = RGBSurface(AttackMsg_Font, "Distant Hit", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
 	attack_melee_msg_miss = RGBSurface(AttackMsg_Font, "Melee Miss", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
 	attack_distant_msg_miss = RGBSurface(AttackMsg_Font, "Distant Miss", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
+}
+//Destructor
+Character_Base::~Character_Base()
+{
+	////Free the msgs
+	//attack_msg_hit.~RGBSurface();
+	//attack_msg_miss.~RGBSurface();
+	//attack_melee_msg_hit.~RGBSurface();
+	//attack_melee_msg_miss.~RGBSurface();
+	//attack_distant_msg_hit.~RGBSurface();
+	//attack_distant_msg_miss.~RGBSurface();
 
-
-	//Everything went fine
-	return true;
+	////Free the surface
+	Characters_Tile.~RGBSurface();
+	Characters_Tile_Melee.~RGBSurface();
+	Characters_Tile_Distant.~RGBSurface();
+	Arrow_Tile.~RGBSurface();
 }
 //Character Graphic Style Initialiation regarding the attack style
 void Character_Base::Update_Graphic_Style()
@@ -635,9 +630,12 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface* 
 //Display attack msg on the status bar (hit or miss)
 void Character_Base::Display_Attack_Msg(VideoSurface* Screen)
 {
+	//If the player has pushed the attack key => display the good msg in the status bar
+	if (attack_status == true)
+	{
 		/*****Display MSG on the status bar *****/
 		//Clean the status Bar (last line of the screen)
-		Screen->fill(Color(0x00, 0x00, 0x00));
+		Screen->fill( Color(0x00, 0x00, 0x00), Rect(Point(0, 15*32), SCREEN_WIDTH, 32) );
 		//SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00) );
 
 		//If a monster was been hit displayed the hit msg, if no display miss msg
@@ -651,6 +649,7 @@ void Character_Base::Display_Attack_Msg(VideoSurface* Screen)
 			Screen->blit( attack_msg_miss, Point::Point(5, SCREEN_HEIGHT - 30) );
 			P0_Logger << " >>> Monster Miss <<< " << std::endl;
 		}
+	}
 }
 //Managed the camera
 void Character_Base::following_camera()

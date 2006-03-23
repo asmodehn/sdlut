@@ -13,7 +13,8 @@ class KeyboardInput : public Keyboard
 
 	public:
 
-		void Character_Knowledge(Character_Base* character);
+		KeyboardInput(Character_Base* character);
+		~KeyboardInput();
 		virtual bool handleKeyEvent (const Sym &s, bool pressed);
     
 };

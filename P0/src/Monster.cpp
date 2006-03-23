@@ -72,7 +72,7 @@ Monster::Monster(const Monster& ToCopy)
 //Destructor
 Monster::~Monster()
 {
-	//_monsters_list.~RGBSurface();
+	_monsters_list.~RGBSurface();
 }
 //Move monster randomly
 void Monster::move(Rect CharacterCollisionbox)
