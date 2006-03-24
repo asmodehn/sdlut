@@ -10,10 +10,5 @@
 void generate_bg(VideoSurface* Screen_Surface);
 //Initialization
 bool InitEverything();
-//Load Images Files
-void Load_Files();
-//Clean Up Surface
-void Clean_Up();
-
 
 #endif

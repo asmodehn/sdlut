@@ -121,9 +121,6 @@ class Character_Base
 		//Update the graphic regarding the attack style
 		void Update_Graphic_Style();
 	    
-		//Takes key presses and adjust things accordingly
-		bool input_mgt(SDL_Event &event);
-
 		//Move the Character and check collision with the collisionbox of the monster in parameter
 		void move();
 

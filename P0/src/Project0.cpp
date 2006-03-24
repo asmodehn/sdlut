@@ -1,16 +1,13 @@
 #include "Project0.hh"
 
-//The VideoSurfaces that will be used
-//SDL_Surface *_screen = NULL;
-
 //VideoSurface *Screen = NULL;
 RGBSurface Background;
 
 //Background Clip
 Rect BG_Clip[1];
 
-//The event structure that will be used
-SDL_Event event;
+//Create the keyboard instance will managed input
+KeyboardInput myKeyboardInput;
 
 //engine Class : No idea whats used for but neccessary for mainloop
 class TheEngine : public Engine
@@ -83,6 +80,9 @@ public:
 
 		//Set the camera
         myCharacter->following_camera();
+
+		//transmit the ch	racter instance to the keyboard instance to work on the good character
+		myKeyboardInput.Update_Character_Knowledge(myCharacter);
 	}
 	//Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
 	void render(VideoSurface* screen) const
@@ -121,7 +121,7 @@ public:
         }
 
 
-		P0_Logger << " \n TheEngine Render Used\n " << std::endl;
+		//P0_Logger << " \n TheEngine Render Used\n " << std::endl;
     }
 
 	//Finally the post render method will be used by each cycle of mainloop after the draw of the screen. It designed to contain evrytinhg that will be updated after the render of the screen surface
@@ -156,7 +156,7 @@ void generate_bg(VideoSurface* Screen)
 		i++;
 		j=0;
 	}
-	P0_Logger << " Background Generation : OK " << std::endl;
+	//P0_Logger << " Background Generation : OK " << std::endl;
 }
 //Initialization of the windows, SDL, SDL_TTF, the surface
 bool InitEverything()
@@ -196,24 +196,6 @@ bool InitEverything()
     //If eveything loads fine
     return true;    
 }
-//Load Images Files
-void Load_Files()
-{
-	//Create rgbsurface that will be the BG with white color as transparent
-	Background = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
-	//Background.setColorKey((0xFF, 0xFF, 0xFF));
-	P0_Logger << " Background Surface Loaded : OK " << std::endl;
-  
-}
-//Clean Up Surface
-void Clean_Up()
-{
-	//Background.~RGBSurface();
-	//SDL_FreeSurface(_background);
-	//SDL_FreeSurface(_screen);
-	//delete _screen;
-}
-
 //Main
 int main( int argc, char* args[] )
 {
@@ -243,9 +225,8 @@ int main( int argc, char* args[] )
 	TheEngine* myEngine = new TheEngine();
 	App::getInstance().getWindow()->setEngine(myEngine);
 
-	//Create the keyboard input management, inform it of the character and then affect the keyboard management to the windows
-    KeyboardInput myKeyboardInput(myEngine->Get_Character());
-	//myKeyboardInput.Character_Knowledge(myEngine->Get_Character());
+	//Inform the keyboard instance of the character instance and then affect the keyboard instance to the windows
+ 	myKeyboardInput.Update_Character_Knowledge(myEngine->Get_Character());
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&myKeyboardInput);
 
 
@@ -259,91 +240,7 @@ int main( int argc, char* args[] )
 	}
 	P0_Logger << " SDL_Net Init : OK " << std::endl;*/
 
-	//Loop until close of the windows using the cross or escape key
-	/*while(quit == false)
-	{
-		//Start the FPS management
-        fps.start();
-
-		//While there's an event to handle
-		while(SDL_PollEvent(&event))
-		{
-
-			//Handle events for the Character
-			quit = myCharacter->input_mgt(event);
-
-			//Window closed
-            if(event.type == SDL_QUIT)
-            {
-                quit = true;
-            }
-			//immediate leave when quit = true, no need for further treatment as the user want to quit
-			if (quit == true) {break;}
-		}
-
-		//Update the graphic style of the character
-		myCharacter->Update_Graphic_Style();
-
-		//Move the character
-		myCharacter->move();
-
-		//Handle attacks
-		int Character_Hit_Distance = myCharacter->attack();
-
-		//Remove Dead monsters from the vector and inform the character 
-		Monster_vector = myMonster_Factory->Remove_Dead_Monsters();
-		myCharacter->Update_Monster_Knowledge(Monster_vector);
-
-		//Move Monsters
-		myMonster_Factory->Move_Monsters(myCharacter->collision_box);
-
-		//Set the camera
-        myCharacter->following_camera();
-
-		//Generate the background to the screen
-		generate_bg();
-
-		//Show the Character on the screen
-		myCharacter->move_animation();
-		
-		//Show character attack animation
-		myCharacter->attack_animation(Character_Hit_Distance);
-
-		//Apply monsters to the screen
-		myMonster_Factory->Move_Monsters_Animation(myCharacter->Camera);
-
-		//Update the screen
-		if( SDL_Flip(_screen) == -1 )
-		{
-			return 1;    
-		}
-		//Update the whole screen
-		if (! Screen->update() )
-		//SDL_Flip(_screen)
-		//SDL_UpdateRect(_screen, 0, 0, 0, 0);
-		{
-			return 1;    
-		}
-
-		//Eventually generate new monster and inform the character
-		Monster_vector = myMonster_Factory->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety() );
-		myCharacter->Update_Monster_Knowledge(Monster_vector);
-
-		//Cap the frame rate
-        while( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
-        {
-            //wait    
-        }
-	}
-
-	//Clean Before Exit
-	//delete myCharacter;
-	//delete myMonster;
-	//myMonster_Factory->~Monster_Factory();
-	//myCharacter->~Character_Base();*/
-	//Clean_Up();
-	
-	//Quit SDl_NEt
+	//Quit SDL_NEt
 	//SDLNet_Quit();
 
     //Quit SDL

@@ -2,7 +2,7 @@
 #define Base_HH
 
 #include "SDL.hh"
-#include "SDL_image.h"
+//#include "SDL_image.h"
 //#include "SDL_ttf.h"
 //#include "SDl_net.h"
 
