@@ -38,7 +38,7 @@ namespace RAGE
 		// Default 2D Engine ( only used if no engine is defined )
 		class DefaultEngine : public Engine
         {
-
+			protected:
 			//will be initialized in init
 			//might be better in a constructor actually...
 			RGBSurface * image;

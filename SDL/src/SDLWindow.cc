@@ -332,6 +332,8 @@ namespace RAGE
 						{
 							//handling all the events
 							_eventmanager->handleAll();
+							//applying the background
+							applyBGColor();
 	
 							//calling engine for prerender and render events
 							_engine->prerender();
