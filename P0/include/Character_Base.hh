@@ -125,16 +125,16 @@ class Character_Base
 		void move();
 
 		//Shows the character movement on the screen
-		void move_animation(VideoSurface* Screen);
+		void move_animation(VideoSurface& Screen);
 
 		//Manage the character attack
 		int attack();
 
 		//Shows the character attack on the screen
-		void attack_animation(int character_hit_distance, VideoSurface* Screen);
+		void attack_animation(int character_hit_distance, VideoSurface& Screen);
 
 		//Display attack msg on the status bar (hit or miss)
-		void Display_Attack_Msg(VideoSurface* Screen);
+		void Display_Attack_Msg(VideoSurface& Screen);
 		
 		//Camera which follow the Character
 		void following_camera();

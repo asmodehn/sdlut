@@ -85,7 +85,7 @@ public:
 		myKeyboardInput.Update_Character_Knowledge(myCharacter);
 	}
 	//Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
-	void render(VideoSurface* screen) const
+	void render(VideoSurface & screen) const
     {
 		//The frames rate regulator
 		Timer fps;
@@ -140,14 +140,14 @@ public:
 };
 
 //Generate Background
-void generate_bg(VideoSurface* Screen)
+void generate_bg(VideoSurface & Screen)
 {
 	int i=0, j=0;
 	while (i<(SCREEN_WIDTH/32))
 	{
 		while (j<(SCREEN_HEIGHT/32 - 1)) //the -1 is here in order to not apply bg on the last line of the screen: the status bar
 		{
-			if (! Screen->blit(Background, Point::Point(i*32, j*32), BG_Clip[0]) )
+			if (! Screen.blit(Background, Point::Point(i*32, j*32), BG_Clip[0]) )
 			{
 				P0_Logger << " Background Generation Failed " << GetError() << std::endl;
 			}

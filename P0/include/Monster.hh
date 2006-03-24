@@ -42,7 +42,7 @@ class Monster
 		void move(Rect CharacterCollisionbox);
 	    
 		//Shows the Monster movement on the screen
-		void move_animation(Rect Camera, VideoSurface* Screen);
+		void move_animation(Rect Camera, VideoSurface& Screen);
 };
 
 #endif

@@ -36,7 +36,7 @@ class Monster_Factory
 		void Move_Monsters(Rect Character_Collision_Box);
 
 		//Invoke all monsters movements animation on the screen
-		void Move_Monsters_Animation(Rect Camera, VideoSurface* Screen);
+		void Move_Monsters_Animation(Rect Camera, VideoSurface& Screen);
 
 		//Remove all monster with dead status from the monster vector container
 		std::vector<Monster*> Remove_Dead_Monsters();

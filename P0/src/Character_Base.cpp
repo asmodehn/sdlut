@@ -235,7 +235,7 @@ void Character_Base::move()
 	}
 }
 //Show the Character on the screen
-void Character_Base::move_animation(VideoSurface* Screen)
+void Character_Base::move_animation(VideoSurface& Screen)
 {
 	//If CH is moving left
     if( xVel < 0 )
@@ -261,19 +261,19 @@ void Character_Base::move_animation(VideoSurface* Screen)
     //Show the character in his good position
     if( move_status == CH_RIGHT )
     {
-		Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
+		Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
     }
     else if( move_status == CH_LEFT )
     {
-		Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
+		Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
     }
 	else if( move_status == CH_DOWN )
     {
-		Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
+		Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
     }
 	else if( move_status == CH_UP )
     {
-		Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
+		Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
     }
 }
 //Handle character attack on monsters for all attack style and return the distance where the attack took place (in case of a distant attack for example)
@@ -361,7 +361,7 @@ bool Character_Base::attack_check_status(int collision_box_movement)
 	return _attack_successfull;
 }
 //Attack animation regarding of the style
-void Character_Base::attack_animation(int character_hit_distance, VideoSurface* Screen)
+void Character_Base::attack_animation(int character_hit_distance, VideoSurface& Screen)
 {
 	//If the player has pushed the attack key => launch animation attack
 	if (attack_status == true)
@@ -382,17 +382,17 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface* 
 				if ( attack_regulator.get_ticks() <= 350 )
 				{
 					attack_regulator.start();
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[1]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[1]);
 				}
 				//2nd frame of the attack animation between 350ms & 700ms
 				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
 				{					
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[2]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[2]);
 				}
 				//The timer is now over the 700ms, we have finished the attack animation so we get back to the initial frame that is the normal display 
 				if ( attack_regulator.get_ticks() > 700 )
 				{
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
 					attack_regulator.stop();
 				}
 
@@ -418,17 +418,17 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface* 
 				if ( attack_regulator.get_ticks() <= 350 )
 				{
 					attack_regulator.start();
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[1]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[1]);
 				}
 				//2nd frame of the attack animation between 350ms & 700ms
 				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
 				{					
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[2]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[2]);
 				}
 				//The timer is now over the 700ms, we have finished the attack animation so we get back to the initial frame that is the normal display 
 				if ( attack_regulator.get_ticks() > 700 )
 				{
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
 					attack_regulator.stop();
 				}
 			}
@@ -444,17 +444,17 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface* 
 				if ( attack_regulator.get_ticks() <= 350 )
 				{
 					attack_regulator.start();
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[1]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[1]);
 				}
 				//2nd frame of the attack animation between 350ms & 700ms
 				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
 				{					
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[2]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[2]);
 				}
 				//The timer is now over the 700ms, we have finished the attack animation so we get back to the initial frame that is the normal display 
 				if ( attack_regulator.get_ticks() > 700 )
 				{
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
 					attack_regulator.stop();
 				}
 			}
@@ -470,17 +470,17 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface* 
 				if ( attack_regulator.get_ticks() <= 350 )
 				{
 					attack_regulator.start();
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[1]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[1]);
 				}
 				//2nd frame of the attack animation between 350ms & 700ms
 				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
 				{					
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[2]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[2]);
 				}
 				//The timer is now over the 700ms, we have finished the attack animation so we get back to the initial frame that is the normal display 
 				if ( attack_regulator.get_ticks() > 700 )
 				{
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
+					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
 					attack_regulator.stop();
 				}
 			}
@@ -494,7 +494,7 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface* 
 				//Show the good arrow in function of the position
 				if( move_status == CH_RIGHT )
 				{
-					Screen->blit(Arrow_Tile, Point::Point(x - Camera.getx() + (i * CH_WIDTH), y - Camera.gety()), Arrow_Right[0]);
+					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx() + (i * CH_WIDTH), y - Camera.gety()), Arrow_Right[0]);
 					//apply_surface(x - camera.x + (i * CH_WIDTH), y - camera.y, Arrow_Tile, screen, &Arrow_Right[0]);
 					attack_regulator.start();
 					while( attack_regulator.get_ticks() < 200 )
@@ -504,7 +504,7 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface* 
 				}
 				else if( move_status == CH_LEFT )
 				{
-					Screen->blit(Arrow_Tile, Point::Point(x - Camera.getx() - (i * CH_WIDTH), y - Camera.gety()), Arrow_Left[0]);
+					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx() - (i * CH_WIDTH), y - Camera.gety()), Arrow_Left[0]);
 					//apply_surface(x - camera.x - (i * CH_WIDTH), y - camera.y, Arrow_Tile, screen, &Arrow_Left[0]);
 					attack_regulator.start();
 					while( attack_regulator.get_ticks() < 200 )
@@ -514,7 +514,7 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface* 
 				}
 				else if( move_status == CH_DOWN )
 				{
-					Screen->blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() + (i * CH_HEIGHT)), Arrow_Down[0]);
+					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() + (i * CH_HEIGHT)), Arrow_Down[0]);
 					//apply_surface(x - camera.x, y - camera.y + (i * CH_HEIGHT), Arrow_Tile, screen, &Arrow_Down[0]);
 					attack_regulator.start();
 					while( attack_regulator.get_ticks() < 200 )
@@ -524,7 +524,7 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface* 
 				}
 				else if( move_status == CH_UP )
 				{
-					Screen->blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() - (i * CH_HEIGHT)), Arrow_Up[0]);
+					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() - (i * CH_HEIGHT)), Arrow_Up[0]);
 					//apply_surface(x - camera.x, y - camera.y - (i * CH_HEIGHT), Arrow_Tile, screen, &Arrow_Up[0]);
 					attack_regulator.start();
 					while( attack_regulator.get_ticks() < 200 )
@@ -540,25 +540,25 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface* 
 	}
 }
 //Display attack msg on the status bar (hit or miss)
-void Character_Base::Display_Attack_Msg(VideoSurface* Screen)
+void Character_Base::Display_Attack_Msg(VideoSurface& Screen)
 {
 	//If the player has pushed the attack key => display the good msg in the status bar
 	if (attack_status == true)
 	{
 		/*****Display MSG on the status bar *****/
 		//Clean the status Bar (last line of the screen)
-		Screen->fill( Color(0x00, 0x00, 0x00), Rect(0, 14*32, SCREEN_WIDTH, 32) );
+		Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, 14*32, SCREEN_WIDTH, 32) );
 		//SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00) );
 
 		//If a monster was been hit displayed the hit msg, if no display miss msg
 		if (attack_successfull)
 		{
-			Screen->blit( attack_msg_hit, Point::Point(5, SCREEN_HEIGHT - 30) );
+			Screen.blit( attack_msg_hit, Point::Point(5, SCREEN_HEIGHT - 30) );
 			P0_Logger << " >>> Monster Hit <<< " << std::endl;
 		}
 		else
 		{
-			Screen->blit( attack_msg_miss, Point::Point(5, SCREEN_HEIGHT - 30) );
+			Screen.blit( attack_msg_miss, Point::Point(5, SCREEN_HEIGHT - 30) );
 			P0_Logger << " >>> Monster Miss <<< " << std::endl;
 		}
 

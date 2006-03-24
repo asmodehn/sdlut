@@ -66,7 +66,7 @@ void Monster_Factory::Move_Monsters(Rect Character_Collision_Box)
 	}
 }
 //Invoke all monsters movements animation on the screen
-void Monster_Factory::Move_Monsters_Animation(Rect Camera, VideoSurface* Screen)
+void Monster_Factory::Move_Monsters_Animation(Rect Camera, VideoSurface& Screen)
 {
 	for(int i=0; i < Monster_Vector.size(); i++)
 	{

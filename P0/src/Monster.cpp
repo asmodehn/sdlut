@@ -112,12 +112,12 @@ void Monster::move(Rect CharacterCollisionbox)
 	}
 }
 //Show monster on the screen
-void Monster::move_animation(Rect Camera, VideoSurface* Screen)
+void Monster::move_animation(Rect Camera, VideoSurface& Screen)
 {
 	//Display the monster only if visible in the Camera range minus the status bar at the bottom
 	if ( (Camera.getx() <= x) && (x < Camera.getx() + Camera.getw()) && (Camera.gety() <= y) && (y < Camera.gety() + Camera.geth() - 32) )
 	{
-		Screen->blit(_monsters_list, Point::Point(x - Camera.getx(), y - Camera.gety()), _monster[0]);
+		Screen.blit(_monsters_list, Point::Point(x - Camera.getx(), y - Camera.gety()), _monster[0]);
 		//apply_surface(x - Camera.getx(), y - Camera.gety(), _monsters_list, screen, &_monster[0]);
 	}
 }
