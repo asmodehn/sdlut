@@ -108,10 +108,10 @@ int main(int argc, char** argv)
     MyUserInput ui;
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 
-    App::getInstance().getWindow()->setBGColor(Color (128,0,0));
+    App::getInstance().getWindow()->setBGColor(Color (64,0,0));
 	
 	//without this line the default engine is used
-    App::getInstance().getWindow()->setEngine(new MyEngine());
+    //App::getInstance().getWindow()->setEngine(new MyEngine());
 
 
     if (! (App::getInstance().getWindow()->resetDisplay()))

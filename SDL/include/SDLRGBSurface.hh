@@ -46,8 +46,8 @@ protected : //the client should not access to flags...
 	RGBSurface( void * pixeldata, int depth, int pitch, int width, int height ) throw (std::logic_error);
 
 public :
-    //default constructor
-	RGBSurface( const RGBColor & color = Color (0,0,0),  int width = DEFAULT_RGB_WIDTH, int height = DEFAULT_RGB_HEIGHT, int bpp = DEFAULT_RGB_BPP )throw (std::logic_error);
+
+	RGBSurface( const RGBColor & color, int width , int height, int bpp )throw (std::logic_error);
     //creates surface from file, copying its content...
 	RGBSurface( std::string filename )throw (std::logic_error);
 	RGBSurface( std::string filename, const RGBColor & colorKey )throw (std::logic_error);
@@ -57,6 +57,9 @@ public :
 	RGBSurface ( const Font & font, std::string text, Color color, RGBColor bgcolor);
 	//creates a surface from a RWOps containing a image.
 	RGBSurface (const RWOps & rwops)  throw (std::logic_error); //TODO : add optional format
+	//default constructor
+	//creates a surface from the embedded resources with a default image
+	RGBSurface::RGBSurface () throw (std::logic_error);
 
 public :
 	//should be used as the copy constructor. But should also be able to get DisplaySurface as input...

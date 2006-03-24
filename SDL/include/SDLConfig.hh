@@ -11,12 +11,6 @@
 #define DEFAULT_DISPLAY_BPP 0 //0 for current display pixel mode
 //beware ! 0 only usable for Display Surface, not for RGB ones !!
 #define DEFAULT_WINDOW_TITLE "RAGE::SDL"
-#define DEFAULT_WINDOW_ICON "data/SDL_icon.bmp"
-
-#define DEFAULT_RGB_WIDTH 640
-#define DEFAULT_RGB_HEIGHT 480
-#define DEFAULT_RGB_BPP 16 //0 for current display pixel mode
-
 
 //Mandatory
 #include <SDL.h>

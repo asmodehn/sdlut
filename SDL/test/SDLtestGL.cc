@@ -50,26 +50,20 @@ int main(int argc, char** argv)
 
     Logger testlog("Test Log");
 
-    //Setup example
-
-    testlog << nl << " Enabling SDL Video... " << std::endl;
 	App::getInstance().setName ("RAGE::SDL test - OpenGL");
     App::getInstance().initVideo(false,false,true,false);
 
     //Getting video informations
     testlog << nl << *App::getInstance().getWindow()->getVideoInfo() << std::endl;
 
-    testlog << nl << " Creating the User Interface... " << std::endl;
     //UI Creation
     MyUserInput ui;
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
+    
+	App::getInstance().getWindow()->setBGColor(Color (64,0,0));
 
-    testlog << nl << " OPENGL activation... " << std::endl;
-    App::getInstance().getWindow()->setBGColor(Color (128,0,0));
-
-    MyUserInput ui2; // another ui, since the first is closed ( but not deleted )
-    App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui2);
-    testlog << nl <<"display reset" << std::endl;
+    MyUserInput ui;
+    App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 
     //GLManager test
     GLManager * glman=App::getInstance().getWindow()->getGLManager();
@@ -85,21 +79,7 @@ int main(int argc, char** argv)
 
     if(App::getInstance().getWindow()->resetDisplay())
     {
-
-
-        //GLManager test
-        testlog << nl << *glman << std::endl;
-
-        VideoSurface* display=App::getInstance().getWindow()->getDisplay();
-        testlog << nl << "calling display->debug() " << std::endl;
-        testlog << nl << *display <<std::endl;
-
-        testlog << nl << std::boolalpha << " setDepthSize(16) " << glman->setDepthSize(16) << std::endl;
-
-        testlog << nl << *glman << std::endl;
-
-        testlog << nl << "loop... " << std::endl;
-        App::getInstance().getWindow()->mainLoop();
+       App::getInstance().getWindow()->mainLoop();
     }
 
     return 0;

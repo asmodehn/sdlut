@@ -1,7 +1,5 @@
 #include "SDLEngine.hh"
 
-#include "SDLResources.inc"
-
 namespace RAGE
 {
     namespace SDL
@@ -10,17 +8,18 @@ namespace RAGE
 		//this render function should not modify the engine
 		void DefaultEngine::render(VideoSurface & screen) const
 		{
-			screen.blit(*image,Point( (screen.getWidth() - image->getWidth()) /2, (screen.getHeight() - image->getHeight()) /2));
+			screen.blit(*image,Point( screen.getWidth() - image->getWidth(), screen.getHeight() - image->getHeight()));
 		}
 
 			//to initialise the engine, just called once before any render
 		bool DefaultEngine::init(int width, int height)
 		{
-			image = new RGBSurface(RWOps(_defaultImage,sizeof(_defaultImage)));
+			//loading the default RGBSurface from the Resources
+			image = new RGBSurface();
 			return image != NULL;
 		}
 
-			//get called everytime the display is resized
+		//get called everytime the display is resized
 		bool DefaultEngine::resize(int width, int height)
 		{
 			return true;

@@ -1,9 +1,13 @@
 #include "SDLRGBSurface.hh"
 
+#include "SDLResources.inc"
+
 namespace RAGE
 {
     namespace SDL
     {
+
+
 
         Uint32 RGBSurface::RGBFlags=SDL_SWSURFACE;
 
@@ -175,6 +179,45 @@ namespace RAGE
 			BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0))
 #else
 			BaseSurface(SDL_LoadBMP_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0))
+#endif
+        {
+#ifdef DEBUG
+            Log << nl << "RGBSurface::RGBSurface(RWOps) called...";
+#endif
+            //std::cerr << "RGBSurface Constructor Called" << std::endl;
+            //TODO : support for other format than BMP with SDL_image
+            if(_surf == NULL)
+            {
+				Log << nl << "Error : Unable to set rgb surface from RWOps ";
+				
+#ifdef HAVE_SDLIMAGE
+			    throw std::logic_error("IMG_Load_RW returns NULL");
+#else
+	          throw std::logic_error("SDL_LoadBMP_RW returns NULL");
+#endif
+      
+            }
+#ifdef DEBUG
+
+            Log << nl << "RGBSurface::RGBSurface(RWOps) done.";
+#endif
+
+        }
+        catch (std::exception &e)
+        {
+            Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
+            e.what() << nl << GetError();
+            //TODO : much more explicit error message...
+        };
+
+		//default constructor
+		RGBSurface::RGBSurface () throw (std::logic_error)
+        try
+:
+#ifdef HAVE_SDLIMAGE
+			BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(RWOps(_defaultImage,sizeof(_defaultImage)).get_pSDL()),0))
+#else
+			BaseSurface(SDL_LoadBMP_RW(const_cast<SDL_RWops*>(RWOps(_defaultImage,sizeof(_defaultImage)).get_pSDL()),0))
 #endif
         {
 #ifdef DEBUG
