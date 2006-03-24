@@ -23,7 +23,7 @@ namespace RAGE
 			virtual void prerender(void) {}
 
 			//this render function should not modify the engine
-            virtual void render(VideoSurface* screen) const = 0;
+            virtual void render(VideoSurface & screen) const = 0;
 
 			//this is run just after the render, and refresh of the screen
 			virtual void postrender(void) {}
@@ -38,10 +38,17 @@ namespace RAGE
 		// Default 2D Engine ( only used if no engine is defined )
 		class DefaultEngine : public Engine
         {
+
+			//will be initialized in init
+			//might be better in a constructor actually...
+			RGBSurface * image;
+
 			public:
 
+			DefaultEngine() : image(NULL) {}
+
 			//this render function should not modify the engine
-            virtual void render(VideoSurface* screen) const;
+            virtual void render(VideoSurface & screen) const;
 
 			//to initialise the engine, just called once before any render
             virtual bool init(int width, int height);
@@ -54,12 +61,15 @@ namespace RAGE
 		// Default GL Engine ( only used if no engine is defined )
 		class DefaultGLEngine : public Engine
         {
+
+			
+
 			public:
 			//this is run just before the render
 			virtual void prerender(void);
 
 			//this render function should not modify the engine
-            virtual void render(VideoSurface* screen) const;
+            virtual void render(VideoSurface & screen) const;
 
 			//to initialise the engine, just called once before any render
             virtual bool init(int width, int height);

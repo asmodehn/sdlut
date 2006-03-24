@@ -26,6 +26,7 @@ ADD_LIBRARY(	Rage_SDL ../include/SDL.hh ../include/SDLColor.hh
 		SDLRWOps.cc ../include/SDLRWOps.hh
 		SDLFont.cc ../include/SDLFont.hh
 		SDLTimer.cc ../include/SDLTimer.hh
+		SDLResources.inc
 	)
 
 

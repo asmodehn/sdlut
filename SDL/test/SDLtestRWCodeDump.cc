@@ -10,12 +10,14 @@ int main(int argc, char** argv)
 {
 
     Logger testlog("Test Log");
+
+	//needed to use RWOps...
     App::getInstance().setName ("SDLtest");
     App::getInstance().initVideo(false,false,true,false);
 
-	RWOps iconfile("data/SDL_icon.png","rb");
+	RWOps iconfile("data/samplefont.png","rb");
 
-	iconfile.dumpCode("SDL_icon_png.c","_defaultIcon");
+	iconfile.dumpCode("samplefont_png.c","_defaultFont");
 
   
   /*Tests form Tutorial about RWOps...*/

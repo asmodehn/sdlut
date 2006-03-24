@@ -1,6 +1,6 @@
 #include "SDLFont.hh"
 
-
+#include "SDLResources.inc"
 
 namespace RAGE
 {

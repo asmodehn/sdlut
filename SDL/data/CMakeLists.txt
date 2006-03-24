@@ -19,8 +19,6 @@ CONFIGURE_FILE(picture.xbm ${EXECUTABLE_OUTPUT_PATH}/data/picture.xbm COPYONLY)
 CONFIGURE_FILE(sail.bmp ${EXECUTABLE_OUTPUT_PATH}/data/sail.bmp COPYONLY)
 CONFIGURE_FILE(sample.bmp ${EXECUTABLE_OUTPUT_PATH}/data/sample.bmp COPYONLY)
 CONFIGURE_FILE(sample.wav ${EXECUTABLE_OUTPUT_PATH}/data/sample.wav COPYONLY)
-CONFIGURE_FILE(sdl_button.png ${EXECUTABLE_OUTPUT_PATH}/data/sdl_button.png COPYONLY)
-CONFIGURE_FILE(sdl_button.bmp ${EXECUTABLE_OUTPUT_PATH}/data/sdl_button.bmp COPYONLY)
 CONFIGURE_FILE(echelon.ttf ${EXECUTABLE_OUTPUT_PATH}/data/echelon.ttf COPYONLY)
 
 # installing tests data

@@ -31,8 +31,6 @@ namespace RAGE
     namespace SDL
     {
 
-		extern const unsigned char _defaultIcon[];
-
         //further reference to break dependency cycles
         class EventManager;
 

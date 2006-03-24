@@ -69,14 +69,14 @@ public:
     bool resize(int width, int height)
     {return true;}
 
-    void render(VideoSurface* screen) const
+    void render(VideoSurface & screen) const
     {
             Log << nl<< "Copie TEST";
             RGBSurface _defaultlogocopy2(_defaultlogocopy);
             Log << nl << "Copie END";
-     screen->blit(_defaultlogocopy2,Point((screen->getWidth()-_defaultlogocopy2.getWidth())/2,(screen->getHeight()-_defaultlogocopy2.getHeight())/2));
+     screen.blit(_defaultlogocopy2,Point((screen.getWidth()-_defaultlogocopy2.getWidth())/2,(screen.getHeight()-_defaultlogocopy2.getHeight())/2));
 
-	screen->blit(_text,Point(20,20));
+	screen.blit(_text,Point(20,20));
     
     }
 };
@@ -115,6 +115,8 @@ int main(int argc, char** argv)
 	App::getInstance().initText(); //to do before using the Engine
 
     App::getInstance().getWindow()->setBGColor(Color (128,0,0));
+	
+	//without this line the default engine is used
     App::getInstance().getWindow()->setEngine(new MyEngine());
 
 
