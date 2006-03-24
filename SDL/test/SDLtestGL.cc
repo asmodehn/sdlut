@@ -62,8 +62,8 @@ int main(int argc, char** argv)
     
 	App::getInstance().getWindow()->setBGColor(Color (64,0,0));
 
-    MyUserInput ui;
-    App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
+    //MyUserInput ui;
+    //App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 
     //GLManager test
     GLManager * glman=App::getInstance().getWindow()->getGLManager();
