@@ -96,7 +96,8 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 	//Escape menu when in game (Paused Character While The world Continue to live)
 	else if (Global_Game_State == 4)
 	{
-		quit = true; //Will generate the mainloop to close
+		quit = true;
+		_quitRequested = true; //Will generate the mainloop to close
 	}
 	return quit;
     

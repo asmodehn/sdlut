@@ -562,7 +562,7 @@ void Character_Base::Display_Attack_Msg(VideoSurface& Screen)
 			P0_Logger << " >>> Monster Miss <<< " << std::endl;
 		}
 
-		//Display attack msg is done, so now everything relative to the character attack is done, when can reset the status
+		//Display attack msg is done, so now everything relative to the character attack is done, we can reset the status
 		attack_status = false;
 	}
 }
