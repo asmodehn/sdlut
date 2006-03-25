@@ -15,7 +15,7 @@ class Character_Base
 		int xVel, yVel;
 
 		//Fight variables
-		bool attack_status; //Attack yes or no 
+		bool attack_status; //Attack key pressed yes or no 
 		int attack_style; //Manage the style of attack 
 		bool attack_successfull; //Manage the attack displayed msg
 
@@ -34,6 +34,7 @@ class Character_Base
 		int frame, move_status;
 
 		//Attack msg, font & color
+		RGBSurface attack_msg; //Will contains the final attack display msg after all other check (style, status, attack successfull, ...)
 		RGBSurface attack_msg_hit;
 		RGBSurface attack_msg_miss;
 		RGBSurface attack_melee_msg_hit;

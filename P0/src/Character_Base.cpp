@@ -144,6 +144,7 @@ Character_Base::Character_Base(int X, int Y, std::vector<Monster*> monster_vecto
 	Font AttackMsg_Font("data/SlimSansSerif.ttf", 28);
 
 	//Msgs displayed in the status bar
+	attack_msg = RGBSurface(AttackMsg_Font, " ", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0)); // Empty msg until the attack key is pressed once (when using empty msg the creator crash so until this bug is solved we will use " " insted of "")
 	attack_melee_msg_hit = RGBSurface(AttackMsg_Font, "Melee Hit", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
 	attack_distant_msg_hit = RGBSurface(AttackMsg_Font, "Distant Hit", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
 	attack_melee_msg_miss = RGBSurface(AttackMsg_Font, "Melee Miss", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
@@ -279,7 +280,7 @@ void Character_Base::move_animation(VideoSurface& Screen)
 //Handle character attack on monsters for all attack style and return the distance where the attack took place (in case of a distant attack for example)
 int Character_Base::attack()
 {
-	int Hit_Distance = 0; //The Hit distane is the distance between the character and the monster by default the Melee Hit Distance
+	int Hit_Distance = 0; //The Hit distance is the distance between the character and the monster by default the Melee Hit Distance
 
 	//If the player has pushed the attack key => check if attack was seccessfull or not and act accordingly
 	if (attack_status == true)
@@ -488,6 +489,9 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface& 
 		// Distant Style
 		if (attack_style == 2)
 		{
+			//Start the timer
+			attack_regulator.start();
+
 			//In case of distant attack character_hit_distance may vary if we have to take care of it
 			for (int i=1; i <= character_hit_distance; i++) //Move the arrow until character_hit_distance reached that represents monster hit
 			{
@@ -533,10 +537,10 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface& 
 					}
 				}
 			}
-		}
 
-		//attack animation has been done => stop the timer
-		attack_regulator.stop();
+			//attack animation has been done => stop the timer
+			attack_regulator.stop();
+		}
 	}
 }
 //Display attack msg on the status bar (hit or miss)
@@ -553,18 +557,21 @@ void Character_Base::Display_Attack_Msg(VideoSurface& Screen)
 		//If a monster was been hit displayed the hit msg, if no display miss msg
 		if (attack_successfull)
 		{
-			Screen.blit( attack_msg_hit, Point::Point(5, SCREEN_HEIGHT - 30) );
+			attack_msg = attack_msg_hit;
+			//Screen.blit( attack_msg_hit, Point::Point(5, SCREEN_HEIGHT - 30) );
 			P0_Logger << " >>> Monster Hit <<< " << std::endl;
 		}
 		else
 		{
-			Screen.blit( attack_msg_miss, Point::Point(5, SCREEN_HEIGHT - 30) );
+			attack_msg = attack_msg_miss;
+			//Screen.blit( attack_msg_miss, Point::Point(5, SCREEN_HEIGHT - 30) );
 			P0_Logger << " >>> Monster Miss <<< " << std::endl;
 		}
 
 		//Display attack msg is done, so now everything relative to the character attack is done, we can reset the status
 		attack_status = false;
 	}
+	Screen.blit( attack_msg, Point::Point(5, SCREEN_HEIGHT - 30) );
 }
 //Managed the camera
 void Character_Base::following_camera()
