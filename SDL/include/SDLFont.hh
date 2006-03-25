@@ -45,8 +45,14 @@ protected:
 	SDL_Surface* render(std::string text, Color c, RenderMode mode, Color bgc = Color()) const;
 
 public:
+	//constructor
 	Font( int ptsize = 16) throw (std::logic_error);
 	Font(std::string filename, int ptsize = 16) throw (std::logic_error);
+
+	//Copy constructor
+	Font(const Font & font);
+
+	//destructor
 	~Font();
 
 

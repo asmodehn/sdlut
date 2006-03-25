@@ -1,7 +1,11 @@
 namespace RAGE {
 	namespace SDL{
 
-#ifdef HAVE_SDLIMAGE
+#ifdef HAVE_SDLIMAGE_DISABLED_FEATURE
+			// The problem here is that if the libpng.dll is not available at run time the program will fail ( icon, etc.)
+			// And I am not aware of any way currently to prevent that.
+			// For stability purpose I would advise to stick only with embedded BMP.
+			// The size loss of using png, is not that relevant anyway.
 
 	//icon in png format
 	static const unsigned char _defaultIcon[1858] = {

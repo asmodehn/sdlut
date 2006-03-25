@@ -41,52 +41,95 @@ public:
     }
 };
 
+class Console
+{
+
+	friend class MyEngine;
+
+	//if member embedded (object not reference), error when destructing Font...
+	//to debug -> copy / deletion problem
+	const Font & _font;
+
+	Color _bgColor;
+
+	RGBSurface * surf;
+
+public :
+	Console(const Font & fnt = Font(),Color c = Color(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL)
+	{
+	}
+
+	bool init(int width, int height)
+	{
+		surf = new RGBSurface(_bgColor,width,height,8); //8 as magic number for minimum bpp.
+		if (surf == NULL) return false;
+		surf->optimise(); // Doesnt matter anyway we match the display one here.
+		return true;
+	}
+
+	//WARNING : BUG here if trying to set to fullscreen using F6, then error, then trying to resize -> crash
+	bool resize(int width, int height,bool keepcontent = true)
+	{
+		bool res = surf->resize(width,height,false);
+		surf->fill(_bgColor);
+		return res;
+	}
+
+	~Console()
+	{
+		if (surf != NULL)
+			delete surf,surf = NULL;
+	}
+
+
+};
+
 class MyEngine : public DefaultEngine
 {
 
 public:
 
-	Point imagePos;
-	Rect screenSize;
-	
-	MyEngine() : imagePos(0,0)
+	Point consolePos;
+	Console * console;
+
+	MyEngine() : consolePos(0,0), console (NULL)
 	{}
+
+	void setConsole( Console * cons ) { console = cons;}
 
     virtual ~MyEngine(){}
 
 	bool init(int width, int height)
 	{
 		DefaultEngine::init(width,height);
-		imagePos = Point( (width - image->getWidth()) /2, (height - image->getHeight()) /2);
-		screenSize = Rect(width,height);
+		console->init(width,height - 2 * DefaultEngine::image->getHeight());
+		consolePos.sety(DefaultEngine::image->getHeight());
 		return true;
 	}
 
 	bool resize(int width, int height)
 	{
-		screenSize = Rect(width,height);
+		DefaultEngine::resize(width,height);
+		console->resize(width,height - 2 * DefaultEngine::image->getHeight());
+		consolePos.sety(DefaultEngine::image->getHeight());
 		return true;
 	}
 
 	void prerender()
 	{
-		//to be sure we dont go out of the screen surface...
-		if ( imagePos.getx() > (int)(screenSize.getw() - image->getWidth()) )
-			imagePos.setx(screenSize.getw() - image->getWidth());
-		if ( imagePos.gety() > (int)(screenSize.geth() - image->getHeight()) )
-			imagePos.sety(screenSize.geth() - image->getHeight());
-		if (imagePos.getx() < 0) imagePos.setx(0);
-		if (imagePos.gety() < 0) imagePos.sety(0);
+		//nothing for now
 	}
 
 	void render(VideoSurface & screen) const
     {
-		screen.blit(*image,imagePos);
+		DefaultEngine::render(screen);
+		if (console !=NULL)
+			screen.blit(*(console->surf),consolePos);
     }
 
 	void postrender()
 	{
-		imagePos += Point (1,1);
+		//nothing for now
 	}
 };
 
@@ -100,18 +143,24 @@ int main(int argc, char** argv)
     //Setup example
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
-	App::getInstance().setName ("RAGE::SDL test - Video");
+	App::getInstance().setName ("RAGE::SDL test - Font");
     App::getInstance().initVideo(false,false,true,false);
+	App::getInstance().initText();
 
     testlog << nl << " Creating the User Interface... " << std::endl;
     //UI Creation
     MyUserInput ui;
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 
-    App::getInstance().getWindow()->setBGColor(Color (0,0,0));
+    App::getInstance().getWindow()->setBGColor(Color (64,0,0));
+
+	Font font("data/echelon.ttf");
+	Console cons(font);
+	MyEngine engine;
+	engine.setConsole(&cons);
 	
 	//without this line the default engine is used
-    App::getInstance().getWindow()->setEngine(new MyEngine());
+    App::getInstance().getWindow()->setEngine(&engine);
 
 
     if (! (App::getInstance().getWindow()->resetDisplay()))

@@ -17,12 +17,13 @@ namespace SDL
 #ifdef HAVE_SDLTTF
 
 
+		int _ref;
 		TTF_Font * _ttfstruct;
 		
 		//explicit TTFFont(TTF_Font* ttfstruct) : _ttfstruct(ttfstruct) {};
 
 		TTFFont(std::string filename, int ptsize) throw (std::logic_error)
-		try : _ttfstruct(TTF_OpenFont(filename.c_str(),ptsize))
+		try : _ttfstruct(TTF_OpenFont(filename.c_str(),ptsize)), _ref(1)
 		{
 			if(_ttfstruct==NULL) {
 				throw std::logic_error("TTF_OpenFont Error : " + GetError(TTF));
@@ -36,13 +37,24 @@ namespace SDL
 		};
 
 
+		//Copy constructor (carefull not full copy, the TTF structure is shared)
+		TTFFont(const TTFFont & font)
+		{
+			++_ref;
+			_ttfstruct = font._ttfstruct;
+		}
+
+
 		//to load default font if any error happens...
 		//TTFFont(){};
 
 		~TTFFont()
 		{
-			TTF_CloseFont(_ttfstruct), _ttfstruct=NULL;
+			--_ref;
+			if (_ref == 0)
+				TTF_CloseFont(_ttfstruct), _ttfstruct=NULL;
 		}
+
 #else //HAVE_SDLTTF
 
 		TTFFont(std::string filename, int ptsize) throw (std::logic_error)
@@ -79,6 +91,9 @@ catch (std::exception& e)
 };
 
 
+Font::Font(const RAGE::SDL::Font &font)
+: _font(font._font)
+{}
 
 
 	Font::~Font()

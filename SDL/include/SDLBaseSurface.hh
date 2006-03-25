@@ -40,6 +40,22 @@ namespace RAGE
             static const VideoInfo * _vinfo; ///a usefull static pointer, set to the current VideoInfo by AppWindow
 
         protected:
+
+			//Moved out of RGBSurface, because VideoSurface might need those sometime...
+			//SDL interprets each pixel as a 32-bit number, so our masks must depend
+			//on the endianness (byte order) of the machine */
+			#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+				static const Uint32 r_default_mask = 0xff000000;
+				static const Uint32 g_default_mask = 0x00ff0000;
+				static const Uint32 b_default_mask = 0x0000ff00;
+				static const Uint32 a_default_mask = 0x000000ff;
+			#else
+				static const Uint32 r_default_mask = 0x000000ff;
+				static const Uint32 g_default_mask = 0x0000ff00;
+				static const Uint32 b_default_mask = 0x00ff0000;
+				static const Uint32 a_default_mask = 0xff000000;
+			#endif
+
             //TODO : improve wrapping with const SDL_Surface * // or maybe (const?) SDL_Surface &
             //... look at SDL_video.h to access correctly to SDL_Surface like as for PixelFormat and everything else
 
@@ -118,6 +134,12 @@ namespace RAGE
 			SDL_Surface get_SDL() const
 			{
 				return *_surf;
+			}
+
+			//usefull to get the SDL structure
+			const SDL_Surface * get_pSDL() const
+			{
+				return _surf;
 			}
 
             inline int getHeight(void) const
@@ -222,6 +244,13 @@ namespace RAGE
             }
             //Blit src into the current surface.
             bool blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect);
+
+			bool resize(const Rect & r)
+			{
+				return resize(r.getw(),r.geth());
+			}
+
+			virtual bool resize(int width, int height, bool keepcontent = false) = 0;
 
             friend Logger & operator << (Logger & ostr, const BaseSurface & surf);
 

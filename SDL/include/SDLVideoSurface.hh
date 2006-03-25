@@ -75,7 +75,7 @@ namespace RAGE
             //this kind of surface shouldnt be deleted by hand. the raw SDL methods takes care of it
 
             //to resize the display
-            virtual bool resize (int width, int height);
+            virtual bool resize (int width, int height, bool keepcontent = false);
             //to flip the videosurface
             virtual bool refresh(void);
 

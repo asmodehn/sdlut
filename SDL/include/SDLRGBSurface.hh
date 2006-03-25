@@ -18,22 +18,8 @@ namespace RAGE
 
 class RGBSurface : public BaseSurface
 {
-	//friend class SurfaceFactory;
-	//friend class SDLDisplaySurface;
 
-//SDL interprets each pixel as a 32-bit number, so our masks must depend
-//on the endianness (byte order) of the machine */
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    static const Uint32 r_default_mask = 0xff000000;
-    static const Uint32 g_default_mask = 0x00ff0000;
-    static const Uint32 b_default_mask = 0x0000ff00;
-    static const Uint32 a_default_mask = 0x000000ff;
-#else
-    static const Uint32 r_default_mask = 0x000000ff;
-    static const Uint32 g_default_mask = 0x0000ff00;
-    static const Uint32 b_default_mask = 0x00ff0000;
-    static const Uint32 a_default_mask = 0xff000000;
-#endif
+
 
 	static Uint32 RGBFlags;
 
@@ -88,6 +74,8 @@ public :
 /*	void setUpdateRect(int x, int y, int w, int h);
 	int update(void);
 */
+
+	bool resize(int width, int height, bool keepcontent = false);
 
 	//Accesseurs - are they all really usefull ?
 	inline bool isSRCColorKeyset(void) {return ( SDL_SRCCOLORKEY & _surf->flags ) != 0;}

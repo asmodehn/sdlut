@@ -465,6 +465,30 @@ namespace RAGE
             return SDL_SetColorKey(_surf, flags, getPixelFormat().getValueFromRGB(key) ) == 0;
         }
 
+		bool RGBSurface::resize(int width, int height, bool keepcontent)
+		{
+			
+			SDL_Surface * newSurf = SDL_CreateRGBSurface(_surf->flags,width,height,_surf->format->BitsPerPixel, r_default_mask, g_default_mask, b_default_mask, a_default_mask);
+
+            if (newSurf==NULL) //SetVideoMode has failed
+            {
+                Log << "Unable to resize to " << width << " x " << height << " 2D RGB surface " << nl << GetError();
+				
+               return false;
+            }
+
+			if (keepcontent)
+			{
+				SDL_BlitSurface(_surf, NULL , newSurf, NULL);
+			}
+
+			assert(newSurf); // should be always OK
+			SDL_FreeSurface(_surf);
+            _surf=newSurf;
+
+			return true;
+		}
+
         bool RGBSurface::optimise(bool alpha)
         {
             assert(_surf);
