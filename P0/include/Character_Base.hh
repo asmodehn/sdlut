@@ -29,6 +29,7 @@ class Character_Base
 		Rect _character_left_attack[3];
 		Rect _character_down_attack[3];
 		Rect _character_up_attack[3];
+		Rect Character_SpriteRect;
 
 		//animation variables
 		int frame, move_status;

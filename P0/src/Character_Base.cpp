@@ -75,6 +75,9 @@ Character_Base::Character_Base(int X, int Y, std::vector<Monster*> monster_vecto
     _character_up_attack[2].setw(CH_WIDTH);
     _character_up_attack[2].seth(CH_HEIGHT);
 
+	//Assign the right sprite to character by deffault
+	Character_SpriteRect = _character_right_attack[0];
+
 	//Initialize animation variables
     frame = 0;  // for future moves animation
     move_status = CH_RIGHT;
@@ -259,23 +262,25 @@ void Character_Base::move_animation(VideoSurface& Screen)
 	    move_status = CH_UP;
 	}
   
-    //Show the character in his good position
+    //assign the good sprite to the character sprite
     if( move_status == CH_RIGHT )
     {
-		Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
-    }
+		Character_SpriteRect = _character_right_attack[0];
+	}
     else if( move_status == CH_LEFT )
     {
-		Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
-    }
+		Character_SpriteRect = _character_left_attack[0];
+	}
 	else if( move_status == CH_DOWN )
     {
-		Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
-    }
+		Character_SpriteRect = _character_down_attack[0];
+	}
 	else if( move_status == CH_UP )
     {
-		Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
+		Character_SpriteRect = _character_up_attack[0];
     }
+	//Show the character in his good position
+	Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Character_SpriteRect);
 }
 //Handle character attack on monsters for all attack style and return the distance where the attack took place (in case of a distant attack for example)
 int Character_Base::attack()
@@ -370,7 +375,7 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface& 
 		// Melee Style (character_hit_distance = 1 so do not care)
 		if (attack_style == 1)
 		{
-			//Show the good attack in function of the position
+			//assign the good sprite to the character sprite depending of the frame and the direction
 			if( move_status == CH_RIGHT )
 			{
 				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
@@ -382,18 +387,17 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface& 
 				//First frame of the attack anim until the timer reach 350ms
 				if ( attack_regulator.get_ticks() <= 350 )
 				{
-					attack_regulator.start();
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[1]);
+					Character_SpriteRect = _character_right_attack[1];
 				}
 				//2nd frame of the attack animation between 350ms & 700ms
 				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
-				{					
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[2]);
+				{	
+					Character_SpriteRect = _character_right_attack[2];
 				}
 				//The timer is now over the 700ms, we have finished the attack animation so we get back to the initial frame that is the normal display 
 				if ( attack_regulator.get_ticks() > 700 )
 				{
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
+					Character_SpriteRect = _character_right_attack[0];
 					attack_regulator.stop();
 				}
 
@@ -410,85 +414,77 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface& 
 			else if( move_status == CH_LEFT )
 			{
 				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
-				//Timer not started then start it
 				if ( attack_regulator.get_ticks() == 0 )
 				{
 					attack_regulator.start();
 				}
-				//First frame of the attack anim until the timer reach 350ms
 				if ( attack_regulator.get_ticks() <= 350 )
 				{
-					attack_regulator.start();
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[1]);
+					Character_SpriteRect = _character_left_attack[1];
 				}
-				//2nd frame of the attack animation between 350ms & 700ms
 				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
-				{					
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[2]);
+				{	
+					Character_SpriteRect = _character_left_attack[2];
 				}
-				//The timer is now over the 700ms, we have finished the attack animation so we get back to the initial frame that is the normal display 
 				if ( attack_regulator.get_ticks() > 700 )
 				{
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
+					Character_SpriteRect = _character_left_attack[0];
 					attack_regulator.stop();
 				}
 			}
 			else if( move_status == CH_DOWN )
 			{
 				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
-				//Timer not started then start it
 				if ( attack_regulator.get_ticks() == 0 )
 				{
 					attack_regulator.start();
 				}
-				//First frame of the attack anim until the timer reach 350ms
 				if ( attack_regulator.get_ticks() <= 350 )
 				{
-					attack_regulator.start();
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[1]);
+					Character_SpriteRect = _character_down_attack[1];
 				}
-				//2nd frame of the attack animation between 350ms & 700ms
 				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
-				{					
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[2]);
+				{	
+					Character_SpriteRect = _character_down_attack[2];
 				}
-				//The timer is now over the 700ms, we have finished the attack animation so we get back to the initial frame that is the normal display 
 				if ( attack_regulator.get_ticks() > 700 )
 				{
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
+					Character_SpriteRect = _character_down_attack[0];
 					attack_regulator.stop();
 				}
 			}
 			else if( move_status == CH_UP )
 			{
 				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
-				//Timer not started then start it
 				if ( attack_regulator.get_ticks() == 0 )
 				{
 					attack_regulator.start();
 				}
-				//First frame of the attack anim until the timer reach 350ms
 				if ( attack_regulator.get_ticks() <= 350 )
 				{
-					attack_regulator.start();
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[1]);
+					Character_SpriteRect = _character_up_attack[1];
 				}
-				//2nd frame of the attack animation between 350ms & 700ms
 				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
-				{					
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[2]);
+				{	
+					Character_SpriteRect = _character_up_attack[2];
 				}
-				//The timer is now over the 700ms, we have finished the attack animation so we get back to the initial frame that is the normal display 
 				if ( attack_regulator.get_ticks() > 700 )
 				{
-					Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
+					Character_SpriteRect = _character_up_attack[0];
 					attack_regulator.stop();
 				}
 			}
+			//Show the good character sprite
+			Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Character_SpriteRect);
 		}
 		// Distant Style
 		if (attack_style == 2)
 		{
+			/****Character****/
+			//Show the good character sprite (future devs: depending of the frame and the direction)
+			Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Character_SpriteRect);
+
+			/****Arrow****/
 			//Start the timer
 			attack_regulator.start();
 
