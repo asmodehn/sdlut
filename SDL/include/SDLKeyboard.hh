@@ -138,10 +138,17 @@ namespace RAGE
                 {
                     return _mod;
                 }
+				//WARNING Will return 0 if unicode not enabled
                 inline long unsigned int getUnicode() const
                 {
                     return _unicode;
                 }
+				//just to convert the unicode value
+				inline char getChar() const
+				{
+					return(static_cast<char>(_unicode & 0x7F));
+				}
+
                 inline bool isUnicode() const
                 {
                     return (_unicode & 0xff80) == 0 ;

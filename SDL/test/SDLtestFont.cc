@@ -3,10 +3,82 @@ using namespace RAGE;
 using namespace RAGE::SDL;
 
 
+
+
+class Console
+{
+
+	friend class MyEngine;
+
+	//if member embedded (object not reference), error when destructing Font...
+	//to debug -> copy / deletion problem
+	const Font & _font;
+
+	Color _bgColor;
+
+	RGBSurface * surf;
+
+	std::string text;
+
+public :
+	Console(const Font & fnt = Font(),Color c = Color(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text(">")
+	{
+	}
+
+	bool init(int width, int height)
+	{
+		surf = new RGBSurface(_bgColor,width,height,8); //8 as magic number for minimum bpp.
+		if (surf == NULL) return false;
+		surf->optimise(); // Doesnt matter anyway we match the display one here.
+		return true;
+	}
+
+	//WARNING : BUG here if trying to set to fullscreen using F6, then error, then trying to resize -> crash
+	bool resize(int width, int height,bool keepcontent = true)
+	{
+		bool res = surf->resize(width,height,false);
+		surf->fill(_bgColor);
+		return res;
+	}
+
+	void print(const std::string & newtext)
+	{
+		text += newtext;
+		RGBSurface textsurf(_font,text,Color(255,255,255),true);
+		surf->fill(_bgColor);
+		surf->blit(textsurf);
+	}
+
+	void add(char newchar)
+	{
+		text += newchar;
+		RGBSurface textsurf(_font,text,Color(255,255,255),true);
+		surf->fill(_bgColor);
+		surf->blit(textsurf);
+	}
+
+	~Console()
+	{
+		if (surf != NULL)
+			delete surf,surf = NULL;
+	}
+
+
+};
+
 //Defining UserInput
-class MyUserInput : public Keyboard
+class MyUserInput : public TextInput
 {
 public:
+
+	Console *cons;
+
+	MyUserInput() : TextInput(), cons(NULL) {}
+
+	void setConsole (Console * newcons)
+	{
+		cons = newcons;
+	}
 
     virtual bool handleKeyEvent (const Sym &s, bool pressed)
     {
@@ -34,54 +106,11 @@ public:
                     App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen());
                 res = true;
                 break;
-                default:
-                res = false;
+				default: if (pressed == true) cons->add(s.getChar());
+                res = true;
             }
         return res;
     }
-};
-
-class Console
-{
-
-	friend class MyEngine;
-
-	//if member embedded (object not reference), error when destructing Font...
-	//to debug -> copy / deletion problem
-	const Font & _font;
-
-	Color _bgColor;
-
-	RGBSurface * surf;
-
-public :
-	Console(const Font & fnt = Font(),Color c = Color(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL)
-	{
-	}
-
-	bool init(int width, int height)
-	{
-		surf = new RGBSurface(_bgColor,width,height,8); //8 as magic number for minimum bpp.
-		if (surf == NULL) return false;
-		surf->optimise(); // Doesnt matter anyway we match the display one here.
-		return true;
-	}
-
-	//WARNING : BUG here if trying to set to fullscreen using F6, then error, then trying to resize -> crash
-	bool resize(int width, int height,bool keepcontent = true)
-	{
-		bool res = surf->resize(width,height,false);
-		surf->fill(_bgColor);
-		return res;
-	}
-
-	~Console()
-	{
-		if (surf != NULL)
-			delete surf,surf = NULL;
-	}
-
-
 };
 
 class MyEngine : public DefaultEngine
@@ -148,17 +177,20 @@ int main(int argc, char** argv)
 	App::getInstance().initText();
 
     testlog << nl << " Creating the User Interface... " << std::endl;
-    //UI Creation
-    MyUserInput ui;
-    App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
-
+ 
     App::getInstance().getWindow()->setBGColor(Color (64,0,0));
 
-	Font font("data/echelon.ttf");
+	Font font("data/echelon.ttf",24);
 	Console cons(font);
 	MyEngine engine;
 	engine.setConsole(&cons);
 	
+   //UI Creation
+    MyUserInput ui;
+	ui.setConsole(&cons);
+    App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
+
+
 	//without this line the default engine is used
     App::getInstance().getWindow()->setEngine(&engine);
 

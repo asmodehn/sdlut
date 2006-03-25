@@ -261,7 +261,7 @@ namespace RAGE
 
         bool Keyboard::isModDown (Modifier m)
         {
-            return m & SDL_GetModState() !=0;
+            return (m & SDL_GetModState()) !=0;
         }
 
         void Keyboard::setModDown(Modifier m)
@@ -313,10 +313,10 @@ namespace RAGE
                 {
                     switch( s.getKey() )
                     {
-                        //deal with international characters
-                        default:
-                        res=false;
+                        //deal with international characters TODO
+                        default: break;
                     }
+					res=false;
                 }
             }
             //TODO on every Event Loop (not critical, and not only keyboard...
