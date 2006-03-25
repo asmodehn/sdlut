@@ -2,6 +2,8 @@
 
 RAGE::Logger P0_Logger("P0 Log");
 
+int GLOBAL_GAME_STATE = 3;
+
 //To check colission (small beginning of a physical engine^^)
 bool check_collision(Rect A, Rect B)
 {

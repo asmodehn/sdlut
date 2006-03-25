@@ -193,6 +193,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Menus.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Monster.cpp"
 				>
 			</File>
@@ -220,6 +224,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Input_Management.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Menus.hh"
 				>
 			</File>
 			<File
@@ -254,6 +262,14 @@
 			</File>
 			<File
 				RelativePath=".\data\ECHELON.TTF"
+				>
+			</File>
+			<File
+				RelativePath=".\data\LeaveMenu_NoSelected.png"
+				>
+			</File>
+			<File
+				RelativePath=".\data\LeaveMenu_YesSelected.png"
 				>
 			</File>
 			<File

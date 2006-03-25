@@ -15,8 +15,8 @@ class TheEngine : public Engine
 private:
 	Monster_Factory* myMonster_Factory;
 	Character_Base* myCharacter;
-	//Monster vector which will contains all monsters
-	std::vector<Monster*> Monster_vector;
+	std::vector<Monster*> Monster_vector; //Monster vector which will contains all monsters
+	Escape_Menu* EscMenu;
 	int Character_Hit_Distance;
 
 public:
@@ -42,6 +42,9 @@ public:
 		myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, Monster_vector);
 		//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_vector);
 		P0_Logger << " Character Creation: OK " << std::endl;
+
+		//Create the ingame escape menu
+		EscMenu = new Escape_Menu();
 		
 		P0_Logger << " \nEngine CONSTRUCTED Successfully\n " << std::endl;
 
@@ -81,8 +84,8 @@ public:
 		//Set the camera
         myCharacter->following_camera();
 
-		//transmit the ch	racter instance to the keyboard instance to work on the good character
-		myKeyboardInput.Update_Character_Knowledge(myCharacter);
+		//transmit the character instance and the esc menu instance to the keyboard instance
+		myKeyboardInput.Update_Character_Knowledge(myCharacter, EscMenu);
 	}
 	//Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
 	void render(VideoSurface & screen) const
@@ -101,6 +104,7 @@ public:
 		//Show the Character on the screen
 		myCharacter->move_animation(screen);
 		
+		if (GLOBAL_GAME_STATE == 3)
 		//Show character attack animation
 		myCharacter->attack_animation(Character_Hit_Distance, screen);
 
@@ -109,6 +113,10 @@ public:
 
 		//Apply monsters to the screen
 		myMonster_Factory->Move_Monsters_Animation(myCharacter->Camera, screen);
+
+		if (GLOBAL_GAME_STATE == 4)
+			//Show Escape menu
+			EscMenu->Show_Menu(screen);
 
 		//Auto Flip by the mainloop here
 
@@ -130,6 +138,10 @@ public:
 		//Eventually generate new monster and inform the character
 		Monster_vector = myMonster_Factory->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety() );
 		myCharacter->Update_Monster_Knowledge(Monster_vector);
+
+		if (GLOBAL_GAME_STATE == 4)
+			//Manage esc menu validation: leave if return is true
+			myKeyboardInput.Set_quitRequested( EscMenu->Manage_Validation() );
 	}
 
 	//Return the character
@@ -226,7 +238,7 @@ int main( int argc, char* args[] )
 	App::getInstance().getWindow()->setEngine(myEngine);
 
 	//Inform the keyboard instance of the character instance and then affect the keyboard instance to the windows
- 	myKeyboardInput.Update_Character_Knowledge(myEngine->Get_Character());
+ 	//myKeyboardInput.Update_Character_Knowledge(myEngine->Get_Character());
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&myKeyboardInput);
 
 

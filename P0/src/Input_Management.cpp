@@ -2,27 +2,26 @@
 
 KeyboardInput::KeyboardInput()
 {
-	Global_Game_State = 3; //Set the game_state to 3, ingame, by default
+	GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
 }
 
-//Inform the keyboard of the current character
-void KeyboardInput::Update_Character_Knowledge(Character_Base* character)
+//Inform the keyboard of the current character and of the esc menu
+void KeyboardInput::Update_Character_Knowledge(Character_Base* character, Escape_Menu* esc_menu)
 {
 	Character = character;
+	Esc_Menu = esc_menu;
 }
 //Managed actions associated to key in function of the context (defined by Global_Game_State)
 bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 {
-	bool quit = false;
-
 	//Future dev
-	if (Global_Game_State == 1)
+	if (GLOBAL_GAME_STATE == 1)
 	{}
 	//Future dev
-	else if (Global_Game_State == 2)
+	else if (GLOBAL_GAME_STATE == 2)
 	{}
 	//InGame
-	else if (Global_Game_State == 3)
+	else if (GLOBAL_GAME_STATE == 3)
 	{
 		if (pressed) //Key pressed
 		{
@@ -65,7 +64,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 
 				//Esc Key Pressed
 				case KEscape:
-					Global_Game_State = 4;//Escape Menu called
+					GLOBAL_GAME_STATE = 4;//Escape Menu called
 					break;
 			}
 		}
@@ -93,12 +92,45 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 			}
 		}
 	}
-	//Escape menu when in game (Paused Character While The world Continue to live)
-	else if (Global_Game_State == 4)
+	//Escape menu when ingame (Paused Character While The world Continue to live)
+	else if (GLOBAL_GAME_STATE == 4)
 	{
-		quit = true;
-		_quitRequested = true; //Will generate the mainloop to close
+		if (pressed) //Key pressed
+		{
+			switch( s.getKey() )
+			{
+				//Decrement esc menu's selected item id until it reach the top than go back to the bottom
+				case KUp:
+					if ( Esc_Menu->Get_SelectedItemId() > 1 )
+					{
+						Esc_Menu->Set_SelectedItemId(Esc_Menu->Get_SelectedItemId() - 1);
+					}
+					else
+					{
+						Esc_Menu->Set_SelectedItemId(2); //The bottom SelectItem id is 2 at this time
+					}
+					break;
+				
+				//Increment esc menu's selected item id until it reach the bottom than go back to the top
+				case KDown:
+					if ( Esc_Menu->Get_SelectedItemId() < 2 )
+					{
+						Esc_Menu->Set_SelectedItemId(Esc_Menu->Get_SelectedItemId() + 1);
+					}
+					else
+					{
+						Esc_Menu->Set_SelectedItemId(1); //The top SelectItem id is 1 at this time
+					}
+					break;
+
+				//Validate the selected esc menu's item id
+				case KReturn:
+					Esc_Menu->Set_ValidatedItemId( Esc_Menu->Get_SelectedItemId() );
+					break;
+			}
+		}
 	}
-	return quit;
+
+	return true; //the return is not usefull for now
     
 }

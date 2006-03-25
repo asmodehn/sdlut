@@ -5,6 +5,7 @@
 #include "Character_Base.hh"
 #include "Monster_Factory.hh"
 #include "Input_Management.hh"
+#include "Menus.hh"
 
 //Gnerate Background
 void generate_bg(VideoSurface& Screen_Surface);
