@@ -101,7 +101,7 @@ namespace RAGE
             {
                 return _glmanager;
             }
-            bool setOpenGL(bool val, Engine* glengine = new DefaultGLEngine());
+            bool setOpenGL(bool val);
 #endif
             bool setNoFrame(bool val);
 

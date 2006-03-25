@@ -57,7 +57,7 @@ namespace RAGE
 			        static float rtri; // rotation angle
 			static float rquad; // rotation angle
 	
-			
+			glMatrixMode(GL_MODELVIEW);       // Select The Modelview Matrix
 			glLoadIdentity();         // Reset The Current Modelview Matrix
 			glTranslatef(-1.5f,0.0f,-6.0f);      // Move Left 1.5 Units And Into The Screen 6.0
 			glRotatef(rtri,0.0f,1.0f,0.0f);      // Rotate The Triangle On The Y axis ( NEW )

@@ -125,20 +125,26 @@ namespace RAGE
             return res;
         }
 #ifdef HAVE_OPENGL
-        bool Window::setOpenGL(bool val, Engine* glengine)
+        bool Window::setOpenGL(bool val)
         {
             bool res = true;
+			
+			Engine * newengine;
+			if (val)
+				newengine = new DefaultGLEngine();
+			else
+				newengine = new DefaultEngine();
+			
+			if (!_userengine) delete _engine;
+			_engine=newengine;
+
             if (_screen == NULL )
 			{
 				VideoSurface::setOpenGL(val);
-				if (_userengine) delete _engine;
-				_engine = glengine;
 			}
             else if ( _screen->isOpenGLset() !=val ) //if called inside mainLoop while screen is active
             {
                 VideoSurface::setOpenGL(val);
-				if (_userengine) delete _engine;
-				_engine = glengine;
                 if (! resetDisplay(_screen->getWidth(),_screen->getHeight()))
                     res=false;
             }
@@ -178,7 +184,7 @@ namespace RAGE
             BaseSurface::_vinfo = _videoinfo;
 
 			RWOps iconrwops( _defaultIcon, sizeof(_defaultIcon));
-			//comment until it's fixed
+
             setIcon(RGBSurface(iconrwops));
             setTitle(_title);
 
@@ -333,7 +339,7 @@ namespace RAGE
 							//handling all the events
 							_eventmanager->handleAll();
 							//applying the background
-							//applyBGColor();
+							applyBGColor();
 	
 							//calling engine for prerender and render events
 							_engine->prerender();

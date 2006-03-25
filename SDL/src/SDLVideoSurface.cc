@@ -126,7 +126,7 @@ namespace RAGE
 				return SDL_Flip(_surf) == 0;
         }
 
-//TODO : rethink about that again...( recopy the content or not ??? )
+//TODO : rethink about that again...( recopy the content if 2D or not at all ??? )
         bool VideoSurface::resize(int width, int height, bool keepcontent)
         {
 
@@ -134,9 +134,13 @@ namespace RAGE
             Log << nl << "VideoSurface::resize(" << width << ", " << height << ") called...";
 #endif
 
-			SDL_Surface * oldSurf = SDL_CreateRGBSurface(SDL_SWSURFACE,getWidth(),getHeight(),getBPP(),r_default_mask,g_default_mask, b_default_mask, a_default_mask);
-			SDL_DisplayFormat(oldSurf);
-			SDL_BlitSurface(_surf,NULL,oldSurf,NULL);
+			SDL_Surface * oldSurf;
+			if ( keepcontent && !isOpenGLset())
+			{
+				oldSurf = SDL_CreateRGBSurface(SDL_SWSURFACE,getWidth(),getHeight(),getBPP(),r_default_mask,g_default_mask, b_default_mask, a_default_mask);
+				SDL_DisplayFormat(oldSurf);
+				SDL_BlitSurface(_surf,NULL,oldSurf,NULL);
+			}
 
             //BEWARE : should match DisplaySurface Constructor code
             SDL_Surface * newSurf = SDL_SetVideoMode(width,height,getBPP(),getFlags());
@@ -151,7 +155,7 @@ namespace RAGE
                 return false;
             }
 
-			if (keepcontent)
+			if (keepcontent  && !isOpenGLset())
 			{
 				SDL_BlitSurface(oldSurf, NULL , newSurf, NULL);
 				SDL_FreeSurface(oldSurf);

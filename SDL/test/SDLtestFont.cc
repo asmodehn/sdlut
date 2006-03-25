@@ -37,21 +37,24 @@ public :
 	bool resize(int width, int height,bool keepcontent = true)
 	{
 		bool res = surf->resize(width,height,false);
-		surf->fill(_bgColor);
+		draw();
 		return res;
 	}
 
 	void print(const std::string & newtext)
 	{
 		text += newtext;
-		RGBSurface textsurf(_font,text,Color(255,255,255),true);
-		surf->fill(_bgColor);
-		surf->blit(textsurf);
+		draw();
 	}
 
 	void add(char newchar)
 	{
 		text += newchar;
+		draw();
+	}
+
+	void draw()
+	{
 		RGBSurface textsurf(_font,text,Color(255,255,255),true);
 		surf->fill(_bgColor);
 		surf->blit(textsurf);
@@ -173,7 +176,7 @@ int main(int argc, char** argv)
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
 	App::getInstance().setName ("RAGE::SDL test - Font");
-    App::getInstance().initVideo(false,false,true,false);
+    App::getInstance().initVideo(false,false,false,false);
 	App::getInstance().initText();
 
     testlog << nl << " Creating the User Interface... " << std::endl;

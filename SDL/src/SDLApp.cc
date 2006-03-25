@@ -72,20 +72,16 @@ namespace RAGE
                 //setting the required flags...
 #ifdef HAVE_OPENGL
 
-                if (opengl)
-                    _window->setOpenGL(true);
+				_window->setOpenGL(opengl);
 #else
 
                 if(opengl)
                     Log << nl << "Not compiled with opengl support --> Ignoring opengl window request"<< std::endl;
 #endif
 
-                if (fullscreen)
-                    _window->setFullscreen(true);
-                if (resizable)
-                    _window->setResizable(true);
-                if (noframe)
-                    _window->setNoFrame(true);
+                    _window->setFullscreen(fullscreen);
+                    _window->setResizable(resizable);
+                    _window->setNoFrame(noframe);
 
 
 

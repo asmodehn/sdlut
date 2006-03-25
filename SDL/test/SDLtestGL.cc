@@ -51,7 +51,8 @@ int main(int argc, char** argv)
     Logger testlog("Test Log");
 
 	App::getInstance().setName ("RAGE::SDL test - OpenGL");
-    App::getInstance().initVideo(false,false,true,false);
+	//Starting with usual SDL window
+    App::getInstance().initVideo(false,true,true,false);
 
     //Getting video informations
     testlog << nl << *App::getInstance().getWindow()->getVideoInfo() << std::endl;
@@ -75,7 +76,10 @@ int main(int argc, char** argv)
     "setBufferSize(5) " << glman->setBufferSize(12) << nl <<
     std::endl;
 
-    App::getInstance().getWindow()->setOpenGL(true,new DefaultGLEngine());
+
+	//switch to opengl
+    //App::getInstance().getWindow()->setOpenGL(true);
+	//using default engine
 
     if(App::getInstance().getWindow()->resetDisplay())
     {
