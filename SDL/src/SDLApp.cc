@@ -52,6 +52,19 @@ namespace RAGE
 			
 		}
 
+		//Initialize sdl timer
+		bool App::initTimer()
+		{
+			if (_manager != NULL)
+			{
+				_manager->enableTimer();
+				return true;
+			}
+			return false;
+            
+			
+		}
+
         bool App::initVideo( bool fullscreen,bool opengl, bool resizable, bool noframe)
         {
             bool res = false;

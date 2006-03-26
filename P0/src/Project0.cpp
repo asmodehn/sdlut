@@ -186,15 +186,12 @@ bool InitEverything()
     }
 	P0_Logger << " Init Video : OK " << std::endl;
 
-	//Create the screen surface
-	//Screen = App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
-	//_screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
-	if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
+	if (! App::getInstance().initTimer() )
 	{
-		P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
+		P0_Logger << " SDL Init Timer Failed : " << GetError() << std::endl;
         return false;
     }
-	P0_Logger << " Video Surface Creation : OK " << std::endl;
+	P0_Logger << " Init Timer : OK " << std::endl;
 
 	//Initialize SDL_ttf
 	if (! App::getInstance().initText())
@@ -204,6 +201,14 @@ bool InitEverything()
         return false;
     }
 	P0_Logger << " TTF Init : OK " << std::endl;
+
+	//Create the video surface aka the display
+	if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
+	{
+		P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
+        return false;
+    }
+	P0_Logger << " Video Surface Creation : OK " << std::endl;
 
     //If eveything loads fine
     return true;    

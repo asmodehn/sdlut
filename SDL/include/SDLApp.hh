@@ -80,7 +80,9 @@ namespace RAGE
             //Add more when they are tested and working...
 			bool initText();
             //bool initAudio();
-            //bool initTimer();
+
+			//Initialize sdl timer
+            bool initTimer();
 
             //Accessors
             // may return NULL => always test the returned value!
