@@ -48,6 +48,9 @@ namespace RAGE
             App( const App & );
             App& operator=( App);
 
+			//to work around SDLNet limitation
+			bool _netInitialized;
+
         public:
 
             static App& getInstance();
@@ -72,17 +75,20 @@ namespace RAGE
                 return _icon;
             }
 
+			//just init SDL
+			bool init();
             ///this is mandatory to get a display and event handling (window manager, mouse, keyboard)
             bool initVideo(bool fullscreen = false,bool opengl = false,  bool resizable = true, bool noframe = false);
             ///this is mandatory to get joystick event handling
             bool initJoystick();
+			bool initCDRom();
+            bool initTimer();
+
 
             //Add more when they are tested and working...
 			bool initText();
             //bool initAudio();
-
-			//Initialize sdl timer
-            bool initTimer();
+			bool initNet();
 
             //Accessors
             // may return NULL => always test the returned value!

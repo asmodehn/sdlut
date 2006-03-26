@@ -27,6 +27,10 @@
 #include "SDL_image.h"
 #endif
 
+#ifdef HAVE_SDLNET
+#include "SDL_net.h"
+#endif
+
 #ifdef HAVE_SDLTTF
 #include "SDL_ttf.h"
 #endif

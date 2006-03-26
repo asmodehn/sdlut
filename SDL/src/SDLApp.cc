@@ -5,8 +5,7 @@ namespace RAGE
     namespace SDL
     {
 
-        App::App(std::string logfilename) :    _manager(NULL),
-                _window(NULL)
+        App::App(std::string logfilename) :    _manager(NULL), _window(NULL), _netInitialized(false)
         {
 #ifdef DEBUG
             Log << nl << "App::App() called";
@@ -23,6 +22,10 @@ namespace RAGE
 #ifdef HAVE_SDLTTF
 			if (TTF_WasInit())
 				TTF_Quit();
+#endif
+#ifdef HAVE_SDLNET
+			if( _netInitialized)
+				SDLNet_Quit();
 #endif
             //MAKE SURE those destructor dont need App. They shouldnt !
             delete _window, _window = NULL;
@@ -52,13 +55,51 @@ namespace RAGE
 			
 		}
 
+		bool App::initNet()
+		{
+#ifdef HAVE_SDLNET
+			_netInitialized = true;
+			//Initialize SDL_net
+			if( SDLNet_Init() == -1 )
+			{
+				Log << " NET Error : " << GetError(Net) << std::endl;
+				return false;
+			}
+			return true;
+#endif
+			return false;
+			
+		}
+
+
+		//Initialize sdl cdrom
+		bool App::initCDRom()
+		{
+			if (_manager == NULL)
+			{
+				_manager = new Manager(false,false,false,true,false,false,false);
+				return true;
+			}
+			else
+			{
+				return _manager->enableCdrom();
+			}
+			return false;
+            
+			
+		}
+
 		//Initialize sdl timer
 		bool App::initTimer()
 		{
-			if (_manager != NULL)
+			if (_manager == NULL)
 			{
-				_manager->enableTimer();
+				_manager = new Manager(false,false,true,false,false,false,false);
 				return true;
+			}
+			else
+			{
+				return _manager->enableTimer();
 			}
 			return false;
             
@@ -73,10 +114,11 @@ namespace RAGE
                 if (_manager == NULL)
                 {
                     _manager = new Manager(true,false,false,false,false,false,false);
+					res = ( _manager != NULL );
                 }
                 else
                 {
-                    _manager->enableVideo();
+                    res = _manager->enableVideo();
                 }
 
                 _window = new Window(_name);
@@ -96,9 +138,6 @@ namespace RAGE
                     _window->setResizable(resizable);
                     _window->setNoFrame(noframe);
 
-
-
-                res=true;
             }
             catch (std::exception &e)
             {
@@ -143,6 +182,17 @@ namespace RAGE
 
             return res;
         }
+
+		bool App::init()
+		{
+			if (_manager == NULL)
+			{
+				_manager = new Manager(false,false,false,false,false,false,false);
+				return (_manager != NULL);
+			}
+			return false;
+			
+		}
 
     }
 }

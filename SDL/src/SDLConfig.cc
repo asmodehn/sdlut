@@ -20,6 +20,13 @@ namespace RAGE
 #else
 				res = "RAGE::SDL not build with SDL_ttf !"; error=true;
 #endif
+			if(mod == Net)
+#ifdef HAVE_SDLNET
+				res = SDLNet_GetError();
+#else
+				res = "RAGE::SDL not build with SDL_net !"; error=true;
+#endif
+
 			if (error)
 				res = "Wrong call to RAGE::SDL::GetError()" ;
 
