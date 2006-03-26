@@ -149,7 +149,7 @@ namespace RAGE
             std::string getIconName();
 
 			//Handles the event, and Call engine->prerender, engie ->render() and engine->postrender()
-            bool mainLoop();
+            bool mainLoop(unsigned int framerate = 60);
 
         };
     }

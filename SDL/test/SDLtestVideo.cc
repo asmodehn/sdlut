@@ -122,7 +122,7 @@ int main(int argc, char** argv)
     else
     {
 
-        App::getInstance().getWindow()->mainLoop();
+        App::getInstance().getWindow()->mainLoop(1);
 
     }
     return 0;

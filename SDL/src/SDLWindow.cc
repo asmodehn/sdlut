@@ -316,7 +316,7 @@ namespace RAGE
 			return _screen;
         }
 
-        bool Window::mainLoop()
+        bool Window::mainLoop(unsigned int framerate)
         {
             bool res = false;
 #ifdef DEBUG
@@ -334,6 +334,7 @@ namespace RAGE
 
                 if (_screen !=NULL)
                 {
+					Uint32 lastframe = SDL_GetTicks();
 	                    while (!(_eventmanager->quitRequested()))
 						{
 							//handling all the events
@@ -346,10 +347,13 @@ namespace RAGE
 							_engine->render(*_screen);
 							
 							//refresh screen
+							SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
 							_screen->refresh();
+							lastframe=SDL_GetTicks();
 	
 							//calling engine for postrender events
 							_engine ->postrender();
+
 						}
                     delete _screen; // to delete the wrapper class (not the actual video surface in memory...)
                     _screen = NULL;
