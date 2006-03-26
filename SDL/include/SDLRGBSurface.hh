@@ -45,7 +45,7 @@ public :
 	RGBSurface (const RWOps & rwops)  throw (std::logic_error); //TODO : add optional format
 	//default constructor
 	//creates a surface from the embedded resources with a default image
-	RGBSurface::RGBSurface () throw (std::logic_error);
+	RGBSurface () throw (std::logic_error);
 
 public :
 	//should be used as the copy constructor. But should also be able to get DisplaySurface as input...
