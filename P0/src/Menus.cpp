@@ -25,9 +25,7 @@ void Escape_Menu::Show_Menu(VideoSurface& Screen)
 //Managed validation on one item
 bool Escape_Menu::Manage_Validation()
 {
-	if (ValidatedItemId == 0) //Do nothing but dont leave
-	{ return false; }
-	else if (ValidatedItemId == 1) //We have yes validated, the user wants to quit
+	if (ValidatedItemId == 1) //We have yes validated, the user wants to quit
 	{
 		// update _quitRequested to leave the mainloop
 		return true;
@@ -39,4 +37,9 @@ bool Escape_Menu::Manage_Validation()
 		GLOBAL_GAME_STATE = 3; //go back to normal game state
 		return false;
 	}
+	else //ValidatedItemId == 0; do nothing but dont leave
+	{
+		return false;
+	}
+
 }
