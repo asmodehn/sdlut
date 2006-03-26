@@ -346,9 +346,14 @@ namespace RAGE
 							_engine->prerender();
 							_engine->render(*_screen);
 							
+							
 							//refresh screen
-							SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
+							//Log << nl << "before :" << SDL_GetTicks() - lastframe ;
+							if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
+								SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
 							_screen->refresh();
+							//Log << nl << "after :" << SDL_GetTicks() - lastframe ;
+							
 							lastframe=SDL_GetTicks();
 	
 							//calling engine for postrender events

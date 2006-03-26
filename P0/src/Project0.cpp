@@ -123,10 +123,10 @@ public:
 		/*****END RENDER*****/
 
 		//Cap the frame rate
-        while( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
-        {
+        //while( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
+        //{
             //wait    
-        }
+        //}
 
 
 		//P0_Logger << " \n TheEngine Render Used\n " << std::endl;
@@ -248,7 +248,7 @@ int main( int argc, char* args[] )
 
 
 	//Launch the mainloop that will use the render method of the Engine and so will render the screen and will manage all events
-	App::getInstance().getWindow()->mainLoop();
+	App::getInstance().getWindow()->mainLoop(FRAMES_PER_SECOND);
 
 
 	/*if(SDLNet_Init()==-1) {
