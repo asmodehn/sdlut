@@ -64,7 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="SDL.lib SDLmain.lib ..\SDL\build\src\debug\Rage_SDL.lib opengl32.lib SDl_image.lib SDL_ttf.lib /NODEFAULTLIB:msvcrt.lib"
+				AdditionalOptions="SDL.lib SDLmain.lib ..\SDL\build\src\debug\Rage_SDL.lib opengl32.lib SDl_image.lib SDL_ttf.lib /NODEFAULTLIB:msvcrt.lib sdl_net.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
@@ -121,6 +121,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\SDL\include;include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,6 +140,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="SDL.lib SDLmain.lib ..\SDL\build\src\release\Rage_SDL.lib opengl32.lib SDl_image.lib SDL_ttf.lib /NODEFAULTLIB:msvcrt.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -211,7 +213,7 @@
 		</Filter>
 		<Filter
 			Name="Headers"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			Filter="h;hh;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File

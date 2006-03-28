@@ -90,14 +90,6 @@ public:
 	//Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
 	void render(VideoSurface & screen) const
     {
-		//The frames rate regulator
-		Timer fps;
-
-		//Start the FPS management
-        fps.start();
-
-		/*****RENDER*****/
-
 		//Generate the background to the screen
 		generate_bg(screen);
 
@@ -119,15 +111,6 @@ public:
 			EscMenu->Show_Menu(screen);
 
 		//Auto Flip by the mainloop here
-
-		/*****END RENDER*****/
-
-		//Cap the frame rate
-        //while( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
-        //{
-            //wait    
-        //}
-
 
 		//P0_Logger << " \n TheEngine Render Used\n " << std::endl;
     }
