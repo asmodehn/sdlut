@@ -475,7 +475,9 @@ namespace RAGE {
 	'\x20','\x48','\x20','\x20','\x50','\x24','\x28','\x58','\x28','\x28','\x60','\x2c','\x30','\x60','\x2c','\x30','\x68','\x30','\x30','\x60',
 	'\x2c','\x30','\x50','\x24','\x28','\x48','\x20','\x20','\x48','\x20','\x20','\x40','\x20','\x20','\x40','\x20','\x20','\x40','\x20','\x20'
 };
-	//same image in BMP format
+	//same image in BMP format 128x64
+	static const int _defaultImageWidth = 128;
+	static const int _defaultImageHeight = 64;
 	static const unsigned char _defaultImage[24630] = {
 	'\x42','\x4d','\x36','\x60','\x00','\x00','\x00','\x00','\x00','\x00','\x36','\x00','\x00','\x00','\x28','\x00','\x00','\x00','\x80','\x00',
 	'\x00','\x00','\x40','\x00','\x00','\x00','\x01','\x00','\x18','\x00','\x00','\x00','\x00','\x00','\x00','\x60','\x00','\x00','\xc4','\x0e',

@@ -83,6 +83,14 @@ public :
 
 	bool optimise(bool alpha = false);
 
+#ifdef HAVE_OPENGL
+	//Check that the image's width is valid and then check that the image's width is a power of 2
+	bool isGLvalid();
+	//return a GL texture that you have to bind
+	GLuint generateTexture();
+#endif
+
+
     friend Logger & operator << (Logger & ostr, const RGBSurface & surf);
 
 };

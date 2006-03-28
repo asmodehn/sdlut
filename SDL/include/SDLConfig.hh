@@ -20,6 +20,10 @@
 //TODO : NO_OPENGL option in build
 #include <SDL_opengl.h>
 
+//Might be needed
+//#if defined(WIN32) && !defined(GL_BGR)
+//#define GL_BGR GL_BGR_EXT
+//#endif
 
 //Conditionals
 

@@ -515,6 +515,33 @@ namespace RAGE
             return res;
         }
 
+
+
+#ifdef HAVE_OPENGL
+		//bool RGBSurface::isGLvalid()
+		//{
+		//		//Not the good test - TO CORRECT
+		//		if (getWidth() >= 1 && getWidth() % 2 == 0 && getHeight() % 2 == 0 )
+		//		{
+		//			return true;
+		//		}
+		//		return false;
+		//}
+
+	//return a GL texture that you have to bind
+		GLuint RGBSurface::generateTexture()
+		{
+			GLuint texture; //maybe keep that not to reload the texture each and everytime ??
+			//Create the texture
+			glGenTextures(1, &texture);
+			//Load the texture
+			glBindTexture(GL_TEXTURE_2D, texture);
+			//Generate the texture
+			glTexImage2D(GL_TEXTURE_2D, 0, 3, getWidth(),getHeight(), 0, GL_BGR, GL_UNSIGNED_BYTE, _surf->pixels);
+			return texture;
+		}
+#endif
+
         /*
         int RGBSurface::update(void)
         {

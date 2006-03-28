@@ -61,10 +61,20 @@ namespace RAGE
 		// Default GL Engine ( only used if no engine is defined )
 		class DefaultGLEngine : public Engine
         {
-
+			//will be initialized in init
+			//might be better in a constructor actually...
+			RGBSurface * image;
+			GLuint imagetexture;
 			
 
 			public:
+
+			DefaultGLEngine() : image(NULL),imagetexture(0) {}
+			~DefaultGLEngine()
+			{
+				if (imagetexture!=0) glDeleteTextures(1, &imagetexture);
+			}
+
 			//this is run just before the render
 			virtual void prerender(void);
 
