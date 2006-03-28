@@ -515,6 +515,101 @@ namespace RAGE
             return res;
         }
 
+		bool RGBSurface::flip(bool vertical, bool horizontal)
+		{
+#pragma message("RGBSurface::flip needs to be implemented !!!")
+			return false ;
+		}
+//
+//SDL_Surface *flip( SDL_Surface *in, int x, int y ) {
+//	SDL_Surface *out, *tmp;
+//	SDL_Rect from_rect, to_rect;
+//	Uint32	flags;
+//	Uint32  colorkey=0;
+//
+//	/* --- grab the settings for the incoming pixmap --- */
+//
+//	SDL_LockSurface(in);
+//	flags = in->flags;
+//
+//	/* --- change in's flags so ignore colorkey & alpha --- */
+//
+//	if (flags & SDL_SRCCOLORKEY) {
+//		in->flags &= ~SDL_SRCCOLORKEY;
+//		colorkey = in->format->colorkey;
+//	}
+//	if (flags & SDL_SRCALPHA) {
+//		in->flags &= ~SDL_SRCALPHA;
+//	}
+//
+//	SDL_UnlockSurface(in);
+//
+//	/* --- create our new surface --- */
+//
+//	out = SDL_CreateRGBSurface(
+//		SDL_SWSURFACE,
+//		in->w, in->h, 32, rmask, gmask, bmask, amask);
+//
+//	/* --- flip horizontally if requested --- */
+//
+//	if (x) {
+//		from_rect.h = to_rect.h = in->h;
+//		from_rect.w = to_rect.w = 1;
+//		from_rect.y = to_rect.y = 0;
+//		from_rect.x = 0;
+//		to_rect.x = in->w - 1;
+//
+//		do {
+//			SDL_BlitSurface(in, &from_rect, out, &to_rect);
+//			from_rect.x++;
+//			to_rect.x--;
+//		} while (to_rect.x >= 0);
+//	}
+//
+//	/* --- flip vertically if requested --- */
+//
+//	if (y) {
+//		from_rect.h = to_rect.h = 1;
+//		from_rect.w = to_rect.w = in->w;
+//		from_rect.x = to_rect.x = 0;
+//		from_rect.y = 0;
+//		to_rect.y = in->h - 1;
+//
+//		do {
+//			SDL_BlitSurface(in, &from_rect, out, &to_rect);
+//			from_rect.y++;
+//			to_rect.y--;
+//		} while (to_rect.y >= 0);
+//	}
+//
+//	/* --- restore colorkey & alpha on in and setup out the same --- */
+//
+//	SDL_LockSurface(in);
+//
+//	if (flags & SDL_SRCCOLORKEY) {
+//		in->flags |= SDL_SRCCOLORKEY;
+//		in->format->colorkey = colorkey;
+//		tmp = SDL_DisplayFormat(out);
+//		SDL_FreeSurface(out);
+//		out = tmp;
+//		out->flags |= SDL_SRCCOLORKEY;
+//		out->format->colorkey = colorkey;
+//	} else if (flags & SDL_SRCALPHA) {
+//		in->flags |= SDL_SRCALPHA;
+//		tmp = SDL_DisplayFormatAlpha(out);
+//		SDL_FreeSurface(out);
+//		out = tmp;
+//	} else {
+//		tmp = SDL_DisplayFormat(out);
+//		SDL_FreeSurface(out);
+//		out = tmp;
+//	}
+//
+//	SDL_UnlockSurface(in);
+//
+//	return out;
+//}
+
 
 
 #ifdef HAVE_OPENGL

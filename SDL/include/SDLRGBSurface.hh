@@ -82,6 +82,7 @@ public :
 	inline bool isSRCAlphaset(void) {return ( SDL_SRCALPHA & _surf->flags ) != 0;}
 
 	bool optimise(bool alpha = false);
+	bool flip(bool vertical = true, bool horizontal = false);
 
 #ifdef HAVE_OPENGL
 	//Check that the image's width is valid and then check that the image's width is a power of 2
