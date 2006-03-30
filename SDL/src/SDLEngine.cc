@@ -51,6 +51,26 @@ namespace RAGE
 			//this render function should not modify the engine
 		void DefaultGLEngine::render(VideoSurface& screen) const
 		{
+
+			//3D Rendering
+
+//glEnable( GL_DEPTH_TEST ) ;
+//glMatrixMode( GL_PROJECTION ) ;
+//glLoadIdentity() ;
+//
+//			glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix
+//			glLoadIdentity();         // Reset The Projection Matrix
+//	
+//			GLdouble znear = 0.1f ;
+//			GLdouble zfar = 100.0f ;
+//			GLdouble ymax = znear * tan(45.0f * M_PI / 360.0);
+//			GLdouble ymin = -ymax;
+//			GLdouble xmin = ymin * GLfloat(width) / GLfloat(height);
+//			GLdouble xmax = ymax * GLfloat(width) / GLfloat(height);
+//	
+//			glFrustum(xmin, xmax, ymin, ymax, znear, zfar);
+
+
 			//2D Rendering
 
 glDisable( GL_DEPTH_TEST ) ;
@@ -73,69 +93,34 @@ glOrtho( /* left */ 0, /* right */ screen.getWidth(), /* bottom */ screen.getHei
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 
-
 			//Enable texturing
 			glEnable(GL_TEXTURE_2D);
 
 			//Load the texture
 			glBindTexture(GL_TEXTURE_2D, imagetexture);
 
-glColor4f( 1.0, 1.0, 1.0, 1.0 ) ;
+//glColor4f( 1.0, 1.0, 1.0, 1.0 ) ;
+glDisable(GL_CULL_FACE);
 
 glBegin( GL_QUADS ) ;
-	glTexCoord2i( 1, 1) ;
-	glVertex2i( 475, 150 ) ;
-	
-	glTexCoord2i( 1, 0) ;
-	glVertex2i( 475, 450 ) ;
-	
-	glTexCoord2i( 0, 0) ;
-	glVertex2i( 25,  450 ) ;
+	glTexCoord2i( 0,0) ;
+	glVertex2i( screen.getWidth() - image->getWidth() , screen.getHeight()- image->getHeight() ) ;
 	
 	glTexCoord2i( 0, 1) ;
-	glVertex2i( 25,  150 ) ;
+	glVertex2i( screen.getWidth() - image->getWidth() , screen.getHeight()) ;
+	
+	glTexCoord2i( 1, 1) ;
+	glVertex2i( screen.getWidth() , screen.getHeight()) ;
+	
+	glTexCoord2i( 1, 0) ;
+	glVertex2i( screen.getWidth(), screen.getHeight() - image->getHeight() ) ;
 glEnd() ;
 
-
-			//glBegin(GL_QUADS);
-			//	//Top-left vertex (corner)
-			//	glColor3f(0.0f,0.0f,1.0f);
-			//	//glTexCoord2i(0,0);
-			//	glVertex3f(1.0f, 1.0f, 1.0f);
-			//	
-			//	//Bottom-left vertex (corner)
-			//	//glTexCoord2i(1,0);
-			//	glVertex3f(2.0f, 1.0f, 1.0f);
-			//	
-			//	//Bottom-right vertex (corner)
-			//	//glTexCoord2i(1,1);
-			//	glVertex3f(2.0f, 2.0f, 0.0f);
-			//	
-			//	//Top-right vertex (corner)
-			//	//glTexCoord2i(0,1);
-			//	glVertex3f(1.0f, 2.0f, 0.0f);
-			//glEnd();
 
 			//Disable texturing
 			glDisable(GL_TEXTURE_2D);
 
-			//3D Rendering
 
-//glEnable( GL_DEPTH_TEST ) ;
-//glMatrixMode( GL_PROJECTION ) ;
-//glLoadIdentity() ;
-//
-//			glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix
-//			glLoadIdentity();         // Reset The Projection Matrix
-//	
-//			GLdouble znear = 0.1f ;
-//			GLdouble zfar = 100.0f ;
-//			GLdouble ymax = znear * tan(45.0f * M_PI / 360.0);
-//			GLdouble ymin = -ymax;
-//			GLdouble xmin = ymin * GLfloat(width) / GLfloat(height);
-//			GLdouble xmax = ymax * GLfloat(width) / GLfloat(height);
-//	
-//			glFrustum(xmin, xmax, ymin, ymax, znear, zfar);
 
 		}
 
@@ -148,7 +133,7 @@ glEnd() ;
 
 			//if ( image->isGLvalid() ) 
 			imagetexture=image->generateTexture();
-			std::cout << imagetexture;
+			Log << nl << imagetexture;
 
 			 //actual init code
 			glShadeModel(GL_SMOOTH);       // Enable Smooth Shading
