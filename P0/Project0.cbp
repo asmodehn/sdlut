@@ -20,11 +20,11 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wall"/>
 			<Add option="-g"/>
 			<Add option="-DLOGPREFIX=\&quot;Project0\&quot;"/>
 			<Add directory="include"/>
 			<Add directory="..\SDL\include"/>
+			<Add directory="..\SDL\depend\SDL-1.2.9\include"/>
 		</Compiler>
 		<Linker>
 			<Add library="..\SDL\build\bin_debug\libSDLwrap.a"/>
@@ -33,6 +33,8 @@
 			<Add library="SDLmain"/>
 			<Add library="SDL_image"/>
 			<Add library="SDL_ttf"/>
+			<Add library="..\SDL\build\src\debug\Rage_SDL.lib"/>
+			<Add directory="..\SDL\depend\SDL-1.2.9\lib"/>
 		</Linker>
 		<Unit filename="data\Arrow.bmp">
 			<Option compilerVar=""/>
@@ -106,6 +108,12 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="include\BattleField.hh">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="include\Character_Base.hh">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -143,6 +151,10 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\Base.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\BattleField.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>

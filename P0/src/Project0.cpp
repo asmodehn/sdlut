@@ -1,21 +1,17 @@
 #include "Project0.hh"
 
-//VideoSurface *Screen = NULL;
-RGBSurface Background;
-
-//Background Clip
-Rect BG_Clip[1];
-
-//Create the keyboard instance will managed input
+//Create the keyboard instance that will managed input
 KeyboardInput myKeyboardInput;
 
-//engine Class : No idea whats used for but neccessary for mainloop
+//Engine Class : that render the screen
 class TheEngine : public Engine
 {
 private:
+	BattleField* myBattleField;
+	std::vector<BattleField_Sprite*> BattleField_Sprite_Vector; //Vector which will contains all battlefield type and clip
 	Monster_Factory* myMonster_Factory;
 	Character_Base* myCharacter;
-	std::vector<Monster*> Monster_vector; //Monster vector which will contains all monsters
+	std::vector<Monster*> Monster_vector; //Vector which will contains all monsters
 	Escape_Menu* EscMenu;
 	int Character_Hit_Distance;
 
@@ -25,10 +21,13 @@ public:
     {
 		Character_Hit_Distance = 0;
 
-		//Create rgbsurface that will be the BG with white color as transparent
-		Background = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
-		//Background.setColorKey((0xFF, 0xFF, 0xFF));
-		P0_Logger << " Background Surface Loaded : OK " << std::endl;
+		//Initialize the battlefield
+		myBattleField = new BattleField();
+		P0_Logger << " BattleField Init: OK " << std::endl;
+
+		//Fill the battlefield vector with all battlefield sprite corresponding to the map file
+		BattleField_Sprite_Vector = myBattleField->BattleField_Vector();
+		P0_Logger << " BattleField_Sprite Vector Fill: OK " << std::endl;
 
 		//Initialize the factory
 		myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS);
@@ -91,7 +90,7 @@ public:
 	void render(VideoSurface & screen) const
     {
 		//Generate the background to the screen
-		generate_bg(screen);
+		myBattleField->Render(screen);
 
 		//Show the Character on the screen
 		myCharacter->move_animation(screen);
@@ -134,34 +133,15 @@ public:
 	}
 };
 
-//Generate Background
-void generate_bg(VideoSurface & Screen)
-{
-	int i=0, j=0;
-	while (i<(SCREEN_WIDTH/32))
-	{
-		while (j<(SCREEN_HEIGHT/32 - 1)) //the -1 is here in order to not apply bg on the last line of the screen: the status bar
-		{
-			if (! Screen.blit(Background, Point::Point(i*32, j*32), BG_Clip[0]) )
-			{
-				P0_Logger << " Background Generation Failed " << GetError() << std::endl;
-			}
-			j++;
-		}
-		i++;
-		j=0;
-	}
-	//P0_Logger << " Background Generation : OK " << std::endl;
-}
 //Initialization of the windows, SDL, SDL_TTF, the surface
 bool InitEverything()
 {
 	//Set windows name
-	App::getInstance().setName("Project 0 - 2D - v0.01");
+	App::getInstance().setName("Project 0 - 2D - v0.02");
 	//SDL_WM_SetCaption( "Project 0 - 2D - v0.01", NULL );
 
 	//Initialize SDL Video
-    if (! App::getInstance().initVideo(false,false,false,false) )
+    if (! App::getInstance().initVideo(false,false,true,false) )
 		//SDL_Init( SDL_INIT_EVERYTHING )
 	{
 		P0_Logger << " SDL Init Video Failed : " << GetError() << std::endl;
@@ -204,12 +184,6 @@ int main( int argc, char* args[] )
 
 	//Make sure the program waits for a quit
 	bool quit = false;
-
-	//Background Clip definition range from the top left
-	BG_Clip->setx(198);
-	BG_Clip->sety(132);
-	BG_Clip->setw(32);
-	BG_Clip->seth(32);
 
 	//Create the windows and init everything (SDL, SDL_TTF, ...)
 	if( InitEverything() == false )

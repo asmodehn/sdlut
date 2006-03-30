@@ -199,6 +199,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\BattleField.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Character_Base.cpp"
 				>
 			</File>
@@ -233,6 +237,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\BattleField.hh"
+				>
+			</File>
+			<File
 				RelativePath=".\include\Character_Base.hh"
 				>
 			</File>
@@ -264,6 +272,10 @@
 			>
 			<File
 				RelativePath=".\data\Arrow.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\data\BattleField_Map.txt"
 				>
 			</File>
 			<File

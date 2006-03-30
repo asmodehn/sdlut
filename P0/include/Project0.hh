@@ -6,9 +6,8 @@
 #include "Monster_Factory.hh"
 #include "Input_Management.hh"
 #include "Menus.hh"
+#include "BattleField.hh"
 
-//Gnerate Background
-void generate_bg(VideoSurface& Screen_Surface);
 //Initialization
 bool InitEverything();
 
