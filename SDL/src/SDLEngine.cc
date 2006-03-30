@@ -134,13 +134,16 @@ glEnd() ;
 			//if ( image->isGLvalid() ) 
 			imagetexture=image->generateTexture();
 			Log << nl << imagetexture;
-
-			 //actual init code
+			
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	// Linear Filtering
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	// Linear Filtering
+			
+			//actual init code
 			glShadeModel(GL_SMOOTH);       // Enable Smooth Shading
 			glClearDepth(1.0f);         // Depth Buffer Setup
 			glEnable(GL_DEPTH_TEST);       // Enables Depth Testing
 			glDepthFunc(GL_LEQUAL);        // The Type Of Depth Testing To Do
-			//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
+			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
 
 	        return resize(width,height);
 		}
