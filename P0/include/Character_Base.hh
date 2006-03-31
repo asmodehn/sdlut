@@ -3,6 +3,7 @@
 
 #include "Base.hh"
 #include "Monster.hh"
+#include "BattleField.hh"
 
 //Character Class
 class Character_Base
@@ -124,7 +125,7 @@ class Character_Base
 		void Update_Graphic_Style();
 	    
 		//Move the Character and check collision with the collisionbox of the monster in parameter
-		void move();
+		void move(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
 
 		//Shows the character movement on the screen
 		void move_animation(VideoSurface& Screen);

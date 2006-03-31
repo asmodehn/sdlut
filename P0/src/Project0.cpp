@@ -68,7 +68,7 @@ public:
 		myCharacter->Update_Graphic_Style();
 
 		//Move the character
-		myCharacter->move();
+		myCharacter->move(BattleField_Sprite_Vector);
 
 		//Handle attacks
 		Character_Hit_Distance = myCharacter->attack();

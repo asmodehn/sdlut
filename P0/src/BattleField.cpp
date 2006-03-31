@@ -148,23 +148,18 @@ bool BattleField::Render(std::vector<BattleField_Sprite*> BattleField_Sprite_Vec
 {
 	//Loop on all the vector
 	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
+	{
+		//Check if the battlefield sprite is present on the screen
+		//NOTE : the -16 inside the first test is half of a character sprite. It's presents because the camera is centered on the middle of the character and so it allow half of a background sprite to be drawn at the right side of the screen
+		if ( (Camera.getx()-16 <= BattleField_Sprite_Vector[i]->Get_X()) && (BattleField_Sprite_Vector[i]->Get_X() < Camera.getx() + Camera.getw()) && (Camera.gety() <= BattleField_Sprite_Vector[i]->Get_Y()) && (BattleField_Sprite_Vector[i]->Get_Y() < Camera.gety() + Camera.geth() - 32) )
 		{
-			//Check if the battlefield sprite is present on the screen
-			//NOTE : the -16 inside the first test is half of a character sprite. It's presents because the camera is centered on the middle of the character and so it allow half of a background sprite to be drawn at the right side of the screen
-			if ( (Camera.getx()-16 <= BattleField_Sprite_Vector[i]->Get_X()) && (BattleField_Sprite_Vector[i]->Get_X() < Camera.getx() + Camera.getw()) && (Camera.gety() <= BattleField_Sprite_Vector[i]->Get_Y()) && (BattleField_Sprite_Vector[i]->Get_Y() < Camera.gety() + Camera.geth() - 32) )
+			//It's present than draw it
+			if (! Screen.blit( Background, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BattleField_Sprite_Vector[i]->Get_BG_Clip() ) )
 			{
-				//It's present than draw it
-				if (! Screen.blit( Background, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BattleField_Sprite_Vector[i]->Get_BG_Clip() ) )
-				{
-					P0_Logger << " Background Generation Failed " << GetError() << std::endl;
-				}
+				P0_Logger << " Background Generation Failed " << GetError() << std::endl;
 			}
 		}
-			/*y++;
-		}
-		x++;
-		y=0;
-	}*/
+	}
 
 	//P0_Logger << " Background Generation : OK " << std::endl;
 	return true;

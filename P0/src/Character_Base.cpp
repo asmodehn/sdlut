@@ -191,18 +191,23 @@ void Character_Base::Update_Graphic_Style()
 	}
 }
 //Show the Character on the screen
-void Character_Base::move()
+void Character_Base::move(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
 {
-    //Move the Character left or right and his collision box
-	x  += xVel;
-    collision_box.setx(x);
+    //Move the Character collision box to were we want to move
+    collision_box.setx(x + xVel);
+	collision_box.sety(y + yVel);
     
     //If the Character went too far to the left or right
 	if( (collision_box.getx() < 0) || (collision_box.getx() + CH_WIDTH > LEVEL_WIDTH) )
 	{
         //move back
-		x -= xVel;
         collision_box.setx(x);    
+    }
+	//If the Character went too far up or down (the -32 is here for the status bar)
+	if((collision_box.gety() < 0) || (collision_box.gety() + CH_HEIGHT > LEVEL_HEIGHT-32) )
+    {
+        //move back
+        collision_box.sety(y);    
     }
 
 	//Collision with monster when moving on the x axis
@@ -210,33 +215,57 @@ void Character_Base::move()
 	{
 		if (check_collision(collision_box, Monster_Vector[i]->collision_box))
 		{
-			x -= xVel;
+			//move back
+			//x -= xVel;
 			collision_box.setx(x);
+			collision_box.sety(y); 
+
+			//we have found the good item inside the vector, no need to work more
 			break;
 		}
 	}
     
-    //Move the Character up or down and his collision box
-	y += yVel;
-    collision_box.sety(y);
-    
-    //If the Character went too far up or down (the -32 is here for the status bar)
-	if((collision_box.gety() < 0) || (collision_box.gety() + CH_HEIGHT > LEVEL_HEIGHT-32) )
-    {
-        //move back
-		y -= yVel;
-        collision_box.sety(y);    
-    }
-	//Collision with monster when moving on the y axis
-	for(int i=0; i < Monster_Vector.size(); i++)
+	//Now that all collision has been checked, we must check if the ground type allow the move
+	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
 	{
-		if (check_collision(collision_box, Monster_Vector[i]->collision_box))
+		//when we have located the good destination inside the vector,...
+		if (( collision_box.getx() == BattleField_Sprite_Vector[i]->Get_X() ) && ( collision_box.gety() == BattleField_Sprite_Vector[i]->Get_Y() ))
 		{
-			y -= yVel;
-			collision_box.sety(y);
+			//...get the destination ground...
+			int newGround_Type = BattleField_Sprite_Vector[i]->Get_Ground_Type();
+			
+			//...then check if the ground allow the character move
+			if( newGround_Type == EMPTY_GROUND ) //Go Back
+			{
+				collision_box.setx(x);
+				collision_box.sety(y);  
+			}
+			else if( newGround_Type == GRASS_GROUND ) //Allow move
+			{				
+			}
+			else if( newGround_Type == SAND_GROUND ) //Go Back
+			{
+				collision_box.setx(x);
+				collision_box.sety(y);  
+			}
+			else if( newGround_Type == RIVER_GROUND ) //allow move
+			{
+			}
+			else // not listed type (impossible!!??). Go BAck
+			{
+				collision_box.setx(x);
+				collision_box.sety(y);  
+			}
+			
+			//we have found the good item inside the vector, no need to work more
 			break;
 		}
 	}
+
+	//Finally move the character in the same place of his collision box
+	x = collision_box.getx();
+	y = collision_box.gety();
+
 }
 //Show the Character on the screen
 void Character_Base::move_animation(VideoSurface& Screen)
