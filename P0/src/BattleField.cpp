@@ -5,8 +5,8 @@ BattleField_Sprite::BattleField_Sprite()
 	X = 0;
 	Y = 0;
 
-	//Default terrain type (grass FOR THE MOMENT)
-	Terrain_Type = 01;
+	//Default Ground type
+	Ground_Type = EMPTY_GROUND;
 
 	//Default Clip, the Grass Clip
 	BG_Clip.setx(198);
@@ -14,16 +14,17 @@ BattleField_Sprite::BattleField_Sprite()
 	BG_Clip.setw(32);
 	BG_Clip.seth(32);
 }
-BattleField_Sprite::BattleField_Sprite(int x, int y, int terrain_type, Rect bg_clip)
+BattleField_Sprite::BattleField_Sprite(int x, int y, int ground_type, Rect bg_clip)
 {
 	X = x;
-	Y = x;
-	Terrain_Type = terrain_type;
+	Y = y;
+	Ground_Type = ground_type;
 	BG_Clip = bg_clip;
 }
 BattleField_Sprite::~BattleField_Sprite()
 {
 }
+
 //BattleField Constructor
 BattleField::BattleField()
 {
@@ -37,6 +38,12 @@ BattleField::BattleField()
 	BattleField_Grass_Clip.setw(32);
 	BattleField_Grass_Clip.seth(32);
 
+	//Sand clip
+	BattleField_Sand_Clip.setx(165);
+	BattleField_Sand_Clip.sety(132);
+	BattleField_Sand_Clip.setw(32);
+	BattleField_Sand_Clip.seth(32);
+
 	//The default clip is the grass clip
 	BattleField_Clip = BattleField_Grass_Clip;
 }
@@ -47,60 +54,54 @@ BattleField::~BattleField()
 //BattleField interpretation from the file
 std::vector<BattleField_Sprite*> BattleField::BattleField_Vector()
 {
-
 	//The tile offset
     int x=0, y=0;
 
-	//The type of terrain that must be generated, by default grass type (!! FOR THE MOMENT!!)
-	int Current_Terrain_Type = 01;
+	//The type of Ground that must be generated, by default empty
+	int Current_Ground_Type = EMPTY_GROUND;
     
     //Open the map
-    std::ifstream map("data/BattleField_Map.txt");
+    std::ifstream BattleField_Map("data/BattleField_Map.txt");
 
 	//check if map has been loaded succesfully
-    if(! map )
+    if(! BattleField_Map )
     {
 		P0_Logger << " Can't open BattleField_Map.map " << std::endl;
 		//exit(0);
     }
 
-	/*char ch;
-	
-	while( map.get(ch) )
-		P0_Logger << ch;
-
-	while(!map.eof())
-    {*/
-    for( int i = 0; i < LEVEL_WIDTH/32; i++ )
+	while(!BattleField_Map.eof())
 	{
-        //Determines what kind of tile will be made
-        int Current_Terrain_Type = 01;
-
-		//Read terrain type from map file
-		map >> Current_Terrain_Type;
+		//Read Ground type from map file
+		BattleField_Map >> Current_Ground_Type;
 
 		//if the map file has a bug in it
-		if( map.fail() == true )
+		if( BattleField_Map.fail() == true )
 		{
 			P0_Logger << " BattleField_Map.txt corrupted " << std::endl;
 			//exit(0);
 		}
 
-		if( Current_Terrain_Type == 01 )
+		//assign the good clip relative to the type read from the map file
+		if( Current_Ground_Type == GRASS_GROUND )
 		{
 			BattleField_Clip = BattleField_Grass_Clip;
 		}
-		else // not listed type (??)
+		else if( Current_Ground_Type == SAND_GROUND )
 		{
-			P0_Logger << " Terrain type present inside BattleField_Map.txt not recognized " << std::endl;
+			BattleField_Clip = BattleField_Sand_Clip;
+		}
+		else // not listed type (??) or empty ground
+		{
+			P0_Logger << " Ground type present inside BattleField_Map.txt not recognized " << std::endl;
 			BattleField_Clip = BattleField_Grass_Clip; //WILL BE SPACE HERE WHEN SPACE CLIP WILL BE AVAILABLE
 		}
 
 		//Create Monster & initialized it
-		BattleField_Sprite* TheBattleField_Sprite = new BattleField_Sprite(x, y, Current_Terrain_Type, BattleField_Clip);
+		BattleField_Sprite* TheBattleField_Sprite = new BattleField_Sprite(x, y, Current_Ground_Type, BattleField_Clip);
 
 		//store the monster at the end of the vector
-		BattleField_Sprite_Vector.push_back(TheBattleField_Sprite);
+		myBattleField_Sprite_Vector.push_back(TheBattleField_Sprite);
 
 		//Move to next position
         x += 32;
@@ -117,35 +118,32 @@ std::vector<BattleField_Sprite*> BattleField::BattleField_Vector()
 	}
 
 	//Close the battlefield map file
-	map.close();
+	BattleField_Map.close();
 
-	return(BattleField_Sprite_Vector);
-}
-//Battlefield interpretation only inside range of the camera
-bool BattleField::BattleField_Camera_Vector(Rect Camera)
-{
+	return(myBattleField_Sprite_Vector);
 }
 //BattleField Render
-bool BattleField::Render(VideoSurface & Screen)
+bool BattleField::Render(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector, Rect Camera, VideoSurface & Screen)
 {
-	int x=0, y=0;
-
-	//By default the clip is the grass clip (!! FOR THE MOMENT!!, next it will be the space clip)
-	BattleField_Clip = BattleField_Grass_Clip;
-
-	while (x<(SCREEN_WIDTH/32))
-	{
-		while (y<(SCREEN_HEIGHT/32 - 1)) //the -1 is here in order to not apply bg on the last line of the screen: the status bar
+	//Loop on all the vector
+	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
 		{
-			if (! Screen.blit(Background, Point::Point(x*32, y*32), BattleField_Clip) )
+			//Check if the battlefield sprite is present on the screen
+			//NOTE : the -16 inside the first test is half of a character sprite. It's presents because the camera is centered on the middle of the character and so it allow half of a background sprite to be drawn at the right side of the screen
+			if ( (Camera.getx()-16 <= BattleField_Sprite_Vector[i]->Get_X()) && (BattleField_Sprite_Vector[i]->Get_X() < Camera.getx() + Camera.getw()) && (Camera.gety() <= BattleField_Sprite_Vector[i]->Get_Y()) && (BattleField_Sprite_Vector[i]->Get_Y() < Camera.gety() + Camera.geth() - 32) )
 			{
-				P0_Logger << " Background Generation Failed " << GetError() << std::endl;
+				//It's present than draw it
+				if (! Screen.blit( Background, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BattleField_Sprite_Vector[i]->Get_BG_Clip() ) )
+				{
+					P0_Logger << " Background Generation Failed " << GetError() << std::endl;
+				}
 			}
-			y++;
+		}
+			/*y++;
 		}
 		x++;
 		y=0;
-	}
+	}*/
 
 	//P0_Logger << " Background Generation : OK " << std::endl;
 	return true;

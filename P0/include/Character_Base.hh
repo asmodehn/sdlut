@@ -82,20 +82,20 @@ class Character_Base
 
 		/****Wrapper****/
 
-		void Set_xVel(int new_xVel )
+		void Set_xVel(int new_xVel)
         {
             xVel=new_xVel;
         }
-		void Set_yVel(int new_yVel )
+		void Set_yVel(int new_yVel)
         {
             yVel=new_yVel;
         }
 		//Define if the player has push the attack Key
-		void Set_Attack_Status(int new_attack_status )
+		void Set_Attack_Status(int new_attack_status)
         {
             attack_status=new_attack_status;
         }
-		void Set_Attack_Style(int new_attack_style )
+		void Set_Attack_Style(int new_attack_style)
         {
             attack_style=new_attack_style;
         }

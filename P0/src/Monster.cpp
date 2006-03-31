@@ -114,10 +114,11 @@ void Monster::move(Rect CharacterCollisionbox)
 //Show monster on the screen
 void Monster::move_animation(Rect Camera, VideoSurface& Screen)
 {
-	//Display the monster only if visible in the Camera range minus the status bar at the bottom
-	if ( (Camera.getx() <= x) && (x < Camera.getx() + Camera.getw()) && (Camera.gety() <= y) && (y < Camera.gety() + Camera.geth() - 32) )
+	//Check if the monster sprite is present on the screen
+	//NOTE : the -16 inside the first test is half of a character sprite. It's presents because the camera is centered on the middle of the character and so it allow half of the monster to be drawn on the right side of the screen
+	if ( (Camera.getx()-16 <= x) && (x < Camera.getx() + Camera.getw()) && (Camera.gety() <= y) && (y < Camera.gety() + Camera.geth() - 32) )
 	{
+		//It's present than draw it
 		Screen.blit(_monsters_list, Point::Point(x - Camera.getx(), y - Camera.gety()), _monster[0]);
-		//apply_surface(x - Camera.getx(), y - Camera.gety(), _monsters_list, screen, &_monster[0]);
 	}
 }

@@ -90,7 +90,7 @@ public:
 	void render(VideoSurface & screen) const
     {
 		//Generate the background to the screen
-		myBattleField->Render(screen);
+		myBattleField->Render(BattleField_Sprite_Vector, myCharacter->Camera, screen);
 
 		//Show the Character on the screen
 		myCharacter->move_animation(screen);

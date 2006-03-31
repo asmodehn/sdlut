@@ -42,6 +42,14 @@ const int CH_UP = 3;
 const int INITIAL_MONSTERS = 15;
 const int MAX_MONSTERS_SIMULTANEOUSLY = 30;
 
+//Ground Type Const
+const int EMPTY_GROUND = 0;
+const int GRASS_GROUND = 1;
+const int SAND_GROUND = 2;
+
+
+
+
 //This variable defined the global game state 1: Initial Menu (future dev), 2: Character Creation/Selection (future dev), 3: Ingame, 4: On Escape menu
 extern int GLOBAL_GAME_STATE;
 
