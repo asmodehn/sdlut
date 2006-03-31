@@ -61,7 +61,7 @@ class BattleField
 	private:
 		RGBSurface Background;
 		Rect BattleField_Clip;
-		Rect BattleField_Grass_Clip, BattleField_Sand_Clip;
+		Rect BattleField_Empty_Clip, BattleField_Grass_Clip, BattleField_Sand_Clip, BattleField_River_Clip;
 
 		//The vector that will contains the battlefield sprites corresponding to the battlefield map
 		std::vector<BattleField_Sprite*> myBattleField_Sprite_Vector;

@@ -8,9 +8,9 @@ BattleField_Sprite::BattleField_Sprite()
 	//Default Ground type
 	Ground_Type = EMPTY_GROUND;
 
-	//Default Clip, the Grass Clip
+	//Default Clip, the empty Clip
 	BG_Clip.setx(198);
-	BG_Clip.sety(132);
+	BG_Clip.sety(165);
 	BG_Clip.setw(32);
 	BG_Clip.seth(32);
 }
@@ -32,6 +32,12 @@ BattleField::BattleField()
 	Background = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
 	P0_Logger << " Background Global Surface Creation : OK " << std::endl;
 
+	//Empty Clip
+	BattleField_Empty_Clip.setx(198);
+	BattleField_Empty_Clip.sety(165);
+	BattleField_Empty_Clip.setw(32);
+	BattleField_Empty_Clip.seth(32);
+
 	//Grass Clip
 	BattleField_Grass_Clip.setx(198);
 	BattleField_Grass_Clip.sety(132);
@@ -44,8 +50,14 @@ BattleField::BattleField()
 	BattleField_Sand_Clip.setw(32);
 	BattleField_Sand_Clip.seth(32);
 
-	//The default clip is the grass clip
-	BattleField_Clip = BattleField_Grass_Clip;
+	//River clip
+	BattleField_River_Clip.setx(231);
+	BattleField_River_Clip.sety(132);
+	BattleField_River_Clip.setw(32);
+	BattleField_River_Clip.seth(32);
+
+	//The default clip is the empty clip
+	BattleField_Clip = BattleField_Empty_Clip;
 }
 //BattleField Destructor
 BattleField::~BattleField()
@@ -83,7 +95,11 @@ std::vector<BattleField_Sprite*> BattleField::BattleField_Vector()
 		}
 
 		//assign the good clip relative to the type read from the map file
-		if( Current_Ground_Type == GRASS_GROUND )
+		if( Current_Ground_Type == EMPTY_GROUND )
+		{
+			BattleField_Clip = BattleField_Empty_Clip;
+		}
+		else if( Current_Ground_Type == GRASS_GROUND )
 		{
 			BattleField_Clip = BattleField_Grass_Clip;
 		}
@@ -91,10 +107,15 @@ std::vector<BattleField_Sprite*> BattleField::BattleField_Vector()
 		{
 			BattleField_Clip = BattleField_Sand_Clip;
 		}
-		else // not listed type (??) or empty ground
+		else if( Current_Ground_Type == RIVER_GROUND )
+		{
+			BattleField_Clip = BattleField_River_Clip;
+		}
+		else // not listed type (??)
 		{
 			P0_Logger << " Ground type present inside BattleField_Map.txt not recognized " << std::endl;
-			BattleField_Clip = BattleField_Grass_Clip; //WILL BE SPACE HERE WHEN SPACE CLIP WILL BE AVAILABLE
+			BattleField_Clip = BattleField_Empty_Clip; //than show the empty clip as if we are outside the battlefield
+			Current_Ground_Type = 0; //set the ground type to empty in order to not crash
 		}
 
 		//Create Monster & initialized it

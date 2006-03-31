@@ -46,7 +46,7 @@ const int MAX_MONSTERS_SIMULTANEOUSLY = 30;
 const int EMPTY_GROUND = 0;
 const int GRASS_GROUND = 1;
 const int SAND_GROUND = 2;
-
+const int RIVER_GROUND = 3;
 
 
 
