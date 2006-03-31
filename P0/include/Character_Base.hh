@@ -2,7 +2,7 @@
 #define Character_HH
 
 #include "Base.hh"
-#include "Monster.hh"
+#include "Monsters.hh"
 #include "BattleField.hh"
 
 //Character Class
@@ -46,7 +46,7 @@ class Character_Base
 		//Font AttackMsg_Font(28);
 
 		//Monster Vector which allow the character to know exactly all monsters on the battlefield
-		std::vector<Monster*> Monster_Vector;
+		std::vector<Monster_Skeleton*> Monster_Vector;
 
 		/***Arrow***/
 		RGBSurface Arrow_Tile;
@@ -60,6 +60,9 @@ class Character_Base
 
 		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
 		bool attack_check_status(int collision_box_movement);
+
+		//Check if the ground allow the move (method which will be redesigned for each chracter)
+		virtual bool check_ground_allow_move(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
 
 	public:
 
@@ -75,7 +78,7 @@ class Character_Base
 		/****Definitions****/
 
 		//Initializes the variables
-		Character_Base(int X, int Y, std::vector<Monster*> monster_vector);
+		Character_Base(int X, int Y, std::vector<Monster_Skeleton*> monster_vector);
 
 		//Destructor which free the surface 
 		~Character_Base();
@@ -143,7 +146,7 @@ class Character_Base
 		void following_camera();
 
 		//Update charaster's monster knowledge of monster presents on the battlefield (in case of one monster has been killed for example)
-		void Update_Monster_Knowledge (std::vector<Monster*> monster_vector);
+		void Update_Monster_Knowledge (std::vector<Monster_Skeleton*> monster_vector);
 };
 
 #endif

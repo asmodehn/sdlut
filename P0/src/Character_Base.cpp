@@ -1,7 +1,7 @@
 #include "Character_Base.hh"
 
 //Initialization construtor
-Character_Base::Character_Base(int X, int Y, std::vector<Monster*> monster_vector)
+Character_Base::Character_Base(int X, int Y, std::vector<Monster_Skeleton*> monster_vector)
 {
     //Initial position
 	x = X;
@@ -216,7 +216,6 @@ void Character_Base::move(std::vector<BattleField_Sprite*> BattleField_Sprite_Ve
 		if (check_collision(collision_box, Monster_Vector[i]->collision_box))
 		{
 			//move back
-			//x -= xVel;
 			collision_box.setx(x);
 			collision_box.sety(y); 
 
@@ -226,6 +225,22 @@ void Character_Base::move(std::vector<BattleField_Sprite*> BattleField_Sprite_Ve
 	}
     
 	//Now that all collision has been checked, we must check if the ground type allow the move
+	if(! check_ground_allow_move(BattleField_Sprite_Vector) )
+	{
+		//move back
+		collision_box.setx(x);
+		collision_box.sety(y); 
+	}
+
+	//Finally move the character in the same place of his collision box
+	x = collision_box.getx();
+	y = collision_box.gety();
+
+}
+//Check if the ground allow the move
+bool Character_Base::check_ground_allow_move(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+{
+	//loop on all the vector
 	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
 	{
 		//when we have located the good destination inside the vector,...
@@ -235,37 +250,30 @@ void Character_Base::move(std::vector<BattleField_Sprite*> BattleField_Sprite_Ve
 			int newGround_Type = BattleField_Sprite_Vector[i]->Get_Ground_Type();
 			
 			//...then check if the ground allow the character move
-			if( newGround_Type == EMPTY_GROUND ) //Go Back
+			if( newGround_Type == EMPTY_GROUND ) //Don't allow move
 			{
-				collision_box.setx(x);
-				collision_box.sety(y);  
+				return false; 
 			}
 			else if( newGround_Type == GRASS_GROUND ) //Allow move
-			{				
-			}
-			else if( newGround_Type == SAND_GROUND ) //Go Back
 			{
-				collision_box.setx(x);
-				collision_box.sety(y);  
+				return true;
 			}
-			else if( newGround_Type == RIVER_GROUND ) //allow move
+			else if( newGround_Type == SAND_GROUND ) //Don't allow move
 			{
+				return false;  
 			}
-			else // not listed type (impossible!!??). Go BAck
+			else if( newGround_Type == RIVER_GROUND ) //Allow move
 			{
-				collision_box.setx(x);
-				collision_box.sety(y);  
+				return true;
 			}
-			
-			//we have found the good item inside the vector, no need to work more
-			break;
+			else // not listed type (impossible!!??). Don't allow move
+			{
+				return false;  
+			}
 		}
 	}
-
-	//Finally move the character in the same place of his collision box
-	x = collision_box.getx();
-	y = collision_box.gety();
-
+	//we can't locate the position inside the vector (impossible!!??)
+	return false;
 }
 //Show the Character on the screen
 void Character_Base::move_animation(VideoSurface& Screen)
@@ -624,7 +632,7 @@ void Character_Base::following_camera()
 }
 
 //Update charaster's monster knowledge of monster presents on the battlefield
-void Character_Base::Update_Monster_Knowledge(std::vector<Monster*> monster_vector)
+void Character_Base::Update_Monster_Knowledge(std::vector<Monster_Skeleton*> monster_vector)
 {
 	//Update only if the two vector have not the same size (only here to gain execution speed when vector will have an important size)
 	if (monster_vector.size() != Monster_Vector.size())

@@ -215,11 +215,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\Monster.cpp"
+				RelativePath=".\src\Monster_Base.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\Monster_Factory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Monsters.cpp"
 				>
 			</File>
 			<File
@@ -253,11 +257,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\Monster.hh"
+				RelativePath=".\include\Monster_Base.hh"
 				>
 			</File>
 			<File
 				RelativePath=".\include\Monster_Factory.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Monsters.hh"
 				>
 			</File>
 			<File

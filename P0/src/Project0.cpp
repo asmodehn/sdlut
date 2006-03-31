@@ -9,9 +9,10 @@ class TheEngine : public Engine
 private:
 	BattleField* myBattleField;
 	std::vector<BattleField_Sprite*> BattleField_Sprite_Vector; //Vector which will contains all battlefield type and clip
-	Monster_Factory* myMonster_Factory;
+	//Monster_Factory<Monster_Skeleton>* myMonster_Factory; //A factory of Monster
+	Monster_Factory* myMonster_Factory; //A factory of Monster
 	Character_Base* myCharacter;
-	std::vector<Monster*> Monster_vector; //Vector which will contains all monsters
+	std::vector<Monster_Skeleton*> Monster_vector; //Vector which will contains all monsters
 	Escape_Menu* EscMenu;
 	int Character_Hit_Distance;
 
@@ -30,6 +31,7 @@ public:
 		P0_Logger << " BattleField_Sprite Vector Fill: OK " << std::endl;
 
 		//Initialize the factory
+		//myMonster_Factory = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS);
 		myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS);
 		P0_Logger << " Monster Factory Init: OK " << std::endl;
 
@@ -73,12 +75,12 @@ public:
 		//Handle attacks
 		Character_Hit_Distance = myCharacter->attack();
 
-		//Remove Dead monsters from the vector and inform the character 
+		//Remove Dead monsters from the vector and inform the character
 		Monster_vector = myMonster_Factory->Remove_Dead_Monsters();
 		myCharacter->Update_Monster_Knowledge(Monster_vector);
 
 		//Move Monsters
-		myMonster_Factory->Move_Monsters(myCharacter->collision_box);
+		myMonster_Factory->Move_Monsters(myCharacter->collision_box, BattleField_Sprite_Vector);
 
 		//Set the camera
         myCharacter->following_camera();
@@ -117,7 +119,7 @@ public:
 	//Finally the post render method will be used by each cycle of mainloop after the draw of the screen. It designed to contain evrytinhg that will be updated after the render of the screen surface
 	void postrender(void)
 	{
-		//Eventually generate new monster and inform the character
+		//Eventually generate new monster (not to near from the character!) and inform the character
 		Monster_vector = myMonster_Factory->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety() );
 		myCharacter->Update_Monster_Knowledge(Monster_vector);
 

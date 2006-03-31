@@ -1,12 +1,13 @@
-#ifndef Monster_HH
-#define Monster_HH
+#ifndef Monster_Base_HH
+#define Monster_Base_HH
 
 #include "Base.hh"
+#include "BattleField.hh"
 
 //The Monster
-class Monster
+class Monster_Base
 {
-    private:
+    protected:
 		//The X and Y offsets of the Monster
 		int x, y;
 
@@ -27,19 +28,21 @@ class Monster
 		bool Alive_Status;
 
 		//Default construtor
-		Monster();
+		Monster_Base();
 
 		//Constructor that initialize the variables
-		Monster(int X, int Y);
+		Monster_Base(int X, int Y);
 
 		//Copy construtor
-		Monster(const Monster& ToCopy);
+		Monster_Base(const Monster_Base& ToCopy);
 
 		//Destructor
-		~Monster();
+		~Monster_Base();
 
 		//Move the Monster and check collision with the collision box of the character in parameter
-		void move(Rect CharacterCollisionbox);
+		void move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
+
+		virtual bool check_ground_allow_move(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
 	    
 		//Shows the Monster movement on the screen
 		void move_animation(Rect Camera, VideoSurface& Screen);
