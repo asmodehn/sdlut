@@ -61,7 +61,21 @@ public:
 
 	//Called when the windows is resized and if the engine need to be updated
     bool resize(int width, int height)
-    { return true; }
+    {
+		CURRENT_SCREEN_WIDTH = width;
+		CURRENT_SCREEN_HEIGHT = height;
+		myCharacter->Camera.setw(CURRENT_SCREEN_WIDTH);
+		myCharacter->Camera.seth(CURRENT_SCREEN_HEIGHT);
+
+		/*//Resize the video surface to the window dim
+		if (App::getInstance().getWindow()->resetDisplay((App::getInstance().getWindow()->getDisplay())->getWidth(), (App::getInstance().getWindow()->getDisplay())->getHeight()) == NULL  )
+		{
+			P0_Logger << " Resize Video Surface Failed : " << GetError() << std::endl;
+			return false;
+		}
+		P0_Logger << " Resize : OK " << std::endl;*/
+		return true;
+	}
 
     //Everything that must be calculated before the display on the screen must be defined in this method and then will be called my the mainloop each cycle
 	void prerender(void)
@@ -101,11 +115,11 @@ public:
 		//Show character attack animation
 		myCharacter->attack_animation(Character_Hit_Distance, screen);
 
-		//Display attack msg
-		myCharacter->Display_Attack_Msg(screen);
-
 		//Apply monsters to the screen
 		myMonster_Factory->Move_Monsters_Animation(myCharacter->Camera, screen);
+
+		//Display attack msg
+		myCharacter->Display_Attack_Msg(screen);
 
 		if (GLOBAL_GAME_STATE == 4)
 			//Show Escape menu
@@ -202,7 +216,6 @@ int main( int argc, char* args[] )
 	App::getInstance().getWindow()->setEngine(myEngine);
 
 	//Inform the keyboard instance of the character instance and then affect the keyboard instance to the windows
- 	//myKeyboardInput.Update_Character_Knowledge(myEngine->Get_Character());
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&myKeyboardInput);
 
 

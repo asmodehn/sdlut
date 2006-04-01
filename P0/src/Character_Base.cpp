@@ -91,8 +91,8 @@ Character_Base::Character_Base(int X, int Y, std::vector<Monster_Skeleton*> mons
 	//Camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 	Camera.setx(0);
 	Camera.sety(0);
-	Camera.setw(SCREEN_WIDTH);
-	Camera.seth(SCREEN_HEIGHT);
+	Camera.setw(CURRENT_SCREEN_WIDTH);
+	Camera.seth(CURRENT_SCREEN_HEIGHT);
 
 	//Collision Box Definition: The collision box has the size of the character
 	collision_box.setx(X);
@@ -579,14 +579,12 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface& 
 //Display attack msg on the status bar (hit or miss)
 void Character_Base::Display_Attack_Msg(VideoSurface& Screen)
 {
+	//Clean the status Bar (last line of the screen)
+	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - 32, CURRENT_SCREEN_WIDTH, 32) );
+
 	//If the player has pushed the attack key => display the good msg in the status bar
 	if (attack_status == true)
 	{
-		/*****Display MSG on the status bar *****/
-		//Clean the status Bar (last line of the screen)
-		Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, 14*32, SCREEN_WIDTH, 32) );
-		//SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00) );
-
 		//If a monster was been hit displayed the hit msg, if no display miss msg
 		if (attack_successfull)
 		{
@@ -604,14 +602,14 @@ void Character_Base::Display_Attack_Msg(VideoSurface& Screen)
 		//Display attack msg is done, so now everything relative to the character attack is done, we can reset the status
 		attack_status = false;
 	}
-	Screen.blit( attack_msg, Point::Point(5, SCREEN_HEIGHT - 30) );
+	Screen.blit( attack_msg, Point::Point(5, CURRENT_SCREEN_HEIGHT - 30) );
 }
 //Managed the camera
 void Character_Base::following_camera()
 {
     //Center the camera over the Character
-    Camera.setx( (x + CH_WIDTH / 2) - SCREEN_WIDTH / 2 );
-    Camera.sety( (y + CH_HEIGHT / 2) - SCREEN_HEIGHT / 2 );
+    Camera.setx( (x + CH_WIDTH / 2) - CURRENT_SCREEN_WIDTH / 2 );
+    Camera.sety( (y + CH_HEIGHT / 2) - CURRENT_SCREEN_HEIGHT / 2 );
     //Keep the camera in bounds.
     if(Camera.getx() < 0)
     {

@@ -15,11 +15,11 @@ void Escape_Menu::Show_Menu(VideoSurface& Screen)
 {
 	if (SelectedItemId == 1) //we want to show Yes selected
 	{
-		Screen.blit(RGBSurface("data/LeaveMenu_YesSelected.png"), Point::Point(SCREEN_WIDTH/2 - 100, SCREEN_HEIGHT/2 - 50) );
+		Screen.blit(RGBSurface("data/LeaveMenu_YesSelected.png"), Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
 	}
 	else if (SelectedItemId == 2) //we want to show No selected
 	{
-		Screen.blit(RGBSurface("data/LeaveMenu_NoSelected.png"), Point::Point(SCREEN_WIDTH/2 - 100, SCREEN_HEIGHT/2 - 50) );
+		Screen.blit(RGBSurface("data/LeaveMenu_NoSelected.png"), Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
 	}
 }
 //Managed validation on one item

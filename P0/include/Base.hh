@@ -10,10 +10,15 @@ using namespace RAGE::SDL;
 #include <vector>
 #include <fstream>
 
-//The attributes of the window
+//The initial attributes of the window
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int SCREEN_BPP = 32;
+
+//The current attributes of the window
+extern int CURRENT_SCREEN_WIDTH;
+extern int CURRENT_SCREEN_HEIGHT;
+extern int CURRENT_SCREEN_BPP;
 
 //The dimensions of the level
 const int LEVEL_WIDTH = 1280;

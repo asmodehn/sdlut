@@ -123,9 +123,9 @@ bool Monster_Base::check_ground_allow_move(std::vector<BattleField_Sprite*> Batt
 //Show monster on the screen
 void Monster_Base::move_animation(Rect Camera, VideoSurface& Screen)
 {
-	//Check if the monster sprite is present on the screen
-	//NOTE : the -16 inside the first test is half of a character sprite. It's presents because the camera is centered on the middle of the character and so it allow half of the monster to be drawn on the right side of the screen
-	if ( (Camera.getx()-16 <= x) && (x < Camera.getx() + Camera.getw()) && (Camera.gety() <= y) && (y < Camera.gety() + Camera.geth() - 32) )
+	//Check if the monster sprite is present on the screen minus the status bar
+	//NOTE : CH_WIDTH/CH_HEIGHT are present because the camera is centered on the middle of the character and so we need to draw the screen a chracter 
+	if ( ( (Camera.getx()-CH_WIDTH) <= x) && (x < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= y) && (y < (Camera.gety() + Camera.geth() - 32) ) )
 	{
 		//It's present than draw it
 		Screen.blit(_monsters_list, Point::Point(x - Camera.getx(), y - Camera.gety()), _monster[0]);

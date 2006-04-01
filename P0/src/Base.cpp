@@ -1,8 +1,15 @@
 #include "Base.hh"
 
+//Logger
 RAGE::Logger P0_Logger("P0 Log");
 
+//we begin the game as 'ingame' state
 int GLOBAL_GAME_STATE = 3;
+
+//At the beginning the window as the initial attributes
+int CURRENT_SCREEN_WIDTH = SCREEN_WIDTH;
+int CURRENT_SCREEN_HEIGHT = SCREEN_HEIGHT;
+int CURRENT_SCREEN_BPP = SCREEN_BPP;
 
 //To check colission (small beginning of a physical engine^^)
 bool check_collision(Rect A, Rect B)

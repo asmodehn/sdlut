@@ -91,6 +91,7 @@ std::vector<BattleField_Sprite*> BattleField::BattleField_Vector()
 		if( BattleField_Map.fail() == true )
 		{
 			P0_Logger << " BattleField_Map.txt corrupted " << std::endl;
+			break;
 			//exit(0);
 		}
 
@@ -150,8 +151,8 @@ bool BattleField::Render(std::vector<BattleField_Sprite*> BattleField_Sprite_Vec
 	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
 	{
 		//Check if the battlefield sprite is present on the screen
-		//NOTE : the -16 inside the first test is half of a character sprite. It's presents because the camera is centered on the middle of the character and so it allow half of a background sprite to be drawn at the right side of the screen
-		if ( (Camera.getx()-16 <= BattleField_Sprite_Vector[i]->Get_X()) && (BattleField_Sprite_Vector[i]->Get_X() < Camera.getx() + Camera.getw()) && (Camera.gety() <= BattleField_Sprite_Vector[i]->Get_Y()) && (BattleField_Sprite_Vector[i]->Get_Y() < Camera.gety() + Camera.geth() - 32) )
+		//NOTE : the -16 is half of a character sprite. They are presents because the camera is centered on the middle of the character and so they allow good surface draw at the extreme top and extreme right of the screen
+		if ( ((Camera.getx()-CH_WIDTH) <= BattleField_Sprite_Vector[i]->Get_X()) && ( BattleField_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= BattleField_Sprite_Vector[i]->Get_Y()) && ( BattleField_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - 32) ) )
 		{
 			//It's present than draw it
 			if (! Screen.blit( Background, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BattleField_Sprite_Vector[i]->Get_BG_Clip() ) )
@@ -160,6 +161,8 @@ bool BattleField::Render(std::vector<BattleField_Sprite*> BattleField_Sprite_Vec
 			}
 		}
 	}
+	//Clean the status bar
+	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - 32, CURRENT_SCREEN_WIDTH, 32) );
 
 	//P0_Logger << " Background Generation : OK " << std::endl;
 	return true;
