@@ -103,7 +103,7 @@ void Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Spri
 		}
 		
 		//Now that all collision has been checked, we must check if the ground type allow the movement
-		if(! check_ground_allow_move(BattleField_Sprite_Vector) )
+		if(! check_background_allow_monster(BattleField_Sprite_Vector) )
 		{
 			//move back
 			collision_box.setx(x);
@@ -116,7 +116,7 @@ void Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Spri
 	}
 }
 //Check if the ground allow the Skeleton move
-bool Monster_Base::check_ground_allow_move(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+bool Monster_Base::check_background_allow_monster(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
 {
 	return true;
 }

@@ -30,7 +30,7 @@ Monster_Skeleton::Monster_Skeleton(int X, int Y)
 	Alive_Status = true;
 }
 //Check if the ground allow the Skeleton to move
-bool Monster_Skeleton::check_ground_allow_move(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+bool Monster_Skeleton::check_background_allow_monster(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
 {
 	//loop on all the vector
 	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
@@ -39,7 +39,7 @@ bool Monster_Skeleton::check_ground_allow_move(std::vector<BattleField_Sprite*> 
 		if (( collision_box.getx() == BattleField_Sprite_Vector[i]->Get_X() ) && ( collision_box.gety() == BattleField_Sprite_Vector[i]->Get_Y() ))
 		{
 			//...get the destination ground...
-			int newGround_Type = BattleField_Sprite_Vector[i]->Get_Ground_Type();
+			int newGround_Type = BattleField_Sprite_Vector[i]->Get_BattleField_Type();
 			
 			//...then check if the ground allow the character move
 			if( newGround_Type == EMPTY_GROUND ) //Don't allow move
@@ -57,10 +57,6 @@ bool Monster_Skeleton::check_ground_allow_move(std::vector<BattleField_Sprite*> 
 			else if( newGround_Type == RIVER_GROUND ) //Allow move
 			{
 				return true;
-			}
-			else if( newGround_Type == TREE_GROUND ) //Don't Allow move
-			{
-				return false;
 			}
 			else // not listed type (impossible!!??). Don't allow move
 			{
@@ -101,8 +97,8 @@ Monster_Worm::Monster_Worm(int X, int Y)
 	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
 	Alive_Status = true;
 }
-//Check if the ground allow the worm to move
-bool Monster_Worm::check_ground_allow_move(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+//Check if the ground allow the worm to exists
+bool Monster_Worm::check_background_allow_monster(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
 {
 	//loop on all the vector
 	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
@@ -111,7 +107,7 @@ bool Monster_Worm::check_ground_allow_move(std::vector<BattleField_Sprite*> Batt
 		if (( collision_box.getx() == BattleField_Sprite_Vector[i]->Get_X() ) && ( collision_box.gety() == BattleField_Sprite_Vector[i]->Get_Y() ))
 		{
 			//...get the destination ground...
-			int newGround_Type = BattleField_Sprite_Vector[i]->Get_Ground_Type();
+			int newGround_Type = BattleField_Sprite_Vector[i]->Get_BattleField_Type();
 			
 			//...then check if the ground allow the character move
 			if( newGround_Type == EMPTY_GROUND ) //Don't allow move
@@ -127,10 +123,6 @@ bool Monster_Worm::check_ground_allow_move(std::vector<BattleField_Sprite*> Batt
 				return true;  
 			}
 			else if( newGround_Type == RIVER_GROUND ) //Don't Allow move
-			{
-				return false;
-			}
-			else if( newGround_Type == TREE_GROUND ) //Don't Allow move
 			{
 				return false;
 			}

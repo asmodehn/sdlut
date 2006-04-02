@@ -9,12 +9,12 @@ class BattleField_Sprite
 {
 	private:
 		int X,Y;
-		int Ground_Type;
+		int BattleField_Type;
 		Rect BattleField_Clip;
 		
 	public:
 		BattleField_Sprite();
-		BattleField_Sprite(int x, int y, int ground_type, Rect battlefield_clip);
+		BattleField_Sprite(int x, int y, int battlefield_type, Rect battlefield_clip);
 		~BattleField_Sprite();
 
 		/****Wrapper****/
@@ -36,13 +36,13 @@ class BattleField_Sprite
             return Y;
         }
 
-		void Set_Ground_Type(int new_Ground_Type)
+		void Set_BattleField_Type(int new_BattleField_Type)
         {
-            Ground_Type = new_Ground_Type;
+            BattleField_Type = new_BattleField_Type;
         }
-        int Get_Ground_Type() const
+        int Get_BattleField_Type() const
         {
-            return Ground_Type;
+            return BattleField_Type;
         }
 
 		void Set_BattleField_Clip(Rect new_BattleField_Clip)
@@ -55,14 +55,14 @@ class BattleField_Sprite
         }
 };
 
-//BackGround class which is designed to manage everything relative to the batllefield
+//BackGround class which is designed to manage everything relative to the background layer of the battlefield
 class BackGround
 {
 	private:
 		//Default sprite clip
 		Rect BackGround_Clip;
 		//Tilesets surface
-		RGBSurface BackGround_Tileset_Empty, BackGround_Tileset_Grass, BackGround_Tileset_Sands, BackGround_Tileset_Rivers, BackGround_Tileset_Trees;
+		RGBSurface BackGround_Tileset_Empty, BackGround_Tileset_Grass, BackGround_Tileset_Sands, BackGround_Tileset_Rivers;
 
 		//The vector that will contains the BackGround sprites corresponding to the BackGround map
 		std::vector<BattleField_Sprite*> myBackGround_Sprite_Vector;
@@ -79,6 +79,34 @@ class BackGround
 
 		//Generate the background of the screen
 		bool Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, Rect Camera, VideoSurface & Screen);
+
+
+};
+
+//Environement class which is designed to manage everything relative to the environement layer of the battlefield
+class Environement
+{
+	private:
+		//Default sprite clip
+		Rect Environement_Clip;
+		//Tilesets surface
+		RGBSurface Environement_Tileset_Trees;
+
+		//The vector that will contains the BackGround sprites corresponding to the BackGround map
+		std::vector<BattleField_Sprite*> myEnvironement_Sprite_Vector;
+
+	public:
+		Environement();
+		~Environement();
+
+
+		/****Methods****/
+
+		//Construct the BackGround vector
+		std::vector<BattleField_Sprite*> Environement_Vector();
+
+		//Generate the background of the screen
+		bool Render(std::vector<BattleField_Sprite*> Environement_Sprite_Vector, Rect Camera, VideoSurface & Screen);
 
 
 };

@@ -42,7 +42,7 @@ class Monster_Base
 		//Move the Monster and check collision with the collision box of the character in parameter
 		void move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
 
-		virtual bool check_ground_allow_move(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
+		virtual bool check_background_allow_monster(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
 	    
 		//Shows the Monster movement on the screen
 		void move_animation(Rect Camera, VideoSurface& Screen);

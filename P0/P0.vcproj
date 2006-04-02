@@ -299,6 +299,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\data\Environement_Map.txt"
+				>
+			</File>
+			<File
 				RelativePath=".\data\LeaveMenu_NoSelected.png"
 				>
 			</File>

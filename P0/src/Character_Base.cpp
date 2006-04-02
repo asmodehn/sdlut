@@ -225,7 +225,7 @@ void Character_Base::move(std::vector<BattleField_Sprite*> BattleField_Sprite_Ve
 	}
     
 	//Now that all collision has been checked, we must check if the ground type allow the move
-	if(! check_ground_allow_move(BattleField_Sprite_Vector) )
+	if(! check_background_allow_character(BattleField_Sprite_Vector) )
 	{
 		//move back
 		collision_box.setx(x);
@@ -238,7 +238,7 @@ void Character_Base::move(std::vector<BattleField_Sprite*> BattleField_Sprite_Ve
 
 }
 //Check if the ground allow the move
-bool Character_Base::check_ground_allow_move(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+bool Character_Base::check_background_allow_character(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
 {
 	//loop on all the vector
 	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
@@ -247,7 +247,7 @@ bool Character_Base::check_ground_allow_move(std::vector<BattleField_Sprite*> Ba
 		if (( collision_box.getx() == BattleField_Sprite_Vector[i]->Get_X() ) && ( collision_box.gety() == BattleField_Sprite_Vector[i]->Get_Y() ))
 		{
 			//...get the destination ground...
-			int newGround_Type = BattleField_Sprite_Vector[i]->Get_Ground_Type();
+			int newGround_Type = BattleField_Sprite_Vector[i]->Get_BattleField_Type();
 			
 			//...then check if the ground allow the character move
 			if( newGround_Type == EMPTY_GROUND ) //Don't allow move
@@ -265,10 +265,6 @@ bool Character_Base::check_ground_allow_move(std::vector<BattleField_Sprite*> Ba
 			else if( newGround_Type == RIVER_GROUND ) //Allow move
 			{
 				return true;
-			}
-			else if( newGround_Type == TREE_GROUND ) //Don't Allow move
-			{
-				return false;
 			}
 			else // not listed type (impossible!!??). Don't allow move
 			{

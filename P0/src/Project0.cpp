@@ -9,6 +9,8 @@ class TheEngine : public Engine
 private:
 	BackGround* myBackGround;
 	std::vector<BattleField_Sprite*> BackGround_Sprite_Vector; //Vector which will contains all BackGround type and clip
+	Environement* myEnvironement;
+	std::vector<BattleField_Sprite*> Environement_Sprite_Vector; //Vector which will contains all Environement items type and clip
 	//Monster_Factory<Monster_Skeleton>* myMonster_Factory; //A factory of Monster
 	Monster_Factory* myMonster_Factory; //A factory of Monster
 	Character_Base* myCharacter;
@@ -29,6 +31,14 @@ public:
 		//Fill the BackGround vector with all BackGround sprite corresponding to the map file
 		BackGround_Sprite_Vector = myBackGround->BackGround_Vector();
 		P0_Logger << " BackGround_Sprite Vector Fill: OK " << std::endl;
+
+		//Initialize the Environement
+		myEnvironement = new Environement();
+		P0_Logger << " Environement Init: OK " << std::endl;
+
+		//Fill the Environement vector with all Environement sprite corresponding to the map file
+		Environement_Sprite_Vector = myEnvironement->Environement_Vector();
+		P0_Logger << " Environement_Sprite Vector Fill: OK " << std::endl;
 
 		//Initialize the factory
 		//myMonster_Factory = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS);
@@ -99,8 +109,11 @@ public:
 	//Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
 	void render(VideoSurface & screen) const
     {
-		//Generate the background to the screen
+		//Generate the background on the screen
 		myBackGround->Render(BackGround_Sprite_Vector, myCharacter->Camera, screen);
+
+		//Generate the environement on the screen
+		myEnvironement->Render(Environement_Sprite_Vector, myCharacter->Camera, screen);
 
 		//Show the Character on the screen
 		myCharacter->move_animation(screen);

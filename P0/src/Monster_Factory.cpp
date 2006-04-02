@@ -41,6 +41,14 @@ void Monster_Factory::Create_One_Monster(int Character_X, int Character_Y)
 		y = random(0,39);
 	}
 
+	/*******************************************************************/
+	/*******************************************************************/
+	/*																   */
+	/* HERE WE NEED TO CHECK IF THE BATTLEFIELD ALLOW MONSTER CREATION */
+	/*																   */
+	/*******************************************************************/
+	/*******************************************************************/
+
 	//Create Monster & initialized it
 	//Monster_Template* myMonster = new Monster_Template(32 * x, 32 * y);
 	Monster_Skeleton* myMonster = new Monster_Skeleton(32 * x, 32 * y);
