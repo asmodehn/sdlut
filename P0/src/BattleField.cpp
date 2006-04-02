@@ -217,26 +217,26 @@ bool BackGround::Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vecto
 }
 
 
-//Environement Constructor
-Environement::Environement()
+//Environment Constructor
+Environment::Environment()
 {
 	//Create tileset surface
-	Environement_Tileset_Trees = RGBSurface("data/Trees Tileset.png", Color(0x73, 0x6D, 0xB5));;
+	Environment_Tileset_Trees = RGBSurface("data/Trees Tileset.png", Color(0x73, 0x6D, 0xB5));;
 
 	//The default clip is the minimal clip (we don't want to blit something in this case so it dont really matter)
-	Environement_Clip.setx(0);
-	Environement_Clip.sety(0);
-	Environement_Clip.setw(0);
-	Environement_Clip.seth(0);
+	Environment_Clip.setx(0);
+	Environment_Clip.sety(0);
+	Environment_Clip.setw(0);
+	Environment_Clip.seth(0);
 
-	P0_Logger << " Environement Construction : OK " << std::endl;
+	P0_Logger << " Environment Construction : OK " << std::endl;
 }
-//Environement Destructor
-Environement::~Environement()
+//Environment Destructor
+Environment::~Environment()
 {
 }
-//Environement interpretation from the file
-std::vector<BattleField_Sprite*> Environement::Environement_Vector()
+//Environment interpretation from the file
+std::vector<BattleField_Sprite*> Environment::Environment_Vector()
 {
 	//The tile offset
     int x=0, y=0;
@@ -245,25 +245,25 @@ std::vector<BattleField_Sprite*> Environement::Environement_Vector()
 	int Current_Env_Item_Type = NOTHING_ENV_ITEM;
     
     //Open the map
-    std::ifstream Environement_Map("data/Environement_Map.txt");
+    std::ifstream Environment_Map("data/Environment_Map.txt");
 
 	//check if map has been loaded succesfully
-    if(! Environement_Map )
+    if(! Environment_Map )
     {
-		P0_Logger << " Can't open Environement_Map.txt " << std::endl;
+		P0_Logger << " Can't open Environment_Map.txt " << std::endl;
 		Timer::delay(3000);
 		exit(0);
     }
 
-	while(!Environement_Map.eof())
+	while(!Environment_Map.eof())
 	{
 		//Read Ground type from map file
-		Environement_Map >> Current_Env_Item_Type;
+		Environment_Map >> Current_Env_Item_Type;
 
 		//if the map file has a bug in it
-		if( Environement_Map.fail() == true )
+		if( Environment_Map.fail() == true )
 		{
-			P0_Logger << " Environement_Map.txt corrupted " << std::endl;
+			P0_Logger << " Environment_Map.txt corrupted " << std::endl;
 			break;
 			//exit(0);
 		}
@@ -272,36 +272,36 @@ std::vector<BattleField_Sprite*> Environement::Environement_Vector()
 		if( Current_Env_Item_Type == NOTHING_ENV_ITEM )
 		{
 			//Minimal clip (we won't blit something in this case so it dont really matter)
-			Environement_Clip.setx(0);
-			Environement_Clip.sety(0);
-			Environement_Clip.setw(0);
-			Environement_Clip.seth(0);
+			Environment_Clip.setx(0);
+			Environment_Clip.sety(0);
+			Environment_Clip.setw(0);
+			Environment_Clip.seth(0);
 		}
 		else if( Current_Env_Item_Type == TREE_ENV_ITEM )
 		{
 			//Tree Clip (random tree from the tileset)
-			Environement_Clip.setx(32 * random(0,3));
-			Environement_Clip.sety(32 * random(0,7));
-			Environement_Clip.setw(32);
-			Environement_Clip.seth(32);
+			Environment_Clip.setx(32 * random(0,3));
+			Environment_Clip.sety(32 * random(0,7));
+			Environment_Clip.setw(32);
+			Environment_Clip.seth(32);
 		}
 		else // not listed type (??)
 		{
-			P0_Logger << " Environement item present inside Environement_Map.txt not recognized " << std::endl;
-			Current_Env_Item_Type = NOTHING_ENV_ITEM; //set the environement type to nothing in order to not crash
+			P0_Logger << " Environment item present inside Environment_Map.txt not recognized " << std::endl;
+			Current_Env_Item_Type = NOTHING_ENV_ITEM; //set the environment type to nothing in order to not crash
 		
 			//Minimal clip (we won't blit something in this case so it dont really matter)
-			Environement_Clip.setx(0);
-			Environement_Clip.sety(0);
-			Environement_Clip.setw(0);
-			Environement_Clip.seth(0);
+			Environment_Clip.setx(0);
+			Environment_Clip.sety(0);
+			Environment_Clip.setw(0);
+			Environment_Clip.seth(0);
 		}
 
 		//Create Monster & initialized it
-		BattleField_Sprite* TheEnvironement_Sprite = new BattleField_Sprite(x, y, Current_Env_Item_Type, Environement_Clip);
+		BattleField_Sprite* TheEnvironment_Sprite = new BattleField_Sprite(x, y, Current_Env_Item_Type, Environment_Clip);
 
 		//store the monster at the end of the vector
-		myEnvironement_Sprite_Vector.push_back(TheEnvironement_Sprite);
+		myEnvironment_Sprite_Vector.push_back(TheEnvironment_Sprite);
 
 		//Move to next position
         x += 32;
@@ -317,42 +317,42 @@ std::vector<BattleField_Sprite*> Environement::Environement_Vector()
         }
 	}
 
-	//Close the Environement map file
-	Environement_Map.close();
+	//Close the Environment map file
+	Environment_Map.close();
 
-	P0_Logger << " Environement Sprite Vector Creation : OK " << std::endl;
+	P0_Logger << " Environment Sprite Vector Creation : OK " << std::endl;
 
-	return(myEnvironement_Sprite_Vector);
+	return(myEnvironment_Sprite_Vector);
 }
-//Environement Render
-bool Environement::Render(std::vector<BattleField_Sprite*> Environement_Sprite_Vector, Rect Camera, VideoSurface & Screen)
+//Environment Render
+bool Environment::Render(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, Rect Camera, VideoSurface & Screen)
 {
 	//Loop on all the vector
-	for(int i=0; i < Environement_Sprite_Vector.size(); i++)
+	for(int i=0; i < Environment_Sprite_Vector.size(); i++)
 	{
-		//Check if the Environement sprite is present on the screen
+		//Check if the Environment sprite is present on the screen
 		//NOTE : the -16 is half of a character sprite. They are presents because the camera is centered on the middle of the character and so they allow good surface draw at the extreme top and extreme right of the screen
-		if ( ((Camera.getx()-CH_WIDTH) <= Environement_Sprite_Vector[i]->Get_X()) && ( Environement_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= Environement_Sprite_Vector[i]->Get_Y()) && ( Environement_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - 32) ) )
+		if ( ((Camera.getx()-CH_WIDTH) <= Environment_Sprite_Vector[i]->Get_X()) && ( Environment_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= Environment_Sprite_Vector[i]->Get_Y()) && ( Environment_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - 32) ) )
 		{
 			//To minimize vector access
-			int Current_Env_Item_Type = Environement_Sprite_Vector[i]->Get_BattleField_Type();
+			int Current_Env_Item_Type = Environment_Sprite_Vector[i]->Get_BattleField_Type();
 
-			//It's present, then select the good tileset according to the environement item type
+			//It's present, then select the good tileset according to the environment item type
 			if ( Current_Env_Item_Type == NOTHING_ENV_ITEM )
 			{
 				//Don't blit anything
 			}
 			else if( Current_Env_Item_Type == TREE_ENV_ITEM )
 			{
-				//Draw the Environement Tree sprite 
-				if (! Screen.blit( Environement_Tileset_Trees, Point::Point( Environement_Sprite_Vector[i]->Get_X() - Camera.getx(), Environement_Sprite_Vector[i]->Get_Y() - Camera.gety() ), Environement_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				//Draw the Environment Tree sprite 
+				if (! Screen.blit( Environment_Tileset_Trees, Point::Point( Environment_Sprite_Vector[i]->Get_X() - Camera.getx(), Environment_Sprite_Vector[i]->Get_Y() - Camera.gety() ), Environment_Sprite_Vector[i]->Get_BattleField_Clip() ) )
 				{
 					P0_Logger << " Tree Sprite Generation Failed " << GetError() << std::endl;
 				}
 			}
-			else // not listed type(!!??) : impossible because the vector was created with Environement::Environement_Vector()
+			else // not listed type(!!??) : impossible because the vector was created with Environment::Environment_Vector()
 			{
-				P0_Logger << " Environnement item type present inside Environement_Sprite_Vector not recognized !!?? " << std::endl;
+				P0_Logger << " Environnement item type present inside Environment_Sprite_Vector not recognized !!?? " << std::endl;
 				
 				//Don't blit anything
 			}
@@ -361,6 +361,6 @@ bool Environement::Render(std::vector<BattleField_Sprite*> Environement_Sprite_V
 	//Clean the status bar
 	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - 32, CURRENT_SCREEN_WIDTH, 32) );
 
-	//P0_Logger << " Environement Generation : OK " << std::endl;*/
+	//P0_Logger << " Environment Generation : OK " << std::endl;*/
 	return true;
 }

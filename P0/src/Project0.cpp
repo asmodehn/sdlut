@@ -9,8 +9,8 @@ class TheEngine : public Engine
 private:
 	BackGround* myBackGround;
 	std::vector<BattleField_Sprite*> BackGround_Sprite_Vector; //Vector which will contains all BackGround type and clip
-	Environement* myEnvironement;
-	std::vector<BattleField_Sprite*> Environement_Sprite_Vector; //Vector which will contains all Environement items type and clip
+	Environment* myEnvironment;
+	std::vector<BattleField_Sprite*> Environment_Sprite_Vector; //Vector which will contains all Environment items type and clip
 	//Monster_Factory<Monster_Skeleton>* myMonster_Factory; //A factory of Monster
 	Monster_Factory* myMonster_Factory; //A factory of Monster
 	Character_Base* myCharacter;
@@ -32,13 +32,13 @@ public:
 		BackGround_Sprite_Vector = myBackGround->BackGround_Vector();
 		P0_Logger << " BackGround_Sprite Vector Fill: OK " << std::endl;
 
-		//Initialize the Environement
-		myEnvironement = new Environement();
-		P0_Logger << " Environement Init: OK " << std::endl;
+		//Initialize the Environment
+		myEnvironment = new Environment();
+		P0_Logger << " Environment Init: OK " << std::endl;
 
-		//Fill the Environement vector with all Environement sprite corresponding to the map file
-		Environement_Sprite_Vector = myEnvironement->Environement_Vector();
-		P0_Logger << " Environement_Sprite Vector Fill: OK " << std::endl;
+		//Fill the Environment vector with all Environment sprite corresponding to the map file
+		Environment_Sprite_Vector = myEnvironment->Environment_Vector();
+		P0_Logger << " Environment_Sprite Vector Fill: OK " << std::endl;
 
 		//Initialize the factory
 		//myMonster_Factory = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS);
@@ -87,8 +87,8 @@ public:
 		//Update the graphic style of the character
 		myCharacter->Update_Graphic_Style();
 
-		//Move the character
-		myCharacter->move(BackGround_Sprite_Vector);
+		//Move the character if possible
+		myCharacter->move(Environment_Sprite_Vector, BackGround_Sprite_Vector);
 
 		//Handle attacks
 		Character_Hit_Distance = myCharacter->attack();
@@ -112,8 +112,8 @@ public:
 		//Generate the background on the screen
 		myBackGround->Render(BackGround_Sprite_Vector, myCharacter->Camera, screen);
 
-		//Generate the environement on the screen
-		myEnvironement->Render(Environement_Sprite_Vector, myCharacter->Camera, screen);
+		//Generate the environment on the screen
+		myEnvironment->Render(Environment_Sprite_Vector, myCharacter->Camera, screen);
 
 		//Show the Character on the screen
 		myCharacter->move_animation(screen);

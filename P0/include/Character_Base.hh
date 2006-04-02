@@ -62,7 +62,10 @@ class Character_Base
 		bool attack_check_status(int collision_box_movement);
 
 		//Check if the ground allow the character presence (method which will be redesigned for each chracter)
-		virtual bool check_background_allow_character(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
+		virtual bool check_background_allow_character(std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+
+		//Check if the environment allow the character presence (method which will be redesigned for each chracter)
+		virtual bool check_environment_allow_character(std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
 
 	public:
 
@@ -127,8 +130,8 @@ class Character_Base
 		//Update the graphic regarding the attack style
 		void Update_Graphic_Style();
 	    
-		//Move the Character and check collision with the collisionbox of the monster in parameter
-		void move(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
+		//Move the Character and check collision with monsters and the battlefield (environment and background)
+		void move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 		//Shows the character movement on the screen
 		void move_animation(VideoSurface& Screen);
