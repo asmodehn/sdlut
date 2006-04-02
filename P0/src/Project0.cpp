@@ -7,8 +7,8 @@ KeyboardInput myKeyboardInput;
 class TheEngine : public Engine
 {
 private:
-	BattleField* myBattleField;
-	std::vector<BattleField_Sprite*> BattleField_Sprite_Vector; //Vector which will contains all battlefield type and clip
+	BackGround* myBackGround;
+	std::vector<BattleField_Sprite*> BackGround_Sprite_Vector; //Vector which will contains all BackGround type and clip
 	//Monster_Factory<Monster_Skeleton>* myMonster_Factory; //A factory of Monster
 	Monster_Factory* myMonster_Factory; //A factory of Monster
 	Character_Base* myCharacter;
@@ -22,13 +22,13 @@ public:
     {
 		Character_Hit_Distance = 0;
 
-		//Initialize the battlefield
-		myBattleField = new BattleField();
-		P0_Logger << " BattleField Init: OK " << std::endl;
+		//Initialize the BackGround
+		myBackGround = new BackGround();
+		P0_Logger << " BackGround Init: OK " << std::endl;
 
-		//Fill the battlefield vector with all battlefield sprite corresponding to the map file
-		BattleField_Sprite_Vector = myBattleField->BattleField_Vector();
-		P0_Logger << " BattleField_Sprite Vector Fill: OK " << std::endl;
+		//Fill the BackGround vector with all BackGround sprite corresponding to the map file
+		BackGround_Sprite_Vector = myBackGround->BackGround_Vector();
+		P0_Logger << " BackGround_Sprite Vector Fill: OK " << std::endl;
 
 		//Initialize the factory
 		//myMonster_Factory = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS);
@@ -78,7 +78,7 @@ public:
 		myCharacter->Update_Graphic_Style();
 
 		//Move the character
-		myCharacter->move(BattleField_Sprite_Vector);
+		myCharacter->move(BackGround_Sprite_Vector);
 
 		//Handle attacks
 		Character_Hit_Distance = myCharacter->attack();
@@ -88,7 +88,7 @@ public:
 		myCharacter->Update_Monster_Knowledge(Monster_vector);
 
 		//Move Monsters
-		myMonster_Factory->Move_Monsters(myCharacter->collision_box, BattleField_Sprite_Vector);
+		myMonster_Factory->Move_Monsters(myCharacter->collision_box, BackGround_Sprite_Vector);
 
 		//Set the camera
         myCharacter->following_camera();
@@ -100,7 +100,7 @@ public:
 	void render(VideoSurface & screen) const
     {
 		//Generate the background to the screen
-		myBattleField->Render(BattleField_Sprite_Vector, myCharacter->Camera, screen);
+		myBackGround->Render(BackGround_Sprite_Vector, myCharacter->Camera, screen);
 
 		//Show the Character on the screen
 		myCharacter->move_animation(screen);

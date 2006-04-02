@@ -4,7 +4,7 @@
 //#include "BattleField_Sprite.hh"
 #include "Base.hh"
 
-//Battlefield Sprites will be referenced inside a vector which will be used to generate the battlefield
+//Battlefield Sprites will be referenced inside a vector which will be used to generate the battlefield (background or environement)
 class BattleField_Sprite
 {
 	private:
@@ -55,30 +55,30 @@ class BattleField_Sprite
         }
 };
 
-//BattleField class which is designed to manage everything relative to the batllefield
-class BattleField
+//BackGround class which is designed to manage everything relative to the batllefield
+class BackGround
 {
 	private:
 		//Default sprite clip
-		Rect BattleField_Clip;
+		Rect BackGround_Clip;
 		//Tilesets surface
-		RGBSurface BattleField_Tileset_Empty, BattleField_Tileset_Grass, BattleField_Tileset_Sands, BattleField_Tileset_Rivers, BattleField_Tileset_Trees;
+		RGBSurface BackGround_Tileset_Empty, BackGround_Tileset_Grass, BackGround_Tileset_Sands, BackGround_Tileset_Rivers, BackGround_Tileset_Trees;
 
-		//The vector that will contains the battlefield sprites corresponding to the battlefield map
-		std::vector<BattleField_Sprite*> myBattleField_Sprite_Vector;
+		//The vector that will contains the BackGround sprites corresponding to the BackGround map
+		std::vector<BattleField_Sprite*> myBackGround_Sprite_Vector;
 
 	public:
-		BattleField();
-		~BattleField();
+		BackGround();
+		~BackGround();
 
 
 		/****Methods****/
 
-		//Construct the battlefield vector
-		std::vector<BattleField_Sprite*> BattleField_Vector();
+		//Construct the BackGround vector
+		std::vector<BattleField_Sprite*> BackGround_Vector();
 
 		//Generate the background of the screen
-		bool Render(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector, Rect Camera, VideoSurface & Screen);
+		bool Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, Rect Camera, VideoSurface & Screen);
 
 
 };
