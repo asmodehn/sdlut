@@ -58,6 +58,10 @@ bool Monster_Skeleton::check_ground_allow_move(std::vector<BattleField_Sprite*> 
 			{
 				return true;
 			}
+			else if( newGround_Type == TREE_GROUND ) //Don't Allow move
+			{
+				return false;
+			}
 			else // not listed type (impossible!!??). Don't allow move
 			{
 				return false;  
@@ -123,6 +127,10 @@ bool Monster_Worm::check_ground_allow_move(std::vector<BattleField_Sprite*> Batt
 				return true;  
 			}
 			else if( newGround_Type == RIVER_GROUND ) //Don't Allow move
+			{
+				return false;
+			}
+			else if( newGround_Type == TREE_GROUND ) //Don't Allow move
 			{
 				return false;
 			}

@@ -8,18 +8,18 @@ BattleField_Sprite::BattleField_Sprite()
 	//Default Ground type
 	Ground_Type = EMPTY_GROUND;
 
-	//Default Clip, the empty Clip
-	BG_Clip.setx(198);
-	BG_Clip.sety(165);
-	BG_Clip.setw(32);
-	BG_Clip.seth(32);
+	//Default Clip, the empty Clip from the default tileset (useful?)
+	BattleField_Clip.setx(198);
+	BattleField_Clip.sety(165);
+	BattleField_Clip.setw(32);
+	BattleField_Clip.seth(32);
 }
-BattleField_Sprite::BattleField_Sprite(int x, int y, int ground_type, Rect bg_clip)
+BattleField_Sprite::BattleField_Sprite(int x, int y, int ground_type, Rect battlefield_clip)
 {
 	X = x;
 	Y = y;
 	Ground_Type = ground_type;
-	BG_Clip = bg_clip;
+	BattleField_Clip = battlefield_clip;
 }
 BattleField_Sprite::~BattleField_Sprite()
 {
@@ -28,36 +28,20 @@ BattleField_Sprite::~BattleField_Sprite()
 //BattleField Constructor
 BattleField::BattleField()
 {
-	//Create rgbsurface that will be the BG with white color as transparent
-	Background = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
-	P0_Logger << " Background Global Surface Creation : OK " << std::endl;
-
-	//Empty Clip
-	BattleField_Empty_Clip.setx(198);
-	BattleField_Empty_Clip.sety(165);
-	BattleField_Empty_Clip.setw(32);
-	BattleField_Empty_Clip.seth(32);
-
-	//Grass Clip
-	BattleField_Grass_Clip.setx(198);
-	BattleField_Grass_Clip.sety(132);
-	BattleField_Grass_Clip.setw(32);
-	BattleField_Grass_Clip.seth(32);
-
-	//Sand clip
-	BattleField_Sand_Clip.setx(165);
-	BattleField_Sand_Clip.sety(132);
-	BattleField_Sand_Clip.setw(32);
-	BattleField_Sand_Clip.seth(32);
-
-	//River clip
-	BattleField_River_Clip.setx(231);
-	BattleField_River_Clip.sety(132);
-	BattleField_River_Clip.setw(32);
-	BattleField_River_Clip.seth(32);
+	//Create tileset surface
+	BattleField_Tileset_Empty = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));;
+	BattleField_Tileset_Grass = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));;
+	BattleField_Tileset_Sands = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));;
+	BattleField_Tileset_Rivers = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));;
+	BattleField_Tileset_Trees = RGBSurface("data/Trees Tileset.png", Color(0x73, 0x6D, 0xB5));;
 
 	//The default clip is the empty clip
-	BattleField_Clip = BattleField_Empty_Clip;
+	BattleField_Clip.setx(198);
+	BattleField_Clip.sety(165);
+	BattleField_Clip.setw(32);
+	BattleField_Clip.seth(32);
+
+	P0_Logger << " BattleField Construction : OK " << std::endl;
 }
 //BattleField Destructor
 BattleField::~BattleField()
@@ -98,25 +82,54 @@ std::vector<BattleField_Sprite*> BattleField::BattleField_Vector()
 		//assign the good clip relative to the type read from the map file
 		if( Current_Ground_Type == EMPTY_GROUND )
 		{
-			BattleField_Clip = BattleField_Empty_Clip;
+			//The empty clip
+			BattleField_Clip.setx(198);
+			BattleField_Clip.sety(165);
+			BattleField_Clip.setw(32);
+			BattleField_Clip.seth(32);
 		}
 		else if( Current_Ground_Type == GRASS_GROUND )
 		{
-			BattleField_Clip = BattleField_Grass_Clip;
+			//Grass Clip
+			BattleField_Clip.setx(198);
+			BattleField_Clip.sety(132);
+			BattleField_Clip.setw(32);
+			BattleField_Clip.seth(32);
 		}
 		else if( Current_Ground_Type == SAND_GROUND )
 		{
-			BattleField_Clip = BattleField_Sand_Clip;
+			//Sand clip
+			BattleField_Clip.setx(165);
+			BattleField_Clip.sety(132);
+			BattleField_Clip.setw(32);
+			BattleField_Clip.seth(32);
 		}
 		else if( Current_Ground_Type == RIVER_GROUND )
 		{
-			BattleField_Clip = BattleField_River_Clip;
+			//River clip
+			BattleField_Clip.setx(231);
+			BattleField_Clip.sety(132);
+			BattleField_Clip.setw(32);
+			BattleField_Clip.seth(32);
+		}
+		else if( Current_Ground_Type == TREE_GROUND )
+		{
+			//Tree Clip (random tree from the tileset)
+			BattleField_Clip.setx(32 * random(0,3));
+			BattleField_Clip.sety(32 * random(0,7));
+			BattleField_Clip.setw(32);
+			BattleField_Clip.seth(32);
 		}
 		else // not listed type (??)
 		{
 			P0_Logger << " Ground type present inside BattleField_Map.txt not recognized " << std::endl;
-			BattleField_Clip = BattleField_Empty_Clip; //than show the empty clip as if we are outside the battlefield
-			Current_Ground_Type = 0; //set the ground type to empty in order to not crash
+			Current_Ground_Type = EMPTY_GROUND; //set the ground type to empty in order to not crash
+		
+			//Use default clip from the default tileset, the empty clip
+			BattleField_Clip.setx(198);
+			BattleField_Clip.sety(165);
+			BattleField_Clip.setw(32);
+			BattleField_Clip.seth(32);
 		}
 
 		//Create Monster & initialized it
@@ -142,6 +155,8 @@ std::vector<BattleField_Sprite*> BattleField::BattleField_Vector()
 	//Close the battlefield map file
 	BattleField_Map.close();
 
+	P0_Logger << " BattleField Sprite Vector Creation : OK " << std::endl;
+
 	return(myBattleField_Sprite_Vector);
 }
 //BattleField Render
@@ -154,10 +169,72 @@ bool BattleField::Render(std::vector<BattleField_Sprite*> BattleField_Sprite_Vec
 		//NOTE : the -16 is half of a character sprite. They are presents because the camera is centered on the middle of the character and so they allow good surface draw at the extreme top and extreme right of the screen
 		if ( ((Camera.getx()-CH_WIDTH) <= BattleField_Sprite_Vector[i]->Get_X()) && ( BattleField_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= BattleField_Sprite_Vector[i]->Get_Y()) && ( BattleField_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - 32) ) )
 		{
-			//It's present than draw it
-			if (! Screen.blit( Background, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BattleField_Sprite_Vector[i]->Get_BG_Clip() ) )
+			//To minimize vector access
+			int Current_Ground_Type = BattleField_Sprite_Vector[i]->Get_Ground_Type();
+
+			//It's present select the good tileset according to the terrain type
+			if ( Current_Ground_Type == EMPTY_GROUND )
 			{
-				P0_Logger << " Background Generation Failed " << GetError() << std::endl;
+				//Draw the battlefield empty sprite 
+				if (! Screen.blit( BattleField_Tileset_Empty, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BattleField_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				{
+					P0_Logger << " Empty Sprite Generation Failed " << GetError() << std::endl;
+				}
+			}
+			else if( Current_Ground_Type == GRASS_GROUND )
+			{
+				//Draw the battlefield grass sprite 
+				if (! Screen.blit( BattleField_Tileset_Grass, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BattleField_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				{
+					P0_Logger << " Grass Sprite Generation Failed " << GetError() << std::endl;
+				}
+			}
+			else if( Current_Ground_Type == SAND_GROUND )
+			{
+				//Draw the battlefield Sand sprite 
+				if (! Screen.blit( BattleField_Tileset_Sands, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BattleField_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				{
+					P0_Logger << " Sand Sprite Generation Failed " << GetError() << std::endl;
+				}
+			}
+			else if( Current_Ground_Type == RIVER_GROUND )
+			{
+				//Draw the battlefield River sprite 
+				if (! Screen.blit( BattleField_Tileset_Rivers, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BattleField_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				{
+					P0_Logger << " River Sprite Generation Failed " << GetError() << std::endl;
+				}
+			}
+			else if( Current_Ground_Type == TREE_GROUND )
+			{
+				//Draw the battlefield background (grass)
+				Rect BG_Clip;
+				BG_Clip.setx(198);
+				BG_Clip.sety(132);
+				BG_Clip.setw(32);
+				BG_Clip.seth(32);
+
+				//Draw the tree background sprite (grass)
+				if (! Screen.blit( BattleField_Tileset_Grass, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BG_Clip ) )
+				{
+					P0_Logger << " Grass BG Sprite Generation Failed " << GetError() << std::endl;
+				}
+
+				//Draw the battlefield Tree sprite 
+				if (! Screen.blit( BattleField_Tileset_Trees, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BattleField_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				{
+					P0_Logger << " Tree Sprite Generation Failed " << GetError() << std::endl;
+				}
+			}
+			else // not listed type(!!??) : impossible because the vector was created with BattleField::BattleField_Vector()
+			{
+				P0_Logger << " Ground type present inside BattleField_Sprite_Vector not recognized !!?? " << std::endl;
+				
+				//Draw the battlefield empty sprite (aka the default)
+				if (! Screen.blit( BattleField_Tileset_Empty, Point::Point( BattleField_Sprite_Vector[i]->Get_X() - Camera.getx(), BattleField_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BattleField_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				{
+					P0_Logger << " Empty Sprite Generation Failed " << GetError() << std::endl;
+				}
 			}
 		}
 	}

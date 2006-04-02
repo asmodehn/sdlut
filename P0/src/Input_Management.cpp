@@ -62,6 +62,11 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					//To DO *******
 					break;
 
+					//Window <--> Fullscreen
+				case KF11:
+					App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen());
+					break;
+
 				//Esc Key Pressed
 				case KEscape:
 					GLOBAL_GAME_STATE = 4;//Escape Menu called

@@ -11,8 +11,8 @@ using namespace RAGE::SDL;
 #include <fstream>
 
 //The initial attributes of the window
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 800;//640;
+const int SCREEN_HEIGHT = 600;//480;
 const int SCREEN_BPP = 32;
 
 //The current attributes of the window
@@ -52,6 +52,7 @@ const int EMPTY_GROUND = 0;
 const int GRASS_GROUND = 1;
 const int SAND_GROUND = 2;
 const int RIVER_GROUND = 3;
+const int TREE_GROUND = 5;
 
 
 

@@ -266,6 +266,10 @@ bool Character_Base::check_ground_allow_move(std::vector<BattleField_Sprite*> Ba
 			{
 				return true;
 			}
+			else if( newGround_Type == TREE_GROUND ) //Don't Allow move
+			{
+				return false;
+			}
 			else // not listed type (impossible!!??). Don't allow move
 			{
 				return false;  

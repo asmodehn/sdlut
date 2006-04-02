@@ -47,7 +47,7 @@ public:
 		//Create the ingame escape menu
 		EscMenu = new Escape_Menu();
 		
-		P0_Logger << " \nEngine CONSTRUCTED Successfully\n " << std::endl;
+		P0_Logger << " Engine CONSTRUCTED Successfully " << std::endl;
 
     }
 
@@ -67,13 +67,7 @@ public:
 		myCharacter->Camera.setw(CURRENT_SCREEN_WIDTH);
 		myCharacter->Camera.seth(CURRENT_SCREEN_HEIGHT);
 
-		/*//Resize the video surface to the window dim
-		if (App::getInstance().getWindow()->resetDisplay((App::getInstance().getWindow()->getDisplay())->getWidth(), (App::getInstance().getWindow()->getDisplay())->getHeight()) == NULL  )
-		{
-			P0_Logger << " Resize Video Surface Failed : " << GetError() << std::endl;
-			return false;
-		}
-		P0_Logger << " Resize : OK " << std::endl;*/
+		P0_Logger << " Resize : OK " << std::endl;
 		return true;
 	}
 

@@ -10,11 +10,11 @@ class BattleField_Sprite
 	private:
 		int X,Y;
 		int Ground_Type;
-		Rect BG_Clip;
+		Rect BattleField_Clip;
 		
 	public:
 		BattleField_Sprite();
-		BattleField_Sprite(int x, int y, int ground_type, Rect bg_clip);
+		BattleField_Sprite(int x, int y, int ground_type, Rect battlefield_clip);
 		~BattleField_Sprite();
 
 		/****Wrapper****/
@@ -45,13 +45,13 @@ class BattleField_Sprite
             return Ground_Type;
         }
 
-		void Set_BG_Clip(int new_BG_Clip)
+		void Set_BattleField_Clip(Rect new_BattleField_Clip)
         {
-            BG_Clip = new_BG_Clip;
+            BattleField_Clip = new_BattleField_Clip;
         }
-        Rect Get_BG_Clip() const
+        Rect Get_BattleField_Clip() const
         {
-            return BG_Clip;
+            return BattleField_Clip;
         }
 };
 
@@ -59,9 +59,10 @@ class BattleField_Sprite
 class BattleField
 {
 	private:
-		RGBSurface Background;
+		//Default sprite clip
 		Rect BattleField_Clip;
-		Rect BattleField_Empty_Clip, BattleField_Grass_Clip, BattleField_Sand_Clip, BattleField_River_Clip;
+		//Tilesets surface
+		RGBSurface BattleField_Tileset_Empty, BattleField_Tileset_Grass, BattleField_Tileset_Sands, BattleField_Tileset_Rivers, BattleField_Tileset_Trees;
 
 		//The vector that will contains the battlefield sprites corresponding to the battlefield map
 		std::vector<BattleField_Sprite*> myBattleField_Sprite_Vector;
@@ -70,9 +71,13 @@ class BattleField
 		BattleField();
 		~BattleField();
 
+
 		/****Methods****/
+
+		//Construct the battlefield vector
 		std::vector<BattleField_Sprite*> BattleField_Vector();
-		//std::vector<BattleField_Sprite*> BattleField::BattleField_Camera_Vector(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector, Rect Camera);
+
+		//Generate the background of the screen
 		bool Render(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector, Rect Camera, VideoSurface & Screen);
 
 
