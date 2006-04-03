@@ -75,7 +75,7 @@ Monster_Base::~Monster_Base()
 	//_monsters_list.~RGBSurface();
 }
 //Move monster randomly
-void Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+void Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	//move only if a random number is below 10 (This speed down monster movement)
 	if (rand()%200 <= 13) 
@@ -101,9 +101,19 @@ void Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Spri
 			//move back
 			collision_box.sety(y);     
 		}
-		
-		//Now that all collision has been checked, we must check if the ground type allow the movement
-		if(! check_background_allow_monster(BattleField_Sprite_Vector) )
+
+		//Now that all collision has been checked, we must check if the environment allow the move
+		if( check_environment_allow_monster(Environment_Sprite_Vector) )
+		{
+			//The environment allow it, so now check with the ground
+			if(! check_background_allow_monster(BackGround_Sprite_Vector) )
+			{
+				//move back
+				collision_box.setx(x);
+				collision_box.sety(y); 
+			}
+		}
+		else //environment dont allow move
 		{
 			//move back
 			collision_box.setx(x);
@@ -116,8 +126,37 @@ void Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Spri
 	}
 }
 //Check if the ground allow the Skeleton move
-bool Monster_Base::check_background_allow_monster(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+bool Monster_Base::check_background_allow_monster(std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
+	return true;
+}
+bool Monster_Base::check_environment_allow_monster(std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
+{
+	//loop on all the vector
+	for(int i=0; i < Environment_Sprite_Vector.size(); i++)
+	{
+		//when we have located the good destination inside the vector,...
+		if (( collision_box.getx() == Environment_Sprite_Vector[i]->Get_X() ) && ( collision_box.gety() == Environment_Sprite_Vector[i]->Get_Y() ))
+		{
+			//...get the environment ground...
+			int newEnv_Type = Environment_Sprite_Vector[i]->Get_BattleField_Type();
+			
+			//...then check if the environment allow the monster move
+			if( newEnv_Type == NOTHING_ENV_ITEM ) //Allow move
+			{
+				return true; 
+			}
+			else if( newEnv_Type == TREE_ENV_ITEM ) //Don't allow move
+			{
+				return false;
+			}
+			else // not listed type (impossible!!??). Allow move
+			{
+				return true;  
+			}
+		}
+	}
+	//we can't locate the position inside the vector (impossible!!??)
 	return true;
 }
 //Show monster on the screen

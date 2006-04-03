@@ -36,7 +36,7 @@ class Monster_Factory
 		std::vector<Monster_Skeleton*> Create_Monsters(int Character_X, int Character_Y);
 
 		//Invoke all monsters movements
-		void Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
+		void Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 		//Invoke all monsters movements animation on the screen
 		void Move_Monsters_Animation(Rect Camera, VideoSurface& Screen);

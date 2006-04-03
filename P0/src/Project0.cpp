@@ -98,7 +98,7 @@ public:
 		myCharacter->Update_Monster_Knowledge(Monster_vector);
 
 		//Move Monsters
-		myMonster_Factory->Move_Monsters(myCharacter->collision_box, BackGround_Sprite_Vector);
+		myMonster_Factory->Move_Monsters(myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector);
 
 		//Set the camera
         myCharacter->following_camera();

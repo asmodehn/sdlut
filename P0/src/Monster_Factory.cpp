@@ -73,12 +73,12 @@ std::vector<Monster_Skeleton*> Monster_Factory::Create_Monsters(int Character_X,
 //Invoke all monsters movements
 //template <typename Monster_Template>
 //void Monster_Factory<Monster_Template>::Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
-void Monster_Factory::Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+void Monster_Factory::Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	//Move Monsters
 	for(int i=0; i < Monster_Vector.size(); i++)
 	{
-		Monster_Vector[i]->move(Character_Collision_Box, BattleField_Sprite_Vector);		
+		Monster_Vector[i]->move(Character_Collision_Box, Environment_Sprite_Vector, BackGround_Sprite_Vector);		
 	}
 }
 //Invoke all monsters movements animation on the screen

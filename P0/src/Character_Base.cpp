@@ -294,10 +294,10 @@ bool Character_Base::check_environment_allow_character(std::vector<BattleField_S
 		//when we have located the good destination inside the vector,...
 		if (( collision_box.getx() == Environment_Sprite_Vector[i]->Get_X() ) && ( collision_box.gety() == Environment_Sprite_Vector[i]->Get_Y() ))
 		{
-			//...get the destination ground...
+			//...get the destination environment...
 			int newEnv_Type = Environment_Sprite_Vector[i]->Get_BattleField_Type();
 			
-			//...then check if the ground allow the character move
+			//...then check if the environment allow the character move
 			if( newEnv_Type == NOTHING_ENV_ITEM ) //Allow move
 			{
 				return true; 
