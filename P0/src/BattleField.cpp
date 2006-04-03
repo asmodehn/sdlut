@@ -29,10 +29,10 @@ BattleField_Sprite::~BattleField_Sprite()
 BackGround::BackGround()
 {
 	//Create tileset surface
-	BackGround_Tileset_Empty = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));;
-	BackGround_Tileset_Grass = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));;
-	BackGround_Tileset_Sands = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));;
-	BackGround_Tileset_Rivers = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));;
+	BackGround_Tileset_Empty = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
+	BackGround_Tileset_Grass = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
+	BackGround_Tileset_Sands = RGBSurface("data/Sand Tileset.png", Color(0x00, 0x00, 0x0));
+	BackGround_Tileset_Rivers = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
 
 	//The default clip is the empty clip
 	BackGround_Clip.setx(198);
@@ -98,9 +98,9 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
 		}
 		else if( Current_Ground_Type == SAND_GROUND )
 		{
-			//Sand clip
-			BackGround_Clip.setx(165);
-			BackGround_Clip.sety(132);
+			//Sand clip (random sand from the tileset)
+			BackGround_Clip.setx(32 * random(0,4));
+			BackGround_Clip.sety(32 * random(0,1));
 			BackGround_Clip.setw(32);
 			BackGround_Clip.seth(32);
 		}
@@ -221,7 +221,7 @@ bool BackGround::Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vecto
 Environment::Environment()
 {
 	//Create tileset surface
-	Environment_Tileset_Trees = RGBSurface("data/Trees Tileset.png", Color(0x73, 0x6D, 0xB5));;
+	Environment_Tileset_Trees = RGBSurface("data/Trees Tileset.png", Color(0x73, 0x6D, 0xB5));
 
 	//The default clip is the minimal clip (we don't want to blit something in this case so it dont really matter)
 	Environment_Clip.setx(0);
