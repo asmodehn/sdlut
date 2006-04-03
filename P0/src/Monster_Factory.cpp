@@ -30,13 +30,13 @@ void Monster_Factory::Create_One_Monster(int Character_X, int Character_Y)
 
 	//Check if monster is not too near of the character if so try again: monsters can't born in the 3 square radius near the character
 	x = random(0,39);
-	while ( (x >= (Character_X/32 - 3)) && (x <= (Character_X/32 + 3)) )
+	while ( (x >= (Character_X/CH_WIDTH - 3)) && (x <= (Character_X/CH_WIDTH + 3)) )
 	{
 		x = random(0,39);
 	}
 
 	y = random(0,39);
-	while ( (y >= (Character_Y/32 - 3)) && (y <= (Character_Y/32 + 3)) )
+	while ( (y >= (Character_Y/CH_HEIGHT - 3)) && (y <= (Character_Y/CH_HEIGHT + 3)) )
 	{
 		y = random(0,39);
 	}
@@ -50,8 +50,8 @@ void Monster_Factory::Create_One_Monster(int Character_X, int Character_Y)
 	/*******************************************************************/
 
 	//Create Monster & initialized it
-	//Monster_Template* myMonster = new Monster_Template(32 * x, 32 * y);
-	Monster_Skeleton* myMonster = new Monster_Skeleton(32 * x, 32 * y);
+	//Monster_Template* myMonster = new Monster_Template(MO_WIDTH * x, MO_HEIGHT * y);
+	Monster_Skeleton* myMonster = new Monster_Skeleton(MO_WIDTH * x, MO_HEIGHT * y);
 
 	//store the monster at the end of the vector
 	Monster_Vector.push_back(myMonster);

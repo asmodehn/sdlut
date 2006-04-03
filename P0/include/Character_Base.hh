@@ -62,10 +62,10 @@ class Character_Base
 		bool attack_check_status(int collision_box_movement);
 
 		//Check if the ground allow the character presence (method which will be redesigned for each chracter)
-		virtual bool check_background_allow_character(std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		virtual bool check_background_allow_character(int x, int y, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 		//Check if the environment allow the character presence (method which will be redesigned for each chracter)
-		virtual bool check_environment_allow_character(std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
+		virtual int check_environment_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
 
 	public:
 

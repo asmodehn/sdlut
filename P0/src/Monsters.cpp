@@ -30,13 +30,13 @@ Monster_Skeleton::Monster_Skeleton(int X, int Y)
 	Alive_Status = true;
 }
 //Check if the ground allow the Skeleton to move
-bool Monster_Skeleton::check_background_allow_monster(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+bool Monster_Skeleton::check_background_allow_monster(int x, int y, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
 {
 	//loop on all the vector
 	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
 	{
 		//when we have located the good destination inside the vector,...
-		if (( collision_box.getx() == BattleField_Sprite_Vector[i]->Get_X() ) && ( collision_box.gety() == BattleField_Sprite_Vector[i]->Get_Y() ))
+		if (( x == BattleField_Sprite_Vector[i]->Get_X() ) && ( y == BattleField_Sprite_Vector[i]->Get_Y() ))
 		{
 			//...get the destination ground...
 			int newGround_Type = BattleField_Sprite_Vector[i]->Get_BattleField_Type();
@@ -98,13 +98,13 @@ Monster_Worm::Monster_Worm(int X, int Y)
 	Alive_Status = true;
 }
 //Check if the ground allow the worm to exists
-bool Monster_Worm::check_background_allow_monster(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+bool Monster_Worm::check_background_allow_monster(int x, int y, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
 {
 	//loop on all the vector
 	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
 	{
 		//when we have located the good destination inside the vector,...
-		if (( collision_box.getx() == BattleField_Sprite_Vector[i]->Get_X() ) && ( collision_box.gety() == BattleField_Sprite_Vector[i]->Get_Y() ))
+		if (( x == BattleField_Sprite_Vector[i]->Get_X() ) && ( y == BattleField_Sprite_Vector[i]->Get_Y() ))
 		{
 			//...get the destination ground...
 			int newGround_Type = BattleField_Sprite_Vector[i]->Get_BattleField_Type();

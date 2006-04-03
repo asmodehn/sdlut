@@ -225,21 +225,26 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
 	}
     
 	//Now that all collision has been checked, we must check if the environment allow the move
-	if( check_environment_allow_character(Environment_Sprite_Vector) )
+	if( check_environment_allow_character(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector) == -1)
 	{
-		//The environment allow it, so now check with the ground
-		if(! check_background_allow_character(BackGround_Sprite_Vector) )
+		//No environement item present, the ground have priority
+		if(! check_background_allow_character(collision_box.getx(), collision_box.gety(), BackGround_Sprite_Vector) )
 		{
 			//move back
 			collision_box.setx(x);
 			collision_box.sety(y); 
 		}
 	}
-	else //environment dont allow move
+	 //environment item present and dont allow move
+	else if( check_environment_allow_character(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector) == 0)
 	{
 		//move back
 		collision_box.setx(x);
 		collision_box.sety(y); 
+	}
+	else //environment item present and allow move
+	{
+		//nothing to do
 	}
 
 	//Finally move the character in the same place of his collision box
@@ -248,13 +253,13 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
 
 }
 //Check if the ground allow the move
-bool Character_Base::check_background_allow_character(std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+bool Character_Base::check_background_allow_character(int x, int y, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	//loop on all the vector
 	for(int i=0; i < BackGround_Sprite_Vector.size(); i++)
 	{
 		//when we have located the good destination inside the vector,...
-		if (( collision_box.getx() == BackGround_Sprite_Vector[i]->Get_X() ) && ( collision_box.gety() == BackGround_Sprite_Vector[i]->Get_Y() ))
+		if (( x == BackGround_Sprite_Vector[i]->Get_X() ) && ( y == BackGround_Sprite_Vector[i]->Get_Y() ))
 		{
 			//...get the destination ground...
 			int newGround_Type = BackGround_Sprite_Vector[i]->Get_BattleField_Type();
@@ -286,34 +291,34 @@ bool Character_Base::check_background_allow_character(std::vector<BattleField_Sp
 	return false;
 }
 //Check if the environment allow the move
-bool Character_Base::check_environment_allow_character(std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
+int Character_Base::check_environment_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
 {
 	//loop on all the vector
 	for(int i=0; i < Environment_Sprite_Vector.size(); i++)
 	{
 		//when we have located the good destination inside the vector,...
-		if (( collision_box.getx() == Environment_Sprite_Vector[i]->Get_X() ) && ( collision_box.gety() == Environment_Sprite_Vector[i]->Get_Y() ))
+		if (( x == Environment_Sprite_Vector[i]->Get_X() ) && ( y == Environment_Sprite_Vector[i]->Get_Y() ))
 		{
 			//...get the destination environment...
 			int newEnv_Type = Environment_Sprite_Vector[i]->Get_BattleField_Type();
 			
 			//...then check if the environment allow the character move
-			if( newEnv_Type == NOTHING_ENV_ITEM ) //Allow move
+			if( newEnv_Type == NOTHING_ENV_ITEM )  //indicate no environement is present
 			{
-				return true; 
+				return -1; 
 			}
 			else if( newEnv_Type == TREE_ENV_ITEM ) //Don't allow move
 			{
-				return false;
+				return 0;
 			}
 			else // not listed type (impossible!!??). Allow move
 			{
-				return true;  
+				return 1;  
 			}
 		}
 	}
 	//we can't locate the position inside the vector (impossible!!??)
-	return true;
+	return -1;
 }
 //Show the Character on the screen
 void Character_Base::move_animation(VideoSurface& Screen)

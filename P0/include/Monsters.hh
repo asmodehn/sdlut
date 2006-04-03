@@ -14,7 +14,7 @@ class Monster_Skeleton : public Monster_Base
 		Monster_Skeleton(int X, int Y);
 
 		//Check if the ground allow the Skeleton to move
-		bool check_background_allow_monster(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
+		bool check_background_allow_monster(int x, int y, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
 		
 };
 
@@ -27,7 +27,7 @@ class Monster_Worm : public Monster_Base
 		Monster_Worm(int X, int Y);
 
 		//Check if the ground allow the worm to move
-		bool check_background_allow_monster(std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
+		bool check_background_allow_monster(int x, int y, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector);
 		
 };
 
