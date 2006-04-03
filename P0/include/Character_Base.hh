@@ -61,11 +61,14 @@ class Character_Base
 		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
 		bool attack_check_status(int collision_box_movement);
 
-		//Check if the ground allow the character presence (method which will be redesigned for each chracter)
+		//Check if the ground allow the character presence
 		virtual bool check_background_allow_character(int x, int y, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
-		//Check if the environment allow the character presence (method which will be redesigned for each chracter)
+		//Check if the environment allow the character presence
 		virtual int check_environment_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
+
+		//Check if the battlefield allow the character presence
+		virtual bool check_battlefield_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 	public:
 

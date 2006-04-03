@@ -46,7 +46,7 @@ public:
 		P0_Logger << " Monster Factory Init: OK " << std::endl;
 
 		//Create all the monsters
-		Monster_vector = myMonster_Factory->Create_Monsters(CH_INITIAL_X, CH_INITIAL_Y);
+		Monster_vector = myMonster_Factory->Create_Monsters(CH_INITIAL_X, CH_INITIAL_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
 		P0_Logger << " Monster Vector Fill: OK " << std::endl;
 
 		//Create Character & initialized it
@@ -141,7 +141,7 @@ public:
 	void postrender(void)
 	{
 		//Eventually generate new monster (not to near from the character!) and inform the character
-		Monster_vector = myMonster_Factory->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety() );
+		Monster_vector = myMonster_Factory->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector );
 		myCharacter->Update_Monster_Knowledge(Monster_vector);
 
 		if (GLOBAL_GAME_STATE == 4)

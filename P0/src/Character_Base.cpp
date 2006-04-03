@@ -224,33 +224,43 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
 		}
 	}
     
-	//Now that all collision has been checked, we must check if the environment allow the move
-	if( check_environment_allow_character(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector) == -1)
-	{
-		//No environement item present, the ground have priority
-		if(! check_background_allow_character(collision_box.getx(), collision_box.gety(), BackGround_Sprite_Vector) )
-		{
-			//move back
-			collision_box.setx(x);
-			collision_box.sety(y); 
-		}
-	}
-	 //environment item present and dont allow move
-	else if( check_environment_allow_character(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector) == 0)
+	//Now that all collision has been checked, we must check if the battlefield allow the move
+	if(! check_battlefield_allow_character(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector) )
 	{
 		//move back
 		collision_box.setx(x);
 		collision_box.sety(y); 
-	}
-	else //environment item present and allow move
-	{
-		//nothing to do
 	}
 
 	//Finally move the character in the same place of his collision box
 	x = collision_box.getx();
 	y = collision_box.gety();
 
+}
+//Check if the battlefield allow the character presence
+bool Character_Base::check_battlefield_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+{
+	//1st, we must check if the environment allow the move
+	if( check_environment_allow_character(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector) == -1)
+	{
+		//No environement item present, the ground have priority
+		if(! check_background_allow_character(collision_box.getx(), collision_box.gety(), BackGround_Sprite_Vector) )
+		{
+			return false;
+		}
+	}
+	 //environment item present and dont allow presence
+	else if( check_environment_allow_character(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector) == 0)
+	{
+		return false;
+	}
+	else //environment item present and allow presence
+	{
+		return true;
+	}
+
+	//allow presence
+	return true;
 }
 //Check if the ground allow the move
 bool Character_Base::check_background_allow_character(int x, int y, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)

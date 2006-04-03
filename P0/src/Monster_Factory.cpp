@@ -23,49 +23,57 @@ Monster_Factory::~Monster_Factory()
 //Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
 //template <typename Monster_Template>
 //void Monster_Factory<Monster_Template>::Create_One_Monster(int Character_X, int Character_Y)
-void Monster_Factory::Create_One_Monster(int Character_X, int Character_Y)
+Monster_Skeleton* Monster_Factory::Create_One_Monster(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	//Determine monster creation position
 	int x = 0, y = 0;
 
-	//Check if monster is not too near of the character if so try again: monsters can't born in the 3 square radius near the character
+	//mini distance (3 square radius from the character border)
+	int distance_mini = int( 3.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );
+	
+	//Monster coord
 	x = random(0,39);
-	while ( (x >= (Character_X/CH_WIDTH - 3)) && (x <= (Character_X/CH_WIDTH + 3)) )
-	{
-		x = random(0,39);
-	}
-
 	y = random(0,39);
-	while ( (y >= (Character_Y/CH_HEIGHT - 3)) && (y <= (Character_Y/CH_HEIGHT + 3)) )
-	{
-		y = random(0,39);
-	}
 
-	/*******************************************************************/
-	/*******************************************************************/
-	/*																   */
-	/* HERE WE NEED TO CHECK IF THE BATTLEFIELD ALLOW MONSTER CREATION */
-	/*																   */
-	/*******************************************************************/
-	/*******************************************************************/
+	//distance from the center - distance center to border of the character
+	int distance = int( sqrt( float( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)) ) )
+						- 0.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );
+	while (distance <= distance_mini) //we are too near
+	{
+		//retry
+		x = random(0,39);
+		y = random(0,39);
+		distance = int( sqrt( float( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)) ) )
+					- 0.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );
+	}
 
 	//Create Monster & initialized it
 	//Monster_Template* myMonster = new Monster_Template(MO_WIDTH * x, MO_HEIGHT * y);
 	Monster_Skeleton* myMonster = new Monster_Skeleton(MO_WIDTH * x, MO_HEIGHT * y);
 
-	//store the monster at the end of the vector
-	Monster_Vector.push_back(myMonster);
+	return myMonster;
 }
 //Create Monsters Method which create as many monsters has desired
 //template <typename Monster_Template>
 //std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Create_Monsters(int Character_X, int Character_Y)
 //std::vector<Monster*> Monster_Factory<Monster_Template>::Create_Monsters(int Character_X, int Character_Y)
-std::vector<Monster_Skeleton*> Monster_Factory::Create_Monsters(int Character_X, int Character_Y)
+std::vector<Monster_Skeleton*> Monster_Factory::Create_Monsters(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	//Loop until desired number of monsters has been reached
 	for(int i=1; i <= Number_Of_Monsters; i++)
 	{
-		Create_One_Monster(Character_X, Character_Y);
+		//Monster generation
+		Monster_Skeleton* newMonster = Create_One_Monster(Character_X, Character_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+
+		//Check if the battlefield allow the monster creation
+		while(! newMonster->check_battlefield_allow_monster(newMonster->collision_box.getx(), newMonster->collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector) )
+		{
+			//regeneration
+			Monster_Skeleton* newMonster = Create_One_Monster(Character_X, Character_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+		}
+
+		//Store the monster at the end of the vector
+		Monster_Vector.push_back(newMonster);
 	}
 
 	return Monster_Vector;
@@ -118,7 +126,7 @@ std::vector<Monster_Skeleton*> Monster_Factory::Remove_Dead_Monsters()
 //template <typename Monster_Template>
 //std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Generate_New_Monster(int Character_X, int Character_Y)
 //std::vector<Monster_Skeleton*> Monster_Factory<Monster_Template>::Generate_New_Monster(int Character_X, int Character_Y)
-std::vector<Monster_Skeleton*> Monster_Factory::Generate_New_Monster(int Character_X, int Character_Y)
+std::vector<Monster_Skeleton*> Monster_Factory::Generate_New_Monster(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	int temp = 0;
 	
@@ -127,7 +135,17 @@ std::vector<Monster_Skeleton*> Monster_Factory::Generate_New_Monster(int Charact
 	if (temp > Monster_Vector.size())
 	{
 		//Monster generation
-		Create_One_Monster(Character_X, Character_Y);
+		Monster_Skeleton* newMonster = Create_One_Monster(Character_X, Character_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+
+		//Check if the battlefield allow the monster creation
+		while(! newMonster->check_battlefield_allow_monster(newMonster->collision_box.getx(), newMonster->collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector) )
+		{
+			//regeneration
+			Monster_Skeleton* newMonster = Create_One_Monster(Character_X, Character_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+		}
+
+		//Store the monster at the end of the vector
+		Monster_Vector.push_back(newMonster);
 	}
 	
 	//Finally return the new Vector wth eventual new monsters

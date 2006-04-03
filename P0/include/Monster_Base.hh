@@ -20,8 +20,9 @@ class Monster_Base
 		//The velocity of the Monster
 		int xVel, yVel;
 
-		//Check if the battlefield allow the monster
+		//Check if the background allow the monster presence
 		virtual bool check_background_allow_monster(int x, int y, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		//Check if the environment allow the monster presence
 		virtual int check_environment_allow_monster(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
 
 	public:
@@ -46,6 +47,9 @@ class Monster_Base
 		//Move the Monster and check collision with the collision box of the character in parameter
 		void move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 	    
+		//Check if the battlefield allow the monster presence
+		virtual bool check_battlefield_allow_monster(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+
 		//Shows the Monster movement on the screen
 		void move_animation(Rect Camera, VideoSurface& Screen);
 };

@@ -9,6 +9,7 @@ using namespace RAGE::SDL;
 #include <string>
 #include <vector>
 #include <fstream>
+#include <math.h>
 
 //The initial attributes of the window
 const int SCREEN_WIDTH = 800;//640;
