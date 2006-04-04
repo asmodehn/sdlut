@@ -134,6 +134,7 @@ public:
 		glEnd ();
 
 	   glEndList();
+	   return true;
    
 	}
 
@@ -220,7 +221,9 @@ int main(int argc, char** argv)
 
 	//switch to opengl
     //App::getInstance().getWindow()->setOpenGL(true);
-	//using default engine
+	
+	//Comment this line to use the default engine
+	App::getInstance().getWindow()->setEngine(new MyEngine());
 
     if(App::getInstance().getWindow()->resetDisplay())
     {
@@ -708,7 +711,7 @@ const GLfloat MyEngine::vertices [1372][3] = {
 {0.0263042f,0.0561605f,0.00350169f},{0.0280359f,0.0561605f,-0.000986396f},{0.0294435f,0.0561605f,-0.00594043f},
 {0.0306396f,0.0561605f,-0.0120704f}
 };
-static const GLfloat textures [1356][2] = {
+const GLfloat MyEngine::textures [1356][2] = {
 {0.0139012f,0.0f},{0.0139012f,1.0f},{1.0f,1.0f},
 {1.0f,0.0f},{0.0272924f,0.0f},{0.0272924f,1.0f},
 {0.0380499f,0.0f},{0.0380499f,1.0f},{0.0484259f,0.0f},
@@ -1163,7 +1166,7 @@ static const GLfloat textures [1356][2] = {
 {0.577689f,1.0f},{0.612837f,0.0f},{0.612837f,1.0f}
 };
 
-static GLfloat normals [1338][3] = {
+const GLfloat MyEngine::normals [1338][3] = {
 {0.0859511f,0.0f,0.996299f},{0.120465f,0.0f,0.992718f},{0.0242935f,0.0f,0.999705f},
 {-0.00282617f,0.0f,0.999996f},{0.186738f,0.0f,0.98241f},{0.218521f,0.0f,0.975832f},
 {0.2794f,0.0f,0.960175f},{0.308526f,0.0f,0.951216f},{0.367201f,0.0f,0.930142f},
@@ -1611,7 +1614,7 @@ static GLfloat normals [1338][3] = {
 {-0.943492f,0.0f,-0.331395f},{-0.953157f,0.0f,-0.302477f},{-0.969209f,0.0f,-0.246238f},
 {-0.975735f,0.0f,-0.218956f},{-0.953991f,0.0f,0.299835f},{-0.476996f,0.0f,0.878906f}
 };
-static const short face_indices[2732][9] = {
+const short MyEngine::face_indices[2732][9] = {
 // Extru2
 	{221,1,0 ,0,1,2 ,0,1,2 }, {220,221,0 ,3,0,2 ,3,0,2 }, {222,2,1 ,4,5,1 ,4,5,1 },
 	{221,222,1 ,0,4,1 ,0,4,1 }, {223,3,2 ,6,7,5 ,6,7,5 }, {222,223,2 ,4,6,5 ,4,6,5 },
