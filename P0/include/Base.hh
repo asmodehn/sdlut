@@ -62,6 +62,7 @@ const int TREE_ENV_ITEM = 01;
 const int ROCK_ENV_ITEM = 10;
 const int WALL_ENV_ITEM = 20;
 const int HOUSE_ENV_ITEM = 30;
+const int BRIDGE_ENV_ITEM = 40;
 
 
 //This variable defined the global game state 1: Initial Menu (future dev), 2: Character Creation/Selection (future dev), 3: Ingame, 4: On Escape menu

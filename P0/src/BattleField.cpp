@@ -8,11 +8,11 @@ BattleField_Sprite::BattleField_Sprite()
 	//Default Ground type
 	BattleField_Type = EMPTY_GROUND;
 
-	//Default Clip, the empty Clip from the default tileset (useful?)
-	BattleField_Clip.setx(198);
-	BattleField_Clip.sety(165);
-	BattleField_Clip.setw(32);
-	BattleField_Clip.seth(32);
+	//Default Clip (minimal clip)
+	BattleField_Clip.setx(0);
+	BattleField_Clip.sety(0);
+	BattleField_Clip.setw(0);
+	BattleField_Clip.seth(0);
 }
 BattleField_Sprite::BattleField_Sprite(int x, int y, int battlefield_type, Rect battlefield_clip)
 {
@@ -29,17 +29,16 @@ BattleField_Sprite::~BattleField_Sprite()
 BackGround::BackGround()
 {
 	//Create tileset surface
-	BackGround_Tileset_Empty = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
 	BackGround_Tileset_Grass = RGBSurface("data/Grass.png", Color(0xFF, 0xFF, 0xFF));
 	BackGround_Tileset_Sands = RGBSurface("data/Sand Tileset.png", Color(0x00, 0x00, 0x00));
 	BackGround_Tileset_Rivers = RGBSurface("data/Water.png", Color(0xFF, 0xFF, 0xFF));
 	BackGround_Tileset_Lakes = RGBSurface("data/Water.png", Color(0xFF, 0xFF, 0xFF));
 
-	//The default clip is the empty clip
-	BackGround_Clip.setx(198);
-	BackGround_Clip.sety(165);
-	BackGround_Clip.setw(32);
-	BackGround_Clip.seth(32);
+	//The default clip (minimal clip)
+	BackGround_Clip.setx(0);
+	BackGround_Clip.sety(0);
+	BackGround_Clip.setw(0);
+	BackGround_Clip.seth(0);
 
 	P0_Logger << " BackGround Construction : OK " << std::endl;
 }
@@ -83,11 +82,11 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
 		//assign the good clip relative to the type read from the map file
 		if( Current_Ground_Type == EMPTY_GROUND )
 		{
-			//The empty clip
-			BackGround_Clip.setx(198);
-			BackGround_Clip.sety(165);
-			BackGround_Clip.setw(32);
-			BackGround_Clip.seth(32);
+			//The empty clip (we wont blit anything in this case)
+			BackGround_Clip.setx(0);
+			BackGround_Clip.sety(0);
+			BackGround_Clip.setw(0);
+			BackGround_Clip.seth(0);
 		}
 		else if( Current_Ground_Type == GRASS_GROUND )
 		{
@@ -127,10 +126,10 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
 			Current_Ground_Type = EMPTY_GROUND; //set the ground type to empty in order to not crash
 		
 			//Use default clip from the default tileset, the empty clip
-			BackGround_Clip.setx(198);
-			BackGround_Clip.sety(165);
-			BackGround_Clip.setw(32);
-			BackGround_Clip.seth(32);
+			BackGround_Clip.setx(0);
+			BackGround_Clip.sety(0);
+			BackGround_Clip.setw(0);
+			BackGround_Clip.seth(0);
 		}
 
 		//Create Monster & initialized it
@@ -176,11 +175,7 @@ bool BackGround::Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vecto
 			//It's present select the good tileset according to the terrain type
 			if ( Current_Ground_Type == EMPTY_GROUND )
 			{
-				//Draw the BackGround empty sprite 
-				if (! Screen.blit( BackGround_Tileset_Empty, Point::Point( BackGround_Sprite_Vector[i]->Get_X() - Camera.getx(), BackGround_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector[i]->Get_BattleField_Clip() ) )
-				{
-					P0_Logger << " Empty Sprite Generation Failed " << GetError() << std::endl;
-				}
+				//Don't draw anything
 			}
 			else if( Current_Ground_Type == GRASS_GROUND )
 			{
@@ -218,11 +213,7 @@ bool BackGround::Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vecto
 			{
 				P0_Logger << " Ground type present inside BackGround_Sprite_Vector not recognized !!?? X: " << BackGround_Sprite_Vector[i]->Get_X() << " Y: " << BackGround_Sprite_Vector[i]->Get_Y() << std::endl;
 				
-				//Draw the BackGround empty sprite (aka the default)
-				if (! Screen.blit( BackGround_Tileset_Empty, Point::Point( BackGround_Sprite_Vector[i]->Get_X() - Camera.getx(), BackGround_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector[i]->Get_BattleField_Clip() ) )
-				{
-					P0_Logger << " Empty Sprite Generation Failed " << GetError() << std::endl;
-				}
+				//Don't draw anything
 			}
 		}
 	}
@@ -242,6 +233,7 @@ Environment::Environment()
 	Environment_Tileset_Rocks = RGBSurface("data/Rock.png", Color(0xFF, 0xFF, 0xFF));
 	Environment_Tileset_Walls = RGBSurface("data/Wall.png", Color(0xFF, 0xFF, 0xFF));
 	Environment_Tileset_Houses = RGBSurface("data/Houses Tileset.png", Color(0xBF, 0x7B, 0xC7));
+	Environment_Tileset_Bridges = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
 
 	//The default clip is the minimal clip (we don't want to blit something in this case so it dont really matter)
 	Environment_Clip.setx(0);
@@ -326,6 +318,14 @@ std::vector<BattleField_Sprite*> Environment::Environment_Vector()
 			//House Clip(random from the tileset)
 			Environment_Clip.setx(32 * random(0,5));
 			Environment_Clip.sety(32 * random(0,2));
+			Environment_Clip.setw(32);
+			Environment_Clip.seth(32);
+		}
+		else if( Current_Env_Item_Type == BRIDGE_ENV_ITEM )
+		{
+			//Bridge Clip
+			Environment_Clip.setx(297);
+			Environment_Clip.sety(231);
 			Environment_Clip.setw(32);
 			Environment_Clip.seth(32);
 		}
@@ -414,6 +414,14 @@ bool Environment::Render(std::vector<BattleField_Sprite*> Environment_Sprite_Vec
 			{
 				//Draw the Environment Wall sprite 
 				if (! Screen.blit( Environment_Tileset_Houses, Point::Point( Environment_Sprite_Vector[i]->Get_X() - Camera.getx(), Environment_Sprite_Vector[i]->Get_Y() - Camera.gety() ), Environment_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				{
+					P0_Logger << " Wall Sprite Generation Failed " << GetError() << std::endl;
+				}
+			}
+			else if( Current_Env_Item_Type == BRIDGE_ENV_ITEM )
+			{
+				//Draw the Environment Bridge sprite 
+				if (! Screen.blit( Environment_Tileset_Bridges, Point::Point( Environment_Sprite_Vector[i]->Get_X() - Camera.getx(), Environment_Sprite_Vector[i]->Get_Y() - Camera.gety() ), Environment_Sprite_Vector[i]->Get_BattleField_Clip() ) )
 				{
 					P0_Logger << " Wall Sprite Generation Failed " << GetError() << std::endl;
 				}
