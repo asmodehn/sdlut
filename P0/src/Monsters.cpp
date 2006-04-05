@@ -41,7 +41,7 @@ bool Monster_Skeleton::check_background_allow_monster(int x, int y, std::vector<
 			//...get the destination ground...
 			int newGround_Type = BattleField_Sprite_Vector[i]->Get_BattleField_Type();
 			
-			//...then check if the ground allow the character move
+			//...then check if the ground allow the monster presence
 			if( newGround_Type == EMPTY_GROUND ) //Don't allow presence
 			{
 				return false; 
@@ -109,7 +109,7 @@ bool Monster_Worm::check_background_allow_monster(int x, int y, std::vector<Batt
 			//...get the destination ground...
 			int newGround_Type = BattleField_Sprite_Vector[i]->Get_BattleField_Type();
 			
-			//...then check if the ground allow the character move
+			//...then check if the ground allow the monster move
 			if( newGround_Type == EMPTY_GROUND ) //Don't allow presence
 			{
 				return false; 

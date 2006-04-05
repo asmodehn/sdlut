@@ -312,24 +312,28 @@ int Character_Base::check_environment_allow_character(int x, int y, std::vector<
 			//...get the destination environment...
 			int newEnv_Type = Environment_Sprite_Vector[i]->Get_BattleField_Type();
 			
-			//...then check if the environment allow the character move
+			//...then check if the environment allow the character presence
 			if( newEnv_Type == NOTHING_ENV_ITEM )  //indicate no environement is present
 			{
 				return -1; 
 			}
-			else if( newEnv_Type == TREE_ENV_ITEM ) //Don't allow move
+			else if( newEnv_Type == TREE_ENV_ITEM ) //Don't allow presence
 			{
 				return 0;
 			}
-			else if( newEnv_Type == ROCK_ENV_ITEM ) //Don't allow move
+			else if( newEnv_Type == ROCK_ENV_ITEM ) //Don't allow presence
 			{
 				return 0;
 			}
-			else if( newEnv_Type == WALL_ENV_ITEM ) //Don't allow move
+			else if( newEnv_Type == WALL_ENV_ITEM ) //Don't allow presence
 			{
 				return 0;
 			}
-			else // not listed type (impossible!!??). Allow move
+			else if( newEnv_Type == HOUSE_ENV_ITEM ) //Allow presence
+			{
+				return 1;
+			}
+			else // not listed type (impossible!!??). Allow presence
 			{
 				return 1;  
 			}

@@ -174,6 +174,10 @@ int Monster_Base::check_environment_allow_monster(int x, int y, std::vector<Batt
 			{
 				return 0;
 			}
+			else if( newEnv_Type == HOUSE_ENV_ITEM ) //Don't allow presence
+			{
+				return 0;
+			}
 			else // not listed type (impossible!!??). Allow presence
 			{
 				return 1;  
