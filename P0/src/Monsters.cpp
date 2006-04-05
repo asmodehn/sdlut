@@ -58,6 +58,10 @@ bool Monster_Skeleton::check_background_allow_monster(int x, int y, std::vector<
 			{
 				return true;
 			}
+			else if( newGround_Type == LAKE_GROUND ) //Don't Allow presence
+			{
+				return false;
+			}
 			else // not listed type (impossible!!??). Don't allow presence
 			{
 				return false;  
@@ -123,6 +127,10 @@ bool Monster_Worm::check_background_allow_monster(int x, int y, std::vector<Batt
 				return true;  
 			}
 			else if( newGround_Type == RIVER_GROUND ) //Don't Allow presence
+			{
+				return false;
+			}
+			else if( newGround_Type == LAKE_GROUND ) //Don't Allow presence
 			{
 				return false;
 			}

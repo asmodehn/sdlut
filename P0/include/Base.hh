@@ -52,8 +52,9 @@ const int MAX_MONSTERS_SIMULTANEOUSLY = 30;
 //BackGround Type Const
 const int EMPTY_GROUND = 00;
 const int GRASS_GROUND = 01;
-const int SAND_GROUND = 02;
-const int RIVER_GROUND = 03;
+const int SAND_GROUND = 10;
+const int RIVER_GROUND = 20;
+const int LAKE_GROUND = 25;
 
 //Envirronement Item Type Const
 const int NOTHING_ENV_ITEM = 00;

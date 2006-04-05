@@ -291,6 +291,10 @@ bool Character_Base::check_background_allow_character(int x, int y, std::vector<
 			{
 				return true;
 			}
+			else if( newGround_Type == LAKE_GROUND ) //Allow move
+			{
+				return false;
+			}
 			else // not listed type (impossible!!??). Don't allow move
 			{
 				return false;  

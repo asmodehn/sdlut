@@ -62,7 +62,7 @@ class BackGround
 		//Default sprite clip
 		Rect BackGround_Clip;
 		//Tilesets surface
-		RGBSurface BackGround_Tileset_Empty, BackGround_Tileset_Grass, BackGround_Tileset_Sands, BackGround_Tileset_Rivers;
+		RGBSurface BackGround_Tileset_Empty, BackGround_Tileset_Grass, BackGround_Tileset_Sands, BackGround_Tileset_Rivers, BackGround_Tileset_Lakes;
 
 		//The vector that will contains the BackGround sprites corresponding to the BackGround map
 		std::vector<BattleField_Sprite*> myBackGround_Sprite_Vector;

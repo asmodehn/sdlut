@@ -32,7 +32,8 @@ BackGround::BackGround()
 	BackGround_Tileset_Empty = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
 	BackGround_Tileset_Grass = RGBSurface("data/Grass.png", Color(0xFF, 0xFF, 0xFF));
 	BackGround_Tileset_Sands = RGBSurface("data/Sand Tileset.png", Color(0x00, 0x00, 0x00));
-	BackGround_Tileset_Rivers = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
+	BackGround_Tileset_Rivers = RGBSurface("data/Water.png", Color(0xFF, 0xFF, 0xFF));
+	BackGround_Tileset_Lakes = RGBSurface("data/Water.png", Color(0xFF, 0xFF, 0xFF));
 
 	//The default clip is the empty clip
 	BackGround_Clip.setx(198);
@@ -107,8 +108,16 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
 		else if( Current_Ground_Type == RIVER_GROUND )
 		{
 			//River clip
-			BackGround_Clip.setx(231);
-			BackGround_Clip.sety(132);
+			BackGround_Clip.setx(0);
+			BackGround_Clip.sety(0);
+			BackGround_Clip.setw(32);
+			BackGround_Clip.seth(32);
+		}
+		else if( Current_Ground_Type == LAKE_GROUND )
+		{
+			//Lake clip
+			BackGround_Clip.setx(0);
+			BackGround_Clip.sety(0);
 			BackGround_Clip.setw(32);
 			BackGround_Clip.seth(32);
 		}
@@ -195,6 +204,14 @@ bool BackGround::Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vecto
 				if (! Screen.blit( BackGround_Tileset_Rivers, Point::Point( BackGround_Sprite_Vector[i]->Get_X() - Camera.getx(), BackGround_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector[i]->Get_BattleField_Clip() ) )
 				{
 					P0_Logger << " River Sprite Generation Failed " << GetError() << std::endl;
+				}
+			}
+			else if( Current_Ground_Type == LAKE_GROUND )
+			{
+				//Draw the BackGround River sprite 
+				if (! Screen.blit( BackGround_Tileset_Lakes, Point::Point( BackGround_Sprite_Vector[i]->Get_X() - Camera.getx(), BackGround_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				{
+					P0_Logger << " Lake Sprite Generation Failed " << GetError() << std::endl;
 				}
 			}
 			else // not listed type(!!??) : impossible because the vector was created with BackGround::BackGround_Vector()
