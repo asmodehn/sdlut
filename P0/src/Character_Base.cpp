@@ -321,6 +321,14 @@ int Character_Base::check_environment_allow_character(int x, int y, std::vector<
 			{
 				return 0;
 			}
+			else if( newEnv_Type == ROCK_ENV_ITEM ) //Don't allow move
+			{
+				return 0;
+			}
+			else if( newEnv_Type == WALL_ENV_ITEM ) //Don't allow move
+			{
+				return 0;
+			}
 			else // not listed type (impossible!!??). Allow move
 			{
 				return 1;  

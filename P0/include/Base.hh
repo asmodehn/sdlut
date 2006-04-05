@@ -50,14 +50,16 @@ const int MAX_MONSTERS_SIMULTANEOUSLY = 30;
 
 
 //BackGround Type Const
-const int EMPTY_GROUND = 0;
-const int GRASS_GROUND = 1;
-const int SAND_GROUND = 2;
-const int RIVER_GROUND = 3;
+const int EMPTY_GROUND = 00;
+const int GRASS_GROUND = 01;
+const int SAND_GROUND = 02;
+const int RIVER_GROUND = 03;
 
 //Envirronement Item Type Const
-const int NOTHING_ENV_ITEM = 0;
-const int TREE_ENV_ITEM = 1;
+const int NOTHING_ENV_ITEM = 00;
+const int TREE_ENV_ITEM = 01;
+const int ROCK_ENV_ITEM = 02;
+const int WALL_ENV_ITEM = 03;
 
 
 //This variable defined the global game state 1: Initial Menu (future dev), 2: Character Creation/Selection (future dev), 3: Ingame, 4: On Escape menu

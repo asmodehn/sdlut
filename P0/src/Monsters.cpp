@@ -42,23 +42,23 @@ bool Monster_Skeleton::check_background_allow_monster(int x, int y, std::vector<
 			int newGround_Type = BattleField_Sprite_Vector[i]->Get_BattleField_Type();
 			
 			//...then check if the ground allow the character move
-			if( newGround_Type == EMPTY_GROUND ) //Don't allow move
+			if( newGround_Type == EMPTY_GROUND ) //Don't allow presence
 			{
 				return false; 
 			}
-			else if( newGround_Type == GRASS_GROUND ) //Allow move
+			else if( newGround_Type == GRASS_GROUND ) //Allow presence
 			{
 				return true;
 			}
-			else if( newGround_Type == SAND_GROUND ) //Don't allow move
+			else if( newGround_Type == SAND_GROUND ) //Don't allow presence
 			{
 				return false;  
 			}
-			else if( newGround_Type == RIVER_GROUND ) //Allow move
+			else if( newGround_Type == RIVER_GROUND ) //Allow presence
 			{
 				return true;
 			}
-			else // not listed type (impossible!!??). Don't allow move
+			else // not listed type (impossible!!??). Don't allow presence
 			{
 				return false;  
 			}
@@ -110,23 +110,23 @@ bool Monster_Worm::check_background_allow_monster(int x, int y, std::vector<Batt
 			int newGround_Type = BattleField_Sprite_Vector[i]->Get_BattleField_Type();
 			
 			//...then check if the ground allow the character move
-			if( newGround_Type == EMPTY_GROUND ) //Don't allow move
+			if( newGround_Type == EMPTY_GROUND ) //Don't allow presence
 			{
 				return false; 
 			}
-			else if( newGround_Type == GRASS_GROUND ) //Allow move
+			else if( newGround_Type == GRASS_GROUND ) //Allow presence
 			{
 				return true;
 			}
-			else if( newGround_Type == SAND_GROUND ) //Allow move
+			else if( newGround_Type == SAND_GROUND ) //Allow presence
 			{
 				return true;  
 			}
-			else if( newGround_Type == RIVER_GROUND ) //Don't Allow move
+			else if( newGround_Type == RIVER_GROUND ) //Don't Allow presence
 			{
 				return false;
 			}
-			else // not listed type (impossible!!??). Don't allow move
+			else // not listed type (impossible!!??). Don't allow presence
 			{
 				return false;  
 			}

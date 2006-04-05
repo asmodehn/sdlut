@@ -90,7 +90,7 @@ class Environment
 		//Default sprite clip
 		Rect Environment_Clip;
 		//Tilesets surface
-		RGBSurface Environment_Tileset_Trees;
+		RGBSurface Environment_Tileset_Trees, Environment_Tileset_Rock, Environment_Tileset_Wall;
 
 		//The vector that will contains the BackGround sprites corresponding to the BackGround map
 		std::vector<BattleField_Sprite*> myEnvironment_Sprite_Vector;

@@ -134,7 +134,7 @@ public:
 
 		//Auto Flip by the mainloop here
 
-		//P0_Logger << " \n TheEngine Render Used\n " << std::endl;
+		//P0_Logger << " TheEngine Render Used " << std::endl;
     }
 
 	//Finally the post render method will be used by each cycle of mainloop after the draw of the screen. It designed to contain evrytinhg that will be updated after the render of the screen surface
@@ -145,7 +145,7 @@ public:
 		myCharacter->Update_Monster_Knowledge(Monster_vector);
 
 		if (GLOBAL_GAME_STATE == 4)
-			//Manage esc menu validation: leave if return is true
+			//Manage esc menu validation: leave the game if return is true
 			myKeyboardInput.Set_quitRequested( EscMenu->Manage_Validation() );
 	}
 
