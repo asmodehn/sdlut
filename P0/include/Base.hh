@@ -58,8 +58,8 @@ const int RIVER_GROUND = 03;
 //Envirronement Item Type Const
 const int NOTHING_ENV_ITEM = 00;
 const int TREE_ENV_ITEM = 01;
-const int ROCK_ENV_ITEM = 02;
-const int WALL_ENV_ITEM = 03;
+const int ROCK_ENV_ITEM = 10;
+const int WALL_ENV_ITEM = 20;
 
 
 //This variable defined the global game state 1: Initial Menu (future dev), 2: Character Creation/Selection (future dev), 3: Ingame, 4: On Escape menu

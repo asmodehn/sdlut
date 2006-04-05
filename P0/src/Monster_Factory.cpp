@@ -23,7 +23,7 @@ Monster_Factory::~Monster_Factory()
 //Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
 //template <typename Monster_Template>
 //void Monster_Factory<Monster_Template>::Create_One_Monster(int Character_X, int Character_Y)
-Monster_Skeleton* Monster_Factory::Create_One_Monster(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+Monster_Skeleton* Monster_Factory::Create_One_Monster(int Character_X, int Character_Y)
 {
 	//Determine monster creation position
 	int x = 0, y = 0;
@@ -57,19 +57,20 @@ Monster_Skeleton* Monster_Factory::Create_One_Monster(int Character_X, int Chara
 //template <typename Monster_Template>
 //std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Create_Monsters(int Character_X, int Character_Y)
 //std::vector<Monster*> Monster_Factory<Monster_Template>::Create_Monsters(int Character_X, int Character_Y)
-std::vector<Monster_Skeleton*> Monster_Factory::Create_Monsters(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+std::vector<Monster_Skeleton*> Monster_Factory::Create_Monsters(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector)
 {
 	//Loop until desired number of monsters has been reached
 	for(int i=1; i <= Number_Of_Monsters; i++)
 	{
 		//Monster generation
-		Monster_Skeleton* newMonster = Create_One_Monster(Character_X, Character_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+		Monster_Skeleton* newMonster = Create_One_Monster(Character_X, Character_Y);
 
 		//Check if the battlefield allow the monster creation
-		while(! newMonster->check_battlefield_allow_monster(newMonster->collision_box.getx(), newMonster->collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector) )
+		while(! newMonster->check_battlefield_allow_monster(newMonster->collision_box.getx(), newMonster->collision_box.gety(), environment_sprite_vector, background_sprite_vector) )
 		{
 			//regeneration
-			Monster_Skeleton* newMonster = Create_One_Monster(Character_X, Character_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+			delete(newMonster);
+			newMonster = Create_One_Monster(Character_X, Character_Y);
 		}
 
 		//Store the monster at the end of the vector
@@ -135,13 +136,14 @@ std::vector<Monster_Skeleton*> Monster_Factory::Generate_New_Monster(int Charact
 	if (temp > Monster_Vector.size())
 	{
 		//Monster generation
-		Monster_Skeleton* newMonster = Create_One_Monster(Character_X, Character_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+		Monster_Skeleton* newMonster = Create_One_Monster(Character_X, Character_Y);
 
 		//Check if the battlefield allow the monster creation
 		while(! newMonster->check_battlefield_allow_monster(newMonster->collision_box.getx(), newMonster->collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector) )
 		{
 			//regeneration
-			Monster_Skeleton* newMonster = Create_One_Monster(Character_X, Character_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+			delete(newMonster);
+			newMonster = Create_One_Monster(Character_X, Character_Y);
 		}
 
 		//Store the monster at the end of the vector
