@@ -56,7 +56,7 @@ const int SAND_GROUND = 10;
 const int RIVER_GROUND = 20;
 const int LAKE_GROUND = 25;
 
-//Envirronement Item Type Const
+//Environment Item Type Const
 const int NOTHING_ENV_ITEM = 00;
 const int TREE_ENV_ITEM = 01;
 const int ROCK_ENV_ITEM = 10;

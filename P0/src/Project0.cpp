@@ -11,12 +11,17 @@ private:
 	std::vector<BattleField_Sprite*> BackGround_Sprite_Vector; //Vector which will contains all BackGround type and clip
 	Environment* myEnvironment;
 	std::vector<BattleField_Sprite*> Environment_Sprite_Vector; //Vector which will contains all Environment items type and clip
-	//Monster_Factory<Monster_Skeleton>* myMonster_Factory; //A factory of Monster
-	Monster_Factory* myMonster_Factory; //A factory of Monster
+	
+	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton; //A factory of Monster Skeletons
+	std::vector<Monster_Skeleton*> Monster_Vector_Skeleton; //Vector which will contains all skeletons
+	//Monster_Factory* Monster_Factory_Skeleton; //A factory of Monster Skeleton
+	Monster_Factory<Monster_Worm>* Monster_Factory_Worm; //A factory of Monster Worms
+	std::vector<Monster_Worm*> Monster_Vector_Worm; //Vector which will contains all skeletons
+	
 	Character_Base* myCharacter;
-	std::vector<Monster_Skeleton*> Monster_vector; //Vector which will contains all monsters
-	Escape_Menu* EscMenu;
 	int Character_Hit_Distance;
+
+	Escape_Menu* EscMenu;
 
 public:
 
@@ -40,18 +45,26 @@ public:
 		Environment_Sprite_Vector = myEnvironment->Environment_Vector();
 		P0_Logger << " Environment_Sprite Vector Fill: OK " << std::endl;
 
-		//Initialize the factory
-		//myMonster_Factory = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS);
-		myMonster_Factory = new Monster_Factory(INITIAL_MONSTERS);
-		P0_Logger << " Monster Factory Init: OK " << std::endl;
+		//Initialize the skeleton factory
+		Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS);
+		//Monster_Factory_Skeleton = new Monster_Factory(INITIAL_MONSTERS);
+		P0_Logger << " Skeleton Factory Init: OK " << std::endl;
 
-		//Create all the monsters
-		Monster_vector = myMonster_Factory->Create_Monsters(CH_INITIAL_X, CH_INITIAL_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
-		P0_Logger << " Monster Vector Fill: OK " << std::endl;
+		//Create all the monsters skeletons
+		Monster_Vector_Skeleton = Monster_Factory_Skeleton->Create_Monsters(CH_INITIAL_X, CH_INITIAL_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+		P0_Logger << " Skeleton Vector Fill: OK " << std::endl;
+
+		//Initialize the worm factory
+		Monster_Factory_Worm = new Monster_Factory<Monster_Worm>(INITIAL_MONSTERS);
+		P0_Logger << " Worm Factory Init: OK " << std::endl;
+
+		//Create all the monsters worms
+		Monster_Vector_Worm = Monster_Factory_Worm->Create_Monsters(CH_INITIAL_X, CH_INITIAL_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+		P0_Logger << " Worm Vector Fill: OK " << std::endl;
 
 		//Create Character & initialized it
-		myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, Monster_vector);
-		//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_vector);
+		myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, Monster_Vector_Skeleton);
+		//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_Vector_Skeleton);
 		P0_Logger << " Character Creation: OK " << std::endl;
 
 		//Create the ingame escape menu
@@ -94,11 +107,13 @@ public:
 		Character_Hit_Distance = myCharacter->attack();
 
 		//Remove Dead monsters from the vector and inform the character
-		Monster_vector = myMonster_Factory->Remove_Dead_Monsters();
-		myCharacter->Update_Monster_Knowledge(Monster_vector);
+		Monster_Vector_Skeleton = Monster_Factory_Skeleton->Remove_Dead_Monsters();
+		Monster_Vector_Worm = Monster_Factory_Worm->Remove_Dead_Monsters();
+		myCharacter->Update_Monster_Knowledge(Monster_Vector_Skeleton);
 
 		//Move Monsters
-		myMonster_Factory->Move_Monsters(myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+		Monster_Factory_Skeleton->Move_Monsters(myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector);
+		Monster_Factory_Worm->Move_Monsters(myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector);
 
 		//Set the camera
         myCharacter->following_camera();
@@ -123,7 +138,8 @@ public:
 		myCharacter->attack_animation(Character_Hit_Distance, screen);
 
 		//Apply monsters to the screen
-		myMonster_Factory->Move_Monsters_Animation(myCharacter->Camera, screen);
+		Monster_Factory_Skeleton->Move_Monsters_Animation(myCharacter->Camera, screen);
+		Monster_Factory_Worm->Move_Monsters_Animation(myCharacter->Camera, screen);
 
 		//Display attack msg
 		myCharacter->Display_Attack_Msg(screen);
@@ -141,8 +157,9 @@ public:
 	void postrender(void)
 	{
 		//Eventually generate new monster (not to near from the character!) and inform the character
-		Monster_vector = myMonster_Factory->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector );
-		myCharacter->Update_Monster_Knowledge(Monster_vector);
+		Monster_Vector_Skeleton = Monster_Factory_Skeleton->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector );
+		Monster_Vector_Worm = Monster_Factory_Worm->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector );
+		myCharacter->Update_Monster_Knowledge(Monster_Vector_Skeleton);
 
 		if (GLOBAL_GAME_STATE == 4)
 			//Manage esc menu validation: leave the game if return is true
@@ -204,9 +221,6 @@ int main( int argc, char* args[] )
 {
 	//Init the rand method using the current time in order to generate more random number
 	srand( (unsigned)time( NULL ) );
-
-	//Make sure the program waits for a quit
-	bool quit = false;
 
 	//Create the windows and init everything (SDL, SDL_TTF, ...)
 	if( InitEverything() == false )
