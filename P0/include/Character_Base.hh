@@ -18,7 +18,7 @@ class Character_Base
 		//Fight variables
 		bool attack_status; //Attack key pressed yes or no 
 		int attack_style; //Manage the style of attack 
-		bool attack_successfull; //Manage the attack displayed msg
+		int attack_successfull; //Manage the attack displayed msg
 
 		//Character tiles
 		RGBSurface Characters_Tile;
@@ -45,9 +45,6 @@ class Character_Base
 		RGBSurface attack_distant_msg_miss;
 		//Font AttackMsg_Font(28);
 
-		//Monster Vector which allow the character to know exactly all monsters on the battlefield
-		std::vector<Monster_Skeleton*> Monster_Vector;
-
 		/***Arrow***/
 		RGBSurface Arrow_Tile;
 		Rect Arrow_Left[1];
@@ -59,7 +56,7 @@ class Character_Base
 		Timer attack_regulator;
 
 		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
-		bool attack_check_status(int collision_box_movement);
+		int attack_check_status(int collision_box_movement, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
 
 		//Check if the ground allow the character presence
 		virtual bool check_background_allow_character(int x, int y, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
@@ -84,48 +81,60 @@ class Character_Base
 		/****Definitions****/
 
 		//Initializes the variables
-		Character_Base(int X, int Y, std::vector<Monster_Skeleton*> monster_vector);
+		Character_Base(int X, int Y);
 
 		//Destructor which free the surface 
 		~Character_Base();
 		
 
-		/****Wrapper****/
+		/****Accessor****/
 
 		void Set_xVel(int new_xVel)
         {
-            xVel=new_xVel;
+            xVel = new_xVel;
         }
-		void Set_yVel(int new_yVel)
-        {
-            yVel=new_yVel;
-        }
-		//Define if the player has push the attack Key
-		void Set_Attack_Status(int new_attack_status)
-        {
-            attack_status=new_attack_status;
-        }
-		void Set_Attack_Style(int new_attack_style)
-        {
-            attack_style=new_attack_style;
-        }
-
-        int Get_xVel() const
+		int Get_xVel() const
         {
             return xVel;
+        }
+
+		void Set_yVel(int new_yVel)
+        {
+            yVel = new_yVel;
         }
         int Get_yVel() const
         {
             return yVel;
         }
+
+		//Define if the player has push the attack Key
+		void Set_Attack_Status(int new_attack_status)
+        {
+            attack_status=new_attack_status;
+        }
 		int Get_Attack_Status() const
         {
             return attack_status;
+        }
+
+		void Set_Attack_Style(int new_attack_style)
+        {
+            attack_style = new_attack_style;
         }
         int Get_Attack_Style() const
         {
             return attack_style;
         }
+
+		void Set_Attack_Successfull(int new_Attack_Successfull)
+        {
+            attack_successfull = new_Attack_Successfull;
+        }
+        int Get_Attack_Successfull() const
+        {
+            return attack_successfull;
+        }
+
 
 
 		/****Methods****/
@@ -134,13 +143,13 @@ class Character_Base
 		void Update_Graphic_Style();
 	    
 		//Move the Character and check collision with monsters and the battlefield (environment and background)
-		void move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		void move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
 
 		//Shows the character movement on the screen
 		void move_animation(VideoSurface& Screen);
 
 		//Manage the character attack
-		int attack();
+		int attack(std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
 
 		//Shows the character attack on the screen
 		void attack_animation(int character_hit_distance, VideoSurface& Screen);
@@ -150,9 +159,6 @@ class Character_Base
 		
 		//Camera which follow the Character
 		void following_camera();
-
-		//Update charaster's monster knowledge of monster presents on the battlefield (in case of one monster has been killed for example)
-		void Update_Monster_Knowledge (std::vector<Monster_Skeleton*> monster_vector);
 };
 
 #endif

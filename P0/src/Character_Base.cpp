@@ -1,7 +1,7 @@
 #include "Character_Base.hh"
 
 //Initialization construtor
-Character_Base::Character_Base(int X, int Y, std::vector<Monster_Skeleton*> monster_vector)
+Character_Base::Character_Base(int X, int Y)
 {
     //Initial position
 	x = X;
@@ -85,7 +85,7 @@ Character_Base::Character_Base(int X, int Y, std::vector<Monster_Skeleton*> mons
 	//Attack variable
 	attack_status = false; //false = 0
 	attack_style = 1; //0: nothing (future dev), 1: Melee attack (default), 2: Distant attack, 3: magic attack (future dev)
-	attack_successfull = false; //Tells if a monster has been hit, by default no
+	attack_successfull = 0; //Tells if a monster has been hit, by default no
 
 	//Camera: at the begining it's in the top left corner of the level
 	//Camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
@@ -105,12 +105,6 @@ Character_Base::Character_Base(int X, int Y, std::vector<Monster_Skeleton*> mons
     attack_collision_box.sety(Y);
     attack_collision_box.setw(CH_WIDTH);
     attack_collision_box.seth(CH_HEIGHT);
-
-	//Msgs displayed in the status bar
-
-
-	//The monster vector that containt all monsters
-	Monster_Vector = monster_vector; 
 
 	/****Arrow***/
 	Arrow_Left[0].setx(0);
@@ -191,7 +185,7 @@ void Character_Base::Update_Graphic_Style()
 	}
 }
 //Show the Character on the screen
-void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm)
 {
     //Move the Character collision box to were we want to move
     collision_box.setx(x + xVel);
@@ -210,17 +204,30 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
         collision_box.sety(y);    
     }
 
-	//Collision with monster when moving on the x axis
-	for(int i=0; i < Monster_Vector.size(); i++)
+	//Collision with skeletons
+	for(int i=0; i < Monster_Vector_Skeleton.size(); i++)
 	{
-		if (check_collision(collision_box, Monster_Vector[i]->collision_box))
+		if (check_collision(collision_box, Monster_Vector_Skeleton[i]->collision_box))
 		{
 			//move back
 			collision_box.setx(x);
 			collision_box.sety(y); 
 
-			//we have found the good item inside the vector, no need to work more
-			break;
+			//we have found a collision inside the vector, no need to work more
+			return;
+		}
+	}
+	//Collision with worms
+	for(int i=0; i < Monster_Vector_Worm.size(); i++)
+	{
+		if (check_collision(collision_box, Monster_Vector_Worm[i]->collision_box))
+		{
+			//move back
+			collision_box.setx(x);
+			collision_box.sety(y); 
+
+			//we have found a collision inside the vector, no need to work more
+			return;
 		}
 	}
     
@@ -391,7 +398,7 @@ void Character_Base::move_animation(VideoSurface& Screen)
 	Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Character_SpriteRect);
 }
 //Handle character attack on monsters for all attack style and return the distance where the attack took place (in case of a distant attack for example)
-int Character_Base::attack()
+int Character_Base::attack(std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm)
 {
 	int Hit_Distance = 0; //The Hit distance is the distance between the character and the monster by default the Melee Hit Distance
 
@@ -399,14 +406,14 @@ int Character_Base::attack()
 	if (attack_status == true)
 	{
 		//By default consider that no attack was successfull
-		attack_successfull = false;
+		attack_successfull = 0;
 
 		//First Check attack style
 		if (attack_style == 1) //Melee attack: Only hit at one square distant
 		{
 			Hit_Distance = 0;
-			//if one of the monster have been it attack_successfull become true
-			attack_successfull = attack_check_status(1);
+			//if one of the monster have been it The_Attack_Successfull become true
+			attack_successfull = attack_check_status(1, Monster_Vector_Skeleton, Monster_Vector_Worm);
 		}
 		else if (attack_style == 2) //distant attack: 3 square hit distance max
 		{
@@ -414,9 +421,9 @@ int Character_Base::attack()
 			//loop for all the arrow traject
 			for (int i=1; i<=3; i++)
 			{
-				//if one of the monster is on the arrow traject it has been it so attack_successfull become true
-				attack_successfull = attack_check_status(i);
-				if (attack_successfull) { //One monster has been hit
+				//if one of the monster is on the arrow traject it has been it so The_Attack_Successfull become true
+				attack_successfull = attack_check_status(i, Monster_Vector_Skeleton, Monster_Vector_Worm) ;
+				if (attack_successfull != 0) { //One monster has been hit
 					Hit_Distance = i-1; //update the hit distance
 					break;
 				}
@@ -427,9 +434,9 @@ int Character_Base::attack()
 	return Hit_Distance;
 }
 //Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
-bool Character_Base::attack_check_status(int collision_box_movement)
+int Character_Base::attack_check_status(int collision_box_movement, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm)
 {
-	bool _attack_successfull = false;
+	int _attack_successfull = 0;
 	//Check attack direction
 	if( move_status == CH_RIGHT )
 	{
@@ -457,18 +464,32 @@ bool Character_Base::attack_check_status(int collision_box_movement)
 	}
 	
 
-	//Check attack with all monsters inside the vector and return true if one of the monster was hit also update the monster Alive_Status
-	for(int i=0; i < Monster_Vector.size(); i++)
+	//Check attack with all skeletons inside the vector and return true if one of the skeleton was hit also update the monster Alive_Status
+	for(int i=0; i < Monster_Vector_Skeleton.size(); i++)
 	{
 		//check if collision between monster and attack now that the attack_collision_box has been moved
-		if (check_collision(attack_collision_box, Monster_Vector[i]->collision_box))
+		if (check_collision(attack_collision_box, Monster_Vector_Skeleton[i]->collision_box))
 		{
-			//One monster has been hit so modify the attack_successfull status...
-			_attack_successfull = true;
+			//One monster has been hit so modify the The_Attack_Successfull status...
+			_attack_successfull = 1;
 			//...Change the monster status to false aka monster dead...
-			Monster_Vector[i]->Alive_Status = false;
+			Monster_Vector_Skeleton[i]->Alive_Status = false;
 			//...Than leave the check in order to touch only one monster at a time.
-			break;
+			return _attack_successfull;
+		}			
+	}
+	//Check attack with all worms inside the vector and return true if one of the worm was hit also update the monster Alive_Status
+	for(int i=0; i < Monster_Vector_Worm.size(); i++)
+	{
+		//check if collision between monster and attack now that the attack_collision_box has been moved
+		if (check_collision(attack_collision_box, Monster_Vector_Worm[i]->collision_box))
+		{
+			//One monster has been hit so modify the The_Attack_Successfull status...
+			_attack_successfull = 2;
+			//...Change the monster status to false aka monster dead...
+			Monster_Vector_Worm[i]->Alive_Status = false;
+			//...Than leave the check in order to touch only one monster at a time.
+			return _attack_successfull;
 		}			
 	}
 
@@ -657,16 +678,18 @@ void Character_Base::Display_Attack_Msg(VideoSurface& Screen)
 	if (attack_status == true)
 	{
 		//If a monster was been hit displayed the hit msg, if no display miss msg
-		if (attack_successfull)
+		if (attack_successfull != 0)
 		{
 			attack_msg = attack_msg_hit;
-			//Screen.blit( attack_msg_hit, Point::Point(5, SCREEN_HEIGHT - 30) );
-			P0_Logger << " >>> Monster Hit <<< " << std::endl;
+
+			if (attack_successfull == 1)
+				P0_Logger << " >>> Skeleton Hit <<< " << std::endl;
+			if (attack_successfull == 2)
+				P0_Logger << " >>> Worm Hit <<< " << std::endl;
 		}
 		else
 		{
 			attack_msg = attack_msg_miss;
-			//Screen.blit( attack_msg_miss, Point::Point(5, SCREEN_HEIGHT - 30) );
 			P0_Logger << " >>> Monster Miss <<< " << std::endl;
 		}
 
@@ -698,14 +721,4 @@ void Character_Base::following_camera()
     {
         Camera.sety(LEVEL_HEIGHT - Camera.geth());    
     }    
-}
-
-//Update charaster's monster knowledge of monster presents on the battlefield
-void Character_Base::Update_Monster_Knowledge(std::vector<Monster_Skeleton*> monster_vector)
-{
-	//Update only if the two vector have not the same size (only here to gain execution speed when vector will have an important size)
-	if (monster_vector.size() != Monster_Vector.size())
-	{
-		Monster_Vector = monster_vector;
-	}
 }

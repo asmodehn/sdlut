@@ -63,7 +63,7 @@ public:
 		P0_Logger << " Worm Vector Fill: OK " << std::endl;
 
 		//Create Character & initialized it
-		myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y, Monster_Vector_Skeleton);
+		myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y);
 		//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_Vector_Skeleton);
 		P0_Logger << " Character Creation: OK " << std::endl;
 
@@ -101,15 +101,14 @@ public:
 		myCharacter->Update_Graphic_Style();
 
 		//Move the character if possible
-		myCharacter->move(Environment_Sprite_Vector, BackGround_Sprite_Vector);
+		myCharacter->move(Environment_Sprite_Vector, BackGround_Sprite_Vector, Monster_Vector_Skeleton, Monster_Vector_Worm);
 
 		//Handle attacks
-		Character_Hit_Distance = myCharacter->attack();
+		Character_Hit_Distance = myCharacter->attack(Monster_Vector_Skeleton, Monster_Vector_Worm);
 
-		//Remove Dead monsters from the vector and inform the character
+		//Remove Dead monsters from the vector
 		Monster_Vector_Skeleton = Monster_Factory_Skeleton->Remove_Dead_Monsters();
 		Monster_Vector_Worm = Monster_Factory_Worm->Remove_Dead_Monsters();
-		myCharacter->Update_Monster_Knowledge(Monster_Vector_Skeleton);
 
 		//Move Monsters
 		Monster_Factory_Skeleton->Move_Monsters(myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector);
@@ -156,10 +155,9 @@ public:
 	//Finally the post render method will be used by each cycle of mainloop after the draw of the screen. It designed to contain evrytinhg that will be updated after the render of the screen surface
 	void postrender(void)
 	{
-		//Eventually generate new monster (not to near from the character!) and inform the character
+		//Eventually generate new monster (not to near from the character!)
 		Monster_Vector_Skeleton = Monster_Factory_Skeleton->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector );
 		Monster_Vector_Worm = Monster_Factory_Worm->Generate_New_Monster( myCharacter->collision_box.getx(), myCharacter->collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector );
-		myCharacter->Update_Monster_Knowledge(Monster_Vector_Skeleton);
 
 		if (GLOBAL_GAME_STATE == 4)
 			//Manage esc menu validation: leave the game if return is true
