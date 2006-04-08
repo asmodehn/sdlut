@@ -141,11 +141,11 @@ Character_Base::Character_Base(int X, int Y)
 	Font AttackMsg_Font("data/SlimSansSerif.ttf", 28);
 
 	//Msgs displayed in the status bar
-	attack_msg = RGBSurface(AttackMsg_Font, " ", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0)); // Empty msg until the attack key is pressed once (when using empty msg the creator crash so until this bug is solved we will use " " insted of "")
-	attack_melee_msg_hit = RGBSurface(AttackMsg_Font, "Melee Hit", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
-	attack_distant_msg_hit = RGBSurface(AttackMsg_Font, "Distant Hit", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
-	attack_melee_msg_miss = RGBSurface(AttackMsg_Font, "Melee Miss", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
-	attack_distant_msg_miss = RGBSurface(AttackMsg_Font, "Distant Miss", Color(0xFF, 0xFF, 0xFF), Color(0, 0, 0));
+	attack_msg = *AttackMsg_Font.render(" ", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0)); // Empty msg until the attack key is pressed once (when using empty msg the creator crash so until this bug is solved we will use " " insted of "")
+	attack_melee_msg_hit = *AttackMsg_Font.render("Melee Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_distant_msg_hit = *AttackMsg_Font.render("Distant Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_melee_msg_miss = *AttackMsg_Font.render("Melee Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_distant_msg_miss = *AttackMsg_Font.render("Distant Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 }
 //Destructor
 Character_Base::~Character_Base()
