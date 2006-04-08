@@ -14,12 +14,6 @@ namespace RAGE
 			std::string res;
 			if (mod == Main)
 				res = SDL_GetError();
-			if (mod == TTF)
-#ifdef HAVE_SDLTTF
-				res = TTF_GetError();
-#else
-				res = "RAGE::SDL not build with SDL_ttf !"; error=true;
-#endif
 			if(mod == Net)
 #ifdef HAVE_SDLNET
 				res = SDLNet_GetError();
@@ -32,6 +26,128 @@ namespace RAGE
 
 			return res; // shouldnt happen since we have a default value for mod
         }
+
+namespace TTF{
+			std::string GetError()
+			{
+				std::string res;
+#ifdef HAVE_SDLTTF
+				res = TTF_GetError();
+#else
+				res = "RAGE::SDL not build with SDL_ttf !"; error=true;
+#endif
+				return res;
+			}
+
+
+			//checks if compiled Version is different from 0.0.0
+			bool isCompiled()
+			{
+				Version v;
+				return !(v.getcompiledmajor() == 0 && v.getcompiledminor() == 0 && v.getcompiledpatch() == 0);
+			}
+
+			//checks if linked version is different from 0.0.0
+			bool isLinked()
+			{
+				Version v;
+				return !(v.getlinkedmajor() == 0 && v.getlinkedminor() == 0 && v.getlinkedpatch() == 0);
+			}
+
+
+Version::Version()
+        {
+#ifdef DEBUG
+            Log << nl << "Version::Version() called ...";
+#endif
+#ifdef HAVE_SDLTTF
+            TTF_VERSION(&_compiled);
+            _linked.major = TTF_Linked_Version()->major;
+            _linked.minor = TTF_Linked_Version()->minor;
+            _linked.patch = TTF_Linked_Version()->patch;
+#else
+			
+			_compiled.major = 0;
+            _compiled.minor = 0;
+            _compiled.patch = 0;
+			_linked.major = 0;
+            _linked.minor = 0;
+            _linked.patch = 0;
+
+#endif
+#ifdef DEBUG
+
+            Log << nl << "Version::Version() done.";
+#endif
+
+        }
+
+        Version::~Version()
+        {
+#ifdef DEBUG
+            Log << nl << "Version::~Version() called ...";
+#endif
+
+#ifdef DEBUG
+
+            Log << nl << "Version::~Version() done.";
+#endif
+
+        }
+        int Version::getcompiledmajor() const
+        {
+            return _compiled.major;
+        }
+        int Version::getcompiledminor() const
+        {
+            return _compiled.minor;
+        }
+        int Version::getcompiledpatch() const
+        {
+            return _compiled.patch;
+        }
+
+        int Version::getlinkedmajor() const
+        {
+            return _linked.major;
+        }
+        int Version::getlinkedminor() const
+        {
+            return _linked.minor;
+        }
+        int Version::getlinkedpatch() const
+        {
+            return _linked.patch;
+        }
+
+		//return true if linked and compiled version are not null and matches exactly
+		bool Version::isValid() const
+		{
+			return isCompiled() && isLinked() && (_linked.major == _compiled.major) && (_linked.minor == _compiled.minor) && (_linked.patch == _compiled.patch);
+		}
+				
+				//return true if linked is not null and superior or equal to compiled
+		bool Version::isSupported() const
+		{
+			return isCompiled() && isLinked() && (_linked.major >= _compiled.major) && (_linked.minor >= _compiled.minor) && (_linked.patch >= _compiled.patch);
+		}
+
+
+        Logger & operator << (Logger& log, const Version & v)
+        {
+			log << nl << "Compiled ?" << std::boolalpha << isCompiled();
+			log << nl << "Linked ?" << std::boolalpha << isLinked();
+            log << nl <<"Compiled version: "<< v.getcompiledmajor() <<"."<< v.getcompiledminor() <<"."<< v.getcompiledpatch();
+            log << nl << "Linked version: " << v.getcompiledmajor() <<"."<< v.getcompiledminor() <<"."<< v.getcompiledpatch();
+			log << nl << "isValid : " << std::boolalpha << v.isValid();
+			log << nl << "isSupported : " << std::boolalpha << v.isSupported();
+            return log;
+        }
+
+
+
+		} //namespace TTF
+
 
         Version::Version()
         {

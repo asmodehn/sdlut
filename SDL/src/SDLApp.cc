@@ -43,13 +43,16 @@ namespace RAGE
 		bool App::initText()
 		{
 #ifdef HAVE_SDLTTF
-			//Initialize SDL_ttf
-			if( TTF_Init() == -1 )
+			if (TTF::isLinked())
 			{
-				Log << " TTF Error : " << GetError(TTF) << std::endl;
-				return false;
+				//Initialize SDL_ttf
+				if( TTF_Init() == -1 )
+				{
+					Log << " TTF Error : " << TTF::GetError() << std::endl;
+					return false;
+				}
+				return true;
 			}
-			return true;
 #endif
 			return false;
 			

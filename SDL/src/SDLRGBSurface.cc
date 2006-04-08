@@ -250,58 +250,58 @@ namespace RAGE
         };
 
 
-
-	//creates a surface from a text (solid or blended mode).
-		RGBSurface::RGBSurface ( const Font & font, std::string text, RGBColor color, bool blended)
-			try : BaseSurface(font.render(text, color, blended? Font::Blended : Font::Solid ))
-		{
-			
-#ifdef DEBUG
-            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") called...";
-#endif
-            if(_surf == NULL)
-            {
-                throw std::logic_error("Unable to set rgb surface from " + text);
-            }
-#ifdef DEBUG
-
-            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") done.";
-#endif
-
-        }
-        catch (std::exception &e)
-        {
-            Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
-            e.what() << nl << GetError();
-            //TODO : much more explicit error message...
-        };
-
-
-	//creates a surface from a text (shaded mode).
-		RGBSurface::RGBSurface ( const Font & font, std::string text, RGBColor color, RGBColor bgcolor)
-		try : BaseSurface(font.render(text, color, Font::Shaded, bgcolor ))
-		{
-			
-#ifdef DEBUG
-            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") called...";
-#endif
-            if(_surf == NULL)
-            {
-                throw std::logic_error("Unable to set rgb surface from " + text);
-            }
-#ifdef DEBUG
-
-            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") done.";
-#endif
-
-        }
-        catch (std::exception &e)
-        {
-            Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
-            e.what() << nl << GetError();
-            //TODO : much more explicit error message...
-        };
-
+//
+//	//creates a surface from a text (solid or blended mode).
+//		RGBSurface::RGBSurface ( const Font & font, std::string text, RGBColor color, bool blended)
+//			try : BaseSurface(font.render(text, color, blended? Font::Blended : Font::Solid ))
+//		{
+//			
+//#ifdef DEBUG
+//            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") called...";
+//#endif
+//            if(_surf == NULL)
+//            {
+//                throw std::logic_error("Unable to set rgb surface from " + text);
+//            }
+//#ifdef DEBUG
+//
+//            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") done.";
+//#endif
+//
+//        }
+//        catch (std::exception &e)
+//        {
+//            Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
+//            e.what() << nl << GetError();
+//            //TODO : much more explicit error message...
+//        };
+//
+//
+//	//creates a surface from a text (shaded mode).
+//		RGBSurface::RGBSurface ( const Font & font, std::string text, RGBColor color, RGBColor bgcolor)
+//		try : BaseSurface(font.render(text, color, Font::Shaded, bgcolor ))
+//		{
+//			
+//#ifdef DEBUG
+//            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") called...";
+//#endif
+//            if(_surf == NULL)
+//            {
+//                throw std::logic_error("Unable to set rgb surface from " + text);
+//            }
+//#ifdef DEBUG
+//
+//            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") done.";
+//#endif
+//
+//        }
+//        catch (std::exception &e)
+//        {
+//            Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
+//            e.what() << nl << GetError();
+//            //TODO : much more explicit error message...
+//        };
+//
 
 
         ////Copy Constructor ( doesn't copy the content of the surface)

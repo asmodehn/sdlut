@@ -9,7 +9,7 @@
 
 #include "SDLBaseSurface.hh"
 #include "SDLColor.hh"
-#include "SDLFont.hh"
+//#include "SDLFont.hh"
 #include "SDLRWOps.hh"
 
 namespace RAGE
@@ -20,8 +20,18 @@ class RGBSurface : public BaseSurface
 {
 
 
+	//To be able to construct RGBSurface from Font :
+	friend class Font;
+	friend class TTF::Font;
+
+	///Conversion Constructor
+    explicit RGBSurface(SDL_Surface * s) : BaseSurface(s)
+    {} ///< This one should be called only by friends
+
 
 	static Uint32 RGBFlags;
+
+
 
 protected : //the client should not access to flags...
 
@@ -37,10 +47,18 @@ public :
     //creates surface from file, copying its content...
 	RGBSurface( std::string filename )throw (std::logic_error);
 	RGBSurface( std::string filename, const RGBColor & colorKey )throw (std::logic_error);
+	
+	/* DEPRECATED 
+	 *
+	 * USE FONT::RENDER FROM NOW ON
+	
 	//creates a surface from a text (solid or blended mode).
-	RGBSurface ( const Font & font, std::string text, Color color, bool blended = false);
+	//RGBSurface ( const Font & font, std::string text, Color color, bool blended = false);
 	//creates a surface from a text (shaded mode).
-	RGBSurface ( const Font & font, std::string text, Color color, RGBColor bgcolor);
+	//RGBSurface ( const Font & font, std::string text, Color color, RGBColor bgcolor);
+
+	 **/
+
 	//creates a surface from a RWOps containing a image.
 	RGBSurface (const RWOps & rwops)  throw (std::logic_error); //TODO : add optional format
 	//default constructor

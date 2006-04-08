@@ -108,13 +108,27 @@ namespace RAGE
 			glDepthFunc(GL_LEQUAL);        // The Type Of Depth Testing To Do
 			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
 
-	        return resize(width,height);
+	        glViewport(0,0,width,height);      // Reset The Current Viewport
+	
+			glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix
+			glLoadIdentity();         // Reset The Projection Matrix
+			return true;
 		}
 
 			//get called everytime the display is resized
 		bool DefaultGLEngine::resize(int width, int height)
 		{
-			       //resize code
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	// Linear Filtering
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	// Linear Filtering
+			
+			//actual init code
+			glShadeModel(GL_SMOOTH);       // Enable Smooth Shading
+			glClearDepth(1.0f);         // Depth Buffer Setup
+			glEnable(GL_DEPTH_TEST);       // Enables Depth Testing
+			glDepthFunc(GL_LEQUAL);        // The Type Of Depth Testing To Do
+			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
+
+			//resize code
 		    glViewport(0,0,width,height);      // Reset The Current Viewport
 	
 			glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix

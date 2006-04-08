@@ -55,9 +55,10 @@ public :
 
 	void draw()
 	{
-		RGBSurface textsurf(_font,text,Color(255,255,255),true);
+		RGBSurface * textsurf = _font.render(text,Color(255,255,255),Font::Solid);
 		surf->fill(_bgColor);
-		surf->blit(textsurf);
+		surf->blit(*textsurf);
+		delete textsurf;
 	}
 
 	~Console()

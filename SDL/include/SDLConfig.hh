@@ -90,12 +90,54 @@ typedef enum
 {
 	Main
 	,Image
-	,TTF
 	,Net
 }Module;
 
 
         std::string GetError(Module = Main);
+
+		namespace TTF{
+
+			//declaring the bridge class to access TTF features
+			class Font;
+
+			std::string GetError();
+
+			//maybe derivate from SDL::Version ?
+			class Version
+	        {
+		        SDL_version _compiled;
+			    SDL_version _linked;
+
+			public:
+				Version();
+				~Version();
+	
+				//Version is 0.0.0 if not available for some reason ( not compiled with or not linked )
+		        int getcompiledmajor() const;
+				int getcompiledminor() const;
+				int getcompiledpatch() const;
+				int getlinkedmajor() const;
+				int getlinkedminor() const;
+				int getlinkedpatch() const;
+	
+				
+
+				//return true if linked and compiled version are not null and matches exactly
+				bool isValid() const;
+				
+				//return true if linked is not null and superior or equal to compiled
+				bool isSupported() const;
+	
+				//Display the version. Usefull for debugging purpose...
+				friend Logger & operator << (Logger& log, const Version & v);
+			};
+
+			//checks if compiled Version is different from 0.0.0
+			bool isCompiled();
+			//checks if linked version is different from 0.0.0
+			bool isLinked();
+		}
 
         class Version
         {

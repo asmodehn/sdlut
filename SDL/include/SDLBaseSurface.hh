@@ -36,6 +36,8 @@ namespace RAGE
         class BaseSurface
         {
             friend class Window;
+
+
         private:
             static const VideoInfo * _vinfo; ///a usefull static pointer, set to the current VideoInfo by AppWindow
 
