@@ -248,16 +248,16 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
 bool Character_Base::check_battlefield_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	//1st, we must check if the environment allow the move
-	if( check_environment_allow_character(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector) == -1)
+	if( check_environment_allow_character(x, y, Environment_Sprite_Vector) == -1)
 	{
 		//No environement item present, the ground have priority
-		if(! check_background_allow_character(collision_box.getx(), collision_box.gety(), BackGround_Sprite_Vector) )
+		if(! check_background_allow_character(x, y, BackGround_Sprite_Vector) )
 		{
 			return false;
 		}
 	}
 	 //environment item present and dont allow presence
-	else if( check_environment_allow_character(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector) == 0)
+	else if( check_environment_allow_character(x, y, Environment_Sprite_Vector) == 0)
 	{
 		return false;
 	}
