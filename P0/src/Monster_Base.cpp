@@ -101,8 +101,8 @@ void Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Spri
 			collision_box.setx(x);
 		}
 
-		//If the Character went too far up or down (the -32 is here for the status bar) or in case of collision with the npc
-		if((collision_box.gety() < 0) || (collision_box.gety() + MO_HEIGHT > LEVEL_HEIGHT-32) || (check_collision(collision_box, CharacterCollisionbox)))
+		//If the Character went too far up or down (minus the status bar) or in case of collision with the npc
+		if((collision_box.gety() < 0) || (collision_box.gety() + MO_HEIGHT > LEVEL_HEIGHT - STATUS_BAR_H) || (check_collision(collision_box, CharacterCollisionbox)))
 		{
 			//move back
 			collision_box.sety(y);     
@@ -228,8 +228,8 @@ bool Monster_Base::check_cutting_allow_monster(int x, int y, std::vector<BattleF
 void Monster_Base::move_animation(Rect Camera, VideoSurface& Screen)
 {
 	//Check if the monster sprite is present on the screen minus the status bar
-	//NOTE : CH_WIDTH/CH_HEIGHT are present because the camera is centered on the middle of the character and so we need to draw the screen a chracter 
-	if ( ( (Camera.getx()-CH_WIDTH) <= x) && (x < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= y) && (y < (Camera.gety() + Camera.geth() - 32) ) )
+	//NOTE : CH_WIDTH/CH_HEIGHT are present because the camera is centered on the middle of the character and so we need to draw the screen a little more than the camera dim
+	if ( ( (Camera.getx()-CH_WIDTH) <= x) && (x < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= y) && (y < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 	{
 		//It's present than draw it
 		Screen.blit(_monsters_list, Point::Point(x - Camera.getx(), y - Camera.gety()), _monster[0]);

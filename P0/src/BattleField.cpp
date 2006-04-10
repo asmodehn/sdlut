@@ -147,32 +147,32 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
 			//Grass Clip
 			BackGround_Clip.setx(0);
 			BackGround_Clip.sety(0);
-			BackGround_Clip.setw(32);
-			BackGround_Clip.seth(32);
+			BackGround_Clip.setw(BATF_SPRITE_W);
+			BackGround_Clip.seth(BATF_SPRITE_H);
 		}
 		else if( Current_Ground_Type == SAND_GROUND )
 		{
 			//Sand clip (random sand from the tileset)
-			BackGround_Clip.setx(32 * random(0,4));
-			BackGround_Clip.sety(32 * random(0,1));
-			BackGround_Clip.setw(32);
-			BackGround_Clip.seth(32);
+			BackGround_Clip.setx(BATF_SPRITE_W * random(0,4));
+			BackGround_Clip.sety(BATF_SPRITE_H * random(0,1));
+			BackGround_Clip.setw(BATF_SPRITE_W);
+			BackGround_Clip.seth(BATF_SPRITE_H);
 		}
 		else if( Current_Ground_Type == RIVER_GROUND )
 		{
 			//River clip
 			BackGround_Clip.setx(0);
 			BackGround_Clip.sety(0);
-			BackGround_Clip.setw(32);
-			BackGround_Clip.seth(32);
+			BackGround_Clip.setw(BATF_SPRITE_W);
+			BackGround_Clip.seth(BATF_SPRITE_H);
 		}
 		else if( Current_Ground_Type == LAKE_GROUND )
 		{
 			//Lake clip
 			BackGround_Clip.setx(0);
 			BackGround_Clip.sety(0);
-			BackGround_Clip.setw(32);
-			BackGround_Clip.seth(32);
+			BackGround_Clip.setw(BATF_SPRITE_W);
+			BackGround_Clip.seth(BATF_SPRITE_H);
 		}
 		else // not listed type (??)
 		{
@@ -193,7 +193,7 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
 		myBackGround_Sprite_Vector.push_back(TheBackGround_Sprite);
 
 		//Move to next position
-        x += 32;
+        x += BATF_SPRITE_W;
         
         //If we've gone too far
         if( x >= LEVEL_WIDTH )
@@ -202,7 +202,7 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
             x = 0;
             
             //Move to the next line
-            y += 32;    
+            y += BATF_SPRITE_H;    
         }
 	}
 
@@ -219,9 +219,8 @@ bool BackGround::Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vecto
 	//Loop on all the vector
 	for(int i=0; i < BackGround_Sprite_Vector.size(); i++)
 	{
-		//Check if the BackGround sprite is present on the screen
-		//NOTE : the -16 is half of a character sprite. They are presents because the camera is centered on the middle of the character and so they allow good surface draw at the extreme top and extreme right of the screen
-		if ( ((Camera.getx()-CH_WIDTH) <= BackGround_Sprite_Vector[i]->Get_X()) && ( BackGround_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= BackGround_Sprite_Vector[i]->Get_Y()) && ( BackGround_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - 32) ) )
+		//Check if the BackGround sprite is present on the screen (in fact screen + character sprite dim)
+		if ( ((Camera.getx()-CH_WIDTH) <= BackGround_Sprite_Vector[i]->Get_X()) && ( BackGround_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= BackGround_Sprite_Vector[i]->Get_Y()) && ( BackGround_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 		{
 			//To minimize vector access
 			int Current_Ground_Type = BackGround_Sprite_Vector[i]->Get_BattleField_Type();
@@ -272,7 +271,7 @@ bool BackGround::Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vecto
 		}
 	}
 	//Clean the status bar
-	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - 32, CURRENT_SCREEN_WIDTH, 32) );
+	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - STATUS_BAR_H, CURRENT_SCREEN_WIDTH, STATUS_BAR_H) );
 
 	//P0_Logger << " Background Generation : OK " << std::endl;
 	return true;
@@ -346,42 +345,42 @@ std::vector<BattleField_Sprite*> Environment::Environment_Vector()
 		else if( Current_Env_Item_Type == TREE_ENV_ITEM )
 		{
 			//Tree Clip (random tree the tileset)
-			Environment_Clip.setx(32 * random(0,3));
-			Environment_Clip.sety(32 * random(0,7));
-			Environment_Clip.setw(32);
-			Environment_Clip.seth(32);
+			Environment_Clip.setx(BATF_SPRITE_W * random(0,3));
+			Environment_Clip.sety(BATF_SPRITE_H * random(0,7));
+			Environment_Clip.setw(BATF_SPRITE_W);
+			Environment_Clip.seth(BATF_SPRITE_H);
 		}
 		else if( Current_Env_Item_Type == ROCK_ENV_ITEM )
 		{
 			//Rock Clip
 			Environment_Clip.setx(0);
 			Environment_Clip.sety(0);
-			Environment_Clip.setw(32);
-			Environment_Clip.seth(32);
+			Environment_Clip.setw(BATF_SPRITE_W);
+			Environment_Clip.seth(BATF_SPRITE_H);
 		}
 		else if( Current_Env_Item_Type == WALL_ENV_ITEM )
 		{
 			//Wall Clip
 			Environment_Clip.setx(0);
 			Environment_Clip.sety(0);
-			Environment_Clip.setw(32);
-			Environment_Clip.seth(32);
+			Environment_Clip.setw(BATF_SPRITE_W);
+			Environment_Clip.seth(BATF_SPRITE_H);
 		}
 		else if( Current_Env_Item_Type == HOUSE_ENV_ITEM )
 		{
 			//House Clip(random from the tileset)
-			Environment_Clip.setx(32 * random(0,5));
-			Environment_Clip.sety(32 * random(0,2));
-			Environment_Clip.setw(32);
-			Environment_Clip.seth(32);
+			Environment_Clip.setx(BATF_SPRITE_W * random(0,5));
+			Environment_Clip.sety(BATF_SPRITE_H * random(0,2));
+			Environment_Clip.setw(BATF_SPRITE_W);
+			Environment_Clip.seth(BATF_SPRITE_H);
 		}
 		else if( Current_Env_Item_Type == BRIDGE_ENV_ITEM )
 		{
 			//Bridge Clip
 			Environment_Clip.setx(297);
 			Environment_Clip.sety(231);
-			Environment_Clip.setw(32);
-			Environment_Clip.seth(32);
+			Environment_Clip.setw(BATF_SPRITE_W);
+			Environment_Clip.seth(BATF_SPRITE_H);
 		}
 		else // not listed type (??)
 		{
@@ -402,7 +401,7 @@ std::vector<BattleField_Sprite*> Environment::Environment_Vector()
 		myEnvironment_Sprite_Vector.push_back(TheEnvironment_Sprite);
 
 		//Move to next position
-        x += 32;
+        x += BATF_SPRITE_W;
         
         //If we've gone too far
         if( x >= LEVEL_WIDTH )
@@ -411,7 +410,7 @@ std::vector<BattleField_Sprite*> Environment::Environment_Vector()
             x = 0;
             
             //Move to the next line
-            y += 32;    
+            y += BATF_SPRITE_H;    
         }
 	}
 
@@ -428,9 +427,8 @@ bool Environment::Render(std::vector<BattleField_Sprite*> Environment_Sprite_Vec
 	//Loop on all the vector
 	for(int i=0; i < Environment_Sprite_Vector.size(); i++)
 	{
-		//Check if the Environment sprite is present on the screen
-		//NOTE : the -16 is half of a character sprite. They are presents because the camera is centered on the middle of the character and so they allow good surface draw at the extreme top and extreme right of the screen
-		if ( ((Camera.getx()-CH_WIDTH) <= Environment_Sprite_Vector[i]->Get_X()) && ( Environment_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= Environment_Sprite_Vector[i]->Get_Y()) && ( Environment_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - 32) ) )
+		//Check if the Environment sprite is present on the screen (in fact screen + character's sprite dim)
+		if ( ((Camera.getx()-CH_WIDTH) <= Environment_Sprite_Vector[i]->Get_X()) && ( Environment_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= Environment_Sprite_Vector[i]->Get_Y()) && ( Environment_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 		{
 			//To minimize vector access
 			int Current_Env_Item_Type = Environment_Sprite_Vector[i]->Get_BattleField_Type();
@@ -489,7 +487,7 @@ bool Environment::Render(std::vector<BattleField_Sprite*> Environment_Sprite_Vec
 		}
 	}
 	//Clean the status bar
-	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - 32, CURRENT_SCREEN_WIDTH, 32) );
+	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - STATUS_BAR_H, CURRENT_SCREEN_WIDTH, STATUS_BAR_H) );
 
 	//P0_Logger << " Environment Generation : OK " << std::endl;*/
 	return true;

@@ -197,8 +197,8 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
         //move back
         collision_box.setx(x);    
     }
-	//If the Character went too far up or down (the -32 is here for the status bar)
-	if((collision_box.gety() < 0) || (collision_box.gety() + CH_HEIGHT > LEVEL_HEIGHT-32) )
+	//If the Character went too far up or down (minus the status bar)
+	if((collision_box.gety() < 0) || (collision_box.gety() + CH_HEIGHT > LEVEL_HEIGHT - STATUS_BAR_H) )
     {
         //move back
         collision_box.sety(y);    
@@ -671,8 +671,8 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface& 
 //Display attack msg on the status bar (hit or miss)
 void Character_Base::Display_Attack_Msg(VideoSurface& Screen)
 {
-	//Clean the status Bar (last line of the screen)
-	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - 32, CURRENT_SCREEN_WIDTH, 32) );
+	//Clean the status Bar
+	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - STATUS_BAR_H, CURRENT_SCREEN_WIDTH, STATUS_BAR_H) );
 
 	//If the player has pushed the attack key => display the good msg in the status bar
 	if (attack_status == true)

@@ -50,6 +50,13 @@ const int INITIAL_MONSTERS = 15;
 const int MAX_MONSTERS_SIMULTANEOUSLY = 30;
 
 
+//Console const
+const int STATUS_BAR_H = 32;
+
+//Battlefield const
+const int BATF_SPRITE_W = 32;
+const int BATF_SPRITE_H = 32;
+
 //BackGround Type Const
 const int EMPTY_GROUND = 00;
 const int GRASS_GROUND = 01;
@@ -65,7 +72,8 @@ const int WALL_ENV_ITEM = 20;
 const int HOUSE_ENV_ITEM = 30;
 const int BRIDGE_ENV_ITEM = 40;
 
-//
+
+//Monsters ID which defined type of monsters (used in coordination with battlefield cutting)
 enum Monsters_Type {Humanoid = 1, Worm = 2};
 
 
