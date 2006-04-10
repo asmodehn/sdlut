@@ -10,6 +10,7 @@ using namespace RAGE::SDL;
 #include <vector>
 #include <fstream>
 #include <math.h>
+#include <stdarg.h> //for methods with an illimited number of parameters
 
 //The initial attributes of the window
 const int SCREEN_WIDTH = 800;//640;
@@ -63,6 +64,9 @@ const int ROCK_ENV_ITEM = 10;
 const int WALL_ENV_ITEM = 20;
 const int HOUSE_ENV_ITEM = 30;
 const int BRIDGE_ENV_ITEM = 40;
+
+//
+enum Monsters_Type {Humanoid = 1, Worm = 2};
 
 
 //This variable defined the global game state 1: Initial Menu (future dev), 2: Character Creation/Selection (future dev), 3: Ingame, 4: On Escape menu

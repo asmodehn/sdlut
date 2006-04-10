@@ -20,6 +20,9 @@ Monster_Skeleton::Monster_Skeleton(int X, int Y)
     xVel = 0;
     yVel = 0;
 
+	//Monster type
+	Monster_ID = Humanoid;
+
 	//Collision Box Definition : The collision box has the size of the monster
 	collision_box.setx(X);
     collision_box.sety(Y);
@@ -91,6 +94,9 @@ Monster_Worm::Monster_Worm(int X, int Y)
 	//Initial velocity
     xVel = 0;
     yVel = 0;
+
+	//Monster type
+	Monster_ID = Worm;
 
 	//Collision Box Definition : The collision box has the size of the monster
 	collision_box.setx(X);

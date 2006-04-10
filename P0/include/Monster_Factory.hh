@@ -17,6 +17,9 @@ class Monster_Factory
 		//Monster Vector which contains all monsters present on the battlefield and all theirs infos
 		std::vector<Monster_Template*> Monster_Vector;
 
+		//Area vector which contain the battlefield cutting design
+		std::vector<BattleField_Zone*> BattleField_Cutting_Vector;
+
 		//Create Monster Method which create ONE SINGLE MONSTER ONLY and check if not to near from the character
 		Monster_Template* Create_One_Monster(int Character_X, int Character_Y);
 
@@ -44,7 +47,7 @@ class Monster_Factory
 		std::vector<Monster_Template*> Remove_Dead_Monsters();
 		
 		//Generate new monsters until max monster has been reached
-		std::vector<Monster_Template*> Generate_New_Monster(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		std::vector<Monster_Template*> Generate_New_Monster(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector);
 		
 };
 

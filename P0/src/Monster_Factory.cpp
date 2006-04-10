@@ -11,6 +11,7 @@ template <typename Monster_Template>
 Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters)
 {
 	Number_Of_Monsters = number_of_monsters;
+	BattleField_Cutting_Vector = BattleField_Zone::Fill_Vector();
 }
 //Destructor
 template <typename Monster_Template>
@@ -59,7 +60,7 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Create_Monster
 		Monster_Template* newMonster = Create_One_Monster(Character_X, Character_Y);
 
 		//Check if the battlefield allow the monster creation
-		while(! newMonster->check_battlefield_allow_monster(newMonster->collision_box.getx(), newMonster->collision_box.gety(), environment_sprite_vector, background_sprite_vector) )
+		while( !(newMonster->check_battlefield_allow_monster( newMonster->Get_X(), newMonster->Get_Y(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->check_cutting_allow_monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
 		{
 			//regeneration
 			delete(newMonster);
@@ -99,7 +100,7 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Remove_Dead_Mo
 	for(int i=0; i < Monster_Vector.size(); i++)
 	{
 		//Check if Alive_Status is false
-		if (Monster_Vector[i]->Alive_Status == false)
+		if (Monster_Vector[i]->Get_Alive_Status() == false)
 		{
 			//remove the monster from the scope (only the ième monster at a time)
 			Monster_Vector.erase(Monster_Vector.begin()+i, Monster_Vector.begin()+i+1);
@@ -114,7 +115,7 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Remove_Dead_Mo
 
 //Generate new monsters until max monster has been reached
 template <typename Monster_Template>
-std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Generate_New_Monster(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Generate_New_Monster(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector)
 {
 	int temp = 0;
 	
@@ -126,7 +127,7 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Generate_New_M
 		Monster_Template* newMonster = Create_One_Monster(Character_X, Character_Y);
 
 		//Check if the battlefield allow the monster creation
-		while(! newMonster->check_battlefield_allow_monster(newMonster->collision_box.getx(), newMonster->collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector) )
+		while( !(newMonster->check_battlefield_allow_monster( newMonster->Get_X(), newMonster->Get_Y(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->check_cutting_allow_monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
 		{
 			//regeneration
 			delete(newMonster);
@@ -141,6 +142,6 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Generate_New_M
 	return Monster_Vector;
 }
 
-//To solve linking problem with template (See: http://www.parashift.com/c++-faq-lite/templates.html#faq-35.15 for more info)
+//To solve linking problem with template we have to defined allowed template values (See: http://www.parashift.com/c++-faq-lite/templates.html#faq-35.15 for more info)
 template class Monster_Factory<Monster_Skeleton>;
 template class Monster_Factory<Monster_Worm>;

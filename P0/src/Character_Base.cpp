@@ -207,7 +207,7 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
 	//Collision with skeletons
 	for(int i=0; i < Monster_Vector_Skeleton.size(); i++)
 	{
-		if (check_collision(collision_box, Monster_Vector_Skeleton[i]->collision_box))
+		if (check_collision( collision_box, Monster_Vector_Skeleton[i]->Get_Collision_Box() ))
 		{
 			//move back
 			collision_box.setx(x);
@@ -220,7 +220,7 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
 	//Collision with worms
 	for(int i=0; i < Monster_Vector_Worm.size(); i++)
 	{
-		if (check_collision(collision_box, Monster_Vector_Worm[i]->collision_box))
+		if (check_collision( collision_box, Monster_Vector_Worm[i]->Get_Collision_Box() ))
 		{
 			//move back
 			collision_box.setx(x);
@@ -468,12 +468,12 @@ int Character_Base::attack_check_status(int collision_box_movement, std::vector<
 	for(int i=0; i < Monster_Vector_Skeleton.size(); i++)
 	{
 		//check if collision between monster and attack now that the attack_collision_box has been moved
-		if (check_collision(attack_collision_box, Monster_Vector_Skeleton[i]->collision_box))
+		if (check_collision( attack_collision_box, Monster_Vector_Skeleton[i]->Get_Collision_Box() ))
 		{
 			//One monster has been hit so modify the The_Attack_Successfull status...
 			_attack_successfull = 1;
 			//...Change the monster status to false aka monster dead...
-			Monster_Vector_Skeleton[i]->Alive_Status = false;
+			Monster_Vector_Skeleton[i]->Set_Alive_Status(false);
 			//...Than leave the check in order to touch only one monster at a time.
 			return _attack_successfull;
 		}			
@@ -482,12 +482,12 @@ int Character_Base::attack_check_status(int collision_box_movement, std::vector<
 	for(int i=0; i < Monster_Vector_Worm.size(); i++)
 	{
 		//check if collision between monster and attack now that the attack_collision_box has been moved
-		if (check_collision(attack_collision_box, Monster_Vector_Worm[i]->collision_box))
+		if (check_collision( attack_collision_box, Monster_Vector_Worm[i]->Get_Collision_Box() ))
 		{
 			//One monster has been hit so modify the The_Attack_Successfull status...
 			_attack_successfull = 2;
 			//...Change the monster status to false aka monster dead...
-			Monster_Vector_Worm[i]->Alive_Status = false;
+			Monster_Vector_Worm[i]->Set_Alive_Status(false);
 			//...Than leave the check in order to touch only one monster at a time.
 			return _attack_successfull;
 		}			

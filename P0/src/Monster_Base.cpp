@@ -26,6 +26,9 @@ Monster_Base::Monster_Base()
     collision_box.setw(MO_WIDTH);
     collision_box.seth(MO_HEIGHT);
 
+	//Monster type
+	Monster_ID = Humanoid;
+
 	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
 	Alive_Status = true;
 }
@@ -48,6 +51,9 @@ Monster_Base::Monster_Base(int X, int Y)
 	//Initial velocity
     xVel = 0;
     yVel = 0;
+
+	//Monster type
+	Monster_ID = Humanoid;
 
 	//Collision Box Definition : The collision box has the size of the monster
 	collision_box.setx(X);
@@ -130,14 +136,13 @@ bool Monster_Base::check_battlefield_allow_monster(int x, int y, std::vector<Bat
 	 //environment item present and dont allow presence
 	else if( check_environment_allow_monster(x, y, Environment_Sprite_Vector) == 0)
 	{
-		return false;
+		return false; //we can't move => no need to test more
 	}
 	else //environment item present and allow presence
 	{
 		return true;
 	}
 
-	//allow presence
 	return true;
 }
 //Check if the ground allow the monster presence
@@ -186,6 +191,38 @@ int Monster_Base::check_environment_allow_monster(int x, int y, std::vector<Batt
 	}
 	//we can't locate the position inside the vector (impossible!!??)
 	return -1;
+}
+//Check if the battlefield cutting allow monster presence
+bool Monster_Base::check_cutting_allow_monster(int x, int y, std::vector<BattleField_Zone*> BattleField_Cutting_Vector)
+{
+	Rect Area;
+	std::vector<int> Allowed_Monsters_Vector;
+
+	//loop on all areas
+	for(int i=0; i < BattleField_Cutting_Vector.size(); i++)
+	{
+		//Get the area
+		Area = BattleField_Cutting_Vector[i]->Get_Area();
+		Allowed_Monsters_Vector = BattleField_Cutting_Vector[i]->Get_Allowed_Monsters();
+
+		//Check if the monster is designed to be present in the Area
+		if ( ( x >= Area.getx() ) && ( x < (Area.getx() + Area.getw()) ) && ( y >= Area.gety() ) && ( y < (Area.gety() + Area.geth()) ) )
+		{
+			//Check if monster ID allow them to born in the area
+			for(int j=0; j < Allowed_Monsters_Vector.size(); j++)
+			{
+				//the monster id must be listed inside the Allowed_Monsters_Vector in order to allow monster generation on the area
+				if ( Monster_ID == Allowed_Monsters_Vector[j])
+				{
+					return true; //good area, monster id present => the cutting allow monster presence
+				}
+			}
+			return false; //the monster id in not present inside the allowed id in this area => the cutting dont allow monster presence
+		}
+	}
+
+	//not design to happen: obviously the monster must be inside one of the area
+	return false;
 }
 //Show monster on the screen
 void Monster_Base::move_animation(Rect Camera, VideoSurface& Screen)

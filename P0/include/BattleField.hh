@@ -17,7 +17,7 @@ class BattleField_Sprite
 		BattleField_Sprite(int x, int y, int battlefield_type, Rect battlefield_clip);
 		~BattleField_Sprite();
 
-		/****Wrapper****/
+		/****Accessor****/
 		void Set_X(int new_X)
         {
             X = new_X;
@@ -53,6 +53,45 @@ class BattleField_Sprite
         {
             return BattleField_Clip;
         }
+};
+//Battlefield zone is a class that defined an area with the allowed monster to be born
+class BattleField_Zone
+{
+	private:
+		Rect Area;
+		std::vector<int> Allowed_Monsters;
+
+	public:
+		BattleField_Zone();
+		BattleField_Zone(int x, int y, int w, int h, int num, ...);
+		~BattleField_Zone();
+
+		/****Accessor****/
+
+		void Set_Area(Rect new_Area)
+        {
+            Area = new_Area;
+        }
+        Rect Get_Area() const
+        {
+            return Area;
+        }
+		
+		void Set_Allowed_Monsters(std::vector<int> new_Allowed_Monsters)
+        {
+            Allowed_Monsters = new_Allowed_Monsters;
+        }
+        std::vector<int> Get_Allowed_Monsters() const
+        {
+            return Allowed_Monsters;
+        }
+
+
+		/****Methods****/
+
+		//Fill the Allowed_Monsters_Generation vector directly
+		static std::vector<BattleField_Zone*> Fill_Vector();
+
 };
 
 //BackGround class which is designed to manage everything relative to the background layer of the battlefield

@@ -25,6 +25,60 @@ BattleField_Sprite::~BattleField_Sprite()
 {
 }
 
+BattleField_Zone::BattleField_Zone()
+{
+	Area.setx(0);
+	Area.sety(0);
+	Area.setw(0);
+	Area.seth(0);
+}
+BattleField_Zone::BattleField_Zone(int x, int y, int w, int h, int nb_args, ...)
+{
+	Area.setx(x);
+	Area.sety(y);
+	Area.setw(w);
+	Area.seth(h);
+
+	//arguments list (argument pointer)
+	va_list args;
+	//open the list
+    va_start(args, nb_args);
+
+    //parse arguments list until num has been reached (ie nb of args)
+    for (int i=0; i < nb_args; i++)
+	{
+		//push generation allowed type monster inside the vector (arguments are int type)
+		Allowed_Monsters.push_back( va_arg(args, int) );
+	}
+
+	//close the list
+	va_end(args);
+}
+BattleField_Zone::~BattleField_Zone()
+{
+}
+std::vector<BattleField_Zone*> BattleField_Zone::Fill_Vector()
+{
+	std::vector<BattleField_Zone*> BattleField_Zone_Vector;
+	
+	//Areas
+	BattleField_Zone* myArea;
+	
+	myArea = new BattleField_Zone(0, 0, 640, 640, 1, Humanoid);
+	BattleField_Zone_Vector.push_back(myArea);
+
+	myArea = new BattleField_Zone(640, 0, 640, 640, 0);
+	BattleField_Zone_Vector.push_back(myArea);
+
+	myArea = new BattleField_Zone(0, 640, 640, 640, 2, Humanoid, Worm);
+	BattleField_Zone_Vector.push_back(myArea);
+
+	myArea = new BattleField_Zone(640, 640, 640, 640, 1, Worm);
+	BattleField_Zone_Vector.push_back(myArea);
+
+	return BattleField_Zone_Vector;
+}
+
 //BackGround Constructor
 BackGround::BackGround()
 {
