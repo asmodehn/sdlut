@@ -172,7 +172,7 @@ public:
 		//Rendering the OpenGL logo
 		glCallList(_glLogoList);
 
-		//Now drawing the SDL logo
+		//Now drawing the SDL logo in 2D ( Ortho projection )
 		return DefaultGLEngine::render(screen);
     }
 

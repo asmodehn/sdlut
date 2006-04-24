@@ -303,14 +303,17 @@ namespace RAGE
             bool res = false;
             if (_screen != NULL )
             {
-                _screen->resize(width,height);
 				_engine->resize(width,height);
+                _screen->resize(width,height);//doesnt keep content
 				applyBGColor();
             }
 
 #ifdef DEBUG
             Log << nl << "Window::resize() done.";
 #endif
+			
+			//Forcing the refresh (display the backcolor)
+			_screen->refresh();
 
             //return res;
 			return _screen;

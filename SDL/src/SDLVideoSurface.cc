@@ -161,8 +161,7 @@ namespace RAGE
 				SDL_FreeSurface(oldSurf);
 			}
 
-            assert(newSurf); // should be always OK
-			SDL_FreeSurface(_surf);
+            assert(newSurf); // should be always OK (NB : _surf has already been freed by setvideoMode)
             _surf=newSurf;
 
 #ifdef DEBUG
