@@ -1,0 +1,13 @@
+gestion des deplacement et attak en diag a 45°
+
+gestion d files 
+
+gestion input a partir dun txt file (modifiable a partir de linterface?)
+
+deplacement pixel/pixel
+
+gestion collision partielle
+
+gestion de vie d monstres(grace o file) 
+
+implementation de RAGE:AML
