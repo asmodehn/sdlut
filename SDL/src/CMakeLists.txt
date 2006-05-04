@@ -31,4 +31,4 @@ ADD_LIBRARY(	Rage_SDL ../include/SDL.hh ../include/SDLColor.hh
 
 
 # installing main library
-INSTALL_TARGETS(/. FILES Rage_SDL)
+INSTALL_TARGETS(/. Rage_SDL)
