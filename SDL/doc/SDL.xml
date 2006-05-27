@@ -11,7 +11,7 @@
     url="http://www.libsdl.org">Smart DirectMedia Library</ulink>. The aim is
     to have a Object Oriented interface to SDL to be used for simple
     applications, working a bit like GLUT work for OpenGL. Just defining few
-    functions, and off you go ! but still be able to use a stable
+    functions, and off you go ! but still being able to use a stable
     object-oriented framework around the SDL libraries.</para>
 
     <para>Users should be able to use it easily and have at least a "default
@@ -20,8 +20,8 @@
     of the library.</para>
 
     <para>Along with SDL others libraries will be added as optional, on build
-    time or with dynamic binding. These are SDL_image, SDL_ttf, SDL_sound,
-    SDL_image and SDL_Net.</para>
+    time or with dynamic binding. These are SDL_image, SDL_ttf, SDL_image and
+    SDL_net.</para>
 
     <section>
       <title>Graphic Interface</title>
@@ -83,7 +83,7 @@
       <section>
         <title>RWOps</title>
 
-        <para>A RWOps classwith some functions.</para>
+        <para>A RWOps class with some functions.</para>
       </section>
     </section>
 
@@ -114,13 +114,11 @@
     <para>- SDL_image : provide more image file format to the library.</para>
 
     <para>- SDL_mixer : provide more possibility using sounds with the
-    library.</para>
+    library, and support multiple file formats.</para>
 
     <para>- SDL_net : provide Network features to the library.</para>
 
     <para>- SDL_ttf : provide support for loading and using Font files.</para>
-
-    <para>- SDL_sound : provide more sound file format to the library.</para>
 
     <para></para>
   </section>
@@ -134,52 +132,32 @@
       <title>Getting all needed Dependencies</title>
 
       <para>The only mandatory dependency is SDL. All the other ones are
-      optional.</para>
-
-      <para></para>
+      optional. You can build The SDLToolkit</para>
 
       <para>On Linux / Unix systems, there are usually a package system that
       enables you to download those dependencies. Just use it. It will install
       the files in the standard places and the CMake build should detect them
       automatically.</para>
 
-      <para></para>
-
       <para>On Windows, you will have to do it manually. Get the dependencies
       from the web.</para>
 
-      <para>Then define specific environment variables (CMake 2.2):</para>
+      <para>If you system doesnt find the dependencies, you need to define
+      specific environment variables (CMake 2.4 needed):</para>
 
-      <para>For SDL : SDLDIR must contain the directory where you installed
-      SDL,</para>
+      <para>- CMAKE_INCLUDE_PATH pointing to the different paths where you
+      have the headers files for the dependencies
+      (/usr/pkg/include:/usr/pkg/include/SDL for NetBSD for example)</para>
 
-      <para>For SDL_image : SDLIMAGEDIR must contain the directory where you
-      installed SDL_image.</para>
-
-      <para>For SDL_mixer : SDLMIXERDIR must contain the directory where you
-      installed SDL_mixer.</para>
-
-      <para>For SDL_net : SDLNETDIR must contain the directory where you
-      installed SDL_net.</para>
-
-      <para>For SDL_ttf : SDLTTFDIR must contain the directory where you
-      installed SDL_ttf.</para>
-
-      <para>For SDL_sound : SDLSOUNDDIR must contain the directory where you
-      installed SDL_sound.</para>
-
-      <para>With Cmake &gt;= 2.4 you will only need to define few variables
-      :</para>
-
-      <para></para>
-
-      <para></para>
+      <para>- CMAKE_LIBRARY_PATH pointing to the path where your dependencies
+      are installed (/usr/pkg/lib for NetBSD for example)</para>
 
       <para>CMake should now detect your librairies. If it doesnt you will
       have to pass the value manually.</para>
 
       <para>To be able to run your executable you need to have the directory
-      containing the .dll in your PATH.</para>
+      containing the dependencies in your PATH (which is usually the case on
+      Unix).</para>
 
       <para></para>
     </section>
@@ -227,8 +205,11 @@
 
       <para>- <emphasis role="bold">Unix/Linux</emphasis> : You just need to
       have GNUmake installed which is pretty standard (or really easy to get)
-      on every Unix/Linux I am aware of ^^. Then install CMake with you
-      package system.</para>
+      on every Unix/Linux I am aware of. Then install CMake with you package
+      system.</para>
+
+      <para>Worth to note than since CMake 2.4, there is a Generator for
+      KDevelop3...</para>
 
       <para></para>
     </section>
