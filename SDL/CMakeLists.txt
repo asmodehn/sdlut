@@ -33,10 +33,6 @@ FIND_PACKAGE(SDL_mixer)
 #sdl_mixer optional
 
 #check for sdl_net
-FIND_PACKAGE(SDL_sound)
-#sdl_net optional
-
-#check for sdl_net
 FIND_PACKAGE(SDL_net)
 #sdl_net optional
 
@@ -96,16 +92,6 @@ ELSE (SDLMIXER_FOUND)
 	MESSAGE (STATUS "SDL_mixer not found." )
 ENDIF(SDLMIXER_FOUND)
 
-#test for sdl_sound
-IF(SDLSOUND_FOUND)
-	MESSAGE (STATUS "SDL_sound found, adjusting build options..." )
-	ADD_DEFINITIONS(-DHAVE_SDLSOUND)
-	INCLUDE_DIRECTORIES(${SDLSOUND_INCLUDE_DIR})
-	LINK_LIBRARIES (${SDLSOUND_LIBRARY})
-ELSE (SDLSOUND_FOUND)
-	MESSAGE (STATUS "SDL_sound not found." )
-ENDIF(SDLSOUND_FOUND)
-
 #test for sdl_net
 IF(SDLNET_FOUND)
 	MESSAGE (STATUS "SDL_Net found, adjusting build options..." )
@@ -163,8 +149,8 @@ IF (BUILD_TESTS)
 ENDIF(BUILD_TESTS)
 
 #where to put them
-SET(LIBRARY_OUTPUT_PATH ${Rage_SDL_SOURCE_DIR}/lib CACHE STRING "Ouput directories for built libraries")
-SET(EXECUTABLE_OUTPUT_PATH ${Rage_SDL_SOURCE_DIR}/bin CACHE STRING "Output directories for built executables")
+SET(LIBRARY_OUTPUT_PATH ${Rage_SDL_BINARY_DIR}/lib CACHE STRING "Ouput directories for RageSDL Library")
+SET(EXECUTABLE_OUTPUT_PATH ${Rage_SDL_BINARY_DIR}/bin CACHE STRING "Output directories for Tests")
 
 #defining usefull variables.
 #GET_TARGET_PROPERTY(Rage_SDL_LIBRARY Rage_SDL LOCATION)
