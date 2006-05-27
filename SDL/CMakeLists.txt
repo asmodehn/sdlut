@@ -17,7 +17,7 @@ IF ( NOT SDL_FOUND )
 ENDIF(NOT SDL_FOUND )
 
 #check for openGL
-FIND_PACKAGE(OPENGL)
+FIND_PACKAGE(OpenGL)
 #opengl optional
 
 #check for sdl_image
@@ -45,7 +45,7 @@ FIND_PACKAGE(SDL_net)
 #
 
 INCLUDE_DIRECTORIES(${Rage_SDL_SOURCE_DIR}/include )
-ADD_DEFINITIONS(-DLOGPREFIX=\"Rage_SDL\")
+ADD_DEFINITIONS(-DLOGPREFIX=\\"Rage_SDL\\")
 
 #test for SDL
 IF(SDL_FOUND)
