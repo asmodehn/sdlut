@@ -1,7 +1,7 @@
-CMAKE_MINIMUM_REQUIRED ( VERSION 2.2)
+CMAKE_MINIMUM_REQUIRED ( VERSION 2.4)
 
 #Project Definition
-PROJECT(Rage_SDL)
+PROJECT(SDLut)
 
 #
 #Checking software dependencies
@@ -37,11 +37,11 @@ FIND_PACKAGE(SDL_net)
 #sdl_net optional
 
 #
-#Defining Rules for building Rage_SDL
+#Defining Rules for building SDL Utility Toolkit
 #
 
-INCLUDE_DIRECTORIES(${Rage_SDL_SOURCE_DIR}/include )
-ADD_DEFINITIONS(-DLOGPREFIX=\\"Rage_SDL\\")
+INCLUDE_DIRECTORIES(${SDLut_SOURCE_DIR}/include )
+ADD_DEFINITIONS(-DLOGPREFIX=\\"SDLut\\")
 
 #test for SDL
 IF(SDL_FOUND)
@@ -102,12 +102,17 @@ ELSE (SDLNET_FOUND)
 	MESSAGE (STATUS "SDL_Net not found." )
 ENDIF(SDLNET_FOUND)	
 	
+#
 #Compiler Specific rules
+#
 IF(CMAKE_CXX_COMPILER STREQUAL "cl")
 MESSAGE( STATUS "Visual Studio Compiler detected. Adjusting C++ flags...")
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /wd4290 " )
 ENDIF(CMAKE_CXX_COMPILER STREQUAL "cl")
 
+#
+# Managing relation between source and builds 
+#
 #to put the SVN Revision number in the build
 find_program( SVNVERSION
   svnversion
@@ -119,28 +124,38 @@ macro( svn_repository_version DESTVAR TOPDIR )
   exec_program( ${SVNVERSION} ${TOPDIR} ARGS "." OUTPUT_VARIABLE ${DESTVAR} )
 endmacro( svn_repository_version )
 
-svn_repository_version( SVNREV ${Rage_SDL_SOURCE_DIR} )
+svn_repository_version( SVNREV ${SDLut_SOURCE_DIR} )
 #think about where it s better to use SVNREV...
 
+#
+# Managing Build Types
+#
+
 #adding definitions for Logs and debug
-
-
 ADD_DEFINITIONS(-DLOGINDENTLVL=1)
 
-SET(Custom_Debug_Mode OFF CACHE BOOL "Wether or not you want the project to be build with extra Log output")
+#default value
+IF(NOT CMAKE_BUILD_TYPE)
+  SET(CMAKE_BUILD_TYPE Debug CACHE STRING
+      "Choose the type of build, options are: Debug Release."
+      FORCE)
+ENDIF(NOT CMAKE_BUILD_TYPE)
 
-IF (Custom_Debug_Mode)
+IF (CMAKE_BUILD_TYPE STREQUAL Debug)
 	ADD_DEFINITIONS(-DDEBUG)
-ENDIF(Custom_Debug_Mode)
+ENDIF (CMAKE_BUILD_TYPE STREQUAL Debug)
 
+#
+# Definining what to build
+#
 
-#what to build
+SET(BUILD_TESTS OFF CACHE BOOL "Wether or not you want the project to include the tests executables")
+
 INCLUDE_DIRECTORIES(include)
 INSTALL_FILES(/include include)
 
 ADD_SUBDIRECTORY(src)
 
-SET(BUILD_TESTS OFF CACHE BOOL "Wether or not you want the project to include the tests executables")
 
 ADD_SUBDIRECTORY(data)
 
@@ -148,13 +163,15 @@ IF (BUILD_TESTS)
 	ADD_SUBDIRECTORY(test)
 ENDIF(BUILD_TESTS)
 
-#where to put them
-SET(LIBRARY_OUTPUT_PATH ${Rage_SDL_BINARY_DIR}/lib CACHE STRING "Ouput directories for RageSDL Library")
-SET(EXECUTABLE_OUTPUT_PATH ${Rage_SDL_BINARY_DIR}/bin CACHE STRING "Output directories for Tests")
+#
+#Defining where to put whats been built
+#
+SET(LIBRARY_OUTPUT_PATH ${SDLut_BINARY_DIR}/lib CACHE STRING "Ouput directories for RageSDL Library")
+SET(EXECUTABLE_OUTPUT_PATH ${SDLut_BINARY_DIR}/bin CACHE STRING "Output directories for Tests")
 
 #defining usefull variables.
-#GET_TARGET_PROPERTY(Rage_SDL_LIBRARY Rage_SDL LOCATION)
-#SET(Rage_SDL_INCLUDE ${Rage_SDL_SOURCE_DIR}/include)
+#GET_TARGET_PROPERTY(SDLut_LIBRARY SDLut LOCATION)
+#SET(SDLut_INCLUDE ${SDLut_SOURCE_DIR}/include)
 #todo set the dependencies
 
 

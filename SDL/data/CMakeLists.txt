@@ -19,9 +19,9 @@ CONFIGURE_FILE(picture.xbm ${EXECUTABLE_OUTPUT_PATH}/data/picture.xbm COPYONLY)
 CONFIGURE_FILE(sail.bmp ${EXECUTABLE_OUTPUT_PATH}/data/sail.bmp COPYONLY)
 CONFIGURE_FILE(sample.bmp ${EXECUTABLE_OUTPUT_PATH}/data/sample.bmp COPYONLY)
 CONFIGURE_FILE(sample.wav ${EXECUTABLE_OUTPUT_PATH}/data/sample.wav COPYONLY)
-CONFIGURE_FILE(echelon.ttf ${EXECUTABLE_OUTPUT_PATH}/data/echelon.ttf COPYONLY)
+CONFIGURE_FILE(ECHELON.TTF ${EXECUTABLE_OUTPUT_PATH}/data/ECHELON.TTF COPYONLY)
 
 # installing tests data
-INSTALL_FILES(/data FILES data/icon.bmp data/moose.dat data/picture.xbm data/sail.bmp data/sample.bmp data/sample.wav data/echelon.ttf)
+INSTALL_FILES(/data FILES data/icon.bmp data/moose.dat data/picture.xbm data/sail.bmp data/sample.bmp data/sample.wav data/ECHELON.TTF)
 
 ENDIF(BUILD_TESTS)
