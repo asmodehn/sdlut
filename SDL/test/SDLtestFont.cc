@@ -184,7 +184,7 @@ int main(int argc, char** argv)
  
     App::getInstance().getWindow()->setBGColor(Color (64,0,0));
 
-	Font font("data/echelon.ttf",24);
+	Font font("data/ECHELON.TTF",24);
 	Console cons(font);
 	MyEngine engine;
 	engine.setConsole(&cons);
