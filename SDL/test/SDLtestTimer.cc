@@ -11,18 +11,19 @@ class ObjectWithCallback
 
 
 	public:
-	bool called;
-		
-	ObjectWithCallback() : called(false) {}
 		
 	unsigned int callback(unsigned int interval, void* args)
 	{
-		called = !called;
-		std::cout << "Called changed to : " << called << std::endl;
+		std::cout << "Instance Method Called back ! " << std::endl;
 		return 0;
 	}
 };
 
+static unsigned int callback(unsigned int interval, void * args)
+{
+	std::cout << "Static Function called back !" << std::endl;
+	return 0;
+}
 
 int main(int argc, char *argv[])
 {
@@ -30,22 +31,23 @@ int main(int argc, char *argv[])
 
 	testlog << "SDL init..." << std::endl;
 
-	SDL::App::getInstance();
+	SDL::App::getInstance().initTimer();	
 			
-	testlog << "Creating object with callback after 2 seconds" << std::endl;
+	testlog << "Creating instance"<< std::endl;
 	ObjectWithCallback obj;
 
+	testlog << "Creating instance timer" << std::endl;
 	SDL::Timer<ObjectWithCallback> timer;
 
-	timer.setInterval(200);
+	timer.setInterval(2000);
 	timer.setCallback(&obj,&ObjectWithCallback::callback,(void*)NULL);
-
+	
+	testlog << "Starting instance timer ( 2 sec )" << std::endl;
 	timer.start();
+	testlog << "Starting static SDL timer ( 4 sec )"<< std::endl;
+	SDL_AddTimer(4000,callback,NULL);
 
-	while (!obj.called)
-		SDL::Delay(1); //TODO Display time running
-
-	testlog << "Called back : " << obj.called << std::endl;
+	SDL::Delay(6000); //TODO Display time running
 
 	return 0;
 }
