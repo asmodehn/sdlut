@@ -8,8 +8,6 @@ namespace RAGE
 {
     namespace SDL
     {
-
-	    
 			//Simple SDL_delay implementation
 	    static inline void Delay(long millisec) { SDL_Delay((millisec)); }
 	    static inline long GetTicks(void) { return static_cast<long>(SDL_GetTicks()); }
@@ -18,7 +16,11 @@ namespace RAGE
 		class Timer
 		{
 
-
+//Functor for Timer Callback
+	    		//the only constraint about the callback function is that it should return int (next interval to apply)
+	    		//and the arguments should be void* to be able to pass anything...
+			
+			
 			class Callback : public TSpecificFunctor2<TClass,unsigned int,unsigned int>
 			{
 			
@@ -32,31 +34,33 @@ namespace RAGE
 			};
 
 
-			
-			//static table lookup that stores pointer to callback
-			static std::vector< Callback* > _cbtable;
-		    	//static callback function who calls the right functor from the table
-			static unsigned int callback(unsigned int, void* args);
-			//structure for arguments
+//structure for arguments
 	    		typedef struct { int lookupindex; void* args;} cbargs;
 		    
 		    	//index of this functor instance in the static lookuptable
 			int _index;
 		    
-			
-			//Functor for Timer Callback
-	    		//the only constraint about the callback function is that it should return int (next interval to apply)
-	    		//and the arguments should be void* to be able to pass anything...
-			
-			
-			
-			
-			bool running;
+						bool running;
 			long _interval;
 			void* _args;
-			SDL_TimerID _timerid; //set after timer is started
+
+
+			//static table lookup that stores pointer to callback
+			static std::vector< Callback* > _cbtable;
 
 			public:
+
+		    	//static callback function who calls the right functor from the table
+			static unsigned int callback(unsigned int, void* args);
+			
+			
+			
+			
+			
+
+			SDL_TimerID _timerid; //set after timer is started
+
+
 
 			Timer();
 			~Timer();

@@ -42,12 +42,12 @@ namespace RAGE
 	
 			virtual returnType operator()(void)
 			{
-				(_ptobj->*_ptfunc)();
+				return (_ptobj->*_ptfunc)();
 			}
 			
 			virtual returnType call(void)
 			{
-				(_ptobj->*_ptfunc)();
+				return (_ptobj->*_ptfunc)();
 			}
 				
 	};
@@ -78,12 +78,12 @@ namespace RAGE
 			
 			virtual returnType operator()(arg1Type arg)
 			{
-				(_ptobj->*_ptfunc)(arg);
+				return (_ptobj->*_ptfunc)(arg);
 			}
 			
 			virtual returnType call(arg1Type arg)
 			{
-				(_ptobj->*_ptfunc)(arg);
+				return (_ptobj->*_ptfunc)(arg);
 			}
 				
 	};
@@ -113,12 +113,12 @@ namespace RAGE
 			
 					virtual returnType operator()(arg1Type arg1,arg2Type arg2)
 					{
-						(_ptobj->*_ptfunc)(arg1,arg2);
+						return (_ptobj->*_ptfunc)(arg1,arg2);
 					}
 			
 					virtual returnType call(arg1Type arg1,arg2Type arg2)
 					{
-						(_ptobj->*_ptfunc)(arg1,arg2);
+						return (_ptobj->*_ptfunc)(arg1,arg2);
 					}
 				
 			};

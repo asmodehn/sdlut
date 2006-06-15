@@ -19,6 +19,7 @@ class ObjectWithCallback
 	{
 		called = !called;
 		std::cout << "Called changed to : " << called << std::endl;
+		return 0;
 	}
 };
 
