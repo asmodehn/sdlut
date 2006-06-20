@@ -303,8 +303,10 @@ namespace RAGE
             bool res = false;
             if (_screen != NULL )
             {
-				_engine->resize(width,height);
                 _screen->resize(width,height);//doesnt keep content
+				_engine->resize(width,height);
+				//this order otherwise we lose opengl context from the engine just after the resize ( reinit )
+				//because screen resize recreates the window, and lose opengl context as documented in SDL docs...
 				applyBGColor();
             }
 

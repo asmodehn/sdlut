@@ -80,7 +80,7 @@ static const GLfloat normals [1338][3];
 static const short face_indices[2732][9];
 
 
-void setMaterial(GLenum mode,GLfloat *f,GLfloat alpha)
+void setMaterial(GLenum mode,GLfloat *f,GLfloat alpha) const
 {
  GLfloat d[4];
  d[0]=f[0];
@@ -158,8 +158,8 @@ public:
 		glLoadIdentity();         // Reset The Projection Matrix
 
 		//equivalent to gluPerspective
-		GLdouble znear = 1.0f ;
-		GLdouble zfar = 2000.0f ;
+		GLdouble znear = 0.001f ;
+		GLdouble zfar = 10.0f ;
 		GLdouble ymax = znear * tan(45.0f * M_PI / 360.0);
 		GLdouble ymin = -ymax;
 		GLdouble xmin = ymin * GLfloat(screen.getWidth()) / GLfloat(screen.getHeight());
@@ -169,8 +169,36 @@ public:
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
+		//putting the logo in the right place in the displayed scene...
+		glTranslatef(0.0f,0.0f,-1.0f);
+		static int rot = 0;
+		glRotatef(--rot,.3f,.0f,.0f);
+
 		//Rendering the OpenGL logo
-		glCallList(_glLogoList);
+		//glCallList(_glLogoList);
+		 // Logo Material
+	  GLfloat alpha=material.alpha;
+	  setMaterial (GL_AMBIENT, material.ambient,alpha);
+	  setMaterial (GL_DIFFUSE, material.diffuse,alpha);
+	  setMaterial (GL_SPECULAR, material.specular,alpha);
+	  setMaterial (GL_EMISSION, material.emission,alpha);
+	  glMaterialf (GL_FRONT_AND_BACK,GL_SHININESS,material.phExp);
+
+	  // Logo Faces
+		glBegin (GL_TRIANGLES);
+		  for(int i=0;i<sizeof(face_indices)/sizeof(face_indices[0]);i++)
+		   {
+		   for(int j=0;j<3;j++)
+			{
+			  int vi=face_indices[i][j];
+			  int ni=face_indices[i][j+3];//Normal index
+			  int ti=face_indices[i][j+6];//Texture index
+			   glNormal3f (normals[ni][0],normals[ni][1],normals[ni][2]);
+			   glTexCoord2f(textures[ti][0],textures[ti][1]);
+			   glVertex3f (vertices[vi][0],vertices[vi][1],vertices[vi][2]);
+			}
+		   }
+		glEnd ();
 
 		//Now drawing the SDL logo in 2D ( Ortho projection )
 		return DefaultGLEngine::render(screen);
@@ -242,13 +270,13 @@ int main(int argc, char** argv)
 
 //DATA
 MyEngine::Material MyEngine::material = { 
-	{6.06016e-038f,0.0f,6.06018e-038f},
+	{0.0f,0.0f,0.0f},
 	{0.622157f,0.704118f,0.886667f},
 	{0.47f,0.47f,0.47f},
 	{0.0f,0.0f,0.0f},
 	1.0f,
 	2.0f,
-	-1
+	-1 // no texture
 };
 
 const GLfloat MyEngine::vertices [1372][3] = {

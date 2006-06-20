@@ -90,13 +90,15 @@ namespace RAGE
 			//to initialise the engine, just called once before any render
 		bool DefaultGLEngine::init(int width, int height)
 		{
-
-			//loading the default RGBSurface from the Resources
-			image = new RGBSurface();
-
-			//if ( image->isGLvalid() ) 
+			if ( image == NULL )
+			{
+				//loading the default RGBSurface from the Resources
+				image = new RGBSurface();
+				 
+			}
+			//if ( image->isGLvalid() )
 			imagetexture=image->generateTexture();
-			Log << nl << imagetexture;
+			Log << nl << "generated texture : " << imagetexture;
 			
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	// Linear Filtering
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	// Linear Filtering
@@ -118,21 +120,25 @@ namespace RAGE
 			//get called everytime the display is resized
 		bool DefaultGLEngine::resize(int width, int height)
 		{
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	// Linear Filtering
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	// Linear Filtering
-			
-			//actual init code
-			glShadeModel(GL_SMOOTH);       // Enable Smooth Shading
-			glClearDepth(1.0f);         // Depth Buffer Setup
-			glEnable(GL_DEPTH_TEST);       // Enables Depth Testing
-			glDepthFunc(GL_LEQUAL);        // The Type Of Depth Testing To Do
-			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
+			//SDL is losing OpenGL context when recreating the window, which we do for the resize.
+			//so we basically need to re init it completely
+			init(width, height);
 
-			//resize code
-		    glViewport(0,0,width,height);      // Reset The Current Viewport
+			//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	// Linear Filtering
+			//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	// Linear Filtering
+			//
+			////actual init code
+			//glShadeModel(GL_SMOOTH);       // Enable Smooth Shading
+			//glClearDepth(1.0f);         // Depth Buffer Setup
+			//glEnable(GL_DEPTH_TEST);       // Enables Depth Testing
+			//glDepthFunc(GL_LEQUAL);        // The Type Of Depth Testing To Do
+			//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
+
+			////resize code
+		 //   glViewport(0,0,width,height);      // Reset The Current Viewport
 	
-			glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix
-			glLoadIdentity();         // Reset The Projection Matrix
+			//glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix
+			//glLoadIdentity();         // Reset The Projection Matrix
 	
 			return true;
 
