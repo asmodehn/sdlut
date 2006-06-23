@@ -165,9 +165,6 @@ INCLUDE_DIRECTORIES( ${SDLut_BINARY_DIR}/include )
 #Defining target
 ADD_SUBDIRECTORY(src)
 
-#Configuring and building data
-ADD_SUBDIRECTORY(data)
-
 IF (BUILD_TESTS)
 	ADD_SUBDIRECTORY(test)
 ENDIF(BUILD_TESTS)

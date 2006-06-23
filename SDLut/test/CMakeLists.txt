@@ -1,5 +1,8 @@
 CMAKE_MINIMUM_REQUIRED ( VERSION 2.2)
 
+#Configuring and building test data
+ADD_SUBDIRECTORY(data)
+
 #linking Rage_SDL to all other following executables
 LINK_LIBRARIES(Rage_SDL)
 
