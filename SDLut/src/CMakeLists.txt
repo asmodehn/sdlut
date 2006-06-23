@@ -1,31 +1,31 @@
 #adding with headers just to have them in generated projects
-ADD_LIBRARY(	Rage_SDL ../include/SDL.hh ../include/SDLColor.hh 
-		SDLEngine.cc ../include/SDLEngine.hh
-		SDLConfig.cc ../include/SDLConfig.hh
-		Logger.cc ../include/Logger.hh
-		SDLApp.cc ../include/SDLApp.hh
-		SDLBaseSurface.cc ../include/SDLBaseSurface.hh
-		SDLCDRom.cc ../include/SDLCDRom.hh
-		SDLCursor.cc ../include/SDLCursor.hh
-		SDLVideoSurface.cc ../include/SDLVideoSurface.hh
-		SDLCriticalEvent.cc ../include/SDLCriticalEvent.hh
-		SDLEvent.cc ../include/SDLEvent.hh
-		SDLEventManager.cc ../include/SDLEventManager.hh
-		SDLKeyboard.cc ../include/SDLKeyboard.hh
-		SDLMouse.cc ../include/SDLMouse.hh
-		SDLJoystick.cc ../include/SDLJoystick.hh
-		SDLGLManager.cc ../include/SDLGLManager.hh
-		SDLManager.cc ../include/SDLManager.hh
-		SDLOverlay.cc ../include/SDLOverlay.hh
-		SDLPixelFormat.cc ../include/SDLPixelFormat.hh
-		SDLPoint.cc ../include/SDLPoint.hh
-		SDLRect.cc ../include/SDLRect.hh
-		SDLRGBSurface.cc ../include/SDLRGBSurface.hh
-		SDLVideoInfo.cc ../include/SDLVideoInfo.hh
-		SDLWindow.cc ../include/SDLWindow.hh
-		SDLRWOps.cc ../include/SDLRWOps.hh
-		SDLFont.cc ../include/SDLFont.hh
-		SDLTimer.cc ../include/SDLTimer.hh
+ADD_LIBRARY(	Rage_SDL
+		SDLEngine.cc
+		SDLConfig.cc
+		Logger.cc
+		SDLApp.cc
+		SDLBaseSurface.cc
+		SDLCDRom.cc
+		SDLCursor.cc
+		SDLVideoSurface.cc
+		SDLCriticalEvent.cc
+		SDLEvent.cc
+		SDLEventManager.cc
+		SDLKeyboard.cc
+		SDLMouse.cc
+		SDLJoystick.cc
+		SDLGLManager.cc
+		SDLManager.cc
+		SDLOverlay.cc
+		SDLPixelFormat.cc
+		SDLPoint.cc
+		SDLRect.cc
+		SDLRGBSurface.cc
+		SDLVideoInfo.cc
+		SDLWindow.cc
+		SDLRWOps.cc
+		SDLFont.cc
+		SDLTimer.cc
 		SDLResources.inc
 	)
 

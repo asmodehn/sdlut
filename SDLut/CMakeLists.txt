@@ -40,7 +40,8 @@ FIND_PACKAGE(SDL_net)
 #Defining Rules for building SDL Utility Toolkit
 #
 
-INCLUDE_DIRECTORIES(${SDLut_SOURCE_DIR}/include )
+# this should be a dependency
+INCLUDE_DIRECTORIES(${SDLut_SOURCE_DIR}/../Core/include )
 
 #test for SDL
 IF(SDL_FOUND)
@@ -145,17 +146,26 @@ IF (CMAKE_BUILD_TYPE STREQUAL Debug)
 ENDIF (CMAKE_BUILD_TYPE STREQUAL Debug)
 
 #
-# Definining what to build
+# Definining what to build depending on options
 #
 
 SET(BUILD_TESTS OFF CACHE BOOL "Wether or not you want the project to include the tests executables")
 
-INCLUDE_DIRECTORIES(include)
-INSTALL_FILES(/include include)
 
+#
+# Configure and Build process
+#
+
+#Include Files are copied in the binary tree once configured
+#those configured include files, are the ones who will be installed.
+ADD_SUBDIRECTORY(include)
+#Including configured headers
+INCLUDE_DIRECTORIES( ${SDLut_BINARY_DIR}/include )
+
+#Defining target
 ADD_SUBDIRECTORY(src)
 
-
+#Configuring and building data
 ADD_SUBDIRECTORY(data)
 
 IF (BUILD_TESTS)
@@ -163,7 +173,7 @@ IF (BUILD_TESTS)
 ENDIF(BUILD_TESTS)
 
 #
-#Defining where to put whats been built
+#Defining where to put what has been built
 #
 SET(LIBRARY_OUTPUT_PATH ${SDLut_BINARY_DIR}/lib CACHE STRING "Ouput directories for RageSDL Library")
 SET(EXECUTABLE_OUTPUT_PATH ${SDLut_BINARY_DIR}/bin CACHE STRING "Output directories for Tests")
