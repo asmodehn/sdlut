@@ -16,12 +16,15 @@ CONFIGURE_FILE(ECHELON.TTF ${SDLut_BINARY_DIR}/test/data/ECHELON.TTF COPYONLY)
 
 # installing tests data
 INSTALL_FILES(/data FILES
-		data/icon.bmp
-		data/moose.dat
-		data/picture.xbm
-		data/sail.bmp
-		data/sample.bmp
-		data/sample.wav
-		data/ECHELON.TTF
+		smiley.bmp
+		moose.dat
+		picture.xbm
+		sail.bmp
+		SDLsample.bmp
+		SDLsample.jpg
+		SDLsample.png
+		SDLsample.tif
+		sample.wav
+		ECHELON.TTF
 	     )
 
