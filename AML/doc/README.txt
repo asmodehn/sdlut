@@ -27,21 +27,17 @@ This is a Developer README for AML
 Libraries for the future ?
 --------------------------
 
-Considering SDL2.0 docs, there are annex librairies we will have to manage in the future
+Considering SDL2.0 docs, there are annex librairies we will have to manage
 
 The SDL Standard libs will be wrapped in the RAGE::SDL part.
 The rest of it will be done in AML.
 
 SDL_draw
-SDL_ttf
-SDL_mixer
 OpenSceneGraph
 OpenInput
 ACE
 OGRE3D
 G3D
-AALIB
-NCURSES
 NGL/NUI
 Cairo/Glitz
 
