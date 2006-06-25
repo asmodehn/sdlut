@@ -140,6 +140,12 @@ typedef enum
 			bool isLinked();
 		}
 
+		//declaring default namespace to contains all default builtins behaviour
+		namespace Default{
+			class Font;
+			class Cursor;
+		}
+
         class Version
         {
             SDL_version _compiled;

@@ -173,16 +173,76 @@ namespace TTF
 
 }//namespace TTF
 
-#else //HAVE_SDLTTF
-
-	//dummy class (maybe not needed ?)
-	//the implementation of the fallback code, has to be done in the calling class
-	//not yet sure this is the best choice...
-	class TTF {};
 
 #endif //HAVE_SDLTTF
 
+namespace Default
+{
+	//Class implementing the default font character render (with alpha masks)
+	class Font
+	{
+		const RGBSurface & _fontsurf;
+
+		std::vector<Rect> alphalookup;
+		
+		public :
+			
+			Font() //image 16x14 character, 225x225 pixels (all start at 0, not 1)
+		try: _fontsurf(RWOps(_defaultFont,sizeof(_defaultFont))), alphalookup(128)
+		{
+			//building alphalookup
+			for (int line = 0; line < 14; line++)
+			{
+						  for (int col = 0; col < 16; col++)
+						  {
+							  Rect r(line * 16, col*14, 14,16);
+							  alphalookup.push_back(r);
+						  }
+			}
+		}
+		catch (std::exception& e)
+		{
+		};
+
+		Rect getSize(const std::string & text)
+		{
+			//number of lines in text -> todo
+
+			//number of character max per line
+			Rect r(text.size() * 14,16);
+			return r;
+		}
+		
+		RGBSurface * render(const std::string & text,Color c, Color bgc)
+		{
+			RGBSurface * result = new RGBSurface(getSize(text).getw(),getSize(text).geth(),16);
+			for (int i= 0; i< text.size(); i++)
+			{
+				result->blit(_fontsurf,Rect(0,i*14,14,16),alphalookup[text[i]]);
+			}
+			return result;
+		}
+	};
+
+}
+
+
+//This constructor loads the default bitmap font
+//scale algorithm needed for surfaces...
+Font::Font( int ptsize) throw (std::logic_error)
+try : _font(NULL)
+{
+	if(_font==NULL) {
+		Log << "Default Font Support not available.";
+	}
 	
+}
+catch (std::exception& e)
+	{
+		Log << nl << "Exception catched in Font Constructor :"  << nl <<
+				e.what() << std::endl;
+            //TODO : much more explicit error message...
+	};
 
 
 
@@ -191,7 +251,7 @@ try :
 #ifdef HAVE_SDLTTF
 	_font(new TTF::Font(filename,ptsize))
 #else
-	_font(NULL)
+	Font(ptsize)
 #endif
 
 {
@@ -232,8 +292,12 @@ RGBSurface * Font::render(std::string text, Color c, RenderMode mode, Color bgc)
 		}
 		return _font->render(text,c,TTF::Font::Solid,bgc);
 	}
+	else
+	{
+		
+		return _deffont->render(text,c,bgc);
+	}
 	//Problem before if the if didnt returned...
-	//TODO : rendering using defaultFont
 	return new RGBSurface();
 	
 }

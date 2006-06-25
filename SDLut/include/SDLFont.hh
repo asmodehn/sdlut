@@ -43,6 +43,7 @@ public:
 private:
 	class TTF::Font * _font;//private class to handle SDL_ttf detection and use
 		//_font == NULL if TTF not available ( or unable to initialise the font )
+	Default::Font * _deffont;
 
 public:
 
@@ -97,5 +98,17 @@ public:
 
 	}
 }
+
+namespace Default
+{
+	class Font
+	{
+		Font(const RWOps& rwops)
+		{
+			RGBSurface(new RWOps(_defaultFont));
+		}
+	};
+}
+
 
 #endif

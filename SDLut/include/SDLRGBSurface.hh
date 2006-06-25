@@ -9,7 +9,6 @@
 
 #include "SDLBaseSurface.hh"
 #include "SDLColor.hh"
-//#include "SDLFont.hh"
 #include "SDLRWOps.hh"
 
 namespace RAGE
@@ -25,8 +24,8 @@ class RGBSurface : public BaseSurface
 	friend class TTF::Font;
 
 	///Conversion Constructor
-    explicit RGBSurface(SDL_Surface * s) : BaseSurface(s)
-    {} ///< This one should be called only by friends
+    	explicit RGBSurface(SDL_Surface * s) : BaseSurface(s)
+    	{} ///< This one should be called only by friends
 
 
 	static Uint32 RGBFlags;
