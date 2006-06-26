@@ -2,7 +2,6 @@
 #define SDL_CONFIG_HH
 
 //Forced Config
-//#undef HAVE_OPENGL //engine call seems to work... 3D part postponed...
 #undef THREAD
 
 //Normal Setup
@@ -13,6 +12,7 @@
 #define DEFAULT_WINDOW_TITLE "RAGE::SDL"
 
 //Mandatory
+#include "CMakeConfig.hh"
 #include <SDL.h>
 //Mandatory because we use RWOps for the wrapper, and we even wrap it
 #include <SDL_rwops.h>

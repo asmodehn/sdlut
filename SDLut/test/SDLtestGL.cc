@@ -165,7 +165,7 @@ public:
 
 		//putting the logo in the right place in the displayed scene...
 		glTranslatef(0.0f,0.0f,-1.0f);
-		static int rot = 0;
+		static float rot = 0.0f;
 		glRotatef(--rot,.3f,.0f,.0f);
 
 	GLfloat glfLightAmbient[] = { 0.1f, 0.1f, 0.1f};

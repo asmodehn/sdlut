@@ -99,16 +99,5 @@ public:
 	}
 }
 
-namespace Default
-{
-	class Font
-	{
-		Font(const RWOps& rwops)
-		{
-			RGBSurface(new RWOps(_defaultFont));
-		}
-	};
-}
-
 
 #endif

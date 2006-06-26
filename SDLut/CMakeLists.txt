@@ -105,10 +105,13 @@ ENDIF(SDLNET_FOUND)
 #
 #Compiler Specific rules
 #
-IF(CMAKE_CXX_COMPILER STREQUAL "cl")
+IF(MSVC)
 MESSAGE( STATUS "Visual Studio Compiler detected. Adjusting C++ flags...")
-SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /wd4290 " )
-ENDIF(CMAKE_CXX_COMPILER STREQUAL "cl")
+#thats doesnt seem to work... not sure...
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /wd4290" )
+#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB")
+#MODULE and SHARED also ??
+ENDIF(MSVC)
 
 #
 # Managing relation between source and builds 
@@ -159,8 +162,8 @@ SET(BUILD_TESTS OFF CACHE BOOL "Wether or not you want the project to include th
 #Include Files are copied in the binary tree once configured
 #those configured include files, are the ones who will be installed.
 ADD_SUBDIRECTORY(include)
-#Including configured headers
-INCLUDE_DIRECTORIES( ${SDLut_BINARY_DIR}/include )
+#Including configured headers (binary for the configured header, source for the unmodified ones
+INCLUDE_DIRECTORIES( ${SDLut_BINARY_DIR}/include ${SDLut_SOURCE_DIR}/include )
 
 #Defining target
 ADD_SUBDIRECTORY(src)
