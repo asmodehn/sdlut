@@ -181,13 +181,29 @@ namespace Default
 	//Class implementing the default font character render (with alpha masks)
 	class Font
 	{
-		const RGBSurface & _fontsurf;
+		//with this version the pointer is replaced by 0x00000014 on render for some reason (VS8)
+		//const RGBSurface & _fontsurf;
 
+		//this version keeps the right value for render
+		const RGBSurface _fontsurf;
+
+		//all the rectangles become {0,0,0,0} on render for some reason
 		std::vector<Rect> alphalookup;
 		
 		public :
 			
-			Font() //image 16x14 character, 225x225 pixels (all start at 0, not 1)
+		 //image 16x14 character, 225x225 pixels (all start at 0, not 1)
+		Font( int ptsize = 16)  throw (std::logic_error);
+		Font::Font(const Font & font);
+		Font::~Font();
+		
+		Rect getSize(const std::string & text);
+		
+		RGBSurface * render(const std::string & text,Color c, Color bgc);
+		
+	};
+
+	Font::Font( int ptsize)  throw (std::logic_error)
 		try: _fontsurf(RWOps(_defaultFont,sizeof(_defaultFont))), alphalookup(128)
 		{
 			//building alphalookup
@@ -195,16 +211,17 @@ namespace Default
 			{
 						  for (int col = 0; col < 16; col++)
 						  {
-							  Rect r(line * 16, col*14, 14,16);
+							  Rect r(col * 14, line*16, 14,16);
 							  alphalookup.push_back(r);
 						  }
 			}
 		}
 		catch (std::exception& e)
 		{
+			Log << nl << "Exception caught in Default font contructor : " << e.what();
 		};
 
-		Rect getSize(const std::string & text)
+		Rect Font::getSize(const std::string & text)
 		{
 			//number of lines in text -> todo
 
@@ -212,17 +229,27 @@ namespace Default
 			Rect r(text.size() * 14,16);
 			return r;
 		}
+
+		Font::Font(const Font & font) : _fontsurf(font._fontsurf)
+		{
+			alphalookup.assign(font.alphalookup.begin(),font.alphalookup.end());
+		}
 		
-		RGBSurface * render(const std::string & text,Color c, Color bgc)
+
+		Font::~Font()
+		{
+		}
+
+		RGBSurface * Font::render(const std::string & text,Color c, Color bgc)
 		{
 			RGBSurface * result = new RGBSurface(getSize(text).getw(),getSize(text).geth(),16);
-			for (int i= 0; i< text.size(); i++)
+			for (unsigned int i= 0; i< text.size(); i++)
 			{
 				result->blit(_fontsurf,Rect(0,i*14,14,16),alphalookup[text[i]]);
 			}
 			return result;
 		}
-	};
+
 
 }
 
@@ -230,9 +257,9 @@ namespace Default
 //This constructor loads the default bitmap font
 //scale algorithm needed for surfaces...
 Font::Font( int ptsize) throw (std::logic_error)
-try : _font(NULL)
+try : _font(NULL),_deffont( new Default::Font(ptsize))
 {
-	if(_font==NULL) {
+	if(_deffont==NULL) {
 		Log << "Default Font Support not available.";
 	}
 	
@@ -249,10 +276,10 @@ catch (std::exception& e)
 	Font::Font(std::string filename, int ptsize) throw (std::logic_error)
 try :
 #ifdef HAVE_SDLTTF
-	_font(new TTF::Font(filename,ptsize))
-#else
-	Font(ptsize)
+	_font(new TTF::Font(filename,ptsize)),
 #endif
+	_deffont( new Default::Font(ptsize))
+
 
 {
 	if(_font==NULL) {
@@ -268,13 +295,15 @@ catch (std::exception& e)
 
 //Copy Constructor
 Font::Font(const RAGE::SDL::Font &font)
-: _font(font._font)
-{}
+: _font(font._font), _deffont(font._deffont)
+{
+}
 
 
 	Font::~Font()
 {
 	delete _font, _font=NULL;
+	delete _deffont, _deffont = NULL;
 }
 
 

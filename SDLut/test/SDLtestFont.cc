@@ -3,8 +3,6 @@ using namespace RAGE;
 using namespace RAGE::SDL;
 
 
-
-
 class Console
 {
 
@@ -185,10 +183,10 @@ int main(int argc, char** argv)
     App::getInstance().getWindow()->setBGColor(Color (64,0,0));
 
     //specific font
-    Font font("data/ECHELON.TTF",24);
+    //Font font("data/ECHELON.TTF",16);
     
     //default font
-    //Font font(24);
+    Font font(16);
     
 	Console cons(font);
 	MyEngine engine;
