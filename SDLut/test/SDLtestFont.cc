@@ -10,7 +10,7 @@ class Console
 
 	//if member embedded (object not reference), error when destructing Font...
 	//to debug -> copy / deletion problem
-	const Font & _font;
+	const Font _font;
 
 	Color _bgColor;
 
@@ -21,6 +21,8 @@ class Console
 public :
 	Console(const Font & fnt = Font(),Color c = Color(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text(">")
 	{
+		//init();
+		//draw();
 	}
 
 	bool init(int width, int height)

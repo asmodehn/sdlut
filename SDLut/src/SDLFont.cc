@@ -181,8 +181,6 @@ namespace Default
 	//Class implementing the default font character render (with alpha masks)
 	class Font
 	{
-		//with this version the pointer is replaced by 0x00000014 on render for some reason (VS8)
-		//const RGBSurface & _fontsurf;
 
 		//this version keeps the right value for render
 		const RGBSurface _fontsurf;
@@ -204,15 +202,14 @@ namespace Default
 	};
 
 	Font::Font( int ptsize)  throw (std::logic_error)
-		try: _fontsurf(RWOps(_defaultFont,sizeof(_defaultFont))), alphalookup(128)
+		try: _fontsurf(RWOps(_defaultFont,sizeof(_defaultFont))), alphalookup()
 		{
 			//building alphalookup
 			for (int line = 0; line < 14; line++)
 			{
 						  for (int col = 0; col < 16; col++)
 						  {
-							  Rect r(col * 14, line*16, 14,16);
-							  alphalookup.push_back(r);
+							  alphalookup.push_back(Rect(col * 14, line*16, 14,16));
 						  }
 			}
 		}
@@ -238,6 +235,7 @@ namespace Default
 
 		Font::~Font()
 		{
+			alphalookup.clear();
 		}
 
 		RGBSurface * Font::render(const std::string & text,Color c, Color bgc)
