@@ -1,28 +1,28 @@
-CMAKE_MINIMUM_REQUIRED ( VERSION 2.2)
+CMAKE_MINIMUM_REQUIRED ( VERSION 2.4)
 
 #Project Definition
-PROJECT(Rage_AML)
+PROJECT(AML)
 
 #
 #Checking software dependencies
 #
 
-SET(CMAKE_MODULE_PATH ../SDL/CMake)
+SET(CMAKE_MODULE_PATH ../SDLut/CMake)
 
 #check for openGL
 FIND_PACKAGE(OPENGL)
-FIND_PACKAGE(Rage_SDL REQUIRED)
+FIND_PACKAGE(SDLut REQUIRED)
 
 #
 #Defining Rules for building AML
 #
 
 #Compiler Specific rules
-IF(CMAKE_CXX_COMPILER STREQUAL "cl")
+IF(MSVC)
 MESSAGE( STATUS "Visual Studio Compiler detected. Adjusting C++ flags...")
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /wd4290 " )
-SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:msvcrt.lib" )
-ENDIF(CMAKE_CXX_COMPILER STREQUAL "cl")
+#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB" )
+ENDIF(MSVC)
 
 #to put the SVN Revision number in the build
 find_program( SVNVERSION

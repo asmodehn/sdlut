@@ -1,30 +1,20 @@
-# Locate Rage::SDL library
+# Locate Rage::SDLut library
 # This module defines
-# Rage_SDL_LIBRARY, the name of the library to link against
-# Rage_SDL_FOUND, if false, do not try to link to SDL
-# Rage_SDL_INCLUDE_DIR, where to find SDL.hh
+# SDLut_LIBRARY, the name of the library to link against
+# SDLut_FOUND, if false, do not try to link to SDL
+# SDLut_INCLUDE_DIR, where to find SDL.hh
 
-FIND_PATH(Rage_SDL_INCLUDE_DIR SDL.hh
-  $ENV{Rage_SDL_DIR}/include
-
-#also detecting non installed library -> temporary, should be done manually later
-  include
-  SDL/include
-  ../SDL/include
+FIND_PATH(SDLut_INCLUDE_DIR SDL.hh
+  $ENV{SDLutDIR}/include
   )
   
-FIND_LIBRARY(Rage_SDL_LIBRARY 
-    NAMES Rage_SDL
+FIND_LIBRARY(SDLut_LIBRARY 
+    NAMES SDLut
     PATHS
-    $ENV{Rage_SDL_DIR}/lib
-    
-#also detecting non installed library -> temporary, should be done manually later
-		src/debug
-		SDL/src/debug
-		../SDL/src/debug
+    $ENV{SDLutDIR}/lib
     )
     
-SET(Rage_SDL_FOUND "NO")
-IF(Rage_SDL_LIBRARY)
-	SET(Rage_SDL_FOUND "YES")
-ENDIF(Rage_SDL_LIBRARY)
+SET(SDLut_FOUND "NO")
+IF(SDLut_LIBRARY)
+	SET(SDLut_FOUND "YES")
+ENDIF(SDLut_LIBRARY)
