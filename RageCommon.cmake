@@ -34,11 +34,12 @@ find_program( SVNVERSION
 )
 
 macro( svn_repository_version DESTVAR TOPDIR )
-  exec_program( ${SVNVERSION} ${TOPDIR} ARGS "." OUTPUT_VARIABLE ${DESTVAR} )
+  exec_program( ${SVNVERSION} ${TOPDIR} ARGS "." OUTPUT_VARIABLE DESTVARORI )
+  STRING(REGEX REPLACE "(.+):(.+)" "\\1_\\2" ${DESTVAR} ${DESTVARORI})
 endmacro( svn_repository_version )
 
-#think about where it s better to use svn_repository_version...
-
+svn_repository_version( SVN_REV ${CMAKE_SOURCE_DIR})
+SET (SVN_REV ${SVN_REV} CACHE STRING "The detected revision of the source repository" FORCE)
 
 #
 # Common use of Cmake
@@ -77,8 +78,9 @@ ENDIF (CMAKE_BUILD_TYPE STREQUAL Debug)
 #
 #Defining where to put whats been built
 #
-SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib CACHE STRING "Ouput directory for Library")
-SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin CACHE STRING "Output directory for Tests")
+
+SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib CACHE PATH "Ouput directory for libraries")
+SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin CACHE PATH "Output directory for executables")
 
 
 
