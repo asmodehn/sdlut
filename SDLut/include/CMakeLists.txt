@@ -3,7 +3,7 @@
 #
 
 # This file contains the CMake build configuration
-CONFIGURE_FILE(CMakeConfig.hh ${SDLut_BINARY_DIR}/include/CMakeConfig.hh )
+CONFIGURE_FILE(CMakeConfig.hh ${CMAKE_CURRENT_BINARY_DIR}/CMakeConfig.hh )
 
 # install include files
 # NB : CMakeConfig.hh should be installed as well to indicate which options have been used to build the library, and use them

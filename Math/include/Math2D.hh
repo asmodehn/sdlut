@@ -123,7 +123,7 @@ inline double Vector2::magnitude(void) const
 inline  void Vector2::normalize(void)
 {
 	double m = magnitude();
-	double tolerance = pow(10,precision);
+	double tolerance = pow(10.0,precision);
 	if ( m <= tolerance ) m = 1;
 	_x /= m;
 	_y /= m;

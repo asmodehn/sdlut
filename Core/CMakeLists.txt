@@ -3,6 +3,9 @@ CMAKE_MINIMUM_REQUIRED ( VERSION 2.4)
 #Project Definition : Rage::Core
 PROJECT(Core)
 
+
+INCLUDE(../RageCommon.cmake)
+
 #
 #Checking software dependencies
 #
@@ -73,11 +76,7 @@ IF (BUILD_TESTS)
 	ADD_SUBDIRECTORY(test)
 ENDIF(BUILD_TESTS)
 
-#
-#Defining where to put whats been built
-#
-SET(LIBRARY_OUTPUT_PATH ${SDLut_BINARY_DIR}/lib CACHE STRING "Ouput directories for RageSDL Library")
-SET(EXECUTABLE_OUTPUT_PATH ${SDLut_BINARY_DIR}/bin CACHE STRING "Output directories for Tests")
+
 
 #defining usefull variables.
 #GET_TARGET_PROPERTY(SDLut_LIBRARY SDLut LOCATION)

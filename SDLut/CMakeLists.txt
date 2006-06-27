@@ -3,6 +3,10 @@ CMAKE_MINIMUM_REQUIRED ( VERSION 2.4)
 #Project Definition
 PROJECT(SDLut)
 
+
+INCLUDE(../RageCommon.cmake)
+
+
 #
 #Checking software dependencies
 #
@@ -103,52 +107,6 @@ ELSE (SDLNET_FOUND)
 ENDIF(SDLNET_FOUND)	
 	
 #
-#Compiler Specific rules
-#
-IF(MSVC)
-MESSAGE( STATUS "Visual Studio Compiler detected. Adjusting C++ flags...")
-#thats doesnt seem to work... not sure...
-SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /wd4290" )
-#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB")
-#MODULE and SHARED also ??
-ENDIF(MSVC)
-
-#
-# Managing relation between source and builds 
-#
-#to put the SVN Revision number in the build
-find_program( SVNVERSION
-  svnversion
-  /usr/local/bin
-  /usr/bin
-)
-
-macro( svn_repository_version DESTVAR TOPDIR )
-  exec_program( ${SVNVERSION} ${TOPDIR} ARGS "." OUTPUT_VARIABLE ${DESTVAR} )
-endmacro( svn_repository_version )
-
-svn_repository_version( SVNREV ${SDLut_SOURCE_DIR} )
-#think about where it s better to use SVNREV...
-
-#
-# Managing Build Types
-#
-
-#adding definitions for Logs and debug
-ADD_DEFINITIONS(-DLOGINDENTLVL=1)
-
-#default value
-IF(NOT CMAKE_BUILD_TYPE)
-  SET(CMAKE_BUILD_TYPE Debug CACHE STRING
-      "Choose the type of build, options are: Debug Release."
-      FORCE)
-ENDIF(NOT CMAKE_BUILD_TYPE)
-
-IF (CMAKE_BUILD_TYPE STREQUAL Debug)
-	ADD_DEFINITIONS(-DDEBUG)
-ENDIF (CMAKE_BUILD_TYPE STREQUAL Debug)
-
-#
 # Definining what to build depending on options
 #
 
@@ -171,12 +129,6 @@ ADD_SUBDIRECTORY(src)
 IF (BUILD_TESTS)
 	ADD_SUBDIRECTORY(test)
 ENDIF(BUILD_TESTS)
-
-#
-#Defining where to put what has been built
-#
-SET(LIBRARY_OUTPUT_PATH ${SDLut_BINARY_DIR}/lib CACHE STRING "Ouput directories for RageSDL Library")
-SET(EXECUTABLE_OUTPUT_PATH ${SDLut_BINARY_DIR}/bin CACHE STRING "Output directories for Tests")
 
 #defining usefull variables.
 #GET_TARGET_PROPERTY(SDLut_LIBRARY SDLut LOCATION)
