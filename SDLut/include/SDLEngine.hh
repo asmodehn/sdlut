@@ -41,11 +41,11 @@ namespace RAGE
 			protected:
 			//will be initialized in init
 			//might be better in a constructor actually...
-			RGBSurface * image;
+			RGBSurface * _logo;
 
 			public:
 
-			DefaultEngine() : image(NULL) {}
+			DefaultEngine() : _logo(NULL) {}
 
 			//this render function should not modify the engine
             virtual void render(VideoSurface & screen) const;
@@ -61,18 +61,19 @@ namespace RAGE
 		// Default GL Engine ( only used if no engine is defined )
 		class DefaultGLEngine : public Engine
         {
+		protected:
 			//will be initialized in init
 			//might be better in a constructor actually...
-			RGBSurface * image;
-			GLuint imagetexture;
+			RGBSurface * _logo;
+			GLuint _logotexture;
 			
 
 			public:
 
-			DefaultGLEngine() : image(NULL),imagetexture(0) {}
+			DefaultGLEngine() : _logo(NULL),_logotexture(0) {}
 			~DefaultGLEngine()
 			{
-				if (imagetexture!=0) glDeleteTextures(1, &imagetexture);
+				if (_logotexture!=0) glDeleteTextures(1, &_logotexture);
 			}
 
 			//this is run just before the render

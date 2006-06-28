@@ -135,16 +135,16 @@ public:
 	bool init(int width, int height)
 	{
 		DefaultEngine::init(width,height);
-		console->init(width,height - 2 * DefaultEngine::image->getHeight());
-		consolePos.sety(DefaultEngine::image->getHeight());
+		console->init(width,height - 2 * DefaultEngine::_logo->getHeight());
+		consolePos.sety(DefaultEngine::_logo->getHeight());
 		return true;
 	}
 
 	bool resize(int width, int height)
 	{
 		DefaultEngine::resize(width,height);
-		console->resize(width,height - 2 * DefaultEngine::image->getHeight());
-		consolePos.sety(DefaultEngine::image->getHeight());
+		console->resize(width,height - 2 * DefaultEngine::_logo->getHeight());
+		consolePos.sety(DefaultEngine::_logo->getHeight());
 		return true;
 	}
 
@@ -185,10 +185,10 @@ int main(int argc, char** argv)
     App::getInstance().getWindow()->setBGColor(Color (64,0,0));
 
     //specific font
-    //Font font("data/ECHELON.TTF",16);
+    Font font("data/ECHELON.TTF",16);
     
     //default font
-    Font font(16);
+    //Font font(16);
     
 	Console cons(font);
 	MyEngine engine;

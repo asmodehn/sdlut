@@ -110,29 +110,9 @@ ENDIF(SDLNET_FOUND)
 # Definining what to build depending on options
 #
 
-SET(BUILD_TESTS OFF CACHE BOOL "Wether or not you want the project to include the tests executables")
 
+RAGE_BUILD(${PROJECT_NAME} LIBRARY)
 
-#
-# Configure and Build process
-#
+RAGE_TEST(${PROJECT_NAME})
 
-#Include Files are copied in the binary tree once configured
-#those configured include files, are the ones who will be installed.
-ADD_SUBDIRECTORY(include)
-#Including configured headers (binary for the configured header, source for the unmodified ones
-INCLUDE_DIRECTORIES( ${SDLut_BINARY_DIR}/include ${SDLut_SOURCE_DIR}/include )
-
-#Defining target
-ADD_SUBDIRECTORY(src)
-
-IF (BUILD_TESTS)
-	ADD_SUBDIRECTORY(test)
-ENDIF(BUILD_TESTS)
-
-#defining usefull variables.
-#GET_TARGET_PROPERTY(SDLut_LIBRARY SDLut LOCATION)
-#SET(SDLut_INCLUDE ${SDLut_SOURCE_DIR}/include)
-#todo set the dependencies
-
-
+RAGE_INSTALL(${PROJECT_NAME})

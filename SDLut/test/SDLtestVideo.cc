@@ -46,48 +46,33 @@ class MyEngine : public DefaultEngine
 
 public:
 
-	Point imagePos;
-	Rect screenSize;
-	
-	MyEngine() : imagePos(0,0)
+	RGBSurface loadedimage;
+	Point imagepos;
+
+	MyEngine( const std::string & imagefilename) : loadedimage(imagefilename),imagepos()
 	{}
 
     virtual ~MyEngine(){}
-
-	bool init(int width, int height)
+			
+    bool init(int width, int height)
 	{
-		DefaultEngine::init(width,height);
-		imagePos = Point( (width - image->getWidth()) /2, (height - image->getHeight()) /2);
-		screenSize = Rect(width,height);
-		return true;
+		imagepos.setx( (width - loadedimage.getWidth()) /2);
+		imagepos.sety( (height - loadedimage.getHeight()) /2);
+		return DefaultEngine::init(width,height);
 	}
 
 	bool resize(int width, int height)
 	{
-		screenSize = Rect(width,height);
-		return true;
-	}
-
-	void prerender()
-	{
-		//to be sure we dont go out of the screen surface...
-		if ( imagePos.getx() > (int)(screenSize.getw() - image->getWidth()) )
-			imagePos.setx(screenSize.getw() - image->getWidth());
-		if ( imagePos.gety() > (int)(screenSize.geth() - image->getHeight()) )
-			imagePos.sety(screenSize.geth() - image->getHeight());
-		if (imagePos.getx() < 0) imagePos.setx(0);
-		if (imagePos.gety() < 0) imagePos.sety(0);
+		imagepos.setx( (width - loadedimage.getWidth()) /2);
+		imagepos.sety( (height - loadedimage.getHeight()) /2);
+		return DefaultEngine::resize(width,height);
 	}
 
 	void render(VideoSurface & screen) const
     {
-		screen.blit(*image,imagePos);
+		screen.blit(loadedimage, imagepos );
+		DefaultEngine::render(screen);
     }
-
-	void postrender()
-	{
-		imagePos += Point (1,1);
-	}
 };
 
 
@@ -110,9 +95,10 @@ int main(int argc, char** argv)
 
     App::getInstance().getWindow()->setBGColor(Color (64,0,0));
 	
-	//without this line the default engine is used
-    //App::getInstance().getWindow()->setEngine(new MyEngine());
-
+	//if argument we load the image in the test engine 
+	if ( argc > 1)
+		App::getInstance().getWindow()->setEngine(new MyEngine(std::string(argv[1])));
+	//otherwise we use the default engine only.
 
     if (! (App::getInstance().getWindow()->resetDisplay()))
     {

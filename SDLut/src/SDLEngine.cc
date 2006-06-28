@@ -8,15 +8,15 @@ namespace RAGE
 		//this render function should not modify the engine
 		void DefaultEngine::render(VideoSurface & screen) const
 		{
-			screen.blit(*image,Point( screen.getWidth() - image->getWidth(), screen.getHeight() - image->getHeight()));
+			screen.blit(*_logo,Point( screen.getWidth() - _logo->getWidth(), screen.getHeight() - _logo->getHeight()));
 		}
 
 			//to initialise the engine, just called once before any render
 		bool DefaultEngine::init(int width, int height)
 		{
 			//loading the default RGBSurface from the Resources
-			image = new RGBSurface();
-			return image != NULL;
+			_logo = new RGBSurface();
+			return _logo != NULL;
 		}
 
 		//get called everytime the display is resized
@@ -66,20 +66,20 @@ namespace RAGE
 			glEnable(GL_TEXTURE_2D);
 
 			//Load the texture
-			glBindTexture(GL_TEXTURE_2D, imagetexture);
+			glBindTexture(GL_TEXTURE_2D, _logotexture);
 
 			glBegin( GL_QUADS ) ;
 				glTexCoord2i( 0,0) ;
-				glVertex2i( screen.getWidth() - image->getWidth() , screen.getHeight()- image->getHeight() ) ;
+				glVertex2i( screen.getWidth() - _logo->getWidth() , screen.getHeight()- _logo->getHeight() ) ;
 	
 				glTexCoord2i( 0, 1) ;
-				glVertex2i( screen.getWidth() - image->getWidth() , screen.getHeight()) ;
+				glVertex2i( screen.getWidth() - _logo->getWidth() , screen.getHeight()) ;
 	
 				glTexCoord2i( 1, 1) ;
 				glVertex2i( screen.getWidth() , screen.getHeight()) ;
 				
 				glTexCoord2i( 1, 0) ;
-				glVertex2i( screen.getWidth(), screen.getHeight() - image->getHeight() ) ;
+				glVertex2i( screen.getWidth(), screen.getHeight() - _logo->getHeight() ) ;
 			glEnd() ;
 
 
@@ -90,15 +90,15 @@ namespace RAGE
 			//to initialise the engine, just called once before any render
 		bool DefaultGLEngine::init(int width, int height)
 		{
-			if ( image == NULL )
+			if ( _logo == NULL )
 			{
 				//loading the default RGBSurface from the Resources
-				image = new RGBSurface();
+				_logo = new RGBSurface();
 				 
 			}
 			//if ( image->isGLvalid() )
-			imagetexture=image->generateTexture();
-			Log << nl << "generated texture : " << imagetexture;
+			_logotexture=_logo->generateTexture();
+			Log << nl << "generated texture : " << _logotexture;
 			
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	// Linear Filtering
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	// Linear Filtering
