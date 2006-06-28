@@ -107,9 +107,8 @@ int main(int argc, char** argv)
     }
     else
     {
-
         App::getInstance().getWindow()->mainLoop(2);
-
+		//think about automatic exit...
     }
     return 0;
 }

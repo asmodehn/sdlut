@@ -19,6 +19,10 @@ ADD_DEPENDENCIES(SDLtestTimer SDLut)
 
 ADD_EXECUTABLE(SDLtestVideo SDLtestVideo.cc)
 ADD_DEPENDENCIES(SDLtestVideo SDLut)
+ADD_TEST(BMP_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.bmp")
+ADD_TEST(PNG_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.png")
+ADD_TEST(TIF_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.tif")
+ADD_TEST(JPG_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.jpg")
 
 ADD_EXECUTABLE(SDLtestGL SDLtestGL.cc)
 ADD_DEPENDENCIES(SDLtestGL SDLut)
