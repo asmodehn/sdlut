@@ -114,10 +114,6 @@ MACRO (RAGE_INSTALL project_name)
 		ARCHIVE DESTINATION ${VERSION}/lib/static
 		)
 
-	#find out how to get list of tests for a project...
-	INSTALL (
-		PROGRAMS ${TESTS_LIST} DESTINATION ${VERSION}/bin/test
-		)
 ENDMACRO(RAGE_INSTALL project_name)
 
 #

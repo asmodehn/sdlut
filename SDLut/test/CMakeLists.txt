@@ -1,7 +1,18 @@
 CMAKE_MINIMUM_REQUIRED ( VERSION 2.2)
 
-#Configuring and building test data
-ADD_SUBDIRECTORY(data)
+# Library tests data set
+
+#copying data files to use when debugging
+CONFIGURE_FILE(data/smiley.bmp ${SDLut_BINARY_DIR}/test/data/smiley.bmp COPYONLY)
+CONFIGURE_FILE(data/moose.dat ${SDLut_BINARY_DIR}/test/data/moose.dat COPYONLY)
+CONFIGURE_FILE(data/picture.xbm ${SDLut_BINARY_DIR}/test/data/picture.xbm COPYONLY)
+CONFIGURE_FILE(data/sail.bmp ${SDLut_BINARY_DIR}/test/data/sail.bmp COPYONLY)
+CONFIGURE_FILE(data/SDLsample.bmp ${SDLut_BINARY_DIR}/test/data/SDLsample.bmp COPYONLY)
+CONFIGURE_FILE(data/SDLsample.jpg ${SDLut_BINARY_DIR}/test/data/SDLsample.jpg COPYONLY)
+CONFIGURE_FILE(data/SDLsample.png ${SDLut_BINARY_DIR}/test/data/SDLsample.png COPYONLY)
+CONFIGURE_FILE(data/SDLsample.tif ${SDLut_BINARY_DIR}/test/data/SDLsample.tif COPYONLY)
+CONFIGURE_FILE(data/sample.wav ${SDLut_BINARY_DIR}/test/data/sample.wav COPYONLY)
+CONFIGURE_FILE(data/ECHELON.TTF ${SDLut_BINARY_DIR}/test/data/ECHELON.TTF COPYONLY)
 
 #linking Rage_SDL to all other following executables
 LINK_LIBRARIES(SDLut)
@@ -35,5 +46,35 @@ ADD_DEPENDENCIES(SDLtestNet SDLut)
 
 ADD_EXECUTABLE(SDLtestRWCodeDump SDLtestRWCodeDump.cc)
 ADD_DEPENDENCIES(SDLtestRWCodeDump SDLut)
+
+INSTALL(
+TARGETS 
+	SDLtestver
+	SDLtestTimer
+	SDLtestVideo
+	SDLtestGL
+	SDLtestFont
+	SDLtestNet
+	SDLtestRWCodeDump
+DESTINATION
+	${VERSION}/test
+)
+
+# installing tests data
+INSTALL(
+FILES
+	data/smiley.bmp
+	data/moose.dat
+	data/picture.xbm
+	data/sail.bmp
+	data/SDLsample.bmp
+	data/SDLsample.jpg
+	data/SDLsample.png
+	data/SDLsample.tif
+	data/sample.wav
+	data/ECHELON.TTF
+DESTINATION
+	${VERSION}/test/data
+)
 
 
