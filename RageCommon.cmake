@@ -92,9 +92,9 @@ MACRO(RAGE_TEST project)
 
 	SET(ENABLE_TESTS OFF CACHE BOOL "Wether or not you want the project to include the tests and enable automatic testing")
 
-	IF (ENABLE_TESTS)
+	IF(ENABLE_TESTS)
 		ENABLE_TESTING()
-		ADD_SUBDIRECTORY(${CMAKE_SOURCE_DIRECTORY}/test)
+		ADD_SUBDIRECTORY(test)
 	ENDIF(ENABLE_TESTS)
 ENDMACRO(RAGE_TEST)
 
