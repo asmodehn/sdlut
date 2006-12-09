@@ -226,7 +226,7 @@ int main( int argc, char* args[] )
 	if( InitEverything() == false )
 	{ 
 		P0_Logger << " Init Windows failed... " << std::endl;
-		Timer::delay(2000);
+		Delay(2000);
 		//SDL_Delay(2000);
 		return 1;
 	}

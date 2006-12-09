@@ -53,7 +53,7 @@ class Character_Base
 		Rect Arrow_Up[1];
 
 		//Timer that will be used to manage the attack animation fluidity
-		Timer attack_regulator;
+		
 
 		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
 		int attack_check_status(int collision_box_movement, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);

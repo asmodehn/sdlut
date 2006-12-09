@@ -116,7 +116,7 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
     if(! BackGround_Map )
     {
 		P0_Logger << " Can't open BackGround_Map.txt " << std::endl;
-		Timer::delay(3000);
+		Delay(3000);
 		exit(0);
     }
 
@@ -316,7 +316,7 @@ std::vector<BattleField_Sprite*> Environment::Environment_Vector()
     if(! Environment_Map )
     {
 		P0_Logger << " Can't open Environment_Map.txt " << std::endl;
-		Timer::delay(3000);
+		Delay(3000);
 		exit(0);
     }
 

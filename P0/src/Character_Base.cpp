@@ -508,100 +508,59 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface& 
 			if( move_status == CH_RIGHT )
 			{
 				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
-				//Timer not started then start it
-				if ( attack_regulator.get_ticks() == 0 )
-				{
-					attack_regulator.start();
-				}
+
 				//First frame of the attack anim until the timer reach 350ms
-				if ( attack_regulator.get_ticks() <= 350 )
-				{
-					Character_SpriteRect = _character_right_attack[1];
-				}
+				Character_SpriteRect = _character_right_attack[1];
+				Delay(250);
+
 				//2nd frame of the attack animation between 350ms & 700ms
-				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
-				{	
-					Character_SpriteRect = _character_right_attack[2];
-				}
-				//The timer is now over the 700ms, we have finished the attack animation so we get back to the initial frame that is the normal display 
-				if ( attack_regulator.get_ticks() > 700 )
-				{
-					Character_SpriteRect = _character_right_attack[0];
-					attack_regulator.stop();
-				}
+				Character_SpriteRect = _character_right_attack[2];
+				Delay(250);
 
-				/*SDL_AddTimer( 0, CallBackFrame, 1);
-				SDL_AddTimer( (350/10)*10, CallBackFrame, 2);
-				SDL_AddTimer( (700/10)*10, CallBackFrame, 0);
+				//End of animation => Get back to the initial frame that is the normal display 
+				Character_SpriteRect = _character_right_attack[0];
 
-				Uint32 CallBackFrame(Uint32 interval, void *param)
-				{
-					Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[param]);
-				}*/
+				//SDL_AddTimer( 0, CallBackFrame, 1);
+				//SDL_AddTimer( (350/10)*10, CallBackFrame, 2);
+				//SDL_AddTimer( (700/10)*10, CallBackFrame, 0);
+
+				//Uint32 CallBackFrame(Uint32 interval, void *param)
+				//{
+				//	Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[param]);
+				//}
 
 			}
 			else if( move_status == CH_LEFT )
 			{
 				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
-				if ( attack_regulator.get_ticks() == 0 )
-				{
-					attack_regulator.start();
-				}
-				if ( attack_regulator.get_ticks() <= 350 )
-				{
-					Character_SpriteRect = _character_left_attack[1];
-				}
-				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
-				{	
-					Character_SpriteRect = _character_left_attack[2];
-				}
-				if ( attack_regulator.get_ticks() > 700 )
-				{
-					Character_SpriteRect = _character_left_attack[0];
-					attack_regulator.stop();
-				}
+
+				Character_SpriteRect = _character_left_attack[1];
+				Delay(250);
+				Character_SpriteRect = _character_left_attack[2];
+				Delay(250);
+				Character_SpriteRect = _character_left_attack[0];
+				Delay(250);
+
 			}
 			else if( move_status == CH_DOWN )
 			{
 				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
-				if ( attack_regulator.get_ticks() == 0 )
-				{
-					attack_regulator.start();
-				}
-				if ( attack_regulator.get_ticks() <= 350 )
-				{
-					Character_SpriteRect = _character_down_attack[1];
-				}
-				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
-				{	
-					Character_SpriteRect = _character_down_attack[2];
-				}
-				if ( attack_regulator.get_ticks() > 700 )
-				{
-					Character_SpriteRect = _character_down_attack[0];
-					attack_regulator.stop();
-				}
+
+				Character_SpriteRect = _character_down_attack[1];
+				Delay(250);
+				Character_SpriteRect = _character_down_attack[2];
+				Delay(250);
+				Character_SpriteRect = _character_down_attack[0];
 			}
 			else if( move_status == CH_UP )
 			{
 				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
-				if ( attack_regulator.get_ticks() == 0 )
-				{
-					attack_regulator.start();
-				}
-				if ( attack_regulator.get_ticks() <= 350 )
-				{
-					Character_SpriteRect = _character_up_attack[1];
-				}
-				if ( (attack_regulator.get_ticks() > 350) && (attack_regulator.get_ticks() <= 700) )
-				{	
-					Character_SpriteRect = _character_up_attack[2];
-				}
-				if ( attack_regulator.get_ticks() > 700 )
-				{
-					Character_SpriteRect = _character_up_attack[0];
-					attack_regulator.stop();
-				}
+				
+				Character_SpriteRect = _character_up_attack[1];
+				Delay(250);
+				Character_SpriteRect = _character_up_attack[2];
+				Delay(250);
+				Character_SpriteRect = _character_up_attack[0];
 			}
 			//Show the good character sprite
 			Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Character_SpriteRect);
@@ -615,56 +574,35 @@ void Character_Base::attack_animation(int character_hit_distance, VideoSurface& 
 
 			/****Arrow****/
 			//Start the timer
-			attack_regulator.start();
 
-			//In case of distant attack character_hit_distance may vary if we have to take care of it
-			for (int i=1; i <= character_hit_distance; i++) //Move the arrow until character_hit_distance reached that represents monster hit
+
+			//In case of distant attack character_hit_distance may vary, we have to take care of it
+			for (int i=1; i <= character_hit_distance; i++) //Move the arrow until character_hit_distance reached. Equal, monster hit!
 			{
 				//Show the good arrow in function of the position
 				if( move_status == CH_RIGHT )
 				{
 					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx() + (i * CH_WIDTH), y - Camera.gety()), Arrow_Right[0]);
-					//apply_surface(x - camera.x + (i * CH_WIDTH), y - camera.y, Arrow_Tile, screen, &Arrow_Right[0]);
-					attack_regulator.start();
-					while( attack_regulator.get_ticks() < 200 )
-					{
-						//wait    
-					}
+					Delay(250);
 				}
 				else if( move_status == CH_LEFT )
 				{
 					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx() - (i * CH_WIDTH), y - Camera.gety()), Arrow_Left[0]);
-					//apply_surface(x - camera.x - (i * CH_WIDTH), y - camera.y, Arrow_Tile, screen, &Arrow_Left[0]);
-					attack_regulator.start();
-					while( attack_regulator.get_ticks() < 200 )
-					{
-						//wait    
-					}
+					Delay(250);
 				}
 				else if( move_status == CH_DOWN )
 				{
 					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() + (i * CH_HEIGHT)), Arrow_Down[0]);
-					//apply_surface(x - camera.x, y - camera.y + (i * CH_HEIGHT), Arrow_Tile, screen, &Arrow_Down[0]);
-					attack_regulator.start();
-					while( attack_regulator.get_ticks() < 200 )
-					{
-						//wait    
-					}
+					Delay(250);
 				}
 				else if( move_status == CH_UP )
 				{
 					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() - (i * CH_HEIGHT)), Arrow_Up[0]);
-					//apply_surface(x - camera.x, y - camera.y - (i * CH_HEIGHT), Arrow_Tile, screen, &Arrow_Up[0]);
-					attack_regulator.start();
-					while( attack_regulator.get_ticks() < 200 )
-					{
-						//wait    
-					}
+					Delay(250);
 				}
 			}
 
-			//attack animation has been done => stop the timer
-			attack_regulator.stop();
+		//attack animation finished
 		}
 	}
 }
