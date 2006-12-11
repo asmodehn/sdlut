@@ -79,13 +79,14 @@ Character_Base::Character_Base(int X, int Y)
 	Character_SpriteRect = _character_right_attack[0];
 
 	//Initialize animation variables
-    frame = 0;  // for future moves animation
+    frame = 0;  // for animation
     move_status = CH_RIGHT;
 
 	//Attack variable
 	attack_status = false; //false = 0
 	attack_style = 1; //0: nothing (future dev), 1: Melee attack (default), 2: Distant attack, 3: magic attack (future dev)
 	attack_successfull = 0; //Tells if a monster has been hit, by default no
+	hit_monster_distance = 0; //distance to the hitted monster
 
 	//Camera: at the begining it's in the top left corner of the level
 	//Camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
@@ -353,8 +354,8 @@ int Character_Base::check_environment_allow_character(int x, int y, std::vector<
 	//we can't locate the position inside the vector (impossible!!??)
 	return -1;
 }
-//Show the Character on the screen
-void Character_Base::move_animation(VideoSurface& Screen)
+//check the move direction and assign the good sprite
+void Character_Base::check_character_direction()
 {
 	//If CH is moving left
     if( xVel < 0 )
@@ -394,13 +395,78 @@ void Character_Base::move_animation(VideoSurface& Screen)
     {
 		Character_SpriteRect = _character_up_attack[0];
     }
-	//Show the character in his good position
-	Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Character_SpriteRect);
+}
+//define character sprite which appear on the screen (during animations or not) (callback method)
+unsigned int Character_Base::set_animation_sprite(unsigned int interval, void* args)
+{
+	//TODO: FIND A WAY TO NOT CHANGE THE SPRITE UNTIL ANIMATION DONE (perhaps lokking at attack_status)
+
+	//choose between move animation or attack animation
+	if ( attack_status == false )  //movement
+	{
+		P0_Logger << " callback method set_move_animation_sprite called" << std::endl;
+		//end of the timer for the moment (until moved animation developped (future dev))
+		return 0;
+	} else {
+		P0_Logger << " callback method SET ATTACK ANIMATION SPRITE called FRAME:" << frame << std::endl;
+
+		// Melee Style (character_hit_distance = 1 so do not care)
+		if (attack_style == 1)
+		{
+			//increase frame each time the timer is run (from 0 to 2)
+			frame++;
+			//make the timer loop until end of animation (2 frames)
+			if (frame > 2) //end of anim
+			{
+				//reset frame anim
+				frame = 0;
+				//end of timer looping
+				return 0;
+
+			} else {
+				//assign the good sprite to the character sprite depending of the frame and the direction
+				if( move_status == CH_RIGHT )
+				{
+					//right sprite
+					Character_SpriteRect = _character_right_attack[frame];
+				}
+				else if( move_status == CH_LEFT )
+				{
+					//left sprite
+					Character_SpriteRect = _character_left_attack[frame];
+				}
+				else if( move_status == CH_DOWN )
+				{
+					//down sprite
+					Character_SpriteRect = _character_down_attack[frame];
+
+				}
+				else if( move_status == CH_UP )
+				{
+					//up sprite
+					Character_SpriteRect = _character_up_attack[frame];
+				}
+				return interval;
+			}
+		}
+		// Distant Style
+		if (attack_style == 2)
+		{
+			//define the good character sprite (future devs: depending of the frame and the direction)
+
+			//reset frame anim
+			frame = 0;
+			//end of timer
+			return 0;
+		}
+		//attack animations finished 
+		return 0;	//(to solve warning)
+	}
 }
 //Handle character attack on monsters for all attack style and return the distance where the attack took place (in case of a distant attack for example)
 int Character_Base::attack(std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm)
 {
-	int Hit_Distance = 0; //The Hit distance is the distance between the character and the monster by default the Melee Hit Distance
+	int Hit_Distance = 0; //The Hit distance is the distance between the character and the monster by default the Melee Hit Distance (aka 0)
 
 	//If the player has pushed the attack key => check if attack was seccessfull or not and act accordingly
 	if (attack_status == true)
@@ -495,116 +561,42 @@ int Character_Base::attack_check_status(int collision_box_movement, std::vector<
 
 	return _attack_successfull;
 }
-//Attack animation regarding of the style
-void Character_Base::attack_animation(int character_hit_distance, VideoSurface& Screen)
+//arrow animation (callback method)
+unsigned int Character_Base::set_arrow_animation_sprite(unsigned int interval, void* args)
 {
-	//If the player has pushed the attack key => launch animation attack
-	if (attack_status == true)
+	return 0;
+}
+//blit the character on the screen
+void Character_Base::Show_Character(VideoSurface& Screen)
+{
+	Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Character_SpriteRect);
+}
+//blit the arrow on the screen
+void Character_Base::Show_Arrow(VideoSurface& Screen)
+{
+	//In case of distant attack hit_monster_distance may vary, we have to take care of it
+	for (int i=1; i <= hit_monster_distance; i++) //Move the arrow until hit_monster_distance reached. Equal, monster hit!
 	{
-		// Melee Style (character_hit_distance = 1 so do not care)
-		if (attack_style == 1)
+		//Show the good arrow in function of the position
+		if( move_status == CH_RIGHT )
 		{
-			//assign the good sprite to the character sprite depending of the frame and the direction
-			if( move_status == CH_RIGHT )
-			{
-				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[0]);
-
-				//First frame of the attack anim until the timer reach 350ms
-				Character_SpriteRect = _character_right_attack[1];
-				Delay(250);
-
-				//2nd frame of the attack animation between 350ms & 700ms
-				Character_SpriteRect = _character_right_attack[2];
-				Delay(250);
-
-				//End of animation => Get back to the initial frame that is the normal display 
-				Character_SpriteRect = _character_right_attack[0];
-
-				//SDL_AddTimer( 0, CallBackFrame, 1);
-				//SDL_AddTimer( (350/10)*10, CallBackFrame, 2);
-				//SDL_AddTimer( (700/10)*10, CallBackFrame, 0);
-
-				//Uint32 CallBackFrame(Uint32 interval, void *param)
-				//{
-				//	Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_right_attack[param]);
-				//}
-
-			}
-			else if( move_status == CH_LEFT )
-			{
-				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_left_attack[0]);
-
-				Character_SpriteRect = _character_left_attack[1];
-				Delay(250);
-				Character_SpriteRect = _character_left_attack[2];
-				Delay(250);
-				Character_SpriteRect = _character_left_attack[0];
-				Delay(250);
-
-			}
-			else if( move_status == CH_DOWN )
-			{
-				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_down_attack[0]);
-
-				Character_SpriteRect = _character_down_attack[1];
-				Delay(250);
-				Character_SpriteRect = _character_down_attack[2];
-				Delay(250);
-				Character_SpriteRect = _character_down_attack[0];
-			}
-			else if( move_status == CH_UP )
-			{
-				//Screen->blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), _character_up_attack[0]);
-				
-				Character_SpriteRect = _character_up_attack[1];
-				Delay(250);
-				Character_SpriteRect = _character_up_attack[2];
-				Delay(250);
-				Character_SpriteRect = _character_up_attack[0];
-			}
-			//Show the good character sprite
-			Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Character_SpriteRect);
+			Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx() + (i * CH_WIDTH), y - Camera.gety()), Arrow_Right[0]);
 		}
-		// Distant Style
-		if (attack_style == 2)
+		else if( move_status == CH_LEFT )
 		{
-			/****Character****/
-			//Show the good character sprite (future devs: depending of the frame and the direction)
-			Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Character_SpriteRect);
-
-			/****Arrow****/
-			//Start the timer
-
-
-			//In case of distant attack character_hit_distance may vary, we have to take care of it
-			for (int i=1; i <= character_hit_distance; i++) //Move the arrow until character_hit_distance reached. Equal, monster hit!
-			{
-				//Show the good arrow in function of the position
-				if( move_status == CH_RIGHT )
-				{
-					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx() + (i * CH_WIDTH), y - Camera.gety()), Arrow_Right[0]);
-					Delay(250);
-				}
-				else if( move_status == CH_LEFT )
-				{
-					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx() - (i * CH_WIDTH), y - Camera.gety()), Arrow_Left[0]);
-					Delay(250);
-				}
-				else if( move_status == CH_DOWN )
-				{
-					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() + (i * CH_HEIGHT)), Arrow_Down[0]);
-					Delay(250);
-				}
-				else if( move_status == CH_UP )
-				{
-					Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() - (i * CH_HEIGHT)), Arrow_Up[0]);
-					Delay(250);
-				}
-			}
-
-		//attack animation finished
+			Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx() - (i * CH_WIDTH), y - Camera.gety()), Arrow_Left[0]);
+		}
+		else if( move_status == CH_DOWN )
+		{
+			Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() + (i * CH_HEIGHT)), Arrow_Down[0]);
+		}
+		else if( move_status == CH_UP )
+		{
+			Screen.blit(Arrow_Tile, Point::Point(x - Camera.getx(), y - Camera.gety() - (i * CH_HEIGHT)), Arrow_Up[0]);
 		}
 	}
+	//reset
+	hit_monster_distance = 0;
 }
 //Display attack msg on the status bar (hit or miss)
 void Character_Base::Display_Attack_Msg(VideoSurface& Screen)

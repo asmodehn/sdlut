@@ -62,7 +62,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					//To DO *******
 					break;
 
-					//Window <--> Fullscreen
+					//Windows <--> Fullscreen
 				case KF11:
 					App::getInstance().getWindow()->setFullscreen(true);
 					//App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen());

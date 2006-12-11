@@ -14,21 +14,25 @@ private:
 	
 	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton; //A factory of Monster Skeletons
 	std::vector<Monster_Skeleton*> Monster_Vector_Skeleton; //Vector which will contains all skeletons
-	//Monster_Factory* Monster_Factory_Skeleton; //A factory of Monster Skeleton
+
 	Monster_Factory<Monster_Worm>* Monster_Factory_Worm; //A factory of Monster Worms
 	std::vector<Monster_Worm*> Monster_Vector_Worm; //Vector which will contains all skeletons
 	
 	Character_Base* myCharacter;
-	int Character_Hit_Distance;
+	int Hit_Monster_Distance;
 
 	Escape_Menu* EscMenu;
+
+	//Character animation timer
+	Timer<Character_Base> Character_Attack_Animation_Timer; //attack
 
 public:
 
 	//Constructor
     TheEngine()
     {
-		Character_Hit_Distance = 0;
+		//Melee Distance
+		Hit_Monster_Distance = 0;
 
 		//Initialize the BackGround
 		myBackGround = new BackGround();
@@ -70,6 +74,9 @@ public:
 
 		//Create the ingame escape menu
 		EscMenu = new Escape_Menu();
+
+		//Intervals between frames (every 10 frames at 10fps)
+		Character_Attack_Animation_Timer.setInterval( 100  );
 		
 		P0_Logger << " Engine CONSTRUCTED Successfully " << std::endl;
 
@@ -96,7 +103,7 @@ public:
 		return true;
 	}
 
-    //Everything that must be calculated before the display on the screen must be defined in this method and then will be called my the mainloop each cycle
+    //Everything that must be calculated before the display on the screen must be defined in this method and then will be called by the mainloop each cycle
 	void prerender(void)
 	{
 		//Update the graphic style of the character
@@ -105,8 +112,8 @@ public:
 		//Move the character if possible
 		myCharacter->move(Environment_Sprite_Vector, BackGround_Sprite_Vector, Monster_Vector_Skeleton, Monster_Vector_Worm);
 
-		//Handle attacks
-		Character_Hit_Distance = myCharacter->attack(Monster_Vector_Skeleton, Monster_Vector_Worm);
+		//Handle attacks (set the distance of the attack)
+		myCharacter->Set_Hit_Monster_Distance( myCharacter->attack(Monster_Vector_Skeleton, Monster_Vector_Worm) );
 
 		//Remove Dead monsters from the vector
 		Monster_Vector_Skeleton = Monster_Factory_Skeleton->Remove_Dead_Monsters();
@@ -121,6 +128,13 @@ public:
 
 		//transmit the character instance and the esc menu instance to the keyboard instance
 		myKeyboardInput.Update_Character_Knowledge(myCharacter, EscMenu);
+
+		//check character looking direction
+		myCharacter->check_character_direction();
+
+		//Set the callback method wshich will define the character appearance on the screen and start animation
+		Character_Attack_Animation_Timer.setCallback(myCharacter,&Character_Base::set_animation_sprite, (void*)NULL);
+		Character_Attack_Animation_Timer.start();
 	}
 	//Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
 	void render(VideoSurface & screen) const
@@ -132,11 +146,11 @@ public:
 		myEnvironment->Render(Environment_Sprite_Vector, myCharacter->Camera, screen);
 
 		//Show the Character on the screen
-		myCharacter->move_animation(screen);
-		
-		if (GLOBAL_GAME_STATE == 3)
-		//Show character attack animation
-		myCharacter->attack_animation(Character_Hit_Distance, screen);
+		myCharacter->Show_Character(screen);
+
+		//show the arrow of the screen if necessary (distant attack used)
+		if ( ( myCharacter->Get_Attack_Status() ) && ( myCharacter->Get_Attack_Style() == 2) )
+		{ myCharacter->Show_Arrow(screen); }
 
 		//Apply monsters to the screen
 		Monster_Factory_Skeleton->Move_Monsters_Animation(myCharacter->Camera, screen);
@@ -212,6 +226,9 @@ bool InitEverything()
         return false;
     }
 	P0_Logger << " Video Surface Creation : OK " << std::endl;
+
+	//Enable timer
+	App::getInstance().initTimer();
 
     //If eveything loads fine
     return true;    

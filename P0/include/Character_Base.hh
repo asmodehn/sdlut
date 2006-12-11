@@ -52,8 +52,8 @@ class Character_Base
 		Rect Arrow_Down[1];
 		Rect Arrow_Up[1];
 
-		//Timer that will be used to manage the attack animation fluidity
-		
+		//Hit distance
+		int hit_monster_distance;
 
 		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
 		int attack_check_status(int collision_box_movement, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
@@ -112,7 +112,7 @@ class Character_Base
         {
             attack_status=new_attack_status;
         }
-		int Get_Attack_Status() const
+		bool Get_Attack_Status() const
         {
             return attack_status;
         }
@@ -134,6 +134,15 @@ class Character_Base
         {
             return attack_successfull;
         }
+		
+		void Set_Hit_Monster_Distance(int new_Hit_Monster_Distance)
+        {
+            hit_monster_distance = new_Hit_Monster_Distance;
+        }
+        int Get_Hit_Monster_Distance() const
+        {
+            return hit_monster_distance;
+        }
 
 
 
@@ -145,14 +154,23 @@ class Character_Base
 		//Move the Character and check collision with monsters and the battlefield (environment and background)
 		void move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
 
-		//Shows the character movement on the screen
-		void move_animation(VideoSurface& Screen);
+		//check the direction where the character is turn to
+		void check_character_direction();
+
+		//define character sprite which appear on the screen (during animations or not) (callback method)
+		unsigned int set_animation_sprite(unsigned int interval, void* args);
 
 		//Manage the character attack
 		int attack(std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
 
-		//Shows the character attack on the screen
-		void attack_animation(int character_hit_distance, VideoSurface& Screen);
+		//Shows arrow animation (callback method)
+		unsigned int set_arrow_animation_sprite(unsigned int interval, void* args);
+
+		//blit the character on the screen
+		void Show_Character(VideoSurface& Screen);
+
+		//blit the arrow on the screen
+		void Show_Arrow(VideoSurface& Screen);
 
 		//Display attack msg on the status bar (hit or miss)
 		void Display_Attack_Msg(VideoSurface& Screen);
