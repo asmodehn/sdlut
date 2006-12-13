@@ -33,7 +33,7 @@ static unsigned int callback(unsigned int interval, void * args)
 
 int main(int argc, char *argv[])
 {
-	Logger testlog("testver");
+	Logger testlog("testTimer");
 
 	testlog << "SDL init..." << std::endl;
 

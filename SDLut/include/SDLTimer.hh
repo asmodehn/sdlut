@@ -3,6 +3,8 @@
 
 #include "SDLConfig.hh"
 #include "Functor.hh"
+#include <utility>
+#include <map>
 
 namespace RAGE
 {
@@ -46,7 +48,7 @@ namespace RAGE
 
 
 			//static table lookup that stores pointer to callback
-			static std::vector< Callback* > _cbtable;
+			static std::map<int, Callback* > _cbtable;
 
 			public:
 
@@ -74,7 +76,7 @@ namespace RAGE
 
 
 		template <class TClass>
-				std::vector<typename Timer<TClass>::Callback* > Timer<TClass>::_cbtable;
+				std::map<int,typename Timer<TClass>::Callback* > Timer<TClass>::_cbtable;
 		
 		template <class TClass>
 		unsigned int Timer<TClass>::callback(unsigned int interval, void* args)
@@ -88,7 +90,7 @@ namespace RAGE
     		void Timer<TClass>::setCallback(TClass* instance,unsigned int (TClass::*func) (unsigned int, void*), void* args)
 		{
 			
-			_cbtable.push_back(new Callback(instance,func));
+			_cbtable.insert(std::make_pair(_index,new Callback(instance,func)));
 			_args = args;
 		}
 
@@ -101,7 +103,8 @@ namespace RAGE
 			index++;
 			_index = index;
 			//preparing callback
-			_cbtable.push_back(NULL);
+			//_cbtable.push_back(NULL);
+			//useful ? really ??
 		}
 
 		template<class TClass>
