@@ -6,6 +6,8 @@
 #include "SDL.hh"
 using namespace RAGE;
 
+int loop_number = 0;
+
 class ObjectWithCallback
 {
 
@@ -20,8 +22,15 @@ class ObjectWithCallback
 	
 	unsigned int callback2(unsigned int interval, void* args)
 	{
-		std::cout << "Instance Method 2 Called back ! " << std::endl;
-		return 0;
+		loop_number++;
+		if ( loop_number > 2 )
+		{
+			loop_number = 0;
+			return 0;
+		}
+
+		std::cout << "Instance Method 2 Called back ! Number: " << loop_number << std::endl;
+		return interval;
 	}
 };
 
