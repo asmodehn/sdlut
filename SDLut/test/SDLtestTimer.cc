@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 
 	timer1.setInterval(2000);
 	timer1.setCallback(&obj,&ObjectWithCallback::callback1,(void*)NULL);
-	timer2.setInterval(100);
+	timer2.setInterval(0); //BUG!! when Interval = 0, the timer loop infinitly instead of exit like when there is the return 0;
 	timer2.setCallback(&obj,&ObjectWithCallback::callback2,(void*)NULL);
 	
 	testlog << "Starting instance timer1 ( 2 sec )" << std::endl;
