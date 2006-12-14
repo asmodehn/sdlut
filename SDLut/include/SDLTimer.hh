@@ -40,20 +40,20 @@ namespace RAGE
 	    		typedef struct { int lookupindex; void* args;} cbargs;
 		    
 		    	//index of this functor instance in the static lookuptable
-			int _index;
+			unsigned int _index;
 		    
-						bool running;
-			long _interval;
+			bool running;
+			unsigned int _interval;
 			void* _args;
 
 
 			//static table lookup that stores pointer to callback
-			static std::map<int, Callback* > _cbtable;
+			static std::map<unsigned int, Callback* > _cbtable;
 
 			public:
 
 		    	//static callback function who calls the right functor from the table
-			static unsigned int callback(unsigned int, void* args);
+				static unsigned int callback(unsigned int, void* args);
 			
 			
 			
@@ -67,7 +67,7 @@ namespace RAGE
 			Timer();
 			~Timer();
 
-			void setInterval(long interval);
+			void setInterval(unsigned int interval);
 			void setCallback(TClass* instance, unsigned int (TClass::*func) (unsigned int, void*) , void* args);
 			
 			void start();
@@ -76,10 +76,10 @@ namespace RAGE
 
 
 		template <class TClass>
-				std::map<int,typename Timer<TClass>::Callback* > Timer<TClass>::_cbtable;
+				std::map<unsigned int,typename Timer<TClass>::Callback* > Timer<TClass>::_cbtable;
 		
 		template <class TClass>
-		unsigned int Timer<TClass>::callback(unsigned int interval, void* args)
+				unsigned int Timer<TClass>::callback(unsigned int interval, void* args)
 		{
 			cbargs* callargs= static_cast<cbargs*>(args);
 			return _cbtable[callargs->lookupindex]->call(interval,callargs->args);
@@ -87,7 +87,7 @@ namespace RAGE
 		}
 		
 		template<class TClass>
-    		void Timer<TClass>::setCallback(TClass* instance,unsigned int (TClass::*func) (unsigned int, void*), void* args)
+				void Timer<TClass>::setCallback(TClass* instance,unsigned int (TClass::*func) (unsigned int, void*), void* args)
 		{
 			
 			_cbtable.insert(std::make_pair(_index,new Callback(instance,func)));
@@ -131,7 +131,7 @@ namespace RAGE
 		}
 		
 		template<class TClass>
-		void Timer<TClass>::setInterval(long interval)
+				void Timer<TClass>::setInterval(unsigned int interval)
 		{
 			_interval = interval;
 		}

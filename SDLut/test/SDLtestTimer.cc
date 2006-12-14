@@ -22,14 +22,12 @@ class ObjectWithCallback
 	
 	unsigned int callback2(unsigned int interval, void* args)
 	{
-		loop_number++;
-		if ( loop_number > 10 )
-		{
-			loop_number = 0;
-			return 0;
-		}
-		std::cout << "Instance Method 2 Called back ! Number: " << loop_number << std::endl;
-		return interval;
+		//this should be only called 3 times
+		static int iter = 5;
+		std::cout << "Instance Method 2 Called back ! Number: " << iter-- << std::endl;
+		if ( iter != 0 )
+			return interval;
+		return 0;
 	}
 };
 
@@ -56,7 +54,7 @@ int main(int argc, char *argv[])
 
 	timer1.setInterval(2000);
 	timer1.setCallback(&obj,&ObjectWithCallback::callback1,(void*)NULL);
-	timer2.setInterval( (10 / 3 / 10) * 10 ); //to round to the nearest 10ms
+	timer2.setInterval(100);
 	timer2.setCallback(&obj,&ObjectWithCallback::callback2,(void*)NULL);
 	
 	testlog << "Starting instance timer1 ( 2 sec )" << std::endl;
