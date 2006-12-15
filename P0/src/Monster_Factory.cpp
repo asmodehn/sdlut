@@ -115,9 +115,11 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Remove_Dead_Mo
 
 //Generate new monsters until max monster has been reached
 template <typename Monster_Template>
-std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Generate_New_Monster(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector)
+std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Generate_New_Monster(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector)
 {
 	int temp = 0;
+	int Character_X = Character_Collision_Box.getx();
+	int Character_Y = Character_Collision_Box.gety();
 	
 	//The more the monster on the battlefield, the less there a chance a new one is generated until we reached the MAX_MONSTERS_SIMULTANEOUSLY constant
 	temp = random(1, MAX_MONSTERS_SIMULTANEOUSLY);

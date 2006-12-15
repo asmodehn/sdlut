@@ -207,6 +207,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Daemons.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Input_Management.cpp"
 				>
 			</File>
@@ -230,6 +234,10 @@
 				RelativePath=".\src\Project0.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\Render_Engine.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Headers"
@@ -246,6 +254,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Character_Base.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Daemons.hh"
 				>
 			</File>
 			<File
@@ -270,6 +282,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Project0.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Render_Engine.hh"
 				>
 			</File>
 		</Filter>

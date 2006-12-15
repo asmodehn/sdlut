@@ -15,10 +15,13 @@ class Character_Base
 		//The velocity of the Character
 		int xVel, yVel;
 
+		//The X and Y offsets of the Arrow
+		int arrow_x, arrow_y;
+
 		//Fight variables
 		bool attack_status; //Attack key pressed yes or no 
 		int attack_style; //Manage the style of attack 
-		int attack_successfull; //Manage the attack displayed msg
+		int attack_successfull; //Manage the attack displayed msg (0: nothing, 1: melee attack success; 2: distant attack success; 3&+: TO DO)
 
 		//Character tiles
 		RGBSurface Characters_Tile;
@@ -33,7 +36,7 @@ class Character_Base
 		Rect Character_SpriteRect;
 
 		//animation variables
-		int frame, move_status;
+		int frame, arrow_frame, move_status;
 
 		//Attack msg, font & color
 		RGBSurface attack_msg; //Will contains the final attack display msg after all other check (style, status, attack successfull, ...)
@@ -51,6 +54,7 @@ class Character_Base
 		Rect Arrow_Right[1];
 		Rect Arrow_Down[1];
 		Rect Arrow_Up[1];
+		Rect Arrow_SpriteRect;
 
 		//Hit distance
 		int hit_monster_distance;
@@ -108,7 +112,7 @@ class Character_Base
         }
 
 		//Define if the player has push the attack Key
-		void Set_Attack_Status(int new_attack_status)
+		void Set_Attack_Status(bool new_attack_status)
         {
             attack_status=new_attack_status;
         }
@@ -157,14 +161,17 @@ class Character_Base
 		//check the direction where the character is turn to
 		void check_character_direction();
 
-		//define character sprite which appear on the screen (during animations or not) (callback method)
-		unsigned int set_animation_sprite(unsigned int interval, void* args);
+		//define character sprite which appear on the screen during moves
+		bool Set_Move_Animation_Sprite();
 
 		//Manage the character attack
 		int attack(std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
 
-		//Shows arrow animation (callback method)
-		unsigned int set_arrow_animation_sprite(unsigned int interval, void* args);
+		//Set Character Sprite Which change when attack occured
+		bool Character_Base::Set_Attack_Animation_Sprite();
+
+		//Set Arrow info for animation
+		bool Set_Arrow_Sprite_Coordinate();
 
 		//blit the character on the screen
 		void Show_Character(VideoSurface& Screen);

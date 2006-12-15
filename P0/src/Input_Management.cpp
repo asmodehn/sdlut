@@ -1,17 +1,86 @@
 #include "Input_Management.hh"
 
+//Constructor
 KeyboardInput::KeyboardInput()
 {
 	GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
 }
-
-//Inform the keyboard of the current character and of the esc menu
-void KeyboardInput::Update_Character_Knowledge(Character_Base* character, Escape_Menu* esc_menu)
+//Private method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
+void KeyboardInput::Character_Moves_Consequences()
 {
-	Character = character;
-	Esc_Menu = esc_menu;
+	//Get Monster's vectors
+	Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
+	Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
+
+	//Move the character if possible
+	myCharacter->move(Environment_Sprite_Vector, BackGround_Sprite_Vector, Monster_Vector_Skeleton, Monster_Vector_Worm);
+	
+	//Set the camera
+	myCharacter->following_camera();
+	
+	//check character looking direction
+	myCharacter->check_character_direction();
+
+	//Send the modified character to the render engine 
+	myRender_Engine->Set_Character_Base(myCharacter);
+
+	//Send the modified character's collision box to daemons
+	myDaemons->Set_Character_Base(myCharacter);
+
+	//Intervals between animation's frames
+	myCharacter_Move_Animation_Timer.setInterval( CHARACTER_MOVE_ANIMATION_INTERVAL  );
+	//Set the callback method which will define the character appearance on the screen and start animation
+	myCharacter_Move_Animation_Timer.setCallback(myDaemons,&Daemons::Character_Move_Animation, (void*)NULL);
+	//Start the animation
+	myCharacter_Move_Animation_Timer.start();
+
+	//P0_Logger << " Move " << std::endl;
 }
-//Managed actions associated to key in function of the context (defined by Global_Game_State)
+//Private method which will call all the method used when there is an attack by the character
+void KeyboardInput::Character_Attack_Consequences()
+{
+	//attack is occuring
+	myCharacter->Set_Attack_Status(true);
+
+	//Get Monster's vectors
+	Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
+	Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
+	
+	//Handle attacks & set the distance of the attack
+	/***WARNING !! IN CASE OF DISTANT ATTACK THE MONSTER IS CONSIDERED AS DEAD WHEN THE KEY IS PRESSED AND NOT WHEN THE ARROW REACHED THE TARGET => TODO: FIND A WAY TO SOLVE THAT (SEPARATE THE ATTACK METHOD IN TWO DISTINCT METHOD EPRHAPS CAN HELP)***/
+	myCharacter->Set_Hit_Monster_Distance( myCharacter->attack(Monster_Vector_Skeleton, Monster_Vector_Worm) );
+	
+	//Intervals between animation's frames
+	myCharacter_Attack_Animation_Timer.setInterval( CHARACTER_MELEE_ATTACK_ANIMATION_INTERVAL );
+	//Set the callback method which will define the character appearance on the screen and start animation
+	myCharacter_Attack_Animation_Timer.setCallback(myDaemons,&Daemons::Character_Attack_Animation, (void*)NULL);
+	
+	//In case of distant attack only
+	if ( myCharacter->Get_Attack_Style() == 2 )
+	{
+		myCharacter_Arrow_Animation_Timer.setInterval( CHARACTER_ARROW_MOVE_ANIMATION_INTERVAL );
+		//Set the callback method which will define the character appearance on the screen and start animation
+		myCharacter_Arrow_Animation_Timer.setCallback(myDaemons,&Daemons::Character_Arrow_Animation, (void*)NULL);
+	}
+	
+	//Start the attack animation
+	myCharacter_Attack_Animation_Timer.start();
+	
+	//In case of distant attack only
+	if ( myCharacter->Get_Attack_Style() == 2 )
+	{
+		//Start arrow animation
+		myCharacter_Arrow_Animation_Timer.start();
+	}
+
+
+	//Send the modified character to the render engine 
+	myRender_Engine->Set_Character_Base(myCharacter);
+
+	//P0_Logger << " Attack " << std::endl;
+}
+
+//Managed actions associated to key in function of the player interface context (defined by GLOBAL_GAME_STATE)
 bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 {
 	//Future dev
@@ -27,46 +96,58 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 		{
 			switch( s.getKey() )
 			{
-				//Moves Keys
-				case KKp8:
-				case KUp:
-					Character->Set_yVel( Character->Get_yVel() - CH_HEIGHT);
-					break;
-				case KKp5:
-				case KDown:
-					Character->Set_yVel( Character->Get_yVel() + CH_HEIGHT);
-					break;
-				case KKp7:
-				case KLeft:
-					Character->Set_xVel( Character->Get_xVel() - CH_WIDTH);
-					break;
-				case KKp9:
-				case KRight:
-					Character->Set_xVel( Character->Get_xVel() + CH_WIDTH);
-					break;
+				if ( !myCharacter->Get_Attack_Status() ) //no attack is occuring if attack not key is available except escape
+				{
+					//Moves Keys
+					case KKp8:
+					case KUp:
+						myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
+						Character_Moves_Consequences();
+						break;
+					case KKp5:
+					case KDown:
+						myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
+						Character_Moves_Consequences();
+						break;
+					case KKp7:
+					case KLeft:
+						myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
+						Character_Moves_Consequences();
+						break;
+					case KKp9:
+					case KRight:
+						myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
+						Character_Moves_Consequences();
+						break;
 
-				//Attacks Key
-				case KKDivide:
-				case KRctrl:
-					Character->Set_Attack_Status(true);
-					break;
-				//Change weapon style by looping between the available styles (2 for the moment)
-				case KKMultiply:
-				case KRShift:
-					Character->Set_Attack_Style( Character->Get_Attack_Style() + 1 );
-					if (Character->Get_Attack_Style() > 2) { Character->Set_Attack_Style(1); }
-					break;
+					//Attacks Key
+					case KKDivide:
+					case KRctrl:
+						Character_Attack_Consequences();
+						break;
 
-				//Leave/appears on the Battlefield and save but do not quit
-				case KKEnter:
-					//To DO *******
-					break;
+					//Change weapon style by looping between the available styles (2 for the moment)
+					case KKMultiply:
+					case KRShift:
+						myCharacter->Set_Attack_Style( myCharacter->Get_Attack_Style() + 1 );
+						if (myCharacter->Get_Attack_Style() > 2) { myCharacter->Set_Attack_Style(1); }
+						//Update the graphic style of the character
+						myCharacter->Update_Graphic_Style();
+						//Send the modified character to the render engine 
+						myRender_Engine->Set_Character_Base(myCharacter);
+						break;
 
-					//Windows <--> Fullscreen
-				case KF11:
-					App::getInstance().getWindow()->setFullscreen(true);
-					//App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen());
-					break;
+					//Leave/appears on the Battlefield and save but do not quit
+					case KKEnter:
+						//To DO *******
+						break;
+
+						//Windows <--> Fullscreen
+					case KF11:
+						App::getInstance().getWindow()->setFullscreen(true);
+						//App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen());
+						break;
+				}
 
 				//Esc Key Pressed
 				case KEscape:
@@ -81,19 +162,23 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				//Moves Keys
 				case KKp8:
 				case KUp:
-					Character->Set_yVel( Character->Get_yVel() + CH_HEIGHT);
+					myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
+					Character_Moves_Consequences();
 					break;
 				case KKp5:
 				case KDown:
-					Character->Set_yVel( Character->Get_yVel() - CH_HEIGHT);
+					myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
+					Character_Moves_Consequences();
 					break;
 				case KKp7:
 				case KLeft:
-					Character->Set_xVel( Character->Get_xVel() + CH_WIDTH);
+					myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
+					Character_Moves_Consequences();
 					break;
 				case KKp9:
 				case KRight:
-					Character->Set_xVel( Character->Get_xVel() - CH_WIDTH);
+					myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
+					Character_Moves_Consequences();
 					break;
 			}
 		}
@@ -107,31 +192,38 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 			{
 				//Decrement esc menu's selected item id until it reach the top than go back to the bottom
 				case KUp:
-					if ( Esc_Menu->Get_SelectedItemId() > 1 )
+					if ( myEsc_Menu->Get_SelectedItemId() > 1 )
 					{
-						Esc_Menu->Set_SelectedItemId(Esc_Menu->Get_SelectedItemId() - 1);
+						myEsc_Menu->Set_SelectedItemId(myEsc_Menu->Get_SelectedItemId() - 1);
 					}
 					else
 					{
-						Esc_Menu->Set_SelectedItemId(2); //The bottom SelectItem id is 2 at this time
+						myEsc_Menu->Set_SelectedItemId(2); //The bottom SelectItem id is 2 at this time
 					}
+					//Send the modified Esc_Menu to the render engine 
+					myRender_Engine->Set_Esc_Menu(myEsc_Menu);
 					break;
 				
 				//Increment esc menu's selected item id until it reach the bottom than go back to the top
 				case KDown:
-					if ( Esc_Menu->Get_SelectedItemId() < 2 )
+					if ( myEsc_Menu->Get_SelectedItemId() < 2 )
 					{
-						Esc_Menu->Set_SelectedItemId(Esc_Menu->Get_SelectedItemId() + 1);
+						myEsc_Menu->Set_SelectedItemId(myEsc_Menu->Get_SelectedItemId() + 1);
 					}
 					else
 					{
-						Esc_Menu->Set_SelectedItemId(1); //The top SelectItem id is 1 at this time
+						myEsc_Menu->Set_SelectedItemId(1); //The top SelectItem id is 1 at this time
 					}
+					//Send the modified Esc_Menu to the render engine 
+					myRender_Engine->Set_Esc_Menu(myEsc_Menu);
 					break;
 
 				//Validate the selected esc menu's item id
 				case KReturn:
-					Esc_Menu->Set_ValidatedItemId( Esc_Menu->Get_SelectedItemId() );
+					//Esc Menu Validation
+					myEsc_Menu->Set_ValidatedItemId( myEsc_Menu->Get_SelectedItemId() );
+					//Manage esc menu validation: leave the game if return is true
+					Set_quitRequested( myEsc_Menu->Manage_Validation() );
 					break;
 			}
 		}

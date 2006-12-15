@@ -47,7 +47,7 @@ class Monster_Factory
 		std::vector<Monster_Template*> Remove_Dead_Monsters();
 		
 		//Generate new monsters until max monster has been reached
-		std::vector<Monster_Template*> Generate_New_Monster(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector);
+		std::vector<Monster_Template*> Generate_New_Monster(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector);
 		
 };
 
