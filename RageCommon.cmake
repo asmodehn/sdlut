@@ -81,6 +81,8 @@ MACRO (RAGE_BUILD project_name project_type)
 
 	SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib CACHE PATH "Ouput directory for libraries")
 	SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin CACHE PATH "Output directory for executables")
+	
+	EXPORT_LIBRARY_DEPENDENCIES(${CMAKE_BINARY_DIR}/CMakeDepends.txt)
 
 ENDMACRO (RAGE_BUILD)
 
