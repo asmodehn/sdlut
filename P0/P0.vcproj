@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="P0"
+	Name="Project_0"
 	ProjectGUID="{A613868B-ADEC-44C3-A9C5-0BCFA37C62BC}"
 	RootNamespace="src"
 	Keyword="Win32Proj"
@@ -319,6 +319,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\data\Grass.png"
+				>
+			</File>
+			<File
+				RelativePath=".\data\Houses Tileset.png"
+				>
+			</File>
+			<File
 				RelativePath=".\data\LeaveMenu_NoSelected.png"
 				>
 			</File>
@@ -331,7 +339,31 @@
 				>
 			</File>
 			<File
-				RelativePath=".\data\tankbrigade.bmp"
+				RelativePath=".\data\Rock.png"
+				>
+			</File>
+			<File
+				RelativePath=".\data\Sand Tileset.png"
+				>
+			</File>
+			<File
+				RelativePath=".\data\Trees Tileset.png"
+				>
+			</File>
+			<File
+				RelativePath=".\data\Wall.png"
+				>
+			</File>
+			<File
+				RelativePath=".\data\Water.png"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Specifs"
+			>
+			<File
+				RelativePath=".\Specifs\2D\2D Design v0.02.odt"
 				>
 			</File>
 		</Filter>

@@ -217,7 +217,7 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
 bool BackGround::Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, Rect Camera, VideoSurface & Screen)
 {
 	//Loop on all the vector
-	for(int i=0; i < BackGround_Sprite_Vector.size(); i++)
+	for(unsigned int i=0; i < BackGround_Sprite_Vector.size(); i++)
 	{
 		//Check if the BackGround sprite is present on the screen (in fact screen + character sprite dim)
 		if ( ((Camera.getx()-CH_WIDTH) <= BackGround_Sprite_Vector[i]->Get_X()) && ( BackGround_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= BackGround_Sprite_Vector[i]->Get_Y()) && ( BackGround_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
@@ -425,7 +425,7 @@ std::vector<BattleField_Sprite*> Environment::Environment_Vector()
 bool Environment::Render(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, Rect Camera, VideoSurface & Screen)
 {
 	//Loop on all the vector
-	for(int i=0; i < Environment_Sprite_Vector.size(); i++)
+	for(unsigned int i=0; i < Environment_Sprite_Vector.size(); i++)
 	{
 		//Check if the Environment sprite is present on the screen (in fact screen + character's sprite dim)
 		if ( ((Camera.getx()-CH_WIDTH) <= Environment_Sprite_Vector[i]->Get_X()) && ( Environment_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= Environment_Sprite_Vector[i]->Get_Y()) && ( Environment_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )

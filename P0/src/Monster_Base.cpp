@@ -154,7 +154,7 @@ bool Monster_Base::check_background_allow_monster(int x, int y, std::vector<Batt
 int Monster_Base::check_environment_allow_monster(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
 {
 	//loop on all the vector
-	for(int i=0; i < Environment_Sprite_Vector.size(); i++)
+	for(unsigned int i=0; i < Environment_Sprite_Vector.size(); i++)
 	{
 		//when we have located the good destination inside the vector,...
 		if (( x == Environment_Sprite_Vector[i]->Get_X() ) && ( y == Environment_Sprite_Vector[i]->Get_Y() ))
@@ -199,7 +199,7 @@ bool Monster_Base::check_cutting_allow_monster(int x, int y, std::vector<BattleF
 	std::vector<int> Allowed_Monsters_Vector;
 
 	//loop on all areas
-	for(int i=0; i < BattleField_Cutting_Vector.size(); i++)
+	for(unsigned int i=0; i < BattleField_Cutting_Vector.size(); i++)
 	{
 		//Get the area
 		Area = BattleField_Cutting_Vector[i]->Get_Area();
@@ -209,7 +209,7 @@ bool Monster_Base::check_cutting_allow_monster(int x, int y, std::vector<BattleF
 		if ( ( x >= Area.getx() ) && ( x < (Area.getx() + Area.getw()) ) && ( y >= Area.gety() ) && ( y < (Area.gety() + Area.geth()) ) )
 		{
 			//Check if monster ID allow them to born in the area
-			for(int j=0; j < Allowed_Monsters_Vector.size(); j++)
+			for(unsigned int j=0; j < Allowed_Monsters_Vector.size(); j++)
 			{
 				//the monster id must be listed inside the Allowed_Monsters_Vector in order to allow monster generation on the area
 				if ( Monster_ID == Allowed_Monsters_Vector[j])

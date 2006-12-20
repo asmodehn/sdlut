@@ -36,7 +36,7 @@ Monster_Skeleton::Monster_Skeleton(int X, int Y)
 bool Monster_Skeleton::check_background_allow_monster(int x, int y, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
 {
 	//loop on all the vector
-	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
+	for(unsigned int i=0; i < BattleField_Sprite_Vector.size(); i++)
 	{
 		//when we have located the good destination inside the vector,...
 		if (( x == BattleField_Sprite_Vector[i]->Get_X() ) && ( y == BattleField_Sprite_Vector[i]->Get_Y() ))
@@ -111,7 +111,7 @@ Monster_Worm::Monster_Worm(int X, int Y)
 bool Monster_Worm::check_background_allow_monster(int x, int y, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
 {
 	//loop on all the vector
-	for(int i=0; i < BattleField_Sprite_Vector.size(); i++)
+	for(unsigned int i=0; i < BattleField_Sprite_Vector.size(); i++)
 	{
 		//when we have located the good destination inside the vector,...
 		if (( x == BattleField_Sprite_Vector[i]->Get_X() ) && ( y == BattleField_Sprite_Vector[i]->Get_Y() ))

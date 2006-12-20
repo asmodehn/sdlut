@@ -213,7 +213,7 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
     }
 
 	//Collision with skeletons
-	for(int i=0; i < Monster_Vector_Skeleton.size(); i++)
+	for(unsigned int i=0; i < Monster_Vector_Skeleton.size(); i++)
 	{
 		if (check_collision( collision_box, Monster_Vector_Skeleton[i]->Get_Collision_Box() ))
 		{
@@ -226,7 +226,7 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
 		}
 	}
 	//Collision with worms
-	for(int i=0; i < Monster_Vector_Worm.size(); i++)
+	for(unsigned int i=0; i < Monster_Vector_Worm.size(); i++)
 	{
 		if (check_collision( collision_box, Monster_Vector_Worm[i]->Get_Collision_Box() ))
 		{
@@ -285,7 +285,7 @@ bool Character_Base::check_battlefield_allow_character(int x, int y, std::vector
 bool Character_Base::check_background_allow_character(int x, int y, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	//loop on all the vector
-	for(int i=0; i < BackGround_Sprite_Vector.size(); i++)
+	for(unsigned int i=0; i < BackGround_Sprite_Vector.size(); i++)
 	{
 		//when we have located the good destination inside the vector,...
 		if (( x == BackGround_Sprite_Vector[i]->Get_X() ) && ( y == BackGround_Sprite_Vector[i]->Get_Y() ))
@@ -327,7 +327,7 @@ bool Character_Base::check_background_allow_character(int x, int y, std::vector<
 int Character_Base::check_environment_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
 {
 	//loop on all the vector
-	for(int i=0; i < Environment_Sprite_Vector.size(); i++)
+	for(unsigned int i=0; i < Environment_Sprite_Vector.size(); i++)
 	{
 		//when we have located the good destination inside the vector,...
 		if (( x == Environment_Sprite_Vector[i]->Get_X() ) && ( y == Environment_Sprite_Vector[i]->Get_Y() ))
@@ -491,7 +491,7 @@ int Character_Base::attack_check_status(int collision_box_movement, std::vector<
 	
 
 	//Check attack with all skeletons inside the vector and return true if one of the skeleton was hit also update the monster Alive_Status
-	for(int i=0; i < Monster_Vector_Skeleton.size(); i++)
+	for(unsigned int i=0; i < Monster_Vector_Skeleton.size(); i++)
 	{
 		//check if collision between monster and attack now that the attack_collision_box has been moved
 		if (check_collision( attack_collision_box, Monster_Vector_Skeleton[i]->Get_Collision_Box() ))
@@ -505,7 +505,7 @@ int Character_Base::attack_check_status(int collision_box_movement, std::vector<
 		}			
 	}
 	//Check attack with all worms inside the vector and return true if one of the worm was hit also update the monster Alive_Status
-	for(int i=0; i < Monster_Vector_Worm.size(); i++)
+	for(unsigned int i=0; i < Monster_Vector_Worm.size(); i++)
 	{
 		//check if collision between monster and attack now that the attack_collision_box has been moved
 		if (check_collision( attack_collision_box, Monster_Vector_Worm[i]->Get_Collision_Box() ))

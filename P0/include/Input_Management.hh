@@ -80,11 +80,11 @@ class KeyboardInput : public Keyboard
 		//Constructor 
 		KeyboardInput();
 
-		void Set_quitRequested(int new_quitRequested)
+		void Set_quitRequested(bool new_quitRequested)
 		{
 			_quitRequested=new_quitRequested;
 		}
-		int Get_quitRequested()
+		bool Get_quitRequested()
 		{
 			return _quitRequested;
 		}

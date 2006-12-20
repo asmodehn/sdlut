@@ -78,7 +78,7 @@ template <typename Monster_Template>
 void Monster_Factory<Monster_Template>::Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	//Move Monsters
-	for(int i=0; i < Monster_Vector.size(); i++)
+	for(unsigned int i=0; i < Monster_Vector.size(); i++)
 	{
 		Monster_Vector[i]->move(Character_Collision_Box, Environment_Sprite_Vector, BackGround_Sprite_Vector);		
 	}
@@ -87,7 +87,7 @@ void Monster_Factory<Monster_Template>::Move_Monsters(Rect Character_Collision_B
 template <typename Monster_Template>
 void Monster_Factory<Monster_Template>::Move_Monsters_Animation(Rect Camera, VideoSurface& Screen)
 {
-	for(int i=0; i < Monster_Vector.size(); i++)
+	for(unsigned int i=0; i < Monster_Vector.size(); i++)
 	{
 		Monster_Vector[i]->move_animation(Camera, Screen);		
 	}
@@ -97,7 +97,7 @@ template <typename Monster_Template>
 std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Remove_Dead_Monsters()
 {
 	//Loop on all the vector
-	for(int i=0; i < Monster_Vector.size(); i++)
+	for(unsigned int i=0; i < Monster_Vector.size(); i++)
 	{
 		//Check if Alive_Status is false
 		if (Monster_Vector[i]->Get_Alive_Status() == false)
@@ -117,7 +117,7 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Remove_Dead_Mo
 template <typename Monster_Template>
 std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Generate_New_Monster(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector)
 {
-	int temp = 0;
+	unsigned int temp = 0;
 	int Character_X = Character_Collision_Box.getx();
 	int Character_Y = Character_Collision_Box.gety();
 	
