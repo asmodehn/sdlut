@@ -13,13 +13,23 @@ void KeyboardInput::Character_Moves_Consequences()
 	Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
 
 	//Move the character if possible
-	myCharacter->move(Environment_Sprite_Vector, BackGround_Sprite_Vector, Monster_Vector_Skeleton, Monster_Vector_Worm);
+	if( myCharacter->move(Environment_Sprite_Vector, BackGround_Sprite_Vector, Monster_Vector_Skeleton, Monster_Vector_Worm)
+	 == false )
+	{ 
+      P0_Logger << " Move character Failed " << std::endl;    
+    }
 	
 	//Set the camera
-	myCharacter->following_camera();
+	if( myCharacter->following_camera() == false )
+	{ 
+      P0_Logger << " Failed to set the camera" << std::endl;    
+    }
 	
 	//check character looking direction
-	myCharacter->check_character_direction();
+	if( myCharacter->check_character_direction() == false )
+	{ 
+      P0_Logger << " Check character direction Failed " << std::endl;    
+    }
 
 	//Send the modified character to the render engine 
 	myRender_Engine->Set_Character_Base(myCharacter);
@@ -130,9 +140,12 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					case KKMultiply:
 					case KRShift:
 						myCharacter->Set_Attack_Style( myCharacter->Get_Attack_Style() + 1 );
-						if (myCharacter->Get_Attack_Style() > 2) { myCharacter->Set_Attack_Style(1); }
+						if (myCharacter->Get_Attack_Style() > 2) { myCharacter->Set_Attack_Style(1); } //loop between style
 						//Update the graphic style of the character
-						myCharacter->Update_Graphic_Style();
+						if( myCharacter->Update_Graphic_Style() == false )
+                    	{ 
+                            P0_Logger << " Update Graphic Style FAILED " << std::endl;
+                        }
 						//Send the modified character to the render engine 
 						myRender_Engine->Set_Character_Base(myCharacter);
 						break;

@@ -35,28 +35,53 @@ void Render_Engine::prerender(void)
 void Render_Engine::render(VideoSurface & screen) const
 {
 	//Generate the background on the screen
-	myBackGround->Render(BackGround_Sprite_Vector, myCharacter->Camera, screen);
+	if( myBackGround->Render(BackGround_Sprite_Vector, myCharacter->Camera, screen) == false )
+	{ 
+      P0_Logger << " Background Render Failed " << std::endl;    
+    }
+
 
 	//Generate the environment on the screen
-	myEnvironment->Render(Environment_Sprite_Vector, myCharacter->Camera, screen);
+	if( myEnvironment->Render(Environment_Sprite_Vector, myCharacter->Camera, screen) == false )
+	{ 
+      P0_Logger << " Environment Render Failed " << std::endl;    
+    }
 
 	//Show the Character on the screen
-	myCharacter->Show_Character(screen);
+	if( myCharacter->Show_Character(screen) == false )
+	{ 
+      P0_Logger << " Character Render Failed " << std::endl;    
+    }
 
 	//show the arrow of the screen (if necessary)
-	myCharacter->Show_Arrow(screen);
+	if( myCharacter->Show_Arrow(screen) == false )
+	{ 
+      P0_Logger << " Arrow Render Failed " << std::endl;    
+    }
 
 	//Apply monsters to the screen
-	Monster_Factory_Skeleton->Move_Monsters_Animation(myCharacter->Camera, screen);
-	Monster_Factory_Worm->Move_Monsters_Animation(myCharacter->Camera, screen);
+	if(
+	( Monster_Factory_Skeleton->Move_Monsters_Animation(myCharacter->Camera, screen) == false )
+	||
+	( Monster_Factory_Worm->Move_Monsters_Animation(myCharacter->Camera, screen) == false )
+	) {
+		P0_Logger << " Monster Render Failed " << std::endl;    
+    }																 
 
 	//Display attack msg
-	myCharacter->Display_Attack_Msg(screen);
+	if( myCharacter->Display_Attack_Msg(screen) == false )
+	{ 
+      P0_Logger << " Display Attack Msg Render Failed " << std::endl;    
+    }
 
-	if (GLOBAL_GAME_STATE == 4)
+	if (GLOBAL_GAME_STATE == 4) {
 		//Show Escape menu
-		EscMenu->Show_Menu(screen);
-
+		if( EscMenu->Show_Menu(screen) == false )
+		{ 
+	      P0_Logger << " Display Esc Menu Failed " << std::endl;    
+	    }
+	}
+	
 	//Auto Flip by the mainloop here
 
 	//P0_Logger << " Render_Engine::Render() Used " << std::endl;

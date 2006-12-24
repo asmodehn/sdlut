@@ -75,22 +75,40 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Create_Monster
 }
 //Invoke all monsters movements
 template <typename Monster_Template>
-void Monster_Factory<Monster_Template>::Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+bool Monster_Factory<Monster_Template>::Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
+try {
 	//Move Monsters
 	for(unsigned int i=0; i < Monster_Vector.size(); i++)
 	{
-		Monster_Vector[i]->move(Character_Collision_Box, Environment_Sprite_Vector, BackGround_Sprite_Vector);		
+		if( Monster_Vector[i]->move(Character_Collision_Box, Environment_Sprite_Vector, BackGround_Sprite_Vector) == false )
+		{ 
+	    	  P0_Logger << " Failed to move monster N°" << i << std::endl;
+			  return false; //error occured 
+   		}		
 	}
+	return true; //no error
+} catch (...) {
+	return false; //error occured
+}
 }
 //Invoke all monsters movements animation on the screen
 template <typename Monster_Template>
-void Monster_Factory<Monster_Template>::Move_Monsters_Animation(Rect Camera, VideoSurface& Screen)
+bool Monster_Factory<Monster_Template>::Move_Monsters_Animation(Rect Camera, VideoSurface& Screen)
 {
+try {
 	for(unsigned int i=0; i < Monster_Vector.size(); i++)
 	{
-		Monster_Vector[i]->move_animation(Camera, Screen);		
+	 	if( Monster_Vector[i]->move_animation(Camera, Screen) == false )
+		{ 
+	    	  P0_Logger << " Failed to render monster movement on monster N°" << i << std::endl;    
+	    	  return false; //error occured
+   		}
 	}
+	return true; //no error occured
+} catch (...) {
+    return false; //error occured
+}
 }
 //Method that will remove all monster with Alive_Status status to false (aka dead monsters) from the monster vector container
 template <typename Monster_Template>

@@ -35,7 +35,7 @@ class Escape_Menu
 
 		/****Methods****/
 		//Blit the good menu surface in function of what the user wants to select with the keyboard
-		void Show_Menu(VideoSurface& Screen);
+		bool Show_Menu(VideoSurface& Screen);
 		//Managed validation on one item (if return true => quit program)
 		bool Escape_Menu::Manage_Validation();
 

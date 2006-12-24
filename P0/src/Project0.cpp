@@ -49,6 +49,8 @@ bool InitEverything()
 //Main
 int main( int argc, char* args[] )
 {
+try { //global error management
+	
 	//Init the rand method using the current time in order to generate more random numbers
 	srand( (unsigned)time( NULL ) );
 
@@ -130,9 +132,14 @@ int main( int argc, char* args[] )
 	//Create Character & initialized it
 	Character_Base* myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y);
 	//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_Vector_Skeleton);
-	myCharacter->Update_Graphic_Style(); //intialize Character's graphic aspect
-	P0_Logger << " Character Creation: OK " << std::endl;
-	myKeyboardInput.Set_Character_Base( myCharacter );
+	if( myCharacter->Update_Graphic_Style() == false ) //intialize Character's graphic aspect
+	{ 
+        P0_Logger << " Character Creation FAILED " << std::endl;
+    	Delay(2000);
+    	return 1;
+    }
+    P0_Logger << " Character Creation: OK " << std::endl;
+    myKeyboardInput.Set_Character_Base( myCharacter );
 	myRender_Engine->Set_Character_Base( myCharacter );
 	
 	//send character collision box to daemons
@@ -191,6 +198,12 @@ int main( int argc, char* args[] )
     //Quit SDL
 	//SDL_Quit();
 
-    return 0;    
+    return 0; //no error occured
+	
+} catch (...) {
+    P0_Logger << " Error in Main " << std::endl;
+    Delay(2000);
+    return 1;
+}
 }
 

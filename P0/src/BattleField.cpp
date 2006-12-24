@@ -216,6 +216,7 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
 //BackGround Render
 bool BackGround::Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, Rect Camera, VideoSurface & Screen)
 {
+try {
 	//Loop on all the vector
 	for(unsigned int i=0; i < BackGround_Sprite_Vector.size(); i++)
 	{
@@ -274,7 +275,10 @@ bool BackGround::Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vecto
 	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - STATUS_BAR_H, CURRENT_SCREEN_WIDTH, STATUS_BAR_H) );
 
 	//P0_Logger << " Background Generation : OK " << std::endl;
-	return true;
+	return true; //no error
+} catch (...) {
+    return false; //error occured
+}
 }
 
 
@@ -424,6 +428,7 @@ std::vector<BattleField_Sprite*> Environment::Environment_Vector()
 //Environment Render
 bool Environment::Render(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, Rect Camera, VideoSurface & Screen)
 {
+try {
 	//Loop on all the vector
 	for(unsigned int i=0; i < Environment_Sprite_Vector.size(); i++)
 	{
@@ -490,5 +495,8 @@ bool Environment::Render(std::vector<BattleField_Sprite*> Environment_Sprite_Vec
 	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - STATUS_BAR_H, CURRENT_SCREEN_WIDTH, STATUS_BAR_H) );
 
 	//P0_Logger << " Environment Generation : OK " << std::endl;*/
-	return true;
+	return true; //no error
+} catch (...) {
+    return false; //error occured
+}
 }

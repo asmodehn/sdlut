@@ -81,8 +81,9 @@ Monster_Base::~Monster_Base()
 	//_monsters_list.~RGBSurface();
 }
 //Move monster randomly
-void Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+bool Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
+try {
 	//move only if a random number is below 10 (This speed down monster movement)
 	if (rand()%200 <= 13) 
 	{
@@ -120,6 +121,10 @@ void Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Spri
 		x = collision_box.getx();
 		y = collision_box.gety();
 	}
+	return true; //no error
+} catch (...) {
+	return false; //error occured
+}
 }
 //Check if the battlefield allow the monster presence
 bool Monster_Base::check_battlefield_allow_monster(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
@@ -225,8 +230,9 @@ bool Monster_Base::check_cutting_allow_monster(int x, int y, std::vector<BattleF
 	return false;
 }
 //Show monster on the screen
-void Monster_Base::move_animation(Rect Camera, VideoSurface& Screen)
+bool Monster_Base::move_animation(Rect Camera, VideoSurface& Screen)
 {
+try {
 	//Check if the monster sprite is present on the screen minus the status bar
 	//NOTE : CH_WIDTH/CH_HEIGHT are present because the camera is centered on the middle of the character and so we need to draw the screen a little more than the camera dim
 	if ( ( (Camera.getx()-CH_WIDTH) <= x) && (x < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= y) && (y < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
@@ -234,4 +240,8 @@ void Monster_Base::move_animation(Rect Camera, VideoSurface& Screen)
 		//It's present than draw it
 		Screen.blit(_monsters_list, Point::Point(x - Camera.getx(), y - Camera.gety()), _monster[0]);
 	}
+	return true; //no error
+} catch (...) {
+  		return false; //error occured
+}
 }

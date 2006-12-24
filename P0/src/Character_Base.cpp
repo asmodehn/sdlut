@@ -173,7 +173,9 @@ Character_Base::~Character_Base()
 	//Arrow_Tile.~RGBSurface();
 }
 //Character Graphic Style Initialiation regarding the attack style
-void Character_Base::Update_Graphic_Style()
+bool Character_Base::Update_Graphic_Style()
+{
+try
 {
 	// Melee Style
 	if (attack_style == 1)
@@ -191,10 +193,16 @@ void Character_Base::Update_Graphic_Style()
 		attack_msg_miss = attack_distant_msg_miss;
 		//P0_Logger << " Graphic Style Updated To Distant Style : OK " << std::endl;
 	}
+	return true;
+}
+catch (...) {
+  return false; //error occured
+}
 }
 //Show the Character on the screen
-void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm)
+bool Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm)
 {
+try {
     //Move the Character collision box to were we want to move
     collision_box.setx(x + xVel);
 	collision_box.sety(y + yVel);
@@ -222,7 +230,7 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
 			collision_box.sety(y); 
 
 			//we have found a collision inside the vector, no need to work more
-			return;
+			return true;
 		}
 	}
 	//Collision with worms
@@ -235,7 +243,7 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
 			collision_box.sety(y); 
 
 			//we have found a collision inside the vector, no need to work more
-			return;
+			return true;
 		}
 	}
     
@@ -254,7 +262,11 @@ void Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Ve
 	//...and the arrow with his owner^^
 	arrow_x = x;
 	arrow_y = y;
-
+	
+	return true; //no error
+} catch (...) {  //error occured
+	return false;
+}
 }
 //Check if the battlefield allow the character presence
 bool Character_Base::check_battlefield_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
@@ -366,8 +378,9 @@ int Character_Base::check_environment_allow_character(int x, int y, std::vector<
 	return -1;
 }
 //check the move direction and assign the good sprite
-void Character_Base::check_character_direction()
+bool Character_Base::check_character_direction()
 {
+try {
 	//If CH is moving left
     if( xVel < 0 )
     {
@@ -413,6 +426,10 @@ void Character_Base::check_character_direction()
 			Arrow_SpriteRect = Arrow_Up[0];
 		}
 	}
+	return true; //no error
+} catch (...) {
+  return false; //error occured
+}
 }
 //define character sprite which appear on the screen during moves
 bool Character_Base::Set_Move_Animation_Sprite()
@@ -618,22 +635,32 @@ bool Character_Base::Set_Arrow_Sprite_Coordinate()
 	}	
 }
 //blit the character on the screen
-void Character_Base::Show_Character(VideoSurface& Screen)
+bool Character_Base::Show_Character(VideoSurface& Screen)
 {
+try {
 	Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Character_SpriteRect);
+	return true; //no error
+} catch (...) {
+	return false; //error occured
+}
 }
 //blit the arrow on the screen
-void Character_Base::Show_Arrow(VideoSurface& Screen)
+bool Character_Base::Show_Arrow(VideoSurface& Screen)
 {
+try {
 	if ( (x != arrow_x) || (y != arrow_y) ) //dont display the arrow when it's at the same place than the character
 	{
 		Screen.blit(Arrow_Tile, Point::Point(arrow_x - Camera.getx(), arrow_y - Camera.gety()), Arrow_SpriteRect);
-
 	}
+	return true; //no error
+} catch (...) {
+	return false; //error occured
+}
 }
 //Display attack msg on the status bar (hit or miss)
-void Character_Base::Display_Attack_Msg(VideoSurface& Screen)
+bool Character_Base::Display_Attack_Msg(VideoSurface& Screen)
 {
+try {
 	//Clean the status Bar
 	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - STATUS_BAR_H, CURRENT_SCREEN_WIDTH, STATUS_BAR_H) );
 
@@ -660,10 +687,15 @@ void Character_Base::Display_Attack_Msg(VideoSurface& Screen)
 		attack_status = false;
 	}
 	Screen.blit( attack_msg, Point::Point(5, CURRENT_SCREEN_HEIGHT - 30) );
+	return true; //no error
+} catch (...) {
+	return false; //error occured
+}
 }
 //Managed the camera
-void Character_Base::following_camera()
+bool Character_Base::following_camera()
 {
+try {
     //Center the camera over the Character
     Camera.setx( (x + CH_WIDTH / 2) - CURRENT_SCREEN_WIDTH / 2 );
     Camera.sety( (y + CH_HEIGHT / 2) - CURRENT_SCREEN_HEIGHT / 2 );
@@ -683,5 +715,9 @@ void Character_Base::following_camera()
     if(Camera.gety() > (LEVEL_HEIGHT - Camera.geth()) )
     {
         Camera.sety(LEVEL_HEIGHT - Camera.geth());    
-    }    
+    }
+	return true; //no error
+} catch (...) {
+	return false; //error occured
+}  
 }

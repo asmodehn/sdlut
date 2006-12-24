@@ -38,10 +38,10 @@ class Monster_Factory
 		std::vector<Monster_Template*> Create_Monsters(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector);
 		
 		//Invoke all monsters movements
-		void Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		bool Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 		//Invoke all monsters movements animation on the screen
-		void Move_Monsters_Animation(Rect Camera, VideoSurface& Screen);
+		bool Move_Monsters_Animation(Rect Camera, VideoSurface& Screen);
 
 		//Remove all monster with dead status from the monster vector container
 		std::vector<Monster_Template*> Remove_Dead_Monsters();

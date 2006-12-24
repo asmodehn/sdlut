@@ -11,8 +11,9 @@ Escape_Menu::~Escape_Menu()
 {
 }
 //Blit the good menu surface in function of what the user wants to select with the keyboard
-void Escape_Menu::Show_Menu(VideoSurface& Screen)
+bool Escape_Menu::Show_Menu(VideoSurface& Screen)
 {
+try {
 	if (SelectedItemId == 1) //we want to show Yes selected
 	{
 		Screen.blit(RGBSurface("data/LeaveMenu_YesSelected.png"), Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
@@ -21,6 +22,10 @@ void Escape_Menu::Show_Menu(VideoSurface& Screen)
 	{
 		Screen.blit(RGBSurface("data/LeaveMenu_NoSelected.png"), Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
 	}
+	return true; //no error
+} catch (...) {
+    return false; //error occured
+}
 }
 //Managed validation on one item
 bool Escape_Menu::Manage_Validation()

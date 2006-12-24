@@ -153,13 +153,13 @@ class Character_Base
 		/****Methods****/
 
 		//Update the graphic regarding the attack style
-		void Update_Graphic_Style();
+		bool Update_Graphic_Style();
 	    
 		//Move the Character and check collision with monsters and the battlefield (environment and background)
-		void move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
+		bool move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
 
 		//check the direction where the character is turn to
-		void check_character_direction();
+		bool check_character_direction();
 
 		//define character sprite which appear on the screen during moves
 		bool Set_Move_Animation_Sprite();
@@ -174,16 +174,16 @@ class Character_Base
 		bool Set_Arrow_Sprite_Coordinate();
 
 		//blit the character on the screen
-		void Show_Character(VideoSurface& Screen);
+		bool Show_Character(VideoSurface& Screen);
 
 		//blit the arrow on the screen
-		void Show_Arrow(VideoSurface& Screen);
+		bool Show_Arrow(VideoSurface& Screen);
 
 		//Display attack msg on the status bar (hit or miss)
-		void Display_Attack_Msg(VideoSurface& Screen);
+		bool Display_Attack_Msg(VideoSurface& Screen);
 		
 		//Camera which follow the Character
-		void following_camera();
+		bool following_camera();
 };
 
 #endif
