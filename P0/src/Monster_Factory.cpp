@@ -75,13 +75,13 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Create_Monster
 }
 //Invoke all monsters movements
 template <typename Monster_Template>
-bool Monster_Factory<Monster_Template>::Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+bool Monster_Factory<Monster_Template>::Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector) //, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
 {
 try {
 	//Move Monsters
 	for(unsigned int i=0; i < Monster_Vector.size(); i++)
 	{
-		if( Monster_Vector[i]->move(Character_Collision_Box, Environment_Sprite_Vector, BackGround_Sprite_Vector) == false )
+		if( Monster_Vector[i]->move(Character_Collision_Box, Environment_Sprite_Vector, BackGround_Sprite_Vector) == false )//, Monster_Vector_Skeleton, Monster_Vector_Worm) == false )
 		{ 
 	    	  P0_Logger << " Failed to move monster N°" << i << std::endl;
 			  return false; //error occured 

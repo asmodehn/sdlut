@@ -45,7 +45,7 @@ BattleField_Zone::BattleField_Zone(int x, int y, int w, int h, int nb_args, ...)
     va_start(args, nb_args);
 
     //parse arguments list until num has been reached (ie nb of args)
-    for (int i=0; i < nb_args; i++)
+    for (unsigned int i=0; i < nb_args; i++)
 	{
 		//push generation allowed type monster inside the vector (arguments are int type)
 		Allowed_Monsters.push_back( va_arg(args, int) );

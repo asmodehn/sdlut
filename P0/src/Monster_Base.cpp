@@ -81,7 +81,7 @@ Monster_Base::~Monster_Base()
 	//_monsters_list.~RGBSurface();
 }
 //Move monster randomly
-bool Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+bool Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector) //, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm) //, std::vector< std::vector<Monster_Base*>* > Monsters_Vector)
 {
 try {
 	//move only if a random number is below 10 (This speed down monster movement)
@@ -91,33 +91,91 @@ try {
 		xVel = ((rand()%3-1)*MO_WIDTH);
 		yVel = ((rand()%3-1)*MO_HEIGHT);
 
-		//Move the monster left or right and his collision box
+		//Move the monster's collision box
 		collision_box.setx(x + xVel);
 		collision_box.sety(y + yVel);
 
-		//If the Character went too far to the left or right or in case of collision with the npc
-		if((collision_box.getx() < 0) || (collision_box.getx() + MO_WIDTH > LEVEL_WIDTH) || (check_collision(collision_box, CharacterCollisionbox)))
+		//If the monster went too far to the left or right
+		if((collision_box.getx() < 0) || (collision_box.getx() + MO_WIDTH > LEVEL_WIDTH) )
 		{
 			//move back
 			collision_box.setx(x);
+			collision_box.sety(y);
+			//we have found a collision no need to work more
+			return true;
 		}
 
-		//If the Character went too far up or down (minus the status bar) or in case of collision with the npc
-		if((collision_box.gety() < 0) || (collision_box.gety() + MO_HEIGHT > LEVEL_HEIGHT - STATUS_BAR_H) || (check_collision(collision_box, CharacterCollisionbox)))
-		{
-			//move back
-			collision_box.sety(y);     
-		}
-
-		//Now that all collision has been checked, we must check if the battlefield allow the move
-		if(! check_battlefield_allow_monster(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector) )
+		//If the monster went too far up or down (minus the status bar)
+		if((collision_box.gety() < 0) || (collision_box.gety() + MO_HEIGHT > LEVEL_HEIGHT - STATUS_BAR_H) )
 		{
 			//move back
 			collision_box.setx(x);
 			collision_box.sety(y); 
+			return true;   
 		}
 		
-		//Finally move the monster in the same place of his collision box
+		//Check collision with PC
+		if ( check_collision(collision_box, CharacterCollisionbox) )
+		{
+		   	 //move back
+			collision_box.setx(x);
+			collision_box.sety(y);
+			return true;
+	 	}
+		
+		/*//Collision with monsters TO CHECk with a vector of vector or with (...) unlimitted number of args
+		for(unsigned int i=0; i < Monsters_Vector.size(); i++)
+		{
+		    for(unsigned int j=0; i < Monsters_Vector[i]->size(); i++)
+			{
+				if (check_collision( collision_box, Monsters_Vector[i,j].Get_Collision_Box() ))
+				{
+					//move back
+					collision_box.setx(x);
+					collision_box.sety(y);
+					//we have found a collision inside the vector, no need to work more
+					return true;
+				}
+			}
+			//*Monsters_Vector++;
+		}*/
+		
+		/*//Collision with skeletons
+		for(unsigned int i=0; i < Monster_Vector_Skeleton.size(); i++)
+		{
+			if (check_collision( collision_box, Monster_Vector_Skeleton[i]->Get_Collision_Box() ))
+			{
+				//move back
+				collision_box.setx(x);
+				collision_box.sety(y); 
+	
+				//we have found a collision inside the vector, no need to work more
+				return true;
+			}
+		}
+
+		//Collision with worms
+		for(unsigned int i=0; i < Monster_Vector_Worm.size(); i++)
+		{
+			if (check_collision( collision_box, Monster_Vector_Worm[i]->Get_Collision_Box() ))
+			{
+				//move back
+				collision_box.setx(x);
+				collision_box.sety(y); 
+				return true;
+			}
+		}
+		*/
+   	 	//Now that all collision has been checked, we must check if the battlefield allow the move
+		if(! check_battlefield_allow_monster(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector) )
+		{
+			//move back
+			collision_box.setx(x);
+			collision_box.sety(y);
+			return true;
+		}
+		
+		//Finally move the monster in the same place of his collision box (no collision found)
 		x = collision_box.getx();
 		y = collision_box.gety();
 	}

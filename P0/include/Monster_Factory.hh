@@ -38,7 +38,7 @@ class Monster_Factory
 		std::vector<Monster_Template*> Create_Monsters(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector);
 		
 		//Invoke all monsters movements
-		bool Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		bool Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector); //, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
 
 		//Invoke all monsters movements animation on the screen
 		bool Move_Monsters_Animation(Rect Camera, VideoSurface& Screen);

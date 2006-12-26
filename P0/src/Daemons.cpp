@@ -12,12 +12,13 @@ Daemons::~Daemons()
 unsigned int Daemons::Move_Monsters(unsigned int interval, void* args)
 {
 try {
-	Monster_Factory_Skeleton->Move_Monsters( myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector );
-	Monster_Factory_Worm->Move_Monsters( myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector );
+	Monster_Factory_Skeleton->Move_Monsters( myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector); //, Monster_Vector_Skeleton, Monster_Vector_Worm );
+	Monster_Factory_Worm->Move_Monsters( myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector); //, Monster_Vector_Skeleton, Monster_Vector_Worm );
 	P0_Logger << " Move Monsters " << std::endl;
 	return interval; // loop
 } catch (...) {
 	P0_Logger << " Move Monsters Daemon Failed " << std::endl;
+	return interval; // loop
 }
 }
 
@@ -32,6 +33,7 @@ try {
 	return interval; // loop
 } catch (...) {
 	P0_Logger << " Generate Monsters Daemon Failed " << std::endl;
+	return interval; // loop
 }
 }
 
@@ -46,6 +48,7 @@ try {
 	
 } catch (...) {
 	P0_Logger << " Character Move Animation Timer Failed " << std::endl;
+	return 0; //end of timer
 }
 }
 
@@ -67,6 +70,7 @@ try {
 
 } catch (...) {
 	P0_Logger << " Character Attack Animation Timer Failed " << std::endl;
+	return 0; //end of timer
 }
 }
 
@@ -88,5 +92,6 @@ try {
 	
 } catch (...) {
 	P0_Logger << " Character's Arrow Animation Timer Failed " << std::endl;
+	return 0; //end of timer
 }
 }

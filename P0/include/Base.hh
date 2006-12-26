@@ -10,7 +10,7 @@ using namespace RAGE::SDL;
 #include <vector>
 #include <fstream>
 #include <math.h>
-#include <stdarg.h> //for methods with an illimited number of parameters
+#include <stdarg.h> //for methods with an unllimited number of parameters
 
 //The initial attributes of the window
 const int SCREEN_WIDTH = 800;//640;
