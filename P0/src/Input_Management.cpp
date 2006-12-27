@@ -157,6 +157,15 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 
 						//Windows <--> Fullscreen
 					case KF11:
+						//reset the display
+						CURRENT_SCREEN_WIDTH = SCREEN_WIDTH;
+						CURRENT_SCREEN_HEIGHT = SCREEN_HEIGHT;
+						if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
+						{
+							P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
+							return false;
+						}
+						//Go to fullscreen
 						App::getInstance().getWindow()->setFullscreen(true);
 						//App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen());
 						break;
@@ -176,22 +185,22 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				case KKp8:
 				case KUp:
 					myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
-					Character_Moves_Consequences();
+					//Character_Moves_Consequences();
 					break;
 				case KKp5:
 				case KDown:
 					myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
-					Character_Moves_Consequences();
+					//Character_Moves_Consequences();
 					break;
 				case KKp7:
 				case KLeft:
 					myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
-					Character_Moves_Consequences();
+					//Character_Moves_Consequences();
 					break;
 				case KKp9:
 				case KRight:
 					myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
-					Character_Moves_Consequences();
+					//Character_Moves_Consequences();
 					break;
 			}
 		}

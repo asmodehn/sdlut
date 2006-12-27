@@ -27,7 +27,7 @@ const int LEVEL_WIDTH = 1280;
 const int LEVEL_HEIGHT = 1280;
 
 //The frame rate
-const int FRAMES_PER_SECOND = 10;
+const int FRAMES_PER_SECOND = 60;
 
 //The dimensions of the Character
 const int CH_WIDTH = 32;
@@ -79,9 +79,9 @@ enum Monsters_Type {Humanoid = 1, Worm = 2};
 
 //Animations
 const long CHARACTER_MOVE_ANIMATION_INTERVAL = 150; //Future dev (To Def)
-const long CHARACTER_MELEE_ATTACK_ANIMATION_INTERVAL = (150 / 10) * 10; // (every 150ms rounded to the nearest 10ms)
-const long CHARACTER_DISTANT_ATTACK_ANIMATION_INTERVAL = (150 / 10) * 10; // (every 150ms rounded to the nearest 10ms)
-const long CHARACTER_ARROW_MOVE_ANIMATION_INTERVAL = (100 / 10) * 10; // (every 100ms rounded to the nearest 10ms)
+const long CHARACTER_MELEE_ATTACK_ANIMATION_INTERVAL = (130 / 10) * 10; // (every 150ms rounded to the nearest 10ms)
+const long CHARACTER_DISTANT_ATTACK_ANIMATION_INTERVAL = (130 / 10) * 10; // (every 150ms rounded to the nearest 10ms)
+const long CHARACTER_ARROW_MOVE_ANIMATION_INTERVAL = (50 / 10) * 10; // (every 100ms rounded to the nearest 10ms)
 const long MONSTERS_MOVEMENT_INTERVAL = (1000 / 10) * 10; // every 5s rounded
 const long MONSTERS_GENERATION_INTERVAL = (10000 / 10) * 10; // every 10s rounded
 
