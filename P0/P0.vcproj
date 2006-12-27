@@ -311,10 +311,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\data\ECHELON.TTF"
-				>
-			</File>
-			<File
 				RelativePath=".\data\Environment_Map.txt"
 				>
 			</File>
@@ -344,6 +340,14 @@
 			</File>
 			<File
 				RelativePath=".\data\Sand Tileset.png"
+				>
+			</File>
+			<File
+				RelativePath=".\data\SlimSansSerif.ttf"
+				>
+			</File>
+			<File
+				RelativePath=".\data\tankbrigade.bmp"
 				>
 			</File>
 			<File
