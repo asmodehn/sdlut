@@ -160,14 +160,15 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 						//reset the display
 						CURRENT_SCREEN_WIDTH = SCREEN_WIDTH;
 						CURRENT_SCREEN_HEIGHT = SCREEN_HEIGHT;
-						if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
+						/*if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
 						{
 							P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
 							return false;
-						}
+						}*/
 						//Go to fullscreen
-						App::getInstance().getWindow()->setFullscreen(true);
-						//App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen());
+						//App::getInstance().getWindow()->setFullscreen(true);
+						//App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen()); not working dont know why ...
+						App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->resizeDisplay(SCREEN_WIDTH,SCREEN_HEIGHT)->isFullScreenset());
 						break;
 				}
 
