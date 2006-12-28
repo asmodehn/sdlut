@@ -14,29 +14,49 @@ SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /W2 /wd4290 " )
 ENDIF(CMAKE_CXX_COMPILER STREQUAL "cl")
 
 
-#For future dev try to make this work (when P0 will be separated from RAGE)
-#Check For SDLut
-SET(CMAKE_MODULE_PATH C:/Boulot/Project0/AML/trunk/SDLut/CMake/)
-#SET(CMAKE_MODULE_PATH ${Project_O_SOURCE_DIR}/../SDLut/CMake/)
-
-#include sdlut dependances
-INCLUDE(C:/Boulot/Project0/AML/trunk/SDLut/build/CMakeDepends.txt)
+#Check For SDLut cmake module file
+FIND_PATH(NEW_CMAKE_MODULE_PATH FindSDLut.cmake DOC "Please specify where the file 'FindSDLut.cmake' is" NO_DEFAULT_PATH REQUIRED)
 
 
-#Check dependencies
-FIND_PACKAGE(SDLut REQUIRED)
+#when we now know where the FindSlut module is
+IF(NEW_CMAKE_MODULE_PATH)
+	
+	#Check For SDLut depends file
+	FIND_FILE(SDLUT_DEPENDS CMakeDepends.txt DOC "Please specify where the file 'CMakeDepends.txt' is" NO_DEFAULT_PATH REQUIRED)
+	
+	#when we know where sdlut's dependencies are
+	IF(SDLUT_DEPENDS)
+		#include sdlut dependances
+		INCLUDE(${SDLUT_DEPENDS})
 
-#test for RAGE SDLut
-IF(SDLut_FOUND)
-	MESSAGE (STATUS "Rage::SDLut found, adjusting build options..." )
-	INCLUDE_DIRECTORIES(${SDLut_INCLUDE_DIR})
-	#link sdlut and sdlut dependances
-	#TARGET_LINK_LIBRARIES(Project_0 ${SDLut_LIBRARY} @SDLut_LIB_DEPENDS@ )
-	LINK_LIBRARIES (${SDLut_LIBRARY} ${SDLut_LIB_DEPENDS})
-ELSE ( NOT SDLut_FOUND )
-	MESSAGE("Rage::SDLut Not Found - Please Specify Manually")
-ENDIF(SDLut_FOUND)
+		SET(CMAKE_MODULE_PATH ${NEW_CMAKE_MODULE_PATH})
 
+		#Check dependencies
+		FIND_PACKAGE(SDLut REQUIRED)
+
+		#test for RAGE SDLut (_FOUND is present only coz case of package : cmake BUG! )
+		IF(SDLut_FOUND)
+			MESSAGE (STATUS "Rage::SDLut found, adjusting build options..." )
+			INCLUDE_DIRECTORIES(${SDLut_INCLUDE_DIR})
+			#link sdlut and sdlut dependances
+			#TARGET_LINK_LIBRARIES(Project_0 ${SDLut_LIBRARY} @SDLut_LIB_DEPENDS@ )
+			LINK_LIBRARIES (${SDLut_LIBRARY} ${SDLut_LIB_DEPENDS})
+		ELSE(SDLut_FOUND)
+			#bug here: msg allways seems to popup
+			MESSAGE("Rage::SDLut Not Found - Please Specify Manually")
+		ENDIF(SDLut_FOUND)
+
+	ELSE(SDLUT_DEPENDS)
+
+		MESSAGE("File 'CMakeDepends.txt' Not Found - Please Specify Manually")
+
+	ENDIF(SDLUT_DEPENDS)
+
+ELSE(NEW_CMAKE_MODULE_PATH)
+
+	MESSAGE("File 'FindSDLut.cmake Not' Found - Please Specify Manually")
+
+ENDIF(NEW_CMAKE_MODULE_PATH)
 
 #check for openGL
 FIND_PACKAGE(OpenGL)
@@ -46,7 +66,7 @@ IF(OPENGL_FOUND)
 	MESSAGE (STATUS "OpenGL found, adjusting build options..." )
 	INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR})
 	LINK_LIBRARIES (${OPENGL_LIBRARY})
-ELSE (OPENGL_FOUND)
+ELSE(OPENGL_FOUND)
 	MESSAGE (STATUS "OpenGL not found." )
 ENDIF(OPENGL_FOUND)
 
@@ -78,6 +98,7 @@ ADD_EXECUTABLE(
 		${Project_0_SOURCE_DIR}/src/Render_Engine.cpp ${Project_0_SOURCE_DIR}/include/Render_Engine.hh
 
 #adding data to have them in generated projects
+		#Cmake BUG on copying arrow.bmp file: copy failed, dest file 8k instead of src 13k
 		${Project_0_SOURCE_DIR}/data/Arrow.bmp
 		${Project_0_SOURCE_DIR}/data/BackGround_Map.txt
 		${Project_0_SOURCE_DIR}/data/Character_Archer.bmp
