@@ -81,9 +81,9 @@ enum Monsters_Type {Humanoid = 1, Worm = 2};
 const long CHARACTER_MOVE_ANIMATION_INTERVAL = 150; //Future dev (To Def)
 const long CHARACTER_MELEE_ATTACK_ANIMATION_INTERVAL = (130 / 10) * 10; // (every 150ms rounded to the nearest 10ms)
 const long CHARACTER_DISTANT_ATTACK_ANIMATION_INTERVAL = (130 / 10) * 10; // (every 150ms rounded to the nearest 10ms)
-const long CHARACTER_ARROW_MOVE_ANIMATION_INTERVAL = (50 / 10) * 10; // (every 100ms rounded to the nearest 10ms)
-const long MONSTERS_MOVEMENT_INTERVAL = (1000 / 10) * 10; // every 5s rounded
-const long MONSTERS_GENERATION_INTERVAL = (10000 / 10) * 10; // every 10s rounded
+const long CHARACTER_ARROW_MOVE_ANIMATION_INTERVAL = (75 / 10) * 10; // (every 75ms rounded to the nearest 10ms)
+const long MONSTERS_MOVEMENT_INTERVAL = (1000 / 10) * 10; // every 1s rounded
+const long MONSTERS_GENERATION_INTERVAL = (4000 / 10) * 10; // every 4s rounded
 
 //This variable defined the global game state 1: Initial Menu (future dev), 2: Character Creation/Selection (future dev), 3: Ingame, 4: On Escape menu
 extern int GLOBAL_GAME_STATE;

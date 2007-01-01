@@ -15,8 +15,8 @@ private:
 	std::vector<BattleField_Sprite*> Environment_Sprite_Vector;
 	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton;
 	Monster_Factory<Monster_Worm>* Monster_Factory_Worm;
-	std::vector<Monster_Skeleton*> Monster_Vector_Skeleton;
-	std::vector<Monster_Worm*> Monster_Vector_Worm;
+	std::vector<Monster_Base*> Monster_Vector_Skeleton;
+	std::vector<Monster_Base*> Monster_Vector_Worm;
 	
 
 public:
@@ -41,7 +41,7 @@ public:
 	{
 		Monster_Factory_Skeleton = newMonster_Factory_Skeleton;
 	}
-	/*Monster_Factory<Monster_Skeleton>* Get_Monster_Factory_Skeleton() const
+	/*Monster_Factory<Monster_Base>* Get_Monster_Factory_Skeleton() const
     {
         return Monster_Factory_Skeleton;
     }*/
@@ -50,25 +50,25 @@ public:
 	{
 		Monster_Factory_Worm = newMonster_Factory_Worm;
 	}
-	/*Monster_Factory<Monster_Worm>* Get_Monster_Factory_Worm() const
+	/*Monster_Factory<Monster_Base>* Get_Monster_Factory_Worm() const
     {
         return Monster_Factory_Worm;
     }*/
 
-	void Set_Monster_Vector_Skeleton(std::vector<Monster_Skeleton*> newMonster_Vector_Skeleton)
+	void Set_Monster_Vector_Skeleton(std::vector<Monster_Base*> newMonster_Vector_Skeleton)
 	{
 		Monster_Vector_Skeleton = newMonster_Vector_Skeleton;
 	}
-	std::vector<Monster_Skeleton*> Get_Monster_Vector_Skeleton() const
+	std::vector<Monster_Base*> Get_Monster_Vector_Skeleton() const
     {
         return Monster_Vector_Skeleton;
     }
 
-	void Set_Monster_Vector_Worm(std::vector<Monster_Worm*> newMonster_Vector_Worm)
+	void Set_Monster_Vector_Worm(std::vector<Monster_Base*> newMonster_Vector_Worm)
 	{
 		Monster_Vector_Worm = newMonster_Vector_Worm;
 	}
-	std::vector<Monster_Worm*> Get_Monster_Vector_Worm() const
+	std::vector<Monster_Base*> Get_Monster_Vector_Worm() const
     {
         return Monster_Vector_Worm;
     }

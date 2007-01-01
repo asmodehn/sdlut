@@ -15,7 +15,7 @@ class Monster_Factory
 		int Number_Of_Monsters;
 		
 		//Monster Vector which contains all monsters present on the battlefield and all theirs infos
-		std::vector<Monster_Template*> Monster_Vector;
+		std::vector<Monster_Base*> Monster_Vector;
 
 		//Area vector which contain the battlefield cutting design
 		std::vector<BattleField_Zone*> BattleField_Cutting_Vector;
@@ -35,19 +35,19 @@ class Monster_Factory
 		~Monster_Factory();
 
 		//Create Monster Method which create has many monsters has desired
-		std::vector<Monster_Template*> Create_Monsters(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector);
+		std::vector<Monster_Base*> Create_Monsters(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector);
 		
 		//Invoke all monsters movements
-		bool Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector); //, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
+		bool Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, int nb_vector, ... );//, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
 
 		//Invoke all monsters movements animation on the screen
 		bool Move_Monsters_Animation(Rect Camera, VideoSurface& Screen);
 
 		//Remove all monster with dead status from the monster vector container
-		std::vector<Monster_Template*> Remove_Dead_Monsters();
+		std::vector<Monster_Base*> Remove_Dead_Monsters();
 		
 		//Generate new monsters until max monster has been reached
-		std::vector<Monster_Template*> Generate_New_Monster(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector);
+		std::vector<Monster_Base*> Generate_New_Monster(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector);
 		
 };
 

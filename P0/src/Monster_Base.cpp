@@ -81,11 +81,11 @@ Monster_Base::~Monster_Base()
 	//_monsters_list.~RGBSurface();
 }
 //Move monster randomly
-bool Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector) //, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm) //, std::vector< std::vector<Monster_Base*>* > Monsters_Vector)
+bool Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector< std::vector<Monster_Base*> *> Global_Monster_Vector)
 {
 try {
-	//move only if a random number is below 10 (This speed down monster movement)
-	if (rand()%200 <= 13) 
+	//move only if a random number between 0 and 199 is below 49: one chance on height (This speed down monster movement)
+	if (rand()%200 <= 49) 
 	{
 		//Random mvt
 		xVel = ((rand()%3-1)*MO_WIDTH);
@@ -123,49 +123,32 @@ try {
 			return true;
 	 	}
 		
-		/*//Collision with monsters TO CHECk with a vector of vector or with (...) unlimitted number of args
-		for(unsigned int i=0; i < Monsters_Vector.size(); i++)
+		//Collision with Monsters
+		//Loop for all monster's vector
+		for (unsigned int j=0; j < Global_Monster_Vector.size(); j++)
 		{
-		    for(unsigned int j=0; i < Monsters_Vector[i]->size(); i++)
+			//loop for the current monster's vector
+			for(unsigned int i=0; i < Global_Monster_Vector.at(j)->size(); i++)
 			{
-				if (check_collision( collision_box, Monsters_Vector[i,j].Get_Collision_Box() ))
+				//In order to the monster to not check collision's with himself
+				if ( ( x != Global_Monster_Vector.at(j)->at(i)->Get_X() ) || y != Global_Monster_Vector.at(j)->at(i)->Get_Y() )
 				{
-					//move back
-					collision_box.setx(x);
-					collision_box.sety(y);
-					//we have found a collision inside the vector, no need to work more
-					return true;
+					if (check_collision( collision_box, Global_Monster_Vector.at(j)->at(i)->Get_Collision_Box() ))
+					{
+						//we have found a collision inside the vector
+						P0_Logger << " Collision with monster " << " @ [ " << x << ", " << y << "]" << std::endl;
+						
+						//move back
+						collision_box.setx(x);
+						collision_box.sety(y); 
+
+						//no need to work more
+						return true;
+					}
 				}
 			}
-			//*Monsters_Vector++;
-		}*/
+		}
 		
-		/*//Collision with skeletons
-		for(unsigned int i=0; i < Monster_Vector_Skeleton.size(); i++)
-		{
-			if (check_collision( collision_box, Monster_Vector_Skeleton[i]->Get_Collision_Box() ))
-			{
-				//move back
-				collision_box.setx(x);
-				collision_box.sety(y); 
-	
-				//we have found a collision inside the vector, no need to work more
-				return true;
-			}
-		}
-
-		//Collision with worms
-		for(unsigned int i=0; i < Monster_Vector_Worm.size(); i++)
-		{
-			if (check_collision( collision_box, Monster_Vector_Worm[i]->Get_Collision_Box() ))
-			{
-				//move back
-				collision_box.setx(x);
-				collision_box.sety(y); 
-				return true;
-			}
-		}
-		*/
    	 	//Now that all collision has been checked, we must check if the battlefield allow the move
 		if(! check_battlefield_allow_monster(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector) )
 		{
@@ -184,6 +167,7 @@ try {
 	return false; //error occured
 }
 }
+
 //Check if the battlefield allow the monster presence
 bool Monster_Base::check_battlefield_allow_monster(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {

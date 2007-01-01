@@ -200,7 +200,7 @@ catch (...) {
 }
 }
 //Show the Character on the screen
-bool Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm)
+bool Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
 {
 try {
     //Move the Character collision box to were we want to move
@@ -441,7 +441,7 @@ bool Character_Base::Set_Move_Animation_Sprite()
 
 }
 //Handle character attack on monsters for all attack style and return the distance where the attack took place (in case of a distant attack for example)
-int Character_Base::attack(std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm)
+int Character_Base::attack(std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
 {
 	int Hit_Distance = 0; //The Hit distance is the distance between the character and the monster by default the Melee Hit Distance (aka 0)
 
@@ -477,7 +477,7 @@ int Character_Base::attack(std::vector<Monster_Skeleton*> Monster_Vector_Skeleto
 	return Hit_Distance;
 }
 //Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
-int Character_Base::attack_check_status(int collision_box_movement, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm)
+int Character_Base::attack_check_status(int collision_box_movement, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
 {
 	int _attack_successfull = 0;
 	//Check attack direction

@@ -4,6 +4,10 @@
 #include "Base.hh"
 #include "BattleField.hh"
 
+//Predefinition of monsters type in order to the base to know it's childs more easily
+class Monster_Skeleton;
+class Monster_Worm;
+
 //The Monster
 class Monster_Base
 {
@@ -36,7 +40,7 @@ class Monster_Base
 		virtual bool check_background_allow_monster(int x, int y, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 		//Check if the environment allow the monster presence
 		virtual int check_environment_allow_monster(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
-
+		
 	public:
 		/****Accessor****/
 
@@ -100,7 +104,7 @@ class Monster_Base
 		~Monster_Base();
 
 		//Move the Monster and check collision with the collision box of the character in parameter, the background and other monsters
-		bool move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector); //, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm); //, std::vector< std::vector<Monster_Base*>* > Monsters_Vector);
+		bool move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector< std::vector<Monster_Base*> *> Global_Monster_Vector);
 	    
 		//Check if the battlefield allow the monster presence
 		virtual bool check_battlefield_allow_monster(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);

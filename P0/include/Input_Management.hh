@@ -22,9 +22,9 @@ class KeyboardInput : public Keyboard
 		std::vector<BattleField_Sprite*> BackGround_Sprite_Vector; //Vector which will contains all BackGround type and clip
 		std::vector<BattleField_Sprite*> Environment_Sprite_Vector; //Vector which will contains all Environment items type and clip
 		Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton; //A factory of Monster Skeletons
-		std::vector<Monster_Skeleton*> Monster_Vector_Skeleton; //Vector which will contains all skeletons
+		std::vector<Monster_Base*> Monster_Vector_Skeleton; //Vector which will contains all skeletons
 		Monster_Factory<Monster_Worm>* Monster_Factory_Worm; //A factory of Monster Worms
-		std::vector<Monster_Worm*> Monster_Vector_Worm; //Vector which will contains all skeletons
+		std::vector<Monster_Base*> Monster_Vector_Worm; //Vector which will contains all skeletons
 		Render_Engine* myRender_Engine; //Engine
 		Daemons* myDaemons; //Daemons
 
@@ -56,7 +56,7 @@ class KeyboardInput : public Keyboard
 		{
 			Monster_Factory_Skeleton = newMonster_Factory_Skeleton;
 		}
-		void Set_Monster_Vector_Skeleton(std::vector<Monster_Skeleton*> newMonster_Vector_Skeleton)
+		void Set_Monster_Vector_Skeleton(std::vector<Monster_Base*> newMonster_Vector_Skeleton)
 		{
 			Monster_Vector_Skeleton = newMonster_Vector_Skeleton;
 		}
@@ -64,7 +64,7 @@ class KeyboardInput : public Keyboard
 		{
 			Monster_Factory_Worm = newMonster_Factory_Worm;
 		}
-		void Set_Monster_Vector_Worm(std::vector<Monster_Worm*> newMonster_Vector_Worm)
+		void Set_Monster_Vector_Worm(std::vector<Monster_Base*> newMonster_Vector_Worm)
 		{
 			Monster_Vector_Worm = newMonster_Vector_Worm;
 		}

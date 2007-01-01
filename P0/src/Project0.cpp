@@ -111,7 +111,7 @@ try { //global error management
 	myRender_Engine->Set_Monster_Factory_Skeleton( Monster_Factory_Skeleton );
 
 	//Create all the monsters skeletons
-	std::vector<Monster_Skeleton*> Monster_Vector_Skeleton = Monster_Factory_Skeleton->Create_Monsters(CH_INITIAL_X, CH_INITIAL_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);  //Vector which will contains all skeletons
+	std::vector<Monster_Base*> Monster_Vector_Skeleton = Monster_Factory_Skeleton->Create_Monsters(CH_INITIAL_X, CH_INITIAL_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector);  //Vector which will contains all skeletons
 	P0_Logger << " Skeleton Vector Fill: OK " << std::endl;
 	myKeyboardInput.Set_Monster_Vector_Skeleton( Monster_Vector_Skeleton );
 	myDaemons->Set_Monster_Vector_Skeleton( Monster_Vector_Skeleton );
@@ -124,7 +124,7 @@ try { //global error management
 	myRender_Engine->Set_Monster_Factory_Worm( Monster_Factory_Worm );
 
 	//Create all the monsters worms
-	std::vector<Monster_Worm*> Monster_Vector_Worm = Monster_Factory_Worm->Create_Monsters(CH_INITIAL_X, CH_INITIAL_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector); //Vector which will contains all skeletons
+	std::vector<Monster_Base*> Monster_Vector_Worm = Monster_Factory_Worm->Create_Monsters(CH_INITIAL_X, CH_INITIAL_Y, Environment_Sprite_Vector, BackGround_Sprite_Vector); //Vector which will contains all skeletons
 	P0_Logger << " Worm Vector Fill: OK " << std::endl;
 	myKeyboardInput.Set_Monster_Vector_Worm( Monster_Vector_Worm );
 	myDaemons->Set_Monster_Vector_Worm( Monster_Vector_Worm );

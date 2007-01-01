@@ -60,7 +60,7 @@ class Character_Base
 		int hit_monster_distance;
 
 		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
-		int attack_check_status(int collision_box_movement, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
+		int attack_check_status(int collision_box_movement, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
 
 		//Check if the ground allow the character presence
 		virtual bool check_background_allow_character(int x, int y, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
@@ -156,7 +156,7 @@ class Character_Base
 		bool Update_Graphic_Style();
 	    
 		//Move the Character and check collision with monsters and the battlefield (environment and background)
-		bool move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
+		bool move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
 
 		//check the direction where the character is turn to
 		bool check_character_direction();
@@ -165,7 +165,7 @@ class Character_Base
 		bool Set_Move_Animation_Sprite();
 
 		//Manage the character attack
-		int attack(std::vector<Monster_Skeleton*> Monster_Vector_Skeleton, std::vector<Monster_Worm*> Monster_Vector_Worm);
+		int attack(std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
 
 		//Set Character Sprite Which change when attack occured
 		bool Character_Base::Set_Attack_Animation_Sprite();

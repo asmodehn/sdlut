@@ -51,7 +51,7 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Char
 }
 //Create Monsters Method which create as many monsters has desired
 template <typename Monster_Template>
-std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Create_Monsters(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector)
+std::vector<Monster_Base*> Monster_Factory<Monster_Template>::Create_Monsters(int Character_X, int Character_Y, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector)
 {
 	//Loop until desired number of monsters has been reached
 	for(int i=1; i <= Number_Of_Monsters; i++)
@@ -75,17 +75,37 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Create_Monster
 }
 //Invoke all monsters movements
 template <typename Monster_Template>
-bool Monster_Factory<Monster_Template>::Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector) //, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
+bool Monster_Factory<Monster_Template>::Move_Monsters(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, int nb_vector, ... )//, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
 {
 try {
 	//Move Monsters
 	for(unsigned int i=0; i < Monster_Vector.size(); i++)
 	{
-		if( Monster_Vector[i]->move(Character_Collision_Box, Environment_Sprite_Vector, BackGround_Sprite_Vector) == false )//, Monster_Vector_Skeleton, Monster_Vector_Worm) == false )
+		//arguments list
+		va_list args;
+		//set the list
+		va_start(args, nb_vector);
+
+		//Vector containing pointer to vector of monsters
+		std::vector< std::vector<Monster_Base*> *> Global_Monster_Vector;
+
+		//parse arguments list until num has been reached (ie nb of vector passed in param)
+		for (unsigned int j=0; j < nb_vector; j++)
+		{
+			//add the current argument (ie a vector of monster) to the vector containing pointer to vector of monsters (arguments are std::vector<Monster_Base*> type)
+			Global_Monster_Vector.push_back( &(va_arg(args, std::vector<Monster_Base*>)) );
+		}
+		
+
+		if( Monster_Vector[i]->move(Character_Collision_Box, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
 		{ 
-	    	  P0_Logger << " Failed to move monster N°" << i << std::endl;
-			  return false; //error occured 
-   		}		
+			P0_Logger << " Failed to move monster N°" << i << std::endl;
+			//close list
+			va_end(args);
+			return false; //error occured 
+   		}	
+		//close list
+		va_end(args);
 	}
 	return true; //no error
 } catch (...) {
@@ -112,7 +132,7 @@ try {
 }
 //Method that will remove all monster with Alive_Status status to false (aka dead monsters) from the monster vector container
 template <typename Monster_Template>
-std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Remove_Dead_Monsters()
+std::vector<Monster_Base*> Monster_Factory<Monster_Template>::Remove_Dead_Monsters()
 {
 	//Loop on all the vector
 	for(unsigned int i=0; i < Monster_Vector.size(); i++)
@@ -133,7 +153,7 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Remove_Dead_Mo
 
 //Generate new monsters until max monster has been reached
 template <typename Monster_Template>
-std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Generate_New_Monster(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector)
+std::vector<Monster_Base*> Monster_Factory<Monster_Template>::Generate_New_Monster(Rect Character_Collision_Box, std::vector<BattleField_Sprite*> environment_sprite_vector, std::vector<BattleField_Sprite*> background_sprite_vector)
 {
 	unsigned int temp = 0;
 	int Character_X = Character_Collision_Box.getx();
@@ -163,5 +183,6 @@ std::vector<Monster_Template*> Monster_Factory<Monster_Template>::Generate_New_M
 }
 
 //To solve linking problem with template we have to defined allowed template values (See: http://www.parashift.com/c++-faq-lite/templates.html#faq-35.15 for more info)
+//template class Monster_Factory<Monster_Base>;
 template class Monster_Factory<Monster_Skeleton>;
 template class Monster_Factory<Monster_Worm>;

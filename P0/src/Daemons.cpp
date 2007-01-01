@@ -12,8 +12,8 @@ Daemons::~Daemons()
 unsigned int Daemons::Move_Monsters(unsigned int interval, void* args)
 {
 try {
-	Monster_Factory_Skeleton->Move_Monsters( myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector); //, Monster_Vector_Skeleton, Monster_Vector_Worm );
-	Monster_Factory_Worm->Move_Monsters( myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector); //, Monster_Vector_Skeleton, Monster_Vector_Worm );
+	Monster_Factory_Skeleton->Move_Monsters( myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector, 2, Monster_Vector_Skeleton, Monster_Vector_Worm );
+	Monster_Factory_Worm->Move_Monsters( myCharacter->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector, 2, Monster_Vector_Skeleton, Monster_Vector_Worm );
 	P0_Logger << " Move Monsters " << std::endl;
 	return interval; // loop
 } catch (...) {
