@@ -4,10 +4,6 @@
 #include "Base.hh"
 #include "BattleField.hh"
 
-//Predefinition of monsters type in order to the base to know it's childs more easily
-class Monster_Skeleton;
-class Monster_Worm;
-
 //The Monster
 class Monster_Base
 {
