@@ -18,7 +18,7 @@ namespace RAGE
 		class Timer
 		{
 
-//Functor for Timer Callback
+			//Functor for Timer Callback
 	    		//the only constraint about the callback function is that it should return int (next interval to apply)
 	    		//and the arguments should be void* to be able to pass anything...
 			
@@ -36,7 +36,7 @@ namespace RAGE
 			};
 
 
-//structure for arguments
+			//structure for arguments
 	    		typedef struct { int lookupindex; void* args;} cbargs;
 		    
 		    	//index of this functor instance in the static lookuptable
@@ -44,6 +44,7 @@ namespace RAGE
 		    
 			bool running;
 			unsigned int _interval;
+			
 			void* _args;
 
 
@@ -100,6 +101,7 @@ namespace RAGE
 			
 			//setting the index for the current instance
 			static unsigned int index=0;
+			//TODO : change here : should start at 0
 			index++;
 			_index = index;
 			//preparing callback

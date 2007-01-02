@@ -37,6 +37,8 @@ protected:
 	//The user should never be able to free the original pixelformat
 	//nor to use SDL directly.
 
+	~PixelFormat(void) { if (!pointerCopy) delete _pformat; }
+
 public:
 
 	//default Constructor
@@ -44,7 +46,6 @@ public:
 	//TODO : To avoid using uninitialized PixelFormat , put default constructor on protected
 	//Really Usefull ??
 
-	~PixelFormat(void) { if (!pointerCopy) delete _pformat; }
 
 	int getBitsPerPixel() const { return _pformat->BitsPerPixel; }
 	int getBytesPerPixel() const { return _pformat->BytesPerPixel; }

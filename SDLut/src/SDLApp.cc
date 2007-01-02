@@ -5,7 +5,7 @@ namespace RAGE
     namespace SDL
     {
 
-        App::App(std::string logfilename) :    _manager(NULL), _window(NULL), _netInitialized(false)
+	    App::App(std::string logfilename) :    _manager(NULL), _window(NULL), _mixer(NULL), _netInitialized(false)
         {
 #ifdef DEBUG
             Log << nl << "App::App() called";
@@ -15,10 +15,17 @@ namespace RAGE
             setIcon();
             if (!Log.enableFileLog(logfilename))
                 throw std::logic_error("Log file creation FAILED !");
+	    
+#ifdef DEBUG
+            Log << nl << "App::App() done";
+#endif
         }
 
         App::~App()
         {
+#ifdef DEBUG
+            Log << nl << "App::~App() called";
+#endif
 #ifdef HAVE_SDLTTF
 			if (TTF_WasInit())
 				TTF_Quit();
@@ -29,9 +36,14 @@ namespace RAGE
 #endif
             //MAKE SURE those destructor dont need App. They shouldnt !
             delete _window, _window = NULL;
+            delete _mixer, _mixer=NULL;
             //this one should be last because it calls SDL_Quit
             delete _manager;
             _manager = NULL;
+	    
+#ifdef DEBUG
+            Log << nl << "App::~App() done";
+#endif
         }
 
         App& App::getInstance()
@@ -186,6 +198,39 @@ namespace RAGE
             return res;
         }
 
+	bool App::initAudio()
+	{
+		bool res = false;
+		try
+		{
+		
+			if (_manager == NULL)
+			{
+				_manager = new Manager(false,true,false,false,false,false,false);
+				res = (_manager != NULL);
+			}
+			else
+			{
+				res = _manager->enableAudio();
+			}
+		
+			if ( res == true )
+				//tmp for test
+				_mixer = new Mixer();
+		
+		}
+		catch (std::exception &e)
+		{
+			Log << nl << "Exception caught : " << e.what() << std::endl;
+			Log << nl << "FATAL ERROR : InitAudio failed... Exiting" << std::endl;
+			exit(1);
+		}
+
+		
+		return res;
+	}
+			
+	
 		bool App::init()
 		{
 			if (_manager == NULL)

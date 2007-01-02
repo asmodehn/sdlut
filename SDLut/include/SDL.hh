@@ -3,6 +3,8 @@
 
 /** This file gather all the header files a user need to include to be able to use RAGE::SDL
   * So the user just has to include SDL.hh to have full access to the whole RAGE wrapper
+ *
+ * Is this file actually needed ??? maybe SDLApp can play the same role, isnt it ?
   */
 
 /**
@@ -28,7 +30,6 @@
   *
   */
 #include "SDLApp.hh"
-#include "SDLWindow.hh"
 #include "SDLManager.hh"
 
 /**
@@ -36,6 +37,7 @@
   *
   * \defgroup WindowManager
   */
+#include "SDLWindow.hh"
 #include "SDLVideoInfo.hh"
 #include "SDLVideoSurface.hh"
 #include "SDLGLManager.hh"
@@ -56,6 +58,12 @@
 
 /**
   * \defgroup Audio
+ */
+#include "SDLMixer.hh"
+#include "SDLAudioInfo.hh"
+#include "SDLSound.hh"
+
+/**
   * \defgroup CDROM
   * \defgroup Threads
   * /
@@ -76,6 +84,12 @@
 
 //just a little usefull tip for mingw
 #ifdef __MINGW32__
+#ifdef main
+#undef main
+#endif
+#endif
+
+#ifdef WIN32
 #ifdef main
 #undef main
 #endif

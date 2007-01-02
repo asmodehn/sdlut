@@ -14,7 +14,7 @@
 //Mandatory
 #include "CMakeConfig.hh"
 #include <SDL.h>
-//Mandatory because we use RWOps for the wrapper, and we even wrap it
+//Mandatory because we use RWOps in the wrapper, and we even wrap it
 #include <SDL_rwops.h>
 
 #ifdef HAVE_OPENGL
@@ -76,7 +76,10 @@
  *
  * Contact: asmodehn@gna.org
  *
+ * TODO : Replace Version structure by the same stuff than SDL version ( macros )
+ *
  */
+ 
 namespace RAGE
 {
 

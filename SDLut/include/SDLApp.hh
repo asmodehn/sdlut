@@ -24,6 +24,7 @@
 #include "SDLManager.hh"
 #include "SDLWindow.hh"
 #include "SDLJoystick.hh"
+#include "SDLMixer.hh"
 
 namespace RAGE
 {
@@ -36,6 +37,7 @@ namespace RAGE
 
             Window* _window; // for video
             JoystickPool* _jpool; //for joystick
+            Mixer* _mixer; // for audio framework
 
             Version _sdlversion;
 
@@ -83,11 +85,11 @@ namespace RAGE
             bool initJoystick();
 			bool initCDRom();
             bool initTimer();
-
+	    bool initAudio();
 
             //Add more when they are tested and working...
 			bool initText();
-            //bool initAudio();
+            
 			bool initNet();
 
             //Accessors
@@ -108,6 +110,11 @@ namespace RAGE
             {
                 _jpool=jpool;
             }
+
+	Mixer * getMixer()
+	{
+		return _mixer;
+	}
 
             const Version & getVersion()
             {

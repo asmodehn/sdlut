@@ -41,7 +41,8 @@ public:
 	typedef enum { Solid, Shaded, Blended } RenderMode;
 
 private:
-	class TTF::Font * _font;//private class to handle SDL_ttf detection and use
+	//TODO : fix the problem when the TTF is absent !!!
+	TTF::Font * _font;//private class to handle SDL_ttf detection and use
 		//_font == NULL if TTF not available ( or unable to initialise the font )
 	Default::Font * _deffont;
 

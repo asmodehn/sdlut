@@ -35,6 +35,10 @@ ADD_TEST(PNG_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.png"
 ADD_TEST(TIF_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.tif")
 ADD_TEST(JPG_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.jpg")
 
+ADD_EXECUTABLE(SDLtestAudio SDLtestAudio.cc)
+ADD_DEPENDENCIES(SDLtestAudio SDLut)
+ADD_TEST(WAV_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestAudio "data/sample.wav")
+
 ADD_EXECUTABLE(SDLtestGL SDLtestGL.cc)
 ADD_DEPENDENCIES(SDLtestGL SDLut)
 
@@ -56,6 +60,7 @@ TARGETS
 	SDLtestFont
 	SDLtestNet
 	SDLtestRWCodeDump
+	SDLtestAudio
 DESTINATION
 	${VERSION}/test
 )

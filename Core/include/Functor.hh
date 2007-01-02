@@ -4,7 +4,7 @@
 // Description: Implements a Functor class
 //
 //
-// Author:  <>, (C) 2006
+// Author:  <alex@asmodehn.net>, (C) 2006
 //
 // Copyright: See COPYING file that comes with this distribution
 //
@@ -122,6 +122,43 @@ namespace RAGE
 					}
 				
 			};
+
+
+		//Generic functor implementing any return type, with a void* as arguments
+			template <typename returnType = void,typename arg1Type = void*, typename arg2Type = void*, typename arg3Type = void*>
+					class TFunctor3
+					{
+						public:
+							virtual returnType operator()(arg1Type,arg2Type,arg3Type) = 0 ; //operator used for calling the function
+							virtual returnType call(arg1Type,arg2Type,arg3Type) = 0 ;//specific call function
+					};
+
+					template <class TClass,typename returnType, typename arg1Type = void*, typename arg2Type = void *, typename arg3Type = void *>
+							class TSpecificFunctor3 : public TFunctor3<returnType,arg1Type,arg2Type,arg3Type>
+							{
+								private:
+									returnType (TClass::*_ptfunc) (arg1Type arg1,arg2Type arg2,arg3Type arg3); //member function pointer
+									TClass *_ptobj;//instance pointer
+
+								public:
+									TSpecificFunctor3(TClass* ptobj, returnType (TClass::*ptfunc) (arg1Type ,arg2Type,arg3Type))
+									{
+										_ptobj = ptobj;
+										_ptfunc = ptfunc;
+									}
+			
+									virtual returnType operator()(arg1Type arg1,arg2Type arg2,arg3Type arg3)
+									{
+										return (_ptobj->*_ptfunc)(arg1,arg2,arg3);
+									}
+			
+									virtual returnType call(arg1Type arg1,arg2Type arg2,arg3Type arg3)
+									{
+										return (_ptobj->*_ptfunc)(arg1,arg2,arg3);
+									}
+				
+							};
+
 
 
 }
