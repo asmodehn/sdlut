@@ -22,25 +22,20 @@ int main(int argc, char *argv[])
 	//if argument we load the sound
 	if ( argc > 1)
 	{
-		testlog << nl<<  "creating sound";
+		testlog << nl<<  "Loading sound";
 		SDL::Sound wavefile(argv[1]);
-		testlog << nl<<"mixing Sound";
-		SDL::App::getInstance().getMixer()->mixSound(wavefile);
-		testlog << nl<<"play";
+		
+		testlog << nl<<"playing...";
 		SDL::App::getInstance().getMixer()->Play();
-		SDL::Delay(6000);
-	}
-	//otherwise we dont use any and play sample sound
-	else
-	{
-		testlog << nl<<  "loading sound";
-		SDL::Sound wavefile("../../test/data/sample.wav");
+		
 		testlog << nl<<  "setting mixer channels";
 		int wav_channel_1 = SDL::App::getInstance().getMixer()->mixSound(wavefile, false);
 		int wav_channel_2 = SDL::App::getInstance().getMixer()->mixSound(wavefile, false);
+		
 		testlog << nl<<  "playing channel 1";
 		SDL::App::getInstance().getMixer()->toggleChannel(wav_channel_1);
 		SDL::Delay(1000);
+
 		testlog << nl<<  "playing channel 2";
 		SDL::App::getInstance().getMixer()->toggleChannel(wav_channel_2);
 		SDL::Delay(6000);

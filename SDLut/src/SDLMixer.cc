@@ -46,7 +46,7 @@ namespace RAGE
 // 					}
 					SDL_MixAudio(stream, waveptr, len, SDL_MIX_MAXVOLUME);
 					_channelscursor[i] += len;
-					Log << nl <<" Channel "<< i<<" after callback at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
+//					Log << nl <<" Channel "<< i<<" after callback at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
 			}
 
 		}

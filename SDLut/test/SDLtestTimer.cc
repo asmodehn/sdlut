@@ -6,7 +6,7 @@
 #include "SDL.hh"
 using namespace RAGE;
 
-int loop_number = 0;
+static long ticks;
 
 class ObjectWithCallback
 {
@@ -16,7 +16,7 @@ class ObjectWithCallback
 		
 	unsigned int callback1(unsigned int interval, void* args)
 	{
-		std::cout << "Instance Method 1 Called back ! " << std::endl;
+		std::cout << SDL::GetTicks() - ticks  << " ms : Instance Method 1 Called back ! " << std::endl;
 		return 0;
 	}
 	
@@ -24,7 +24,7 @@ class ObjectWithCallback
 	{
 		//this should be only called 3 times
 		static int iter = 5;
-		std::cout << "Instance Method 2 Called back ! Number: " << iter-- << std::endl;
+		std::cout << SDL::GetTicks() - ticks  << " ms : Instance Method 2 Called back ! Number: " << iter-- << std::endl;
 		if ( iter != 0 )
 			return interval;
 		return 0;
@@ -33,7 +33,7 @@ class ObjectWithCallback
 
 static unsigned int callback(unsigned int interval, void * args)
 {
-	std::cout << "Static Function called back !" << std::endl;
+	std::cout << SDL::GetTicks() - ticks  << " ms : Static Function called back !" << std::endl;
 	return 0;
 }
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
 	testlog << "SDL init..." << std::endl;
 
-	SDL::App::getInstance().initTimer();	
+	SDL::App::getInstance().initTimer();
 			
 	testlog << "Creating instance"<< std::endl;
 	ObjectWithCallback obj;
@@ -54,12 +54,13 @@ int main(int argc, char *argv[])
 
 	timer1.setInterval(2000);
 	timer1.setCallback(&obj,&ObjectWithCallback::callback1,(void*)NULL);
-	timer2.setInterval(0); //BUG!! when Interval = 0, the timer loop infinitly instead of exit like when there is the return 0;
+	timer2.setInterval(500);
 	timer2.setCallback(&obj,&ObjectWithCallback::callback2,(void*)NULL);
-	
+
+	ticks = SDL::GetTicks();
 	testlog << "Starting instance timer1 ( 2 sec )" << std::endl;
 	timer1.start();
-	testlog << "Starting instance timer2" << std::endl;
+	testlog << "Starting instance timer 2 (every 500ms)" << std::endl;
 	timer2.start();
 	testlog << "Starting static SDL timer ( 4 sec )"<< std::endl;
 	SDL_AddTimer(4000,callback,NULL);
