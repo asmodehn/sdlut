@@ -182,7 +182,10 @@ std::vector<Monster_Base*> Monster_Factory<Monster_Template>::Generate_New_Monst
 	return Monster_Vector;
 }
 
-//To solve linking problem with template we have to defined allowed template values (See: http://www.parashift.com/c++-faq-lite/templates.html#faq-35.15 for more info)
-//template class Monster_Factory<Monster_Base>;
-template class Monster_Factory<Monster_Skeleton>;
-template class Monster_Factory<Monster_Worm>;
+//If we build using VS, To solve linking problem with template we have to defined allowed template values (See: http://www.parashift.com/c++-faq-lite/templates.html#faq-35.15 for more info)
+#ifdef VISUAL_STUDIO
+	//template class Monster_Factory<Monster_Base>;
+	template class Monster_Factory<Monster_Skeleton>;
+	template class Monster_Factory<Monster_Worm>;
+
+#endif

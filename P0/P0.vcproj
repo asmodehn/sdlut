@@ -40,6 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D &quot;VISUAL_STUDIO&quot;"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\SDLut\include;include;..\Core\include;..\Math\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;"
@@ -127,6 +128,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D &quot;VISUAL_STUDIO&quot;"
 				Optimization="2"
 				AdditionalIncludeDirectories="..\SDLut\include;include;..\Core\include;..\Math\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
