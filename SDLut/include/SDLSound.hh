@@ -52,10 +52,13 @@ namespace RAGE
 	Uint32 _length;
 	Uint8 * _buf;
 
+	//manage if the sound is looping after it end
+	bool _loop_status;
+
 	public:
 
 		//Sound Loader
-		Sound(std::string filename) throw (std::logic_error);
+		Sound(std::string filename, bool loop_status = false) throw (std::logic_error);
 		//Sound Copy ( careful with conversion )
 		Sound( const Sound & s);
 		//Sound destructor

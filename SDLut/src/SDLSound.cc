@@ -10,7 +10,7 @@ namespace RAGE
 		
 //		int Sound::resourcecount = 0;
 		
-		Sound::Sound(std::string filename) throw ( std::logic_error)
+		Sound::Sound(std::string filename, bool loop_status) throw ( std::logic_error)
 		try
 		{
 #ifdef DEBUG
@@ -22,6 +22,8 @@ namespace RAGE
 				throw std::logic_error(" Unable to open the sound file !");
 
 			_aInfo = new AudioInfo(_aspec);
+
+			_loop_status = loop_status;
 #ifdef DEBUG
 			Log << nl << "Sound::Sound(" << filename << ") done";
 #endif
@@ -49,7 +51,8 @@ namespace RAGE
 				_buf[i] = s._buf[i];
 			}
 			
-			
+			_loop_status=s._loop_status;
+
 #ifdef DEBUG
 			Log << nl << "Sound::Sound(" << &s << ") done";
 #endif

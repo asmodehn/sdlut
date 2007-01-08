@@ -15,38 +15,58 @@ namespace RAGE
 			Uint8 *waveptr;
 			int    waveleft;
 
-			int i;
 			//Going throw channels list to find out the active ones
-			for (i = 0; i < _activechannels.size() && _activechannels[i]; i++)
+			for (unsigned int i = 0; i < _activechannels.size(); i++)
 			{
-// 					Log << nl <<" Channel " << i<<" at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
+				if (_activechannels[i]) //channel is active
+				{
+ //					Log << nl <<" Channel " << i<<" at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
 
-
-			/* Set up the pointers */
+				/* Set up the pointers */
 					waveptr = _channels[i]->_buf + _channelscursor[i] ;
 					waveleft = _channels[i]->_length - _channelscursor[i];
 
-			/* Go! */
+				/* Go! */
 					//in case the sound is smaller than the required number of samples
 					//or maybe when the callback is not enough frequently called ???
 					//just loop inserting few chunks of audio
-					while ( waveleft <= len ) {
+					/*while ( waveleft <= len ) {
 						SDL_MixAudio(stream, waveptr, waveleft, SDL_MIX_MAXVOLUME);
 						stream += waveleft;
 						len -= waveleft;
 						waveptr = _channels[i]->_buf;
 						waveleft = _channels[i]->_length;
 						_channelscursor[i] = 0;
-					}
+					}*/
+					
 					//just insert the usual full chunk
 //To debug, because SDL_MixAudio doesnt know all possible audio formats
 // 					for (int j=0; j< len; j++)
 // 					{
 // 						stream[j] = waveptr[j];
 // 					}
+					//When sound is smaller (aka very small sound or last part of a sound )
+					if ( waveleft <= len )
+					{
+						SDL_MixAudio(stream, waveptr, waveleft, SDL_MIX_MAXVOLUME);
+					} else {
 					SDL_MixAudio(stream, waveptr, len, SDL_MIX_MAXVOLUME);
+					}
+
 					_channelscursor[i] += len;
 //					Log << nl <<" Channel "<< i<<" after callback at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
+
+				/* If loop_status is set to false, then change back the status after playing the whole sound*/
+					if (!(_channels[i]->_loop_status) && (_channelscursor[i] >= _channels[i]->_length) )
+					{
+						_activechannels[i] = false;
+					} //if it set to true then reset the cursor
+					else if ( (_channels[i]->_loop_status) && (_channelscursor[i] >= _channels[i]->_length) )
+					{
+						_channelscursor[i] = 0;
+					}
+				}
+
 			}
 
 		}
@@ -176,7 +196,11 @@ namespace RAGE
 
 	void Mixer::toggleChannel(int index)
 {
+
 	_activechannels[index] = !_activechannels[index];
+	//reinit cursor if necessary (sound as been played once or more)
+	if (_activechannels[index])
+		_channelscursor[index] = 0;
 }
 
 		int Mixer::setChannelsNumber(int n)
