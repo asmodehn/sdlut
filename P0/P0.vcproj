@@ -238,6 +238,10 @@
 				RelativePath=".\src\Render_Engine.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\Sounds.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Headers"
@@ -286,6 +290,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Render_Engine.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Sounds.hh"
 				>
 			</File>
 		</Filter>

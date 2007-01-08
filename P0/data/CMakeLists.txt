@@ -16,3 +16,5 @@ CONFIGURE_FILE(	"tankbrigade.bmp" "${Project_0_BINARY_DIR}/data/tankbrigade.bmp"
 CONFIGURE_FILE(	"Trees Tileset.png" "${Project_0_BINARY_DIR}/data/Trees Tileset.png" COPYONLY)
 CONFIGURE_FILE(	Wall.png ${Project_0_BINARY_DIR}/data/Wall.png COPYONLY)
 CONFIGURE_FILE(	Water.png ${Project_0_BINARY_DIR}/data/Water.png COPYONLY)
+CONFIGURE_FILE(	esc_menu_sound.wav ${Project_0_BINARY_DIR}/data/esc_menu_sound.wav COPYONLY)
+CONFIGURE_FILE(	null.wav ${Project_0_BINARY_DIR}/data/null.wav COPYONLY)

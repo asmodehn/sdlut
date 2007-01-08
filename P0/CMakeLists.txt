@@ -96,6 +96,7 @@ ADD_EXECUTABLE(
 		${Project_0_SOURCE_DIR}/src/Monster_Factory.cpp ${Project_0_SOURCE_DIR}/include/Monster_Factory.hh
 		${Project_0_SOURCE_DIR}/src/Monsters.cpp ${Project_0_SOURCE_DIR}/include/Monsters.hh
 		${Project_0_SOURCE_DIR}/src/Render_Engine.cpp ${Project_0_SOURCE_DIR}/include/Render_Engine.hh
+		${Project_0_SOURCE_DIR}/src/Sounds.cpp ${Project_0_SOURCE_DIR}/include/Sounds.hh
 
 #adding data to have them in generated projects
 		#Cmake BUG on copying arrow.bmp file: copy failed, dest file 8k instead of src 13k
@@ -116,6 +117,8 @@ ADD_EXECUTABLE(
 		"${Project_0_SOURCE_DIR}/data/tankbrigade.bmp"
 		${Project_0_SOURCE_DIR}/data/Wall.png
 		${Project_0_SOURCE_DIR}/data/Water.png
+		${Project_0_SOURCE_DIR}/data/esc_menu_sound.wav
+		${Project_0_SOURCE_DIR}/data/null.wav
 
 #adding spec to have it in generated projects
 		"${Project_0_SOURCE_DIR}/Specifs/2D/2D Design v0.02.odt"

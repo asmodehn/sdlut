@@ -11,14 +11,15 @@ bool InitEverything()
     if (! App::getInstance().initVideo(false,false,true,false) )
 		//SDL_Init( SDL_INIT_EVERYTHING )
 	{
-		P0_Logger << " SDL Init Video Failed : " << GetError() << std::endl;
+		P0_Logger << " Init Video Failed : " << GetError() << std::endl;
         return false;
     }
 	P0_Logger << " Init Video : OK " << std::endl;
 
+	//Intialize Timer
 	if (! App::getInstance().initTimer() )
 	{
-		P0_Logger << " SDL Init Timer Failed : " << GetError() << std::endl;
+		P0_Logger << " Init Timer Failed : " << GetError() << std::endl;
         return false;
     }
 	P0_Logger << " Init Timer : OK " << std::endl;
@@ -27,7 +28,7 @@ bool InitEverything()
 	if (! App::getInstance().initText())
 		//if( TTF_Init() == -1 )
     {
-		P0_Logger << " TTF Error : " << TTF::GetError() << std::endl;
+		P0_Logger << " TTF Init Error : " << TTF::GetError() << std::endl;
         return false;
     }
 	P0_Logger << " TTF Init : OK " << std::endl;
@@ -40,10 +41,30 @@ bool InitEverything()
     }
 	P0_Logger << " Video Surface Creation : OK " << std::endl;
 
-	//Enable timer
-	App::getInstance().initTimer();
+	//Initialize Audio Mixer
+	if (! App::getInstance().initAudio())
+    {
+		P0_Logger << " Audio Init Error : " << GetError() << std::endl;
+        return false;
+    }
+	P0_Logger << " Audio Init : OK " << std::endl;
 
-    //If eveything loads fine
+	//Launch Mixer
+	App::getInstance().getMixer()->Play();
+
+	//Load Fxs Sounds Files to the mixer and set there respective channels
+	if (!Set_Fx_Sound_Channels())
+	{
+		P0_Logger << " Mixing Sound Error : " << GetError() << std::endl;
+        return false;
+    }
+	P0_Logger << " Mixing Sound : OK " << std::endl;
+
+
+	//Load Fx Files and get channels of each
+	//Set_Fx_Sound_Channels();
+
+	//If eveything loads fine
     return true;    
 }
 //Main

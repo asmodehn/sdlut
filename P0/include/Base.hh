@@ -12,6 +12,8 @@ using namespace RAGE::SDL;
 #include <math.h>
 #include <stdarg.h> //for methods with an unllimited number of parameters
 
+#include "Sounds.hh"
+
 //The initial attributes of the window
 const int SCREEN_WIDTH = 800;//640;
 const int SCREEN_HEIGHT = 600;//480;
@@ -76,6 +78,8 @@ const int BRIDGE_ENV_ITEM = 40;
 //Monsters ID which defined type of monsters (used in coordination with battlefield cutting)
 enum Monsters_Type {Humanoid = 1, Worm = 2};
 
+//Sounds
+//const Sound EscMenuButtonFx("data/esc_menu_sound.wav");
 
 //Animations
 const long CHARACTER_MOVE_ANIMATION_INTERVAL = 150; //Future dev (To Def)
