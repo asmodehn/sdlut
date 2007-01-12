@@ -79,8 +79,8 @@ INCLUDE_DIRECTORIES(${Project_0_SOURCE_DIR}/../Core/include )
 #include headers
 INCLUDE_DIRECTORIES(${Project_0_SOURCE_DIR}/include )
 
-#copy data
-ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/data/ )
+#copy Datas
+ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Datas/ )
 
 
 #adding with headers to have them in generated projects
@@ -99,30 +99,46 @@ ADD_EXECUTABLE(
 		${Project_0_SOURCE_DIR}/src/Render_Engine.cpp ${Project_0_SOURCE_DIR}/include/Render_Engine.hh
 		${Project_0_SOURCE_DIR}/src/Sounds.cpp ${Project_0_SOURCE_DIR}/include/Sounds.hh
 
-#adding data to have them in generated projects
-		#Cmake BUG on copying arrow.bmp file: copy failed, dest file 8k instead of src 13k
-		${Project_0_SOURCE_DIR}/data/Arrow.bmp
-		${Project_0_SOURCE_DIR}/data/BackGround_Map.txt
-		${Project_0_SOURCE_DIR}/data/Character_Archer.bmp
-		${Project_0_SOURCE_DIR}/data/Character_Fighter.bmp
-		${Project_0_SOURCE_DIR}/data/SlimSansSerif.ttf
-		${Project_0_SOURCE_DIR}/data/Environment_Map.txt
-		${Project_0_SOURCE_DIR}/data/Grass.png
-		"${Project_0_SOURCE_DIR}/data/Houses Tileset.png"
-		${Project_0_SOURCE_DIR}/data/LeaveMenu_NoSelected.png
-		${Project_0_SOURCE_DIR}/data/LeaveMenu_YesSelected.png
-		${Project_0_SOURCE_DIR}/data/Monsters5.bmp
-		${Project_0_SOURCE_DIR}/data/Rock.png
-		"${Project_0_SOURCE_DIR}/data/Sand Tileset.png"
-		"${Project_0_SOURCE_DIR}/data/Trees Tileset.png"
-		"${Project_0_SOURCE_DIR}/data/tankbrigade.bmp"
-		${Project_0_SOURCE_DIR}/data/Wall.png
-		${Project_0_SOURCE_DIR}/data/Water.png
-		${Project_0_SOURCE_DIR}/data/esc_menu_sound.wav
-		${Project_0_SOURCE_DIR}/data/null.wav
+#adding datas to have them in generated projects
+	#Battlefield
+		${Project_0_SOURCE_DIR}/Datas/Battlefield/BackGround_Map.txt
+		${Project_0_SOURCE_DIR}/Datas/Battlefield/Environment_Map.txt
+		${Project_0_SOURCE_DIR}/Datas/Battlefield/Grass.png
+		"${Project_0_SOURCE_DIR}/Datas/Battlefield/Houses Tileset.png"
+		${Project_0_SOURCE_DIR}/Datas/Battlefield/Rock.png
+		"${Project_0_SOURCE_DIR}/Datas/Battlefield/Sand Tileset.png"
+		"${Project_0_SOURCE_DIR}/Datas/Battlefield/Trees Tileset.png"
+		"${Project_0_SOURCE_DIR}/Datas/Battlefield/tankbrigade.bmp"
+		${Project_0_SOURCE_DIR}/Datas/Battlefield/Wall.png
+		${Project_0_SOURCE_DIR}/Datas/Battlefield/Water.png
+
+	#Characters
+		${Project_0_SOURCE_DIR}/Datas/Characters/Character_Archer.bmp
+		${Project_0_SOURCE_DIR}/Datas/Characters/Character_Fighter.bmp
+		${Project_0_SOURCE_DIR}/Datas/Characters/Monsters5.bmp
+
+	#Fonts
+		${Project_0_SOURCE_DIR}/Datas/Fonts/SlimSansSerif.ttf
+
+	#Interface
+		${Project_0_SOURCE_DIR}/Datas/Interface/LeaveMenu_NoSelected.png
+		${Project_0_SOURCE_DIR}/Datas/Interface/LeaveMenu_YesSelected.png	
+
+	#Items
+		${Project_0_SOURCE_DIR}/Datas/Items/Arrow.bmp
+
+	#Movies
+
+
+	#Musics
+
+
+	#SFXs
+		${Project_0_SOURCE_DIR}/Datas/SFXs/esc_menu_sound.wav
+		${Project_0_SOURCE_DIR}/Datas/SFXs/null.wav
 
 #adding spec to have it in generated projects
-		"${Project_0_SOURCE_DIR}/Specifs/2D/2D Design v0.02.odt"
+		"${Project_0_SOURCE_DIR}/Specifs/2D/2D Design v0.03.odt"
 	)
 
 

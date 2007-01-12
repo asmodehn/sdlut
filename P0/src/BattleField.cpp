@@ -83,10 +83,10 @@ std::vector<BattleField_Zone*> BattleField_Zone::Fill_Vector()
 BackGround::BackGround()
 {
 	//Create tileset surface
-	BackGround_Tileset_Grass = RGBSurface("data/Grass.png", Color(0xFF, 0xFF, 0xFF));
-	BackGround_Tileset_Sands = RGBSurface("data/Sand Tileset.png", Color(0x00, 0x00, 0x00));
-	BackGround_Tileset_Rivers = RGBSurface("data/Water.png", Color(0xFF, 0xFF, 0xFF));
-	BackGround_Tileset_Lakes = RGBSurface("data/Water.png", Color(0xFF, 0xFF, 0xFF));
+	BackGround_Tileset_Grass = RGBSurface("Datas/Battlefield/Grass.png", Color(0xFF, 0xFF, 0xFF));
+	BackGround_Tileset_Sands = RGBSurface("Datas/Battlefield/Sand Tileset.png", Color(0x00, 0x00, 0x00));
+	BackGround_Tileset_Rivers = RGBSurface("Datas/Battlefield/Water.png", Color(0xFF, 0xFF, 0xFF));
+	BackGround_Tileset_Lakes = RGBSurface("Datas/Battlefield/Water.png", Color(0xFF, 0xFF, 0xFF));
 
 	//The default clip (minimal clip)
 	BackGround_Clip.setx(0);
@@ -110,7 +110,7 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
 	int Current_Ground_Type = EMPTY_GROUND;
     
     //Open the map
-    std::ifstream BackGround_Map("data/BackGround_Map.txt");
+    std::ifstream BackGround_Map("Datas/Battlefield/BackGround_Map.txt");
 
 	//check if map has been loaded succesfully
     if(! BackGround_Map )
@@ -286,11 +286,11 @@ try {
 Environment::Environment()
 {
 	//Create tileset surface
-	Environment_Tileset_Trees = RGBSurface("data/Trees Tileset.png", Color(0x73, 0x6D, 0xB5));
-	Environment_Tileset_Rocks = RGBSurface("data/Rock.png", Color(0xFF, 0xFF, 0xFF));
-	Environment_Tileset_Walls = RGBSurface("data/Wall.png", Color(0xFF, 0xFF, 0xFF));
-	Environment_Tileset_Houses = RGBSurface("data/Houses Tileset.png", Color(0xBF, 0x7B, 0xC7));
-	Environment_Tileset_Bridges = RGBSurface("data/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
+	Environment_Tileset_Trees = RGBSurface("Datas/Battlefield/Trees Tileset.png", Color(0x73, 0x6D, 0xB5));
+	Environment_Tileset_Rocks = RGBSurface("datas/Battlefield/Rock.png", Color(0xFF, 0xFF, 0xFF));
+	Environment_Tileset_Walls = RGBSurface("Datas/Battlefield/Wall.png", Color(0xFF, 0xFF, 0xFF));
+	Environment_Tileset_Houses = RGBSurface("Datas/Battlefield/Houses Tileset.png", Color(0xBF, 0x7B, 0xC7));
+	Environment_Tileset_Bridges = RGBSurface("Datas/Battlefield/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
 
 	//The default clip is the minimal clip (we don't want to blit something in this case so it dont really matter)
 	Environment_Clip.setx(0);
@@ -314,7 +314,7 @@ std::vector<BattleField_Sprite*> Environment::Environment_Vector()
 	int Current_Env_Item_Type = NOTHING_ENV_ITEM;
     
     //Open the map
-    std::ifstream Environment_Map("data/Environment_Map.txt");
+    std::ifstream Environment_Map("Datas/Battlefield/Environment_Map.txt");
 
 	//check if map has been loaded succesfully
     if(! Environment_Map )

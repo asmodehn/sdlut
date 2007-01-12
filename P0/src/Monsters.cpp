@@ -8,7 +8,7 @@ Monster_Skeleton::Monster_Skeleton(int X, int Y)
     y = Y;
 
 	//Monster Tile Surface
-	_monsters_list = RGBSurface("data/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
+	_monsters_list = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
     _monster[0].setx( MO_WIDTH * (rand()%8) );
@@ -83,7 +83,7 @@ Monster_Worm::Monster_Worm(int X, int Y)
     y = Y;
 
 	//Monster Tile Surface
-	_monsters_list = RGBSurface("data/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
+	_monsters_list = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	 //Monster Clip definition range for the top left (Random monster from the 5th line)
     _monster[0].setx( MO_WIDTH * (rand()%8) );

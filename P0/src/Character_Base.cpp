@@ -138,15 +138,15 @@ Character_Base::Character_Base(int X, int Y)
 
 	/****Surfaces****/
 	//Characters Surfaces
-	Characters_Tile_Melee = RGBSurface("data/Character_Fighter.bmp", Color(0xFF, 0xFF, 0xFF));
-	Characters_Tile_Distant = RGBSurface("data/Character_Archer.bmp", Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile_Melee = RGBSurface("Datas/Characters/Character_Fighter.bmp", Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile_Distant = RGBSurface("Datas/Characters/Character_Archer.bmp", Color(0xFF, 0xFF, 0xFF));
 	Characters_Tile = Characters_Tile_Melee; //Default tile: the melee tile
 	//Arrow surface
-	Arrow_Tile = RGBSurface("data/Arrow.bmp", Color(0xFF, 0xFF, 0xFF));
+	Arrow_Tile = RGBSurface("Datas/Items/Arrow.bmp", Color(0xFF, 0xFF, 0xFF));
 
 	//Fight Msgs Style
-	//Font AttackMsg_Font("data/ECHELON.TTF", 28);
-	Font AttackMsg_Font("data/SlimSansSerif.ttf", 28);
+	//Font AttackMsg_Font("Datas/Fonts/ECHELON.TTF", 28);
+	Font AttackMsg_Font("Datas/Fonts/SlimSansSerif.ttf", 28);
 
 	//Msgs displayed in the status bar
 	attack_msg = *AttackMsg_Font.render(" ", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0)); // Empty msg until the attack key is pressed once (when using empty msg the creator crash so until this bug is solved we will use " " insted of "")

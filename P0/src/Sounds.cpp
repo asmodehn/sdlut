@@ -8,7 +8,7 @@ bool Set_Fx_Sound_Channels()
 {
 try {
 	//define the null sound
-	Sound NullSound("data/null.wav", false);
+	Sound NullSound("Datas/SFXs/null.wav", false);
 
 	//Set the null sound to the channel 0 (the 1st one)
 	if (App::getInstance().getMixer()->mixSound(NullSound, false) != 0)
@@ -17,7 +17,7 @@ try {
 	}
 
 	//Load Fxs Sounds
-	Sound EscMenuButtonFx("data/esc_menu_sound.wav", false);
+	Sound EscMenuButtonFx("Datas/SFXs/esc_menu_sound.wav", false);
 
 	//Set Fxs Channels
 	EscMenuButtonFx_Chan = App::getInstance().getMixer()->mixSound(EscMenuButtonFx, false);
