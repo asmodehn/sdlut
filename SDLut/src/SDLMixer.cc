@@ -183,6 +183,7 @@ int Mixer::freeChannel(int index)
 	_activechannels[index] = false;
 	_channelscursor[index] = 0;
 	_loopchannels[index] = false;
+	return 0;
 }
 
 	std::string Mixer::getDriverName()
