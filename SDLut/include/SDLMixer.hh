@@ -37,6 +37,7 @@ class Mixer
 	static std::vector<const Sound*> _channels;
 	static std::vector<int>_channelscursor;
 	static std::vector<bool> _activechannels;
+	static std::vector<bool> _loopchannels;
 
 		
 	public:
@@ -65,7 +66,8 @@ class Mixer
 		void Play(void) { SDL_PauseAudio(0); }
 		
 		//To convert a Sound and store it internally.
-		int mixSound(const Sound& sound, bool autoplay = true);
+		int mixSound(const Sound& sound, bool loop = true, bool autoplay = true);
+		int freeChannel(int index);
 		void toggleChannel(int index);
 		int setChannelsNumber(int);
 	

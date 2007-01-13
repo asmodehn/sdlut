@@ -1,5 +1,7 @@
 #include "SDLMixer.hh"
 
+#define MIN(a,b) (a<b)?a:b;
+
 namespace RAGE
 {
 	namespace SDL
@@ -8,6 +10,7 @@ namespace RAGE
 		std::vector<const Sound*> Mixer::_channels;
 		std::vector<int> Mixer::_channelscursor;
 		std::vector<bool> Mixer::_activechannels;
+		std::vector<bool> Mixer::_loopchannels;
 		
 		//class Mixer
 		void Mixer::callback(void *userdata, Uint8 *stream, int len)
@@ -15,29 +18,35 @@ namespace RAGE
 			Uint8 *waveptr;
 			int    waveleft;
 
+			int i;
 			//Going throw channels list to find out the active ones
-			for (unsigned int i = 0; i < _activechannels.size(); i++)
+			for (i = 0; i < _activechannels.size() && _activechannels[i]; i++)
 			{
-				if (_activechannels[i]) //channel is active
+				//TODO : replace mixaudio with my own mix function, in case there is no SDL_mixer
+				waveptr = _channels[i]->_buf + _channelscursor[i] ;
+				waveleft = MIN(_channels[i]->_length - _channelscursor[i],len);//test end of sound buffer
+
+				SDL_MixAudio(stream, waveptr, waveleft, SDL_MIX_MAXVOLUME);
+				_channelscursor[i] += waveleft;
+				if (_channelscursor[i] >= _channels[i]->_length)
 				{
- //					Log << nl <<" Channel " << i<<" at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
-
-				/* Set up the pointers */
-					waveptr = _channels[i]->_buf + _channelscursor[i] ;
-					waveleft = _channels[i]->_length - _channelscursor[i];
-
-				/* Go! */
-					//in case the sound is smaller than the required number of samples
-					//or maybe when the callback is not enough frequently called ???
-					//just loop inserting few chunks of audio
-					/*while ( waveleft <= len ) {
-						SDL_MixAudio(stream, waveptr, waveleft, SDL_MIX_MAXVOLUME);
+					_channelscursor[i]=0;
+							
+					//in case of loop
+					if (_loopchannels[i])
+					{
 						stream += waveleft;
 						len -= waveleft;
-						waveptr = _channels[i]->_buf;
-						waveleft = _channels[i]->_length;
-						_channelscursor[i] = 0;
-					}*/
+						waveleft = MIN(len,_channels[i]->_length);
+						SDL_MixAudio(stream, _channels[i]->_buf, waveleft, SDL_MIX_MAXVOLUME);
+						_channelscursor[i] += waveleft;
+					}
+					else
+					{
+						_activechannels[i] = false;
+					}
+					
+				}
 					
 					//just insert the usual full chunk
 //To debug, because SDL_MixAudio doesnt know all possible audio formats
@@ -45,28 +54,9 @@ namespace RAGE
 // 					{
 // 						stream[j] = waveptr[j];
 // 					}
-					//When sound is smaller (aka very small sound or last part of a sound )
-					if ( waveleft <= len )
-					{
-						SDL_MixAudio(stream, waveptr, waveleft, SDL_MIX_MAXVOLUME);
-					} else {
-					SDL_MixAudio(stream, waveptr, len, SDL_MIX_MAXVOLUME);
-					}
-
-					_channelscursor[i] += len;
-//					Log << nl <<" Channel "<< i<<" after callback at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
-
-				/* If loop_status is set to false, then change back the status after playing the whole sound*/
-					if (!(_channels[i]->_loop_status) && (_channelscursor[i] >= _channels[i]->_length) )
-					{
-						_activechannels[i] = false;
-					} //if it set to true then reset the cursor
-					else if ( (_channels[i]->_loop_status) && (_channelscursor[i] >= _channels[i]->_length) )
-					{
-						_channelscursor[i] = 0;
-					}
-				}
-
+					
+						
+// 					Log << nl <<" Channel "<< i<<" after callback at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
 			}
 
 		}
@@ -157,7 +147,7 @@ namespace RAGE
 }
 
 		
-	int Mixer::mixSound(const Sound& sound, bool autoplay )
+	int Mixer::mixSound(const Sound& sound,bool loop, bool autoplay )
 {
 #ifdef DEBUG
 			Log << nl << "Mixer::mixSound("<<&sound<< ", " << autoplay <<") called";
@@ -177,6 +167,7 @@ namespace RAGE
 		    _channels.push_back(cvtsound);
 		    _activechannels.push_back(autoplay);
 		    _channelscursor.push_back(0);
+		    _loopchannels.push_back(loop);
 		    SDL_UnlockAudio();
 	    }
 	
@@ -184,6 +175,14 @@ namespace RAGE
 			Log << nl << "Mixer::mixSound("<<&sound<< ", " << autoplay <<") done";
 #endif
 	return _activechannels.size()-1;
+}
+
+int Mixer::freeChannel(int index)
+{
+	delete _channels[index];
+	_activechannels[index] = false;
+	_channelscursor[index] = 0;
+	_loopchannels[index] = false;
 }
 
 	std::string Mixer::getDriverName()
@@ -196,11 +195,7 @@ namespace RAGE
 
 	void Mixer::toggleChannel(int index)
 {
-
 	_activechannels[index] = !_activechannels[index];
-	//reinit cursor if necessary (sound as been played once or more)
-	if (_activechannels[index])
-		_channelscursor[index] = 0;
 }
 
 		int Mixer::setChannelsNumber(int n)
@@ -209,6 +204,7 @@ namespace RAGE
 	_channels.resize(n);//TODO : if needed, fill the new channels with default sound (silence?)
 	_activechannels.resize(n); //TODO : turn off the new channels
 	_channelscursor.resize(n); //TODO : turn off the new channels
+	_loopchannels.resize(n);
 	SDL_UnlockAudio();
 	return n; //TODO : return the actuall allocated number of channels
 }
