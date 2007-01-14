@@ -192,8 +192,8 @@ namespace Default
 			
 		 //image 16x14 character, 225x225 pixels (all start at 0, not 1)
 		Font( int ptsize = 16)  throw (std::logic_error);
-		Font::Font(const Font & font);
-		Font::~Font();
+		Font(const Font & font);
+		~Font();
 		
 		Rect getSize(const std::string & text);
 		

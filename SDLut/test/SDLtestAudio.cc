@@ -25,15 +25,12 @@ int main(int argc, char *argv[])
 		testlog << nl<<  "Loading sound";
 		SDL::Sound wavefile(argv[1]);
 		
-		testlog << nl<<"playing...";
-		SDL::App::getInstance().getMixer()->Play();
-		
 		testlog << nl<<  "setting mixer channels";
 		int wav_channel_1 = SDL::App::getInstance().getMixer()->mixSound(wavefile,true, false);
 		//int wav_channel_2 = SDL::App::getInstance().getMixer()->mixSound(wavefile,false, false);
 		
 		testlog << nl<<  "playing channel 1";
-		SDL::App::getInstance().getMixer()->toggleChannel(wav_channel_1);
+		SDL::App::getInstance().getMixer()->playChannel(wav_channel_1);
 		SDL::Delay(1000);
 
 		//testlog << nl<<  "playing channel 2";

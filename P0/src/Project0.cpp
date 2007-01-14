@@ -49,9 +49,6 @@ bool InitEverything()
     }
 	P0_Logger << " Audio Init : OK " << std::endl;
 
-	//Launch Mixer
-	App::getInstance().getMixer()->Play();
-
 	//Load Fxs Sounds Files to the mixer and set there respective channels
 	if (!Set_Fx_Sound_Channels())
 	{

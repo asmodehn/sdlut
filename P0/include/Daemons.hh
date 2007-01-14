@@ -82,11 +82,11 @@ public:
 	//Callback method that will eventually generate new monster (not to near from the character!)
 	unsigned int Generate_Monsters(unsigned int interval, void* args);
 	//Callback method that will launch the character's move animation
-	unsigned int Daemons::Character_Move_Animation(unsigned int interval, void* args);
+	unsigned int Character_Move_Animation(unsigned int interval, void* args);
 	//Callback method that will launch the character's attack animation
-	unsigned int Daemons::Character_Attack_Animation(unsigned int interval, void* args);
+	unsigned int Character_Attack_Animation(unsigned int interval, void* args);
 	//Callback method that will launch the arrow attack animation
-	unsigned int Daemons::Character_Arrow_Animation(unsigned int interval, void* args);
+	unsigned int Character_Arrow_Animation(unsigned int interval, void* args);
 
 };
 

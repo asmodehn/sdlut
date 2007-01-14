@@ -168,7 +168,7 @@ class Character_Base
 		int attack(std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
 
 		//Set Character Sprite Which change when attack occured
-		bool Character_Base::Set_Attack_Animation_Sprite();
+		bool Set_Attack_Animation_Sprite();
 
 		//Set Arrow info for animation
 		bool Set_Arrow_Sprite_Coordinate();

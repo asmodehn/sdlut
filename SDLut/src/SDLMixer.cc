@@ -106,7 +106,7 @@ namespace RAGE
 
 			Log << nl << "Using Driver : " << getDriverName();
 
-			
+			PlayAll();	
 
 
 #ifdef DEBUG
@@ -128,6 +128,7 @@ namespace RAGE
 		
 		Mixer::~Mixer()
 {
+	PauseAll();
 			
 #ifdef DEBUG
 			Log << nl << "Mixer::~Mixer() called";
@@ -194,10 +195,20 @@ int Mixer::freeChannel(int index)
 		//printf("Using audio driver: %s\n", SDL_AudioDriverName(name, 32));
 	}
 
-	void Mixer::toggleChannel(int index)
+		void Mixer::stopChannel(int index)
 {
-	_activechannels[index] = !_activechannels[index];
+	_activechannels[index] = false;
+	_channelscursor[index] = 0;
 }
+		void Mixer::playChannel(int index)
+{
+	_activechannels[index] = true;
+}
+		void Mixer::pauseChannel(int index)
+{
+	_activechannels[index] = false;
+}
+		
 
 		int Mixer::setChannelsNumber(int n)
 {

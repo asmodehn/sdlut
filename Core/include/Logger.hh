@@ -47,7 +47,7 @@ namespace RAGE
         quiet,normal,verbose
     }
     Loglevel;
-
+    
     class Logger //: public std::ostream
     {
         int _indentlvl,_indentwidth;
@@ -123,6 +123,7 @@ namespace RAGE
         return *this;
     }
 
+    Logger& nl (Logger& log); // adds a new line with the prefix
 
 }
 

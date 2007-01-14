@@ -62,13 +62,15 @@ class Mixer
 		//global Audio methods
 		std::string getDriverName();
 		Status GetStatus();
-		void Pause(void) { SDL_PauseAudio(1); }
-		void Play(void) { SDL_PauseAudio(0); }
+		void PauseAll(void) { SDL_PauseAudio(1); }
+		void PlayAll(void) { SDL_PauseAudio(0); }
 		
 		//To convert a Sound and store it internally.
 		int mixSound(const Sound& sound, bool loop = true, bool autoplay = true);
 		int freeChannel(int index);
-		void toggleChannel(int index);
+		void stopChannel(int index);
+		void playChannel(int index);
+		void pauseChannel(int index);
 		int setChannelsNumber(int);
 	
 }; //class Mixer

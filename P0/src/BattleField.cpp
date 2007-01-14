@@ -287,7 +287,7 @@ Environment::Environment()
 {
 	//Create tileset surface
 	Environment_Tileset_Trees = RGBSurface("Datas/Battlefield/Trees Tileset.png", Color(0x73, 0x6D, 0xB5));
-	Environment_Tileset_Rocks = RGBSurface("datas/Battlefield/Rock.png", Color(0xFF, 0xFF, 0xFF));
+	Environment_Tileset_Rocks = RGBSurface("Datas/Battlefield/Rock.png", Color(0xFF, 0xFF, 0xFF));
 	Environment_Tileset_Walls = RGBSurface("Datas/Battlefield/Wall.png", Color(0xFF, 0xFF, 0xFF));
 	Environment_Tileset_Houses = RGBSurface("Datas/Battlefield/Houses Tileset.png", Color(0xBF, 0x7B, 0xC7));
 	Environment_Tileset_Bridges = RGBSurface("Datas/Battlefield/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));

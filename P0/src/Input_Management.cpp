@@ -218,7 +218,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					//play menu Fx	
 					//App::getInstance().getMixer()->toggleChannel(App::getInstance().getMixer()->mixSound(EscMenuButtonFx, true));
 					//App::getInstance().getMixer()->Play();
-					App::getInstance().getMixer()->toggleChannel(EscMenuButtonFx_Chan);
+					App::getInstance().getMixer()->playChannel(EscMenuButtonFx_Chan);
 					//loop between Y/N 
 					if ( myEsc_Menu->Get_SelectedItemId() > 1 )
 					{
@@ -237,7 +237,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					//play menu Fx
 					//App::getInstance().getMixer()->toggleChannel(App::getInstance().getMixer()->mixSound(EscMenuButtonFx, true));
 					//App::getInstance().getMixer()->Play();
-					App::getInstance().getMixer()->toggleChannel(EscMenuButtonFx_Chan);
+					App::getInstance().getMixer()->playChannel(EscMenuButtonFx_Chan);
 					//loop between Y/N 
 					if ( myEsc_Menu->Get_SelectedItemId() < 2 )
 					{
