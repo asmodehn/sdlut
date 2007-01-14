@@ -20,32 +20,35 @@ namespace RAGE
 
 			int i;
 			//Going throw channels list to find out the active ones
-			for (i = 0; i < _activechannels.size() && _activechannels[i]; i++)
+			for (i = 0; i < _activechannels.size() ; i++)
 			{
-				//TODO : replace mixaudio with my own mix function, in case there is no SDL_mixer
-				waveptr = _channels[i]->_buf + _channelscursor[i] ;
-				waveleft = MIN(_channels[i]->_length - _channelscursor[i],len);//test end of sound buffer
-
-				SDL_MixAudio(stream, waveptr, waveleft, SDL_MIX_MAXVOLUME);
-				_channelscursor[i] += waveleft;
-				if (_channelscursor[i] >= _channels[i]->_length)
+				if (_activechannels[i])
 				{
-					_channelscursor[i]=0;
-							
-					//in case of loop
-					if (_loopchannels[i])
+					//TODO : replace mixaudio with my own mix function, in case there is no SDL_mixer
+					waveptr = _channels[i]->_buf + _channelscursor[i] ;
+					waveleft = MIN(_channels[i]->_length - _channelscursor[i],len);//test end of sound buffer
+
+					SDL_MixAudio(stream, waveptr, waveleft, SDL_MIX_MAXVOLUME);
+					_channelscursor[i] += waveleft;
+					if (_channelscursor[i] >= _channels[i]->_length)
 					{
-						stream += waveleft;
-						len -= waveleft;
-						waveleft = MIN(len,_channels[i]->_length);
-						SDL_MixAudio(stream, _channels[i]->_buf, waveleft, SDL_MIX_MAXVOLUME);
-						_channelscursor[i] += waveleft;
+						_channelscursor[i]=0;
+								
+						//in case of loop
+						if (_loopchannels[i])
+						{
+							stream += waveleft;
+							len -= waveleft;
+							waveleft = MIN(len,_channels[i]->_length);
+							SDL_MixAudio(stream, _channels[i]->_buf, waveleft, SDL_MIX_MAXVOLUME);
+							_channelscursor[i] += waveleft;
+						}
+						else
+						{
+							_activechannels[i] = false;
+						}
+						
 					}
-					else
-					{
-						_activechannels[i] = false;
-					}
-					
 				}
 					
 					//just insert the usual full chunk
