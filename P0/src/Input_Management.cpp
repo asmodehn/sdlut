@@ -12,37 +12,40 @@ void KeyboardInput::Character_Moves_Consequences()
 	Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
 	Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
 
-	//Move the character if possible
-	if( myCharacter->move(Environment_Sprite_Vector, BackGround_Sprite_Vector, Monster_Vector_Skeleton, Monster_Vector_Worm)
-	 == false )
-	{ 
-      P0_Logger << " Move character Failed " << std::endl;    
-    }
-	
-	//Set the camera
-	if( myCharacter->following_camera() == false )
-	{ 
-      P0_Logger << " Failed to set the camera" << std::endl;    
-    }
-	
-	//check character looking direction
-	if( myCharacter->check_character_direction() == false )
+	//set character sprite in function of the direction and dont move if it's only a direction change
+	if( myCharacter->assign_direction_sprite() == false )
 	{ 
       P0_Logger << " Check character direction Failed " << std::endl;    
     }
 
+	if ( myCharacter->Get_Moving_Status() ) //we're really moving but not simply changing the direction
+	{
+		//Move the character if possible
+		if( myCharacter->move(Environment_Sprite_Vector, BackGround_Sprite_Vector, Monster_Vector_Skeleton, Monster_Vector_Worm)
+		 == false )
+		{ 
+		  P0_Logger << " Move character Failed " << std::endl;    
+		}
+		
+		//Set the camera
+		if( myCharacter->following_camera() == false )
+		{ 
+		  P0_Logger << " Failed to set the camera" << std::endl;    
+		}
+
+		//Intervals between animation's frames
+		myCharacter_Move_Animation_Timer.setInterval( CHARACTER_MOVE_ANIMATION_INTERVAL  );
+		//Set the callback method which will define the character appearance on the screen and start animation
+		myCharacter_Move_Animation_Timer.setCallback(myDaemons,&Daemons::Character_Move_Animation, (void*)NULL);
+		//Start the animation
+		myCharacter_Move_Animation_Timer.start();
+
+		//Send the modified character's collision box to daemons
+		myDaemons->Set_Character_Base(myCharacter);
+	}
+	
 	//Send the modified character to the render engine 
 	myRender_Engine->Set_Character_Base(myCharacter);
-
-	//Send the modified character's collision box to daemons
-	myDaemons->Set_Character_Base(myCharacter);
-
-	//Intervals between animation's frames
-	myCharacter_Move_Animation_Timer.setInterval( CHARACTER_MOVE_ANIMATION_INTERVAL  );
-	//Set the callback method which will define the character appearance on the screen and start animation
-	myCharacter_Move_Animation_Timer.setCallback(myDaemons,&Daemons::Character_Move_Animation, (void*)NULL);
-	//Start the animation
-	myCharacter_Move_Animation_Timer.start();
 
 	//P0_Logger << " Move " << std::endl;
 }
@@ -57,7 +60,7 @@ void KeyboardInput::Character_Attack_Consequences()
 	Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
 	
 	//Handle attacks & set the distance of the attack
-	/***WARNING !! IN CASE OF DISTANT ATTACK THE MONSTER IS CONSIDERED AS DEAD WHEN THE KEY IS PRESSED AND NOT WHEN THE ARROW REACHED THE TARGET => TODO: FIND A WAY TO SOLVE THAT (SEPARATE THE ATTACK METHOD IN TWO DISTINCT METHOD EPRHAPS CAN HELP)***/
+	/***WARNING !! IN CASE OF DISTANT ATTACK THE MONSTER IS CONSIDERED AS DEAD WHEN THE KEY IS PRESSED AND NOT WHEN THE ARROW REACHED THE TARGET => TODO: FIND A WAY TO SOLVE THAT (SEPARATE THE ATTACK METHOD IN TWO DISTINCT METHOD PERHAPS CAN HELP)***/
 	myCharacter->Set_Hit_Monster_Distance( myCharacter->attack(Monster_Vector_Skeleton, Monster_Vector_Worm) );
 	
 	//Intervals between animation's frames
@@ -106,33 +109,41 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 		{
 			switch( s.getKey() )
 			{
-				if ( !myCharacter->Get_Attack_Status() ) //no attack is occuring if attack not key is available except escape
+				if ( !myCharacter->Get_Attack_Status() ) //If attack is occuring then no keys are available except escape
+				/************SEEMS TO BUG HERE WHEN CHANGING WEAPON DURING ATTACK****************/
 				{
 					//Moves Keys
 					case KKp8:
 					case KUp:
-						myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
+						//myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
+						myCharacter->Set_yVel( myCharacter->Get_yVel() - 1);
 						Character_Moves_Consequences();
 						break;
 					case KKp5:
 					case KDown:
-						myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
+						//myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
+						myCharacter->Set_yVel( myCharacter->Get_yVel() + 1);
 						Character_Moves_Consequences();
 						break;
 					case KKp7:
 					case KLeft:
-						myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
+						//myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
+						myCharacter->Set_xVel( myCharacter->Get_xVel() - 1);
 						Character_Moves_Consequences();
 						break;
 					case KKp9:
 					case KRight:
-						myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
+						//myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
+						myCharacter->Set_xVel( myCharacter->Get_xVel() + 1);
 						Character_Moves_Consequences();
 						break;
 
 					//Attacks Key
 					case KKDivide:
 					case KRctrl:
+						//Stop moving
+						myCharacter->Set_xVel(0);
+						myCharacter->Set_yVel(0);
 						Character_Attack_Consequences();
 						break;
 
@@ -182,26 +193,17 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 		{
 			switch( s.getKey() )
 			{
-				//Moves Keys
+				//Moves Keys released => no velocity
 				case KKp8:
 				case KUp:
-					myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
-					//Character_Moves_Consequences();
-					break;
 				case KKp5:
 				case KDown:
-					myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
-					//Character_Moves_Consequences();
-					break;
 				case KKp7:
 				case KLeft:
-					myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
-					//Character_Moves_Consequences();
-					break;
 				case KKp9:
 				case KRight:
-					myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
-					//Character_Moves_Consequences();
+					myCharacter->Set_xVel(0);
+					myCharacter->Set_yVel(0);
 					break;
 			}
 		}

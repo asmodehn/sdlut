@@ -90,7 +90,7 @@ class KeyboardInput : public Keyboard
 		}
 
 		//Manage the key pressed
-		virtual bool handleKeyEvent (const Sym &s, bool pressed);
+		bool handleKeyEvent (const Sym &s, bool pressed);
     
 };
 

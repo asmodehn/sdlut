@@ -18,6 +18,9 @@ class Character_Base
 		//The X and Y offsets of the Arrow
 		int arrow_x, arrow_y;
 
+		//Moving status define if the player is moving or just changing direction or staying at the same place
+		bool moving_status;
+
 		//Fight variables
 		bool attack_status; //Attack key pressed yes or no 
 		int attack_style; //Manage the style of attack 
@@ -63,13 +66,17 @@ class Character_Base
 		int attack_check_status(int collision_box_movement, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
 
 		//Check if the ground allow the character presence
-		virtual bool check_background_allow_character(int x, int y, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		virtual int check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 		//Check if the environment allow the character presence
-		virtual int check_environment_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
+		virtual int check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
 
 		//Check if the battlefield allow the character presence
-		virtual bool check_battlefield_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		virtual bool check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+
+		//defines Battlefield rules for players
+		int BackGround_Collision_Rules(int Ground_Type);
+		int Environment_Collision_Rules(int Env_Type);
 
 	public:
 
@@ -148,6 +155,15 @@ class Character_Base
             return hit_monster_distance;
         }
 
+		void Set_Moving_Status(bool new_moving_status)
+        {
+            moving_status = new_moving_status;
+        }
+        bool Get_Moving_Status() const
+        {
+            return moving_status;
+        }
+
 
 
 		/****Methods****/
@@ -159,7 +175,7 @@ class Character_Base
 		bool move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
 
 		//check the direction where the character is turn to
-		bool check_character_direction();
+		bool assign_direction_sprite();
 
 		//define character sprite which appear on the screen during moves
 		bool Set_Move_Animation_Sprite();

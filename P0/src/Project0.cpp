@@ -57,10 +57,6 @@ bool InitEverything()
     }
 	P0_Logger << " Mixing Sound : OK " << std::endl;
 
-
-	//Load Fx Files and get channels of each
-	//Set_Fx_Sound_Channels();
-
 	//If eveything loads fine
     return true;    
 }
@@ -88,7 +84,7 @@ try { //global error management
 	/********Classes Instanciation & Initialization********/
 	//Create the keyboard instance that will managed input
 	KeyboardInput myKeyboardInput;
-	//myKeyboardInput.enableKeyRepeat(10,500);
+	myKeyboardInput.enableKeyRepeat();  //enable key repeat
 
 	//Instanciate the timers class
 	Daemons* myDaemons = new Daemons();

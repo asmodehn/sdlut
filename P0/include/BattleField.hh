@@ -95,7 +95,7 @@ class BattleField_Zone
 };
 
 //BackGround class which is designed to manage everything relative to the background layer of the battlefield
-class BackGround
+class BackGround : public BattleField_Sprite
 {
 	private:
 		//Default sprite clip
@@ -119,12 +119,10 @@ class BackGround
 
 		//Generate the background of the screen
 		bool Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, Rect Camera, VideoSurface & Screen);
-
-
 };
 
 //Environment class which is designed to manage everything relative to the environment layer of the battlefield
-class Environment
+class Environment : public BattleField_Sprite
 {
 	private:
 		//Default sprite clip
@@ -148,8 +146,6 @@ class Environment
 
 		//Generate the background of the screen
 		bool Render(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, Rect Camera, VideoSurface & Screen);
-
-
 };
 
 #endif

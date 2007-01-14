@@ -15,6 +15,9 @@ Character_Base::Character_Base(int X, int Y)
 	arrow_x = x;
 	arrow_y = y;
 
+	//Initial moving status
+	moving_status = false;
+
 	//Character Clips definition
 	_character_left_attack[0].setx(0);
 	_character_left_attack[0].sety(0);
@@ -220,6 +223,16 @@ try {
         collision_box.sety(y);    
     }
 
+	//Check if the battlefield allow the move
+	if(! check_battlefield_allow_character(collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector) )
+	{
+		//move back
+		collision_box.setx(x);
+		collision_box.sety(y);
+		//collision found no need to work more
+		return true;
+	}
+
 	//Collision with skeletons
 	for(unsigned int i=0; i < Monster_Vector_Skeleton.size(); i++)
 	{
@@ -247,14 +260,6 @@ try {
 		}
 	}
     
-	//Now that all collision has been checked, we must check if the battlefield allow the move
-	if(! check_battlefield_allow_character(collision_box.getx(), collision_box.gety(), Environment_Sprite_Vector, BackGround_Sprite_Vector) )
-	{
-		//move back
-		collision_box.setx(x);
-		collision_box.sety(y); 
-	}
-
 	//Finally move the character in the same place of his collision box...
 	x = collision_box.getx();
 	y = collision_box.gety();
@@ -269,23 +274,26 @@ try {
 }
 }
 //Check if the battlefield allow the character presence
-bool Character_Base::check_battlefield_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+bool Character_Base::check_battlefield_allow_character(Rect Collision_Box , std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	//1st, we must check if the environment allow the move
-	if( check_environment_allow_character(x, y, Environment_Sprite_Vector) == -1)
+	int _environment_allow_character = check_environment_allow_character(Collision_Box, Environment_Sprite_Vector);
+
+	//No environement item present, the ground have priority
+	if( _environment_allow_character == -1)
 	{
-		//No environement item present, the ground have priority
-		if(! check_background_allow_character(x, y, BackGround_Sprite_Vector) )
+		
+		if(! check_background_allow_character(Collision_Box, BackGround_Sprite_Vector) )
 		{
 			return false;
 		}
 	}
 	 //environment item present and dont allow presence
-	else if( check_environment_allow_character(x, y, Environment_Sprite_Vector) == 0)
+	else if( _environment_allow_character == 0)
 	{
 		return false;
 	}
-	else //environment item present and allow presence
+	else //(1): environment item present and allow presence
 	{
 		return true;
 	}
@@ -294,93 +302,126 @@ bool Character_Base::check_battlefield_allow_character(int x, int y, std::vector
 	return true;
 }
 //Check if the ground allow the move
-bool Character_Base::check_background_allow_character(int x, int y, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+int Character_Base::check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
+	int res = true; //allowed by default
+	int newGround_Type;
+	Rect bg_rect;
+
 	//loop on all the vector
 	for(unsigned int i=0; i < BackGround_Sprite_Vector.size(); i++)
 	{
-		//when we have located the good destination inside the vector,...
-		if (( x == BackGround_Sprite_Vector[i]->Get_X() ) && ( y == BackGround_Sprite_Vector[i]->Get_Y() ))
+		bg_rect.setx(BackGround_Sprite_Vector[i]->Get_X());
+		bg_rect.sety(BackGround_Sprite_Vector[i]->Get_Y());
+		bg_rect.setw(BATF_SPRITE_W);
+		bg_rect.seth(BATF_SPRITE_H);
+
+		if ( check_collision( Collision_Box, bg_rect ) )
 		{
-			//...get the destination ground...
-			int newGround_Type = BackGround_Sprite_Vector[i]->Get_BattleField_Type();
-			
-			//...then check if the ground allow the character move
-			if( newGround_Type == EMPTY_GROUND ) //Don't allow move
-			{
-				return false; 
-			}
-			else if( newGround_Type == GRASS_GROUND ) //Allow move
-			{
-				return true;
-			}
-			else if( newGround_Type == SAND_GROUND ) //Don't allow move
-			{
-				return false;  
-			}
-			else if( newGround_Type == RIVER_GROUND ) //Allow move
-			{
-				return true;
-			}
-			else if( newGround_Type == LAKE_GROUND ) //Allow move
-			{
-				return false;
-			}
-			else // not listed type (impossible!!??). Don't allow move
-			{
-				return false;  
-			}
+			//Get the destination ground
+			newGround_Type = BackGround_Sprite_Vector[i]->Get_BattleField_Type();
+			//Ask the background if the collision bow is allowed to go there
+			res = BackGround_Collision_Rules(newGround_Type);
+			if (!res) // Not allowed to be here: no need to check another square of the collision box
+				return res;
 		}
 	}
-	//we can't locate the position inside the vector (impossible!!??)
-	return false;
+
+	return res;
+}
+//Set BackGroundRules For Player Presence
+int Character_Base::BackGround_Collision_Rules(int Ground_Type)
+{
+	//check if the ground allow the character move
+	if( Ground_Type == EMPTY_GROUND ) //Don't allow move
+	{
+		return false; 
+	}
+	else if( Ground_Type == GRASS_GROUND ) //Allow move
+	{
+		return true;
+	}
+	else if( Ground_Type == SAND_GROUND ) //Don't allow move
+	{
+		return false;  
+	}
+	else if( Ground_Type == RIVER_GROUND ) //Allow move
+	{
+		return true;
+	}
+	else if( Ground_Type == LAKE_GROUND ) //Allow move
+	{
+		return false;
+	}
+	else // not listed type (impossible!!??). Don't allow move
+	{
+		return false;  
+	}
 }
 //Check if the environment allow the move
-int Character_Base::check_environment_allow_character(int x, int y, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
+int Character_Base::check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
 {
+	int res = -1; //nothing by default
+    int newEnv_Type;
+	Rect env_rect;
+
 	//loop on all the vector
 	for(unsigned int i=0; i < Environment_Sprite_Vector.size(); i++)
 	{
-		//when we have located the good destination inside the vector,...
-		if (( x == Environment_Sprite_Vector[i]->Get_X() ) && ( y == Environment_Sprite_Vector[i]->Get_Y() ))
+		env_rect.setx(Environment_Sprite_Vector[i]->Get_X());
+		env_rect.sety(Environment_Sprite_Vector[i]->Get_Y());
+		env_rect.setw(BATF_SPRITE_W);
+		env_rect.seth(BATF_SPRITE_H);
+
+		if ( check_collision( Collision_Box, env_rect ) )
 		{
-			//...get the destination environment...
-			int newEnv_Type = Environment_Sprite_Vector[i]->Get_BattleField_Type();
-			
-			//...then check if the environment allow the character presence
-			if( newEnv_Type == NOTHING_ENV_ITEM )  //indicate no environement is present
-			{
-				return -1; 
-			}
-			else if( newEnv_Type == TREE_ENV_ITEM ) //Don't allow presence
-			{
-				return 0;
-			}
-			else if( newEnv_Type == ROCK_ENV_ITEM ) //Don't allow presence
-			{
-				return 0;
-			}
-			else if( newEnv_Type == WALL_ENV_ITEM ) //Don't allow presence
-			{
-				return 0;
-			}
-			else if( newEnv_Type == HOUSE_ENV_ITEM ) //Allow presence
-			{
-				return 1;
-			}
-			else // not listed type (impossible!!??). Allow presence
-			{
-				return 1;  
-			}
+			//Get the destination environment
+			newEnv_Type = Environment_Sprite_Vector[i]->Get_BattleField_Type();
+			//Check if the environment allow the player's collision box presence
+			res = Environment_Collision_Rules(newEnv_Type);
+			if ( res == 0) // Not allowed: no need to work more
+				return res;
 		}
 	}
-	//we can't locate the position inside the vector (impossible!!??)
-	return -1;
+
+	return res;
 }
+
+//Set Environment Rules For Player Presence
+int Character_Base::Environment_Collision_Rules(int Env_Type)
+{
+	if( Env_Type == NOTHING_ENV_ITEM )  //indicate no environement is present
+	{
+		return -1; 
+	}
+	else if( Env_Type == TREE_ENV_ITEM ) //Don't allow presence
+	{
+		return 0;
+	}
+	else if( Env_Type == ROCK_ENV_ITEM ) //Don't allow presence
+	{
+		return 0;
+	}
+	else if( Env_Type == WALL_ENV_ITEM ) //Don't allow presence
+	{
+		return 0;
+	}
+	else if( Env_Type == HOUSE_ENV_ITEM ) //Allow presence
+	{
+		return 1;
+	}
+	else // not listed type (impossible!!??). Allow presence
+	{
+		return 1;  
+	}
+}
+
 //check the move direction and assign the good sprite
-bool Character_Base::check_character_direction()
+bool Character_Base::assign_direction_sprite()
 {
 try {
+	int old_move_status = move_status;
+
 	//If CH is moving left
     if( xVel < 0 )
     {
@@ -426,6 +467,17 @@ try {
 			Arrow_SpriteRect = Arrow_Up[0];
 		}
 	}
+
+	//Check if we are changing direction
+	if ( old_move_status != move_status )
+	{ //change but dont move
+		xVel = 0;
+		yVel = 0;
+		moving_status = false;
+	} else {
+		moving_status = true; //we're moving
+	}
+
 	return true; //no error
 } catch (...) {
   return false; //error occured
