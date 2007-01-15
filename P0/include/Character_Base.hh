@@ -66,17 +66,13 @@ class Character_Base
 		int attack_check_status(int collision_box_movement, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
 
 		//Check if the ground allow the character presence
-		virtual int check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		std::vector<int> check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 		//Check if the environment allow the character presence
-		virtual int check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
+		std::vector<int> check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
 
 		//Check if the battlefield allow the character presence
-		virtual bool check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
-
-		//defines Battlefield rules for players
-		int BackGround_Collision_Rules(int Ground_Type);
-		int Environment_Collision_Rules(int Env_Type);
+		bool check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 	public:
 
