@@ -60,7 +60,7 @@ std::vector<Monster_Base*> Monster_Factory<Monster_Template>::Create_Monsters(in
 		Monster_Template* newMonster = Create_One_Monster(Character_X, Character_Y);
 
 		//Check if the battlefield allow the monster creation
-		while( !(newMonster->check_battlefield_allow_monster( newMonster->Get_X(), newMonster->Get_Y(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->check_cutting_allow_monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
+		while( !(newMonster->check_battlefield_allow_monster( newMonster->Get_Collision_Box(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->check_cutting_allow_monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
 		{
 			//regeneration
 			delete(newMonster);
@@ -167,7 +167,7 @@ std::vector<Monster_Base*> Monster_Factory<Monster_Template>::Generate_New_Monst
 		Monster_Template* newMonster = Create_One_Monster(Character_X, Character_Y);
 
 		//Check if the battlefield allow the monster creation
-		while( !(newMonster->check_battlefield_allow_monster( newMonster->Get_X(), newMonster->Get_Y(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->check_cutting_allow_monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
+		while( !(newMonster->check_battlefield_allow_monster( newMonster->Get_Collision_Box(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->check_cutting_allow_monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
 		{
 			//regeneration
 			delete(newMonster);

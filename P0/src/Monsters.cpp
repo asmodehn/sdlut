@@ -33,46 +33,53 @@ Monster_Skeleton::Monster_Skeleton(int X, int Y)
 	Alive_Status = true;
 }
 //Check if the ground allow the Skeleton to move
-bool Monster_Skeleton::check_background_allow_monster(int x, int y, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+std::vector<int> Monster_Skeleton::check_background_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
+	std::vector<int> res; //vector of collision results
+	int Ground_Type;
+	Rect bg_rect;
+
 	//loop on all the vector
-	for(unsigned int i=0; i < BattleField_Sprite_Vector.size(); i++)
+	for(unsigned int i=0; i < BackGround_Sprite_Vector.size(); i++)
 	{
-		//when we have located the good destination inside the vector,...
-		if (( x == BattleField_Sprite_Vector[i]->Get_X() ) && ( y == BattleField_Sprite_Vector[i]->Get_Y() ))
+		bg_rect.setx(BackGround_Sprite_Vector[i]->Get_X());
+		bg_rect.sety(BackGround_Sprite_Vector[i]->Get_Y());
+		bg_rect.setw(BATF_SPRITE_W);
+		bg_rect.seth(BATF_SPRITE_H);
+
+		if ( check_collision( Collision_Box, bg_rect ) )
 		{
-			//...get the destination ground...
-			int newGround_Type = BattleField_Sprite_Vector[i]->Get_BattleField_Type();
-			
-			//...then check if the ground allow the monster presence
-			if( newGround_Type == EMPTY_GROUND ) //Don't allow presence
+			//Get the destination ground
+			Ground_Type = BackGround_Sprite_Vector[i]->Get_BattleField_Type();
+			//Ask the background if the collision box is allowed to go there
+			if( Ground_Type == EMPTY_GROUND ) //Don't allow move
 			{
-				return false; 
+				res.push_back(0);
 			}
-			else if( newGround_Type == GRASS_GROUND ) //Allow presence
+			else if( Ground_Type == GRASS_GROUND ) //Allow move
 			{
-				return true;
+				res.push_back(1);
 			}
-			else if( newGround_Type == SAND_GROUND ) //Don't allow presence
+			else if( Ground_Type == SAND_GROUND ) //Don't allow move
 			{
-				return false;  
+				res.push_back(0);
 			}
-			else if( newGround_Type == RIVER_GROUND ) //Allow presence
+			else if( Ground_Type == RIVER_GROUND ) //Allow move
 			{
-				return true;
+				res.push_back(1);
 			}
-			else if( newGround_Type == LAKE_GROUND ) //Don't Allow presence
+			else if( Ground_Type == LAKE_GROUND ) //Don't allow move
 			{
-				return false;
+				res.push_back(0);
 			}
-			else // not listed type (impossible!!??). Don't allow presence
+			else // not listed type (impossible!!??). Don't allow move
 			{
-				return false;  
+				res.push_back(0);
 			}
 		}
 	}
-	//we can't locate the position inside the vector (impossible!!??)
-	return false;
+
+	return res;
 }
 
 //Worm Full constructor
@@ -108,44 +115,51 @@ Monster_Worm::Monster_Worm(int X, int Y)
 	Alive_Status = true;
 }
 //Check if the ground allow the worm to exists
-bool Monster_Worm::check_background_allow_monster(int x, int y, std::vector<BattleField_Sprite*> BattleField_Sprite_Vector)
+std::vector<int> Monster_Worm::check_background_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
+	std::vector<int> res; //vector of collision results
+	int Ground_Type;
+	Rect bg_rect;
+
 	//loop on all the vector
-	for(unsigned int i=0; i < BattleField_Sprite_Vector.size(); i++)
+	for(unsigned int i=0; i < BackGround_Sprite_Vector.size(); i++)
 	{
-		//when we have located the good destination inside the vector,...
-		if (( x == BattleField_Sprite_Vector[i]->Get_X() ) && ( y == BattleField_Sprite_Vector[i]->Get_Y() ))
+		bg_rect.setx(BackGround_Sprite_Vector[i]->Get_X());
+		bg_rect.sety(BackGround_Sprite_Vector[i]->Get_Y());
+		bg_rect.setw(BATF_SPRITE_W);
+		bg_rect.seth(BATF_SPRITE_H);
+
+		if ( check_collision( Collision_Box, bg_rect ) )
 		{
-			//...get the destination ground...
-			int newGround_Type = BattleField_Sprite_Vector[i]->Get_BattleField_Type();
-			
-			//...then check if the ground allow the monster move
-			if( newGround_Type == EMPTY_GROUND ) //Don't allow presence
+			//Get the destination ground
+			Ground_Type = BackGround_Sprite_Vector[i]->Get_BattleField_Type();
+			//Ask the background if the collision box is allowed to go there
+			if( Ground_Type == EMPTY_GROUND ) //Don't allow move
 			{
-				return false; 
+				res.push_back(0);
 			}
-			else if( newGround_Type == GRASS_GROUND ) //Allow presence
+			else if( Ground_Type == GRASS_GROUND ) //Allow move
 			{
-				return true;
+				res.push_back(1);
 			}
-			else if( newGround_Type == SAND_GROUND ) //Allow presence
+			else if( Ground_Type == SAND_GROUND ) //Allow move
 			{
-				return true;  
+				res.push_back(1);
 			}
-			else if( newGround_Type == RIVER_GROUND ) //Don't Allow presence
+			else if( Ground_Type == RIVER_GROUND ) //Don't allow move
 			{
-				return false;
+				res.push_back(0);
 			}
-			else if( newGround_Type == LAKE_GROUND ) //Don't Allow presence
+			else if( Ground_Type == LAKE_GROUND ) //Don't allow move
 			{
-				return false;
+				res.push_back(0);
 			}
-			else // not listed type (impossible!!??). Don't allow presence
+			else // not listed type (impossible!!??). Don't allow move
 			{
-				return false;  
+				res.push_back(0);
 			}
 		}
 	}
-	//we can't locate the position inside the vector (impossible!!??)
-	return false;
+
+	return res;
 }

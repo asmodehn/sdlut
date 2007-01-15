@@ -276,15 +276,12 @@ try {
 //Check if the battlefield allow the character presence
 bool Character_Base::check_battlefield_allow_character(Rect Collision_Box , std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
-	bool res;
+	bool res = true;
 
 	std::vector<int> env_vs_pc_collisions = check_environment_allow_character(Collision_Box, Environment_Sprite_Vector);
 	std::vector<int> bg_vs_pc_collisions = check_background_allow_character(Collision_Box, BackGround_Sprite_Vector);
 
-	int env_vector_size = env_vs_pc_collisions.size();
-	int bg_vector_size = bg_vs_pc_collisions.size();
-	
-	for (unsigned int i = 0; i < env_vector_size; i++)
+	for (unsigned int i = 0; i < env_vs_pc_collisions.size(); i++)
 	{
 		if ( env_vs_pc_collisions.at(i) == -1 ) //environment is not present
 		{
@@ -303,10 +300,8 @@ bool Character_Base::check_battlefield_allow_character(Rect Collision_Box , std:
 		}
 	}
 	
-	
-
 	//Never happend (just 4 warning)
-	return true;
+	return res;
 }
 //Check if the ground allow the move
 std::vector<int> Character_Base::check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
@@ -327,7 +322,7 @@ std::vector<int> Character_Base::check_background_allow_character(Rect Collision
 		{
 			//Get the destination ground
 			Ground_Type = BackGround_Sprite_Vector[i]->Get_BattleField_Type();
-			//Ask the background if the collision bow is allowed to go there
+			//Ask the background if the collision box is allowed to go there
 			if( Ground_Type == EMPTY_GROUND ) //Don't allow move
 			{
 				res.push_back(0);
@@ -336,7 +331,7 @@ std::vector<int> Character_Base::check_background_allow_character(Rect Collision
 			{
 				res.push_back(1);
 			}
-			else if( Ground_Type == SAND_GROUND ) //Don't allow move, no need to work more
+			else if( Ground_Type == SAND_GROUND ) //Don't allow move
 			{
 				res.push_back(0);
 			}
