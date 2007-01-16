@@ -1,10 +1,13 @@
 #include "Sounds.hh"
 
 //init each chan to the default chan
+	//sfxs
 int EscMenuButtonFx_Chan = NullSound_Chan;
 
+	//musics
+int GlobalMusic_Chan = NullSound_Chan;
 
-bool Set_Fx_Sound_Channels()
+bool Set_Sounds_Channels()
 {
 try {
 	//define the null sound
@@ -21,6 +24,12 @@ try {
 
 	//Set Fxs Channels
 	EscMenuButtonFx_Chan = App::getInstance().getMixer()->mixSound(EscMenuButtonFx, false, false);
+
+	//Load Musics Sounds
+	Sound GlobalMusic("Datas/Musics/Global Music.wav");
+
+	//Set Musics Channels
+	GlobalMusic_Chan = App::getInstance().getMixer()->mixSound(GlobalMusic, true, false);
 
 	return true; //no error
 

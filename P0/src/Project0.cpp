@@ -49,8 +49,8 @@ bool InitEverything()
     }
 	P0_Logger << " Audio Init : OK " << std::endl;
 
-	//Load Fxs Sounds Files to the mixer and set there respective channels
-	if (!Set_Fx_Sound_Channels())
+	//Load Fxs & Musics Sounds Files to the mixer and set there respective channels
+	if (!Set_Sounds_Channels())
 	{
 		P0_Logger << " Mixing Sound Error : " << GetError() << std::endl;
         return false;
@@ -189,6 +189,9 @@ try { //global error management
 	//Affect the keyboard instance to the windows
     App::getInstance().getWindow()->getEventManager()->setKeyboard(&myKeyboardInput);
 
+
+	/********Start music********/
+	App::getInstance().getMixer()->playChannel(GlobalMusic_Chan);
 
 	/********Start Daemons Process********/
 	myMonster_Factory_Monsters_Moves_Timer.start(); //monsters movement

@@ -17,11 +17,13 @@ extern Sound EscMenuButtonFx;
 extern int EscMenuButtonFx_Chan;
 
 //Musics
+extern Sound GlobalMusic;
 
 //Music Channels
+extern int GlobalMusic_Chan;
 
 //Methods
-bool Set_Fx_Sound_Channels();
+bool Set_Sounds_Channels();
 
 
 #endif

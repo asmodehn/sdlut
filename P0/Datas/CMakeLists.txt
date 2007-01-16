@@ -32,7 +32,7 @@ CONFIGURE_FILE( Items/Arrow.bmp "${Project_0_BINARY_DIR}/Datas/Items/Arrow.bmp")
 
 
 	#Musics
-
+CONFIGURE_FILE(	"Musics/Global Music.wav" "${Project_0_BINARY_DIR}/Datas/Musics/Global Music.wav" COPYONLY)
 
 	#SFXs
 CONFIGURE_FILE(	SFXs/esc_menu_sound.wav ${Project_0_BINARY_DIR}/Datas/SFXs/esc_menu_sound.wav COPYONLY)
