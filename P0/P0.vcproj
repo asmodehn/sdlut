@@ -205,10 +205,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\Character_Base.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\Daemons.cpp"
 				>
 			</File>
@@ -230,6 +226,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Monsters.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Player_Base.cpp"
 				>
 			</File>
 			<File
@@ -259,10 +259,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\Character_Base.hh"
-				>
-			</File>
-			<File
 				RelativePath=".\include\Daemons.hh"
 				>
 			</File>
@@ -284,6 +280,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Monsters.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Player_Base.hh"
 				>
 			</File>
 			<File

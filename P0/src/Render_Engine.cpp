@@ -20,8 +20,8 @@ bool Render_Engine::resize(int width, int height)
 {
 	CURRENT_SCREEN_WIDTH = width;
 	CURRENT_SCREEN_HEIGHT = height;
-	myCharacter->Camera.setw(CURRENT_SCREEN_WIDTH);
-	myCharacter->Camera.seth(CURRENT_SCREEN_HEIGHT);
+	myPlayer->Camera.setw(CURRENT_SCREEN_WIDTH);
+	myPlayer->Camera.seth(CURRENT_SCREEN_HEIGHT);
 
 	P0_Logger << " Resize : OK " << std::endl;
 	return true;
@@ -35,41 +35,41 @@ void Render_Engine::prerender(void)
 void Render_Engine::render(VideoSurface & screen) const
 {
 	//Generate the background on the screen
-	if( myBackGround->Render(BackGround_Sprite_Vector, myCharacter->Camera, screen) == false )
+	if( myBackGround->Render(BackGround_Sprite_Vector, myPlayer->Camera, screen) == false )
 	{ 
       P0_Logger << " Background Render Failed " << std::endl;    
     }
 
 
 	//Generate the environment on the screen
-	if( myEnvironment->Render(Environment_Sprite_Vector, myCharacter->Camera, screen) == false )
+	if( myEnvironment->Render(Environment_Sprite_Vector, myPlayer->Camera, screen) == false )
 	{ 
       P0_Logger << " Environment Render Failed " << std::endl;    
     }
 
 	//Show the Character on the screen
-	if( myCharacter->Show_Character(screen) == false )
+	if( myPlayer->Show_Player(screen) == false )
 	{ 
       P0_Logger << " Character Render Failed " << std::endl;    
     }
 
 	//show the arrow of the screen (if necessary)
-	if( myCharacter->Show_Arrow(screen) == false )
+	if( myPlayer->Show_Arrow(screen) == false )
 	{ 
       P0_Logger << " Arrow Render Failed " << std::endl;    
     }
 
 	//Apply monsters to the screen
 	if(
-	( Monster_Factory_Skeleton->Move_Monsters_Animation(myCharacter->Camera, screen) == false )
+	( Monster_Factory_Skeleton->Move_Monsters_Animation(myPlayer->Camera, screen) == false )
 	||
-	( Monster_Factory_Worm->Move_Monsters_Animation(myCharacter->Camera, screen) == false )
+	( Monster_Factory_Worm->Move_Monsters_Animation(myPlayer->Camera, screen) == false )
 	) {
 		P0_Logger << " Monster Render Failed " << std::endl;    
     }																 
 
 	//Display attack msg
-	if( myCharacter->Display_Attack_Msg(screen) == false )
+	if( myPlayer->Display_Attack_Msg(screen) == false )
 	{ 
       P0_Logger << " Display Attack Msg Render Failed " << std::endl;    
     }

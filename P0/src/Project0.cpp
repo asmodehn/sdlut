@@ -144,20 +144,19 @@ try { //global error management
 	myDaemons->Set_Monster_Vector_Worm( Monster_Vector_Worm );
 
 	//Create Character & initialized it
-	Character_Base* myCharacter = new Character_Base(CH_INITIAL_X, CH_INITIAL_Y);
-	//Character<Monster*>* myCharacter = new Character<Monster*>(192, 224, _screen, Monster_Vector_Skeleton);
-	if( myCharacter->Update_Graphic_Style() == false ) //intialize Character's graphic aspect
+	Player_Base* myPlayer = new Player_Base(CH_INITIAL_X, CH_INITIAL_Y);
+	if( myPlayer->Update_Graphic_Style() == false ) //intialize Character's graphic aspect
 	{ 
         P0_Logger << " Character Creation FAILED " << std::endl;
     	Delay(2000);
     	return 1;
     }
     P0_Logger << " Character Creation: OK " << std::endl;
-    myKeyboardInput.Set_Character_Base( myCharacter );
-	myRender_Engine->Set_Character_Base( myCharacter );
+    myKeyboardInput.Set_Player_Base( myPlayer );
+	myRender_Engine->Set_Player_Base( myPlayer );
 	
 	//send character collision box to daemons
-	myDaemons->Set_Character_Base(myCharacter);
+	myDaemons->Set_Player_Base(myPlayer);
 
 	//Create the ingame escape menu
 	Escape_Menu* EscMenu = new Escape_Menu();
@@ -200,16 +199,7 @@ try { //global error management
 
 
 	/********QUIT********/
-	/*if(SDLNet_Init()==-1) {
-		P0_Logger << " SDL_Net Init Failed " << std::endl;
-		return 1;
-	}
-	P0_Logger << " SDL_Net Init : OK " << std::endl;*/
-
-	//Quit SDL_NEt
-	//SDLNet_Quit();
-
-    //Quit SDL
+	//Quit SDL
 	//SDL_Quit();
 
     return 0; //no error occured

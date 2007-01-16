@@ -1,7 +1,7 @@
-#include "Character_Base.hh"
+#include "Player_Base.hh"
 
 //Initialization construtor
-Character_Base::Character_Base(int X, int Y)
+Player_Base::Player_Base(int X, int Y)
 {
     //Initial position
 	x = X;
@@ -19,71 +19,71 @@ Character_Base::Character_Base(int X, int Y)
 	moving_status = false;
 
 	//Character Clips definition
-	_character_left_attack[0].setx(0);
-	_character_left_attack[0].sety(0);
-	_character_left_attack[0].setw(CH_WIDTH);
-	_character_left_attack[0].seth(CH_HEIGHT);
+	_player_left_attack[0].setx(0);
+	_player_left_attack[0].sety(0);
+	_player_left_attack[0].setw(CH_WIDTH);
+	_player_left_attack[0].seth(CH_HEIGHT);
 
-	_character_left_attack[1].setx(CH_WIDTH);
-    _character_left_attack[1].sety(0);
-    _character_left_attack[1].setw(CH_WIDTH);
-    _character_left_attack[1].seth(CH_HEIGHT);
+	_player_left_attack[1].setx(CH_WIDTH);
+    _player_left_attack[1].sety(0);
+    _player_left_attack[1].setw(CH_WIDTH);
+    _player_left_attack[1].seth(CH_HEIGHT);
 
-	_character_left_attack[2].setx(CH_WIDTH * 2);
-    _character_left_attack[2].sety(0);
-    _character_left_attack[2].setw(CH_WIDTH);
-    _character_left_attack[2].seth(CH_HEIGHT);
-
-
-    _character_right_attack[0].setx(0);
-    _character_right_attack[0].sety(CH_HEIGHT);
-    _character_right_attack[0].setw(CH_WIDTH);
-    _character_right_attack[0].seth(CH_HEIGHT);
-    
-    _character_right_attack[1].setx(CH_WIDTH);
-    _character_right_attack[1].sety(CH_HEIGHT);
-    _character_right_attack[1].setw(CH_WIDTH);
-    _character_right_attack[1].seth(CH_HEIGHT);
-    
-    _character_right_attack[2].setx(CH_WIDTH * 2);
-    _character_right_attack[2].sety(CH_HEIGHT);
-    _character_right_attack[2].setw(CH_WIDTH);
-    _character_right_attack[2].seth(CH_HEIGHT);
+	_player_left_attack[2].setx(CH_WIDTH * 2);
+    _player_left_attack[2].sety(0);
+    _player_left_attack[2].setw(CH_WIDTH);
+    _player_left_attack[2].seth(CH_HEIGHT);
 
 
-	_character_down_attack[0].setx(0);
-    _character_down_attack[0].sety(CH_HEIGHT*2);
-    _character_down_attack[0].setw(CH_WIDTH);
-    _character_down_attack[0].seth(CH_HEIGHT);
+    _player_right_attack[0].setx(0);
+    _player_right_attack[0].sety(CH_HEIGHT);
+    _player_right_attack[0].setw(CH_WIDTH);
+    _player_right_attack[0].seth(CH_HEIGHT);
     
-    _character_down_attack[1].setx(CH_WIDTH);
-    _character_down_attack[1].sety(CH_HEIGHT*2);
-    _character_down_attack[1].setw(CH_WIDTH);
-    _character_down_attack[1].seth(CH_HEIGHT);
+    _player_right_attack[1].setx(CH_WIDTH);
+    _player_right_attack[1].sety(CH_HEIGHT);
+    _player_right_attack[1].setw(CH_WIDTH);
+    _player_right_attack[1].seth(CH_HEIGHT);
     
-    _character_down_attack[2].setx(CH_WIDTH * 2);
-    _character_down_attack[2].sety(CH_HEIGHT*2);
-    _character_down_attack[2].setw(CH_WIDTH);
-    _character_down_attack[2].seth(CH_HEIGHT);
+    _player_right_attack[2].setx(CH_WIDTH * 2);
+    _player_right_attack[2].sety(CH_HEIGHT);
+    _player_right_attack[2].setw(CH_WIDTH);
+    _player_right_attack[2].seth(CH_HEIGHT);
+
+
+	_player_down_attack[0].setx(0);
+    _player_down_attack[0].sety(CH_HEIGHT*2);
+    _player_down_attack[0].setw(CH_WIDTH);
+    _player_down_attack[0].seth(CH_HEIGHT);
+    
+    _player_down_attack[1].setx(CH_WIDTH);
+    _player_down_attack[1].sety(CH_HEIGHT*2);
+    _player_down_attack[1].setw(CH_WIDTH);
+    _player_down_attack[1].seth(CH_HEIGHT);
+    
+    _player_down_attack[2].setx(CH_WIDTH * 2);
+    _player_down_attack[2].sety(CH_HEIGHT*2);
+    _player_down_attack[2].setw(CH_WIDTH);
+    _player_down_attack[2].seth(CH_HEIGHT);
     
 
-    _character_up_attack[0].setx(0);
-    _character_up_attack[0].sety(CH_HEIGHT*3);
-    _character_up_attack[0].setw(CH_WIDTH);
-    _character_up_attack[0].seth(CH_HEIGHT);
+    _player_up_attack[0].setx(0);
+    _player_up_attack[0].sety(CH_HEIGHT*3);
+    _player_up_attack[0].setw(CH_WIDTH);
+    _player_up_attack[0].seth(CH_HEIGHT);
     
-    _character_up_attack[1].setx(CH_WIDTH);
-    _character_up_attack[1].sety(CH_HEIGHT*3);
-    _character_up_attack[1].setw(CH_WIDTH);
-    _character_up_attack[1].seth(CH_HEIGHT);
+    _player_up_attack[1].setx(CH_WIDTH);
+    _player_up_attack[1].sety(CH_HEIGHT*3);
+    _player_up_attack[1].setw(CH_WIDTH);
+    _player_up_attack[1].seth(CH_HEIGHT);
     
-    _character_up_attack[2].setx(CH_WIDTH * 2);
-    _character_up_attack[2].sety(CH_HEIGHT*3);
-    _character_up_attack[2].setw(CH_WIDTH);
-    _character_up_attack[2].seth(CH_HEIGHT);
+    _player_up_attack[2].setx(CH_WIDTH * 2);
+    _player_up_attack[2].sety(CH_HEIGHT*3);
+    _player_up_attack[2].setw(CH_WIDTH);
+    _player_up_attack[2].seth(CH_HEIGHT);
 
 	//Assign the right sprite to character by default
-	Character_SpriteRect = _character_right_attack[0];
+	Player_SpriteRect = _player_right_attack[0];
 
 	//Initialize animation variables
     frame = 0;  // for animation
@@ -141,9 +141,9 @@ Character_Base::Character_Base(int X, int Y)
 
 	/****Surfaces****/
 	//Characters Surfaces
-	Characters_Tile_Melee = RGBSurface("Datas/Characters/Character_Fighter.bmp", Color(0xFF, 0xFF, 0xFF));
-	Characters_Tile_Distant = RGBSurface("Datas/Characters/Character_Archer.bmp", Color(0xFF, 0xFF, 0xFF));
-	Characters_Tile = Characters_Tile_Melee; //Default tile: the melee tile
+	Players_Tile_Melee = RGBSurface("Datas/Characters/Character_Fighter.bmp", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile_Distant = RGBSurface("Datas/Characters/Character_Archer.bmp", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile = Players_Tile_Melee; //Default tile: the melee tile
 	//Arrow surface
 	Arrow_Tile = RGBSurface("Datas/Items/Arrow.bmp", Color(0xFF, 0xFF, 0xFF));
 
@@ -159,7 +159,7 @@ Character_Base::Character_Base(int X, int Y)
 	attack_distant_msg_miss = *AttackMsg_Font.render("Distant Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 }
 //Destructor
-Character_Base::~Character_Base()
+Player_Base::~Player_Base()
 {
 	////Free the msgs
 	//attack_msg_hit.~RGBSurface();
@@ -176,14 +176,14 @@ Character_Base::~Character_Base()
 	//Arrow_Tile.~RGBSurface();
 }
 //Character Graphic Style Initialiation regarding the attack style
-bool Character_Base::Update_Graphic_Style()
+bool Player_Base::Update_Graphic_Style()
 {
 try
 {
 	// Melee Style
 	if (attack_style == 1)
 	{
-		Characters_Tile = Characters_Tile_Melee;
+		Players_Tile = Players_Tile_Melee;
 		attack_msg_hit = attack_melee_msg_hit;
 		attack_msg_miss = attack_melee_msg_miss;
 		//P0_Logger << " Graphic Style Updated To Melee Style : OK " << std::endl;
@@ -191,7 +191,7 @@ try
 	// Distant Style
 	else if (attack_style == 2)
 	{
-		Characters_Tile = Characters_Tile_Distant;
+		Players_Tile = Players_Tile_Distant;
 		attack_msg_hit = attack_distant_msg_hit;
 		attack_msg_miss = attack_distant_msg_miss;
 		//P0_Logger << " Graphic Style Updated To Distant Style : OK " << std::endl;
@@ -203,7 +203,7 @@ catch (...) {
 }
 }
 //Show the Character on the screen
-bool Character_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
+bool Player_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
 {
 try {
     //Move the Character collision box to were we want to move
@@ -274,7 +274,7 @@ try {
 }
 }
 //Check if the battlefield allow the character presence
-bool Character_Base::check_battlefield_allow_character(Rect Collision_Box , std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+bool Player_Base::check_battlefield_allow_character(Rect Collision_Box , std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	bool res = true;
 
@@ -304,7 +304,7 @@ bool Character_Base::check_battlefield_allow_character(Rect Collision_Box , std:
 	return res;
 }
 //Check if the ground allow the move
-std::vector<int> Character_Base::check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+std::vector<int> Player_Base::check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	std::vector<int> res; //vector of collision results
 	int Ground_Type;
@@ -353,7 +353,7 @@ std::vector<int> Character_Base::check_background_allow_character(Rect Collision
 	return res;
 }
 //Check if the environment allow the move
-std::vector<int> Character_Base::check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
+std::vector<int> Player_Base::check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
 {
 	std::vector<int> res; //vector of collision results
     int Env_Type;
@@ -407,7 +407,7 @@ std::vector<int> Character_Base::check_environment_allow_character(Rect Collisio
 }
 
 //check the move direction and assign the good sprite
-bool Character_Base::assign_direction_sprite()
+bool Player_Base::assign_direction_sprite()
 {
 try {
 	int old_move_status = move_status;
@@ -438,22 +438,22 @@ try {
 		//assign the good sprite to the character sprite and the good arrow to the character arrow
 		if( move_status == CH_RIGHT )
 		{
-			Character_SpriteRect = _character_right_attack[0];
+			Player_SpriteRect = _player_right_attack[0];
 			Arrow_SpriteRect = Arrow_Right[0];
 		}
 		else if( move_status == CH_LEFT )
 		{
-			Character_SpriteRect = _character_left_attack[0];
+			Player_SpriteRect = _player_left_attack[0];
 			Arrow_SpriteRect = Arrow_Left[0];
 		}
 		else if( move_status == CH_DOWN )
 		{
-			Character_SpriteRect = _character_down_attack[0];
+			Player_SpriteRect = _player_down_attack[0];
 			Arrow_SpriteRect = Arrow_Down[0];
 		}
 		else if( move_status == CH_UP )
 		{
-			Character_SpriteRect = _character_up_attack[0];
+			Player_SpriteRect = _player_up_attack[0];
 			Arrow_SpriteRect = Arrow_Up[0];
 		}
 	}
@@ -474,7 +474,7 @@ try {
 }
 }
 //define character sprite which appear on the screen during moves
-bool Character_Base::Set_Move_Animation_Sprite()
+bool Player_Base::Set_Move_Animation_Sprite()
 {
 		//P0_Logger << " Set_Move_Animation_Sprite called" << std::endl;
 
@@ -483,7 +483,7 @@ bool Character_Base::Set_Move_Animation_Sprite()
 
 }
 //Handle character attack on monsters for all attack style and return the distance where the attack took place (in case of a distant attack for example)
-int Character_Base::attack(std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
+int Player_Base::attack(std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
 {
 	int Hit_Distance = 0; //The Hit distance is the distance between the character and the monster by default the Melee Hit Distance (aka 0)
 
@@ -519,7 +519,7 @@ int Character_Base::attack(std::vector<Monster_Base*> Monster_Vector_Skeleton, s
 	return Hit_Distance;
 }
 //Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
-int Character_Base::attack_check_status(int collision_box_movement, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
+int Player_Base::attack_check_status(int collision_box_movement, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
 {
 	int _attack_successfull = 0;
 	//Check attack direction
@@ -581,7 +581,7 @@ int Character_Base::attack_check_status(int collision_box_movement, std::vector<
 	return _attack_successfull;
 }
 //Set Character Sprite Which change when attack occured
-bool Character_Base::Set_Attack_Animation_Sprite()
+bool Player_Base::Set_Attack_Animation_Sprite()
 {
 	//increase frame each time the timer is run (from 0 to 2)
 	frame++;
@@ -602,23 +602,23 @@ bool Character_Base::Set_Attack_Animation_Sprite()
 		if( move_status == CH_RIGHT )
 		{
 			//right sprite
-			Character_SpriteRect = _character_right_attack[frame];
+			Player_SpriteRect = _player_right_attack[frame];
 		}
 		else if( move_status == CH_LEFT )
 		{
 			//left sprite
-			Character_SpriteRect = _character_left_attack[frame];
+			Player_SpriteRect = _player_left_attack[frame];
 		}
 		else if( move_status == CH_DOWN )
 		{
 			//down sprite
-			Character_SpriteRect = _character_down_attack[frame];
+			Player_SpriteRect = _player_down_attack[frame];
 
 		}
 		else if( move_status == CH_UP )
 		{
 			//up sprite
-			Character_SpriteRect = _character_up_attack[frame];
+			Player_SpriteRect = _player_up_attack[frame];
 		}
 
 	}
@@ -637,7 +637,7 @@ bool Character_Base::Set_Attack_Animation_Sprite()
 
 }
 //arrow animation (callback method)
-bool Character_Base::Set_Arrow_Sprite_Coordinate()
+bool Player_Base::Set_Arrow_Sprite_Coordinate()
 {
 	//increase arrow frame
 	arrow_frame++;
@@ -677,17 +677,17 @@ bool Character_Base::Set_Arrow_Sprite_Coordinate()
 	}	
 }
 //blit the character on the screen
-bool Character_Base::Show_Character(VideoSurface& Screen)
+bool Player_Base::Show_Player(VideoSurface& Screen)
 {
 try {
-	Screen.blit(Characters_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Character_SpriteRect);
+	Screen.blit(Players_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Player_SpriteRect);
 	return true; //no error
 } catch (...) {
 	return false; //error occured
 }
 }
 //blit the arrow on the screen
-bool Character_Base::Show_Arrow(VideoSurface& Screen)
+bool Player_Base::Show_Arrow(VideoSurface& Screen)
 {
 try {
 	if ( (x != arrow_x) || (y != arrow_y) ) //dont display the arrow when it's at the same place than the character
@@ -700,7 +700,7 @@ try {
 }
 }
 //Display attack msg on the status bar (hit or miss)
-bool Character_Base::Display_Attack_Msg(VideoSurface& Screen)
+bool Player_Base::Display_Attack_Msg(VideoSurface& Screen)
 {
 try {
 	//Clean the status Bar
@@ -735,7 +735,7 @@ try {
 }
 }
 //Managed the camera
-bool Character_Base::following_camera()
+bool Player_Base::following_camera()
 {
 try {
     //Center the camera over the Character

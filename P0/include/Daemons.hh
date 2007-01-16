@@ -3,14 +3,14 @@
 
 #include "Monster_Factory.hh"
 #include "Base.hh"
-#include "Character_Base.hh"
+#include "Player_Base.hh"
 
 //Class that will only contains callback methods used by timers
 class Daemons
 {
 private:
 	//variables that need to be designed externally
-	Character_Base* myCharacter;
+	Player_Base* myPlayer;
 	std::vector<BattleField_Sprite*> BackGround_Sprite_Vector;
 	std::vector<BattleField_Sprite*> Environment_Sprite_Vector;
 	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton;
@@ -22,9 +22,9 @@ private:
 public:
 
 	//Accessor
-	void Set_Character_Base(Character_Base* newCharacter_Base)
+	void Set_Player_Base(Player_Base* newPlayer_Base)
 	{
-		myCharacter = newCharacter_Base;
+		myPlayer = newPlayer_Base;
 	}
 
 	void Set_BackGround_Sprite_Vector(std::vector<BattleField_Sprite*> newBackGround_Sprite_Vector)
@@ -82,11 +82,11 @@ public:
 	//Callback method that will eventually generate new monster (not to near from the character!)
 	unsigned int Generate_Monsters(unsigned int interval, void* args);
 	//Callback method that will launch the character's move animation
-	unsigned int Character_Move_Animation(unsigned int interval, void* args);
+	unsigned int Player_Move_Animation(unsigned int interval, void* args);
 	//Callback method that will launch the character's attack animation
-	unsigned int Character_Attack_Animation(unsigned int interval, void* args);
+	unsigned int Player_Attack_Animation(unsigned int interval, void* args);
 	//Callback method that will launch the arrow attack animation
-	unsigned int Character_Arrow_Animation(unsigned int interval, void* args);
+	unsigned int Player_Arrow_Animation(unsigned int interval, void* args);
 
 };
 

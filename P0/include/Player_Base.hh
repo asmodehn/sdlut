@@ -1,15 +1,15 @@
-#ifndef Character_HH
-#define Character_HH
+#ifndef Player_Base_HH
+#define Player_Base_HH
 
 #include "Base.hh"
 #include "Monsters.hh"
 #include "BattleField.hh"
 
 //Character Class
-class Character_Base
+class Player_Base
 {
     private:
-		//The X and Y offsets of the Character
+		//The X and Y offsets of the Player
 		int x, y;
 
 		//The velocity of the Character
@@ -27,16 +27,16 @@ class Character_Base
 		int attack_successfull; //Manage the attack displayed msg (0: nothing, 1: melee attack success; 2: distant attack success; 3&+: TO DO)
 
 		//Character tiles
-		RGBSurface Characters_Tile;
-		RGBSurface Characters_Tile_Melee;
-		RGBSurface Characters_Tile_Distant;
+		RGBSurface Players_Tile;
+		RGBSurface Players_Tile_Melee;
+		RGBSurface Players_Tile_Distant;
 
 		//Character Clips
-		Rect _character_right_attack[3];
-		Rect _character_left_attack[3];
-		Rect _character_down_attack[3];
-		Rect _character_up_attack[3];
-		Rect Character_SpriteRect;
+		Rect _player_right_attack[3];
+		Rect _player_left_attack[3];
+		Rect _player_down_attack[3];
+		Rect _player_up_attack[3];
+		Rect Player_SpriteRect;
 
 		//animation variables
 		int frame, arrow_frame, move_status;
@@ -65,13 +65,13 @@ class Character_Base
 		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
 		int attack_check_status(int collision_box_movement, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
 
-		//Check if the ground allow the character presence
+		//Check if the ground allow the player presence
 		std::vector<int> check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
-		//Check if the environment allow the character presence
+		//Check if the environment allow the player presence
 		std::vector<int> check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
 
-		//Check if the battlefield allow the character presence
+		//Check if the battlefield allow the player presence
 		bool check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 	public:
@@ -88,10 +88,10 @@ class Character_Base
 		/****Definitions****/
 
 		//Initializes the variables
-		Character_Base(int X, int Y);
+		Player_Base(int X, int Y);
 
 		//Destructor which free the surface 
-		~Character_Base();
+		~Player_Base();
 		
 
 		/****Accessor****/
@@ -186,7 +186,7 @@ class Character_Base
 		bool Set_Arrow_Sprite_Coordinate();
 
 		//blit the character on the screen
-		bool Show_Character(VideoSurface& Screen);
+		bool Show_Player(VideoSurface& Screen);
 
 		//blit the arrow on the screen
 		bool Show_Arrow(VideoSurface& Screen);

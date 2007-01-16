@@ -12,12 +12,12 @@ class KeyboardInput : public Keyboard
 {
 	private:
 		//Character attack animation timer
-		Timer<Daemons> myCharacter_Attack_Animation_Timer;
-		Timer<Daemons> myCharacter_Move_Animation_Timer;
-		Timer<Daemons> myCharacter_Arrow_Animation_Timer;
+		Timer<Daemons> myPlayer_Attack_Animation_Timer;
+		Timer<Daemons> myPlayer_Move_Animation_Timer;
+		Timer<Daemons> myPlayer_Arrow_Animation_Timer;
 
 		//Variables designed to be defined externaly
-		Character_Base* myCharacter; //The Character Definition
+		Player_Base* myPlayer; //The Character Definition
 		Escape_Menu* myEsc_Menu; //The escape menu definition
 		std::vector<BattleField_Sprite*> BackGround_Sprite_Vector; //Vector which will contains all BackGround type and clip
 		std::vector<BattleField_Sprite*> Environment_Sprite_Vector; //Vector which will contains all Environment items type and clip
@@ -29,16 +29,16 @@ class KeyboardInput : public Keyboard
 		Daemons* myDaemons; //Daemons
 
 		//Method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
-		void Character_Moves_Consequences();
+		void Player_Moves_Consequences();
 		//Method which will call all the method used when there is an attack by the character
-		void Character_Attack_Consequences();
+		void Player_Attack_Consequences();
 
 	public:
 
 		//Accessor
-		void Set_Character_Base(Character_Base* newCharacterBase)
+		void Set_Player_Base(Player_Base* newPlayerBase)
 		{
-			myCharacter = newCharacterBase;
+			myPlayer = newPlayerBase;
 		}
 		void Set_Esc_Menu(Escape_Menu* newEsc_Menu)
 		{

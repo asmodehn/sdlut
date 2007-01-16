@@ -6,54 +6,54 @@ KeyboardInput::KeyboardInput()
 	GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
 }
 //Private method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
-void KeyboardInput::Character_Moves_Consequences()
+void KeyboardInput::Player_Moves_Consequences()
 {
 	//Get Monster's vectors
 	Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
 	Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
 
 	//set character sprite in function of the direction and dont move if it's only a direction change
-	if( myCharacter->assign_direction_sprite() == false )
+	if( myPlayer->assign_direction_sprite() == false )
 	{ 
       P0_Logger << " Check character direction Failed " << std::endl;    
     }
 
-	if ( myCharacter->Get_Moving_Status() ) //we're really moving but not simply changing the direction
+	if ( myPlayer->Get_Moving_Status() ) //we're really moving but not simply changing the direction
 	{
 		//Move the character if possible
-		if( myCharacter->move(Environment_Sprite_Vector, BackGround_Sprite_Vector, Monster_Vector_Skeleton, Monster_Vector_Worm)
+		if( myPlayer->move(Environment_Sprite_Vector, BackGround_Sprite_Vector, Monster_Vector_Skeleton, Monster_Vector_Worm)
 		 == false )
 		{ 
-		  P0_Logger << " Move character Failed " << std::endl;    
+		  P0_Logger << " Move player Failed " << std::endl;    
 		}
 		
 		//Set the camera
-		if( myCharacter->following_camera() == false )
+		if( myPlayer->following_camera() == false )
 		{ 
 		  P0_Logger << " Failed to set the camera" << std::endl;    
 		}
 
 		//Intervals between animation's frames
-		myCharacter_Move_Animation_Timer.setInterval( CHARACTER_MOVE_ANIMATION_INTERVAL  );
+		myPlayer_Move_Animation_Timer.setInterval( PLAYER_MOVE_ANIMATION_INTERVAL  );
 		//Set the callback method which will define the character appearance on the screen and start animation
-		myCharacter_Move_Animation_Timer.setCallback(myDaemons,&Daemons::Character_Move_Animation, (void*)NULL);
+		myPlayer_Move_Animation_Timer.setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
 		//Start the animation
-		myCharacter_Move_Animation_Timer.start();
+		myPlayer_Move_Animation_Timer.start();
 
 		//Send the modified character's collision box to daemons
-		myDaemons->Set_Character_Base(myCharacter);
+		myDaemons->Set_Player_Base(myPlayer);
 	}
 	
 	//Send the modified character to the render engine 
-	myRender_Engine->Set_Character_Base(myCharacter);
+	myRender_Engine->Set_Player_Base(myPlayer);
 
 	//P0_Logger << " Move " << std::endl;
 }
 //Private method which will call all the method used when there is an attack by the character
-void KeyboardInput::Character_Attack_Consequences()
+void KeyboardInput::Player_Attack_Consequences()
 {
 	//attack is occuring
-	myCharacter->Set_Attack_Status(true);
+	myPlayer->Set_Attack_Status(true);
 
 	//Get Monster's vectors
 	Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
@@ -61,34 +61,34 @@ void KeyboardInput::Character_Attack_Consequences()
 	
 	//Handle attacks & set the distance of the attack
 	/***WARNING !! IN CASE OF DISTANT ATTACK THE MONSTER IS CONSIDERED AS DEAD WHEN THE KEY IS PRESSED AND NOT WHEN THE ARROW REACHED THE TARGET => TODO: FIND A WAY TO SOLVE THAT (SEPARATE THE ATTACK METHOD IN TWO DISTINCT METHOD PERHAPS CAN HELP)***/
-	myCharacter->Set_Hit_Monster_Distance( myCharacter->attack(Monster_Vector_Skeleton, Monster_Vector_Worm) );
+	myPlayer->Set_Hit_Monster_Distance( myPlayer->attack(Monster_Vector_Skeleton, Monster_Vector_Worm) );
 	
 	//Intervals between animation's frames
-	myCharacter_Attack_Animation_Timer.setInterval( CHARACTER_MELEE_ATTACK_ANIMATION_INTERVAL );
+	myPlayer_Attack_Animation_Timer.setInterval( PLAYER_MELEE_ATTACK_ANIMATION_INTERVAL );
 	//Set the callback method which will define the character appearance on the screen and start animation
-	myCharacter_Attack_Animation_Timer.setCallback(myDaemons,&Daemons::Character_Attack_Animation, (void*)NULL);
+	myPlayer_Attack_Animation_Timer.setCallback(myDaemons,&Daemons::Player_Attack_Animation, (void*)NULL);
 	
 	//In case of distant attack only
-	if ( myCharacter->Get_Attack_Style() == 2 )
+	if ( myPlayer->Get_Attack_Style() == 2 )
 	{
-		myCharacter_Arrow_Animation_Timer.setInterval( CHARACTER_ARROW_MOVE_ANIMATION_INTERVAL );
+		myPlayer_Arrow_Animation_Timer.setInterval( PLAYER_ARROW_MOVE_ANIMATION_INTERVAL );
 		//Set the callback method which will define the character appearance on the screen and start animation
-		myCharacter_Arrow_Animation_Timer.setCallback(myDaemons,&Daemons::Character_Arrow_Animation, (void*)NULL);
+		myPlayer_Arrow_Animation_Timer.setCallback(myDaemons,&Daemons::Player_Arrow_Animation, (void*)NULL);
 	}
 	
 	//Start the attack animation
-	myCharacter_Attack_Animation_Timer.start();
+	myPlayer_Attack_Animation_Timer.start();
 	
 	//In case of distant attack only
-	if ( myCharacter->Get_Attack_Style() == 2 )
+	if ( myPlayer->Get_Attack_Style() == 2 )
 	{
 		//Start arrow animation
-		myCharacter_Arrow_Animation_Timer.start();
+		myPlayer_Arrow_Animation_Timer.start();
 	}
 
 
 	//Send the modified character to the render engine 
-	myRender_Engine->Set_Character_Base(myCharacter);
+	myRender_Engine->Set_Player_Base(myPlayer);
 
 	//P0_Logger << " Attack " << std::endl;
 }
@@ -109,56 +109,56 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 		{
 			switch( s.getKey() )
 			{
-				if ( !myCharacter->Get_Attack_Status() ) //If attack is occuring then no keys are available except escape
+				if ( !myPlayer->Get_Attack_Status() ) //If attack is occuring then no keys are available except escape
 				/************SEEMS TO BUG HERE WHEN CHANGING WEAPON DURING ATTACK****************/
 				{
 					//Moves Keys
 					case KKp8:
 					case KUp:
 						//myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
-						myCharacter->Set_yVel( myCharacter->Get_yVel() - 1);
-						Character_Moves_Consequences();
+						myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
+						Player_Moves_Consequences();
 						break;
 					case KKp5:
 					case KDown:
 						//myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
-						myCharacter->Set_yVel( myCharacter->Get_yVel() + 1);
-						Character_Moves_Consequences();
+						myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
+						Player_Moves_Consequences();
 						break;
 					case KKp7:
 					case KLeft:
 						//myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
-						myCharacter->Set_xVel( myCharacter->Get_xVel() - 1);
-						Character_Moves_Consequences();
+						myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
+						Player_Moves_Consequences();
 						break;
 					case KKp9:
 					case KRight:
 						//myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
-						myCharacter->Set_xVel( myCharacter->Get_xVel() + 1);
-						Character_Moves_Consequences();
+						myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
+						Player_Moves_Consequences();
 						break;
 
 					//Attacks Key
 					case KKDivide:
 					case KRctrl:
 						//Stop moving
-						myCharacter->Set_xVel(0);
-						myCharacter->Set_yVel(0);
-						Character_Attack_Consequences();
+						myPlayer->Set_xVel(0);
+						myPlayer->Set_yVel(0);
+						Player_Attack_Consequences();
 						break;
 
 					//Change weapon style by looping between the available styles (2 for the moment)
 					case KKMultiply:
 					case KRShift:
-						myCharacter->Set_Attack_Style( myCharacter->Get_Attack_Style() + 1 );
-						if (myCharacter->Get_Attack_Style() > 2) { myCharacter->Set_Attack_Style(1); } //loop between style
+						myPlayer->Set_Attack_Style( myPlayer->Get_Attack_Style() + 1 );
+						if (myPlayer->Get_Attack_Style() > 2) { myPlayer->Set_Attack_Style(1); } //loop between style
 						//Update the graphic style of the character
-						if( myCharacter->Update_Graphic_Style() == false )
+						if( myPlayer->Update_Graphic_Style() == false )
                     	{ 
                             P0_Logger << " Update Graphic Style FAILED " << std::endl;
                         }
 						//Send the modified character to the render engine 
-						myRender_Engine->Set_Character_Base(myCharacter);
+						myRender_Engine->Set_Player_Base(myPlayer);
 						break;
 
 					//Leave/appears on the Battlefield and save but do not quit
@@ -202,8 +202,8 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				case KLeft:
 				case KKp9:
 				case KRight:
-					myCharacter->Set_xVel(0);
-					myCharacter->Set_yVel(0);
+					myPlayer->Set_xVel(0);
+					myPlayer->Set_yVel(0);
 					break;
 			}
 		}

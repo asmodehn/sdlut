@@ -2,7 +2,7 @@
 #define Render_Engine_HH
 
 #include "Monster_Factory.hh"
-#include "Character_Base.hh"
+#include "Player_Base.hh"
 #include "Menus.hh"
 #include "Base.hh"
 
@@ -11,7 +11,7 @@ class Render_Engine : public Engine
 {
 private:
 	//Variable that need to be designed externally
-	Character_Base* myCharacter;
+	Player_Base* myPlayer;
 	BackGround* myBackGround;
 	std::vector<BattleField_Sprite*> BackGround_Sprite_Vector;
 	Environment* myEnvironment;
@@ -24,9 +24,9 @@ private:
 public:
 
 	//Accessor
-	void Set_Character_Base(Character_Base* newCharacterBase)
+	void Set_Player_Base(Player_Base* newPlayerBase)
 	{
-		myCharacter = newCharacterBase;
+		myPlayer = newPlayerBase;
 	}
 	void Set_Esc_Menu(Escape_Menu* newEsc_Menu)
 	{
