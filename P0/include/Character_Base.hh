@@ -14,7 +14,9 @@ class Character_Base
 		//The velocity of the character
 		int xVel, yVel;
 
+		//Tile & Clip
 		RGBSurface Characters_Tile;
+		Rect Characters_SpriteRect;
 		
 	public:
 		

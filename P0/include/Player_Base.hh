@@ -29,7 +29,6 @@ class Player_Base : public Character_Base
 		Rect _player_left_attack[3];
 		Rect _player_down_attack[3];
 		Rect _player_up_attack[3];
-		Rect Player_SpriteRect;
 
 		//animation variables
 		int frame, arrow_frame, move_status;

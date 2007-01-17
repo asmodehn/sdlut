@@ -16,6 +16,9 @@ Monster_Skeleton::Monster_Skeleton(int x, int y)
     _monster[0].setw( MO_WIDTH );
     _monster[0].seth( MO_HEIGHT );
 
+	//Assign the sprite
+	Characters_SpriteRect = _monster[0];
+
 	//Initial velocity
     xVel = 0;
     yVel = 0;
@@ -97,6 +100,9 @@ Monster_Worm::Monster_Worm(int x, int y)
 	_monster[0].sety( MO_HEIGHT*4 );
     _monster[0].setw( MO_WIDTH );
     _monster[0].seth( MO_HEIGHT );
+
+	//Assign the sprite
+	Characters_SpriteRect = _monster[0];
 
 	//Initial velocity
     xVel = 0;

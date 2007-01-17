@@ -16,6 +16,9 @@ Monster_Base::Monster_Base()
     _monster[0].setw( MO_WIDTH );
     _monster[0].seth( MO_HEIGHT );
 
+	//Assign sprite
+	Characters_SpriteRect = _monster[0];
+
 	//Initial velocity
     xVel = 0;
     yVel = 0;
@@ -48,6 +51,9 @@ Monster_Base::Monster_Base(int x, int y)
     _monster[0].setw( MO_WIDTH );
     _monster[0].seth( MO_HEIGHT );
 
+	//Assign sprite
+	Characters_SpriteRect = _monster[0];
+
 	//Initial velocity
     xVel = 0;
     yVel = 0;
@@ -70,7 +76,7 @@ Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 	X = ToCopy.X;
 	Y = ToCopy.Y;
 	Characters_Tile = ToCopy.Characters_Tile;
-	_monster[0] = ToCopy._monster[0];
+	Characters_SpriteRect = ToCopy.Characters_SpriteRect;
 	xVel = ToCopy.xVel;
 	yVel = ToCopy.yVel;
 	collision_box = ToCopy.collision_box;
@@ -305,7 +311,7 @@ try {
 	if ( ( (Camera.getx()-CH_WIDTH) <= X) && (X < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= Y) && (Y < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 	{
 		//It's present than draw it
-		Screen.blit(Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), _monster[0]);
+		Screen.blit(Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), Characters_SpriteRect);
 	}
 	return true; //no error
 } catch (...) {

@@ -82,8 +82,8 @@ Player_Base::Player_Base(int x, int y)
     _player_up_attack[2].setw(CH_WIDTH);
     _player_up_attack[2].seth(CH_HEIGHT);
 
-	//Assign the right sprite to character by default
-	Player_SpriteRect = _player_right_attack[0];
+	//Assign the right sprite to the player by default
+	Characters_SpriteRect = _player_right_attack[0];
 
 	//Initialize animation variables
     frame = 0;  // for animation
@@ -438,22 +438,22 @@ try {
 		//assign the good sprite to the character sprite and the good arrow to the character arrow
 		if( move_status == CH_RIGHT )
 		{
-			Player_SpriteRect = _player_right_attack[0];
+			Characters_SpriteRect = _player_right_attack[0];
 			Arrow_SpriteRect = Arrow_Right[0];
 		}
 		else if( move_status == CH_LEFT )
 		{
-			Player_SpriteRect = _player_left_attack[0];
+			Characters_SpriteRect = _player_left_attack[0];
 			Arrow_SpriteRect = Arrow_Left[0];
 		}
 		else if( move_status == CH_DOWN )
 		{
-			Player_SpriteRect = _player_down_attack[0];
+			Characters_SpriteRect = _player_down_attack[0];
 			Arrow_SpriteRect = Arrow_Down[0];
 		}
 		else if( move_status == CH_UP )
 		{
-			Player_SpriteRect = _player_up_attack[0];
+			Characters_SpriteRect = _player_up_attack[0];
 			Arrow_SpriteRect = Arrow_Up[0];
 		}
 	}
@@ -602,23 +602,23 @@ bool Player_Base::Set_Attack_Animation_Sprite()
 		if( move_status == CH_RIGHT )
 		{
 			//right sprite
-			Player_SpriteRect = _player_right_attack[frame];
+			Characters_SpriteRect = _player_right_attack[frame];
 		}
 		else if( move_status == CH_LEFT )
 		{
 			//left sprite
-			Player_SpriteRect = _player_left_attack[frame];
+			Characters_SpriteRect = _player_left_attack[frame];
 		}
 		else if( move_status == CH_DOWN )
 		{
 			//down sprite
-			Player_SpriteRect = _player_down_attack[frame];
+			Characters_SpriteRect = _player_down_attack[frame];
 
 		}
 		else if( move_status == CH_UP )
 		{
 			//up sprite
-			Player_SpriteRect = _player_up_attack[frame];
+			Characters_SpriteRect = _player_up_attack[frame];
 		}
 
 	}
@@ -680,7 +680,7 @@ bool Player_Base::Set_Arrow_Sprite_Coordinate()
 bool Player_Base::Show_Player(VideoSurface& Screen)
 {
 try {
-	Screen.blit(Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), Player_SpriteRect);
+	Screen.blit(Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), Characters_SpriteRect);
 	return true; //no error
 } catch (...) {
 	return false; //error occured
