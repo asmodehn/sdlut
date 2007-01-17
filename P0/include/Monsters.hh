@@ -1,9 +1,7 @@
 #ifndef Monsters_HH
 #define Monsters_HH
 
-#include "Base.hh"
 #include "Monster_Base.hh"
-#include "BattleField.hh"
 
 //Skeleton specifics
 class Monster_Skeleton : public Monster_Base
@@ -11,7 +9,7 @@ class Monster_Skeleton : public Monster_Base
     private:
 
 	public:
-		Monster_Skeleton(int X, int Y);
+		Monster_Skeleton(int x, int y);
 
 		//Check if the ground allow the Skeleton to move
 		std::vector<int> check_background_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
@@ -24,7 +22,7 @@ class Monster_Worm : public Monster_Base
     private:
 		
 	public:
-		Monster_Worm(int X, int Y);
+		Monster_Worm(int x, int y);
 
 		//Check if the ground allow the worm to move
 		std::vector<int> check_background_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);

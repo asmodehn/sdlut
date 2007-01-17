@@ -1,14 +1,14 @@
 #include "Monsters.hh"
 
 //Skeleton Full constructor
-Monster_Skeleton::Monster_Skeleton(int X, int Y)
+Monster_Skeleton::Monster_Skeleton(int x, int y)
 {
     //Initial position
-	x = X;
-    y = Y;
+	X = x;
+    Y = y;
 
 	//Monster Tile Surface
-	_monsters_list = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
     _monster[0].setx( MO_WIDTH * (rand()%8) );
@@ -83,14 +83,14 @@ std::vector<int> Monster_Skeleton::check_background_allow_monster(Rect Collision
 }
 
 //Worm Full constructor
-Monster_Worm::Monster_Worm(int X, int Y)
+Monster_Worm::Monster_Worm(int x, int y)
 {
     //Initial position
-	x = X;
-    y = Y;
+	X = x;
+    Y = y;
 
 	//Monster Tile Surface
-	_monsters_list = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	 //Monster Clip definition range for the top left (Random monster from the 5th line)
     _monster[0].setx( MO_WIDTH * (rand()%8) );

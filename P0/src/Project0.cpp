@@ -191,7 +191,9 @@ try { //global error management
 
 
 	/********Start music********/
+#ifdef NDEBUG //only on rlz mode
 	App::getInstance().getMixer()->playChannel(GlobalMusic_Chan);
+#endif
 
 	/********Start Daemons Process********/
 	myMonster_Factory_Monsters_Moves_Timer.start(); //monsters movement

@@ -1,20 +1,14 @@
 #ifndef Player_Base_HH
 #define Player_Base_HH
 
-#include "Base.hh"
+#include "Character_Base.hh"
 #include "Monsters.hh"
-#include "BattleField.hh"
+
 
 //Character Class
-class Player_Base
+class Player_Base : public Character_Base
 {
     private:
-		//The X and Y offsets of the Player
-		int x, y;
-
-		//The velocity of the Character
-		int xVel, yVel;
-
 		//The X and Y offsets of the Arrow
 		int arrow_x, arrow_y;
 
@@ -26,8 +20,7 @@ class Player_Base
 		int attack_style; //Manage the style of attack 
 		int attack_successfull; //Manage the attack displayed msg (0: nothing, 1: melee attack success; 2: distant attack success; 3&+: TO DO)
 
-		//Character tiles
-		RGBSurface Players_Tile;
+		//players specifics tiles
 		RGBSurface Players_Tile_Melee;
 		RGBSurface Players_Tile_Distant;
 

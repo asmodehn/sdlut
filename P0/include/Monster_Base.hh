@@ -1,24 +1,14 @@
 #ifndef Monster_Base_HH
 #define Monster_Base_HH
 
-#include "Base.hh"
-#include "BattleField.hh"
+#include "Character_Base.hh"
 
 //The Monster
-class Monster_Base
+class Monster_Base : public Character_Base
 {
     protected:
-		//The X and Y offsets of the Monster
-		int x, y;
-
-		//Monster Tile
-		RGBSurface _monsters_list;
-
 		//Monster Tile Clip
 		Rect _monster[1];
-
-		//The velocity of the Monster
-		int xVel, yVel;
 
 		//Monster type
 		Monsters_Type Monster_ID;
@@ -42,20 +32,20 @@ class Monster_Base
 
 		void Set_X(int new_X)
         {
-            x = new_X;
+            X = new_X;
         }
 		int Get_X() const
         {
-            return x;
+            return X;
         }
 
 		void Set_Y(int new_Y)
         {
-            y = new_Y;
+            Y = new_Y;
         }
 		int Get_Y() const
         {
-            return y;
+            return Y;
         }
 
 		void Set_Collision_Box(Rect new_Collision_Box)
@@ -91,7 +81,7 @@ class Monster_Base
 		Monster_Base();
 
 		//Constructor that initialize the variables
-		Monster_Base(int X, int Y);
+		Monster_Base(int x, int y);
 
 		//Copy construtor
 		Monster_Base(const Monster_Base& ToCopy);

@@ -4,11 +4,11 @@
 Monster_Base::Monster_Base()
 {
 	//Initial position
-	x = 0;
-    y = 0;
+	X = 0;
+    Y = 0;
 
 	//Monster Tile Surface with white transparent
-	_monsters_list = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
 
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
     _monster[0].setx( MO_WIDTH * (rand()%8) );
@@ -33,14 +33,14 @@ Monster_Base::Monster_Base()
 	Alive_Status = true;
 }
 //Full Construtor
-Monster_Base::Monster_Base(int X, int Y)
+Monster_Base::Monster_Base(int x, int y)
 {
     //Initial position
-	x = X;
-    y = Y;
+	X = x;
+    Y = y;
 
 	//Monster Tile Surface
-	_monsters_list = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
     _monster[0].setx( MO_WIDTH * (rand()%8) );
@@ -67,9 +67,9 @@ Monster_Base::Monster_Base(int X, int Y)
 //Copy construtor
 Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 {
-	x = ToCopy.x;
-	y = ToCopy.y;
-	_monsters_list = ToCopy._monsters_list;
+	X = ToCopy.X;
+	Y = ToCopy.Y;
+	Characters_Tile = ToCopy.Characters_Tile;
 	_monster[0] = ToCopy._monster[0];
 	xVel = ToCopy.xVel;
 	yVel = ToCopy.yVel;
@@ -78,7 +78,7 @@ Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 //Destructor
 Monster_Base::~Monster_Base()
 {
-	//_monsters_list.~RGBSurface();
+	//Characters_Tile.~RGBSurface();
 }
 //Move monster randomly
 bool Monster_Base::move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector< std::vector<Monster_Base*> *> Global_Monster_Vector)
@@ -94,15 +94,15 @@ try {
 		yVel = (rand()%3-1);
 
 		//Move the monster's collision box
-		collision_box.setx(x + xVel);
-		collision_box.sety(y + yVel);
+		collision_box.setx(X + xVel);
+		collision_box.sety(Y + yVel);
 
 		//If the monster went too far to the left or right
 		if((collision_box.getx() < 0) || (collision_box.getx() + MO_WIDTH > LEVEL_WIDTH) )
 		{
 			//move back
-			collision_box.setx(x);
-			collision_box.sety(y);
+			collision_box.setx(X);
+			collision_box.sety(Y);
 			//we have found a collision no need to work more
 			return true;
 		}
@@ -111,8 +111,8 @@ try {
 		if((collision_box.gety() < 0) || (collision_box.gety() + MO_HEIGHT > LEVEL_HEIGHT - STATUS_BAR_H) )
 		{
 			//move back
-			collision_box.setx(x);
-			collision_box.sety(y); 
+			collision_box.setx(X);
+			collision_box.sety(Y); 
 			return true;   
 		}
 
@@ -120,8 +120,8 @@ try {
 		if(! check_battlefield_allow_monster(collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector) )
 		{
 			//move back
-			collision_box.setx(x);
-			collision_box.sety(y);
+			collision_box.setx(X);
+			collision_box.sety(Y);
 			return true;
 		}
 		
@@ -129,8 +129,8 @@ try {
 		if ( check_collision(collision_box, CharacterCollisionbox) )
 		{
 		   	 //move back
-			collision_box.setx(x);
-			collision_box.sety(y);
+			collision_box.setx(X);
+			collision_box.sety(Y);
 			return true;
 	 	}
 		
@@ -142,16 +142,16 @@ try {
 			for(unsigned int i=0; i < Global_Monster_Vector.at(j)->size(); i++)
 			{
 				//In order to the monster to not check collision's with himself
-				if ( ( x != Global_Monster_Vector.at(j)->at(i)->Get_X() ) || y != Global_Monster_Vector.at(j)->at(i)->Get_Y() )
+				if ( ( X != Global_Monster_Vector.at(j)->at(i)->Get_X() ) || Y != Global_Monster_Vector.at(j)->at(i)->Get_Y() )
 				{
 					if (check_collision( collision_box, Global_Monster_Vector.at(j)->at(i)->Get_Collision_Box() ))
 					{
 						//we have found a collision inside the vector
-						P0_Logger << " Collision with monster " << " @ [ " << x << ", " << y << "]" << std::endl;
+						P0_Logger << " Collision with monster " << " @ [ " << X << ", " << Y << "]" << std::endl;
 						
 						//move back
-						collision_box.setx(x);
-						collision_box.sety(y); 
+						collision_box.setx(X);
+						collision_box.sety(Y); 
 
 						//no need to work more
 						return true;
@@ -161,8 +161,8 @@ try {
 		}
 			
 		//Finally move the monster in the same place of his collision box (no collision found)
-		x = collision_box.getx();
-		y = collision_box.gety();
+		X = collision_box.getx();
+		Y = collision_box.gety();
 	}
 	return true; //no error
 } catch (...) {
@@ -302,10 +302,10 @@ bool Monster_Base::move_animation(Rect Camera, VideoSurface& Screen)
 try {
 	//Check if the monster sprite is present on the screen minus the status bar
 	//NOTE : CH_WIDTH/CH_HEIGHT are present because the camera is centered on the middle of the character and so we need to draw the screen a little more than the camera dim
-	if ( ( (Camera.getx()-CH_WIDTH) <= x) && (x < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= y) && (y < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
+	if ( ( (Camera.getx()-CH_WIDTH) <= X) && (X < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= Y) && (Y < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 	{
 		//It's present than draw it
-		Screen.blit(_monsters_list, Point::Point(x - Camera.getx(), y - Camera.gety()), _monster[0]);
+		Screen.blit(Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), _monster[0]);
 	}
 	return true; //no error
 } catch (...) {

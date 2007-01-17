@@ -26,22 +26,28 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Char
 	int x = 0, y = 0;
 
 	//mini distance (3 square radius from the character border)
-	int distance_mini = int( 3.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );
+	/*int distance_mini = int( 3.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );*/
+	int distance_mini_carre = int( 12.25*CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT );
 	
 	//Monster coord
 	x = random(0,39);
 	y = random(0,39);
 
 	//distance from the center - distance center to border of the character
-	int distance = int( sqrt( float( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)) ) )
-						- 0.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );
-	while (distance <= distance_mini) //we are too near
+	/*int distance = int( sqrt( float( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)) ) )
+						- 0.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );*/
+	int distance_carre = int( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)
+						- 0.25*CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) );
+	//while (distance <= distance_mini) //we are too near
+	while ( distance_carre <= distance_mini_carre ) //we are too near
 	{
 		//retry
 		x = random(0,39);
 		y = random(0,39);
-		distance = int( sqrt( float( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)) ) )
-					- 0.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );
+		/*distance = int( sqrt( float( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)) ) )
+					- 0.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );*/
+		distance_carre = int( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)
+					- 0.25*CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) );
 	}
 
 	//Create Monster & initialized it
@@ -60,6 +66,7 @@ std::vector<Monster_Base*> Monster_Factory<Monster_Template>::Create_Monsters(in
 		Monster_Template* newMonster = Create_One_Monster(Character_X, Character_Y);
 
 		//Check if the battlefield allow the monster creation
+		/******BUG HERE: We're not checking if other monsters allow the new created one *****/
 		while( !(newMonster->check_battlefield_allow_monster( newMonster->Get_Collision_Box(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->check_cutting_allow_monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
 		{
 			//regeneration

@@ -1,19 +1,19 @@
 #include "Player_Base.hh"
 
 //Initialization construtor
-Player_Base::Player_Base(int X, int Y)
+Player_Base::Player_Base(int x, int y)
 {
     //Initial position
-	x = X;
-	y = Y;
+	X = x;
+	Y = y;
     
     //Initial velocity
     xVel = 0;
     yVel = 0;
 
 	//Initial arrow position
-	arrow_x = x;
-	arrow_y = y;
+	arrow_x = X;
+	arrow_y = Y;
 
 	//Initial moving status
 	moving_status = false;
@@ -143,7 +143,7 @@ Player_Base::Player_Base(int X, int Y)
 	//Characters Surfaces
 	Players_Tile_Melee = RGBSurface("Datas/Characters/Character_Fighter.bmp", Color(0xFF, 0xFF, 0xFF));
 	Players_Tile_Distant = RGBSurface("Datas/Characters/Character_Archer.bmp", Color(0xFF, 0xFF, 0xFF));
-	Players_Tile = Players_Tile_Melee; //Default tile: the melee tile
+	Characters_Tile = Players_Tile_Melee; //Default tile: the melee tile
 	//Arrow surface
 	Arrow_Tile = RGBSurface("Datas/Items/Arrow.bmp", Color(0xFF, 0xFF, 0xFF));
 
@@ -183,7 +183,7 @@ try
 	// Melee Style
 	if (attack_style == 1)
 	{
-		Players_Tile = Players_Tile_Melee;
+		Characters_Tile = Players_Tile_Melee;
 		attack_msg_hit = attack_melee_msg_hit;
 		attack_msg_miss = attack_melee_msg_miss;
 		//P0_Logger << " Graphic Style Updated To Melee Style : OK " << std::endl;
@@ -191,7 +191,7 @@ try
 	// Distant Style
 	else if (attack_style == 2)
 	{
-		Players_Tile = Players_Tile_Distant;
+		Characters_Tile = Players_Tile_Distant;
 		attack_msg_hit = attack_distant_msg_hit;
 		attack_msg_miss = attack_distant_msg_miss;
 		//P0_Logger << " Graphic Style Updated To Distant Style : OK " << std::endl;
@@ -207,28 +207,28 @@ bool Player_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Vecto
 {
 try {
     //Move the Character collision box to were we want to move
-    collision_box.setx(x + xVel);
-	collision_box.sety(y + yVel);
+    collision_box.setx(X + xVel);
+	collision_box.sety(Y + yVel);
     
     //If the Character went too far to the left or right
 	if( (collision_box.getx() < 0) || (collision_box.getx() + CH_WIDTH > LEVEL_WIDTH) )
 	{
         //move back
-        collision_box.setx(x);    
+        collision_box.setx(X);    
     }
 	//If the Character went too far up or down (minus the status bar)
 	if((collision_box.gety() < 0) || (collision_box.gety() + CH_HEIGHT > LEVEL_HEIGHT - STATUS_BAR_H) )
     {
         //move back
-        collision_box.sety(y);    
+        collision_box.sety(Y);    
     }
 
 	//Check if the battlefield allow the move
 	if(! check_battlefield_allow_character(collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector) )
 	{
 		//move back
-		collision_box.setx(x);
-		collision_box.sety(y);
+		collision_box.setx(X);
+		collision_box.sety(Y);
 		//collision found no need to work more
 		return true;
 	}
@@ -239,8 +239,8 @@ try {
 		if (check_collision( collision_box, Monster_Vector_Skeleton[i]->Get_Collision_Box() ))
 		{
 			//move back
-			collision_box.setx(x);
-			collision_box.sety(y); 
+			collision_box.setx(X);
+			collision_box.sety(Y); 
 
 			//we have found a collision inside the vector, no need to work more
 			return true;
@@ -252,8 +252,8 @@ try {
 		if (check_collision( collision_box, Monster_Vector_Worm[i]->Get_Collision_Box() ))
 		{
 			//move back
-			collision_box.setx(x);
-			collision_box.sety(y); 
+			collision_box.setx(X);
+			collision_box.sety(Y); 
 
 			//we have found a collision inside the vector, no need to work more
 			return true;
@@ -261,12 +261,12 @@ try {
 	}
     
 	//Finally move the character in the same place of his collision box...
-	x = collision_box.getx();
-	y = collision_box.gety();
+	X = collision_box.getx();
+	Y = collision_box.gety();
 	
 	//...and the arrow with his owner^^
-	arrow_x = x;
-	arrow_y = y;
+	arrow_x = X;
+	arrow_y = Y;
 	
 	return true; //no error
 } catch (...) {  //error occured
@@ -649,30 +649,30 @@ bool Player_Base::Set_Arrow_Sprite_Coordinate()
 		//set coordinate in fonction of the character direction
 		if( move_status == CH_RIGHT )
 		{
-			arrow_x = x + (arrow_frame * CH_WIDTH);
-			arrow_y = y;
+			arrow_x = X + (arrow_frame * CH_WIDTH);
+			arrow_y = Y;
 		}
 		else if( move_status == CH_LEFT )
 		{
-			arrow_x = x - (arrow_frame * CH_WIDTH);
-			arrow_y = y;
+			arrow_x = X - (arrow_frame * CH_WIDTH);
+			arrow_y = Y;
 		}
 		else if( move_status == CH_DOWN )
 		{
-			arrow_x = x;
-			arrow_y = y + (arrow_frame * CH_HEIGHT);
+			arrow_x = X;
+			arrow_y = Y + (arrow_frame * CH_HEIGHT);
 		}
 		else if( move_status == CH_UP )
 		{
-			arrow_x = x;
-			arrow_y = y - (arrow_frame * CH_HEIGHT);
+			arrow_x = X;
+			arrow_y = Y - (arrow_frame * CH_HEIGHT);
 		}
 		return true;
 	} else { //end of animation
 		arrow_frame = 0; //end anim
 		hit_monster_distance = 0; //reset the distance
-		arrow_x = x; //reset coordinate (no need to reset rect coz it dont change)
-		arrow_y = y;
+		arrow_x = X; //reset coordinate (no need to reset rect coz it dont change)
+		arrow_y = Y;
 		return false;
 	}	
 }
@@ -680,7 +680,7 @@ bool Player_Base::Set_Arrow_Sprite_Coordinate()
 bool Player_Base::Show_Player(VideoSurface& Screen)
 {
 try {
-	Screen.blit(Players_Tile, Point::Point(x - Camera.getx(), y - Camera.gety()), Player_SpriteRect);
+	Screen.blit(Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), Player_SpriteRect);
 	return true; //no error
 } catch (...) {
 	return false; //error occured
@@ -690,7 +690,7 @@ try {
 bool Player_Base::Show_Arrow(VideoSurface& Screen)
 {
 try {
-	if ( (x != arrow_x) || (y != arrow_y) ) //dont display the arrow when it's at the same place than the character
+	if ( (X != arrow_x) || (Y != arrow_y) ) //dont display the arrow when it's at the same place than the character
 	{
 		Screen.blit(Arrow_Tile, Point::Point(arrow_x - Camera.getx(), arrow_y - Camera.gety()), Arrow_SpriteRect);
 	}
@@ -739,8 +739,8 @@ bool Player_Base::following_camera()
 {
 try {
     //Center the camera over the Character
-    Camera.setx( (x + CH_WIDTH / 2) - CURRENT_SCREEN_WIDTH / 2 );
-    Camera.sety( (y + CH_HEIGHT / 2) - CURRENT_SCREEN_HEIGHT / 2 );
+    Camera.setx( (X + CH_WIDTH / 2) - CURRENT_SCREEN_WIDTH / 2 );
+    Camera.sety( (Y + CH_HEIGHT / 2) - CURRENT_SCREEN_HEIGHT / 2 );
     //Keep the camera in bounds.
     if(Camera.getx() < 0)
     {
