@@ -23,31 +23,15 @@ class Monster_Base : public Character_Base
 		/****Methods****/
 
 		//Check if the background allow the monster presence
-		virtual std::vector<int> check_background_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		//virtual std::vector<int> check_background_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 		//Check if the environment allow the monster presence
-		virtual std::vector<int> check_environment_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
+		//virtual std::vector<int> check_environment_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
 		
+		//Battlefield rules
+		virtual int Get_BG_vs_CH_Rules(int bgType);
+		/* virtual */ int Get_Env_vs_CH_Rules(int envType);
+
 	public:
-		/****Accessor****/
-
-		void Set_X(int new_X)
-        {
-            X = new_X;
-        }
-		int Get_X() const
-        {
-            return X;
-        }
-
-		void Set_Y(int new_Y)
-        {
-            Y = new_Y;
-        }
-		int Get_Y() const
-        {
-            return Y;
-        }
-
 		void Set_Collision_Box(Rect new_Collision_Box)
         {
             collision_box = new_Collision_Box;
@@ -93,7 +77,7 @@ class Monster_Base : public Character_Base
 		bool move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector< std::vector<Monster_Base*> *> Global_Monster_Vector);
 	    
 		//Check if the battlefield allow the monster presence
-		virtual bool check_battlefield_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		//virtual bool check_battlefield_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 		//Check if the battlefield cutting allow monster presence
 		bool check_cutting_allow_monster(int x, int y, std::vector<BattleField_Zone*> BattleField_Cutting_Vector);

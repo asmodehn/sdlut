@@ -94,10 +94,13 @@ try {
 	if (rand()%200 <= 133) 
 	{
 		//Random mvt
-		//xVel = ((rand()%3-1)*MO_WIDTH);
-		//yVel = ((rand()%3-1)*MO_HEIGHT);
+#ifdef _DEBUG //debug mode
+		xVel = ((rand()%3-1)*MO_WIDTH);
+		yVel = ((rand()%3-1)*MO_HEIGHT);
+#else //rlz mode
 		xVel = (rand()%3-1);
 		yVel = (rand()%3-1);
+#endif
 
 		//Move the monster's collision box
 		collision_box.setx(X + xVel);
@@ -123,7 +126,7 @@ try {
 		}
 
 		//Check if the battlefield allow the move
-		if(! check_battlefield_allow_monster(collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector) )
+		if(! Check_battlefield_allow_character(collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector) )
 		{
 			//move back
 			collision_box.setx(X);
@@ -176,7 +179,7 @@ try {
 }
 }
 
-//Check if the battlefield allow the monster presence
+/*//Check if the battlefield allow the monster presence
 bool Monster_Base::check_battlefield_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	bool res = true;
@@ -202,23 +205,54 @@ bool Monster_Base::check_battlefield_allow_monster(Rect Collision_Box, std::vect
 			res = true; //no collision
 		}
 	}
-	if ( res == false )
-	{
-		P0_Logger << "BLAH BLAH BLAH" << std::endl;
-	}
 	
 	//Never happend (just 4 warning)
 	return res;
+}*/
+//By default the ground allow the undefined monster presence
+int Monster_Base::Get_BG_vs_CH_Rules(int bgType)
+{
+	return 1;
 }
-//Check if the ground allow the monster presence
-std::vector<int> Monster_Base::check_background_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+/*std::vector<int> Monster_Base::check_background_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	std::vector<int> res;
 	res.push_back(1);
 	return res;
-}
+}*/
 //Check if the environmemt allow the monster presence
-std::vector<int> Monster_Base::check_environment_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
+int Monster_Base::Get_Env_vs_CH_Rules(int envType)
+{
+	if( envType == NOTHING_ENV_ITEM )  //indicate no environement is present
+	{
+		return -1;
+	}
+	else if( envType == TREE_ENV_ITEM ) //Don't allow presence
+	{
+		return 0;
+	}
+	else if( envType == ROCK_ENV_ITEM ) //Don't allow presence
+	{
+		return 0;
+	}
+	else if( envType == WALL_ENV_ITEM ) //Don't allow presence
+	{
+		return 0;
+	}
+	else if( envType == HOUSE_ENV_ITEM ) //Allow presence
+	{
+		return 0;
+	}
+	else if( envType == BRIDGE_ENV_ITEM ) //Allow presence
+	{
+		return 1;
+	}
+	else // not listed type (impossible!!??). Allow presence
+	{
+		return 1;
+	}
+}
+/*std::vector<int> Monster_Base::check_environment_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
 {
 	std::vector<int> res; //vector of collision results
     int Env_Type;
@@ -269,7 +303,7 @@ std::vector<int> Monster_Base::check_environment_allow_monster(Rect Collision_Bo
 	}
 
 	return res;
-}
+}*/
 //Check if the battlefield cutting allow monster presence
 bool Monster_Base::check_cutting_allow_monster(int x, int y, std::vector<BattleField_Zone*> BattleField_Cutting_Vector)
 {

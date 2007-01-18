@@ -224,7 +224,7 @@ try {
     }
 
 	//Check if the battlefield allow the move
-	if(! check_battlefield_allow_character(collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector) )
+	if(! Check_battlefield_allow_character(collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector) )
 	{
 		//move back
 		collision_box.setx(X);
@@ -274,7 +274,7 @@ try {
 }
 }
 //Check if the battlefield allow the character presence
-bool Player_Base::check_battlefield_allow_character(Rect Collision_Box , std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+/*bool Player_Base::check_battlefield_allow_character(Rect Collision_Box , std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	bool res = true;
 
@@ -302,9 +302,37 @@ bool Player_Base::check_battlefield_allow_character(Rect Collision_Box , std::ve
 	
 	//Never happend (just 4 warning)
 	return res;
+}*/
+//Set ground vs player rules
+int Player_Base::Get_BG_vs_CH_Rules(int bgType)
+{
+	if( bgType == EMPTY_GROUND ) //Don't allow move
+	{
+		return 0;
+	}
+	else if( bgType == GRASS_GROUND ) //Allow move
+	{
+		return 1;
+	}
+	else if( bgType == SAND_GROUND ) //Don't allow move
+	{
+		return 0;
+	}
+	else if( bgType == RIVER_GROUND ) //Allow move
+	{
+		return 1;
+	}
+	else if( bgType == LAKE_GROUND ) //Don't allow move
+	{
+		return 0;
+	}
+	else // not listed type (impossible!!??). Don't allow move
+	{
+		return 0;
+	}
 }
 //Check if the ground allow the move
-std::vector<int> Player_Base::check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
+/*std::vector<int> Player_Base::check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
 {
 	std::vector<int> res; //vector of collision results
 	int Ground_Type;
@@ -351,9 +379,41 @@ std::vector<int> Player_Base::check_background_allow_character(Rect Collision_Bo
 	}
 
 	return res;
+}*/
+//Set env vs player rules
+int Player_Base::Get_Env_vs_CH_Rules(int envType)
+{
+	if( envType == NOTHING_ENV_ITEM )  //indicate no environement is present
+	{
+		return -1;
+	}
+	else if( envType == TREE_ENV_ITEM ) //Don't allow presence
+	{
+		return 0;
+	}
+	else if( envType == ROCK_ENV_ITEM ) //Don't allow presence
+	{
+		return 0;
+	}
+	else if( envType == WALL_ENV_ITEM ) //Don't allow presence
+	{
+		return 0;
+	}
+	else if( envType == HOUSE_ENV_ITEM ) //Allow presence
+	{
+		return 1;
+	}
+	else if( envType == BRIDGE_ENV_ITEM ) //Allow presence
+	{
+		return 1;
+	}
+	else // not listed type (impossible!!??). Allow presence
+	{
+		return 1;
+	}
 }
 //Check if the environment allow the move
-std::vector<int> Player_Base::check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
+/*std::vector<int> Player_Base::check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
 {
 	std::vector<int> res; //vector of collision results
     int Env_Type;
@@ -404,7 +464,7 @@ std::vector<int> Player_Base::check_environment_allow_character(Rect Collision_B
 	}
 
 	return res;
-}
+}*/
 
 //check the move direction and assign the good sprite
 bool Player_Base::assign_direction_sprite()

@@ -58,14 +58,17 @@ class Player_Base : public Character_Base
 		int attack_check_status(int collision_box_movement, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
 
 		//Check if the ground allow the player presence
-		std::vector<int> check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		//std::vector<int> check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 		//Check if the environment allow the player presence
-		std::vector<int> check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
+		//std::vector<int> check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
 
 		//Check if the battlefield allow the player presence
-		bool check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+		//bool check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
+		//Battlefield rules
+		/* virtual */ int Get_BG_vs_CH_Rules(int bgType);
+		/* virtual */ int Get_Env_vs_CH_Rules(int envType);
 	public:
 
 		/****Variables****/
@@ -87,25 +90,6 @@ class Player_Base : public Character_Base
 		
 
 		/****Accessor****/
-
-		void Set_xVel(int new_xVel)
-        {
-            xVel = new_xVel;
-        }
-		int Get_xVel() const
-        {
-            return xVel;
-        }
-
-		void Set_yVel(int new_yVel)
-        {
-            yVel = new_yVel;
-        }
-        int Get_yVel() const
-        {
-            return yVel;
-        }
-
 		//Define if the player has push the attack Key
 		void Set_Attack_Status(bool new_attack_status)
         {
