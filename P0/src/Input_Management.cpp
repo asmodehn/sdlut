@@ -9,8 +9,8 @@ KeyboardInput::KeyboardInput()
 void KeyboardInput::Player_Moves_Consequences()
 {
 	//Get Monster's vectors
-	Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
-	Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
+	//Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
+	//Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
 
 	//set character sprite in function of the direction and dont move if it's only a direction change
 	if( myPlayer->assign_direction_sprite() == false )
@@ -21,7 +21,7 @@ void KeyboardInput::Player_Moves_Consequences()
 	if ( myPlayer->Get_Moving_Status() ) //we're really moving but not simply changing the direction
 	{
 		//Move the character if possible
-		if( myPlayer->move(Environment_Sprite_Vector, BackGround_Sprite_Vector, Monster_Vector_Skeleton, Monster_Vector_Worm)
+		if( myPlayer->move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector)
 		 == false )
 		{ 
 		  P0_Logger << " Move player Failed " << std::endl;    
@@ -41,11 +41,11 @@ void KeyboardInput::Player_Moves_Consequences()
 		myPlayer_Move_Animation_Timer.start();
 
 		//Send the modified character's collision box to daemons
-		myDaemons->Set_Player_Base(myPlayer);
+		//myDaemons->Set_Player_Base(myPlayer);
 	}
 	
 	//Send the modified character to the render engine 
-	myRender_Engine->Set_Player_Base(myPlayer);
+	//myRender_Engine->Set_Player_Base(myPlayer);
 
 	//P0_Logger << " Move " << std::endl;
 }
@@ -56,12 +56,12 @@ void KeyboardInput::Player_Attack_Consequences()
 	myPlayer->Set_Attack_Status(true);
 
 	//Get Monster's vectors
-	Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
-	Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
+	/*Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
+	Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();*/
 	
 	//Handle attacks & set the distance of the attack
 	/***WARNING !! IN CASE OF DISTANT ATTACK THE MONSTER IS CONSIDERED AS DEAD WHEN THE KEY IS PRESSED AND NOT WHEN THE ARROW REACHED THE TARGET => TODO: FIND A WAY TO SOLVE THAT (SEPARATE THE ATTACK METHOD IN TWO DISTINCT METHOD PERHAPS CAN HELP)***/
-	myPlayer->Set_Hit_Monster_Distance( myPlayer->attack(Monster_Vector_Skeleton, Monster_Vector_Worm) );
+	myPlayer->Set_Hit_Monster_Distance( myPlayer->attack(Global_Monster_Vector) );
 	
 	//Intervals between animation's frames
 	myPlayer_Attack_Animation_Timer.setInterval( PLAYER_MELEE_ATTACK_ANIMATION_INTERVAL );
@@ -88,7 +88,7 @@ void KeyboardInput::Player_Attack_Consequences()
 
 
 	//Send the modified character to the render engine 
-	myRender_Engine->Set_Player_Base(myPlayer);
+	//myRender_Engine->Set_Player_Base(myPlayer);
 
 	//P0_Logger << " Attack " << std::endl;
 }
@@ -158,7 +158,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
                             P0_Logger << " Update Graphic Style FAILED " << std::endl;
                         }
 						//Send the modified character to the render engine 
-						myRender_Engine->Set_Player_Base(myPlayer);
+						//myRender_Engine->Set_Player_Base(myPlayer);
 						break;
 
 					//Leave/appears on the Battlefield and save but do not quit
@@ -198,12 +198,13 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				case KUp:
 				case KKp5:
 				case KDown:
+					myPlayer->Set_yVel(0);
+					break;
 				case KKp7:
 				case KLeft:
 				case KKp9:
 				case KRight:
 					myPlayer->Set_xVel(0);
-					myPlayer->Set_yVel(0);
 					break;
 			}
 		}
@@ -231,7 +232,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 						myEsc_Menu->Set_SelectedItemId(2); //The bottom SelectItem id is 2 at this time
 					}
 					//Send the modified Esc_Menu to the render engine 
-					myRender_Engine->Set_Esc_Menu(myEsc_Menu);
+					//myRender_Engine->Set_Esc_Menu(myEsc_Menu);
 					break;
 				
 				//Increment esc menu's selected item id until it reach the bottom than go back to the top
@@ -250,7 +251,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 						myEsc_Menu->Set_SelectedItemId(1); //The top SelectItem id is 1 at this time
 					}
 					//Send the modified Esc_Menu to the render engine 
-					myRender_Engine->Set_Esc_Menu(myEsc_Menu);
+					//myRender_Engine->Set_Esc_Menu(myEsc_Menu);
 					break;
 
 				//Validate the selected esc menu's item id

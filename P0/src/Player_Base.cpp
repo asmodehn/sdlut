@@ -104,10 +104,10 @@ Player_Base::Player_Base(int x, int y)
 	Camera.seth(CURRENT_SCREEN_HEIGHT);
 
 	//Collision Box Definition: The collision box has the size of the character
-	collision_box.setx(X);
-    collision_box.sety(Y);
-    collision_box.setw(CH_WIDTH);
-    collision_box.seth(CH_HEIGHT);
+	Collision_Box.setx(X);
+    Collision_Box.sety(Y);
+    Collision_Box.setw(CH_WIDTH);
+    Collision_Box.seth(CH_HEIGHT);
 
 	//Attack collsion box: currently in the same place of the character
 	attack_collision_box.setx(X);
@@ -158,23 +158,7 @@ Player_Base::Player_Base(int x, int y)
 	attack_melee_msg_miss = *AttackMsg_Font.render("Melee Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 	attack_distant_msg_miss = *AttackMsg_Font.render("Distant Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 }
-//Destructor
-Player_Base::~Player_Base()
-{
-	////Free the msgs
-	//attack_msg_hit.~RGBSurface();
-	//attack_msg_miss.~RGBSurface();
-	//attack_melee_msg_hit.~RGBSurface();
-	//attack_melee_msg_miss.~RGBSurface();
-	//attack_distant_msg_hit.~RGBSurface();
-	//attack_distant_msg_miss.~RGBSurface();
 
-	////Free the surface
-	//Characters_Tile.~RGBSurface();
-	//Characters_Tile_Melee.~RGBSurface();
-	//Characters_Tile_Distant.~RGBSurface();
-	//Arrow_Tile.~RGBSurface();
-}
 //Character Graphic Style Initialiation regarding the attack style
 bool Player_Base::Update_Graphic_Style()
 {
@@ -203,106 +187,26 @@ catch (...) {
 }
 }
 //Show the Character on the screen
-bool Player_Base::move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
+bool Player_Base::move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 try {
-    //Move the Character collision box to were we want to move
-    collision_box.setx(X + xVel);
-	collision_box.sety(Y + yVel);
-    
-    //If the Character went too far to the left or right
-	if( (collision_box.getx() < 0) || (collision_box.getx() + CH_WIDTH > LEVEL_WIDTH) )
-	{
-        //move back
-        collision_box.setx(X);    
-    }
-	//If the Character went too far up or down (minus the status bar)
-	if((collision_box.gety() < 0) || (collision_box.gety() + CH_HEIGHT > LEVEL_HEIGHT - STATUS_BAR_H) )
-    {
-        //move back
-        collision_box.sety(Y);    
-    }
+	if (! Check_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) )
+	{ //No collisions found
+		//move the player
+		X = Collision_Box.getx();
+		Y = Collision_Box.gety();
 
-	//Check if the battlefield allow the move
-	if(! Check_battlefield_allow_character(collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector) )
-	{
-		//move back
-		collision_box.setx(X);
-		collision_box.sety(Y);
-		//collision found no need to work more
-		return true;
+		//...and the arrow with his owner^^
+		arrow_x = X;
+		arrow_y = Y;
 	}
 
-	//Collision with skeletons
-	for(unsigned int i=0; i < Monster_Vector_Skeleton.size(); i++)
-	{
-		if (check_collision( collision_box, Monster_Vector_Skeleton[i]->Get_Collision_Box() ))
-		{
-			//move back
-			collision_box.setx(X);
-			collision_box.sety(Y); 
-
-			//we have found a collision inside the vector, no need to work more
-			return true;
-		}
-	}
-	//Collision with worms
-	for(unsigned int i=0; i < Monster_Vector_Worm.size(); i++)
-	{
-		if (check_collision( collision_box, Monster_Vector_Worm[i]->Get_Collision_Box() ))
-		{
-			//move back
-			collision_box.setx(X);
-			collision_box.sety(Y); 
-
-			//we have found a collision inside the vector, no need to work more
-			return true;
-		}
-	}
-    
-	//Finally move the character in the same place of his collision box...
-	X = collision_box.getx();
-	Y = collision_box.gety();
-	
-	//...and the arrow with his owner^^
-	arrow_x = X;
-	arrow_y = Y;
-	
 	return true; //no error
 } catch (...) {  //error occured
 	return false;
 }
 }
-//Check if the battlefield allow the character presence
-/*bool Player_Base::check_battlefield_allow_character(Rect Collision_Box , std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
-{
-	bool res = true;
 
-	std::vector<int> env_vs_pc_collisions = check_environment_allow_character(Collision_Box, Environment_Sprite_Vector);
-	std::vector<int> bg_vs_pc_collisions = check_background_allow_character(Collision_Box, BackGround_Sprite_Vector);
-
-	for (unsigned int i = 0; i < env_vs_pc_collisions.size(); i++)
-	{
-		if ( env_vs_pc_collisions.at(i) == -1 ) //environment is not present
-		{
-			if ( bg_vs_pc_collisions.at(i) == 0 )
-			{
-				res = false; //collision with bg
-				return res; //no need to work more
-			}
-
-		} else if ( env_vs_pc_collisions.at(i) == 0 ) 
-		{
-			res = false; //collision with env
-			return res; //no need to work more
-		} else {
-			res = true; //no collision
-		}
-	}
-	
-	//Never happend (just 4 warning)
-	return res;
-}*/
 //Set ground vs player rules
 int Player_Base::Get_BG_vs_CH_Rules(int bgType)
 {
@@ -331,55 +235,7 @@ int Player_Base::Get_BG_vs_CH_Rules(int bgType)
 		return 0;
 	}
 }
-//Check if the ground allow the move
-/*std::vector<int> Player_Base::check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
-{
-	std::vector<int> res; //vector of collision results
-	int Ground_Type;
-	Rect bg_rect;
 
-	//loop on all the vector
-	for(unsigned int i=0; i < BackGround_Sprite_Vector.size(); i++)
-	{
-		bg_rect.setx(BackGround_Sprite_Vector[i]->Get_X());
-		bg_rect.sety(BackGround_Sprite_Vector[i]->Get_Y());
-		bg_rect.setw(BATF_SPRITE_W);
-		bg_rect.seth(BATF_SPRITE_H);
-
-		if ( check_collision( Collision_Box, bg_rect ) )
-		{
-			//Get the destination ground
-			Ground_Type = BackGround_Sprite_Vector[i]->Get_BattleField_Type();
-			//Ask the background if the collision box is allowed to go there
-			if( Ground_Type == EMPTY_GROUND ) //Don't allow move
-			{
-				res.push_back(0);
-			}
-			else if( Ground_Type == GRASS_GROUND ) //Allow move
-			{
-				res.push_back(1);
-			}
-			else if( Ground_Type == SAND_GROUND ) //Don't allow move
-			{
-				res.push_back(0);
-			}
-			else if( Ground_Type == RIVER_GROUND ) //Allow move
-			{
-				res.push_back(1);
-			}
-			else if( Ground_Type == LAKE_GROUND ) //Don't allow move
-			{
-				res.push_back(0);
-			}
-			else // not listed type (impossible!!??). Don't allow move
-			{
-				res.push_back(0);
-			}
-		}
-	}
-
-	return res;
-}*/
 //Set env vs player rules
 int Player_Base::Get_Env_vs_CH_Rules(int envType)
 {
@@ -412,59 +268,6 @@ int Player_Base::Get_Env_vs_CH_Rules(int envType)
 		return 1;
 	}
 }
-//Check if the environment allow the move
-/*std::vector<int> Player_Base::check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector)
-{
-	std::vector<int> res; //vector of collision results
-    int Env_Type;
-	Rect env_rect;
-
-	//loop on all the vector
-	for(unsigned int i=0; i < Environment_Sprite_Vector.size(); i++)
-	{
-		env_rect.setx(Environment_Sprite_Vector[i]->Get_X());
-		env_rect.sety(Environment_Sprite_Vector[i]->Get_Y());
-		env_rect.setw(BATF_SPRITE_W);
-		env_rect.seth(BATF_SPRITE_H);
-
-		if ( check_collision( Collision_Box, env_rect ) )
-		{
-			//Get the destination environment
-			Env_Type = Environment_Sprite_Vector[i]->Get_BattleField_Type();
-			//Check if the environment allow the player's collision box presence
-			if( Env_Type == NOTHING_ENV_ITEM )  //indicate no environement is present
-			{
-				res.push_back(-1);
-			}
-			else if( Env_Type == TREE_ENV_ITEM ) //Don't allow presence
-			{
-				res.push_back(0);
-			}
-			else if( Env_Type == ROCK_ENV_ITEM ) //Don't allow presence
-			{
-				res.push_back(0);
-			}
-			else if( Env_Type == WALL_ENV_ITEM ) //Don't allow presence
-			{
-				res.push_back(0);
-			}
-			else if( Env_Type == HOUSE_ENV_ITEM ) //Allow presence
-			{
-				res.push_back(1);
-			}
-			else if( Env_Type == BRIDGE_ENV_ITEM ) //Allow presence
-			{
-				res.push_back(1);
-			}
-			else // not listed type (impossible!!??). Allow presence
-			{
-				res.push_back(1);
-			}
-		}
-	}
-
-	return res;
-}*/
 
 //check the move direction and assign the good sprite
 bool Player_Base::assign_direction_sprite()
@@ -543,7 +346,7 @@ bool Player_Base::Set_Move_Animation_Sprite()
 
 }
 //Handle character attack on monsters for all attack style and return the distance where the attack took place (in case of a distant attack for example)
-int Player_Base::attack(std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
+int Player_Base::attack(std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 	int Hit_Distance = 0; //The Hit distance is the distance between the character and the monster by default the Melee Hit Distance (aka 0)
 
@@ -558,7 +361,7 @@ int Player_Base::attack(std::vector<Monster_Base*> Monster_Vector_Skeleton, std:
 		{
 			Hit_Distance = 0;
 			//if one of the monster have been it The_Attack_Successfull become true
-			attack_successfull = attack_check_status(1, Monster_Vector_Skeleton, Monster_Vector_Worm);
+			attack_successfull = attack_check_status(1, Global_Monster_Vector);
 		}
 		else if (attack_style == 2) //distant attack: 3 square hit distance max
 		{
@@ -567,7 +370,7 @@ int Player_Base::attack(std::vector<Monster_Base*> Monster_Vector_Skeleton, std:
 			for (int i=1; i<=3; i++)
 			{
 				//if one of the monster is on the arrow traject it has been it so The_Attack_Successfull become true
-				attack_successfull = attack_check_status(i, Monster_Vector_Skeleton, Monster_Vector_Worm) ;
+				attack_successfull = attack_check_status(i, Global_Monster_Vector) ;
 				if (attack_successfull != 0) { //One monster has been hit
 					Hit_Distance = i-1; //update the hit distance
 					break;
@@ -579,37 +382,62 @@ int Player_Base::attack(std::vector<Monster_Base*> Monster_Vector_Skeleton, std:
 	return Hit_Distance;
 }
 //Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
-int Player_Base::attack_check_status(int collision_box_movement, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm)
+int Player_Base::attack_check_status(int collision_box_movement, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 	int _attack_successfull = 0;
 	//Check attack direction
 	if( move_status == CH_RIGHT )
 	{
 		//move the collision box right of the character
-		attack_collision_box.setx ( collision_box.getx() + (CH_WIDTH * collision_box_movement) );
-		attack_collision_box.sety ( collision_box.gety());
+		attack_collision_box.setx ( Collision_Box.getx() + (CH_WIDTH * collision_box_movement) );
+		attack_collision_box.sety ( Collision_Box.gety());
 	}
 	else if( move_status == CH_LEFT )
 	{
 		//move the collision box left of the character
-		attack_collision_box.setx( collision_box.getx() - (CH_WIDTH * collision_box_movement) );
-		attack_collision_box.sety( collision_box.gety() );
+		attack_collision_box.setx( Collision_Box.getx() - (CH_WIDTH * collision_box_movement) );
+		attack_collision_box.sety( Collision_Box.gety() );
 	}
 	else if( move_status == CH_DOWN )
 	{
 		//move the collision box down of the character
-		attack_collision_box.setx( collision_box.getx() );
-		attack_collision_box.sety( collision_box.gety() + (CH_HEIGHT * collision_box_movement) );
+		attack_collision_box.setx( Collision_Box.getx() );
+		attack_collision_box.sety( Collision_Box.gety() + (CH_HEIGHT * collision_box_movement) );
 	}
 	else if( move_status == CH_UP )
 	{
 		//move the collision box up of the character
-		attack_collision_box.setx( collision_box.getx() );
-		attack_collision_box.sety( collision_box.gety() - (CH_WIDTH * collision_box_movement) );
+		attack_collision_box.setx( Collision_Box.getx() );
+		attack_collision_box.sety( Collision_Box.gety() - (CH_WIDTH * collision_box_movement) );
 	}
 	
+	//Collision with Monsters
+	//Loop for all monster's vector
+	for (unsigned int j=0; j < Global_Monster_Vector->size(); j++)
+	{
+		//loop for the current monster's vector
+		for(unsigned int i=0; i < Global_Monster_Vector->at(j)->size(); i++)
+		{
+			//Get the current monster
+			Monster_Base* Current_Monster = (Monster_Base*)Global_Monster_Vector->at(j)->at(i);
 
-	//Check attack with all skeletons inside the vector and return true if one of the skeleton was hit also update the monster Alive_Status
+			//In order to not check himself
+			if ( ( X != Current_Monster->Get_X() ) || Y != Current_Monster->Get_Y() )
+			{
+				if (check_collision( attack_collision_box, Current_Monster->Get_Collision_Box() ))
+				{
+					//One monster has been hit so modify the The_Attack_Successfull status...
+					_attack_successfull = Current_Monster->Get_Monster_ID();
+					//...Change the monster status to false aka monster dead...
+					Current_Monster->Set_Alive_Status(false);
+					//...Than leave the check in order to touch only one monster at a time.
+					return _attack_successfull;
+				}
+			}
+		}
+	}
+
+	/*//Check attack with all skeletons inside the vector and return true if one of the skeleton was hit also update the monster Alive_Status
 	for(unsigned int i=0; i < Monster_Vector_Skeleton.size(); i++)
 	{
 		//check if collision between monster and attack now that the attack_collision_box has been moved
@@ -636,7 +464,7 @@ int Player_Base::attack_check_status(int collision_box_movement, std::vector<Mon
 			//...Than leave the check in order to touch only one monster at a time.
 			return _attack_successfull;
 		}			
-	}
+	}*/
 
 	return _attack_successfull;
 }
@@ -736,16 +564,7 @@ bool Player_Base::Set_Arrow_Sprite_Coordinate()
 		return false;
 	}	
 }
-//blit the character on the screen
-bool Player_Base::Show_Player(VideoSurface& Screen)
-{
-try {
-	Screen.blit(Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), Characters_SpriteRect);
-	return true; //no error
-} catch (...) {
-	return false; //error occured
-}
-}
+
 //blit the arrow on the screen
 bool Player_Base::Show_Arrow(VideoSurface& Screen)
 {

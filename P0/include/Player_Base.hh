@@ -15,6 +15,9 @@ class Player_Base : public Character_Base
 		//Moving status define if the player is moving or just changing direction or staying at the same place
 		bool moving_status;
 
+		//The collision boxes of the Character and his attack colliosion box
+		Rect attack_collision_box;
+
 		//Fight variables
 		bool attack_status; //Attack key pressed yes or no 
 		int attack_style; //Manage the style of attack 
@@ -54,8 +57,11 @@ class Player_Base : public Character_Base
 		//Hit distance
 		int hit_monster_distance;
 
+		//The Camera that follow the character
+		Rect Camera;
+
 		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
-		int attack_check_status(int collision_box_movement, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
+		int attack_check_status(int collision_box_movement, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
 
 		//Check if the ground allow the player presence
 		//std::vector<int> check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
@@ -71,67 +77,63 @@ class Player_Base : public Character_Base
 		/* virtual */ int Get_Env_vs_CH_Rules(int envType);
 	public:
 
-		/****Variables****/
-
-		//The Camera that follow the character
-		Rect Camera;
-
-		//The collision boxes of the Character and his attack colliosion box
-		Rect collision_box, attack_collision_box;
-
-
-		/****Definitions****/
+		/****Definition****/
 
 		//Initializes the variables
 		Player_Base(int X, int Y);
 
-		//Destructor which free the surface 
-		~Player_Base();
-		
-
 		/****Accessor****/
+		inline void Set_Camera(Rect new_Camera)
+        {
+            Camera = new_Camera;
+        }
+        inline Rect Get_Camera() const
+        {
+            return Camera;
+        }
+
 		//Define if the player has push the attack Key
-		void Set_Attack_Status(bool new_attack_status)
+		inline void Set_Attack_Status(bool new_attack_status)
         {
             attack_status=new_attack_status;
         }
-		bool Get_Attack_Status() const
+		inline bool Get_Attack_Status() const
         {
             return attack_status;
         }
 
-		void Set_Attack_Style(int new_attack_style)
+		inline void Set_Attack_Style(int new_attack_style)
         {
             attack_style = new_attack_style;
         }
-        int Get_Attack_Style() const
+        inline int Get_Attack_Style() const
         {
             return attack_style;
         }
 
-		void Set_Attack_Successfull(int new_Attack_Successfull)
+		inline void Set_Attack_Successfull(int new_Attack_Successfull)
         {
             attack_successfull = new_Attack_Successfull;
         }
-        int Get_Attack_Successfull() const
+        inline int Get_Attack_Successfull() const
         {
             return attack_successfull;
         }
 		
-		void Set_Hit_Monster_Distance(int new_Hit_Monster_Distance)
+		inline void Set_Hit_Monster_Distance(int new_Hit_Monster_Distance)
         {
             hit_monster_distance = new_Hit_Monster_Distance;
         }
-        int Get_Hit_Monster_Distance() const
+        inline int Get_Hit_Monster_Distance() const
         {
             return hit_monster_distance;
         }
 
-		void Set_Moving_Status(bool new_moving_status)
+		inline void Set_Moving_Status(bool new_moving_status)
         {
             moving_status = new_moving_status;
         }
-        bool Get_Moving_Status() const
+        inline bool Get_Moving_Status() const
         {
             return moving_status;
         }
@@ -143,8 +145,8 @@ class Player_Base : public Character_Base
 		//Update the graphic regarding the attack style
 		bool Update_Graphic_Style();
 	    
-		//Move the Character and check collision with monsters and the battlefield (environment and background)
-		bool move(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
+		//Move the Character and check collisions with everything
+		bool move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
 
 		//check the direction where the character is turn to
 		bool assign_direction_sprite();
@@ -153,7 +155,7 @@ class Player_Base : public Character_Base
 		bool Set_Move_Animation_Sprite();
 
 		//Manage the character attack
-		int attack(std::vector<Monster_Base*> Monster_Vector_Skeleton, std::vector<Monster_Base*> Monster_Vector_Worm);
+		int attack(std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
 
 		//Set Character Sprite Which change when attack occured
 		bool Set_Attack_Animation_Sprite();
@@ -161,8 +163,8 @@ class Player_Base : public Character_Base
 		//Set Arrow info for animation
 		bool Set_Arrow_Sprite_Coordinate();
 
-		//blit the character on the screen
-		bool Show_Player(VideoSurface& Screen);
+		/*//blit the character on the screen
+		bool Show_Player(VideoSurface& Screen);*/
 
 		//blit the arrow on the screen
 		bool Show_Arrow(VideoSurface& Screen);

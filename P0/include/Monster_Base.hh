@@ -13,13 +13,6 @@ class Monster_Base : public Character_Base
 		//Monster type
 		Monsters_Type Monster_ID;
 
-		//The collision boxes of the Monster
-		Rect collision_box;
-
-		//Bool that will indicate if the monster is alive or dead
-		bool Alive_Status;
-
-
 		/****Methods****/
 
 		//Check if the background allow the monster presence
@@ -32,29 +25,11 @@ class Monster_Base : public Character_Base
 		/* virtual */ int Get_Env_vs_CH_Rules(int envType);
 
 	public:
-		void Set_Collision_Box(Rect new_Collision_Box)
-        {
-            collision_box = new_Collision_Box;
-        }
-		Rect Get_Collision_Box() const
-        {
-            return collision_box;
-        }
-
-		void Set_Alive_Status(bool new_Alive_Status)
-        {
-            Alive_Status = new_Alive_Status;
-        }
-		bool Get_Alive_Status() const
-        {
-            return Alive_Status;
-		}
-
-		void Set_Monster_ID(Monsters_Type new_Monster_ID)
+		inline void Set_Monster_ID(Monsters_Type new_Monster_ID)
         {
             Monster_ID = new_Monster_ID;
         }
-		Monsters_Type Get_Monster_ID() const
+		inline Monsters_Type Get_Monster_ID() const
         {
             return Monster_ID;
 		}
@@ -70,20 +45,17 @@ class Monster_Base : public Character_Base
 		//Copy construtor
 		Monster_Base(const Monster_Base& ToCopy);
 
-		//Destructor
-		~Monster_Base();
-
-		//Move the Monster and check collision with the collision box of the character in parameter, the background and other monsters
-		bool move(Rect CharacterCollisionbox, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, std::vector< std::vector<Monster_Base*> *> Global_Monster_Vector);
+		//Move the Monster and check collision with everything
+		bool move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*> *BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
 	    
 		//Check if the battlefield allow the monster presence
 		//virtual bool check_battlefield_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 		//Check if the battlefield cutting allow monster presence
-		bool check_cutting_allow_monster(int x, int y, std::vector<BattleField_Zone*> BattleField_Cutting_Vector);
+		bool check_cutting_allow_monster(int x, int y, std::vector<BattleField_Zone*>* BattleField_Cutting_Vector);
 
 		//Shows the Monster movement on the screen
-		bool move_animation(Rect Camera, VideoSurface& Screen);
+		//bool move_animation(Rect Camera, VideoSurface& Screen);
 };
 
 #endif

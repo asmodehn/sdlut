@@ -9,10 +9,10 @@ class Character_Base
 {
 private:
 	//Check if the ground allow the character presence
-	std::vector<int> Check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+	std::vector<int>* Check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector);
 	
 	//Check if the environment allow the character presence
-	std::vector<int> Check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
+	std::vector<int>* Check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector);
 	
 protected:
 	//The X and Y offsets of the character
@@ -25,6 +25,12 @@ protected:
 	RGBSurface Characters_Tile;
 	Rect Characters_SpriteRect;
 
+	//The collision boxes of the Monster
+	Rect Collision_Box;
+
+	//Bool that will indicate if the character is alive or dead
+	bool Alive_Status;
+
 	//Battlefield rules (pure virtuals)
 	virtual int Get_BG_vs_CH_Rules(int bgType) = 0;
 	virtual int Get_Env_vs_CH_Rules(int envType) = 0;
@@ -32,45 +38,76 @@ protected:
 	
 public:
 	/****Accessor****/
-	void Set_X(int new_X)
+	inline void Set_X(int new_X)
     {
         X = new_X;
     }
-	int Get_X() const
+	inline int Get_X() const
     {
         return X;
     }
 
-	void Set_Y(int new_Y)
+	inline void Set_Y(int new_Y)
     {
         Y = new_Y;
     }
-	int Get_Y() const
+	inline int Get_Y() const
     {
         return Y;
     }
 	
-	void Set_xVel(int new_xVel)
+	inline void Set_xVel(int new_xVel)
     {
         xVel = new_xVel;
     }
-	int Get_xVel() const
+	inline int Get_xVel() const
     {
         return xVel;
     }
 
-	void Set_yVel(int new_yVel)
+	inline void Set_yVel(int new_yVel)
     {
         yVel = new_yVel;
     }
-    int Get_yVel() const
+    inline int Get_yVel() const
     {
         return yVel;
     }
 
+	inline void Set_Collision_Box(Rect new_Collision_Box)
+    {
+        Collision_Box = new_Collision_Box;
+    }
+	inline Rect Get_Collision_Box() const
+    {
+        return Collision_Box;
+    }
+
+	inline void Set_Alive_Status(bool new_Alive_Status)
+    {
+        Alive_Status = new_Alive_Status;
+    }
+	inline bool Get_Alive_Status() const
+    {
+        return Alive_Status;
+	}
+
+	//Constructor
+	Character_Base();
 
 	//Check if the battlefield allow the character presence
-	bool Check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
+	bool Check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector);
+
+	//Check collision with everything possible
+	bool Check_Collisions(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
+
+	//Move character (pure virtual)
+	virtual bool move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector) = 0;
+
+
+	//Show Character on the screen
+	bool Show(Rect Camera, VideoSurface& Screen);
+
 };
 
 #endif

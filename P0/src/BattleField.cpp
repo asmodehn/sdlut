@@ -21,9 +21,7 @@ BattleField_Sprite::BattleField_Sprite(int x, int y, int battlefield_type, Rect 
 	BattleField_Type = battlefield_type;
 	BattleField_Clip = battlefield_clip;
 }
-BattleField_Sprite::~BattleField_Sprite()
-{
-}
+
 
 BattleField_Zone::BattleField_Zone()
 {
@@ -31,6 +29,7 @@ BattleField_Zone::BattleField_Zone()
 	Area.sety(0);
 	Area.setw(0);
 	Area.seth(0);
+	Allowed_Monsters = new std::vector<int>;
 }
 BattleField_Zone::BattleField_Zone(int x, int y, int w, int h, int nb_args, ...)
 {
@@ -38,6 +37,7 @@ BattleField_Zone::BattleField_Zone(int x, int y, int w, int h, int nb_args, ...)
 	Area.sety(y);
 	Area.setw(w);
 	Area.seth(h);
+	Allowed_Monsters = new std::vector<int>;
 
 	//arguments list (argument pointer)
 	va_list args;
@@ -48,33 +48,30 @@ BattleField_Zone::BattleField_Zone(int x, int y, int w, int h, int nb_args, ...)
     for (unsigned int i=0; i < nb_args; i++)
 	{
 		//push generation allowed type monster inside the vector (arguments are int type)
-		Allowed_Monsters.push_back( va_arg(args, int) );
+		Allowed_Monsters->push_back( va_arg(args, int) );
 	}
 
 	//close the list
 	va_end(args);
 }
-BattleField_Zone::~BattleField_Zone()
+std::vector<BattleField_Zone*>* BattleField_Zone::Fill_Vector()
 {
-}
-std::vector<BattleField_Zone*> BattleField_Zone::Fill_Vector()
-{
-	std::vector<BattleField_Zone*> BattleField_Zone_Vector;
+	std::vector<BattleField_Zone*>* BattleField_Zone_Vector = new std::vector<BattleField_Zone*>;
 	
 	//Areas
 	BattleField_Zone* myArea;
 	
 	myArea = new BattleField_Zone(0, 0, 640, 640, 1, Humanoid);
-	BattleField_Zone_Vector.push_back(myArea);
+	BattleField_Zone_Vector->push_back(myArea);
 
 	myArea = new BattleField_Zone(640, 0, 640, 640, 0);
-	BattleField_Zone_Vector.push_back(myArea);
+	BattleField_Zone_Vector->push_back(myArea);
 
 	myArea = new BattleField_Zone(0, 640, 640, 640, 2, Humanoid, Worm);
-	BattleField_Zone_Vector.push_back(myArea);
+	BattleField_Zone_Vector->push_back(myArea);
 
 	myArea = new BattleField_Zone(640, 640, 640, 640, 1, Worm);
-	BattleField_Zone_Vector.push_back(myArea);
+	BattleField_Zone_Vector->push_back(myArea);
 
 	return BattleField_Zone_Vector;
 }
@@ -94,14 +91,14 @@ BackGround::BackGround()
 	BackGround_Clip.setw(0);
 	BackGround_Clip.seth(0);
 
+	//Initialize vector
+	myBackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
+
 	P0_Logger << " BackGround Construction : OK " << std::endl;
 }
-//BackGround Destructor
-BackGround::~BackGround()
-{
-}
+
 //BackGround interpretation from the file
-std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
+std::vector<BattleField_Sprite*>* BackGround::BackGround_Vector()
 {
 	//The tile offset
     int x=0, y=0;
@@ -190,7 +187,7 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
 		BattleField_Sprite* TheBackGround_Sprite = new BattleField_Sprite(x, y, Current_Ground_Type, BackGround_Clip);
 
 		//store the monster at the end of the vector
-		myBackGround_Sprite_Vector.push_back(TheBackGround_Sprite);
+		myBackGround_Sprite_Vector->push_back(TheBackGround_Sprite);
 
 		//Move to next position
         x += BATF_SPRITE_W;
@@ -214,60 +211,44 @@ std::vector<BattleField_Sprite*> BackGround::BackGround_Vector()
 	return(myBackGround_Sprite_Vector);
 }
 //BackGround Render
-bool BackGround::Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, Rect Camera, VideoSurface & Screen)
+bool BackGround::Render(std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, Rect Camera, VideoSurface & Screen)
 {
 try {
 	//Loop on all the vector
-	for(unsigned int i=0; i < BackGround_Sprite_Vector.size(); i++)
+	for(unsigned int i=0; i < BackGround_Sprite_Vector->size(); i++)
 	{
 		//Check if the BackGround sprite is present on the screen (in fact screen + character sprite dim)
-		if ( ((Camera.getx()-CH_WIDTH) <= BackGround_Sprite_Vector[i]->Get_X()) && ( BackGround_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= BackGround_Sprite_Vector[i]->Get_Y()) && ( BackGround_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
+		if ( ((Camera.getx()-CH_WIDTH) <= BackGround_Sprite_Vector->at(i)->Get_X()) && ( BackGround_Sprite_Vector->at(i)->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= BackGround_Sprite_Vector->at(i)->Get_Y()) && ( BackGround_Sprite_Vector->at(i)->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 		{
-			//To minimize vector access
-			int Current_Ground_Type = BackGround_Sprite_Vector[i]->Get_BattleField_Type();
-
-			//It's present select the good tileset according to the terrain type
-			if ( Current_Ground_Type == EMPTY_GROUND )
+			switch( BackGround_Sprite_Vector->at(i)->Get_BattleField_Type() )
 			{
-				//Don't draw anything
-			}
-			else if( Current_Ground_Type == GRASS_GROUND )
-			{
-				//Draw the BackGround grass sprite 
-				if (! Screen.blit( BackGround_Tileset_Grass, Point::Point( BackGround_Sprite_Vector[i]->Get_X() - Camera.getx(), BackGround_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector[i]->Get_BattleField_Clip() ) )
-				{
-					P0_Logger << " Grass Sprite Generation Failed " << GetError() << std::endl;
-				}
-			}
-			else if( Current_Ground_Type == SAND_GROUND )
-			{
-				//Draw the BackGround Sand sprite 
-				if (! Screen.blit( BackGround_Tileset_Sands, Point::Point( BackGround_Sprite_Vector[i]->Get_X() - Camera.getx(), BackGround_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector[i]->Get_BattleField_Clip() ) )
-				{
-					P0_Logger << " Sand Sprite Generation Failed " << GetError() << std::endl;
-				}
-			}
-			else if( Current_Ground_Type == RIVER_GROUND )
-			{
-				//Draw the BackGround River sprite 
-				if (! Screen.blit( BackGround_Tileset_Rivers, Point::Point( BackGround_Sprite_Vector[i]->Get_X() - Camera.getx(), BackGround_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector[i]->Get_BattleField_Clip() ) )
-				{
-					P0_Logger << " River Sprite Generation Failed " << GetError() << std::endl;
-				}
-			}
-			else if( Current_Ground_Type == LAKE_GROUND )
-			{
-				//Draw the BackGround River sprite 
-				if (! Screen.blit( BackGround_Tileset_Lakes, Point::Point( BackGround_Sprite_Vector[i]->Get_X() - Camera.getx(), BackGround_Sprite_Vector[i]->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector[i]->Get_BattleField_Clip() ) )
-				{
-					P0_Logger << " Lake Sprite Generation Failed " << GetError() << std::endl;
-				}
-			}
-			else // not listed type(!!??) : impossible because the vector was created with BackGround::BackGround_Vector()
-			{
-				P0_Logger << " Ground type present inside BackGround_Sprite_Vector not recognized !!?? X: " << BackGround_Sprite_Vector[i]->Get_X() << " Y: " << BackGround_Sprite_Vector[i]->Get_Y() << std::endl;
-				
-				//Don't draw anything
+				case EMPTY_GROUND:
+					//Don't draw anything
+					break;
+				case GRASS_GROUND:
+					//Draw the BackGround grass sprite 
+					if (! Screen.blit( BackGround_Tileset_Grass, Point::Point( BackGround_Sprite_Vector->at(i)->Get_X() - Camera.getx(), BackGround_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
+						P0_Logger << " Grass Sprite Generation Failed " << GetError() << std::endl;
+					break;
+				case SAND_GROUND:
+					//Draw the BackGround Sand sprite 
+					if (! Screen.blit( BackGround_Tileset_Sands, Point::Point( BackGround_Sprite_Vector->at(i)->Get_X() - Camera.getx(), BackGround_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
+						P0_Logger << " Sand Sprite Generation Failed " << GetError() << std::endl;
+					break;
+				case RIVER_GROUND:
+					//Draw the BackGround River sprite 
+					if (! Screen.blit( BackGround_Tileset_Rivers, Point::Point( BackGround_Sprite_Vector->at(i)->Get_X() - Camera.getx(), BackGround_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
+						P0_Logger << " River Sprite Generation Failed " << GetError() << std::endl;
+					break;
+				case LAKE_GROUND:
+					//Draw the BackGround River sprite 
+					if (! Screen.blit( BackGround_Tileset_Lakes, Point::Point( BackGround_Sprite_Vector->at(i)->Get_X() - Camera.getx(), BackGround_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
+						P0_Logger << " Lake Sprite Generation Failed " << GetError() << std::endl;
+					break;
+				default: // not listed type(!!??) : impossible because the vector was created with BackGround::BackGround_Vector()
+					P0_Logger << " Ground type present inside BackGround_Sprite_Vector not recognized !!?? X: " << BackGround_Sprite_Vector->at(i)->Get_X() << " Y: " << BackGround_Sprite_Vector->at(i)->Get_Y() << std::endl;
+					//Don't draw anything
+					break;
 			}
 		}
 	}
@@ -298,14 +279,14 @@ Environment::Environment()
 	Environment_Clip.setw(0);
 	Environment_Clip.seth(0);
 
+	//Initialize vector
+	myEnvironment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
+
 	P0_Logger << " Environment Construction : OK " << std::endl;
 }
-//Environment Destructor
-Environment::~Environment()
-{
-}
+
 //Environment interpretation from the file
-std::vector<BattleField_Sprite*> Environment::Environment_Vector()
+std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 {
 	//The tile offset
     int x=0, y=0;
@@ -402,7 +383,7 @@ std::vector<BattleField_Sprite*> Environment::Environment_Vector()
 		BattleField_Sprite* TheEnvironment_Sprite = new BattleField_Sprite(x, y, Current_Env_Item_Type, Environment_Clip);
 
 		//store the monster at the end of the vector
-		myEnvironment_Sprite_Vector.push_back(TheEnvironment_Sprite);
+		myEnvironment_Sprite_Vector->push_back(TheEnvironment_Sprite);
 
 		//Move to next position
         x += BATF_SPRITE_W;
@@ -426,17 +407,53 @@ std::vector<BattleField_Sprite*> Environment::Environment_Vector()
 	return(myEnvironment_Sprite_Vector);
 }
 //Environment Render
-bool Environment::Render(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, Rect Camera, VideoSurface & Screen)
+bool Environment::Render(std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, Rect Camera, VideoSurface & Screen)
 {
 try {
 	//Loop on all the vector
-	for(unsigned int i=0; i < Environment_Sprite_Vector.size(); i++)
+	for(unsigned int i=0; i < Environment_Sprite_Vector->size(); i++)
 	{
 		//Check if the Environment sprite is present on the screen (in fact screen + character's sprite dim)
-		if ( ((Camera.getx()-CH_WIDTH) <= Environment_Sprite_Vector[i]->Get_X()) && ( Environment_Sprite_Vector[i]->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= Environment_Sprite_Vector[i]->Get_Y()) && ( Environment_Sprite_Vector[i]->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
+		if ( ((Camera.getx()-CH_WIDTH) <= Environment_Sprite_Vector->at(i)->Get_X()) && ( Environment_Sprite_Vector->at(i)->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= Environment_Sprite_Vector->at(i)->Get_Y()) && ( Environment_Sprite_Vector->at(i)->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 		{
-			//To minimize vector access
-			int Current_Env_Item_Type = Environment_Sprite_Vector[i]->Get_BattleField_Type();
+
+			switch( Environment_Sprite_Vector->at(i)->Get_BattleField_Type() )
+			{
+				case NOTHING_ENV_ITEM:
+					//Don't draw anything
+					break;
+				case TREE_ENV_ITEM:
+					//Draw the Environment Tree sprite 
+					if (! Screen.blit( Environment_Tileset_Trees, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
+						P0_Logger << " Tree Sprite Generation Failed " << GetError() << std::endl;
+					break;
+				case ROCK_ENV_ITEM:
+					//Draw the Environment Rock sprite 
+					if (! Screen.blit( Environment_Tileset_Rocks, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
+						P0_Logger << " Rock Sprite Generation Failed " << GetError() << std::endl;
+					break;
+				case WALL_ENV_ITEM:
+					//Draw the Environment Wall sprite 
+					if (! Screen.blit( Environment_Tileset_Walls, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
+						P0_Logger << " Wall Sprite Generation Failed " << GetError() << std::endl;
+					break;
+				case HOUSE_ENV_ITEM:
+					//Draw the Environment Wall sprite 
+					if (! Screen.blit( Environment_Tileset_Houses, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
+						P0_Logger << " Wall Sprite Generation Failed " << GetError() << std::endl;
+					break;
+				case BRIDGE_ENV_ITEM:
+					//Draw the Environment Bridge sprite 
+					if (! Screen.blit( Environment_Tileset_Bridges, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
+						P0_Logger << " Wall Sprite Generation Failed " << GetError() << std::endl;
+					break;
+				default: // not listed type(!!??) : impossible because the vector was created with Environment::Environment_Vector()
+					P0_Logger << " Environnement item type present inside Environment_Sprite_Vector not recognized !!?? X: " << Environment_Sprite_Vector->at(i)->Get_X() << " Y: " << Environment_Sprite_Vector->at(i)->Get_Y() << std::endl;
+					//Don't draw anything
+					break;
+			}
+			/*//To minimize vector access
+			int Current_Env_Item_Type = Environment_Sprite_Vector->at(i)->Get_BattleField_Type();
 
 			//It's present, then select the good tileset according to the environment item type
 			if ( Current_Env_Item_Type == NOTHING_ENV_ITEM )
@@ -446,7 +463,7 @@ try {
 			else if( Current_Env_Item_Type == TREE_ENV_ITEM )
 			{
 				//Draw the Environment Tree sprite 
-				if (! Screen.blit( Environment_Tileset_Trees, Point::Point( Environment_Sprite_Vector[i]->Get_X() - Camera.getx(), Environment_Sprite_Vector[i]->Get_Y() - Camera.gety() ), Environment_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				if (! Screen.blit( Environment_Tileset_Trees, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
 				{
 					P0_Logger << " Tree Sprite Generation Failed " << GetError() << std::endl;
 				}
@@ -454,7 +471,7 @@ try {
 			else if( Current_Env_Item_Type == ROCK_ENV_ITEM )
 			{
 				//Draw the Environment Rock sprite 
-				if (! Screen.blit( Environment_Tileset_Rocks, Point::Point( Environment_Sprite_Vector[i]->Get_X() - Camera.getx(), Environment_Sprite_Vector[i]->Get_Y() - Camera.gety() ), Environment_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				if (! Screen.blit( Environment_Tileset_Rocks, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
 				{
 					P0_Logger << " Rock Sprite Generation Failed " << GetError() << std::endl;
 				}
@@ -462,7 +479,7 @@ try {
 			else if( Current_Env_Item_Type == WALL_ENV_ITEM )
 			{
 				//Draw the Environment Wall sprite 
-				if (! Screen.blit( Environment_Tileset_Walls, Point::Point( Environment_Sprite_Vector[i]->Get_X() - Camera.getx(), Environment_Sprite_Vector[i]->Get_Y() - Camera.gety() ), Environment_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				if (! Screen.blit( Environment_Tileset_Walls, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
 				{
 					P0_Logger << " Wall Sprite Generation Failed " << GetError() << std::endl;
 				}
@@ -470,7 +487,7 @@ try {
 			else if( Current_Env_Item_Type == HOUSE_ENV_ITEM )
 			{
 				//Draw the Environment Wall sprite 
-				if (! Screen.blit( Environment_Tileset_Houses, Point::Point( Environment_Sprite_Vector[i]->Get_X() - Camera.getx(), Environment_Sprite_Vector[i]->Get_Y() - Camera.gety() ), Environment_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				if (! Screen.blit( Environment_Tileset_Houses, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
 				{
 					P0_Logger << " Wall Sprite Generation Failed " << GetError() << std::endl;
 				}
@@ -478,17 +495,17 @@ try {
 			else if( Current_Env_Item_Type == BRIDGE_ENV_ITEM )
 			{
 				//Draw the Environment Bridge sprite 
-				if (! Screen.blit( Environment_Tileset_Bridges, Point::Point( Environment_Sprite_Vector[i]->Get_X() - Camera.getx(), Environment_Sprite_Vector[i]->Get_Y() - Camera.gety() ), Environment_Sprite_Vector[i]->Get_BattleField_Clip() ) )
+				if (! Screen.blit( Environment_Tileset_Bridges, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
 				{
 					P0_Logger << " Wall Sprite Generation Failed " << GetError() << std::endl;
 				}
 			}
 			else // not listed type(!!??) : impossible because the vector was created with Environment::Environment_Vector()
 			{
-				P0_Logger << " Environnement item type present inside Environment_Sprite_Vector not recognized !!?? X: " << Environment_Sprite_Vector[i]->Get_X() << " Y: " << Environment_Sprite_Vector[i]->Get_Y() << std::endl;
+				P0_Logger << " Environnement item type present inside Environment_Sprite_Vector not recognized !!?? X: " << Environment_Sprite_Vector->at(i)->Get_X() << " Y: " << Environment_Sprite_Vector->at(i)->Get_Y() << std::endl;
 				
 				//Don't blit anything
-			}
+			}*/
 		}
 	}
 	//Clean the status bar

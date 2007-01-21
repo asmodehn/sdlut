@@ -13,22 +13,21 @@ class Escape_Menu
 	public:
 
 		Escape_Menu();
-		~Escape_Menu();
 
 		/****Wrapper****/
-		void Set_SelectedItemId(int new_SelectedItemId)
+		inline void Set_SelectedItemId(int new_SelectedItemId)
 		{
 			SelectedItemId=new_SelectedItemId;
 		}
-		int Get_SelectedItemId()
+		inline int Get_SelectedItemId()
 		{
 			return SelectedItemId;
 		}
-		void Set_ValidatedItemId(int new_ValidatedItemId)
+		inline void Set_ValidatedItemId(int new_ValidatedItemId)
 		{
 			ValidatedItemId = new_ValidatedItemId;
 		}
-		int Get_ValidatedItemId()
+		inline int Get_ValidatedItemId()
 		{
 			return ValidatedItemId;
 		}

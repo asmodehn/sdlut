@@ -15,41 +15,40 @@ class BattleField_Sprite
 	public:
 		BattleField_Sprite();
 		BattleField_Sprite(int x, int y, int battlefield_type, Rect battlefield_clip);
-		~BattleField_Sprite();
 
 		/****Accessor****/
-		void Set_X(int new_X)
+		inline void Set_X(int new_X)
         {
             X = new_X;
         }
-        int Get_X() const
+        inline int Get_X() const
         {
             return X;
         }
 
-		void Set_Y(int new_Y)
+		inline void Set_Y(int new_Y)
         {
             Y = new_Y;
         }
-        int Get_Y() const
+        inline int Get_Y() const
         {
             return Y;
         }
 
-		void Set_BattleField_Type(int new_BattleField_Type)
+		inline void Set_BattleField_Type(int new_BattleField_Type)
         {
             BattleField_Type = new_BattleField_Type;
         }
-        int Get_BattleField_Type() const
+        inline int Get_BattleField_Type() const
         {
             return BattleField_Type;
         }
 
-		void Set_BattleField_Clip(Rect new_BattleField_Clip)
+		inline void Set_BattleField_Clip(Rect new_BattleField_Clip)
         {
             BattleField_Clip = new_BattleField_Clip;
         }
-        Rect Get_BattleField_Clip() const
+        inline Rect Get_BattleField_Clip() const
         {
             return BattleField_Clip;
         }
@@ -59,29 +58,28 @@ class BattleField_Zone
 {
 	private:
 		Rect Area;
-		std::vector<int> Allowed_Monsters;
+		std::vector<int>* Allowed_Monsters;
 
 	public:
 		BattleField_Zone();
 		BattleField_Zone(int x, int y, int w, int h, int num, ...);
-		~BattleField_Zone();
 
 		/****Accessor****/
 
-		void Set_Area(Rect new_Area)
+		inline void Set_Area(Rect new_Area)
         {
             Area = new_Area;
         }
-        Rect Get_Area() const
+        inline Rect Get_Area() const
         {
             return Area;
         }
 		
-		void Set_Allowed_Monsters(std::vector<int> new_Allowed_Monsters)
+		inline void Set_Allowed_Monsters(std::vector<int>* new_Allowed_Monsters)
         {
             Allowed_Monsters = new_Allowed_Monsters;
         }
-        std::vector<int> Get_Allowed_Monsters() const
+        inline std::vector<int>* Get_Allowed_Monsters() const
         {
             return Allowed_Monsters;
         }
@@ -90,7 +88,7 @@ class BattleField_Zone
 		/****Methods****/
 
 		//Fill the Allowed_Monsters_Generation vector directly
-		static std::vector<BattleField_Zone*> Fill_Vector();
+		static std::vector<BattleField_Zone*>* Fill_Vector();
 
 };
 
@@ -105,20 +103,18 @@ class BackGround : public BattleField_Sprite
 		RGBSurface BackGround_Tileset_Lakes;
 
 		//The vector that will contains the BackGround sprites corresponding to the BackGround map
-		std::vector<BattleField_Sprite*> myBackGround_Sprite_Vector;
+		std::vector<BattleField_Sprite*>* myBackGround_Sprite_Vector;
 
 	public:
 		BackGround();
-		~BackGround();
-
 
 		/****Methods****/
 
 		//Construct the BackGround vector
-		std::vector<BattleField_Sprite*> BackGround_Vector();
+		std::vector<BattleField_Sprite*>* BackGround_Vector();
 
 		//Generate the background of the screen
-		bool Render(std::vector<BattleField_Sprite*> BackGround_Sprite_Vector, Rect Camera, VideoSurface & Screen);
+		bool Render(std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, Rect Camera, VideoSurface & Screen);
 };
 
 //Environment class which is designed to manage everything relative to the environment layer of the battlefield
@@ -132,20 +128,18 @@ class Environment : public BattleField_Sprite
 		RGBSurface Environment_Tileset_Bridges;
 
 		//The vector that will contains the BackGround sprites corresponding to the BackGround map
-		std::vector<BattleField_Sprite*> myEnvironment_Sprite_Vector;
+		std::vector<BattleField_Sprite*>* myEnvironment_Sprite_Vector;
 
 	public:
 		Environment();
-		~Environment();
-
 
 		/****Methods****/
 
 		//Construct the BackGround vector
-		std::vector<BattleField_Sprite*> Environment_Vector();
+		std::vector<BattleField_Sprite*>* Environment_Vector();
 
 		//Generate the background of the screen
-		bool Render(std::vector<BattleField_Sprite*> Environment_Sprite_Vector, Rect Camera, VideoSurface & Screen);
+		bool Render(std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, Rect Camera, VideoSurface & Screen);
 };
 
 #endif

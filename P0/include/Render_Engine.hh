@@ -13,9 +13,9 @@ private:
 	//Variable that need to be designed externally
 	Player_Base* myPlayer;
 	BackGround* myBackGround;
-	std::vector<BattleField_Sprite*> BackGround_Sprite_Vector;
+	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector;
 	Environment* myEnvironment;
-	std::vector<BattleField_Sprite*> Environment_Sprite_Vector;
+	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector;
 	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton;
 	Monster_Factory<Monster_Worm>* Monster_Factory_Worm;
 	Escape_Menu* EscMenu;
@@ -24,42 +24,46 @@ private:
 public:
 
 	//Accessor
-	void Set_Player_Base(Player_Base* newPlayerBase)
+	inline void Set_Player_Base(Player_Base* newPlayerBase)
 	{
 		myPlayer = newPlayerBase;
 	}
-	void Set_Esc_Menu(Escape_Menu* newEsc_Menu)
+	/*inline void Set_Global_Player_Vector(std::vector< std::vector<Character_Base*> *>* newGlobal_Player_Vector)
+	{
+		Global_Player_Vector = newGlobal_Player_Vector;
+	}*/
+	inline void Set_Esc_Menu(Escape_Menu* newEsc_Menu)
 	{
 		EscMenu = newEsc_Menu;
 	}
-	void Set_BackGround(BackGround* newBackGround)
+	inline void Set_BackGround(BackGround* newBackGround)
 	{
 		myBackGround = newBackGround;
 	}
-	void Set_BackGround_Sprite_Vector(std::vector<BattleField_Sprite*> newBackGround_Sprite_Vector)
+	inline void Set_BackGround_Sprite_Vector(std::vector<BattleField_Sprite*>* newBackGround_Sprite_Vector)
 	{
 		BackGround_Sprite_Vector = newBackGround_Sprite_Vector;
 	}
-	void Set_Environment(Environment* newEnvironment)
+	inline void Set_Environment(Environment* newEnvironment)
 	{
 		myEnvironment = newEnvironment;
 	}
-	void Set_Environment_Sprite_Vector(std::vector<BattleField_Sprite*> newEnvironment_Sprite_Vector)
+	inline void Set_Environment_Sprite_Vector(std::vector<BattleField_Sprite*>* newEnvironment_Sprite_Vector)
 	{
 		Environment_Sprite_Vector = newEnvironment_Sprite_Vector;
 	}
-	void Set_Monster_Factory_Skeleton(Monster_Factory<Monster_Skeleton>* newMonster_Factory_Skeleton)
+	inline void Set_Monster_Factory_Skeleton(Monster_Factory<Monster_Skeleton>* newMonster_Factory_Skeleton)
 	{
 		Monster_Factory_Skeleton = newMonster_Factory_Skeleton;
 	}
-	void Set_Monster_Factory_Worm(Monster_Factory<Monster_Worm>* newMonster_Factory_Worm)
+	inline void Set_Monster_Factory_Worm(Monster_Factory<Monster_Worm>* newMonster_Factory_Worm)
 	{
 		Monster_Factory_Worm = newMonster_Factory_Worm;
 	}
 
 	/****Methods****/
 	Render_Engine();
-	virtual ~Render_Engine();
+
 	//Methods that is used when resetdisplay is called and not to initialize the engine like is name could let think. Its used to update the engine only when the windows settings change
 	bool init(int width, int height);
 	//Called when the windows is resized and if the engine need to be updated

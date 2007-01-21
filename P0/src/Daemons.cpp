@@ -2,18 +2,23 @@
 
 //Constructor
 Daemons::Daemons()
-{}
-
-//Destructor
-Daemons::~Daemons()
-{}
+{
+	//Allocations
+	myPlayer = new Player_Base(0,0);
+	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
+	Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
+	Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>;
+	Monster_Factory_Worm = new Monster_Factory<Monster_Worm>;
+	Global_Player_Vector = new std::vector< std::vector<Character_Base*> *>;
+	Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;
+}
 
 //Callback method that will call monsters movement
 unsigned int Daemons::Move_Monsters(unsigned int interval, void* args)
 {
 try {
-	Monster_Factory_Skeleton->Move_Monsters( myPlayer->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector, 2, Monster_Vector_Skeleton, Monster_Vector_Worm );
-	Monster_Factory_Worm->Move_Monsters( myPlayer->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector, 2, Monster_Vector_Skeleton, Monster_Vector_Worm );
+	Monster_Factory_Skeleton->Move_Monsters( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector );
+	Monster_Factory_Worm->Move_Monsters( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector );
 	P0_Logger << " Move Monsters " << std::endl;
 	return interval; // loop
 } catch (...) {
@@ -26,8 +31,11 @@ try {
 unsigned int Daemons::Generate_Monsters(unsigned int interval, void* args)
 {
 try {
-	Monster_Vector_Skeleton = Monster_Factory_Skeleton->Generate_New_Monster( myPlayer->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector );
-	Monster_Vector_Worm = Monster_Factory_Worm->Generate_New_Monster( myPlayer->collision_box, Environment_Sprite_Vector, BackGround_Sprite_Vector );
+	//Skeletons
+	Global_Monster_Vector->at(0) = Monster_Factory_Skeleton->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
+	//->swap( 
+	//Worms
+	Global_Monster_Vector->at(1) = Monster_Factory_Worm->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
 
 	P0_Logger << " Generate Monsters " << std::endl;
 	return interval; // loop
@@ -63,8 +71,10 @@ try {
 	//if the attack was succesfull
 	if ( (myPlayer->Get_Attack_Successfull() != 0 ) && ( myPlayer->Get_Attack_Style() == 1 ) )
 	{//Now that attack anim is finished, remove Dead monsters from theirs respective vector
-		Monster_Vector_Skeleton = Monster_Factory_Skeleton->Remove_Dead_Monsters();
-		Monster_Vector_Worm = Monster_Factory_Worm->Remove_Dead_Monsters();
+			//Skeletons
+		Global_Monster_Vector->at(0) = Monster_Factory_Skeleton->Remove_Dead_Monsters();
+			//Worms
+		Global_Monster_Vector->at(1) = Monster_Factory_Worm->Remove_Dead_Monsters();
 	}
 	return 0; //end of timer
 
@@ -85,8 +95,10 @@ try {
 	//if the attack was succesfull
 	if ( (myPlayer->Get_Attack_Successfull() != 0 ) && ( myPlayer->Get_Attack_Style() == 2 ) )
 	{//Now that arrow anim is finished, remove Dead monsters from theirs respective vector
-		Monster_Vector_Skeleton = Monster_Factory_Skeleton->Remove_Dead_Monsters();
-		Monster_Vector_Worm = Monster_Factory_Worm->Remove_Dead_Monsters();
+			//Skeletons
+		Global_Monster_Vector->at(0) = Monster_Factory_Skeleton->Remove_Dead_Monsters();
+			//Worms
+		Global_Monster_Vector->at(1) = Monster_Factory_Worm->Remove_Dead_Monsters();
 	}
 	return 0; //end of timer
 	

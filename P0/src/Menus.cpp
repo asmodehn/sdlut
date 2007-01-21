@@ -6,10 +6,7 @@ Escape_Menu::Escape_Menu()
 	SelectedItemId = 1; //initially select the first one (aka "Yes")
 	ValidatedItemId = 0; //No validated id 
 }
-//Escape_Menu Destructor
-Escape_Menu::~Escape_Menu()
-{
-}
+
 //Blit the good menu surface in function of what the user wants to select with the keyboard
 bool Escape_Menu::Show_Menu(VideoSurface& Screen)
 {

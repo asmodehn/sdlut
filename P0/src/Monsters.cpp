@@ -27,10 +27,10 @@ Monster_Skeleton::Monster_Skeleton(int x, int y)
 	Monster_ID = Humanoid;
 
 	//Collision Box Definition : The collision box has the size of the monster
-	collision_box.setx(X);
-    collision_box.sety(Y);
-    collision_box.setw(MO_WIDTH);
-    collision_box.seth(MO_HEIGHT);
+	Collision_Box.setx(X);
+    Collision_Box.sety(Y);
+    Collision_Box.setw(MO_WIDTH);
+    Collision_Box.seth(MO_HEIGHT);
 
 	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
 	Alive_Status = true;
@@ -140,10 +140,10 @@ Monster_Worm::Monster_Worm(int x, int y)
 	Monster_ID = Worm;
 
 	//Collision Box Definition : The collision box has the size of the monster
-	collision_box.setx(X);
-    collision_box.sety(Y);
-    collision_box.setw(MO_WIDTH);
-    collision_box.seth(MO_HEIGHT);
+	Collision_Box.setx(X);
+    Collision_Box.sety(Y);
+    Collision_Box.setw(MO_WIDTH);
+    Collision_Box.seth(MO_HEIGHT);
 
 	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
 	Alive_Status = true;
