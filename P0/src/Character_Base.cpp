@@ -82,10 +82,13 @@ bool Character_Base::Check_battlefield_allow_character(Rect Collision_Box, std::
 	{
 		if ( env_vs_ch_collisions->at(i) == -1 ) //environment is not present
 		{
-			if ( bg_vs_ch_collisions->at(i) == 0 )
+			if (bg_vs_ch_collisions->size() > 0) //in case of empty vector
 			{
-				res = false; //collision with bg
-				return res; //no need to work more
+				if ( bg_vs_ch_collisions->at(i) == 0 )
+				{
+					res = false; //collision with bg
+					return res; //no need to work more
+				}
 			}
 
 		} else if ( env_vs_ch_collisions->at(i) == 0 ) 

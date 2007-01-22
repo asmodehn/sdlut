@@ -84,9 +84,8 @@ try { //global error management
 	/********Classes Instanciation & Initialization********/
 	//Create the keyboard instance that will managed input
 	KeyboardInput* myKeyboardInput = new KeyboardInput();
-#ifndef _DEBUG //only on rlz mode
 	myKeyboardInput->enableKeyRepeat();  //enable key repeat
-#endif
+
 
 	//Instanciate the timers class
 	Daemons* myDaemons = new Daemons();
@@ -102,7 +101,11 @@ try { //global error management
 	myRender_Engine->Set_BackGround(myBackGround); //inform the engine class of the background instance (as background is fixed for the moment)
 
 	//Fill the BackGround vector with all BackGround sprite corresponding to the map file
+#ifdef _DEBUG //debug mode
+	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
+#else //rlz mode
 	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = myBackGround->BackGround_Vector(); //Vector which will contains all BackGround type and clip
+#endif
 	P0_Logger << " BackGround_Sprite Vector Fill: OK " << std::endl;
 	myKeyboardInput->Set_BackGround_Sprite_Vector( BackGround_Sprite_Vector ); //inform the input management
 	myDaemons->Set_BackGround_Sprite_Vector( BackGround_Sprite_Vector ); //inform the timer class
@@ -114,7 +117,11 @@ try { //global error management
 	myRender_Engine->Set_Environment(myEnvironment); //inform the engine class of the environment instance
 
 	//Fill the Environment vector with all Environment sprite corresponding to the map file
+#ifdef _DEBUG //debug mode
+	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
+#else //rlz mode*/
 	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector = myEnvironment->Environment_Vector(); //Vector which will contains all Environment items type and clip
+#endif
 	P0_Logger << " Environment_Sprite Vector Fill: OK " << std::endl;
 	myKeyboardInput->Set_Environment_Sprite_Vector( Environment_Sprite_Vector );
 	myDaemons->Set_Environment_Sprite_Vector( Environment_Sprite_Vector ); 
