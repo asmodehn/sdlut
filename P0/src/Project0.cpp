@@ -33,6 +33,13 @@ bool InitEverything()
     }
 	P0_Logger << " TTF Init : OK " << std::endl;
 
+	//Load configuration from ini files
+	if (!Set_Config())
+	{
+		P0_Logger << " Configuration could not been set " << GetError() << std::endl;
+        return false;
+	}
+
 	//Create the video surface aka the display
 	if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
 	{
@@ -42,7 +49,7 @@ bool InitEverything()
 	P0_Logger << " Video Surface Creation : OK " << std::endl;
 
 	//Initialize Audio Mixer
-	if (! App::getInstance().initAudio())
+	if (!App::getInstance().initAudio())
     {
 		P0_Logger << " Audio Init Error : " << GetError() << std::endl;
         return false;
@@ -80,6 +87,8 @@ try { //global error management
 	}
 	P0_Logger << "-> Windows, SDL, SDL_TTF And VideoSurface Where Initialized Successfully <-" << std::endl;
 	
+	//define log filename
+	P0_Logger.enableFileLog("P0.log");
 
 	/********Classes Instanciation & Initialization********/
 	//Create the keyboard instance that will managed input

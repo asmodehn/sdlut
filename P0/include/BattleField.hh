@@ -93,7 +93,7 @@ class BattleField_Zone
 };
 
 //BackGround class which is designed to manage everything relative to the background layer of the battlefield
-class BackGround : public BattleField_Sprite
+class BackGround // : public BattleField_Sprite
 {
 	private:
 		//Default sprite clip
@@ -118,7 +118,7 @@ class BackGround : public BattleField_Sprite
 };
 
 //Environment class which is designed to manage everything relative to the environment layer of the battlefield
-class Environment : public BattleField_Sprite
+class Environment // : public BattleField_Sprite
 {
 	private:
 		//Default sprite clip

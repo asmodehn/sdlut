@@ -1,23 +1,20 @@
 #ifndef Base_HH
 #define Base_HH
 
-#include "SDL.hh"
-
-using namespace RAGE::SDL;
-
 #include <ctime>
-#include <string>
+//#include <string>
 #include <vector>
-#include <fstream>
+//#include <fstream>
 #include <math.h>
 #include <stdarg.h> //for methods with an unllimited number of parameters
 
 #include "Sounds.hh"
+#include "Ini_Manager.hh"
 
 //The initial attributes of the window
-const int SCREEN_WIDTH = 800;//640;
-const int SCREEN_HEIGHT = 600;//480;
-const int SCREEN_BPP = 32;
+extern int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
+extern int SCREEN_BPP;
 
 //The current attributes of the window
 extern int CURRENT_SCREEN_WIDTH;
@@ -52,8 +49,29 @@ const int INITIAL_MONSTERS = 15;
 const int MAX_MONSTERS_SIMULTANEOUSLY = 30;
 
 
+//KEYS 1
+extern int UP_1;
+extern int DOWN_1;
+extern int LEFT_1;
+extern int RIGHT_1;
+extern int ATTACK_1;
+extern int CHANGE_ATTACK_MODE_1;
+extern int MENU_CALL_1;
+extern int WINDOW_MODE_1;
+
+//Keys 2
+extern int UP_2;
+extern int DOWN_2;
+extern int LEFT_2;
+extern int RIGHT_2;
+extern int ATTACK_2;
+extern int CHANGE_ATTACK_MODE_2;
+extern int MENU_CALL_2;
+extern int WINDOW_MODE_2;
+
 //Console const
 const int STATUS_BAR_H = 32;
+
 
 //Battlefield const
 const int BATF_SPRITE_W = 32;
@@ -91,6 +109,9 @@ extern int GLOBAL_GAME_STATE;
 
 //Logger windows
 extern RAGE::Logger P0_Logger;
+
+//Define configuration from files or set the default config
+bool Set_Config();
 
 //To check colission (small beginning of a physical engine^^)
 bool check_collision(Rect A, Rect B);

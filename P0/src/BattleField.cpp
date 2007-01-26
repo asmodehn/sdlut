@@ -112,6 +112,10 @@ std::vector<BattleField_Sprite*>* BackGround::BackGround_Vector()
 	//check if map has been loaded succesfully
     if(! BackGround_Map )
     {
+		//Close the BackGround map file
+		BackGround_Map.close();
+
+		//print msg
 		P0_Logger << " Can't open BackGround_Map.txt " << std::endl;
 		Delay(3000);
 		exit(0);
@@ -300,6 +304,10 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 	//check if map has been loaded succesfully
     if(! Environment_Map )
     {
+		//Close the Environment map file
+		Environment_Map.close();
+
+		//print msg
 		P0_Logger << " Can't open Environment_Map.txt " << std::endl;
 		Delay(3000);
 		exit(0);

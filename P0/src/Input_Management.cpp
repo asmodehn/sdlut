@@ -107,106 +107,93 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 	{
 		if (pressed) //Key pressed
 		{
-			switch( s.getKey() )
+			//switch( s.getKey() )
+			//{
+			if ( !myPlayer->Get_Attack_Status() ) //If attack is occuring then no keys are available except escape/options keys
+			/************SEEMS TO BUG HERE WHEN CHANGING WEAPON DURING ATTACK ?****************/
 			{
-				if ( !myPlayer->Get_Attack_Status() ) //If attack is occuring then no keys are available except escape
-				/************SEEMS TO BUG HERE WHEN CHANGING WEAPON DURING ATTACK****************/
+				//Moves Keys
+				if ((s.getKey() == UP_1) || (s.getKey() == UP_2))
 				{
-					//Moves Keys
-					case KKp8:
-					case KUp:
-						//myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
-						myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
-						Player_Moves_Consequences();
-						break;
-					case KKp5:
-					case KDown:
-						//myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
-						myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
-						Player_Moves_Consequences();
-						break;
-					case KKp7:
-					case KLeft:
-						//myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
-						myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
-						Player_Moves_Consequences();
-						break;
-					case KKp9:
-					case KRight:
-						//myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
-						myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
-						Player_Moves_Consequences();
-						break;
-
-					//Attacks Key
-					case KKDivide:
-					case KRctrl:
-						//Stop moving
-						myPlayer->Set_xVel(0);
-						myPlayer->Set_yVel(0);
-						Player_Attack_Consequences();
-						break;
-
-					//Change weapon style by looping between the available styles (2 for the moment)
-					case KKMultiply:
-					case KRShift:
-						myPlayer->Set_Attack_Style( myPlayer->Get_Attack_Style() + 1 );
-						if (myPlayer->Get_Attack_Style() > 2) { myPlayer->Set_Attack_Style(1); } //loop between style
-						//Update the graphic style of the character
-						if( myPlayer->Update_Graphic_Style() == false )
-                    	{ 
-                            P0_Logger << " Update Graphic Style FAILED " << std::endl;
-                        }
-						//Send the modified character to the render engine 
-						//myRender_Engine->Set_Player_Base(myPlayer);
-						break;
-
-					//Leave/appears on the Battlefield and save but do not quit
-					case KKEnter:
-						//To DO *******
-						break;
-
-						//Windows <--> Fullscreen
-					case KF11:
-						//reset the display
-						CURRENT_SCREEN_WIDTH = SCREEN_WIDTH;
-						CURRENT_SCREEN_HEIGHT = SCREEN_HEIGHT;
-						/*if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
-						{
-							P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
-							return false;
-						}*/
-						//Go to fullscreen
-						//App::getInstance().getWindow()->setFullscreen(true);
-						//App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen()); not working dont know why ...
-						App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->resizeDisplay(SCREEN_WIDTH,SCREEN_HEIGHT)->isFullScreenset());
-						break;
+					//myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
+					myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
+					Player_Moves_Consequences();
+				} else if ((s.getKey() == DOWN_1) || (s.getKey() == DOWN_2))
+				{
+					//myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
+					myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
+					Player_Moves_Consequences();
+				} else if ((s.getKey() == LEFT_1) || (s.getKey() == LEFT_2))
+				{
+					//myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
+					myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
+					Player_Moves_Consequences();
+				} else if ((s.getKey() == RIGHT_1) || (s.getKey() == RIGHT_2))
+				{
+					//myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
+					myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
+					Player_Moves_Consequences();
+				} 
+				else if ((s.getKey() == ATTACK_1) || (s.getKey() == ATTACK_2)) //Attacks Key
+				{
+					//Stop moving
+					myPlayer->Set_xVel(0);
+					myPlayer->Set_yVel(0);
+					Player_Attack_Consequences();
 				}
+				else if ((s.getKey() == CHANGE_ATTACK_MODE_1) || (s.getKey() == CHANGE_ATTACK_MODE_2))
+				{
+					//Change weapon style by looping between the available styles (2 for the moment)
+					myPlayer->Set_Attack_Style( myPlayer->Get_Attack_Style() + 1 );
+					if (myPlayer->Get_Attack_Style() > 2) { myPlayer->Set_Attack_Style(1); } //loop between style
+					//Update the graphic style of the character
+					if( myPlayer->Update_Graphic_Style() == false )
+                    { 
+						P0_Logger << " Update Graphic Style FAILED " << std::endl;
+                    }
+					//Send the modified character to the render engine 
+					//myRender_Engine->Set_Player_Base(myPlayer);
+				}
+				else if ((s.getKey() == KKEnter) || (s.getKey() == KKEnter))
+				{
+					//Leave/appears on the Battlefield and save but do not quit
+					//case KKEnter:
+					//To DO *******
+					
+				}
+			}
+			
+			//Windows <--> Fullscreen
+			if ((s.getKey() == WINDOW_MODE_1) || (s.getKey() == WINDOW_MODE_2))
+			{
+				//reset the display
+				CURRENT_SCREEN_WIDTH = SCREEN_WIDTH;
+				CURRENT_SCREEN_HEIGHT = SCREEN_HEIGHT;
+				/*if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
+				{
+					P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
+					return false;
+				}*/
+				//Go to fullscreen
+				//App::getInstance().getWindow()->setFullscreen(true);
+				//App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen()); not working dont know why ...
+				App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->resizeDisplay(SCREEN_WIDTH,SCREEN_HEIGHT)->isFullScreenset());
+			}
+			
 
-				//Esc Key Pressed
-				case KEscape:
-					GLOBAL_GAME_STATE = 4;//Escape Menu called
-					break;
+			//Menu call
+			if ((s.getKey() == MENU_CALL_1) || (s.getKey() == MENU_CALL_2))
+			{
+				GLOBAL_GAME_STATE = 4;//Escape Menu called
 			}
 		}
 		else // Key released
 		{
-			switch( s.getKey() )
-			{
 				//Moves Keys released => no velocity
-				case KKp8:
-				case KUp:
-				case KKp5:
-				case KDown:
+				if ( (s.getKey() == UP_1) || (s.getKey() == UP_2) || (s.getKey() == DOWN_1) || (s.getKey() == DOWN_2) )
 					myPlayer->Set_yVel(0);
-					break;
-				case KKp7:
-				case KLeft:
-				case KKp9:
-				case KRight:
+				if ( (s.getKey() == LEFT_1) || (s.getKey() == LEFT_2) || (s.getKey() == RIGHT_1) || (s.getKey() == RIGHT_2) )
 					myPlayer->Set_xVel(0);
-					break;
-			}
 		}
 	}
 	//Escape menu when ingame (Paused Character While The world Continue to live)

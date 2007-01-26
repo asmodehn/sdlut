@@ -63,55 +63,7 @@ int Monster_Skeleton::Get_BG_vs_CH_Rules(int bgType)
 		return 0;
 	}
 }
-//Check if the ground allow the Skeleton to move
-/*std::vector<int> Monster_Skeleton::check_background_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
-{
-	std::vector<int> res; //vector of collision results
-	int Ground_Type;
-	Rect bg_rect;
 
-	//loop on all the vector
-	for(unsigned int i=0; i < BackGround_Sprite_Vector.size(); i++)
-	{
-		bg_rect.setx(BackGround_Sprite_Vector[i]->Get_X());
-		bg_rect.sety(BackGround_Sprite_Vector[i]->Get_Y());
-		bg_rect.setw(BATF_SPRITE_W);
-		bg_rect.seth(BATF_SPRITE_H);
-
-		if ( check_collision( Collision_Box, bg_rect ) )
-		{
-			//Get the destination ground
-			Ground_Type = BackGround_Sprite_Vector[i]->Get_BattleField_Type();
-			//Ask the background if the collision box is allowed to go there
-			if( Ground_Type == EMPTY_GROUND ) //Don't allow move
-			{
-				res.push_back(0);
-			}
-			else if( Ground_Type == GRASS_GROUND ) //Allow move
-			{
-				res.push_back(1);
-			}
-			else if( Ground_Type == SAND_GROUND ) //Don't allow move
-			{
-				res.push_back(0);
-			}
-			else if( Ground_Type == RIVER_GROUND ) //Allow move
-			{
-				res.push_back(1);
-			}
-			else if( Ground_Type == LAKE_GROUND ) //Don't allow move
-			{
-				res.push_back(0);
-			}
-			else // not listed type (impossible!!??). Don't allow move
-			{
-				res.push_back(0);
-			}
-		}
-	}
-
-	return res;
-}*/
 
 //Worm Full constructor
 Monster_Worm::Monster_Worm(int x, int y)
@@ -177,52 +129,3 @@ int Monster_Worm::Get_BG_vs_CH_Rules(int bgType)
 		return 0;
 	}
 }
-//Check if the ground allow the worm to exists
-/*std::vector<int> Monster_Worm::check_background_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector)
-{
-	std::vector<int> res; //vector of collision results
-	int Ground_Type;
-	Rect bg_rect;
-
-	//loop on all the vector
-	for(unsigned int i=0; i < BackGround_Sprite_Vector.size(); i++)
-	{
-		bg_rect.setx(BackGround_Sprite_Vector[i]->Get_X());
-		bg_rect.sety(BackGround_Sprite_Vector[i]->Get_Y());
-		bg_rect.setw(BATF_SPRITE_W);
-		bg_rect.seth(BATF_SPRITE_H);
-
-		if ( check_collision( Collision_Box, bg_rect ) )
-		{
-			//Get the destination ground
-			Ground_Type = BackGround_Sprite_Vector[i]->Get_BattleField_Type();
-			//Ask the background if the collision box is allowed to go there
-			if( Ground_Type == EMPTY_GROUND ) //Don't allow move
-			{
-				res.push_back(0);
-			}
-			else if( Ground_Type == GRASS_GROUND ) //Allow move
-			{
-				res.push_back(1);
-			}
-			else if( Ground_Type == SAND_GROUND ) //Allow move
-			{
-				res.push_back(1);
-			}
-			else if( Ground_Type == RIVER_GROUND ) //Don't allow move
-			{
-				res.push_back(0);
-			}
-			else if( Ground_Type == LAKE_GROUND ) //Don't allow move
-			{
-				res.push_back(0);
-			}
-			else // not listed type (impossible!!??). Don't allow move
-			{
-				res.push_back(0);
-			}
-		}
-	}
-
-	return res;
-}*/

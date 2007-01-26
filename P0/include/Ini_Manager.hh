@@ -1,0 +1,31 @@
+#ifndef Ini_Manager_HH
+#define Ini_Manager_HH
+
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+using namespace std;
+
+#include "SDL.hh"
+
+using namespace RAGE::SDL;
+
+//Ini Manager Class
+class Ini_Manager
+{
+private:
+	void Parse_Line();
+		
+public:
+	static bool Write_New_Ini_File(const string &filename, const char* content);
+	static bool Append_To_Ini_File(const string &filename, const char* content);
+	//static bool Read_Ini_File(const string &filename, char* content);
+
+	static string Get_Option_String(const string &filename, const char* Option_Name);
+	static int Get_Key_Value_From_Key_Name(string key_str);
+
+};
+
+#endif

@@ -214,6 +214,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Ini_Manager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Input_Management.cpp"
 				>
 			</File>
@@ -269,6 +273,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Daemons.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Ini_Manager.hh"
 				>
 			</File>
 			<File
