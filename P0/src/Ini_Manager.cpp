@@ -60,16 +60,26 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 		{
 			if ( newline_str->find(Option_Name, 0) != string::npos ) //find the good line
 			{
-				string::size_type loc = newline_str->find("=", 0);
-				if ( loc != string::npos ) //find the '='
+				string::size_type equal_loc = newline_str->find("=", 0);  //find the '='
+				if ( equal_loc != string::npos )
 				{
-					//remove whitespace
-					char* temp_res = new char;
-					std::stringstream( newline_str->substr(loc+1) ) >> skipws >> temp_res;
+					
+					//find if string is between " "
+					if ( newline_str->find("\"", 0) == string::npos ) //no " found
+					{
+						char* temp_res = new char;
+						//remove whitespace
+						std::stringstream( newline_str->substr(equal_loc+1) ) >> skipws >> temp_res;
+						//return the final clear string
+						fi.close();
+						return (string)temp_res;
+					}
+					else
+					{
+						fi.close();
+						return newline_str->substr(equal_loc+1);
+					}
 
-					//return the final clear string
-					fi.close();
-					return (string)temp_res;
 				}
 				
 			}
@@ -86,7 +96,7 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 //Get the keyboard's key value from it's name
 int Ini_Manager::Get_Key_Value_From_Key_Name(string key_str)
 {
-	int value=0;
+	int value=-1;
 	if (key_str == "KUNKNOWN")
 	{
 		value = SDLK_UNKNOWN;

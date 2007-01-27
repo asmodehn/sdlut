@@ -3,8 +3,15 @@
 //Initialization of the windows, SDL, SDL_TTF, the surface
 bool InitEverything()
 {
-	//Set windows name
-	App::getInstance().setName("Project 0 - 2D - v0.02");
+	//Load configuration from ini files
+	if (!Set_Config())
+	{
+		P0_Logger << " Configuration could not been set " << GetError() << std::endl;
+        return false;
+	}
+
+	//Set window name
+	App::getInstance().setName(Window_Name);
 	//SDL_WM_SetCaption( "Project 0 - 2D - v0.01", NULL );
 
 	//Initialize SDL Video
@@ -32,13 +39,6 @@ bool InitEverything()
         return false;
     }
 	P0_Logger << " TTF Init : OK " << std::endl;
-
-	//Load configuration from ini files
-	if (!Set_Config())
-	{
-		P0_Logger << " Configuration could not been set " << GetError() << std::endl;
-        return false;
-	}
 
 	//Create the video surface aka the display
 	if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
@@ -87,9 +87,6 @@ try { //global error management
 	}
 	P0_Logger << "-> Windows, SDL, SDL_TTF And VideoSurface Where Initialized Successfully <-" << std::endl;
 	
-	//define log filename
-	P0_Logger.enableFileLog("P0.log");
-
 	/********Classes Instanciation & Initialization********/
 	//Create the keyboard instance that will managed input
 	KeyboardInput* myKeyboardInput = new KeyboardInput();
@@ -160,18 +157,9 @@ try { //global error management
 	myKeyboardInput->Set_Player_Base( myPlayer );
 	myKeyboardInput->Set_Global_Player_Vector(Global_Player_Vector);
 	myRender_Engine->Set_Player_Base( myPlayer );
-	//myRender_Engine->Set_Global_Player_Vector(&Global_Player_Vector);
+	//myRender_Engine->Set_Global_Player_Vector(Global_Player_Vector);
 	myDaemons->Set_Global_Player_Vector(Global_Player_Vector);
 	myDaemons->Set_Player_Base(myPlayer);
-
-	//Inform classes of the vector of players
-    /*myKeyboardInput.Set_Player_Base( (Player_Base*)Players_Vector[0] );
-	myRender_Engine->Set_Player_Base( (Player_Base*)Players_Vector[0] );
-	myDaemons->Set_Player_Base( (Player_Base*)Players_Vector[0] );*/
-	/*//Inform classes of the player
-	myKeyboardInput.Set_Player_Base( myPlayer );
-	myRender_Engine->Set_Player_Base( myPlayer );
-	myDaemons->Set_Player_Base( myPlayer );*/
 
 		/****Monsters****/
 	//Initialize the skeleton factory
@@ -184,8 +172,6 @@ try { //global error management
 	//Create all the monsters skeletons
 	std::vector<Character_Base*>* Monster_Vector_Skeleton = Monster_Factory_Skeleton->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector);  //Vector which will contains all skeletons
 	P0_Logger << " Skeleton Vector Fill: OK " << std::endl;
-	//myKeyboardInput.Set_Monster_Vector_Skeleton( Monster_Vector_Skeleton );
-	//myDaemons->Set_Monster_Vector_Skeleton( Monster_Vector_Skeleton );
 	
 	//Initialize the worm factory
 	Monster_Factory<Monster_Worm>* Monster_Factory_Worm = new Monster_Factory<Monster_Worm>(INITIAL_MONSTERS);  //A factory of Monster Worms
@@ -197,8 +183,6 @@ try { //global error management
 	//Create all the monsters worms
 	std::vector<Character_Base*>* Monster_Vector_Worm = Monster_Factory_Worm->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector); //Vector which will contains all skeletons
 	P0_Logger << " Worm Vector Fill: OK " << std::endl;
-	//myKeyboardInput.Set_Monster_Vector_Worm( Monster_Vector_Worm );
-	//myDaemons->Set_Monster_Vector_Worm( Monster_Vector_Worm );
 
 	//Vector containing pointers to vector of pointers to monsters
 	std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;

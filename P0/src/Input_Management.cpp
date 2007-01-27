@@ -156,6 +156,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				}
 				else if ((s.getKey() == KKEnter) || (s.getKey() == KKEnter))
 				{
+					int grgrgr=0;
 					//Leave/appears on the Battlefield and save but do not quit
 					//case KKEnter:
 					//To DO *******
@@ -184,6 +185,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 			//Menu call
 			if ((s.getKey() == MENU_CALL_1) || (s.getKey() == MENU_CALL_2))
 			{
+
 				GLOBAL_GAME_STATE = 4;//Escape Menu called
 			}
 		}
