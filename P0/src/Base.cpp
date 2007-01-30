@@ -21,7 +21,7 @@ int NOTHING_ENV_ITEM = 0, TREE_ENV_ITEM = 0, ROCK_ENV_ITEM = 0, WALL_ENV_ITEM = 
 long PLAYER_MOVE_ANIMATION_INTERVAL = 0, PLAYER_MELEE_ATTACK_ANIMATION_INTERVAL = 0, PLAYER_DISTANT_ATTACK_ANIMATION_INTERVAL = 0, PLAYER_ARROW_MOVE_ANIMATION_INTERVAL = 0, MONSTERS_MOVEMENT_INTERVAL = 0, MONSTERS_GENERATION_INTERVAL = 0;
 int	GLOBAL_GAME_STATE = 3;
 
-RAGE::Logger P0_Logger("P0: "); //prefix
+RAGE::Logger P0_Logger("P0:"); //prefix
 string Log_Name = "P0.Log";
 string Window_Name = "P0";
 
@@ -70,7 +70,7 @@ try { //error management
 	std::ifstream fi_dev("Config/Dev_Config.ini") ;
 	if (fi_dev.fail()) //File does not exist so create it with default values
 		Ini_Manager::Write_New_Ini_File("Config/Dev_Config.ini",
-		"#frame rate\nFRAMES_PER_SECOND = 60\n\n#level dimensions\nLEVEL_WIDTH = 1280\nLEVEL_HEIGHT = 1280\n\n#Characters sprite dimensions\nCH_WIDTH = 32\nCH_HEIGHT = 32\nMO_WIDTH = 32\nMO_HEIGHT = 32\n\n#character initial position\nCH_INITIAL_X = 192\nCH_INITIAL_Y = 224\n\n#Directions representation\nCH_RIGHT = 0\nCH_LEFT = 1\nCH_DOWN = 2\nCH_UP = 3\nCH_RIGHT_DOWN = 4\nCH_LEFT_DOWN = 5\nCH_RIGHT_UP = 6\nCH_LEFT_UP = 7\n\n#monsters level const\nINITIAL_MONSTERS = 15\nMAX_MONSTERS_SIMULTANEOUSLY = 30\n\n#status bar dimension\nSTATUS_BAR_H = 32\n\n#Battlefield sprite dimensions\nBATF_SPRITE_W = 32\nBATF_SPRITE_H = 32\n\n#BackGround Types\nEMPTY_GROUND = 00\nGRASS_GROUND = 01\nSAND_GROUND = 10\nRIVER_GROUND = 20\nLAKE_GROUND = 25\n\n#Environment Types\nNOTHING_ENV_ITEM = 00;\nTREE_ENV_ITEM = 01;\nROCK_ENV_ITEM = 10;\nWALL_ENV_ITEM = 20;\nHOUSE_ENV_ITEM = 30;\nBRIDGE_ENV_ITEM = 40;\n\n#Animations (ms)\nPLAYER_MOVE_ANIMATION_INTERVAL = 150\nPLAYER_MELEE_ATTACK_ANIMATION_INTERVAL = 130\nPLAYER_DISTANT_ATTACK_ANIMATION_INTERVAL = 130\nPLAYER_ARROW_MOVE_ANIMATION_INTERVAL = 75\nMONSTERS_MOVEMENT_INTERVAL = 1000\nMONSTERS_GENERATION_INTERVAL = 5000\n\n#State of the game at the begining: 'ingame' state\nGLOBAL_GAME_STATE = 3\n\n#Name of the log file\nLog_Name = \"P0 Log\"\n\nWindow_Name = \"Project 0 - 2D v0.03\"\n"
+		"#frame rate\nFRAMES_PER_SECOND = 60\n\n#level dimensions\nLEVEL_WIDTH = 1280\nLEVEL_HEIGHT = 1280\n\n#Characters sprite dimensions\nCH_WIDTH = 32\nCH_HEIGHT = 32\nMO_WIDTH = 32\nMO_HEIGHT = 32\n\n#character initial position\nCH_INITIAL_X = 192\nCH_INITIAL_Y = 224\n\n#Directions representation\nCH_RIGHT = 0\nCH_LEFT = 1\nCH_DOWN = 2\nCH_UP = 3\nCH_RIGHT_DOWN = 4\nCH_LEFT_DOWN = 5\nCH_RIGHT_UP = 6\nCH_LEFT_UP = 7\n\n#monsters level const\nINITIAL_MONSTERS = 15\nMAX_MONSTERS_SIMULTANEOUSLY = 30\n\n#status bar dimension\nSTATUS_BAR_H = 32\n\n#Battlefield sprite dimensions\nBATF_SPRITE_W = 32\nBATF_SPRITE_H = 32\n\n#BackGround Types\nEMPTY_GROUND = 00\nGRASS_GROUND = 01\nSAND_GROUND = 10\nRIVER_GROUND = 20\nLAKE_GROUND = 25\n\n#Environment Types\nNOTHING_ENV_ITEM = 00;\nTREE_ENV_ITEM = 01;\nROCK_ENV_ITEM = 10;\nWALL_ENV_ITEM = 20;\nHOUSE_ENV_ITEM = 30;\nBRIDGE_ENV_ITEM = 40;\n\n#Animations (ms)\nPLAYER_MOVE_ANIMATION_INTERVAL = 150\nPLAYER_MELEE_ATTACK_ANIMATION_INTERVAL = 130\nPLAYER_DISTANT_ATTACK_ANIMATION_INTERVAL = 130\nPLAYER_ARROW_MOVE_ANIMATION_INTERVAL = 75\nMONSTERS_MOVEMENT_INTERVAL = 1000\nMONSTERS_GENERATION_INTERVAL = 5000\n\n#State of the game at the begining: 'ingame' state\nGLOBAL_GAME_STATE = 3\n\n#Name of the log file\nLog_Name = \"P0_Log.log\"\n\nWindow_Name = \"Project 0 - 2D v0.03\"\n"
 			);
 	fi_dev.close();
 	

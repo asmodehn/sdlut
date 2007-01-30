@@ -26,7 +26,7 @@ try {
 	EscMenuButtonFx_Chan = App::getInstance().getMixer()->mixSound(EscMenuButtonFx, false, false);
 
 	//Load Musics Sounds
-	Sound GlobalMusic("Datas/Musics/Global Music.wav");
+	Sound GlobalMusic("Datas/Musics/Temple.wav");
 
 	//Set Musics Channels
 	GlobalMusic_Chan = App::getInstance().getMixer()->mixSound(GlobalMusic, true, false);
