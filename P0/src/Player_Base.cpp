@@ -100,6 +100,8 @@ Player_Base::Player_Base(int x, int y)
 	//Camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 	Camera.setx(0);
 	Camera.sety(0);
+	//Camera.setx( (X + CH_WIDTH / 2) - CURRENT_SCREEN_WIDTH / 2 );
+	//Camera.sety( (Y + CH_HEIGHT / 2) - CURRENT_SCREEN_HEIGHT / 2 );
 	Camera.setw(CURRENT_SCREEN_WIDTH);
 	Camera.seth(CURRENT_SCREEN_HEIGHT);
 
@@ -478,7 +480,6 @@ bool Player_Base::Set_Attack_Animation_Sprite()
 	if (frame > 2) //end of anim
 	{
 		frame = 0; //reset frame anim
-		attack_status = false; //end of attack
 	}
 
 	P0_Logger << " Set_Attack_Animation_Sprite called FRAME:" << frame << std::endl;

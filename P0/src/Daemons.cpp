@@ -66,7 +66,10 @@ unsigned int Daemons::Player_Attack_Animation(unsigned int interval, void* args)
 try {
 	
 	if ( myPlayer->Set_Attack_Animation_Sprite() ) //attack anim is still ocuring than loop
-	{ return interval; } 
+	{ 
+		myPlayer->Set_Attack_Status(true); //attack occuring
+		return interval;
+	} 
 	
 	//if the attack was succesfull
 	if ( (myPlayer->Get_Attack_Successfull() != 0 ) && ( myPlayer->Get_Attack_Style() == 1 ) )
@@ -76,6 +79,7 @@ try {
 			//Worms
 		Global_Monster_Vector->at(1) = Monster_Factory_Worm->Remove_Dead_Monsters();
 	}
+	myPlayer->Set_Attack_Status(false); //end of attack
 	return 0; //end of timer
 
 } catch (...) {
@@ -90,7 +94,10 @@ unsigned int Daemons::Player_Arrow_Animation(unsigned int interval, void* args)
 try {
 	
 	if ( myPlayer->Set_Arrow_Sprite_Coordinate() ) //arrow anim is still ocuring than loop
-	{ return interval; } 
+	{ 
+		myPlayer->Set_Attack_Status(true); //attack occuring
+		return interval;
+	} 
 	
 	//if the attack was succesfull
 	if ( (myPlayer->Get_Attack_Successfull() != 0 ) && ( myPlayer->Get_Attack_Style() == 2 ) )
@@ -100,6 +107,7 @@ try {
 			//Worms
 		Global_Monster_Vector->at(1) = Monster_Factory_Worm->Remove_Dead_Monsters();
 	}
+	myPlayer->Set_Attack_Status(false); //end of attack
 	return 0; //end of timer
 	
 } catch (...) {
