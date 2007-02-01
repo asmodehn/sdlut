@@ -63,9 +63,10 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 				string::size_type equal_loc = newline_str->find("=", 0);  //find the '='
 				if ( equal_loc != string::npos )
 				{
-					
 					//find if string is between " "
-					if ( newline_str->find("\"", 0) == string::npos ) //no " found
+					string::size_type quote_1_loc = newline_str->find("\"", 0);
+					
+					if ( quote_1_loc == string::npos ) //no " found
 					{
 						char* temp_res = new char;
 						//remove whitespace
@@ -76,13 +77,21 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 					}
 					else
 					{
-						fi.close();
-						return newline_str->substr(equal_loc+1);
+						//find the 2nd quote
+						string::size_type quote_2_loc = (newline_str->substr(quote_1_loc+1)).find("\"", 0);
+						if ( quote_2_loc == string::npos ) //the 2nd " wasn't found
+						{
+							fi.close();
+							//return the all string after the = (even with the only ")
+							return newline_str->substr(equal_loc+1);
+						} else {
+							fi.close();
+							//we return the string between the " "
+							return newline_str->substr(quote_1_loc+1, quote_2_loc);
+						}
 					}
-
 				}
-				
-			}
+				}
 		}
 		//free before looping
 		//delete(newline_str);

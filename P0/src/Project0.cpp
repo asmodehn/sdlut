@@ -12,7 +12,7 @@ bool InitEverything()
 
 	//Set window name
 	App::getInstance().setName(Window_Name);
-	//SDL_WM_SetCaption( "Project 0 - 2D - v0.01", NULL );
+	//SDL_WM_SetCaption( "Project 0 - 2D", NULL );
 
 	//Initialize SDL Video
     if (! App::getInstance().initVideo(false,false,true,false) )
