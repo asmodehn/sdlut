@@ -298,7 +298,7 @@ try {
 	    move_status = CH_UP;
 	}
   
-	if (attack_status == false) //no attack is occuring
+	if (!Get_Attack_Status()) //no attack is occuring
 	{
 		//assign the good sprite to the character sprite and the good arrow to the character arrow
 		if( move_status == CH_RIGHT )
@@ -353,28 +353,46 @@ int Player_Base::attack(std::vector< std::vector<Character_Base*> *>* Global_Mon
 	int Hit_Distance = 0; //The Hit distance is the distance between the character and the monster by default the Melee Hit Distance (aka 0)
 
 	//If the player has pushed the attack key => check if attack was seccessfull or not and act accordingly
-	if (attack_status == true)
+	if ( Get_Attack_Status() )
 	{
 		//By default consider that no attack was successfull
 		attack_successfull = 0;
 
+		//
+		//TODO: Get the weapon max hit range & damage and calculate character range and damage from them
+		//TODO: put these value's definitions inside the constructor
+		//TODO: use formula for character_real_damage
+		//
+		int character_max_damage = 100;
+		int character_real_damage = character_max_damage;
+		int character_current_damage = character_real_damage;
+
 		//First Check attack style
 		if (attack_style == 1) //Melee attack: Only hit at one square distant
 		{
-			Hit_Distance = 0;
-			//if one of the monster have been it The_Attack_Successfull become true
-			attack_successfull = attack_check_status(1, Global_Monster_Vector);
+			int character_max_range = 1;
+			//Check if one of the monster is on the arrow traject
+			attack_successfull = attack_check_status(character_max_range, character_current_damage, Global_Monster_Vector) ;
+			if (attack_successfull != 0) //One monster has been hitted
+				Hit_Distance = character_max_range-1; //update the hit distance (used for arrow management)
+
 		}
-		else if (attack_style == 2) //distant attack: 3 square hit distance max
+		else if (attack_style == 2) //distant attack: 6 square hit distance max
 		{
-			Hit_Distance = 3;
-			//loop for all the arrow traject
-			for (int i=1; i<=3; i++)
+			int character_max_range = 6;
+
+			//loop for all the range traject
+			for (int i=1; i<=character_max_range; i++)
 			{
-				//if one of the monster is on the arrow traject it has been it so The_Attack_Successfull become true
-				attack_successfull = attack_check_status(i, Global_Monster_Vector) ;
-				if (attack_successfull != 0) { //One monster has been hit
-					Hit_Distance = i-1; //update the hit distance
+				//
+				//TODO: Get this formula from config file if possible
+				//
+				character_current_damage = character_real_damage - (i-1)*character_real_damage/character_max_range;
+
+				//Check if one of the monster is on the arrow traject
+				attack_successfull = attack_check_status(i, character_current_damage, Global_Monster_Vector) ;
+				if (attack_successfull != 0) { //One monster has been hitted
+					Hit_Distance = i-1; //update the hit distance (used for arrow management)
 					break;
 				}
 			}
@@ -384,33 +402,33 @@ int Player_Base::attack(std::vector< std::vector<Character_Base*> *>* Global_Mon
 	return Hit_Distance;
 }
 //Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
-int Player_Base::attack_check_status(int collision_box_movement, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+int Player_Base::attack_check_status(int current_hit_distance, int character_damage, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 	int _attack_successfull = 0;
 	//Check attack direction
 	if( move_status == CH_RIGHT )
 	{
 		//move the collision box right of the character
-		attack_collision_box.setx ( Collision_Box.getx() + (CH_WIDTH * collision_box_movement) );
+		attack_collision_box.setx ( Collision_Box.getx() + (CH_WIDTH * current_hit_distance) );
 		attack_collision_box.sety ( Collision_Box.gety());
 	}
 	else if( move_status == CH_LEFT )
 	{
 		//move the collision box left of the character
-		attack_collision_box.setx( Collision_Box.getx() - (CH_WIDTH * collision_box_movement) );
+		attack_collision_box.setx( Collision_Box.getx() - (CH_WIDTH * current_hit_distance) );
 		attack_collision_box.sety( Collision_Box.gety() );
 	}
 	else if( move_status == CH_DOWN )
 	{
 		//move the collision box down of the character
 		attack_collision_box.setx( Collision_Box.getx() );
-		attack_collision_box.sety( Collision_Box.gety() + (CH_HEIGHT * collision_box_movement) );
+		attack_collision_box.sety( Collision_Box.gety() + (CH_HEIGHT * current_hit_distance) );
 	}
 	else if( move_status == CH_UP )
 	{
 		//move the collision box up of the character
 		attack_collision_box.setx( Collision_Box.getx() );
-		attack_collision_box.sety( Collision_Box.gety() - (CH_WIDTH * collision_box_movement) );
+		attack_collision_box.sety( Collision_Box.gety() - (CH_WIDTH * current_hit_distance) );
 	}
 	
 	//Collision with Monsters
@@ -430,44 +448,14 @@ int Player_Base::attack_check_status(int collision_box_movement, std::vector< st
 				{
 					//One monster has been hit so modify the The_Attack_Successfull status...
 					_attack_successfull = Current_Monster->Get_Monster_ID();
-					//...Change the monster status to false aka monster dead...
-					Current_Monster->Set_Alive_Status(false);
+					//...Send damage value to the monster
+					Current_Monster->Calculate_Current_Life( character_damage );
 					//...Than leave the check in order to touch only one monster at a time.
 					return _attack_successfull;
 				}
 			}
 		}
 	}
-
-	/*//Check attack with all skeletons inside the vector and return true if one of the skeleton was hit also update the monster Alive_Status
-	for(unsigned int i=0; i < Monster_Vector_Skeleton.size(); i++)
-	{
-		//check if collision between monster and attack now that the attack_collision_box has been moved
-		if (check_collision( attack_collision_box, Monster_Vector_Skeleton[i]->Get_Collision_Box() ))
-		{
-			//One monster has been hit so modify the The_Attack_Successfull status...
-			_attack_successfull = 1;
-			//...Change the monster status to false aka monster dead...
-			Monster_Vector_Skeleton[i]->Set_Alive_Status(false);
-			//...Than leave the check in order to touch only one monster at a time.
-			return _attack_successfull;
-		}			
-	}
-	//Check attack with all worms inside the vector and return true if one of the worm was hit also update the monster Alive_Status
-	for(unsigned int i=0; i < Monster_Vector_Worm.size(); i++)
-	{
-		//check if collision between monster and attack now that the attack_collision_box has been moved
-		if (check_collision( attack_collision_box, Monster_Vector_Worm[i]->Get_Collision_Box() ))
-		{
-			//One monster has been hit so modify the The_Attack_Successfull status...
-			_attack_successfull = 2;
-			//...Change the monster status to false aka monster dead...
-			Monster_Vector_Worm[i]->Set_Alive_Status(false);
-			//...Than leave the check in order to touch only one monster at a time.
-			return _attack_successfull;
-		}			
-	}*/
-
 	return _attack_successfull;
 }
 //Set Character Sprite Which change when attack occured

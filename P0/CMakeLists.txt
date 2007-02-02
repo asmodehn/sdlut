@@ -224,6 +224,7 @@ ADD_EXECUTABLE(
 		${Project_0_SOURCE_DIR}/Datas/Characters/Character_Archer.bmp
 		${Project_0_SOURCE_DIR}/Datas/Characters/Character_Fighter.bmp
 		${Project_0_SOURCE_DIR}/Datas/Characters/Monsters5.bmp
+		"${Project_0_SOURCE_DIR}/Datas/Characters/Life Bar Tile.bmp"
 
 	#Fonts
 		${Project_0_SOURCE_DIR}/Datas/Fonts/SlimSansSerif.ttf

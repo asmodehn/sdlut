@@ -34,6 +34,23 @@ Monster_Base::Monster_Base()
 
 	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
 	Alive_Status = true;
+
+	//Life bar infos
+	Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	
+	empty_life_bar_rect.setx(0);
+	empty_life_bar_rect.sety(0);
+	empty_life_bar_rect.setw(32);
+	empty_life_bar_rect.seth(6);
+
+	current_life_bar_rect.setx(0);
+	current_life_bar_rect.sety(6);
+	current_life_bar_rect.setw(32);
+	current_life_bar_rect.seth(6);
+	//
+	//ToDO: set these values into Dev_Config.ini & get them from here
+	//
+
 }
 
 //Full Construtor
@@ -182,4 +199,47 @@ bool Monster_Base::check_cutting_allow_monster(int x, int y, std::vector<BattleF
 
 	//not design to happen: obviously the monster must be inside one of the area
 	return false;
+}
+
+//Calculate the current life of the monster depending on damage, malus, etc
+bool Monster_Base::Calculate_Current_Life(int opponent_damage = 0)
+{
+	//
+	//TODO: define armor inside the character's constructor or monster's constructor
+	//
+
+	int armor = 0;
+	int current_damage = (opponent_damage - armor); //TODO: Set the real damage formula
+
+	if ( (current_damage) < 0) //in case damage dont exceed armor value then set it to 0: no damage
+		current_damage = 0;
+
+	Set_Current_Life( Get_Current_Life() - current_damage) ;
+	
+	//Monster as no life => dead
+	if ( Get_Current_Life() <= 0 )
+		Set_Alive_Status(false);
+
+	return true; //everything went fine
+}
+
+//Shows the life bar of the monster depending of it's current life
+bool Monster_Base::Show_Life_Bar(Rect Camera, VideoSurface& Screen)
+{
+	int _current_life = Get_Current_Life();
+	//to avoid draw pb when life is < 0
+	if (_current_life < 0)
+		_current_life = 0;
+
+	current_life_bar_rect.setw( (32 * _current_life / MAX_LIFE) );
+	//
+	//ToDO: set get life bar width from config file Dev_Config.ini
+	//
+
+	//we blit the empty rect than the current life rect
+	//positions are def by monster pos
+	Screen.blit(Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), empty_life_bar_rect);
+	Screen.blit(Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), current_life_bar_rect);
+
+	return true;  //everything went fine
 }

@@ -111,8 +111,18 @@ try {
 	{
 	 	if( Monster_Vector->at(i)->Show(Camera, Screen) == false )
 		{ 
-	    	  P0_Logger << " Failed to render monster movement on monster N°" << i << std::endl;    
+	    	P0_Logger << " Failed to render monster movement on monster N°" << i << std::endl;  
+			#ifdef _DEBUG //debug mode
 	    	  return false; //error occured
+			#endif
+
+   		}
+		if( ((Monster_Base*)Monster_Vector->at(i))->Show_Life_Bar(Camera, Screen) == false )
+		{ 
+			P0_Logger << " Failed to render monster life bar on monster N°" << i << std::endl;   
+			#ifdef _DEBUG //debug mode
+	    		return false; //error occured
+			#endif
    		}
 	}
 	return true; //no error occured

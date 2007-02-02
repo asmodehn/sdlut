@@ -5,6 +5,14 @@ Character_Base::Character_Base()
 {
 	X = 0, Y =0;
 	xVel = 0, yVel = 0;
+
+	//The life and max life of the character
+	//
+	//TODO: get it from desc file
+	//
+	MAX_LIFE = 100;
+	Current_Life = MAX_LIFE;
+
 	Characters_Tile = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, 32);
 
 	Characters_SpriteRect.setx(0);

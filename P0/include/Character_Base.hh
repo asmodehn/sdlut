@@ -21,6 +21,9 @@ protected:
 	//The velocity of the character
 	int xVel, yVel;
 
+	//The life and max life of the character
+	int MAX_LIFE, Current_Life;
+
 	//Tile & Clip
 	RGBSurface Characters_Tile;
 	Rect Characters_SpriteRect;
@@ -90,6 +93,14 @@ public:
 	inline bool Get_Alive_Status() const
     {
         return Alive_Status;
+	}
+	inline void Set_Current_Life(int new_Current_Life)
+	{
+		Current_Life = new_Current_Life;
+	}
+	inline int Get_Current_Life()
+	{
+		return Current_Life;
 	}
 
 	//Constructor

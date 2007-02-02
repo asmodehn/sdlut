@@ -13,6 +13,11 @@ class Monster_Base : public Character_Base
 		//Monster type
 		Monsters_Type Monster_ID;
 
+		//Life bar infos
+		RGBSurface Life_Bar_Tile;
+		Rect empty_life_bar_rect;
+		Rect current_life_bar_rect;
+
 		/****Methods****/
 
 		//Check if the background allow the monster presence
@@ -56,6 +61,12 @@ class Monster_Base : public Character_Base
 
 		//Shows the Monster movement on the screen
 		//bool move_animation(Rect Camera, VideoSurface& Screen);
+
+		//Calculate the current life depending on damage, malus, etc and damage made by the opponent
+		bool Monster_Base::Calculate_Current_Life(int opponent_damage);
+
+		//Shows the life bar of the monster depending of it's current life
+		bool Show_Life_Bar(Rect Camera, VideoSurface& Screen);
 };
 
 #endif

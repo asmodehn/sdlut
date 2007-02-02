@@ -60,8 +60,8 @@ class Player_Base : public Character_Base
 		//The Camera that follow the character
 		Rect Camera;
 
-		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
-		int attack_check_status(int collision_box_movement, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
+		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing and character infos
+		int attack_check_status(int current_hit_distance, int character_damage, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
 
 		//Check if the ground allow the player presence
 		//std::vector<int> check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
