@@ -40,17 +40,13 @@ Monster_Base::Monster_Base()
 	
 	empty_life_bar_rect.setx(0);
 	empty_life_bar_rect.sety(0);
-	empty_life_bar_rect.setw(32);
-	empty_life_bar_rect.seth(6);
+	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
 
 	current_life_bar_rect.setx(0);
-	current_life_bar_rect.sety(6);
-	current_life_bar_rect.setw(32);
-	current_life_bar_rect.seth(6);
-	//
-	//ToDO: set these values into Dev_Config.ini & get them from here
-	//
-
+	current_life_bar_rect.sety(LIFE_BAR_HEIGHT);
+	current_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	current_life_bar_rect.seth(LIFE_BAR_HEIGHT);
 }
 
 //Full Construtor
@@ -231,7 +227,7 @@ bool Monster_Base::Show_Life_Bar(Rect Camera, VideoSurface& Screen)
 	if (_current_life < 0)
 		_current_life = 0;
 
-	current_life_bar_rect.setw( (32 * _current_life / MAX_LIFE) );
+	current_life_bar_rect.setw( (LIFE_BAR_WIDTH * _current_life / MAX_LIFE) );
 	//
 	//ToDO: set get life bar width from config file Dev_Config.ini
 	//

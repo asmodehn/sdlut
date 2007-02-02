@@ -371,15 +371,18 @@ int Player_Base::attack(std::vector< std::vector<Character_Base*> *>* Global_Mon
 		if (attack_style == 1) //Melee attack: Only hit at one square distant
 		{
 			int character_max_range = 1;
+			Hit_Distance = character_max_range-1; //update the hit distance (used for arrow management)
+
 			//Check if one of the monster is on the arrow traject
 			attack_successfull = attack_check_status(character_max_range, character_current_damage, Global_Monster_Vector) ;
-			if (attack_successfull != 0) //One monster has been hitted
-				Hit_Distance = character_max_range-1; //update the hit distance (used for arrow management)
+			//if (attack_successfull != 0) //One monster has been hitted
+				
 
 		}
 		else if (attack_style == 2) //distant attack: 6 square hit distance max
 		{
 			int character_max_range = 6;
+			Hit_Distance = character_max_range-1; //update the hit distance (used for arrow management)
 
 			//loop for all the range traject
 			for (int i=1; i<=character_max_range; i++)

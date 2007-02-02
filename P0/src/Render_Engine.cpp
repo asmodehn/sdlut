@@ -61,11 +61,13 @@ void Render_Engine::render(VideoSurface & screen) const
     }
 
 	//show the arrow of the screen (if necessary)
-	if ((myPlayer->Get_Attack_Style() == 2))
+	if (myPlayer->Get_Attack_Style() == 2)
+	{
 		if( myPlayer->Show_Arrow(screen) == false )
 		{ 
 		  P0_Logger << " Arrow Render Failed " << std::endl;    
 		}
+	}
 
 	//Apply monsters to the screen
 	if(

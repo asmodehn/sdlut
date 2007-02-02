@@ -78,6 +78,9 @@ extern int MAX_MONSTERS_SIMULTANEOUSLY;
 //Console const
 extern int STATUS_BAR_H;
 
+//Life Bar dims
+extern int LIFE_BAR_WIDTH;
+extern int LIFE_BAR_HEIGHT;
 
 //Battlefield const
 extern int BATF_SPRITE_W;
