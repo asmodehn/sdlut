@@ -19,7 +19,7 @@ Player_Base::Player_Base(int x, int y)
 	moving_status = false;
 
 	//Character Clips definition
-	_player_left_attack[0].setx(0);
+	/*_player_left_attack[0].setx(0);
 	_player_left_attack[0].sety(0);
 	_player_left_attack[0].setw(CH_WIDTH);
 	_player_left_attack[0].seth(CH_HEIGHT);
@@ -80,10 +80,22 @@ Player_Base::Player_Base(int x, int y)
     _player_up_attack[2].setx(CH_WIDTH * 2);
     _player_up_attack[2].sety(CH_HEIGHT*3);
     _player_up_attack[2].setw(CH_WIDTH);
-    _player_up_attack[2].seth(CH_HEIGHT);
+    _player_up_attack[2].seth(CH_HEIGHT);*/
+
+
+	for (unsigned int i = 0; i < 8; i++)  //The 8 directions
+	{
+		for (unsigned int j = 0; j < 3; j++) //Frames
+		{
+			Player_Attack_Tile_Rect[i][j].setx( CH_WIDTH * j);
+			Player_Attack_Tile_Rect[i][j].sety( CH_HEIGHT*i );
+			Player_Attack_Tile_Rect[i][j].setw(CH_WIDTH);
+			Player_Attack_Tile_Rect[i][j].seth(CH_HEIGHT);
+		}
+	}
 
 	//Assign the right sprite to the player by default
-	Characters_SpriteRect = _player_right_attack[0];
+	Characters_SpriteRect = Player_Attack_Tile_Rect[CH_RIGHT][0];
 
 	//Initialize animation variables
     frame = 0;  // for animation
@@ -118,7 +130,7 @@ Player_Base::Player_Base(int x, int y)
     attack_collision_box.seth(CH_HEIGHT);
 
 	/****Arrow***/
-	Arrow_Left[0].setx(0);
+	/*Arrow_Left[0].setx(0);
     Arrow_Left[0].sety(0);
     Arrow_Left[0].setw(CH_WIDTH);
     Arrow_Left[0].seth(CH_HEIGHT);
@@ -136,18 +148,25 @@ Player_Base::Player_Base(int x, int y)
 	Arrow_Up[0].setx(0);
     Arrow_Up[0].sety(CH_HEIGHT*3);
     Arrow_Up[0].setw(CH_WIDTH);
-    Arrow_Up[0].seth(CH_HEIGHT);
+    Arrow_Up[0].seth(CH_HEIGHT);*/
+	for (unsigned int i = 0; i < 8; i++)  //The 8 directions
+	{
+		Arrow_SpriteRect[i][0].setx( 0 );
+		Arrow_SpriteRect[i][0].sety( CH_HEIGHT*i );
+		Arrow_SpriteRect[i][0].setw( CH_WIDTH );
+		Arrow_SpriteRect[i][0].seth( CH_HEIGHT );
+	}
 
-	Arrow_SpriteRect = Arrow_Right[0]; //default arrow sprite rect
+	Current_Arrow_SpriteRect = Arrow_SpriteRect[CH_RIGHT][0]; //default arrow sprite rect
 
 
 	/****Surfaces****/
 	//Characters Surfaces
-	Players_Tile_Melee = RGBSurface("Datas/Characters/Character_Fighter.bmp", Color(0xFF, 0xFF, 0xFF));
-	Players_Tile_Distant = RGBSurface("Datas/Characters/Character_Archer.bmp", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile_Melee = RGBSurface("Datas/Characters/Character_Fighter.png", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile_Distant = RGBSurface("Datas/Characters/Character_Archer.png", Color(0xFF, 0xFF, 0xFF));
 	Characters_Tile = Players_Tile_Melee; //Default tile: the melee tile
 	//Arrow surface
-	Arrow_Tile = RGBSurface("Datas/Items/Arrow.bmp", Color(0xFF, 0xFF, 0xFF));
+	Arrow_Tile = RGBSurface("Datas/Items/Arrow.png", Color(0x80, 0x80, 0x80));
 
 	//Fight Msgs Style
 	//Font AttackMsg_Font("Datas/Fonts/ECHELON.TTF", 28);
@@ -275,64 +294,59 @@ int Player_Base::Get_Env_vs_CH_Rules(int envType)
 bool Player_Base::assign_direction_sprite()
 {
 try {
-	int old_move_status = move_status;
-
-	//If CH is moving left
-    if( xVel < 0 )
-    {
-        move_status = CH_LEFT;
-    }
-    //If CH is moving right
-    else if( xVel > 0 )
-    {
-        move_status = CH_RIGHT;
-    }
-    //If CH is moving down
-    else if ( yVel > 0 )
-    {
-        move_status = CH_DOWN;  
-    }
-	//If CH is moving up
-	else if( yVel < 0 )
-	{
-	    move_status = CH_UP;
-	}
-  
 	if (!Get_Attack_Status()) //no attack is occuring
 	{
-		//assign the good sprite to the character sprite and the good arrow to the character arrow
-		if( move_status == CH_RIGHT )
+		int old_move_status = move_status;
+
+		//check velocities
+		if ( (Get_xVel() > 0) && (Get_yVel() == 0) ) //CH is moving right
 		{
-			Characters_SpriteRect = _player_right_attack[0];
-			Arrow_SpriteRect = Arrow_Right[0];
+			move_status = CH_RIGHT;
 		}
-		else if( move_status == CH_LEFT )
+		else if ( (Get_xVel() > 0) && (Get_yVel() > 0) )  //right down
 		{
-			Characters_SpriteRect = _player_left_attack[0];
-			Arrow_SpriteRect = Arrow_Left[0];
+			move_status = CH_RIGHT_DOWN;
+
 		}
-		else if( move_status == CH_DOWN )
+		else if ( (Get_xVel() == 0) && (Get_yVel() > 0) )  //down
 		{
-			Characters_SpriteRect = _player_down_attack[0];
-			Arrow_SpriteRect = Arrow_Down[0];
+			move_status = CH_DOWN;
 		}
-		else if( move_status == CH_UP )
+		else if ( (Get_xVel() < 0) && (Get_yVel() > 0) ) //left down
 		{
-			Characters_SpriteRect = _player_up_attack[0];
-			Arrow_SpriteRect = Arrow_Up[0];
+			move_status = CH_LEFT_DOWN;
+		}
+		else if ( (Get_xVel() < 0) && (Get_yVel() == 0) ) //left
+		{
+			move_status = CH_LEFT;
+		}
+		else if ( (Get_xVel() < 0) && (Get_yVel() < 0) ) //left up
+		{
+			move_status = CH_LEFT_UP;
+		}
+		else if ( (Get_xVel() == 0) && (Get_yVel() < 0) ) //up
+		{
+			move_status = CH_UP;
+		}
+		else if ( (Get_xVel() > 0) && (Get_yVel() < 0) ) //right up
+		{
+			move_status = CH_RIGHT_UP;
+		}
+		
+		//Good sprites for the direction
+		Characters_SpriteRect = Player_Attack_Tile_Rect[move_status][0];
+		Current_Arrow_SpriteRect = Arrow_SpriteRect[move_status][0];
+
+		//Check if we are changing direction
+		if ( old_move_status != move_status )
+		{ //change but dont move
+			xVel = 0;
+			yVel = 0;
+			moving_status = false;
+		} else {
+			moving_status = true; //we're moving
 		}
 	}
-
-	//Check if we are changing direction
-	if ( old_move_status != move_status )
-	{ //change but dont move
-		xVel = 0;
-		yVel = 0;
-		moving_status = false;
-	} else {
-		moving_status = true; //we're moving
-	}
-
 	return true; //no error
 } catch (...) {
   return false; //error occured
@@ -411,26 +425,42 @@ int Player_Base::attack_check_status(int current_hit_distance, int character_dam
 	//Check attack direction
 	if( move_status == CH_RIGHT )
 	{
-		//move the collision box right of the character
 		attack_collision_box.setx ( Collision_Box.getx() + (CH_WIDTH * current_hit_distance) );
 		attack_collision_box.sety ( Collision_Box.gety());
 	}
-	else if( move_status == CH_LEFT )
+	else if( move_status == CH_RIGHT_DOWN )
 	{
-		//move the collision box left of the character
-		attack_collision_box.setx( Collision_Box.getx() - (CH_WIDTH * current_hit_distance) );
-		attack_collision_box.sety( Collision_Box.gety() );
+		attack_collision_box.setx ( Collision_Box.getx() + (CH_WIDTH * current_hit_distance) );
+		attack_collision_box.sety ( Collision_Box.gety() + (CH_HEIGHT * current_hit_distance) );
 	}
 	else if( move_status == CH_DOWN )
 	{
-		//move the collision box down of the character
 		attack_collision_box.setx( Collision_Box.getx() );
 		attack_collision_box.sety( Collision_Box.gety() + (CH_HEIGHT * current_hit_distance) );
 	}
+	else if( move_status == CH_LEFT_DOWN )
+	{
+		attack_collision_box.setx( Collision_Box.getx() - (CH_WIDTH * current_hit_distance) );
+		attack_collision_box.sety( Collision_Box.gety() + (CH_HEIGHT * current_hit_distance) );
+	}
+	else if( move_status == CH_LEFT )
+	{
+		attack_collision_box.setx( Collision_Box.getx() - (CH_WIDTH * current_hit_distance) );
+		attack_collision_box.sety( Collision_Box.gety() );
+	}
+	else if( move_status == CH_LEFT_UP )
+	{
+		attack_collision_box.setx( Collision_Box.getx() - (CH_WIDTH * current_hit_distance) );
+		attack_collision_box.sety( Collision_Box.gety() - (CH_WIDTH * current_hit_distance) );
+	}
 	else if( move_status == CH_UP )
 	{
-		//move the collision box up of the character
 		attack_collision_box.setx( Collision_Box.getx() );
+		attack_collision_box.sety( Collision_Box.gety() - (CH_WIDTH * current_hit_distance) );
+	}
+	else if( move_status == CH_RIGHT_UP )
+	{
+		attack_collision_box.setx( Collision_Box.getx() + (CH_WIDTH * current_hit_distance) );
 		attack_collision_box.sety( Collision_Box.gety() - (CH_WIDTH * current_hit_distance) );
 	}
 	
@@ -464,53 +494,38 @@ int Player_Base::attack_check_status(int current_hit_distance, int character_dam
 //Set Character Sprite Which change when attack occured
 bool Player_Base::Set_Attack_Animation_Sprite()
 {
+	const int SWORD_ATTACK_ANIM_FRAMES = 2;
+	const int BOW_ATTACK_ANIM_FRAMES = 2;
+	//
+	//ToDo: Export this to animation config file
+	//
+
 	//increase frame each time the timer is run (from 0 to 2)
 	frame++;
 
-	//make the timer loop until end of animation (2 frames)
-	if (frame > 2) //end of anim
+	//reset the frame status at end of animation depending of the attack style 
+	if ( Get_Attack_Style() == 1 ) // Melee Style
 	{
-		frame = 0; //reset frame anim
+		if (frame > SWORD_ATTACK_ANIM_FRAMES)
+			frame = 0; //reset frame anim
+
+		//assign the good sprite rect to the character sprite rect depending on the frame and the direction
+		Characters_SpriteRect = Player_Attack_Tile_Rect[move_status][frame];
 	}
-
-	P0_Logger << " Set_Attack_Animation_Sprite called FRAME:" << frame << std::endl;
-
-	// Melee Style
-	if (attack_style == 1)
+	else if ( Get_Attack_Style() == 2 ) // Distant Style
 	{
-		//assign the good sprite rect to the character sprite rect depending of the frame and the direction
-		if( move_status == CH_RIGHT )
-		{
-			//right sprite
-			Characters_SpriteRect = _player_right_attack[frame];
-		}
-		else if( move_status == CH_LEFT )
-		{
-			//left sprite
-			Characters_SpriteRect = _player_left_attack[frame];
-		}
-		else if( move_status == CH_DOWN )
-		{
-			//down sprite
-			Characters_SpriteRect = _player_down_attack[frame];
-
-		}
-		else if( move_status == CH_UP )
-		{
-			//up sprite
-			Characters_SpriteRect = _player_up_attack[frame];
-		}
-
-	}
-	// Distant Style
-	else if (attack_style == 2)
-	{
+		if (frame > BOW_ATTACK_ANIM_FRAMES)
+			frame = 0; //reset frame anim
+		
 		//define the good character sprite (future devs: depending of the frame and the direction)
 		//frame = 0;
 	}
 
+
+	P0_Logger << " Set_Attack_Animation_Sprite called FRAME:" << frame << std::endl;
+
 	if ( frame == 0 )
-	{ return false; } //end of anim
+		return false; //end of anim
 
 	//anim is still looping
 	return true;
@@ -532,19 +547,39 @@ bool Player_Base::Set_Arrow_Sprite_Coordinate()
 			arrow_x = X + (arrow_frame * CH_WIDTH);
 			arrow_y = Y;
 		}
-		else if( move_status == CH_LEFT )
+		else if( move_status == CH_RIGHT_DOWN )
 		{
-			arrow_x = X - (arrow_frame * CH_WIDTH);
-			arrow_y = Y;
+			arrow_x = X + (arrow_frame * CH_WIDTH);
+			arrow_y = Y + (arrow_frame * CH_HEIGHT);
 		}
 		else if( move_status == CH_DOWN )
 		{
 			arrow_x = X;
 			arrow_y = Y + (arrow_frame * CH_HEIGHT);
 		}
+		else if( move_status == CH_LEFT_DOWN )
+		{
+			arrow_x = X - (arrow_frame * CH_WIDTH);
+			arrow_y = Y + (arrow_frame * CH_HEIGHT);
+		}
+		else if( move_status == CH_LEFT )
+		{
+			arrow_x = X - (arrow_frame * CH_WIDTH);
+			arrow_y = Y;
+		}
+		else if( move_status == CH_LEFT_UP )
+		{
+			arrow_x = X - (arrow_frame * CH_WIDTH);
+			arrow_y = Y - (arrow_frame * CH_HEIGHT);
+		}
 		else if( move_status == CH_UP )
 		{
 			arrow_x = X;
+			arrow_y = Y - (arrow_frame * CH_HEIGHT);
+		}
+		else if( move_status == CH_RIGHT_UP )
+		{
+			arrow_x = X + (arrow_frame * CH_WIDTH);
 			arrow_y = Y - (arrow_frame * CH_HEIGHT);
 		}
 		return true;
@@ -563,7 +598,7 @@ bool Player_Base::Show_Arrow(VideoSurface& Screen)
 try {
 	if ( (X != arrow_x) || (Y != arrow_y) ) //dont display the arrow when it's at the same place than the character
 	{
-		Screen.blit(Arrow_Tile, Point::Point(arrow_x - Camera.getx(), arrow_y - Camera.gety()), Arrow_SpriteRect);
+		Screen.blit(Arrow_Tile, Point::Point(arrow_x - Camera.getx(), arrow_y - Camera.gety()), Current_Arrow_SpriteRect);
 	}
 	return true; //no error
 } catch (...) {

@@ -112,36 +112,46 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 			if ( !myPlayer->Get_Attack_Status() ) //If attack is occuring then no keys are available except escape/options keys
 			/************SEEMS TO BUG HERE WHEN CHANGING WEAPON DURING ATTACK ?****************/
 			{
+				bool move_key_pressed = false;
+
 				//Moves Keys
 				if ((s.getKey() == UP_1) || (s.getKey() == UP_2))
 				{
 					//myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
 					myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
-					Player_Moves_Consequences();
-				} else if ((s.getKey() == DOWN_1) || (s.getKey() == DOWN_2))
+					move_key_pressed = true;
+					
+				}
+				if ((s.getKey() == DOWN_1) || (s.getKey() == DOWN_2))
 				{
 					//myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
 					myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
-					Player_Moves_Consequences();
-				} else if ((s.getKey() == LEFT_1) || (s.getKey() == LEFT_2))
+					move_key_pressed = true;;
+				}
+				if ((s.getKey() == LEFT_1) || (s.getKey() == LEFT_2))
 				{
 					//myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
 					myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
-					Player_Moves_Consequences();
-				} else if ((s.getKey() == RIGHT_1) || (s.getKey() == RIGHT_2))
+					move_key_pressed = true;
+				}
+				if ((s.getKey() == RIGHT_1) || (s.getKey() == RIGHT_2))
 				{
 					//myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
 					myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
-					Player_Moves_Consequences();
+					move_key_pressed = true;
 				} 
-				else if ((s.getKey() == ATTACK_1) || (s.getKey() == ATTACK_2)) //Attacks Key
+				 //a movement key has been pressed
+				if (move_key_pressed)
+					Player_Moves_Consequences();
+
+				if ((s.getKey() == ATTACK_1) || (s.getKey() == ATTACK_2)) //Attacks Key
 				{
 					//Stop moving
 					myPlayer->Set_xVel(0);
 					myPlayer->Set_yVel(0);
 					Player_Attack_Consequences();
 				}
-				else if ((s.getKey() == CHANGE_ATTACK_MODE_1) || (s.getKey() == CHANGE_ATTACK_MODE_2))
+				if ((s.getKey() == CHANGE_ATTACK_MODE_1) || (s.getKey() == CHANGE_ATTACK_MODE_2))
 				{
 					//Change weapon style by looping between the available styles (2 for the moment)
 					myPlayer->Set_Attack_Style( myPlayer->Get_Attack_Style() + 1 );
@@ -154,7 +164,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					//Send the modified character to the render engine 
 					//myRender_Engine->Set_Player_Base(myPlayer);
 				}
-				else if ((s.getKey() == KKEnter) || (s.getKey() == KKEnter))
+				if ((s.getKey() == KKEnter) || (s.getKey() == KKEnter))
 				{
 					int grgrgr=0;
 					//Leave/appears on the Battlefield and save but do not quit

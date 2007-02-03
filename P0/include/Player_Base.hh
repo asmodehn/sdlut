@@ -27,11 +27,19 @@ class Player_Base : public Character_Base
 		RGBSurface Players_Tile_Melee;
 		RGBSurface Players_Tile_Distant;
 
-		//Character Clips
-		Rect _player_right_attack[3];
-		Rect _player_left_attack[3];
+		//Character Clips Vector
+		Rect Player_Attack_Tile_Rect[8][3];
+		//
+		//TODO: move the 3 to the config file and def a number of frame for the attack anim (8 is the number of directions)
+		//
+		/*Rect _player_right_attack[3];
+		Rect _player_right_down_attack[3];
 		Rect _player_down_attack[3];
+		Rect _player_left_down_attack[3];
+		Rect _player_left_attack[3];
+		Rect _player_left_up_attack[3];
 		Rect _player_up_attack[3];
+		Rect _player_right_up_attack[3];*/
 
 		//animation variables
 		int frame, arrow_frame, move_status;
@@ -48,11 +56,17 @@ class Player_Base : public Character_Base
 
 		/***Arrow***/
 		RGBSurface Arrow_Tile;
-		Rect Arrow_Left[1];
-		Rect Arrow_Right[1];
+		Rect Arrow_SpriteRect[8][1];
+		Rect Current_Arrow_SpriteRect;
+		/*Rect Arrow_Right[1];
+		Rect Arrow_Right_Down[1];
 		Rect Arrow_Down[1];
+		Rect Arrow_Left_Down[1];
+		Rect Arrow_Left[1];
+		Rect Arrow_Left_Up[1];
 		Rect Arrow_Up[1];
-		Rect Arrow_SpriteRect;
+		Rect Arrow_Right_Up[1];*/
+		
 
 		//Hit distance
 		int hit_monster_distance;

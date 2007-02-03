@@ -221,8 +221,8 @@ ADD_EXECUTABLE(
 		${Project_0_SOURCE_DIR}/Datas/Battlefield/Water.png
 
 	#Characters
-		${Project_0_SOURCE_DIR}/Datas/Characters/Character_Archer.bmp
-		${Project_0_SOURCE_DIR}/Datas/Characters/Character_Fighter.bmp
+		${Project_0_SOURCE_DIR}/Datas/Characters/Character_Archer.png
+		${Project_0_SOURCE_DIR}/Datas/Characters/Character_Fighter.png
 		${Project_0_SOURCE_DIR}/Datas/Characters/Monsters5.bmp
 		"${Project_0_SOURCE_DIR}/Datas/Characters/Life Bar Tile.bmp"
 
@@ -234,7 +234,7 @@ ADD_EXECUTABLE(
 		${Project_0_SOURCE_DIR}/Datas/Interface/LeaveMenu_YesSelected.png	
 
 	#Items
-		${Project_0_SOURCE_DIR}/Datas/Items/Arrow.bmp
+		${Project_0_SOURCE_DIR}/Datas/Items/Arrow.png
 
 	#Movies
 
