@@ -44,12 +44,16 @@ extern int WINDOW_MODE_2;
 
 
 ///*******DeV config*******///
+	///***Globals***/
 //The dimensions of the level
 extern int LEVEL_WIDTH;
 extern int LEVEL_HEIGHT;
 
 //The frame rate
 extern int FRAMES_PER_SECOND;
+
+//Windows
+extern string Window_Name;
 
 //The dimensions of the Character
 extern int CH_WIDTH;
@@ -105,14 +109,6 @@ extern int BRIDGE_ENV_ITEM;
 //Monsters ID which defined type of monsters (used in coordination with battlefield cutting)
 enum Monsters_Type {Humanoid = 1, Worm = 2};
 
-//Animations
-extern long PLAYER_MOVE_ANIMATION_INTERVAL;
-extern long PLAYER_MELEE_ATTACK_ANIMATION_INTERVAL;
-extern long PLAYER_DISTANT_ATTACK_ANIMATION_INTERVAL;
-extern long PLAYER_ARROW_MOVE_ANIMATION_INTERVAL;
-extern long MONSTERS_MOVEMENT_INTERVAL;
-extern long MONSTERS_GENERATION_INTERVAL;
-
 //This variable defined the global game state 1: Initial Menu (future dev), 2: Character Creation/Selection (future dev), 3: Ingame, 4: On Escape menu
 extern int GLOBAL_GAME_STATE;
 
@@ -120,8 +116,19 @@ extern int GLOBAL_GAME_STATE;
 extern RAGE::Logger P0_Logger;
 extern string Log_Name;
 
-//Windows
-extern string Window_Name;
+	///***Animations***///
+extern long PLAYER_MOVE_ANIMATION_INTERVAL;
+extern long PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL;
+extern long PLAYER_BOW_ATTACK_ANIMATION_INTERVAL;
+extern long PLAYER_ARROW_MOVE_ANIMATION_INTERVAL;
+
+const int PLAYER_SWORD_ATTACK_ANIMATION_FRAME = 3;
+const int PLAYER_BOW_ATTACK_ANIMATION_FRAME = 3;
+const int PLAYER_ARROW_ATTACK_ANIMATION_FRAME = 1;
+
+	///***Daemons***///
+extern long MONSTERS_MOVEMENT_INTERVAL;
+extern long MONSTERS_GENERATION_INTERVAL;
 
 //Define configuration from files or set the default config
 bool Set_Config();

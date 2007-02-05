@@ -63,16 +63,21 @@ void KeyboardInput::Player_Attack_Consequences()
 	/***WARNING !! IN CASE OF DISTANT ATTACK THE MONSTER IS CONSIDERED AS DEAD WHEN THE KEY IS PRESSED AND NOT WHEN THE ARROW REACHED THE TARGET => TODO: FIND A WAY TO SOLVE THAT (SEPARATE THE ATTACK METHOD IN TWO DISTINCT METHOD PERHAPS CAN HELP)***/
 	myPlayer->Set_Hit_Monster_Distance( myPlayer->attack(Global_Monster_Vector) );
 	
-	//Intervals between animation's frames
-	myPlayer_Attack_Animation_Timer.setInterval( PLAYER_MELEE_ATTACK_ANIMATION_INTERVAL );
 	//Set the callback method which will define the character appearance on the screen and start animation
 	myPlayer_Attack_Animation_Timer.setCallback(myDaemons,&Daemons::Player_Attack_Animation, (void*)NULL);
 	
-	//In case of distant attack only
-	if ( myPlayer->Get_Attack_Style() == 2 )
+	//difference between attack styles
+	if ( myPlayer->Get_Attack_Style() == 1 ) 
 	{
+		//Intervals between animation's frames
+		myPlayer_Attack_Animation_Timer.setInterval( PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL );
+	}
+	else if ( myPlayer->Get_Attack_Style() == 2 )
+	{
+		//Intervals between animation's frames
+		myPlayer_Attack_Animation_Timer.setInterval( PLAYER_BOW_ATTACK_ANIMATION_INTERVAL );
+		//Arrow management
 		myPlayer_Arrow_Animation_Timer.setInterval( PLAYER_ARROW_MOVE_ANIMATION_INTERVAL );
-		//Set the callback method which will define the character appearance on the screen and start animation
 		myPlayer_Arrow_Animation_Timer.setCallback(myDaemons,&Daemons::Player_Arrow_Animation, (void*)NULL);
 	}
 	
@@ -166,7 +171,6 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				}
 				if ((s.getKey() == KKEnter) || (s.getKey() == KKEnter))
 				{
-					int grgrgr=0;
 					//Leave/appears on the Battlefield and save but do not quit
 					//case KKEnter:
 					//To DO *******

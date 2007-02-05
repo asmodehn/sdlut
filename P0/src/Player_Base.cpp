@@ -19,70 +19,6 @@ Player_Base::Player_Base(int x, int y)
 	moving_status = false;
 
 	//Character Clips definition
-	/*_player_left_attack[0].setx(0);
-	_player_left_attack[0].sety(0);
-	_player_left_attack[0].setw(CH_WIDTH);
-	_player_left_attack[0].seth(CH_HEIGHT);
-
-	_player_left_attack[1].setx(CH_WIDTH);
-    _player_left_attack[1].sety(0);
-    _player_left_attack[1].setw(CH_WIDTH);
-    _player_left_attack[1].seth(CH_HEIGHT);
-
-	_player_left_attack[2].setx(CH_WIDTH * 2);
-    _player_left_attack[2].sety(0);
-    _player_left_attack[2].setw(CH_WIDTH);
-    _player_left_attack[2].seth(CH_HEIGHT);
-
-
-    _player_right_attack[0].setx(0);
-    _player_right_attack[0].sety(CH_HEIGHT);
-    _player_right_attack[0].setw(CH_WIDTH);
-    _player_right_attack[0].seth(CH_HEIGHT);
-    
-    _player_right_attack[1].setx(CH_WIDTH);
-    _player_right_attack[1].sety(CH_HEIGHT);
-    _player_right_attack[1].setw(CH_WIDTH);
-    _player_right_attack[1].seth(CH_HEIGHT);
-    
-    _player_right_attack[2].setx(CH_WIDTH * 2);
-    _player_right_attack[2].sety(CH_HEIGHT);
-    _player_right_attack[2].setw(CH_WIDTH);
-    _player_right_attack[2].seth(CH_HEIGHT);
-
-
-	_player_down_attack[0].setx(0);
-    _player_down_attack[0].sety(CH_HEIGHT*2);
-    _player_down_attack[0].setw(CH_WIDTH);
-    _player_down_attack[0].seth(CH_HEIGHT);
-    
-    _player_down_attack[1].setx(CH_WIDTH);
-    _player_down_attack[1].sety(CH_HEIGHT*2);
-    _player_down_attack[1].setw(CH_WIDTH);
-    _player_down_attack[1].seth(CH_HEIGHT);
-    
-    _player_down_attack[2].setx(CH_WIDTH * 2);
-    _player_down_attack[2].sety(CH_HEIGHT*2);
-    _player_down_attack[2].setw(CH_WIDTH);
-    _player_down_attack[2].seth(CH_HEIGHT);
-    
-
-    _player_up_attack[0].setx(0);
-    _player_up_attack[0].sety(CH_HEIGHT*3);
-    _player_up_attack[0].setw(CH_WIDTH);
-    _player_up_attack[0].seth(CH_HEIGHT);
-    
-    _player_up_attack[1].setx(CH_WIDTH);
-    _player_up_attack[1].sety(CH_HEIGHT*3);
-    _player_up_attack[1].setw(CH_WIDTH);
-    _player_up_attack[1].seth(CH_HEIGHT);
-    
-    _player_up_attack[2].setx(CH_WIDTH * 2);
-    _player_up_attack[2].sety(CH_HEIGHT*3);
-    _player_up_attack[2].setw(CH_WIDTH);
-    _player_up_attack[2].seth(CH_HEIGHT);*/
-
-
 	for (unsigned int i = 0; i < 8; i++)  //The 8 directions
 	{
 		for (unsigned int j = 0; j < 3; j++) //Frames
@@ -104,7 +40,7 @@ Player_Base::Player_Base(int x, int y)
 
 	//Attack variable
 	attack_status = false; //false = 0
-	attack_style = 1; //0: nothing (future dev), 1: Melee attack (default), 2: Distant attack, 3: magic attack (future dev)
+	attack_style = 1; //0: nothing (future dev), 1: Sword attack (default), 2: Bow attack, 3: magic attack (future dev), ...
 	attack_successfull = 0; //Tells if a monster has been hit, by default no
 	hit_monster_distance = 0; //distance to the hitted monster
 
@@ -130,25 +66,7 @@ Player_Base::Player_Base(int x, int y)
     attack_collision_box.seth(CH_HEIGHT);
 
 	/****Arrow***/
-	/*Arrow_Left[0].setx(0);
-    Arrow_Left[0].sety(0);
-    Arrow_Left[0].setw(CH_WIDTH);
-    Arrow_Left[0].seth(CH_HEIGHT);
-
-	Arrow_Right[0].setx(0);
-    Arrow_Right[0].sety(CH_HEIGHT);
-    Arrow_Right[0].setw(CH_WIDTH);
-    Arrow_Right[0].seth(CH_HEIGHT);
-
-	Arrow_Down[0].setx(0);
-    Arrow_Down[0].sety(CH_HEIGHT*2);
-    Arrow_Down[0].setw(CH_WIDTH);
-    Arrow_Down[0].seth(CH_HEIGHT);
-
-	Arrow_Up[0].setx(0);
-    Arrow_Up[0].sety(CH_HEIGHT*3);
-    Arrow_Up[0].setw(CH_WIDTH);
-    Arrow_Up[0].seth(CH_HEIGHT);*/
+	//Clip
 	for (unsigned int i = 0; i < 8; i++)  //The 8 directions
 	{
 		Arrow_SpriteRect[i][0].setx( 0 );
@@ -157,7 +75,8 @@ Player_Base::Player_Base(int x, int y)
 		Arrow_SpriteRect[i][0].seth( CH_HEIGHT );
 	}
 
-	Current_Arrow_SpriteRect = Arrow_SpriteRect[CH_RIGHT][0]; //default arrow sprite rect
+	//default arrow sprite rect
+	Current_Arrow_SpriteRect = Arrow_SpriteRect[CH_RIGHT][0];
 
 
 	/****Surfaces****/
@@ -494,19 +413,13 @@ int Player_Base::attack_check_status(int current_hit_distance, int character_dam
 //Set Character Sprite Which change when attack occured
 bool Player_Base::Set_Attack_Animation_Sprite()
 {
-	const int SWORD_ATTACK_ANIM_FRAMES = 2;
-	const int BOW_ATTACK_ANIM_FRAMES = 2;
-	//
-	//ToDo: Export this to animation config file
-	//
-
 	//increase frame each time the timer is run (from 0 to 2)
 	frame++;
 
 	//reset the frame status at end of animation depending of the attack style 
 	if ( Get_Attack_Style() == 1 ) // Melee Style
 	{
-		if (frame > SWORD_ATTACK_ANIM_FRAMES)
+		if (frame > (PLAYER_SWORD_ATTACK_ANIMATION_FRAME-1) )
 			frame = 0; //reset frame anim
 
 		//assign the good sprite rect to the character sprite rect depending on the frame and the direction
@@ -514,10 +427,12 @@ bool Player_Base::Set_Attack_Animation_Sprite()
 	}
 	else if ( Get_Attack_Style() == 2 ) // Distant Style
 	{
-		if (frame > BOW_ATTACK_ANIM_FRAMES)
+		if (frame > (PLAYER_BOW_ATTACK_ANIMATION_FRAME-1) )
 			frame = 0; //reset frame anim
 		
-		//define the good character sprite (future devs: depending of the frame and the direction)
+		//
+		//TODO: define the good character sprite (future devs: depending of the frame and the direction)
+		//
 		//frame = 0;
 	}
 

@@ -28,18 +28,10 @@ class Player_Base : public Character_Base
 		RGBSurface Players_Tile_Distant;
 
 		//Character Clips Vector
-		Rect Player_Attack_Tile_Rect[8][3];
+		Rect Player_Attack_Tile_Rect[8][PLAYER_SWORD_ATTACK_ANIMATION_FRAME];
 		//
-		//TODO: move the 3 to the config file and def a number of frame for the attack anim (8 is the number of directions)
+		//TODO: newxt version, define one array per style
 		//
-		/*Rect _player_right_attack[3];
-		Rect _player_right_down_attack[3];
-		Rect _player_down_attack[3];
-		Rect _player_left_down_attack[3];
-		Rect _player_left_attack[3];
-		Rect _player_left_up_attack[3];
-		Rect _player_up_attack[3];
-		Rect _player_right_up_attack[3];*/
 
 		//animation variables
 		int frame, arrow_frame, move_status;
@@ -56,17 +48,8 @@ class Player_Base : public Character_Base
 
 		/***Arrow***/
 		RGBSurface Arrow_Tile;
-		Rect Arrow_SpriteRect[8][1];
+		Rect Arrow_SpriteRect[8][PLAYER_ARROW_ATTACK_ANIMATION_FRAME];
 		Rect Current_Arrow_SpriteRect;
-		/*Rect Arrow_Right[1];
-		Rect Arrow_Right_Down[1];
-		Rect Arrow_Down[1];
-		Rect Arrow_Left_Down[1];
-		Rect Arrow_Left[1];
-		Rect Arrow_Left_Up[1];
-		Rect Arrow_Up[1];
-		Rect Arrow_Right_Up[1];*/
-		
 
 		//Hit distance
 		int hit_monster_distance;
@@ -76,15 +59,6 @@ class Player_Base : public Character_Base
 
 		//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing and character infos
 		int attack_check_status(int current_hit_distance, int character_damage, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
-
-		//Check if the ground allow the player presence
-		//std::vector<int> check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
-
-		//Check if the environment allow the player presence
-		//std::vector<int> check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
-
-		//Check if the battlefield allow the player presence
-		//bool check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
 
 		//Battlefield rules
 		/* virtual */ int Get_BG_vs_CH_Rules(int bgType);
@@ -176,9 +150,6 @@ class Player_Base : public Character_Base
 
 		//Set Arrow info for animation
 		bool Set_Arrow_Sprite_Coordinate();
-
-		/*//blit the character on the screen
-		bool Show_Player(VideoSurface& Screen);*/
 
 		//blit the arrow on the screen
 		bool Show_Arrow(VideoSurface& Screen);

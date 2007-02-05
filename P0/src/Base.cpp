@@ -19,13 +19,17 @@ int BATF_SPRITE_W = 0, BATF_SPRITE_H = 0;
 int EMPTY_GROUND = 0, GRASS_GROUND = 0, SAND_GROUND = 0, RIVER_GROUND = 0, LAKE_GROUND = 0;
 int NOTHING_ENV_ITEM = 0, TREE_ENV_ITEM = 0, ROCK_ENV_ITEM = 0, WALL_ENV_ITEM = 0, HOUSE_ENV_ITEM = 0, BRIDGE_ENV_ITEM = 0;
 //int Humanoid = 0, Worm = 0;
-long PLAYER_MOVE_ANIMATION_INTERVAL = 0, PLAYER_MELEE_ATTACK_ANIMATION_INTERVAL = 0, PLAYER_DISTANT_ATTACK_ANIMATION_INTERVAL = 0, PLAYER_ARROW_MOVE_ANIMATION_INTERVAL = 0, MONSTERS_MOVEMENT_INTERVAL = 0, MONSTERS_GENERATION_INTERVAL = 0;
 int	GLOBAL_GAME_STATE = 3;
-
 RAGE::Logger P0_Logger("P0:"); //prefix
 string Log_Name = "P0.Log";
-
 string Window_Name = "P0";
+
+	//Anim dev config
+long PLAYER_MOVE_ANIMATION_INTERVAL = 0, PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL = 0, PLAYER_BOW_ATTACK_ANIMATION_INTERVAL = 0, PLAYER_ARROW_MOVE_ANIMATION_INTERVAL = 0;
+//int PLAYER_SWORD_ATTACK_ANIMATION_FRAME = 0, PLAYER_BOW_ATTACK_ANIMATION_FRAME = 0, PLAYER_ARROW_ATTACK_ANIMATION_FRAME = 0;
+
+	//Daemons Dev Config
+long MONSTERS_MOVEMENT_INTERVAL = 0, MONSTERS_GENERATION_INTERVAL = 0;
 
 bool Set_Config()
 {
@@ -69,15 +73,18 @@ try { //error management
 	WINDOW_MODE_2 = Ini_Manager::Get_Key_Value_From_Key_Name( Ini_Manager::Get_Option_String("Config.ini", "WINDOW_MODE_2") );
 
 	///*******DeV config*******///
+		///***Global***///
 	std::ifstream fi_dev("Config/Dev_Config.ini") ;
 	if (fi_dev.fail()) //File does not exist so create it with default values
 		Ini_Manager::Write_New_Ini_File("Config/Dev_Config.ini",
-		"#frame rate\nFRAMES_PER_SECOND = 60\n\n#level dimensions\nLEVEL_WIDTH = 1280\nLEVEL_HEIGHT = 1280\n\n#Characters sprite dimensions\nCH_WIDTH = 32\nCH_HEIGHT = 32\nMO_WIDTH = 32\nMO_HEIGHT = 32\n\n#character initial position\nCH_INITIAL_X = 192\nCH_INITIAL_Y = 224\n\n#Directions representation\nCH_RIGHT = 0\nCH_RIGHT_DOWN = 1\nCH_DOWN = 2\nCH_LEFT_DOWN = 3\nCH_LEFT = 4\nCH_LEFT_UP = 5\nCH_UP = 6\nCH_RIGHT_UP = 7\n\n#monsters level const\nINITIAL_MONSTERS = 15\nMAX_MONSTERS_SIMULTANEOUSLY = 30\n\n#status bar dimension\nSTATUS_BAR_H = 32\n\n#Life Bar dimensions\nLIFE_BAR_WIDTH = 32\nLIFE_BAR_HEIGHT = 6\n\n#Battlefield sprite dimensions\nBATF_SPRITE_W = 32\nBATF_SPRITE_H = 32\n\n#BackGround Types\nEMPTY_GROUND = 00\nGRASS_GROUND = 01\nSAND_GROUND = 10\nRIVER_GROUND = 20\nLAKE_GROUND = 25\n\n#Environment Types\nNOTHING_ENV_ITEM = 00;\nTREE_ENV_ITEM = 01;\nROCK_ENV_ITEM = 10;\nWALL_ENV_ITEM = 20;\nHOUSE_ENV_ITEM = 30;\nBRIDGE_ENV_ITEM = 40;\n\n#Animations (ms)\nPLAYER_MOVE_ANIMATION_INTERVAL = 150\nPLAYER_MELEE_ATTACK_ANIMATION_INTERVAL = 130\nPLAYER_DISTANT_ATTACK_ANIMATION_INTERVAL = 130\nPLAYER_ARROW_MOVE_ANIMATION_INTERVAL = 75\nMONSTERS_MOVEMENT_INTERVAL = 1000\nMONSTERS_GENERATION_INTERVAL = 5000\n\n#State of the game at the begining: 'ingame' state\nGLOBAL_GAME_STATE = 3\n\n#Name of the log file\nLog_Name = \"P0_Log.log\"\n\nWindow_Name = \"Project 0 - 2D v0.03\"\n"
+		"#frame rate\nFRAMES_PER_SECOND = 60\n\n#Windows\nWindow_Name = \"Project 0 - 2D v0.03\"\n\n#level dimensions\nLEVEL_WIDTH = 1280\nLEVEL_HEIGHT = 1280\n\n#Characters sprite dimensions\nCH_WIDTH = 32\nCH_HEIGHT = 32\nMO_WIDTH = 32\nMO_HEIGHT = 32\n\n#character initial position\nCH_INITIAL_X = 192\nCH_INITIAL_Y = 224\n\n#Directions representation\nCH_RIGHT = 0\nCH_RIGHT_DOWN = 1\nCH_DOWN = 2\nCH_LEFT_DOWN = 3\nCH_LEFT = 4\nCH_LEFT_UP = 5\nCH_UP = 6\nCH_RIGHT_UP = 7\n\n#monsters level const\nINITIAL_MONSTERS = 15\nMAX_MONSTERS_SIMULTANEOUSLY = 30\n\n#status bar dimension\nSTATUS_BAR_H = 32\n\n#Life Bar dimensions\nLIFE_BAR_WIDTH = 32\nLIFE_BAR_HEIGHT = 6\n\n#Battlefield sprite dimensions\nBATF_SPRITE_W = 32\nBATF_SPRITE_H = 32\n\n#BackGround Types\nEMPTY_GROUND = 00\nGRASS_GROUND = 01\nSAND_GROUND = 10\nRIVER_GROUND = 20\nLAKE_GROUND = 25\n\n#Environment Types\nNOTHING_ENV_ITEM = 00;\nTREE_ENV_ITEM = 01;\nROCK_ENV_ITEM = 10;\nWALL_ENV_ITEM = 20;\nHOUSE_ENV_ITEM = 30;\nBRIDGE_ENV_ITEM = 40;\n\n#State of the game at the begining: 'ingame' state\nGLOBAL_GAME_STATE = 3\n\n#Name of the log file\nLog_Name = \"P0_Log.log\""
 			);
 	fi_dev.close();
 	
 	std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "FRAMES_PER_SECOND") ) >> (const int)FRAMES_PER_SECOND;
 	
+	Window_Name = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Window_Name");
+
 	std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LEVEL_WIDTH") ) >> (const int)LEVEL_WIDTH;
 	std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LEVEL_HEIGHT") ) >> (const int)LEVEL_HEIGHT;
 	
@@ -125,13 +132,6 @@ try { //error management
 	
 	//std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Humanoid") ) >> (const int)Humanoid;
 	//std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Worm") ) >> (const int)Worm;
-	//
-	std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "PLAYER_MOVE_ANIMATION_INTERVAL") ) >> (const long)PLAYER_MOVE_ANIMATION_INTERVAL;
-	std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "PLAYER_MELEE_ATTACK_ANIMATION_INTERVAL") ) >> (const long)PLAYER_MELEE_ATTACK_ANIMATION_INTERVAL;
-	std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "PLAYER_DISTANT_ATTACK_ANIMATION_INTERVAL") ) >> (const long)PLAYER_DISTANT_ATTACK_ANIMATION_INTERVAL;
-	std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "PLAYER_ARROW_MOVE_ANIMATION_INTERVAL") ) >> (const long)PLAYER_ARROW_MOVE_ANIMATION_INTERVAL;
-	std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "MONSTERS_MOVEMENT_INTERVAL") ) >> (const long)MONSTERS_MOVEMENT_INTERVAL;
-	std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "MONSTERS_GENERATION_INTERVAL") ) >> (const long)MONSTERS_GENERATION_INTERVAL;
 
 	std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "GLOBAL_GAME_STATE") ) >> (const int)GLOBAL_GAME_STATE;
 
@@ -139,7 +139,36 @@ try { //error management
 	//define log filename
 	P0_Logger.enableFileLog(Log_Name);
 
-	Window_Name = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Window_Name");
+		
+		///***Animations***///
+	std::ifstream fi_anim("Config/Anim_Config.ini") ;
+	if (fi_anim.fail()) //File does not exist so create it with default values
+		Ini_Manager::Write_New_Ini_File("Config/Anim_Config.ini",
+		"#Animations timers (ms)\nPLAYER_MOVE_ANIMATION_INTERVAL = 150\nPLAYER_SWORD_ATTACK_ANIMATION_INTERVAL = 130\nPLAYER_BOW_ATTACK_ANIMATION_INTERVAL = 130\nPLAYER_ARROW_MOVE_ANIMATION_INTERVAL = 75\n\n#Animations frame numbers\nPLAYER_SWORD_ATTACK_ANIMATION_FRAME = 3\nPLAYER_BOW_ATTACK_ANIMATION_FRAME = 3\nPLAYER_ARROW_ATTACK_ANIMATION_FRAME = 1\n"
+			);
+	fi_anim.close();
+
+	std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_MOVE_ANIMATION_INTERVAL") ) >> (const long)PLAYER_MOVE_ANIMATION_INTERVAL;
+	std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL") ) >> (const long)PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL;
+	std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_BOW_ATTACK_ANIMATION_INTERVAL") ) >> (const long)PLAYER_BOW_ATTACK_ANIMATION_INTERVAL;
+	std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_ARROW_MOVE_ANIMATION_INTERVAL") ) >> (const long)PLAYER_ARROW_MOVE_ANIMATION_INTERVAL;
+
+	//std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_SWORD_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_SWORD_ATTACK_ANIMATION_FRAME;
+	//std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_BOW_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_BOW_ATTACK_ANIMATION_FRAME;
+	//std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_ARROW_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_ARROW_ATTACK_ANIMATION_FRAME;
+	
+		///***Deamons***///
+	std::ifstream fi_daemons("Config/Daemons_Config.ini") ;
+	if (fi_daemons.fail()) //File does not exist so create it with default values
+		Ini_Manager::Write_New_Ini_File("Config/Daemons_Config.ini",
+		"#Daemons Intervals\nMONSTERS_MOVEMENT_INTERVAL = 1000\nMONSTERS_GENERATION_INTERVAL = 5000"
+			);
+	fi_daemons.close();
+
+	std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "MONSTERS_MOVEMENT_INTERVAL") ) >> (const long)MONSTERS_MOVEMENT_INTERVAL;
+	std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "MONSTERS_GENERATION_INTERVAL") ) >> (const long)MONSTERS_GENERATION_INTERVAL;
+
+	
 
 
 	return true; //no error
