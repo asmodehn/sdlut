@@ -26,7 +26,7 @@ string Window_Name = "P0";
 
 	//Anim dev config
 long PLAYER_MOVE_ANIMATION_INTERVAL = 0, PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL = 0, PLAYER_BOW_ATTACK_ANIMATION_INTERVAL = 0, PLAYER_ARROW_MOVE_ANIMATION_INTERVAL = 0;
-//int PLAYER_SWORD_ATTACK_ANIMATION_FRAME = 0, PLAYER_BOW_ATTACK_ANIMATION_FRAME = 0, PLAYER_ARROW_ATTACK_ANIMATION_FRAME = 0;
+int PLAYER_SWORD_ATTACK_ANIMATION_FRAME = 0, PLAYER_BOW_ATTACK_ANIMATION_FRAME = 0, PLAYER_ARROW_ATTACK_ANIMATION_FRAME = 0;
 
 	//Daemons Dev Config
 long MONSTERS_MOVEMENT_INTERVAL = 0, MONSTERS_GENERATION_INTERVAL = 0;
@@ -153,9 +153,9 @@ try { //error management
 	std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_BOW_ATTACK_ANIMATION_INTERVAL") ) >> (const long)PLAYER_BOW_ATTACK_ANIMATION_INTERVAL;
 	std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_ARROW_MOVE_ANIMATION_INTERVAL") ) >> (const long)PLAYER_ARROW_MOVE_ANIMATION_INTERVAL;
 
-	//std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_SWORD_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_SWORD_ATTACK_ANIMATION_FRAME;
-	//std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_BOW_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_BOW_ATTACK_ANIMATION_FRAME;
-	//std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_ARROW_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_ARROW_ATTACK_ANIMATION_FRAME;
+	std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_SWORD_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_SWORD_ATTACK_ANIMATION_FRAME;
+	std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_BOW_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_BOW_ATTACK_ANIMATION_FRAME;
+	std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_ARROW_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_ARROW_ATTACK_ANIMATION_FRAME;
 	
 		///***Deamons***///
 	std::ifstream fi_daemons("Config/Daemons_Config.ini") ;

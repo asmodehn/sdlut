@@ -18,20 +18,28 @@ Player_Base::Player_Base(int x, int y)
 	//Initial moving status
 	moving_status = false;
 
+	//Rect Player_Attack_Tile_Rect[8][PLAYER_SWORD_ATTACK_ANIMATION_FRAME];
+	Player_Attack_Tile_Rect = new std::vector<Rect>;
+	Rect _temp_ch_rect;
 	//Character Clips definition
 	for (unsigned int i = 0; i < 8; i++)  //The 8 directions
 	{
-		for (unsigned int j = 0; j < 3; j++) //Frames
+		for (unsigned int j = 0; j < PLAYER_SWORD_ATTACK_ANIMATION_FRAME; j++) //Frames
 		{
-			Player_Attack_Tile_Rect[i][j].setx( CH_WIDTH * j);
-			Player_Attack_Tile_Rect[i][j].sety( CH_HEIGHT*i );
-			Player_Attack_Tile_Rect[i][j].setw(CH_WIDTH);
-			Player_Attack_Tile_Rect[i][j].seth(CH_HEIGHT);
+			_temp_ch_rect.setx( CH_WIDTH * j);
+			_temp_ch_rect.sety( CH_HEIGHT*i );
+			_temp_ch_rect.setw(CH_WIDTH);
+			_temp_ch_rect.seth(CH_HEIGHT);
+			Player_Attack_Tile_Rect->push_back(_temp_ch_rect);
+			//->at(i*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + j)
+			//
+			//TODO find a way to make insert by iterator insted of pushback
+			//
 		}
 	}
 
 	//Assign the right sprite to the player by default
-	Characters_SpriteRect = Player_Attack_Tile_Rect[CH_RIGHT][0];
+	Characters_SpriteRect = Player_Attack_Tile_Rect->at(CH_RIGHT*PLAYER_SWORD_ATTACK_ANIMATION_FRAME);
 
 	//Initialize animation variables
     frame = 0;  // for animation
@@ -67,16 +75,23 @@ Player_Base::Player_Base(int x, int y)
 
 	/****Arrow***/
 	//Clip
+	Arrow_SpriteRect = new std::vector<Rect>;
+	Rect _temp_arrow_rect;
 	for (unsigned int i = 0; i < 8; i++)  //The 8 directions
 	{
-		Arrow_SpriteRect[i][0].setx( 0 );
-		Arrow_SpriteRect[i][0].sety( CH_HEIGHT*i );
-		Arrow_SpriteRect[i][0].setw( CH_WIDTH );
-		Arrow_SpriteRect[i][0].seth( CH_HEIGHT );
+		_temp_arrow_rect.setx(0);
+		_temp_arrow_rect.sety(CH_HEIGHT*i);
+		_temp_arrow_rect.setw(CH_WIDTH);
+		_temp_arrow_rect.seth(CH_HEIGHT);
+		Arrow_SpriteRect->push_back(_temp_arrow_rect);
+		//->at(i*PLAYER_ARROW_ATTACK_ANIMATION_FRAME)
+		//
+		//TODO find a way to make insert by iterator insted of pushback
+		//
 	}
 
 	//default arrow sprite rect
-	Current_Arrow_SpriteRect = Arrow_SpriteRect[CH_RIGHT][0];
+	Current_Arrow_SpriteRect = Arrow_SpriteRect->at(CH_RIGHT*PLAYER_ARROW_ATTACK_ANIMATION_FRAME);
 
 
 	/****Surfaces****/
@@ -253,8 +268,8 @@ try {
 		}
 		
 		//Good sprites for the direction
-		Characters_SpriteRect = Player_Attack_Tile_Rect[move_status][0];
-		Current_Arrow_SpriteRect = Arrow_SpriteRect[move_status][0];
+		Characters_SpriteRect = Player_Attack_Tile_Rect->at(move_status*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + 0);
+		Current_Arrow_SpriteRect = Arrow_SpriteRect->at(move_status*PLAYER_ARROW_ATTACK_ANIMATION_FRAME + 0);
 
 		//Check if we are changing direction
 		if ( old_move_status != move_status )
@@ -423,7 +438,7 @@ bool Player_Base::Set_Attack_Animation_Sprite()
 			frame = 0; //reset frame anim
 
 		//assign the good sprite rect to the character sprite rect depending on the frame and the direction
-		Characters_SpriteRect = Player_Attack_Tile_Rect[move_status][frame];
+		Characters_SpriteRect = Player_Attack_Tile_Rect->at(move_status*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + frame);
 	}
 	else if ( Get_Attack_Style() == 2 ) // Distant Style
 	{
