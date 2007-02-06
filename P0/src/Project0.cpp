@@ -199,6 +199,11 @@ try { //global error management
 	myKeyboardInput->Set_Esc_Menu( EscMenu );
 	myRender_Engine->Set_Esc_Menu( EscMenu );
 
+	//Create the victory screen
+	Victory_Screen* VictoryScreen = new Victory_Screen();
+	myKeyboardInput->Set_Victory_Screen( VictoryScreen );
+	myRender_Engine->Set_Victory_Screen(VictoryScreen);
+
 	//Inform the keyboard of the engine instance
 	myKeyboardInput->Set_Render_Engine(myRender_Engine);
 
@@ -213,6 +218,11 @@ try { //global error management
 	Timer<Daemons>* myMonster_Factory_Monsters_Generation_Timer = new Timer<Daemons>; //set definition
 	myMonster_Factory_Monsters_Generation_Timer->setInterval( MONSTERS_GENERATION_INTERVAL ); //set interval
 	myMonster_Factory_Monsters_Generation_Timer->setCallback(myDaemons,&Daemons::Generate_Monsters, (void*)NULL); //set callback
+
+	//Manage score
+	Timer<Daemons>* myScore = new Timer<Daemons>; //set definition
+	myScore->setInterval( 1000 / FRAMES_PER_SECOND ); //set interval
+	myScore->setCallback(myDaemons,&Daemons::Score, (void*)NULL); //set callback
 
 	//inform the keyboard of daemons process instance
 	myKeyboardInput->Set_Daemons(myDaemons);
@@ -231,9 +241,16 @@ try { //global error management
 	App::getInstance().getMixer()->playChannel(GlobalMusic_Chan);
 #endif
 
+	/*******Score Management********/
+	FiNiSH_TiME = (unsigned)time( NULL );
+
 	/********Start Daemons Process********/
 	myMonster_Factory_Monsters_Moves_Timer->start(); //monsters movement
 	myMonster_Factory_Monsters_Generation_Timer->start(); //monsters generation
+	myScore->start(); //Score
+
+	/*******Score Management********/
+	FiNiSH_TiME = (unsigned)time( NULL );
 
 	/********Launch the mainloop that will use the render method of the Engine and so will render the screen and will manage all events********/
 	App::getInstance().getWindow()->mainLoop(FRAMES_PER_SECOND);

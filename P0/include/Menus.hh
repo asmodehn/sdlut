@@ -40,4 +40,16 @@ class Escape_Menu
 
 };
 
+//Victory screen
+class Victory_Screen
+{
+	private:
+		
+	public:
+		//Save Victory Time
+		bool Save_Time();
+		//show victory screen
+		bool Show(VideoSurface& Screen);
+};
+
 #endif

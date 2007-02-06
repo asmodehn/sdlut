@@ -1,6 +1,10 @@
 #include "Base.hh"
 
-//Default def to solve extern's linker pb
+//globals
+int ALiVE_MONSTERS = 0;
+int FiNiSH_TiME = 0;
+
+//Default config def to solve extern's linker pb
 	//Default user Cfg
 int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600, SCREEN_BPP = 16, CURRENT_SCREEN_WIDTH = 800, CURRENT_SCREEN_HEIGHT = 600, CURRENT_SCREEN_BPP = 32;
 int UP_1 = 0, DOWN_1 = 0, LEFT_1 = 0, RIGHT_1 = 0, ATTACK_1 = 0, CHANGE_ATTACK_MODE_1 = 0, MENU_CALL_1 = 0, WINDOW_MODE_1 = 0;
@@ -228,4 +232,46 @@ int random(int min, int max)
 {
 	//srand( (unsigned)time( NULL ) );
 	return min + (rand()%(max+1-min));
+}
+
+std::string Int_To_String(int to_convert)
+{
+	std::stringstream s;
+    if (s << to_convert) // conversion worked
+        return s.str();
+
+	//failed
+	return NULL;
+}
+
+//Style the time to "Xd Xh Xmin Xs"
+std::string Time_Style(int time)
+{
+	int day=0, hour=0, minute=0, second=0;
+	
+	if (time < 60)
+	{
+		return Int_To_String(time) + "s";
+	} else if ( (time >= 60) && (time < 3600) ) 
+	{
+		minute = (int)(time / 60);
+		second = time - (minute*60);
+		return Int_To_String(minute) + "mn " + Int_To_String(second) + "s";
+	} else if ( (time >=3600) && (time < 86400) )
+	{
+		hour = (int)(time / 3600);
+		minute = (int)( (time - (hour*3600))/60 );
+		second = time - (hour*3600) - (minute*60);
+		return Int_To_String(hour) + "hr " + Int_To_String(minute) + "mn " + Int_To_String(second) + "s";
+	} else if (time >=86400)
+	{
+		day = (int)(time / 86400);
+		hour = (int)( (time - (day*86400))/3600);
+		minute = (int) ( (time -(day*86400) -(hour*3600))/60);
+		second = time -(day*86400) -(hour*3600) -(minute*60);
+		return Int_To_String(day) + "day " + Int_To_String(hour) + "hr " + Int_To_String(minute) + "mn " + Int_To_String(second) + "s";
+
+	}
+
+	return NULL; //error
 }

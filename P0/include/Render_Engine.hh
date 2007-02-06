@@ -19,6 +19,7 @@ private:
 	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton;
 	Monster_Factory<Monster_Worm>* Monster_Factory_Worm;
 	Escape_Menu* EscMenu;
+	Victory_Screen* VictoryScreen;
 
 	
 public:
@@ -35,6 +36,10 @@ public:
 	inline void Set_Esc_Menu(Escape_Menu* newEsc_Menu)
 	{
 		EscMenu = newEsc_Menu;
+	}
+	inline void Set_Victory_Screen(Victory_Screen* newVictory_Screen)
+	{
+		VictoryScreen = newVictory_Screen;
 	}
 	inline void Set_BackGround(BackGround* newBackGround)
 	{

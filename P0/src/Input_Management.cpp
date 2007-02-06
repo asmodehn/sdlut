@@ -212,7 +212,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					myPlayer->Set_xVel(0);
 		}
 	}
-	//Escape menu when ingame (Paused Character While The world Continue to live)
+	//Escape menu when ingame (Paused Character While The world Continue To Live)
 	else if (GLOBAL_GAME_STATE == 4)
 	{
 		if (pressed) //Key pressed
@@ -263,6 +263,23 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					myEsc_Menu->Set_ValidatedItemId( myEsc_Menu->Get_SelectedItemId() );
 					//Manage esc menu validation: leave the game if return is true
 					Set_quitRequested( myEsc_Menu->Manage_Validation() );
+					break;
+			}
+		}
+	}
+	//Victory: Nothing work anymore we'll simply draw the score than quit.
+	else if (GLOBAL_GAME_STATE == 5)
+	{
+		if (pressed) //Key pressed
+		{
+			switch( s.getKey() )
+			{
+				case KReturn:
+				case KEscape:
+					//Save time in file
+					myVictory_Screen->Save_Time();
+					//Quit
+					Set_quitRequested(true);
 					break;
 			}
 		}

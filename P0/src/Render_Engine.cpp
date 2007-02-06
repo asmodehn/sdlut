@@ -91,6 +91,14 @@ void Render_Engine::render(VideoSurface & screen) const
 	      P0_Logger << " Display Esc Menu Failed " << std::endl;    
 	    }
 	}
+
+	if (GLOBAL_GAME_STATE == 5) {
+		//Show Vicotry Screen menu
+		if( VictoryScreen->Show(screen) == false )
+		{ 
+	      P0_Logger << " Display Victory Screen Failed " << std::endl;    
+	    }
+	}
 	
 	//Auto Flip by the mainloop here
 

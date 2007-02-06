@@ -17,10 +17,15 @@ Daemons::Daemons()
 unsigned int Daemons::Move_Monsters(unsigned int interval, void* args)
 {
 try {
-	Monster_Factory_Skeleton->Move_Monsters( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector );
-	Monster_Factory_Worm->Move_Monsters( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector );
-	P0_Logger << " Move Monsters " << std::endl;
-	return interval; // loop
+	if (GLOBAL_GAME_STATE != 5 )//victory 
+	{
+		Monster_Factory_Skeleton->Move_Monsters( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector );
+		Monster_Factory_Worm->Move_Monsters( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector );
+		P0_Logger << " Move Monsters " << std::endl;
+		return interval; // loop
+	} else { //Victory: end of timer
+		return 0;
+	}
 } catch (...) {
 	P0_Logger << " Move Monsters Daemon Failed " << std::endl;
 	return interval; // loop
@@ -31,14 +36,19 @@ try {
 unsigned int Daemons::Generate_Monsters(unsigned int interval, void* args)
 {
 try {
-	//Skeletons
-	Global_Monster_Vector->at(0) = Monster_Factory_Skeleton->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
-	//->swap( 
-	//Worms
-	Global_Monster_Vector->at(1) = Monster_Factory_Worm->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
+	if (GLOBAL_GAME_STATE != 5 )//victory 
+	{
+		//Skeletons
+		Global_Monster_Vector->at(0) = Monster_Factory_Skeleton->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
+		//->swap( 
+		//Worms
+		Global_Monster_Vector->at(1) = Monster_Factory_Worm->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
 
-	P0_Logger << " Generate Monsters " << std::endl;
-	return interval; // loop
+		P0_Logger << " Generate Monsters " << std::endl;
+		return interval; // loop
+	} else { //Victory: end of timer
+		return 0;
+	}
 } catch (...) {
 	P0_Logger << " Generate Monsters Daemon Failed " << std::endl;
 	return interval; // loop
@@ -108,6 +118,28 @@ try {
 		Global_Monster_Vector->at(1) = Monster_Factory_Worm->Remove_Dead_Monsters();
 	}
 	myPlayer->Set_Attack_Status(false); //end of attack
+	return 0; //end of timer
+	
+} catch (...) {
+	P0_Logger << " Player's Arrow Animation Timer Failed " << std::endl;
+	return 0; //end of timer
+}
+}
+
+//Callback method that will manage score
+unsigned int Daemons::Score(unsigned int interval, void* args)
+{
+try {
+	while (ALiVE_MONSTERS > 0)
+		return interval;
+
+	FiNiSH_TiME = (unsigned)time( NULL ) - FiNiSH_TiME;
+
+	GLOBAL_GAME_STATE = 5;
+	//
+	//todo: show score
+	//
+
 	return 0; //end of timer
 	
 } catch (...) {

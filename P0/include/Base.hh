@@ -109,7 +109,7 @@ extern int BRIDGE_ENV_ITEM;
 //Monsters ID which defined type of monsters (used in coordination with battlefield cutting)
 enum Monsters_Type {Humanoid = 1, Worm = 2};
 
-//This variable defined the global game state 1: Initial Menu (future dev), 2: Character Creation/Selection (future dev), 3: Ingame, 4: On Escape menu
+//This variable defined the global game state 1: Initial Menu (future dev), 2: Character Creation/Selection (future dev), 3: Ingame, 4: On Escape menu, 5: Victory
 extern int GLOBAL_GAME_STATE;
 
 //Logger windows
@@ -130,12 +130,23 @@ extern int PLAYER_ARROW_ATTACK_ANIMATION_FRAME;
 extern long MONSTERS_MOVEMENT_INTERVAL;
 extern long MONSTERS_GENERATION_INTERVAL;
 
+///*******Base variable & methods*******///
+extern int ALiVE_MONSTERS;
+extern int FiNiSH_TiME;
+
 //Define configuration from files or set the default config
 bool Set_Config();
 
 //To check colission (small beginning of a physical engine^^)
 bool check_collision(Rect A, Rect B);
+
 //random function
 int random(int min, int max);
+
+//Convert Int To String
+std::string Int_To_String(int to_convert);
+
+//Style the time to "Xd Xh Xmin Xs"
+std::string Time_Style(int time);
 
 #endif

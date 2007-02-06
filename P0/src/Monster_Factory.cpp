@@ -79,6 +79,9 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters
 
 		//Store the monster at the end of the vector
 		Monster_Vector->push_back(newMonster);
+		
+		//Add 1 to the number of monsters present
+		ALiVE_MONSTERS++;
 	}
 
 	return Monster_Vector;
@@ -143,6 +146,9 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Remove_Dead_Mon
 			//remove the monster from the scope (only the ième monster at a time)
 			Monster_Vector->erase(Monster_Vector->begin()+i, Monster_Vector->begin()+i+1);
 
+			//remove 1 to the number of monsters present
+			ALiVE_MONSTERS--;
+
 			//Then go back of one in the loop because elements has been shifted
 			i--;
 		}
@@ -179,6 +185,9 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Mo
 
 		//Store the monster at the end of the vector
 		Monster_Vector->push_back(newMonster);
+
+		//Add 1 to the number of monsters present
+		ALiVE_MONSTERS++;
 	}
 	
 	//Finally return the new Vector wth eventual new monsters

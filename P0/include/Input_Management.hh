@@ -19,6 +19,7 @@ class KeyboardInput : public Keyboard
 		//Variables designed to be defined externaly
 		Player_Base* myPlayer; //The Character Definition
 		Escape_Menu* myEsc_Menu; //The escape menu definition
+		Victory_Screen* myVictory_Screen; //The victory screen def
 		std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector; //Vector which will contains all BackGround type and clip
 		std::vector<BattleField_Sprite*>* Environment_Sprite_Vector; //Vector which will contains all Environment items type and clip
 		Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton; //A factory of Monster Skeletons
@@ -45,6 +46,10 @@ class KeyboardInput : public Keyboard
 		inline void Set_Esc_Menu(Escape_Menu* newEsc_Menu)
 		{
 			myEsc_Menu = newEsc_Menu;
+		}
+		inline void Set_Victory_Screen(Victory_Screen* newVictory_Screen)
+		{
+			myVictory_Screen = newVictory_Screen;
 		}
 		inline void Set_BackGround_Sprite_Vector(std::vector<BattleField_Sprite*>* newBackGround_Sprite_Vector)
 		{
