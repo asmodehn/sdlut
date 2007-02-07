@@ -200,12 +200,7 @@ bool Monster_Base::check_cutting_allow_monster(int x, int y, std::vector<BattleF
 //Calculate the current life of the monster depending on damage, malus, etc
 bool Monster_Base::Calculate_Current_Life(int opponent_damage = 0)
 {
-	//
-	//TODO: define armor inside the character's constructor or monster's constructor
-	//
-
-	int armor = 0;
-	int current_damage = (opponent_damage - armor); //TODO: Set the real damage formula
+	int current_damage = (opponent_damage - Get_Current_Armor()); //TODO: Set the real damage formula
 
 	if ( (current_damage) < 0) //in case damage dont exceed armor value then set it to 0: no damage
 		current_damage = 0;
@@ -227,7 +222,7 @@ bool Monster_Base::Show_Life_Bar(Rect Camera, VideoSurface& Screen)
 	if (_current_life < 0)
 		_current_life = 0;
 
-	current_life_bar_rect.setw( (LIFE_BAR_WIDTH * _current_life / MAX_LIFE) );
+	current_life_bar_rect.setw( (LIFE_BAR_WIDTH * _current_life / BASE_LIFE) );
 	//
 	//ToDO: set get life bar width from config file Dev_Config.ini
 	//

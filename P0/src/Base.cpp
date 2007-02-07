@@ -166,7 +166,7 @@ try { //error management
 	std::ifstream fi_daemons("Config/Daemons_Config.ini") ;
 	if (fi_daemons.fail()) //File does not exist so create it with default values
 		Ini_Manager::Write_New_Ini_File("Config/Daemons_Config.ini",
-		"#Daemons Intervals\nMONSTERS_MOVEMENT_INTERVAL = 1000\nMONSTERS_GENERATION_INTERVAL = 20000"
+		"#Daemons Intervals\nMONSTERS_MOVEMENT_INTERVAL = 1000\nMONSTERS_GENERATION_INTERVAL = 75000"
 			);
 	fi_daemons.close();
 

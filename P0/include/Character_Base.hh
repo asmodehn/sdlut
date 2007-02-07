@@ -21,8 +21,9 @@ protected:
 	//The velocity of the character
 	int xVel, yVel;
 
-	//The life and max life of the character
-	int MAX_LIFE, Current_Life;
+	//Characteristics of the character
+	int BASE_LIFE, Current_Life;
+	int BASE_ARMOR, Current_Armor;
 
 	//Tile & Clip
 	RGBSurface Characters_Tile;
@@ -101,6 +102,14 @@ public:
 	inline int Get_Current_Life()
 	{
 		return Current_Life;
+	}
+	inline void Set_Current_Armor(int new_Current_Armor)
+	{
+		Current_Armor = new_Current_Armor;
+	}
+	inline int Get_Current_Armor()
+	{
+		return Current_Armor;
 	}
 
 	//Constructor
