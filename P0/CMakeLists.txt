@@ -209,32 +209,35 @@ ADD_EXECUTABLE(
 
 #adding datas to have them in generated projects
 	#Battlefield
-		${Project_0_SOURCE_DIR}/Datas/Battlefield/BackGround_Map.txt
-		${Project_0_SOURCE_DIR}/Datas/Battlefield/Environment_Map.txt
-		${Project_0_SOURCE_DIR}/Datas/Battlefield/Grass.png
+		"${Project_0_SOURCE_DIR}/Datas/Battlefield/BackGround_Map.txt"
+		"${Project_0_SOURCE_DIR}/Datas/Battlefield/Environment_Map.txt"
+		"${Project_0_SOURCE_DIR}/Datas/Battlefield/Grass.png"
 		"${Project_0_SOURCE_DIR}/Datas/Battlefield/Houses Tileset.png"
-		${Project_0_SOURCE_DIR}/Datas/Battlefield/Rock.png
+		"${Project_0_SOURCE_DIR}/Datas/Battlefield/Rock.png"
 		"${Project_0_SOURCE_DIR}/Datas/Battlefield/Sand Tileset.png"
 		"${Project_0_SOURCE_DIR}/Datas/Battlefield/Trees Tileset.png"
 		"${Project_0_SOURCE_DIR}/Datas/Battlefield/tankbrigade.bmp"
-		${Project_0_SOURCE_DIR}/Datas/Battlefield/Wall.png
-		${Project_0_SOURCE_DIR}/Datas/Battlefield/Water.png
+		"${Project_0_SOURCE_DIR}/Datas/Battlefield/Wall.png"
+		"${Project_0_SOURCE_DIR}/Datas/Battlefield/Water.png"
 
 	#Characters
-		${Project_0_SOURCE_DIR}/Datas/Characters/Character_Archer.png
-		${Project_0_SOURCE_DIR}/Datas/Characters/Character_Fighter.png
-		${Project_0_SOURCE_DIR}/Datas/Characters/Monsters5.bmp
+		"${Project_0_SOURCE_DIR}/Datas/Characters/Character_Archer.png"
+		"${Project_0_SOURCE_DIR}/Datas/Characters/Character_Fighter.png"
 		"${Project_0_SOURCE_DIR}/Datas/Characters/Life Bar Tile.bmp"
+		"${Project_0_SOURCE_DIR}/Datas/Characters/Skeletons Tile.bmp"
+		"${Project_0_SOURCE_DIR}/Datas/Characters/Skeletons.ini"
+		"${Project_0_SOURCE_DIR}/Datas/Characters/Worms Tile.bmp"
+		"${Project_0_SOURCE_DIR}/Datas/Characters/Worms.ini"
 
 	#Fonts
-		${Project_0_SOURCE_DIR}/Datas/Fonts/SlimSansSerif.ttf
+		"${Project_0_SOURCE_DIR}/Datas/Fonts/SlimSansSerif.ttf"
 
 	#Interface
-		${Project_0_SOURCE_DIR}/Datas/Interface/LeaveMenu_NoSelected.png
-		${Project_0_SOURCE_DIR}/Datas/Interface/LeaveMenu_YesSelected.png	
+		"${Project_0_SOURCE_DIR}/Datas/Interface/LeaveMenu_NoSelected.png"
+		"${Project_0_SOURCE_DIR}/Datas/Interface/LeaveMenu_YesSelected.png"	
 
 	#Items
-		${Project_0_SOURCE_DIR}/Datas/Items/Arrow.png
+		"${Project_0_SOURCE_DIR}/Datas/Items/Arrow.png"
 
 	#Movies
 
@@ -243,8 +246,8 @@ ADD_EXECUTABLE(
 		"${Project_0_SOURCE_DIR}/Datas/Musics/Temple.wav"
 
 	#SFXs
-		${Project_0_SOURCE_DIR}/Datas/SFXs/esc_menu_sound.wav
-		${Project_0_SOURCE_DIR}/Datas/SFXs/null.wav
+		"${Project_0_SOURCE_DIR}/Datas/SFXs/esc_menu_sound.wav"
+		"${Project_0_SOURCE_DIR}/Datas/SFXs/null.wav"
 
 #adding spec to have it in generated projects
 		"${Project_0_SOURCE_DIR}/Specifs/2D/2D Design v0.03.odt"
