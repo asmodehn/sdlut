@@ -2,6 +2,7 @@
 
 //globals
 int ALiVE_MONSTERS = 0;
+int KiLLED_MONSTERS = 0;
 int FiNiSH_TiME = 0;
 
 //Default config def to solve extern's linker pb
@@ -165,7 +166,7 @@ try { //error management
 	std::ifstream fi_daemons("Config/Daemons_Config.ini") ;
 	if (fi_daemons.fail()) //File does not exist so create it with default values
 		Ini_Manager::Write_New_Ini_File("Config/Daemons_Config.ini",
-		"#Daemons Intervals\nMONSTERS_MOVEMENT_INTERVAL = 1000\nMONSTERS_GENERATION_INTERVAL = 5000"
+		"#Daemons Intervals\nMONSTERS_MOVEMENT_INTERVAL = 1000\nMONSTERS_GENERATION_INTERVAL = 20000"
 			);
 	fi_daemons.close();
 

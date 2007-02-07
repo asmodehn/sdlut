@@ -79,11 +79,17 @@ void Render_Engine::render(VideoSurface & screen) const
     }																 
 
 	//Display attack msg
-	if( myPlayer->Display_Attack_Msg(screen) == false )
+	if( myPlayer->Show_Attack_Msg(screen) == false )
 	{ 
       P0_Logger << " Display Attack Msg Render Failed " << std::endl;    
     }
 
+	//Display monsters numbers
+	if( VictoryScreen->Show_Monsters_Stats(screen) == false )
+	{ 
+      P0_Logger << " Display Monsters Stats Render Failed " << std::endl;    
+    }
+	
 	if (GLOBAL_GAME_STATE == 4) {
 		//Show Escape menu
 		if( EscMenu->Show_Menu(screen) == false )

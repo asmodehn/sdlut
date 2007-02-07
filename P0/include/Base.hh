@@ -132,6 +132,7 @@ extern long MONSTERS_GENERATION_INTERVAL;
 
 ///*******Base variable & methods*******///
 extern int ALiVE_MONSTERS;
+extern int KiLLED_MONSTERS;
 extern int FiNiSH_TiME;
 
 //Define configuration from files or set the default config

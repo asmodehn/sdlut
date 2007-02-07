@@ -49,32 +49,63 @@ bool Escape_Menu::Manage_Validation()
 
 
 ///***ViCTORY SCREEN***///
+//Constructor
+Victory_Screen::Victory_Screen()
+{
+	//Time
+	Time_Font = new Font("Datas/Fonts/SlimSansSerif.ttf", 20);
+	//Monsters Stats
+	Monsters_Stats_Font = new Font("Datas/Fonts/SlimSansSerif.ttf", 14);
+}
 //show victory screen
 bool Victory_Screen::Show(VideoSurface& Screen)
 {
+try {
 	//Show Victory Screen
 	Screen.blit(RGBSurface("Datas/Interface/Victory Screen.png"), Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
 	
 	//Show Time
-	Font Time_Font("Datas/Fonts/SlimSansSerif.ttf", 20);
-	RGBSurface time_msg = *Time_Font.render(Time_Style(FiNiSH_TiME), Color(0, 0, 0), Font::Shaded, Color(0xFF, 0xFF, 0xFF));
+	time_msg = *Time_Font->render(Time_Style(FiNiSH_TiME), Color(0, 0, 0), Font::Shaded, Color(0xFF, 0xFF, 0xFF));
 	Screen.blit(time_msg, Point::Point(CURRENT_SCREEN_WIDTH/2 - 10 , CURRENT_SCREEN_HEIGHT/2 + 7 ) );
 	
 	return true;
+} catch (...) {
+    return false; //error occured
+}
 }
 
 //Save Victory Time
 bool Victory_Screen::Save_Time()
 {
-	std::ifstream fi_score("Time_Scores.txt") ;
+try {
+	std::ifstream fi_score("Best_Times.txt") ;
 	if (fi_score.fail()) //File does not exist
 	{
-		Ini_Manager::Write_New_Ini_File("Best_Times.txt", Time_Style(FiNiSH_TiME).c_str() );
+		Ini_Manager::Write_New_Ini_File("Best_Times.txt", Int_To_String(KiLLED_MONSTERS) + " Monsters Killed in : " + Time_Style(FiNiSH_TiME) + "\n" );
 	} else {
-		Ini_Manager::Append_To_Ini_File("Best_Times.txt", "\n");
-		Ini_Manager::Append_To_Ini_File("Best_Times.txt", Time_Style(FiNiSH_TiME).c_str());
+		//Ini_Manager::Append_To_Ini_File("Best_Times.txt", "\n");
+		Ini_Manager::Append_To_Ini_File("Best_Times.txt", Int_To_String(KiLLED_MONSTERS) + " Monsters Killed in : " + Time_Style(FiNiSH_TiME) + "\n" );
 	}
 
 	fi_score.close();
 	return true;
+} catch (...) {
+    return false; //error occured
+}
+}
+
+//show number of killed & number of present monsters
+bool Victory_Screen::Show_Monsters_Stats(VideoSurface& Screen)
+{
+try {
+	//Show Numbers
+	monsters_stats_msg = *Monsters_Stats_Font->render("Monsters ALiVED: " + Int_To_String(ALiVE_MONSTERS) + "; Monsters KiLLED: " + Int_To_String(KiLLED_MONSTERS) , Color(0xFF, 0xFF, 0xFF), Font::Shaded);
+	Screen.blit( monsters_stats_msg, Point::Point(CURRENT_SCREEN_WIDTH - 200, CURRENT_SCREEN_HEIGHT - 20) );
+
+	//delete Numbers_Font;
+
+	return true;
+} catch (...) {
+    return false; //error occured
+}
 }

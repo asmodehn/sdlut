@@ -19,9 +19,9 @@ private:
 	void Parse_Line();
 		
 public:
-	static bool Write_New_Ini_File(const string &filename, const char* content);
-	static bool Append_To_Ini_File(const string &filename, const char* content);
-	//static bool Read_Ini_File(const string &filename, char* content);
+	static bool Write_New_Ini_File(const string &filename, string content);
+	static bool Append_To_Ini_File(const string &filename, string content);
+	//static bool Read_Ini_File(const string &filename, string content);
 
 	static string Get_Option_String(const string &filename, const char* Option_Name);
 	static int Get_Key_Value_From_Key_Name(string key_str);

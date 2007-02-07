@@ -148,6 +148,8 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Remove_Dead_Mon
 
 			//remove 1 to the number of monsters present
 			ALiVE_MONSTERS--;
+			//Add 1 to killed numbers
+			KiLLED_MONSTERS++;
 
 			//Then go back of one in the loop because elements has been shifted
 			i--;

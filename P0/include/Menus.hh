@@ -44,12 +44,22 @@ class Escape_Menu
 class Victory_Screen
 {
 	private:
+		//Time
+		Font* Time_Font;
+		RGBSurface time_msg;
+		//Monsters Stats
+		Font* Monsters_Stats_Font;
+		RGBSurface monsters_stats_msg;
 		
 	public:
+		//Constructor
+		Victory_Screen();
 		//Save Victory Time
 		bool Save_Time();
 		//show victory screen
 		bool Show(VideoSurface& Screen);
+		//show number of killed & number of present monsters
+		bool Show_Monsters_Stats(VideoSurface& Screen);
 };
 
 #endif

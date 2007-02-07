@@ -104,14 +104,14 @@ Player_Base::Player_Base(int x, int y)
 
 	//Fight Msgs Style
 	//Font AttackMsg_Font("Datas/Fonts/ECHELON.TTF", 28);
-	Font AttackMsg_Font("Datas/Fonts/SlimSansSerif.ttf", 28);
+	Font* AttackMsg_Font = new Font("Datas/Fonts/SlimSansSerif.ttf", 28);
 
 	//Msgs displayed in the status bar
-	attack_msg = *AttackMsg_Font.render(" ", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0)); // Empty msg until the attack key is pressed once (when using empty msg the creator crash so until this bug is solved we will use " " insted of "")
-	attack_melee_msg_hit = *AttackMsg_Font.render("Melee Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-	attack_distant_msg_hit = *AttackMsg_Font.render("Distant Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-	attack_melee_msg_miss = *AttackMsg_Font.render("Melee Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-	attack_distant_msg_miss = *AttackMsg_Font.render("Distant Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_msg = *AttackMsg_Font->render(" ", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0)); // Empty msg until the attack key is pressed once (when using empty msg the creator crash so until this bug is solved we will use " " insted of "")
+	attack_melee_msg_hit = *AttackMsg_Font->render("Melee Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_distant_msg_hit = *AttackMsg_Font->render("Distant Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_melee_msg_miss = *AttackMsg_Font->render("Melee Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_distant_msg_miss = *AttackMsg_Font->render("Distant Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 }
 
 //Character Graphic Style Initialiation regarding the attack style
@@ -536,7 +536,7 @@ try {
 }
 }
 //Display attack msg on the status bar (hit or miss)
-bool Player_Base::Display_Attack_Msg(VideoSurface& Screen)
+bool Player_Base::Show_Attack_Msg(VideoSurface& Screen)
 {
 try {
 	//Clean the status Bar

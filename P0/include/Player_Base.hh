@@ -156,7 +156,7 @@ class Player_Base : public Character_Base
 		bool Show_Arrow(VideoSurface& Screen);
 
 		//Display attack msg on the status bar (hit or miss)
-		bool Display_Attack_Msg(VideoSurface& Screen);
+		bool Show_Attack_Msg(VideoSurface& Screen);
 		
 		//Camera which follow the Character
 		bool following_camera();

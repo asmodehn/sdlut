@@ -1,6 +1,6 @@
 #include "Ini_Manager.hh"
 
-bool Ini_Manager::Write_New_Ini_File(const string &filename, const char* content)
+bool Ini_Manager::Write_New_Ini_File(const string &filename, string content)
 {
 	ofstream fo(filename.c_str());
 	if ( !fo.fail() )
@@ -14,7 +14,7 @@ bool Ini_Manager::Write_New_Ini_File(const string &filename, const char* content
 	}
 }
 
-bool Ini_Manager::Append_To_Ini_File(const string &filename, const char* content)
+bool Ini_Manager::Append_To_Ini_File(const string &filename, string content)
 {
 	ofstream fo(filename.c_str(), ofstream::app);
 	if ( !fo.fail() )
@@ -28,7 +28,7 @@ bool Ini_Manager::Append_To_Ini_File(const string &filename, const char* content
 	}
 }
 
-/*bool Ini_Manager::Read_Ini_File(const string &filename, char* content)
+/*bool Ini_Manager::Read_Ini_File(const string &filename, char* string)
 {
 	ifstream fi(filename.c_str());
 	if ( !fi.fail() )
