@@ -240,7 +240,7 @@ ADD_EXECUTABLE(
 
 
 	#Musics
-		"${Project_0_SOURCE_DIR}/Datas/Musics/Global Music.wav"
+		"${Project_0_SOURCE_DIR}/Datas/Musics/Temple.wav"
 
 	#SFXs
 		${Project_0_SOURCE_DIR}/Datas/SFXs/esc_menu_sound.wav

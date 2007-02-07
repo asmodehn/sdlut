@@ -321,80 +321,136 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-			<File
-				RelativePath=".\data\Arrow.bmp"
+			<Filter
+				Name="Battlefield"
 				>
-			</File>
-			<File
-				RelativePath=".\data\BackGround_Map.txt"
+				<File
+					RelativePath=".\data\BackGround_Map.txt"
+					>
+				</File>
+				<File
+					RelativePath=".\data\Environment_Map.txt"
+					>
+				</File>
+				<File
+					RelativePath=".\data\Grass.png"
+					>
+				</File>
+				<File
+					RelativePath=".\data\Houses Tileset.png"
+					>
+				</File>
+				<File
+					RelativePath=".\data\Rock.png"
+					>
+				</File>
+				<File
+					RelativePath=".\data\Sand Tileset.png"
+					>
+				</File>
+				<File
+					RelativePath=".\data\tankbrigade.bmp"
+					>
+				</File>
+				<File
+					RelativePath=".\data\Trees Tileset.png"
+					>
+				</File>
+				<File
+					RelativePath=".\data\Wall.png"
+					>
+				</File>
+				<File
+					RelativePath=".\data\Water.png"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Characters"
 				>
-			</File>
-			<File
-				RelativePath=".\data\Character_Archer.bmp"
+				<File
+					RelativePath=".\Datas\Characters\Character_Archer.png"
+					>
+				</File>
+				<File
+					RelativePath=".\Datas\Characters\Character_Fighter.png"
+					>
+				</File>
+				<File
+					RelativePath=".\Datas\Characters\Characters.bmp"
+					>
+				</File>
+				<File
+					RelativePath=".\Datas\Characters\Life Bar Tile.bmp"
+					>
+				</File>
+				<File
+					RelativePath=".\data\Monsters5.bmp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Fonts"
 				>
-			</File>
-			<File
-				RelativePath=".\data\Character_Fighter.bmp"
+				<File
+					RelativePath=".\data\SlimSansSerif.ttf"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Interface"
 				>
-			</File>
-			<File
-				RelativePath=".\data\Environment_Map.txt"
+				<File
+					RelativePath=".\data\LeaveMenu_NoSelected.png"
+					>
+				</File>
+				<File
+					RelativePath=".\data\LeaveMenu_YesSelected.png"
+					>
+				</File>
+				<File
+					RelativePath=".\Datas\Interface\Victory Screen.png"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Items"
 				>
-			</File>
-			<File
-				RelativePath=".\data\Grass.png"
+				<File
+					RelativePath=".\Datas\Items\Arrow.PNG"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Movies"
 				>
-			</File>
-			<File
-				RelativePath=".\data\Houses Tileset.png"
+			</Filter>
+			<Filter
+				Name="Musics"
 				>
-			</File>
-			<File
-				RelativePath=".\data\LeaveMenu_NoSelected.png"
+				<File
+					RelativePath=".\Datas\Musics\Temple.wav"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="SFXs"
 				>
-			</File>
-			<File
-				RelativePath=".\data\LeaveMenu_YesSelected.png"
-				>
-			</File>
-			<File
-				RelativePath=".\data\Monsters5.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\data\Rock.png"
-				>
-			</File>
-			<File
-				RelativePath=".\data\Sand Tileset.png"
-				>
-			</File>
-			<File
-				RelativePath=".\data\SlimSansSerif.ttf"
-				>
-			</File>
-			<File
-				RelativePath=".\data\tankbrigade.bmp"
-				>
-			</File>
-			<File
-				RelativePath=".\data\Trees Tileset.png"
-				>
-			</File>
-			<File
-				RelativePath=".\data\Wall.png"
-				>
-			</File>
-			<File
-				RelativePath=".\data\Water.png"
-				>
-			</File>
+				<File
+					RelativePath=".\Datas\SFXs\esc_menu_sound.wav"
+					>
+				</File>
+				<File
+					RelativePath=".\Datas\SFXs\null.wav"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Specifs"
 			>
 			<File
-				RelativePath=".\Specifs\2D\2D Design v0.02.odt"
+				RelativePath=".\Specifs\2D\2D Design v0.03.odt"
 				>
 			</File>
 		</Filter>
