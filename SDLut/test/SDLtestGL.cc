@@ -1,5 +1,6 @@
 #include "SDL.hh"
 #include "Logger.hh"
+#include <GL/gl.h>
 using namespace RAGE;
 using namespace RAGE::SDL;
 
