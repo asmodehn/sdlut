@@ -1,4 +1,5 @@
 #include "SDLSound.hh"
+#include "SDLConfig.hh"
 
 namespace RAGE
 {
@@ -18,9 +19,11 @@ namespace RAGE
 #endif
 			SDL_AudioSpec * _aspec = new SDL_AudioSpec();
 
-			if ( SDL_LoadWAV(filename.c_str(),_aspec,&_buf,&_length) == NULL)
+			Uint32 len;
+			if ( SDL_LoadWAV(filename.c_str(),_aspec,&_buf,&len) == NULL)
 				throw std::logic_error(" Unable to open the sound file !");
 
+			_length = static_cast<unsigned long>(len);
 			_aInfo = new AudioInfo(_aspec);
 
 			_loop_status = loop_status;
@@ -46,7 +49,7 @@ namespace RAGE
 
 			_length=s._length;
 			_buf= new Uint8[s._length];
-			for (int i=0; i<s._length; i++)
+			for (unsigned int i=0; i<s._length; i++)
 			{
 				_buf[i] = s._buf[i];
 			}
@@ -77,7 +80,7 @@ namespace RAGE
 	//cvt.fillBuffer(_length, _buf);
 				_convertTable->len = _length;
 				_convertTable->buf = new Uint8[_convertTable->len*_convertTable->len_mult];
-				for (int i=0; i< _length; i++)
+				for (unsigned int i=0; i< _length; i++)
 				{
 					_convertTable->buf[i] = _buf[i];
 				}
@@ -100,6 +103,7 @@ namespace RAGE
 	//TODO : find a way to have an accurate AudioInfo after convert
 	
 	delete _convertTable;
+	//TODO : change this to bool with a check
 	return res;
 	
 }

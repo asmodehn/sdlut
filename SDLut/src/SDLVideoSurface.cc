@@ -1,4 +1,5 @@
 #include "SDLVideoSurface.hh"
+#include "SDLConfig.hh"
 //#include <sstream>
 
 namespace RAGE
@@ -8,7 +9,7 @@ namespace RAGE
 
         std::vector<int> VideoSurface::availableWidth;
         std::vector<int> VideoSurface::availableHeight;
-        Uint32 VideoSurface::_defaultflags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
+        unsigned long VideoSurface::_defaultflags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
 
         //Constructor
         VideoSurface::VideoSurface(int width, int height, int bpp) throw (std::logic_error)
@@ -196,6 +197,117 @@ namespace RAGE
         }
         return true;
     }
+
+
+    //those methods just changes the static flags used on display creation.
+	//use the App::methods to also reset the display.
+    void VideoSurface::setOpenGL(bool val)
+    {
+	    if (val)
+		    _defaultflags|= SDL_OPENGL;
+	    else
+		    _defaultflags&= (~SDL_OPENGL) ;
+    }
+    void VideoSurface::setFullscreen(bool val)
+    {
+	    if (val)
+		    _defaultflags|= SDL_FULLSCREEN;
+	    else
+		    _defaultflags&= (~SDL_FULLSCREEN) ;
+    }
+    void VideoSurface::setResizable(bool val)
+    {
+	    if (val)
+		    _defaultflags|= SDL_RESIZABLE;
+	    else
+		    _defaultflags&= (~SDL_RESIZABLE) ;
+    }
+    void VideoSurface::setNoFrame(bool val)
+    {
+	    if (val)
+		    _defaultflags|= SDL_NOFRAME;
+	    else
+		    _defaultflags&= (~SDL_NOFRAME) ;
+    }
+    void VideoSurface::setDoubleBuf(bool val)
+    {
+	    if (val)
+		    _defaultflags|= SDL_DOUBLEBUF;
+	    else
+		    _defaultflags&= (~SDL_DOUBLEBUF) ;
+    }
+    void VideoSurface::setAnyFormat(bool val)
+    {
+	    if (val)
+		    _defaultflags|= SDL_ANYFORMAT;
+	    else
+		    _defaultflags&= (~SDL_ANYFORMAT) ;
+    }
+    void VideoSurface::setSWSurface(bool val)
+    {
+	    if (val)
+		    _defaultflags|= SDL_SWSURFACE;
+	    else
+		    _defaultflags&= (~SDL_SWSURFACE) ;
+    }
+    void VideoSurface::setHWSurface(bool val)
+    {
+	    if (val)
+		    _defaultflags|= SDL_HWSURFACE;
+	    else
+		    _defaultflags&= (~SDL_HWSURFACE) ;
+    }
+    void VideoSurface::setHWPalette(bool val)
+    {
+	    if (val)
+		    _defaultflags|= SDL_HWPALETTE;
+	    else
+		    _defaultflags&= (~SDL_HWPALETTE) ;
+    }
+    void VideoSurface::setAsyncBlit(bool val)
+    {
+	    if (val)
+		    _defaultflags|= SDL_ASYNCBLIT;
+	    else
+		    _defaultflags&= (~SDL_ASYNCBLIT) ;
+    }
+
+
+            //Accessors
+    bool VideoSurface::isOpenGLset(void) const
+    {
+	    return ( SDL_OPENGL & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+    }
+    bool VideoSurface::isFullScreenset(void) const
+    {
+	    return ( SDL_FULLSCREEN & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+    }
+    bool VideoSurface::isResizableset(void) const
+    {
+	    return ( SDL_RESIZABLE & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+    }
+    bool VideoSurface::isNoFrameset(void) const
+    {
+	    return ( SDL_NOFRAME & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+    }
+    bool VideoSurface::isAnyFormatset(void) const
+    {
+	    return ( SDL_ANYFORMAT & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+    }
+    bool VideoSurface::isDoubleBufset(void) const
+    {
+	    return ( SDL_DOUBLEBUF & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+    }
+            //unused
+    bool VideoSurface::isASyncBlitset(void) const
+    {
+	    return ( SDL_ASYNCBLIT & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+    }
+    bool VideoSurface::isHWPaletteset(void) const
+    {
+	    return ( SDL_HWPALETTE & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+    }
+
 
     Logger & operator << (Logger & log, const VideoSurface & surf)
     {

@@ -1,7 +1,9 @@
 #ifndef SDL_CDROM_HH
 #define SDL_CDROM_HH
 
-#include "SDLConfig.hh"
+#include <stdexcept>
+
+struct SDL_CD;
 
 namespace RAGE
 {
@@ -13,10 +15,7 @@ namespace RAGE
         SDL_CD * m_drive;
 
     public:
-        static inline int numDrives(void)
-        {
-            return SDL_CDNumDrives();
-        }
+	    static int numDrives(void);
 
         CDRom(int drive = 0) throw (std::logic_error);
         ~CDRom(void);

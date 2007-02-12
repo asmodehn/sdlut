@@ -1,4 +1,5 @@
 #include "SDLManager.hh"
+#include "SDLConfig.hh"
 
 namespace RAGE
 {
@@ -145,6 +146,34 @@ Manager::~Manager()
         }
 
 
+	bool Manager::isTimerEnabled(void) const
+	{
+		return ( SDL_WasInit(SDL_INIT_TIMER) ) != 0;
+	}
+	bool Manager::isAudioEnabled(void) const
+	{
+		return ( SDL_WasInit(SDL_INIT_AUDIO) ) != 0;
+	}
+	bool Manager::isVideoEnabled(void) const
+	{
+		return ( SDL_WasInit(SDL_INIT_VIDEO) ) != 0;
+	}
+	bool Manager::isCdromEnabled(void) const
+	{
+		return ( SDL_WasInit(SDL_INIT_CDROM) ) != 0;
+	}
+	bool Manager::isJoystickEnabled(void) const
+	{
+		return ( SDL_WasInit(SDL_INIT_JOYSTICK) ) != 0;
+	}
+	bool Manager::isNoParachuteEnabled(void) const
+	{
+		return ( SDL_WasInit(SDL_INIT_NOPARACHUTE) ) != 0;
+	}
+	bool Manager::isEventThreadEnabled(void) const
+	{
+		return ( SDL_WasInit(SDL_INIT_EVENTTHREAD) ) != 0;
+	}
 
 
         Logger & operator << (Logger & log, const Manager & man)

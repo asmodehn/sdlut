@@ -5,8 +5,6 @@
  * Handle a Graphical Surface
  ******************************************************************************/
 
-#include "SDLConfig.hh"
-
 #include "SDLBaseSurface.hh"
 #include "SDLColor.hh"
 #include "SDLRWOps.hh"
@@ -21,15 +19,13 @@ class RGBSurface : public BaseSurface
 
 	//To be able to construct RGBSurface from Font :
 	friend class Font;
-	friend class TTF::Font;
-	friend class Default::Font;
-
+	
 	///Conversion Constructor
     	explicit RGBSurface(SDL_Surface * s) : BaseSurface(s)
     	{} ///< This one should be called only by friends
 
 
-	static Uint32 RGBFlags;
+	static unsigned long RGBFlags;
 
 
 
@@ -96,8 +92,8 @@ public :
 	bool resize(int width, int height, bool keepcontent = false);
 
 	//Accesseurs - are they all really usefull ?
-	inline bool isSRCColorKeyset(void) {return ( SDL_SRCCOLORKEY & _surf->flags ) != 0;}
-	inline bool isSRCAlphaset(void) {return ( SDL_SRCALPHA & _surf->flags ) != 0;}
+	bool isSRCColorKeyset(void);
+	bool isSRCAlphaset(void);
 
 	bool optimise(bool alpha = false);
 	bool flip(bool vertical = true, bool horizontal = false);
@@ -106,7 +102,7 @@ public :
 	//Check that the image's width is valid and then check that the image's width is a power of 2
 	bool isGLvalid();
 	//return a GL texture that you have to bind
-	GLuint generateTexture();
+	unsigned int generateTexture();
 #endif
 
 

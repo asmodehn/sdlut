@@ -1,8 +1,7 @@
 #ifndef SDL_POINT_HH
 #define SDL_POINT_HH
 
-#include "SDLConfig.hh"
-
+#include <iostream>
 /**
  * \class Point
  *
@@ -25,99 +24,56 @@
  * A Point is a SDL_Rect where width and height are never used.
  *****************************************************************************/
 
+//declaring SDL_type for late binding
+struct SDL_Rect;
+
 namespace RAGE
 {
     namespace SDL
     {
 
+
         class Point
         {
         protected:
             //the address of the SDL_Rect struct should never change...
-            SDL_Rect * const _rect;
+		SDL_Rect * const _rect;
 
         public:
 
             //2 parameters define only a point.
-            Point(int nx=0, int ny=0) : _rect(new SDL_Rect)
-            {
-                _rect->x=nx;
-                _rect->y=ny;
-                _rect->w=0;
-                _rect->h=0;
-            }
+		Point(int nx=0, int ny=0);
 
-            Point( const Point& p ) : _rect(new SDL_Rect)
-            {
-                _rect->x=p.getx();
-                _rect->y=p.gety();
-                _rect->w=0;
-                _rect->h=0;
-            }
+		Point( const Point& p );
 
-            ~Point()
-            {
-                if (_rect!=NULL)
-                    delete _rect;
-            };
+		~Point();
 
             //Accessors
 
-            void setx(int nx )
-            {
-                _rect->x=nx;
-            }
-            void sety(int ny )
-            {
-                _rect->y=ny;
-            }
+		void setx(int nx );
+		void sety(int ny );
+		int getx() const;
+		int gety() const;
 
-            int getx() const
-            {
-                return _rect->x;
-            }
-            int gety() const
-            {
-                return _rect->y;
-            }
-
+		//usefull to get the SDL rect without any risk of modification
+		SDL_Rect get_SDL() const;
+		//usefull to get the SDL rect
+		const SDL_Rect * get_pSDL() const;
 
             //Methods
 
-            void translate(int x ,int y)
-            {
-                _rect->x+=x;
-                _rect->y+=y;
-            };
+		void translate(int x ,int y);
 
             Point& operator=(const Point&);
 
             //and others like + - etc...
-            inline Point operator+(const Point &p) const
-            {
-                return Point(_rect->x + p.getx(), _rect->y + p.gety());
-            }
-            inline Point operator-(const Point &p) const
-            {
-                return Point(_rect->x - p.getx(), _rect->y - p.gety());
-            }
-            inline Point& operator+=(const Point &p)
-            {
-                _rect->x += p.getx();
-                _rect->y += p.gety();
-                return *this;
-            }
-            inline Point& operator-=(const Point &p)
-            {
-                _rect->x -= p.getx();
-                _rect->y -= p.gety();
-                return *this;
-            }
-//TODO : tests operators == , X< X> Y< Y> ( cf old vector operator overloading for example...)
-            inline bool operator==(const Point & p)
-            {
-                return _rect->x == p.getx() && _rect->y == p.gety();
-            }
+	    Point operator+(const Point &p) const;
+	    Point operator-(const Point &p) const;
+	    Point& operator+=(const Point &p);
+	    Point& operator-=(const Point &p);
+	    
+	//TODO : tests operators == , X< X> Y< Y> ( cf old vector operator overloading for example...)
+	    bool operator==(const Point & p);
 
             inline friend std::ostream& operator << (std::ostream& os, const Point& p)
             {

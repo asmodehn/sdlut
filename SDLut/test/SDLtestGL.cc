@@ -1,7 +1,9 @@
 #include "SDL.hh"
+#include "Logger.hh"
 using namespace RAGE;
 using namespace RAGE::SDL;
 
+Logger Log("Test GL");
 
 //Defining UserInput
 class MyUserInput : public Keyboard
@@ -215,9 +217,10 @@ int main(int argc, char** argv)
 
     Logger testlog("Test Log");
 
-	App::getInstance().setName ("RAGE::SDL test - OpenGL");
-	//Starting with usual SDL window
+    //Starting with usual SDL window
     App::getInstance().initVideo(false,true,true,false);
+    App::getInstance().setName ("RAGE::SDL test - OpenGL");
+	
 
     //Getting video informations
     testlog << nl << *App::getInstance().getWindow()->getVideoInfo() << std::endl;

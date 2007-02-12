@@ -12,7 +12,12 @@ int main(int argc, char *argv[])
 {
     Logger testlog("testver");
 
-    testlog <<SDL::App::getInstance().getVersion()<< std::endl;
+    testlog <<nl << "SDL : " << SDL::Version(SDL::Version::Main)<< std::endl;
+    testlog <<nl << "TTF : " << SDL::Version(SDL::Version::TTF)<< std::endl;
+    testlog <<nl << "Image : " << SDL::Version(SDL::Version::Image)<< std::endl;
+    testlog <<nl << "Mixer : " << SDL::Version(SDL::Version::Mixer)<< std::endl;
+    testlog <<nl << "Net : " << SDL::Version(SDL::Version::Net)<< std::endl;
+    
 
 	return 0;
 }

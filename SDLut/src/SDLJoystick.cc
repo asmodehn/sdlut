@@ -1,4 +1,5 @@
 #include "SDLJoystick.hh"
+#include "SDLConfig.hh"
 
 namespace RAGE
 {
@@ -48,6 +49,61 @@ std::string JoystickPool::getName(int index)
 {
     return std::string (SDL_JoystickName(index));
 }
+
+
+
+
+
+	std::map<short,Joystick::JoyHat> Joystick::JoyHatsdl2rage;
+	std::map<std::string,Joystick::JoyHat> Joystick::JoyHatstr2rage;
+
+	//based on the fact that Rage's enum map to in [0..number-1]. This way the vector is easily built
+	std::vector<short> Joystick::InitJoyHatMapping()
+{
+	std::vector<short> result;
+		
+	std::map<Joystick::JoyHat,short> JoyHatrage2sdlmap;
+
+		//using a max here to support partial mapping list...
+	int maxvecindex =0;
+		
+#define ASSOCIATE( jh, sdljh, strjh ) JoyHatrage2sdlmap[jh] = sdljh; JoyHatsdl2rage[sdljh] = jh; JoyHatstr2rage[strjh] = jh; maxvecindex = (maxvecindex>jh)? maxvecindex : jh;
+#include "SDLJoyHatMapping.inl"
+#undef ASSOCIATE
+
+{
+	result.resize(maxvecindex+1, 0);
+
+	std::map<Joystick::JoyHat,short>::iterator it = JoyHatrage2sdlmap.begin();
+	std::map<Joystick::JoyHat,short>::iterator itEnd = JoyHatrage2sdlmap.end();
+	for (; it != itEnd; ++it)
+	{
+		assert((*it).first >= 0 && (*it).first < result.size());
+		result[(*it).first] = (*it).second;
+	}
+}
+return result;
+}
+	
+	std::vector<short> Joystick::JoyHatrage2sdl = InitJoyHatMapping();
+	
+
+
+
+	
+	short Joystick::JoyHat2sdl(Joystick::JoyHat jh)
+{
+	return JoyHatrage2sdl[jh];
+}
+	Joystick::JoyHat Joystick::sdl2JoyHat(short sdljh)
+{
+	return JoyHatsdl2rage[sdljh];
+}
+	Joystick::JoyHat Joystick::str2JoyHat(std::string strjh)
+{
+	return JoyHatstr2rage[strjh];
+}
+
 
 
 Joystick::Joystick(int index) : _joystick(SDL_JoystickOpen(index))
@@ -112,7 +168,7 @@ Point Joystick::getBallDeltaPos(int ball)
     }
 }
 
-bool JoystickPool::handleJoyAxisEvent (Uint8 joystick, Uint8 axis, Sint16 value)
+bool JoystickPool::handleJoyAxisEvent (unsigned short joystick, unsigned short axis, signed int value)
 {
 #ifdef DEBUG
     Log << nl << "Joystick n°" << joystick << " axis : " << axis << " value : " << value << std::endl;
@@ -122,7 +178,7 @@ bool JoystickPool::handleJoyAxisEvent (Uint8 joystick, Uint8 axis, Sint16 value)
 #endif
 }
 
-bool JoystickPool::handleJoyButtonEvent (Uint8 joystick, Uint8 button, bool pressed)
+bool JoystickPool::handleJoyButtonEvent (unsigned short joystick, unsigned short button, bool pressed)
 {
 #ifdef DEBUG
     Log << nl << "Joystick n°" << joystick << " button : " << button << " pressed : " << pressed << std::endl;
@@ -132,7 +188,7 @@ bool JoystickPool::handleJoyButtonEvent (Uint8 joystick, Uint8 button, bool pres
 #endif
 }
 
-bool JoystickPool::handleJoyHatEvent(Uint8 joystick, Uint8 hat, Uint8 value)
+bool JoystickPool::handleJoyHatEvent(unsigned short joystick, Joystick::JoyHat hat, unsigned short value)
 {
 #ifdef DEBUG
     Log << nl << "Joystick n°" << joystick << " hat : " << hat << " value : " << value << std::endl;
@@ -142,7 +198,7 @@ bool JoystickPool::handleJoyHatEvent(Uint8 joystick, Uint8 hat, Uint8 value)
 #endif
 }
 
-bool JoystickPool::handleJoyBallEvent(Uint8 joystick, Uint8 ball, Sint16 xrel, Sint16 yrel)
+bool JoystickPool::handleJoyBallEvent(unsigned short joystick, unsigned short ball, signed int xrel, signed int yrel)
 {
 #ifdef DEBUG
     Log << nl << "Joystick n°" << joystick << " ball : " << ball << " xrel : " << xrel << " yrel : " << yrel << std::endl;
@@ -151,5 +207,6 @@ bool JoystickPool::handleJoyBallEvent(Uint8 joystick, Uint8 ball, Sint16 xrel, S
     return false;
 #endif
 }
+
     }
 }

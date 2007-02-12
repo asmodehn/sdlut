@@ -19,8 +19,9 @@
  *
  */
 
-#include "SDLConfig.hh"
+#include "Logger.hh"
 
+#include <stdexcept>
 
 namespace RAGE
 {
@@ -59,36 +60,13 @@ namespace RAGE
         void disableEventThread(void);
 
         //Accesseurs
-        inline bool isTimerEnabled(void) const
-        {
-            return ( SDL_WasInit(SDL_INIT_TIMER) ) != 0;
-        }
-        inline bool isAudioEnabled(void) const
-        {
-            return ( SDL_WasInit(SDL_INIT_AUDIO) ) != 0;
-        }
-        inline bool isVideoEnabled(void) const
-        {
-            return ( SDL_WasInit(SDL_INIT_VIDEO) ) != 0;
-        }
-        inline bool isCdromEnabled(void) const
-        {
-            return ( SDL_WasInit(SDL_INIT_CDROM) ) != 0;
-        }
-        inline bool isJoystickEnabled(void) const
-        {
-            return ( SDL_WasInit(SDL_INIT_JOYSTICK) ) != 0;
-        }
-        inline bool isNoParachuteEnabled(void) const
-        {
-            return ( SDL_WasInit(SDL_INIT_NOPARACHUTE) ) != 0;
-        }
-        inline bool isEventThreadEnabled(void) const
-        {
-            return ( SDL_WasInit(SDL_INIT_EVENTTHREAD) ) != 0;
-        }
-
-
+	bool isTimerEnabled(void) const;
+	bool isAudioEnabled(void) const;
+	bool isVideoEnabled(void) const;
+	bool isCdromEnabled(void) const;
+	bool isJoystickEnabled(void) const;
+	bool isNoParachuteEnabled(void) const;
+	bool isEventThreadEnabled(void) const;
 
         //display all Informations
 	friend Logger & operator << (Logger & log, const Manager & man);

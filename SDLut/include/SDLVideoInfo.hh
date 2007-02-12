@@ -18,11 +18,14 @@
  *
  */
 
-
-#include "SDLConfig.hh"
-
+#include "Logger.hh"
 #include "SDLPixelFormat.hh"
 
+#include <iostream>
+#include <stdexcept>
+
+//Declaring SDL types for late binding.
+struct SDL_VideoInfo;
 
 namespace RAGE
 {
@@ -49,64 +52,25 @@ namespace RAGE
             ~VideoInfo();
 
             //return true if hardware acceleration is enabled
-            inline bool isHWAvailable() const
-            {
-                return _info->hw_available;
-            }
-
+	    bool isHWAvailable() const;
             //return true if a window manager is available
-            inline bool isWMAvailable() const
-            {
-                return _info->wm_available;
-            }
-
+	    bool isWMAvailable() const;
             //return true if hardware to hardware blits are accelerated
-            inline bool isBlitHWAccelAvailable() const
-            {
-                return _info->blit_hw;
-            }
-
+	    bool isBlitHWAccelAvailable() const;
             //return true if hardware to hardware colorkey blits are accelerated
-            inline bool isBlitHWCCAccelAvailable() const
-            {
-                return _info->blit_sw_CC;
-            }
-
+	    bool isBlitHWCCAccelAvailable() const;
             //return true if hardware to hardware alpha blits are accelerated
-            inline bool isBlitHWAAccelAvailable() const
-            {
-                return _info->blit_sw_A;
-            }
-
+	    bool isBlitHWAAccelAvailable() const;
             //return true if software to hardware blits are accelerated
-            inline bool isBlitSWAccelAvailable() const
-            {
-                return _info->blit_sw;
-            }
-
+	    bool isBlitSWAccelAvailable() const;
             //return true if software to hardware colorkey blits are accelerated
-            inline bool isBlitSWCCAccelAvailable() const
-            {
-                return _info->blit_sw_CC;
-            }
-
+	    bool isBlitSWCCAccelAvailable() const;
             //return true if software to hardware alpha blits are accelerated
-            inline bool isBlitSWAAccelAvailable() const
-            {
-                return _info->blit_sw_A;
-            }
-
+	    bool isBlitSWAAccelAvailable() const;
             //return true if color fills are accelerated
-            inline bool isBlitFillAccelAvailable() const
-            {
-                return _info->blit_fill;
-            }
-
+	    bool isBlitFillAccelAvailable() const;
             //return the total amount of video memory in kilobytes
-            inline unsigned long videoMemSize() const
-            {
-                return _info->video_mem;
-            }
+	    unsigned long videoMemSize() const;
 
             std::string getDriverName(void) const;
 

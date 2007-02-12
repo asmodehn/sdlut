@@ -1,4 +1,5 @@
 #include "SDLMixer.hh"
+#include "SDLConfig.hh"
 
 #define MIN(a,b) (a<b)?a:b;
 
@@ -8,7 +9,7 @@ namespace RAGE
 	{
 
 		std::vector<const Sound*> Mixer::_channels;
-		std::vector<int> Mixer::_channelscursor;
+		std::vector<unsigned long> Mixer::_channelscursor;
 		std::vector<bool> Mixer::_activechannels;
 		std::vector<bool> Mixer::_loopchannels;
 		
@@ -18,46 +19,38 @@ namespace RAGE
 			Uint8 *waveptr;
 			int    waveleft;
 
-			int i;
+			unsigned int i;
 			//Going throw channels list to find out the active ones
-			for (i = 0; i < _activechannels.size() ; i++)
+			for (i = 0; i < _activechannels.size(); i++)
 			{
-				if (_activechannels[i])
-				{
-					//TODO : replace mixaudio with my own mix function, in case there is no SDL_mixer
-					waveptr = _channels[i]->_buf + _channelscursor[i] ;
-					waveleft = MIN(_channels[i]->_length - _channelscursor[i],len);//test end of sound buffer
+			if (_activechannels[i])
+{
+				//TODO : replace mixaudio with my own mix function, in case there is no SDL_mixer
+				waveptr = _channels[i]->_buf + _channelscursor[i] ;
+				waveleft = MIN(_channels[i]->_length - _channelscursor[i],static_cast<unsigned int>(len));//test end of sound buffer
 
-					SDL_MixAudio(stream, waveptr, waveleft, SDL_MIX_MAXVOLUME);
-					_channelscursor[i] += waveleft;
-					if (_channelscursor[i] >= _channels[i]->_length)
+				SDL_MixAudio(stream, waveptr, waveleft, SDL_MIX_MAXVOLUME);
+				_channelscursor[i] += waveleft;
+				if (_channelscursor[i] >= _channels[i]->_length)
+				{
+					_channelscursor[i]=0;
+							
+					//in case of loop
+					if (_loopchannels[i])
 					{
-						_channelscursor[i]=0;
-								
-						//in case of loop
-						if (_loopchannels[i])
-						{
-							stream += waveleft;
-							len -= waveleft;
-							waveleft = MIN(len,_channels[i]->_length);
-							SDL_MixAudio(stream, _channels[i]->_buf, waveleft, SDL_MIX_MAXVOLUME);
-							_channelscursor[i] += waveleft;
-						}
-						else
-						{
-							_activechannels[i] = false;
-						}
-						
+						stream += waveleft;
+						len -= waveleft;
+						waveleft = MIN(static_cast<unsigned int>(len),_channels[i]->_length);
+						SDL_MixAudio(stream, _channels[i]->_buf, waveleft, SDL_MIX_MAXVOLUME);
+						_channelscursor[i] += waveleft;
 					}
+					else
+					{
+						_activechannels[i] = false;
+					}
+					
 				}
-					
-					//just insert the usual full chunk
-//To debug, because SDL_MixAudio doesnt know all possible audio formats
-// 					for (int j=0; j< len; j++)
-// 					{
-// 						stream[j] = waveptr[j];
-// 					}
-					
+}					
 						
 // 					Log << nl <<" Channel "<< i<<" after callback at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
 			}
@@ -75,7 +68,7 @@ namespace RAGE
 			desired->freq = frequency;		// DSP frequency -- samples per second
 			desired->format = AUDIO_S16SYS;		// Audio data format
 			//WARNING : as for SDL_MixAudio in V 1.2.11, AUDIO_U16 is unknown...
-			desired->channels = channels;	// Number of channels: 1 mono, 2 stereo
+			desired->channels = static_cast<Uint8>(channels);	// Number of channels: 1 mono, 2 stereo
 			desired->samples = samples;		// Audio buffer size in samples (power of 2)
 	
 			// This function is called when the audio device needs more data
@@ -147,7 +140,12 @@ namespace RAGE
 
 		Mixer::Status Mixer::GetStatus()
 {
-	return static_cast<Status>(SDL_GetAudioStatus());
+	switch (SDL_GetAudioStatus())
+	{
+		case SDL_AUDIO_PLAYING : return Playing;
+		case SDL_AUDIO_STOPPED : return Stopped;
+		case SDL_AUDIO_PAUSED : return Paused;
+	}
 }
 
 		
@@ -198,6 +196,10 @@ int Mixer::freeChannel(int index)
 		//printf("Using audio driver: %s\n", SDL_AudioDriverName(name, 32));
 	}
 
+	
+	void Mixer::PauseAll(void) { SDL_PauseAudio(1); }
+	void Mixer::PlayAll(void) { SDL_PauseAudio(0); }
+		
 		void Mixer::stopChannel(int index)
 {
 	_activechannels[index] = false;

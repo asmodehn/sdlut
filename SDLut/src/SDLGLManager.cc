@@ -1,11 +1,17 @@
 #include "SDLGLManager.hh"
-
+#include "SDLConfig.hh"
 
 namespace RAGE
 {
     namespace SDL {
 
 #ifdef HAVE_OPENGL
+
+//may be connected with constructor ???
+	bool GLManager::loadGLLibrary(const std::string & path)
+{
+	return SDL_GL_LoadLibrary(path.c_str()) == 0;
+}
 
 int GLManager::getRSize(void) const
 {
@@ -155,7 +161,8 @@ Logger & operator << (Logger & log, const GLManager & glman)
 		"GL Accum Alpha Size = " << glman.getAccumASize() ;
 		return log;
 }
-
+#else
+#pragma message if no OpenGL, methods should be implemented
 #endif
     }
 }

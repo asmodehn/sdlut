@@ -14,7 +14,7 @@ class ObjectWithCallback
 
 	public:
 		
-	unsigned int callback1(unsigned int interval, void* args)
+		unsigned int callback1(unsigned int interval, void* args)
 	{
 		std::cout << SDL::GetTicks() - ticks  << " ms : Instance Method 1 Called back ! " << std::endl;
 		return 0;
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 	testlog << "Starting instance timer 2 (every 500ms)" << std::endl;
 	timer2.start();
 	testlog << "Starting static SDL timer ( 4 sec )"<< std::endl;
-	SDL_AddTimer(4000,callback,NULL);
+	SDL::AddGlobalTimer(4000,callback,NULL);
 
 	SDL::Delay(6000); //TODO Display time running
 

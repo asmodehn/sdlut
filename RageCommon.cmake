@@ -58,8 +58,8 @@ MACRO (RAGE_BUILD project_name project_type)
 
 	FILE(GLOB HEADERS ${CMAKE_SOURCE_DIR}/include/*.hh)
 
-	#Including configured headers (binary for the configured header, source for the unmodified ones
-	INCLUDE_DIRECTORIES( ${CMAKE_BINARY_DIR}/include ${CMAKE_SOURCE_DIR}/include )
+	#Including configured headers (binary for the configured header, source for the unmodified ones, and in source/src for internal ones)
+	INCLUDE_DIRECTORIES( ${CMAKE_BINARY_DIR}/include ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
 	#Defining target
 	FILE(GLOB SOURCES ${CMAKE_SOURCE_DIR}/src/*.cc)
@@ -136,6 +136,8 @@ IF(MSVC)
 	#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB")
 	#MODULE and SHARED also ??
 ENDIF(MSVC)
+
+
 
 
 

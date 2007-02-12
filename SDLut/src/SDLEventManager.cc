@@ -1,4 +1,5 @@
 #include "SDLEventManager.hh"
+#include "SDLConfig.hh"
 #include "SDLApp.hh" //for default resize
 
 namespace RAGE
@@ -6,7 +7,7 @@ namespace RAGE
     namespace SDL
 {
 
-    bool GeneralHandler::handleActiveEvent(bool gain, Uint8 state)
+    bool GeneralHandler::handleActiveEvent(bool gain, bool active, bool inputfocus, bool mousefocus)
     {
         return false;
     }
@@ -31,7 +32,7 @@ namespace RAGE
         return false;
     }
 
-    bool GeneralHandler::handleUserEvent(Uint8 type, int code, void* data1, void* data2)
+    bool GeneralHandler::handleUserEvent(Event::Type type, int code, void* data1, void* data2)
     {
         return false;
     }
@@ -42,7 +43,7 @@ namespace RAGE
         return true;
     }
 
-    bool GeneralHandler::handleEvent(CriticalEvent &cevent)
+    bool GeneralHandler::handleEvent(Event &event)
     {
 #if (DEBUG ==2)
         //Getting the details of the Event
@@ -63,66 +64,24 @@ namespace RAGE
         return Event(res);
     }
 
-    //handle all the critical events in the queue in a loop
-    void EventManager::handleAllCritical()
-    {
-        SDL_Event* event=new SDL_Event();
-        while( SDL_PeepEvents(event,1,SDL_GETEVENT,_criticaltypes))
-        {
-            CriticalEvent cevent(event);
-#ifdef DEBUG
-            assert(ghndlr);
-//            assert(khndlr);
-            assert(mhndlr);
-#endif
-
-            if(! cevent.callHandler(ghndlr, khndlr, mhndlr) )
-                ghndlr->handleEvent(cevent);
-        }
-    }
-
-    //handle the next critical event
-    bool EventManager::handleNextCritical()
-    {
-        SDL_Event* event=new SDL_Event();
-        bool ev_handled = false;
-        //to improve
-        if (SDL_PeepEvents(event,1,SDL_GETEVENT,_criticaltypes) != -1 )
-        {
-            CriticalEvent cevent(event);
-#ifdef DEBUG
-            assert(ghndlr);
-//            assert(khndlr);
-            assert(mhndlr);
-#endif
-
-            if(! cevent.callHandler(ghndlr, khndlr, mhndlr) )
-                ev_handled = ghndlr->handleEvent(cevent);
-        }
-        return ev_handled;
-    }
-
-
-
-
     //handle the next critical event of this type
-    bool EventManager::handleNextCritical(EventType type)
+    bool EventManager::handleNext(Event::Type type)
     {
         SDL_Event* event=new SDL_Event();
 
         bool ev_handled = false;
         //to improve
-        if (SDL_PeepEvents(event,1,SDL_GETEVENT,type) != -1 )
+	if (SDL_PeepEvents(event,1,SDL_GETEVENT,Event::Type2sdl(type)) != -1 )
         {
-            CriticalEvent cevent(event);
+            Event event(event);
 #ifdef DEBUG
             assert(ghndlr);
-//            assert(khndlr);
+            assert(khndlr);
             assert(mhndlr);
 #endif
 
-            if(! cevent.callHandler(ghndlr, khndlr, mhndlr) )
-                ev_handled = ghndlr->handleEvent(cevent);
+            if(! event.callHandler(ghndlr, khndlr, mhndlr) )
+                ev_handled = ghndlr->handleEvent(event);
         }
         return ev_handled;
     }
@@ -136,7 +95,7 @@ namespace RAGE
             Event event(sdlevent);
 #ifdef DEBUG
             assert(ghndlr);
-//            assert(khndlr);
+           assert(khndlr);
             assert(mhndlr);
 #endif
 
@@ -157,7 +116,7 @@ namespace RAGE
             Event event(sdlevent);
 #ifdef DEBUG
             assert(ghndlr);
-//            assert(khndlr);
+           assert(khndlr);
             assert(mhndlr);
 #endif
 
@@ -166,6 +125,12 @@ namespace RAGE
         }
         return ev_handled;
     }
+
+    void EventManager::pump()
+    {
+	    SDL_PumpEvents();
+    }
+
 
 }
 

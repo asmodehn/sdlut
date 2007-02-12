@@ -1,4 +1,5 @@
 #include "SDLBaseSurface.hh"
+#include "SDLConfig.hh"
 
 namespace RAGE
 {
@@ -67,13 +68,23 @@ BaseSurface& BaseSurface::operator=(const BaseSurface& s)
     return *this;
 }
 
-        BaseSurface::BaseSurface(const BaseSurface & s ,Uint32 flags, PixelFormat pfmt) throw (std::logic_error)
+ unsigned long BaseSurface::getFlags(void) const
+{
+	return _surf->flags;
+}
+
+BaseSurface::~BaseSurface()
+{
+	if (_surf!=NULL)
+		SDL_FreeSurface(_surf);
+}
+        BaseSurface::BaseSurface(const BaseSurface & s ,unsigned long flags, PixelFormat pfmt) throw (std::logic_error)
         try
         :
             locks(0)
         {
 #ifdef DEBUG
-            Log << nl << "BaseSurface::BaseSurface(const BaseSurface & s,Uint32 flags, PixelFormat pfmt) called...";
+            Log << nl << "BaseSurface::BaseSurface(const BaseSurface & s,unsigned long flags, PixelFormat pfmt) called...";
 #endif
 
             _surf=SDL_ConvertSurface(s._surf,const_cast<SDL_PixelFormat *>(pfmt._pformat),flags); //SDL shouldnt modify the pixel format at all
@@ -85,7 +96,7 @@ BaseSurface& BaseSurface::operator=(const BaseSurface& s)
                 throw std::logic_error(errstr + " returns NULL");
             }
 #ifdef DEBUG
-            Log << nl << "BaseSurface::BaseSurface(const BaseSurface & s,Uint32 flags, PixelFormat pfmt)  done.";
+            Log << nl << "BaseSurface::BaseSurface(const BaseSurface & s,unsigned long flags, PixelFormat pfmt)  done.";
 #endif
 
         }
@@ -95,12 +106,62 @@ BaseSurface& BaseSurface::operator=(const BaseSurface& s)
             e.what() << nl << GetError();
         };
 
+	//usefull to get the SDL structure without no risk of modifying it
+	SDL_Surface BaseSurface::get_SDL() const
+	{
+		return *_surf;
+	}
 
+			//usefull to get the SDL structure
+	const SDL_Surface * BaseSurface::get_pSDL() const
+	{
+		return _surf;
+	}
+	
+	int BaseSurface::getHeight(void) const
+	{
+		return _surf->h;
+	}
+	int BaseSurface::getWidth(void) const
+	{
+		return _surf->w;
+	}
 
-        Uint32 BaseSurface::getpixel(int x, int y)
+	int BaseSurface::getBPP(void) const
+	{
+		assert(_surf->format);
+		return _surf->format->BitsPerPixel;
+	}
+	bool BaseSurface::isSWset(void) const
+	{
+		return ( SDL_SWSURFACE & _surf->flags ) != 0;
+	}
+	bool BaseSurface::isHWset(void) const
+	{
+		return ( SDL_HWSURFACE & _surf->flags ) != 0;
+	}
+	bool BaseSurface::isHWAccelset(void) const
+	{
+		return ( SDL_HWACCEL & _surf->flags ) != 0;
+	}
+	bool BaseSurface::isRLEAccelset(void) const
+	{
+		return ( SDL_RLEACCEL & _surf->flags ) != 0;
+	}
+	bool BaseSurface::isPreAllocset(void) const
+	{
+		return ( SDL_PREALLOC & _surf->flags ) != 0;
+	}
+
+            ///Accessor to pixelFormat
+	PixelFormat BaseSurface::getPixelFormat(void) const
+	{
+		return PixelFormat(_surf->format);
+	}
+
+        PixelColor BaseSurface::getpixel(int x, int y)
         {
-            lock()
-            ;
+            lock();
             /* Here p is the address to the pixel we want to retrieve */
             Uint8 *p = (Uint8 *)_surf->pixels + y * _surf->pitch + x * _surf->format->BytesPerPixel;
             Uint32 pixel;
@@ -127,10 +188,9 @@ BaseSurface& BaseSurface::operator=(const BaseSurface& s)
             return pixel;
         }
 
-        void BaseSurface::setpixel(int x, int y, Uint32 pixel)
+        void BaseSurface::setpixel(int x, int y, PixelColor pixel)
         {
-            lock()
-            ;
+            lock();
             /* Here p is the address to the pixel we want to set */
             Uint8 *p = (Uint8 *)_surf->pixels + y * _surf->pitch + x * _surf->format->BytesPerPixel;
 

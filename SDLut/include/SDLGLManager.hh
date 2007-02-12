@@ -1,8 +1,6 @@
 #ifndef SDL_GLMANAGER_HH
 #define SDL_GLMANAGER_HH
 
-#include "SDLConfig.hh"
-
 /**
  * \class SDLGLManager
  *
@@ -20,11 +18,13 @@
  *
  */
 
+#include "Logger.hh"
+#include <string>
+
 namespace RAGE
 {
     namespace SDL {
 
-#ifdef HAVE_OPENGL
 
 /*******************************************************************************
  * Manager of the GL state machine
@@ -46,10 +46,7 @@ public :
     ~GLManager(){}
 
 	//may be connected with constructor ???
-	bool loadGLLibrary(const std::string & path)
-	{
-		return SDL_GL_LoadLibrary(path.c_str()) == 0;
-	}
+    bool loadGLLibrary(const std::string & path);
 
 	//TODO : I don't know how to manage this....
 	//getProcAddress
@@ -95,7 +92,7 @@ public :
 
 	friend Logger & operator << (Logger & ostr, const GLManager & glman);
 };
-#endif
+
     }
 } // namespace RAGE::SDL
 

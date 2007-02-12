@@ -1,18 +1,25 @@
 #ifndef SDL_TIMER_HH
 #define SDL_TIMER_HH
 
-#include "SDLConfig.hh"
 #include "Functor.hh"
 #include <utility>
 #include <map>
+
+typedef struct _SDL_TimerID *SDL_TimerID;
 
 namespace RAGE
 {
     namespace SDL
     {
-			//Simple SDL_delay implementation
-	    static inline void Delay(long millisec) { SDL_Delay((millisec)); }
-	    static inline long GetTicks(void) { return static_cast<long>(SDL_GetTicks()); }
+	//Simple overloaded implementations
+	    void Delay(long millisec);
+	    long GetTicks();
+
+	    //these should be used through the timer class, not directly
+	    SDL_TimerID AddGlobalTimer(unsigned int interval, unsigned int callback (unsigned int, void*) , void *param);
+	    bool RemoveGlobalTimer(SDL_TimerID t);
+
+	    
 
     		template <class TClass>
 		class Timer
@@ -113,7 +120,7 @@ namespace RAGE
 		Timer<TClass>::~Timer()
 		{
 			if (running)
-				SDL_RemoveTimer(_timerid);
+				RemoveGlobalTimer(_timerid);
 		}
 
 		template<class TClass>
@@ -123,13 +130,13 @@ namespace RAGE
 			cbargs* _cbargs = new cbargs();
 			_cbargs->lookupindex = _index;
 			_cbargs->args = _args;
-			_timerid = SDL_AddTimer(_interval,callback,_cbargs);
+			_timerid = AddGlobalTimer(_interval,callback,_cbargs);
 		}
 
 		template<class TClass>
 		bool Timer<TClass>::stop()
 		{
-			return ! (running = !SDL_RemoveTimer(_timerid));
+			return ! (running = !RemoveGlobalTimer(_timerid));
 		}
 		
 		template<class TClass>

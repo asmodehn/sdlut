@@ -1,5 +1,5 @@
 #include "SDLRGBSurface.hh"
-
+#include "SDLConfig.hh"
 #include "SDLResources.inc"
 
 namespace RAGE
@@ -9,7 +9,7 @@ namespace RAGE
 
 
 
-        Uint32 RGBSurface::RGBFlags=SDL_SWSURFACE;
+        unsigned long RGBSurface::RGBFlags=SDL_SWSURFACE;
 
         RGBSurface::RGBSurface(int width, int height, int bpp) throw (std::logic_error)
         try
@@ -489,6 +489,18 @@ namespace RAGE
 			return true;
 		}
 
+
+		
+	//Accesseurs - are they all really usefull ?
+		bool RGBSurface::isSRCColorKeyset(void)
+		{
+			return ( SDL_SRCCOLORKEY & _surf->flags ) != 0;
+		}
+		bool RGBSurface::isSRCAlphaset(void)
+		{
+			return ( SDL_SRCALPHA & _surf->flags ) != 0;
+		}
+		
         bool RGBSurface::optimise(bool alpha)
         {
             assert(_surf);

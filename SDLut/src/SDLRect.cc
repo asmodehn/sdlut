@@ -1,4 +1,5 @@
 #include "SDLRect.hh"
+#include "SDLConfig.hh"
 #define min( a , b )  ( (a)>(b) )?(b):(a)
 #define max( a , b ) ((a)>(b))?(a):(b)
 //#define ifpositive( a ) a>0?a:0
@@ -8,6 +9,84 @@ namespace RAGE
     namespace SDL
     {
 
+	    //also used to convert point for main methods use...
+	    Rect::Rect(const Point& p , unsigned int nw, unsigned int nh) : Point(p.getx(),p.gety())
+	    {
+		    _rect->w=nw;
+		    _rect->h=nh;
+	    }
+
+	    Rect::Rect(int x, int y , unsigned int nw, unsigned int nh) : Point(x,y)
+	    {
+		    _rect->w=nw;
+		    _rect->h=nh;
+	    }
+
+	//2 parameter define only a rectangular zone
+	    Rect::Rect( unsigned int nw, unsigned int nh) : Point(0,0)
+	    {
+		    _rect->w=nw;
+		    _rect->h=nh;
+	    }
+
+	//Copy Constructor
+	    Rect::Rect( const Rect& r) : Point(r.getx(),r.gety())
+	    {
+		    _rect->w=r.getw();
+		    _rect->h=r.geth();
+	    }
+
+	    
+	    void Rect::setw(unsigned int nw )
+	    {
+		    _rect->w=nw;
+	    }
+	    void Rect::seth(unsigned int nh )
+	    {
+		    _rect->h=nh;
+	    }
+
+	    unsigned int Rect::getw() const
+	    {
+		    return _rect->w;
+	    }
+	    unsigned int Rect::geth() const
+	    {
+		    return _rect->h;
+	    }
+
+	    //scalar operations
+	    
+	    Rect& Rect::operator*=(int s)
+	    {
+		    _rect->w *= s;
+		    _rect->h *= s;
+		    return *this;
+	    }
+
+	    Rect& Rect::operator/=(int s)
+	    {
+		    _rect->w /= s;
+		    _rect->h /= s;
+		    return *this;
+	    }
+
+	     Rect operator*(int s, const Rect& u)
+	    {
+		    return Rect ( u._rect->w * s, u._rect->h * s );
+	    }
+
+	     Rect operator*(const Rect& u, int s)
+	    {
+		    return Rect ( u._rect->w * s, u._rect->h * s );
+	    }
+
+		Rect operator/(const Rect& u, int s)
+	    {
+		    return Rect ( u._rect->w / s, u._rect->h / s );
+	    }
+
+	    
         Rect& Rect::operator=(const Rect& r)
         {
             Point::operator=(r);
@@ -16,6 +95,11 @@ namespace RAGE
             return *this;
         }
 
+	bool Rect::operator==(const Rect & r)
+	{
+		return _rect->w == r.getw() && _rect->h == r.geth();
+	}
+	
         //this computes the intersection of 2 rects, that if the greatest rect contained in both of them
         Rect Rect::inf(const Rect & r)
         {

@@ -21,7 +21,6 @@
  *
  */
 
-#include "SDLConfig.hh"
 #include "SDLPoint.hh"
 
 namespace RAGE
@@ -42,39 +41,22 @@ protected :
 public:
 
 	//also used to convert point for main methods use...
-	Rect(const Point& p , unsigned int nw=0, unsigned int nh=0) : Point(p.getx(),p.gety())
-	{
-		_rect->w=nw;
-		_rect->h=nh;
-	}
-
-	Rect(int x, int y , unsigned int nw, unsigned int nh) : Point(x,y)
-	{
-		_rect->w=nw;
-		_rect->h=nh;
-	}
+	Rect(const Point& p , unsigned int nw=0, unsigned int nh=0);
+	Rect(int x, int y , unsigned int nw, unsigned int nh);
 
 	//2 parameter define only a rectangular zone
-	Rect( unsigned int nw=0, unsigned int nh=0) : Point(0,0)
-	{
-		_rect->w=nw;
-		_rect->h=nh;
-	}
+	Rect( unsigned int nw=0, unsigned int nh=0);
 
 	//Copy Constructor
-	Rect( const Rect& r) : Point(r.getx(),r.gety())
-	{
-		_rect->w=r.getw();
-		_rect->h=r.geth();
-	}
+	Rect( const Rect& r);
 
     Rect& operator=(const Rect& p);
 
-	void setw(unsigned int nw ) { _rect->w=nw; }
-	void seth(unsigned int nh ) { _rect->h=nh; }
+    void setw(unsigned int nw );
+    void seth(unsigned int nh );
 
-	unsigned int getw() const { return _rect->w; }
-	unsigned int geth() const { return _rect->h; }
+    unsigned int getw() const;
+    unsigned int geth() const;
 
 	//Methods
 	//
@@ -84,28 +66,16 @@ public:
 	Rect sup(const Rect & r);
 
   //scalar operations
-  inline Rect& operator*=(int s)
-  { _rect->w *= s; _rect->h *= s; return *this; }
-
-  inline Rect& operator/=(int s)
-  { _rect->w /= s; _rect->h /= s;	return *this; }
-
-  inline friend Rect operator*(int s, const Rect& u)
-  {	return Rect ( u._rect->w * s, u._rect->h * s ); }
-
-	inline friend Rect operator*(const Rect& u, int s)
-  {	return Rect ( u._rect->w * s, u._rect->h * s ); }
-
-  inline friend Rect operator/(const Rect& u, int s)
-  { return Rect ( u._rect->w / s, u._rect->h / s ); }
-
+		Rect& operator*=(int s);
+		Rect& operator/=(int s);
+		friend Rect operator*(int s, const Rect& u);
+		friend Rect operator*(const Rect& u, int s);
+		friend Rect operator/(const Rect& u, int s);
+		
 	//TODO growCenter, growCorner, rotate90, rotate180, rotate270
 
 	//TODO tests operators :  != == <= < >= > (about size of the area only)
-            inline bool operator==(const Rect & r)
-            {
-                return _rect->w == r.getw() && _rect->h == r.geth();
-            }
+		bool operator==(const Rect & r);
 
 
 	inline friend std::ostream& operator << (std::ostream& os, const Rect& r)

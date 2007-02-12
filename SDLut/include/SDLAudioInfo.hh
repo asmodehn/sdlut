@@ -16,7 +16,8 @@
  *
  */
 
-#include "SDLConfig.hh"
+//declarign SDL_type for late binding
+struct SDL_AudioSpec;
 
 namespace RAGE
 {
@@ -37,6 +38,7 @@ namespace RAGE
 		
 
 
+
 	//This class handle the Audio Device.
 	//Only one instance of this class should be used.
 	class AudioInfo
@@ -54,40 +56,18 @@ namespace RAGE
 			
 			//Copy Constructor from SDL_AudioSpec
 			//This handle explicit casts
-			explicit AudioInfo(const SDL_AudioSpec* as): _spec(as)
-			{
-				pointerCopy = true;
-			}
+			explicit AudioInfo(const SDL_AudioSpec* as);
 			
-			~AudioInfo(void) { if (!pointerCopy) delete _spec; }
+			~AudioInfo(void);
 
 		public :
 
 	
-			int frequency()
-			{
-				return _spec->freq;
-			}
-
-			unsigned int format()
-			{
-				return _spec->format;
-			}
-
-			unsigned int channels()
-			{
-				return _spec->channels;
-			}
-
-			unsigned long samples()
-			{
-				return _spec->samples;
-			}
-
-			void* userdata()
-			{
-				return _spec->userdata;
-			}
+			int frequency();
+			unsigned int format();
+			unsigned int channels();
+			unsigned long samples();
+			void* userdata();
 
 
 	

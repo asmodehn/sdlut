@@ -1,9 +1,12 @@
 #include "SDLEngine.hh"
+#include "SDLConfig.hh"
+
 
 namespace RAGE
 {
     namespace SDL
     {
+
 
 		//this render function should not modify the engine
 		void DefaultEngine::render(VideoSurface & screen) const
@@ -42,7 +45,14 @@ namespace RAGE
     {
 #pragma message( "DefaultGLEngine not finished yet!!!")
 
-			//this is run just before the render
+		DefaultGLEngine::DefaultGLEngine() : _logo(NULL),_logotexture(0) {}
+	    DefaultGLEngine::~DefaultGLEngine()
+	    {
+		    if (_logotexture!=0) glDeleteTextures(1, &_logotexture);
+	    }
+
+	    
+		//this is run just before the render
 		void DefaultGLEngine::prerender(void)
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear Screen And Depth Buffer

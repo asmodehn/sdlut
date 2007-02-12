@@ -16,8 +16,9 @@
  *
  */
 
-#include "SDLConfig.hh"
 #include "SDLAudioInfo.hh"
+#include <string>
+#include <stdexcept>
 
 namespace RAGE
 {
@@ -49,8 +50,8 @@ namespace RAGE
 	AudioInfo * _aInfo;
 
 		//Length and data of the Sound
-	Uint32 _length;
-	Uint8 * _buf;
+	unsigned long _length;
+	unsigned char * _buf;
 
 	//manage if the sound is looping after it end
 	bool _loop_status;

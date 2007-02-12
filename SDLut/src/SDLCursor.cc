@@ -1,4 +1,5 @@
 #include "SDLCursor.hh"
+#include "SDLConfig.hh"
 
 namespace RAGE{
     namespace SDL {
@@ -148,5 +149,50 @@ catch (std::exception & e)
 	Log << nl << "Exception catched on Cursor Constructor !!!" << nl <<
 		e.what() << nl << GetError() << std::endl;
 }
+
+
+        Cursor::Cursor(SDL_Cursor * c) : _cursor(c)
+	{
+	}
+
+            
+	    Cursor::~Cursor()
+		    {
+			    SDL_FreeCursor(_cursor);
+		    }
+
+            //Static Methods
+		    void Cursor::setCurrent (const Cursor & cur)
+		    {
+			    SDL_SetCursor(cur._cursor);
+		    }
+
+		    Cursor Cursor::getCurrent (void)
+		    {
+			    return Cursor(SDL_GetCursor());
+
+		    }
+		    void Cursor::warpCurrent (Point p)
+		    {
+			    SDL_WarpMouse(p.getx(),p.gety());
+			    std::cout << "Mouse warped !" << std::endl;
+		    }
+
+            //Methods
+		    void Cursor::show(void) // show the current Cursor
+		    {
+			    SDL_ShowCursor(SDL_ENABLE);
+		    }
+		    void Cursor::hide(void) // hide the current Cursor
+		    {
+			    SDL_ShowCursor(SDL_DISABLE);
+		    }
+		    bool Cursor::isVisible(void) // query the cursor - return true if the cursor is visible
+		    {
+			    return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
+		    }
+
+
+
     }
 } //namespace RAGE::SDL

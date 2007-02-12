@@ -1,7 +1,7 @@
 #ifndef SDL_COLOR_HH
 #define SDL_COLOR_HH
 
-#include "SDLConfig.hh"
+#include <iostream>
 //#include "SDLPixelFormat.hh"
 //#include "SDLVideoInfo.hh"
 
@@ -30,10 +30,16 @@
  *
  */
 
+
+//declaring SDL type for late binding
+struct SDL_Color;
+struct SDL_Palette;
+
 namespace RAGE
 {
     namespace SDL
     {
+
         //TODO : Color constructor with string ("black", "yellow", "grey", etc. )
         //TODO : Color operator, like + - = etc. (like a vector)
         class RGBColor
@@ -55,69 +61,20 @@ namespace RAGE
 
             //Because NULL has no sense for function using colors, defaut constructor
             // just paint it black :)
-            RGBColor(Uint8 r=0, Uint8 g=0, Uint8 b=0) : _color(new SDL_Color)
-            {
-                _color->r=r;
-                _color->g=g;
-                _color->b=b;
-                pointerCopy = false;
-            }
-            RGBColor(const RGBColor & rgbcolor)
-                    :_color(new SDL_Color)
-            {
-                _color->r=rgbcolor.getR();
-                _color->g=rgbcolor.getG();
-                ;
-                _color->b=rgbcolor.getB();
-                ;
-                pointerCopy = false;
-            }
-            RGBColor& operator=( const RGBColor & rgbcolor)
-            {
-                _color->r=rgbcolor.getR();
-                _color->g=rgbcolor.getG();
-                ;
-                _color->b=rgbcolor.getB();
-                ;
-                pointerCopy = false;
-                return *this;
-            }
-            virtual ~RGBColor()
-            {
-                if (!pointerCopy)
-                    delete _color;
-            }
+		RGBColor(unsigned char r=0, unsigned char g=0, unsigned char b=0);
+		RGBColor(const RGBColor & rgbcolor);
+		RGBColor& operator=( const RGBColor & rgbcolor);
+		virtual ~RGBColor();
 
-			SDL_Color get_SDL() const
-			{
-				return *_color;
-			}
+		SDL_Color get_SDL() const;
 
-            void setR(Uint8 nr)
-            {
-                _color->r=nr ;
-            }
-            void setG(Uint8 ng)
-            {
-                _color->g=ng ;
-            }
-            void setB(Uint8 nb)
-            {
-                _color->b=nb ;
-            }
+		void setR(unsigned char nr);
+		void setG(unsigned char ng);
+		void setB(unsigned char nb);
 
-            unsigned int getR(void) const
-            {
-                return _color->r;
-            }
-            unsigned int getG(void) const
-            {
-                return _color->g;
-            }
-            unsigned int getB(void) const
-            {
-                return _color->b;
-            }
+		unsigned char getR() const;
+		unsigned char getG() const;
+		unsigned char getB() const;
 
             inline friend std::ostream& operator << (std::ostream& os, const RGBColor& c)
             {
@@ -147,38 +104,14 @@ namespace RAGE
             //	explicit SDLRGBAColor(SDL_Color * color) : SDLRGBColor(color) {}
 
         public:
-            RGBAColor(Uint8 r=0, Uint8 g=0, Uint8 b=0, Uint8 a=0)
-                    : RGBColor(r, g, b)
-            {
-                _color->unused=a;
-            }
-            RGBAColor(const RGBAColor & rgbacolor)
-                    : RGBColor(rgbacolor.getR(), rgbacolor.getG(), rgbacolor.getB())
-            {
-                _color->unused=rgbacolor.getA();
-            }
-            RGBAColor& operator=( const RGBAColor & rgbacolor )
-            {
-                _color->r=rgbacolor.getR();
-                _color->g=rgbacolor.getG();
-                ;
-                _color->b=rgbacolor.getB();
-                ;
-                _color->unused=rgbacolor.getA();
-                return *this;
-            }
-            virtual ~RGBAColor()
-            {}
+		RGBAColor(unsigned char r=0, unsigned char g=0, unsigned char b=0, unsigned char a=0);
+		RGBAColor(const RGBAColor & rgbacolor);
+		RGBAColor& operator=( const RGBAColor & rgbacolor );
+	    virtual ~RGBAColor();
 
-            void setA(Uint8 na)
-            {
-                _color->unused=na ;
-            }
+	    void setA(unsigned char na);
 
-            unsigned int     getA(void) const
-            {
-                return _color->unused;
-            }
+	    unsigned char getA(void) const;
 
             inline friend std::ostream& operator << (std::ostream& os, const RGBAColor& c)
             {
@@ -234,32 +167,14 @@ namespace RAGE
             //to handle explicit cast from SDL
             //beware : store only a pointer...
             //so the original should not be destroyed !
-            explicit Palette(const SDL_Palette* palette) : _palette(palette)
-            {
-                pointerCopy = true;
-            }
+	    explicit Palette(const SDL_Palette* palette);
+	    
         public:
 
-            ~Palette(void)
-            {
-                if (!pointerCopy)
-                    delete _palette;
-            }
+		~Palette(void);
 
-            inline int getNColors(void) const
-            {
-                return _palette->ncolors;
-            }
-            inline RGBAColor getColors(int index) const
-            {
-                //creates a new color to protects color in Palette...
-                //maybe using const would be better ??
-                return RGBAColor(	_palette->colors[index].r,
-                                  _palette->colors[index].g,
-                                  _palette->colors[index].b,
-                                  _palette->colors[index].unused
-                                );
-            }
+		int getNColors(void) const;
+		RGBAColor getColors(int index) const;
 
         };
     }

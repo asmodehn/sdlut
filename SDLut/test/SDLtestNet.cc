@@ -1,8 +1,9 @@
 #include "SDL.hh"
+#include "Logger.hh"
 using namespace RAGE;
 using namespace RAGE::SDL;
 
-
+Logger Log("Test Net");
 
 
 //Main Program

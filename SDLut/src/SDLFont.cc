@@ -1,185 +1,20 @@
 #include "SDLFont.hh"
 
+#include "SDLConfig.hh"
 #include "SDLResources.inc"
+
+
 
 namespace RAGE
 {
 namespace SDL
 {
-
-//if SDL_TTF used, provide a class to be used as a bridge.
-//this way the client doesnt have to take care of which function is available
-#ifdef HAVE_SDLTTF
-
-namespace TTF
-{
-	class Font
-	{
-		//shared between copies of the same instance
-		TTF_Font * _ttfstruct;
-		int _ref;
-
-		public:
-			//Constructor
-			Font(std::string filename, int ptsize) throw (std::logic_error);
-			
-			//Copy Constructor
-			//copy completely the content of *_ttfstruct
-			Font(const Font & );
-			//Assignement operator
-			Font & operator=(const Font &);
-
-			//Destructor
-			~Font();
-
-
-			//Attributes Access
-			static void byteSwapUNICODE(bool swapped);
-
-			typedef enum { Normal = TTF_STYLE_NORMAL, Bold = TTF_STYLE_BOLD, Italic = TTF_STYLE_ITALIC, Underline = TTF_STYLE_UNDERLINE }Style;
-
-			Style getStyle();
-			void setStyle(Style s);
-			
-			int height();
-			int ascent();
-			int descent();
-			int lineskip();
-			long faces();
-			bool faceIsFixedWidth();
-			std::string faceFamilyName();
-			std::string faceStyleName();
-			Rect size(std::string text);
-
-			//Rendering
-			typedef enum { Solid, Shaded, Blended } RenderMode;
-
-			//The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-			RGBSurface * render(std::string text, Color c, RenderMode mode, Color bgc = Color()) const;
-
-
-
-	};
-
-
-//Implementation of class Font
-		Font::Font(std::string filename, int ptsize) throw (std::logic_error)
-		try : _ttfstruct(TTF_OpenFont(filename.c_str(),ptsize)), _ref(1)
-		{
-			if(_ttfstruct==NULL) {
-				throw std::logic_error("TTF_OpenFont Error : " + GetError());
-			}
-		}
-		catch (std::exception& e)
-		{
-			Log << nl << "Exception catched in internal TTFFont Constructor :"  << nl <<
-					e.what() << std::endl;
-		            //TODO : much more explicit error message...
-		};
-
-		Font::Font(const Font & font)
-		{
-			++_ref;
-			_ttfstruct = font._ttfstruct;
-		}
-
-		Font::~Font()
-		{
-			--_ref;
-			if (_ref == 0)
-				TTF_CloseFont(_ttfstruct), _ttfstruct=NULL;
-		}
-
-		RGBSurface * Font::render(std::string text, Color c, RenderMode mode, Color bgc) const
-		{
-			SDL_Surface * surf;
-			switch ( mode )
-			{
-				case Blended : surf=TTF_RenderText_Blended(_ttfstruct,text.c_str(), c.get_SDL()); break;
-				case Shaded : surf=TTF_RenderText_Shaded(_ttfstruct,text.c_str(),c.get_SDL(), bgc.get_SDL()); break;
-				case Solid :
-				default: surf=TTF_RenderText_Solid(_ttfstruct,text.c_str(), c.get_SDL());
-			}
-			return new RGBSurface(surf);
-		}
-
-		//Attributes Access
-		void Font::byteSwapUNICODE(bool swapped)
-		{
-			TTF_ByteSwappedUNICODE(swapped);
-		}
-
-		Font::Style Font::getStyle()
-		{
-			return Style(TTF_GetFontStyle(_ttfstruct));
-		}
-
-			void Font::setStyle(Style s)
-			{
-				TTF_SetFontStyle(_ttfstruct,s);
-			}
-
-			
-			int Font::height()
-			{
-				return TTF_FontHeight(_ttfstruct);
-			}
-
-			int Font::ascent()
-			{
-				return TTF_FontAscent(_ttfstruct);
-			}
-
-			int Font::descent()
-			{
-				return TTF_FontDescent(_ttfstruct);
-			}
-
-			int Font::lineskip()
-			{
-				return TTF_FontLineSkip(_ttfstruct);
-			}
-
-			long Font::faces()
-			{
-				return TTF_FontFaces(_ttfstruct);
-			}
-
-			bool Font::faceIsFixedWidth()
-			{
-				return TTF_FontFaceIsFixedWidth(_ttfstruct) != 0 ;
-			}
-
-			std::string Font::faceFamilyName()
-			{
-				return std::string( TTF_FontFaceFamilyName(_ttfstruct) );
-			}
-
-			std::string Font::faceStyleName()
-			{
-				return std::string( TTF_FontFaceStyleName(_ttfstruct) );
-			}
-
-			Rect Font::size(std::string text)
-			{
-				int w,h;
-				int test = TTF_SizeText(_ttfstruct,text.c_str(),&w,&h);
-				if (!test) //success
-					return Rect(w,h);
-				//failure
-				Log << nl << GetError();
-				return Rect(0,0);
-			}
-
-}//namespace TTF
-
-
-#endif //HAVE_SDLTTF
-
-namespace Default
-{
-	//Class implementing the default font character render (with alpha masks)
-	class Font
+	/////////////////////////////////
+	// DEFAULT FONT IMPLEMENTATION //
+	/////////////////////////////////
+	
+//Class implementing the default font character render (with alpha masks)
+	class FontImpl
 	{
 
 		//this version keeps the right value for render
@@ -191,97 +26,266 @@ namespace Default
 		public :
 			
 		 //image 16x14 character, 225x225 pixels (all start at 0, not 1)
-		Font( int ptsize = 16)  throw (std::logic_error);
-		Font(const Font & font);
-		~Font();
+			FontImpl()  throw (std::logic_error);
+			FontImpl(const FontImpl & font);
+			virtual ~FontImpl();
 		
-		Rect getSize(const std::string & text);
-		
-		RGBSurface * render(const std::string & text,Color c, Color bgc);
+			virtual Rect getSize(const std::string & text);
+
+			virtual Font::Style getStyle() { return Font::Default;}
+			virtual void setStyle(Font::Style s) { } //does nothing only one style available in default mode.
+			
+			//Rendering
+			//bgc is used only if mode == shaded. Otherwise it s transparent
+			virtual SDL_Surface * render(const std::string & text,Color c, Color bgc, Font::RenderMode mode = Font::Solid );
 		
 	};
 
-	Font::Font( int ptsize)  throw (std::logic_error)
-		try: _fontsurf(RWOps(_defaultFont,sizeof(_defaultFont))), alphalookup()
-		{
-			//building alphalookup
-			for (int line = 0; line < 14; line++)
+	FontImpl::FontImpl()  throw (std::logic_error)
+			try: _fontsurf(RWOps(_defaultFont,sizeof(_defaultFont))), alphalookup()
 			{
-						  for (int col = 0; col < 16; col++)
-						  {
-							  alphalookup.push_back(Rect(col * 14, line*16, 14,16));
-						  }
+			//building alphalookup
+				for (int line = 0; line < 14; line++)
+				{
+					for (int col = 0; col < 16; col++)
+					{
+						alphalookup.push_back(Rect(col * 14, line*16, 14,16));
+					}
+				}
+			}
+			catch (std::exception& e)
+			{
+				Log << nl << "Exception caught in internal FontImpl constructor : " << e.what();
+			};
+
+			Rect FontImpl::getSize(const std::string & text)
+			{
+			//number of lines in text -> todo
+
+			//number of character max per line
+				Rect r(text.size() * 14,16);
+				return r;
+			}
+
+			FontImpl::FontImpl(const FontImpl & font) : _fontsurf(font._fontsurf)
+			{
+				alphalookup.assign(font.alphalookup.begin(),font.alphalookup.end());
+			}
+
+			FontImpl::~FontImpl()
+			{
+				alphalookup.clear();
+			}
+
+			SDL_Surface * FontImpl::render(const std::string & text,Color c, Color bgc, Font::RenderMode mode)
+			{
+			//TODO
+// 			SDL_Surface * result = new SDL_CreateRGBSurface(RGBFlags, getSize(text).getw(), getSize(text).geth(), 16, r_default_mask, g_default_mask, b_default_mask, a_default_mask);
+// 			for (unsigned int i= 0; i< text.size(); i++)
+// 			{
+// 				result->blit(_fontsurf,Rect(0,i*14,14,16),alphalookup[text[i]]);
+// 			}
+// 			return result;
+			}
+
+
+			
+	/////////////////////////////
+	// TTF FONT IMPLEMENTATION //
+	/////////////////////////////
+	
+//if SDL_TTF used, provide a class to be used as a bridge.
+//this way the client doesnt have to take care of which function is available
+#ifdef HAVE_SDLTTF
+
+	class FontExtend : public FontImpl
+	{
+		//shared between copies of the same instance
+		TTF_Font * _ttfstruct;
+		int _ref;
+
+		public:
+			//Constructor
+			FontExtend(std::string filename, int ptsize) throw (std::logic_error);
+			
+			//Copy Constructor
+			//copy completely the content of *_ttfstruct
+			FontExtend(const FontExtend & );
+			//Assignement operator
+			FontExtend & operator=(const FontExtend &);
+
+			//Destructor
+			~FontExtend();
+
+
+			//Attributes Access
+			static void byteSwapUNICODE(bool swapped);
+
+			Font::Style getStyle();
+			void setStyle(Font::Style s);
+			
+			int height();
+			int ascent();
+			int descent();
+			int lineskip();
+			long faces();
+			bool faceIsFixedWidth();
+			std::string faceFamilyName();
+			std::string faceStyleName();
+			
+			Rect size(std::string text);
+
+			//The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
+			SDL_Surface * render(std::string text, Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid) const;
+
+
+
+	};
+
+
+//Implementation of class Font
+	FontExtend::FontExtend(std::string filename, int ptsize) throw (std::logic_error)
+			try : FontImpl(),_ttfstruct(TTF_OpenFont(filename.c_str(),ptsize)), _ref(1)
+		{
+			if(_ttfstruct==NULL) {
+				throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
 			}
 		}
 		catch (std::exception& e)
 		{
-			Log << nl << "Exception caught in Default font contructor : " << e.what();
+			Log << nl << "Exception catched in internal FontExtent Constructor :"  << nl <<
+					e.what() << std::endl;
+		            //TODO : much more explicit error message...
 		};
 
-		Rect Font::getSize(const std::string & text)
+		FontExtend::FontExtend(const FontExtend & font)
 		{
-			//number of lines in text -> todo
-
-			//number of character max per line
-			Rect r(text.size() * 14,16);
-			return r;
+			++_ref;
+			_ttfstruct = font._ttfstruct;
 		}
 
-		Font::Font(const Font & font) : _fontsurf(font._fontsurf)
+		FontExtend::~FontExtend()
 		{
-			alphalookup.assign(font.alphalookup.begin(),font.alphalookup.end());
-		}
-		
-
-		Font::~Font()
-		{
-			alphalookup.clear();
+			--_ref;
+			if (_ref == 0)
+				TTF_CloseFont(_ttfstruct), _ttfstruct=NULL;
 		}
 
-		RGBSurface * Font::render(const std::string & text,Color c, Color bgc)
+		SDL_Surface * FontExtend::render(std::string text, Color c, Color bgc, Font::RenderMode mode) const
 		{
-			RGBSurface * result = new RGBSurface(getSize(text).getw(),getSize(text).geth(),16);
-			for (unsigned int i= 0; i< text.size(); i++)
+			SDL_Surface * surf;
+			switch ( mode )
 			{
-				result->blit(_fontsurf,Rect(0,i*14,14,16),alphalookup[text[i]]);
+				case Font::Blended : surf=TTF_RenderText_Blended(_ttfstruct,text.c_str(), c.get_SDL()); break;
+				case Font::Shaded : surf=TTF_RenderText_Shaded(_ttfstruct,text.c_str(),c.get_SDL(), bgc.get_SDL()); break;
+				case Font::Solid :
+				default: surf=TTF_RenderText_Solid(_ttfstruct,text.c_str(), c.get_SDL()); break;
 			}
-			return result;
+			return surf;
 		}
 
+		//Attributes Access
+		void FontExtend::byteSwapUNICODE(bool swapped)
+		{
+			TTF_ByteSwappedUNICODE(swapped);
+		}
 
-}
+		Font::Style FontExtend::getStyle()
+		{
+			switch (TTF_GetFontStyle(_ttfstruct))
+			{
+				case TTF_STYLE_NORMAL : return Font::Normal; break;
+				case TTF_STYLE_BOLD : return Font::Bold; break;
+				case TTF_STYLE_ITALIC : return Font::Italic; break;
+				case TTF_STYLE_UNDERLINE :return Font::Underline; break;
+			}
+			return Font::Default;
+		}
+
+		void FontExtend::setStyle(Font::Style s)
+			{
+				switch (s)
+				{
+					case Font::Normal : TTF_SetFontStyle(_ttfstruct,TTF_STYLE_NORMAL); break;
+					case Font::Bold : TTF_SetFontStyle(_ttfstruct,TTF_STYLE_BOLD); break;
+					case Font::Italic : TTF_SetFontStyle(_ttfstruct,TTF_STYLE_ITALIC); break;
+					case Font::Underline : TTF_SetFontStyle(_ttfstruct,TTF_STYLE_UNDERLINE); break;
+					case Font::Default : //TODO : Implement using parent class
+						default : break;
+				}
+			}
+
+			
+			int FontExtend::height()
+			{
+				return TTF_FontHeight(_ttfstruct);
+			}
+
+			int FontExtend::ascent()
+			{
+				return TTF_FontAscent(_ttfstruct);
+			}
+
+			int FontExtend::descent()
+			{
+				return TTF_FontDescent(_ttfstruct);
+			}
+
+			int FontExtend::lineskip()
+			{
+				return TTF_FontLineSkip(_ttfstruct);
+			}
+
+			long FontExtend::faces()
+			{
+				return TTF_FontFaces(_ttfstruct);
+			}
+
+			bool FontExtend::faceIsFixedWidth()
+			{
+				return TTF_FontFaceIsFixedWidth(_ttfstruct) != 0 ;
+			}
+
+			std::string FontExtend::faceFamilyName()
+			{
+				return std::string( TTF_FontFaceFamilyName(_ttfstruct) );
+			}
+
+			std::string FontExtend::faceStyleName()
+			{
+				return std::string( TTF_FontFaceStyleName(_ttfstruct) );
+			}
+
+			Rect FontExtend::size(std::string text)
+			{
+				int w,h;
+				int test = TTF_SizeText(_ttfstruct,text.c_str(),&w,&h);
+				if (!test) //success
+					return Rect(w,h);
+				//failure
+				Log << nl << Optional::GetError(Optional::TTF);
+				return Rect(0,0);
+			}
 
 
-//This constructor loads the default bitmap font
-//scale algorithm needed for surfaces...
-Font::Font( int ptsize) throw (std::logic_error)
-try : _font(NULL),_deffont( new Default::Font(ptsize))
-{
-	if(_deffont==NULL) {
-		Log << "Default Font Support not available.";
-	}
-	
-}
-catch (std::exception& e)
-	{
-		Log << nl << "Exception catched in Font Constructor :"  << nl <<
-				e.what() << std::endl;
-            //TODO : much more explicit error message...
-	};
+#endif //HAVE_SDLTTF
 
+
+	///////////////////////////////////
+	// INTERFACE FONT IMPLEMENTATION //
+	///////////////////////////////////
 
 
 	Font::Font(std::string filename, int ptsize) throw (std::logic_error)
-try :
+
 #ifdef HAVE_SDLTTF
-	_font(new TTF::Font(filename,ptsize)),
+			try : _font( new FontExtend(filename,ptsize))
+#else
+			try : _font( new FontImpl(filename,ptsize))
 #endif
-	_deffont( new Default::Font(ptsize))
-
-
 {
 	if(_font==NULL) {
-		Log << "TTF Support not available" << filename;
+		throw std::logic_error("Font Support not available");
     }
 }
 catch (std::exception& e)
@@ -292,8 +296,8 @@ catch (std::exception& e)
 };
 
 //Copy Constructor
-Font::Font(const RAGE::SDL::Font &font)
-: _font(font._font), _deffont(font._deffont)
+Font::Font(const Font &font)
+: _font(font._font)
 {
 }
 
@@ -301,158 +305,24 @@ Font::Font(const RAGE::SDL::Font &font)
 	Font::~Font()
 {
 	delete _font, _font=NULL;
-	delete _deffont, _deffont = NULL;
 }
-
 
 
 RGBSurface * Font::render(std::string text, Color c, RenderMode mode, Color bgc) const
 {
-	if(_font !=NULL)
-	{
-		switch(mode)
-		{
-		case (Shaded) : return _font->render(text,c,TTF::Font::Shaded,bgc); break;
-		case (Blended) : return _font->render(text,c,TTF::Font::Blended,bgc); break;
-		case (Solid) : return _font->render(text,c,TTF::Font::Solid,bgc); break;
-		default : Log << nl << " Font::render(...) => Rendermode not recognized, using Solid";
-		}
-		return _font->render(text,c,TTF::Font::Solid,bgc);
-	}
-	else
-	{
-		
-		return _deffont->render(text,c,bgc);
-	}
-	//Problem before if the if didnt returned...
-	return new RGBSurface();
-	
+	return new RGBSurface(_font->render(text,c,bgc,mode));
 }
-
-	//Attributes Access
-void Font::byteSwapUNICODE(bool swapped)
-	{
-		//if TTF is linked, we try to call byteswapUNICODE...
-		if (TTF::isLinked() )
-			TTF::Font::byteSwapUNICODE(swapped);
-		else
-			Log << nl << "Warning : Font::byteSwapUNICODE => This TTF Feature is not available.";
-	}
 
 	Font::Style Font::getStyle()
 	{
-		if (_font != NULL )
-		{
-			switch (_font->getStyle())
-			{
-			case (TTF::Font::Normal) : return Normal; break;
-			case (TTF::Font::Bold) : return Bold; break;
-			case (TTF::Font::Italic) : return Italic; break;
-			case (TTF::Font::Underline) : return Underline; break;
-			default : Log << nl << "Font::getStyle() -> Internal TTF::Font::Style not identified. This shouldnt happen !!! -> returning 'Normal'";
-			}
-			return Normal;
-		}
-		
-		//Default Style is normal
-		Log << nl << "Warning : Font::getStyle => This TTF Feature is not available. Default Style is Normal";
-		return Normal;
+		return _font->getStyle();
 	}
 
 	void Font::setStyle(Style s)
 	{
-		if (_font != NULL )
-		{
-			switch (s)
-			{
-			case (Normal) : _font->setStyle(TTF::Font::Normal); break;
-			case (Bold) :  _font->setStyle(TTF::Font::Bold); break;
-			case (Italic) : _font->setStyle(TTF::Font::Italic); break;
-			case (Underline) : _font->setStyle(TTF::Font::Underline); break;
-			default : Log << nl << "Font::setStyle(Font::Style) -> Font::Style passed not usable in TTF::Font. -> Ignoring call.";
-			}
-		}
-			
-		else
-			Log << nl << "Warning : Font::setStyle => This TTF Feature is not available. Default Style is Normal";
+		_font->setStyle(s);
 	}
 	
-	int Font::height()
-	{
-		if (_font != NULL )
-			return _font->height();
-		Log << nl << "Warning : Font::height() => This TTF Feature is not available.";
-		return 0;
-	}
-
-	int Font::ascent()
-	{
-		
-		if (_font != NULL )
-			return _font->ascent();
-		Log << nl << "Warning : Font::ascent() => This TTF Feature is not available.";
-		return 0;
-	}
-
-	int Font::descent()
-	{
-		
-		if (_font != NULL )
-			return _font->descent();
-		Log << nl << "Warning : Font::descent() => This TTF Feature is not available.";
-		return 0;
-	}
-
-	int Font::lineskip()
-	{
-		
-		if (_font != NULL )
-			return _font->lineskip();
-		Log << nl << "Warning : Font::lineskip() => This TTF Feature is not available.";
-		return 0;
-	}
-
-	long Font::faces()
-	{
-		
-		if (_font != NULL )
-			return _font->faces();
-		Log << nl << "Warning : Font::faces() => This TTF Feature is not available.";
-		return 0;
-	}
-
-	bool Font::faceIsFixedWidth()
-	{
-		
-		if (_font != NULL )
-			return _font->faceIsFixedWidth();
-		Log << nl << "Warning : Font::faceIsFixedWidth() => This TTF Feature is not available.";
-		return false;
-	}
-
-	std::string Font::faceFamilyName()
-	{
-		if (_font != NULL )
-			return _font->faceFamilyName();
-		Log << nl << "Warning : Font::faceFamilyName() => This TTF Feature is not available.";
-		return "";
-	}
-
-	std::string Font::faceStyleName()
-	{
-		if (_font != NULL )
-			return _font->faceStyleName();
-		Log << nl << "Warning : Font::faceStyleName() => This TTF Feature is not available.";
-		return "";
-	}
-
-	Rect Font::size(std::string text)
-	{
-		if (_font != NULL )
-			return _font->size(text);
-		Log << nl << "Warning : Font::size(string text) => This TTF Feature is not available.";
-		return Rect();
-	}
 
 
 

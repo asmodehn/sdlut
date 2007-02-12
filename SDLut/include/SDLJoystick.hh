@@ -1,9 +1,12 @@
 #ifndef SDL_JOYSTICK_HH
 #define SDL_JOYSTICK_HH
 
-#include "SDLConfig.hh"
-
 #include "SDLPoint.hh"
+#include <vector>
+#include <map>
+
+//forward reference
+typedef struct _SDL_Joystick SDL_Joystick;
 
 namespace RAGE
 {
@@ -19,6 +22,12 @@ namespace RAGE
 
         public :
 
+	typedef enum
+	{
+		Centered, Up, Right, Down, Left, RightUp, RightDown, LeftUp, LeftDown
+	}
+	JoyHat;
+
         ~Joystick();
 
         std::string getName();
@@ -32,6 +41,18 @@ namespace RAGE
         // to think about the hat :  how to handle the different states and combinations
         bool isButtonPressed(int button);
         Point getBallDeltaPos(int ball);
+
+	static short JoyHat2sdl(JoyHat jh); //protect this ??
+	static JoyHat sdl2JoyHat(short sdljh);
+	static JoyHat str2JoyHat(std::string strjh);
+	
+	    private :
+		    
+		    static std::vector<short> JoyHatrage2sdl;
+		    static std::map<short,JoyHat> JoyHatsdl2rage;
+		    static std::map<std::string,JoyHat> JoyHatstr2rage;
+		    static std::vector<short> InitJoyHatMapping();
+
 
     };
 
@@ -52,18 +73,19 @@ class JoystickPool
         void Update();
 
 	//Callbacks on Joystick Events
-	virtual bool handleJoyAxisEvent (Uint8 joystick, Uint8 axis, Sint16 value);
-	virtual bool handleJoyButtonEvent (Uint8 joystick, Uint8 button, bool pressed);
-	virtual inline bool handleJoyButtonPressEvent (Uint8 joystick, Uint8 button)
+	virtual bool handleJoyAxisEvent (unsigned short joystick, unsigned short axis, signed int value);
+	virtual bool handleJoyButtonEvent (unsigned short joystick, unsigned short button, bool pressed);
+	virtual inline bool handleJoyButtonPressEvent (unsigned short joystick, unsigned short button)
 	{
 		return handleJoyButtonEvent(joystick, button, true);
 	}
-	virtual inline bool handleJoyButtonReleaseEvent (Uint8 joystick, Uint8 button)
+	virtual inline bool handleJoyButtonReleaseEvent (unsigned short joystick, unsigned short button)
 	{
 		return handleJoyButtonEvent(joystick, button, false);
 	}
-	virtual bool handleJoyHatEvent(Uint8 joystick, Uint8 hat, Uint8 value);
-	virtual bool handleJoyBallEvent(Uint8 joystick, Uint8 ball, Sint16 xrel, Sint16 yrel);
+	virtual bool handleJoyHatEvent(unsigned short joystick, Joystick::JoyHat hat, unsigned short value);
+	virtual bool handleJoyBallEvent(unsigned short joystick, unsigned short ball, signed int xrel, signed int yrel);
+
 };
 
     }

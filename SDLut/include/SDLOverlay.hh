@@ -1,7 +1,6 @@
 #ifndef SDL_OVERLAY_HH
 #define SDL_OVERLAY_HH
 
-#include "SDLConfig.hh"
 #include "SDLRect.hh"
 #include "SDLVideoSurface.hh"
 #include "SDLApp.hh"
@@ -25,6 +24,8 @@
  *
  */
 
+struct SDL_Overlay;
+
 namespace RAGE
 {
     namespace SDL {
@@ -36,52 +37,28 @@ class Overlay
 	SDL_Overlay * const _overlay;
 
 	typedef enum { YV12, IYUV, YUY2, UYVY, YVYU } Format;
-	static Uint32 formatConvert(Format f )
-	{
-		Uint32 format = 0;
-		switch (f)
-		{
-			case YV12 : format = SDL_YV12_OVERLAY; break;
-			case IYUV : format = SDL_IYUV_OVERLAY; break;
-			case YUY2 : format = SDL_YUY2_OVERLAY; break;
-			case UYVY : format = SDL_UYVY_OVERLAY; break;
-			case YVYU : format = SDL_YVYU_OVERLAY; break;
-			default : break;//should not happen
-		}
-		return format;
-	}
+	static unsigned long formatConvert(Format f );
 
 public :
 	//Constructor
 	//maybe the current display size must be used ?
-	Overlay(Format f, int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, VideoSurface* dsurf = App::getInstance().getWindow()->getDisplay())
-	: _overlay(SDL_CreateYUVOverlay(width,height,formatConvert(f),dsurf->_surf))
-	{}
+	Overlay(Format f, int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, VideoSurface* dsurf = App::getInstance().getWindow()->getDisplay());
 	//Destructor
-	~Overlay() { SDL_FreeYUVOverlay(_overlay);}
+	~Overlay();
 
 	//Methods
 	Format getFormat(void) const;
-	int getHeight(void) const {return _overlay->w;}
-	int getWidth(void) const {return _overlay->h;}
-	int getPlanes(void) const {return _overlay->planes;}
-	bool isHWAccel(void) const {return _overlay->hw_overlay;}
+	int getHeight(void) const;
+	int getWidth(void) const;
+	int getPlanes(void) const;
+	bool isHWAccel(void) const;
 
 	//locks
-	bool lock(void)
-	{
-		return SDL_LockYUVOverlay(_overlay)==0;
-	}
-	void unlock(void)
-	{
-		SDL_UnlockYUVOverlay(_overlay);
-	}
+	bool lock(void);
+	void unlock(void);
 
 	//return true of dislay is successfull
-	bool display(Rect r)
-	{
-		return SDL_DisplayYUVOverlay(_overlay,r._rect) == 0;
-	}
+	bool display(Rect r);
 };
     }
 }

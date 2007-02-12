@@ -1,8 +1,9 @@
 #ifndef SDL_CURSOR_HH
 #define SDL_CURSOR_HH
 
-#include "SDLConfig.hh"
 #include "SDLPoint.hh"
+
+#include <stdexcept>
 
 /**
  * \class Cursor
@@ -22,6 +23,8 @@
  * Contact: asmodehn@gna.org
  *
  */
+
+struct SDL_Cursor;
 
 namespace RAGE
 {
@@ -50,49 +53,24 @@ namespace RAGE
             //The address of SDL_Cursor structure should not change
             SDL_Cursor * const _cursor;
 
-            explicit Cursor(SDL_Cursor * c) : _cursor(c)
-            {}
+	    explicit Cursor(SDL_Cursor * c);
 
         public :
             //Constructor
             Cursor(CursorShape sh = arrow) throw (std::logic_error);
 
             //Destructor
-            ~Cursor()
-            {
-                SDL_FreeCursor(_cursor);
-            }
+	    ~Cursor();
 
             //Static Methods
-            static void setCurrent (const Cursor & cur)
-            {
-                SDL_SetCursor(cur._cursor);
-            }
-
-            static Cursor getCurrent (void)
-            {
-                return Cursor(SDL_GetCursor());
-
-            }
-            static void warpCurrent (Point p)
-            {
-                SDL_WarpMouse(p.getx(),p.gety());
-                std::cout << "Mouse warped !" << std::endl;
-            }
+	    static void setCurrent (const Cursor & cur);
+	    static Cursor getCurrent (void);
+	    static void warpCurrent (Point p);
 
             //Methods
-            void show(void) // show the current Cursor
-            {
-                SDL_ShowCursor(SDL_ENABLE);
-            }
-            void hide(void) // hide the current Cursor
-            {
-                SDL_ShowCursor(SDL_DISABLE);
-            }
-            bool isVisible(void) // query the cursor - return true if the cursor is visible
-            {
-                return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
-            }
+	    void show(void); // show the current Cursor
+	    void hide(void); // hide the current Cursor
+	    bool isVisible(void); // query the cursor - return true if the cursor is visible
 
         };
     }

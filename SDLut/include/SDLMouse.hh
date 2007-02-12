@@ -1,9 +1,11 @@
 #ifndef SDL_MOUSE_HH
 #define SDL_MOUSE_HH
 
-#include "SDLConfig.hh"
-
 #include "SDLPoint.hh"
+
+#include <vector>
+#include <map>
+#include <string>
 
 namespace RAGE
 {
@@ -35,34 +37,45 @@ namespace RAGE
 
         typedef enum
         {
-            Left = 1, Middle, Right
+            Left, Middle, Right, WheelUp, WheelDown
         }
         Button;
-
+	
         Point getPos();
         Point getDeltaPos();
 
         bool isButtonPressed(Button b);
 
 
-        Mouse()
-        {}
-        virtual ~Mouse()
-        {}
+	Mouse();
+	virtual ~Mouse();
 
         //Callbacks on Mouse Events
-        virtual bool handleMouseMotionEvent (Uint8 state, Uint16 x, Uint16 y,
-                                             Sint16 xrel, Sint16 yrel);
-        virtual bool handleMouseButtonEvent (Uint8 button, Uint16 x, Uint16 y,
+        virtual bool handleMouseMotionEvent (bool button_pressed, unsigned int x, unsigned int y,
+                                             signed int xrel, signed int yrel);
+        virtual bool handleMouseButtonEvent (Button button, unsigned int x, unsigned int y,
                                              bool pressed);
-        virtual inline bool handleMouseButtonPressEvent (Uint8 button, Uint16 x, Uint16 y)
+        virtual inline bool handleMouseButtonPressEvent (Button button, unsigned int x, unsigned int y)
         {
             return handleMouseButtonEvent(button, x, y, true);
         }
-        virtual inline bool handleMouseButtonReleaseEvent (Uint8 button, Uint16 x, Uint16 y)
+        virtual inline bool handleMouseButtonReleaseEvent (Button button, unsigned int x, unsigned int y)
         {
             return handleMouseButtonEvent(button, x, y, false);
         }
+
+// 	    protected :
+		    
+	static short Button2sdl(Button b); //protect this ??
+		    static Button sdl2Button(short sdlb);
+		    static Button str2Button(std::string strb);
+	
+	    private :
+		    
+		    static std::vector<short> Buttonrage2sdl;
+		    static std::map<short,Button> Buttonsdl2rage;
+		    static std::map<std::string,Button> Buttonstr2rage;
+		    static std::vector<short> InitButtonMapping();
 
     };
 

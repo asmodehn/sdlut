@@ -13,9 +13,10 @@ CONFIGURE_FILE(	Battlefield/Wall.png ${Project_0_BINARY_DIR}/Datas/Battlefield/W
 CONFIGURE_FILE(	Battlefield/Water.png ${Project_0_BINARY_DIR}/Datas/Battlefield/Water.png COPYONLY)
 
 	#Characters
-CONFIGURE_FILE(	Characters/Character_Archer.bmp ${Project_0_BINARY_DIR}/Datas/Characters/Character_Archer.bmp COPYONLY)
-CONFIGURE_FILE(	Characters/Character_Fighter.bmp ${Project_0_BINARY_DIR}/Datas/Characters/Character_Fighter.bmp COPYONLY)
-CONFIGURE_FILE(	Characters/Monsters5.bmp ${Project_0_BINARY_DIR}/Datas/Characters/Monsters5.bmp COPYONLY)
+CONFIGURE_FILE(	Characters/Character_Archer.png ${Project_0_BINARY_DIR}/Datas/Characters/Character_Archer.png COPYONLY)
+CONFIGURE_FILE(	Characters/Character_Fighter.png ${Project_0_BINARY_DIR}/Datas/Characters/Character_Fighter.png COPYONLY)
+CONFIGURE_FILE(	"Characters/Skeletons Tile.bmp" "${Project_0_BINARY_DIR}/Datas/Characters/Skeletons Tile.bmp" COPYONLY)
+CONFIGURE_FILE(	"Characters/Worms Tile.bmp" "${Project_0_BINARY_DIR}/Datas/Characters/Worms Tile.bmp" COPYONLY)
 
 	#Fonts
 CONFIGURE_FILE(	Fonts/SlimSansSerif.ttf ${Project_0_BINARY_DIR}/Datas/Fonts/SlimSansSerif.ttf COPYONLY)
@@ -25,7 +26,7 @@ CONFIGURE_FILE(	Interface/LeaveMenu_NoSelected.png ${Project_0_BINARY_DIR}/Datas
 CONFIGURE_FILE(	Interface/LeaveMenu_YesSelected.png ${Project_0_BINARY_DIR}/Datas/Interface/LeaveMenu_YesSelected.png COPYONLY)
 
 	#Items
-CONFIGURE_FILE( Items/Arrow.bmp "${Project_0_BINARY_DIR}/Datas/Items/Arrow.bmp")
+CONFIGURE_FILE( Items/Arrow.png "${Project_0_BINARY_DIR}/Datas/Items/Arrow.png")
 #!!!!! Cmake BUG on copying Arrow.bmp file: copy failed, dest file 8k instead of src 13k   !!!!!
 
 	#Movies

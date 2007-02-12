@@ -18,9 +18,6 @@
  *
  */
 
-#include "SDLConfig.hh"
-
-
 #include "SDLManager.hh"
 #include "SDLWindow.hh"
 #include "SDLJoystick.hh"
@@ -31,6 +28,8 @@ namespace RAGE
     namespace SDL
     {
 
+	extern std::string GetError();
+	    
         class App
         {
             Manager * _manager;
@@ -38,8 +37,6 @@ namespace RAGE
             Window* _window; // for video
             JoystickPool* _jpool; //for joystick
             Mixer* _mixer; // for audio framework
-
-            Version _sdlversion;
 
             std::string _name,_icon;
 
@@ -49,9 +46,6 @@ namespace RAGE
             // undefined just here to prevent copies...
             App( const App & );
             App& operator=( App);
-
-			//to work around SDLNet limitation
-			bool _netInitialized;
 
         public:
 
@@ -115,11 +109,6 @@ namespace RAGE
 	{
 		return _mixer;
 	}
-
-            const Version & getVersion()
-            {
-                return _sdlversion;
-            }
 
         };
     }

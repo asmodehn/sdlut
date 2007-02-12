@@ -1,7 +1,9 @@
 #include "SDL.hh"
+#include "Logger.hh"
 using namespace RAGE;
 using namespace RAGE::SDL;
 
+Logger Log("Test Video");
 
 //Defining UserInput
 class MyUserInput : public Keyboard
@@ -85,8 +87,10 @@ int main(int argc, char** argv)
     //Setup example
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
-	App::getInstance().setName ("RAGE::SDL test - Video");
     App::getInstance().initVideo(false,false,true,false);
+    
+	App::getInstance().setName ("RAGE::SDL test - Video");
+    
 
     testlog << nl << " Creating the User Interface... " << std::endl;
     //UI Creation

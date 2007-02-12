@@ -1,4 +1,5 @@
 #include "SDLRWOps.hh"
+#include "SDLConfig.hh"
 
 namespace RAGE {
 	namespace SDL{
@@ -64,6 +65,16 @@ namespace RAGE {
 			Log << "Exception cought in RWOps Constructor : " << e.what();
 		};
 
+		SDL_RWops RWOps::get_SDL() const
+		{
+			return *_rwops;
+		}
+
+		const SDL_RWops * RWOps::get_pSDL() const
+		{
+			return _rwops;
+		}
+		
 		RWOps::~RWOps()
 		{
 			SDL_FreeRW(_rwops);

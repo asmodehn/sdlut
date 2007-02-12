@@ -19,11 +19,16 @@
  *
  */
 
-#include "SDLConfig.hh"
-
+#include "Logger.hh"
 #include "SDLRect.hh"
 #include "SDLVideoInfo.hh"
+
+#include <iostream>
 #include <cassert>
+
+//declaring SDL_type for late binding
+struct SDL_Surface;
+
 
 namespace RAGE
 {
@@ -47,15 +52,15 @@ namespace RAGE
 			//SDL interprets each pixel as a 32-bit number, so our masks must depend
 			//on the endianness (byte order) of the machine */
 			#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-				static const Uint32 r_default_mask = 0xff000000;
-				static const Uint32 g_default_mask = 0x00ff0000;
-				static const Uint32 b_default_mask = 0x0000ff00;
-				static const Uint32 a_default_mask = 0x000000ff;
+				static const unsigned long r_default_mask = 0xff000000;
+				static const unsigned long g_default_mask = 0x00ff0000;
+				static const unsigned long b_default_mask = 0x0000ff00;
+				static const unsigned long a_default_mask = 0x000000ff;
 			#else
-				static const Uint32 r_default_mask = 0x000000ff;
-				static const Uint32 g_default_mask = 0x0000ff00;
-				static const Uint32 b_default_mask = 0x00ff0000;
-				static const Uint32 a_default_mask = 0xff000000;
+				static const unsigned long r_default_mask = 0x000000ff;
+				static const unsigned long g_default_mask = 0x0000ff00;
+				static const unsigned long b_default_mask = 0x00ff0000;
+				static const unsigned long a_default_mask = 0xff000000;
 			#endif
 
             //TODO : improve wrapping with const SDL_Surface * // or maybe (const?) SDL_Surface &
@@ -99,8 +104,8 @@ namespace RAGE
             bool unlock(void);
 
 
-            Uint32 getpixel(int x, int y);
-            void setpixel(int x, int y, Uint32 pixel);
+            PixelColor getpixel(int x, int y);
+            void setpixel(int x, int y, PixelColor pixel);
 
             ///Conversion Constructor
             explicit BaseSurface(SDL_Surface * s) : _surf(s),locks(0)
@@ -109,86 +114,47 @@ namespace RAGE
             /** \brief Copy constructor overload.
               */
             BaseSurface(const BaseSurface & s) throw (std::logic_error);
-            BaseSurface(const BaseSurface & s , Uint32 flags, PixelFormat pfmt) throw (std::logic_error);
+            BaseSurface(const BaseSurface & s , unsigned long flags, PixelFormat pfmt) throw (std::logic_error);
 
 
             /** \brief assignement operator overload.
             */
             BaseSurface& operator=(const BaseSurface& s);
 
-            inline Uint32 getFlags(void) const
-            {
-                return _surf->flags;
-            } ///<usefull accessor for children only
+	    ///<usefull accessor for children only
+	    unsigned long getFlags(void) const;
 
         public:
 
             /// Virtual Destructor
-            virtual ~BaseSurface()
-            {
-                if (_surf!=NULL)
-                    SDL_FreeSurface(_surf);
-            }
+		virtual ~BaseSurface();
 
             ///Accessors
 
 			//usefull to get the SDL structure without no risk of modifying it
-			SDL_Surface get_SDL() const
-			{
-				return *_surf;
-			}
-
+		SDL_Surface get_SDL() const;
+		
 			//usefull to get the SDL structure
-			const SDL_Surface * get_pSDL() const
+		const SDL_Surface * get_pSDL() const;
+
+			int getHeight(void) const;
+			int getWidth(void) const;
+
+			Rect getSize() const
 			{
-				return _surf;
+				return Rect(getWidth(),getHeight());
 			}
 
-            inline int getHeight(void) const
-            {
-                return _surf->h;
-            }
-            inline int getWidth(void) const
-            {
-                return _surf->w;
-            }
-            Rect getSize() const
-            {
-                return Rect(getWidth(),getHeight());
-            }
-
-            inline int getBPP(void) const
-            {
-                assert(_surf->format);
-                return _surf->format->BitsPerPixel;
-            }
-            inline bool isSWset(void) const
-            {
-                return ( SDL_SWSURFACE & _surf->flags ) != 0;
-            }
-            inline bool isHWset(void) const
-            {
-                return ( SDL_HWSURFACE & _surf->flags ) != 0;
-            }
-            inline bool isHWAccelset(void) const
-            {
-                return ( SDL_HWACCEL & _surf->flags ) != 0;
-            }
-            inline bool isRLEAccelset(void) const
-            {
-                return ( SDL_RLEACCEL & _surf->flags ) != 0;
-            }
-            inline bool isPreAllocset(void) const
-            {
-                return ( SDL_PREALLOC & _surf->flags ) != 0;
-            }
-
+			int getBPP(void) const;
+			bool isSWset(void) const;
+			bool isHWset(void) const;
+			bool isHWAccelset(void) const;
+			bool isRLEAccelset(void) const;
+			bool isPreAllocset(void) const;
+			
             ///Accessor to pixelFormat
-            inline PixelFormat getPixelFormat(void) const
-            {
-                return PixelFormat(_surf->format);
-            }
-
+			PixelFormat getPixelFormat(void) const;
+			
             //Set the clip rect
             //Default Reset the clip rect to the full size of the surface
             inline void setClipRect(void)
@@ -206,11 +172,11 @@ namespace RAGE
             //Fill
             inline bool fill (const RGBColor& color)
             {
-                return fill(PixelFormat(_surf->format).getValueFromRGB(color));
+                return fill(getPixelFormat().getValueFromRGB(color));
             }
             inline bool fill (const RGBAColor& color)
             {
-                return fill(PixelFormat(_surf->format).getValueFromRGBA(color));
+                return fill(getPixelFormat().getValueFromRGBA(color));
             }
             inline bool fill (const PixelColor& color)
             {
@@ -219,11 +185,11 @@ namespace RAGE
             }
             inline bool fill (const RGBColor& color, Rect dest_rect)
             {
-                return fill(PixelFormat(_surf->format).getValueFromRGB(color), dest_rect);
+                return fill(getPixelFormat().getValueFromRGB(color), dest_rect);
             }
             inline bool fill (const RGBAColor& color, Rect dest_rect)
             {
-                return fill(PixelFormat(_surf->format).getValueFromRGBA(color), dest_rect);
+                return fill(getPixelFormat().getValueFromRGBA(color), dest_rect);
             }
             bool fill (const PixelColor& color, Rect dest_rect);
 

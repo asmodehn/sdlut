@@ -1,10 +1,16 @@
 #include "SDLCDRom.hh"
+#include "SDLConfig.hh"
 
 namespace RAGE
 {
     namespace SDL
 {
 
+	int CDRom::numDrives(void)
+	{
+		return SDL_CDNumDrives();
+	}
+	
     CDRom::CDRom(int drive ) throw (std::logic_error)
     try
     :

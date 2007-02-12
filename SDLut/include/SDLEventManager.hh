@@ -1,14 +1,14 @@
 #ifndef SDL_EVENTMANAGER_HH
 #define SDL_EVENTMANAGER_HH
 
-#include "SDLConfig.hh"
-
 #include "SDLEvent.hh"
-#include "SDLCriticalEvent.hh"
+//#include "SDLCriticalEvent.hh"
 
 #include "SDLMouse.hh"
 #include "SDLKeyboard.hh"
 #include "SDLJoystick.hh"
+
+#include <stdexcept>
 
 namespace RAGE
 {
@@ -43,20 +43,20 @@ namespace RAGE
             {}
 
             //Callbacks on Window / Display events
-            virtual bool handleActiveEvent(bool gain, Uint8 state);
+            virtual bool handleActiveEvent(bool gain, bool active, bool inputfocus, bool mousefocus);
             virtual bool handleResizeEvent(int w, int h);
             virtual bool handleExposeEvent();
             //callback on platform-dependent windows manager event
             virtual bool handleSysWMEvent(void);
 
             //Callback on other Events
-            virtual bool handleUserEvent(Uint8 type, int code, void* data1, void* data2);
+	    virtual bool handleUserEvent(Event::Type type, int code, void* data1, void* data2);
 
             //Callback on Quit Event
             virtual bool handleQuitEvent(void);
 
             //Catch-all callback
-            virtual bool handleEvent(CriticalEvent &cevent);
+            virtual bool handleEvent(Event &event);
         };
 
         /**
@@ -81,7 +81,7 @@ namespace RAGE
 
         protected:
             //filter to decide if an event is set as critical or not
-            Uint8 _criticaltypes;
+  //          Uint8 _criticaltypes;
 
             //WARNING : the handler must be initialized properly before setting a corresponding type as critical
             GeneralHandler * ghndlr;
@@ -89,7 +89,7 @@ namespace RAGE
             Keyboard * khndlr;
 
 
-            EventManager()  : _criticaltypes( 0), ghndlr(new GeneralHandler()),mhndlr(new Mouse()), khndlr(NULL)
+	    EventManager()  : /*_criticaltypes( 0),*/ ghndlr(new GeneralHandler()),mhndlr(new Mouse()), khndlr(NULL)
             {}
             ~EventManager()
             {}
@@ -125,20 +125,11 @@ namespace RAGE
             //Wait indefinitely for the next available event
             //return the event found or throw an exception if error.
             Event wait () throw(std::logic_error);
-
+/*
             void setCriticalType(EventType type)
             {
                 _criticaltypes |= type;
-            }
-
-            //handle all the critical events in the queue in a loop
-            void handleAllCritical();
-
-            //handle the next critical event
-            bool handleNextCritical();
-
-            //handle the next event of this type as critical (temporary -> doesnt change the _criticaltypes mask)
-            bool handleNextCritical(EventType type);
+            }*/
 
             //handle all the critical events in the queue in a loop
             void handleAll();
@@ -146,16 +137,13 @@ namespace RAGE
             //handle the next critical event
             bool handleNext();
 
-            //handle the next event of this type as critical (temporary -> doesnt change the _criticaltypes mask)
-            bool handleNext(EventType type);
+            //handle the next event of this type
+	    bool handleNext(Event::Type type);
 
             //Pump the event loop.
             //Implicitely called by handleAll() or handleNext() but not by the "critical" methods
-            void pump()
-            {
-                SDL_PumpEvents();
-            }
-
+	    void pump();
+	    
         };
     }
 }

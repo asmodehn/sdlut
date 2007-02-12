@@ -1,8 +1,13 @@
 #ifndef SDLRWOPS_HH
 #define SDLRWOPS_HH
 
-#include "SDLConfig.hh"
+
 #include <fstream>
+#include <string>
+#include <stdexcept>
+
+//forward declaration for late time binding...
+struct SDL_RWops;
 
 namespace RAGE
 {
@@ -25,7 +30,6 @@ namespace RAGE
         *
         */
 
-
         class RWOps
         {
 
@@ -45,15 +49,9 @@ namespace RAGE
 			RWOps(const void *mem, int size) throw (std::logic_error);
 			~RWOps();
 
-			SDL_RWops get_SDL() const
-			{
-				return *_rwops;
-			}
+			SDL_RWops get_SDL() const;
 
-			const SDL_RWops * get_pSDL() const
-			{
-				return _rwops;
-			}
+			const SDL_RWops * get_pSDL() const;
 
 			/*int Seek(int offset,Seek start);
 			Tell();

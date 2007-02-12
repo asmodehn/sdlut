@@ -5,7 +5,6 @@
  * Interface with other systems
  ******************************************************************************/
 
-#include "SDLConfig.hh"
 #include "SDLRGBSurface.hh"
 #include "SDLVideoSurface.hh"
 
@@ -65,16 +64,13 @@ namespace RAGE
 			//will be initialized in init
 			//might be better in a constructor actually...
 			RGBSurface * _logo;
-			GLuint _logotexture;
+			unsigned int _logotexture;
 			
 
 			public:
 
-			DefaultGLEngine() : _logo(NULL),_logotexture(0) {}
-			~DefaultGLEngine()
-			{
-				if (_logotexture!=0) glDeleteTextures(1, &_logotexture);
-			}
+				DefaultGLEngine();
+				~DefaultGLEngine();
 
 			//this is run just before the render
 			virtual void prerender(void);

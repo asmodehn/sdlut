@@ -10,8 +10,8 @@
 /**
   * \defgroup Utils
   */
-
 #include "Logger.hh"
+
 
 /**
   * \defgroup General
@@ -29,6 +29,7 @@
   * </ul>
   *
   */
+#include "SDLVersion.hh"
 #include "SDLApp.hh"
 #include "SDLManager.hh"
 
@@ -68,7 +69,7 @@
   * \defgroup Threads
   * /
 /**
-  defgroup Timers
+  * \defgroup Timers
   */
 #include "SDLTimer.hh"
 /**
@@ -79,7 +80,6 @@
   * \defgroup Text
   */
 #include "SDLFont.hh"
-
 
 
 //just a little usefull tip for mingw

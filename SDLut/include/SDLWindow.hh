@@ -17,14 +17,20 @@
  *
  */
 
-#include "SDLConfig.hh"
 #include "SDLEngine.hh"
 #include "SDLVideoInfo.hh"
  #include "SDLVideoSurface.hh"
+#include "SDLColor.hh"
  #ifdef HAVE_OPENGL
  #include "SDLGLManager.hh"
  #endif //HAVE_OPENGL
 
+
+//Default Setup
+#define DEFAULT_DISPLAY_WIDTH 640
+#define DEFAULT_DISPLAY_HEIGHT 480
+#define DEFAULT_DISPLAY_BPP 0 //0 for current display pixel mode
+#define DEFAULT_WINDOW_TITLE "RAGE::SDL"
 
 namespace RAGE
 {

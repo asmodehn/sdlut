@@ -1,10 +1,96 @@
 #include "SDLPixelFormat.hh"
+#include "SDLConfig.hh"
 
 namespace RAGE
 {
     namespace SDL
     {
 
+	    PixelFormat::PixelFormat(const SDL_PixelFormat* pf) : _pformat(pf)
+	    {
+		    pointerCopy = true;
+	    }
+
+	    PixelFormat::~PixelFormat(void)
+	    {
+		    if (!pointerCopy) delete _pformat;
+	    }
+
+	    int PixelFormat::getBitsPerPixel() const
+	    {
+		    return _pformat->BitsPerPixel;
+	    }
+	    int PixelFormat::getBytesPerPixel() const
+	    {
+		    return _pformat->BytesPerPixel;
+	    }
+	    int PixelFormat::getRshift() const
+	    {
+		    return _pformat->Rshift;
+	    }
+	    int PixelFormat::getGshift() const
+	    {
+		    return _pformat->Gshift;
+	    }
+	    int PixelFormat::getBshift() const
+	    {
+		    return _pformat->Bshift;
+	    }
+	    int PixelFormat::getAshift() const
+	    {
+		    return _pformat->Ashift;
+	    }
+
+	    int PixelFormat::getRloss() const
+	    {
+		    return _pformat->Rloss;
+	    }
+	    int PixelFormat::getGloss() const
+	    {
+		    return _pformat->Gloss;
+	    }
+	    int PixelFormat::getBloss() const
+	    {
+		    return _pformat->Bloss;
+	    }
+	    int PixelFormat::getAloss() const
+	    {
+		    return _pformat->Aloss;
+	    }
+
+	//BEWARE ! sometimes this has no sense, because only the palette is set...
+	//TODO : Handle this...
+	    unsigned long PixelFormat::getRmask() const
+	    {
+		    return _pformat->Rmask;
+	    }
+	    unsigned long PixelFormat::getGmask() const
+	    {
+		    return _pformat->Gmask;
+	    }
+	    unsigned long PixelFormat::getBmask() const
+	    {
+		    return _pformat->Bmask;
+	    }
+	    unsigned long PixelFormat::getAmask() const
+	    {
+		    return _pformat->Amask;
+	    }
+
+	    PixelColor PixelFormat::getColorKey() const
+	    {
+		    return _pformat->colorkey;
+	    }
+	    int PixelFormat::getAlpha() const
+	    {
+		    return _pformat->alpha;
+	    }
+	    Palette * PixelFormat::getPalette() const
+	    {
+		    return new Palette(_pformat->palette);
+	    }
+
+	    
         Logger & operator << (Logger & log, const PixelFormat & pformat)
         {
             log << nl << "PixelFormat:" << nl <<

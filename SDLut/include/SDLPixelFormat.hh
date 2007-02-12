@@ -1,15 +1,17 @@
 #ifndef SDL_PIXELFORMAT_HH
 #define SDL_PIXELFORMAT_HH
 
-#include "SDLConfig.hh"
 #include "SDLColor.hh"
+
+//declaring SDL_type for late binding
+struct SDL_PixelFormat;
 
 namespace RAGE
 {
     namespace SDL {
 
 //to store pixel colors
-typedef Uint32 PixelColor;
+typedef unsigned long PixelColor;
 
 class PixelFormat
 {
@@ -29,15 +31,12 @@ protected:
 
 	//Copy Constructor from SDL_PixelFormat
 	//This handle explicit casts
-	explicit PixelFormat(const SDL_PixelFormat* pf) : _pformat(pf)
-	{
-		pointerCopy = true;
-	}
+	explicit PixelFormat(const SDL_PixelFormat* pf);
 	//DEVELOPER BEWARE ! Don't free the original pixelformat.
 	//The user should never be able to free the original pixelformat
 	//nor to use SDL directly.
 
-	~PixelFormat(void) { if (!pointerCopy) delete _pformat; }
+	~PixelFormat(void);
 
 public:
 
@@ -47,28 +46,28 @@ public:
 	//Really Usefull ??
 
 
-	int getBitsPerPixel() const { return _pformat->BitsPerPixel; }
-	int getBytesPerPixel() const { return _pformat->BytesPerPixel; }
-	int getRshift() const { return _pformat->Rshift; }
-	int getGshift() const { return _pformat->Gshift; }
-	int getBshift() const { return _pformat->Bshift; }
-	int getAshift() const { return _pformat->Ashift; }
+	int getBitsPerPixel() const;
+	int getBytesPerPixel() const;
+	int getRshift() const;
+	int getGshift() const;
+	int getBshift() const;
+	int getAshift() const;
 
-	int getRloss() const { return _pformat->Rloss; }
-	int getGloss() const { return _pformat->Gloss; }
-	int getBloss() const { return _pformat->Bloss; }
-	int getAloss() const { return _pformat->Aloss; }
+	int getRloss() const;
+	int getGloss() const;
+	int getBloss() const;
+	int getAloss() const;
 
 	//BEWARE ! sometimes this has no sense, because only the palette is set...
 	//TODO : Handle this...
-	unsigned long getRmask() const { return _pformat->Rmask; }
-	unsigned long getGmask() const { return _pformat->Gmask; }
-	unsigned long getBmask() const { return _pformat->Bmask; }
-	unsigned long getAmask() const { return _pformat->Amask; }
+	unsigned long getRmask() const;
+	unsigned long getGmask() const;
+	unsigned long getBmask() const;
+	unsigned long getAmask() const;
 
-	PixelColor getColorKey() const { return _pformat->colorkey; }
-	int getAlpha() const { return _pformat->alpha; }
-	Palette * getPalette() const { return new Palette(_pformat->palette); }
+	PixelColor getColorKey() const;
+	int getAlpha() const;
+	Palette * getPalette() const;
 
 	//display all detected informations about pixelformat
 	friend std::ostream & operator << (std::ostream & ostr, const PixelFormat & pformat);

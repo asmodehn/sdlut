@@ -1,4 +1,5 @@
 #include "SDLAudioInfo.hh"
+#include "SDLConfig.hh"
 
 namespace RAGE
 {
@@ -6,8 +7,45 @@ namespace RAGE
 	{
 
 		//class AudioInfo
+
+			//Copy Constructor from SDL_AudioSpec
+			//This handle explicit casts
+		AudioInfo::AudioInfo(const SDL_AudioSpec* as): _spec(as)
+		{
+			pointerCopy = true;
+		}
+			
+		AudioInfo::~AudioInfo(void)
+		{
+			if (!pointerCopy) delete _spec;
+		}
+
 		
-		
+		int AudioInfo::frequency()
+		{
+			return _spec->freq;
+		}
+
+		unsigned int AudioInfo::format()
+		{
+			return _spec->format;
+		}
+
+		unsigned int AudioInfo::channels()
+		{
+			return _spec->channels;
+		}
+
+		unsigned long AudioInfo::samples()
+		{
+			return _spec->samples;
+		}
+
+		void* AudioInfo::userdata()
+		{
+			return _spec->userdata;
+		}
+
 
 
 		

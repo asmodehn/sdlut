@@ -1,5 +1,6 @@
 #include "SDLVideoInfo.hh"
 #include "SDLManager.hh"
+#include "SDLConfig.hh"
 namespace RAGE
 {
     namespace SDL
@@ -60,6 +61,67 @@ namespace RAGE
             return std::string(name);
         }
 
+            //return true if hardware acceleration is enabled
+	bool VideoInfo::isHWAvailable() const
+	{
+		return _info->hw_available;
+	}
+
+            //return true if a window manager is available
+	bool VideoInfo::isWMAvailable() const
+	{
+		return _info->wm_available;
+	}
+
+            //return true if hardware to hardware blits are accelerated
+	bool VideoInfo::isBlitHWAccelAvailable() const
+	{
+		return _info->blit_hw;
+	}
+
+            //return true if hardware to hardware colorkey blits are accelerated
+	bool VideoInfo::isBlitHWCCAccelAvailable() const
+	{
+		return _info->blit_sw_CC;
+	}
+
+            //return true if hardware to hardware alpha blits are accelerated
+	bool VideoInfo::isBlitHWAAccelAvailable() const
+	{
+		return _info->blit_sw_A;
+	}
+
+            //return true if software to hardware blits are accelerated
+	bool VideoInfo::isBlitSWAccelAvailable() const
+	{
+		return _info->blit_sw;
+	}
+
+            //return true if software to hardware colorkey blits are accelerated
+	bool VideoInfo::isBlitSWCCAccelAvailable() const
+	{
+		return _info->blit_sw_CC;
+	}
+
+            //return true if software to hardware alpha blits are accelerated
+	bool VideoInfo::isBlitSWAAccelAvailable() const
+	{
+		return _info->blit_sw_A;
+	}
+
+            //return true if color fills are accelerated
+	bool VideoInfo::isBlitFillAccelAvailable() const
+	{
+		return _info->blit_fill;
+	}
+
+            //return the total amount of video memory in kilobytes
+	unsigned long VideoInfo::videoMemSize() const
+	{
+		return _info->video_mem;
+	}
+
+	
         //return the SDLPixelFormat for the current video device
         PixelFormat * VideoInfo::getPixelFormat() const
         {

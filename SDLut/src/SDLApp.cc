@@ -1,11 +1,12 @@
 #include "SDLApp.hh"
+#include "SDLConfig.hh"
 
 namespace RAGE
 {
     namespace SDL
     {
 
-	    App::App(std::string logfilename) :    _manager(NULL), _window(NULL), _mixer(NULL), _netInitialized(false)
+	    App::App(std::string logfilename) :    _manager(NULL), _window(NULL), _mixer(NULL)
         {
 #ifdef DEBUG
             Log << nl << "App::App() called";
@@ -26,14 +27,13 @@ namespace RAGE
 #ifdef DEBUG
             Log << nl << "App::~App() called";
 #endif
-#ifdef HAVE_SDLTTF
-			if (TTF_WasInit())
-				TTF_Quit();
-#endif
-#ifdef HAVE_SDLNET
-			if( _netInitialized)
-				SDLNet_Quit();
-#endif
+
+	if (Optional::WasInit(Optional::TTF))
+		Optional::Quit(Optional::TTF);
+
+	if( Optional::WasInit(Optional::Net))
+		Optional::Quit(Optional::Net);
+				
             //MAKE SURE those destructor dont need App. They shouldnt !
             delete _window, _window = NULL;
             delete _mixer, _mixer=NULL;
@@ -54,34 +54,32 @@ namespace RAGE
 
 		bool App::initText()
 		{
-#ifdef HAVE_SDLTTF
-			if (TTF::isLinked())
+			if (Optional::isLinked(Optional::TTF))
 			{
 				//Initialize SDL_ttf
-				if( TTF_Init() == -1 )
+				if( Optional::Init(Optional::TTF) )
 				{
-					Log << " TTF Error : " << TTF::GetError() << std::endl;
+					Log << " TTF Error : " << Optional::GetError(Optional::TTF) << std::endl;
 					return false;
 				}
 				return true;
 			}
-#endif
 			return false;
 			
 		}
 
 		bool App::initNet()
 		{
-#ifdef HAVE_SDLNET
-			_netInitialized = true;
-			//Initialize SDL_net
-			if( SDLNet_Init() == -1 )
+			if (Optional::isLinked(Optional::Net))
 			{
-				Log << " NET Error : " << GetError(Net) << std::endl;
-				return false;
+				//Initialize SDL_net
+				if( Optional::Init(Optional::Net) )
+				{
+					Log << " NET Error : " << Optional::GetError(Optional::Net) << std::endl;
+					return false;
+				}
+				return true;
 			}
-			return true;
-#endif
 			return false;
 			
 		}
@@ -142,7 +140,7 @@ namespace RAGE
                 //setting the required flags...
 #ifdef HAVE_OPENGL
 
-				_window->setOpenGL(opengl);
+		_window->setOpenGL(opengl);
 #else
 
                 if(opengl)
@@ -241,7 +239,6 @@ namespace RAGE
 			return false;
 			
 		}
-
     }
 }
 
