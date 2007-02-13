@@ -128,7 +128,8 @@ ADD_EXECUTABLE(
 
 	#Interface
 		"${Project_0_SOURCE_DIR}/Datas/Interface/LeaveMenu_NoSelected.png"
-		"${Project_0_SOURCE_DIR}/Datas/Interface/LeaveMenu_YesSelected.png"	
+		"${Project_0_SOURCE_DIR}/Datas/Interface/LeaveMenu_YesSelected.png"
+		"${Project_0_SOURCE_DIR}/Datas/Interface/Victory Screen.png"	
 
 	#Items
 		"${Project_0_SOURCE_DIR}/Datas/Items/Arrow.png"
