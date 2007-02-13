@@ -65,7 +65,7 @@ namespace RAGE
 		//Sound destructor
 		~Sound();
 
-		bool Convert (int DestinationFormat,int DestinationChannels,int DestinationFrequency);
+		int Convert (int DestinationFormat,int DestinationChannels,int DestinationFrequency);
 		
 	
 };//class Sound

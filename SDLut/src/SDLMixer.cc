@@ -146,6 +146,8 @@ namespace RAGE
 		case SDL_AUDIO_STOPPED : return Stopped;
 		case SDL_AUDIO_PAUSED : return Paused;
 	}
+	//4 warnings
+	return Stopped;
 }
 
 		

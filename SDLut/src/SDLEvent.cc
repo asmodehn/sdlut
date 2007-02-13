@@ -14,7 +14,7 @@ namespace RAGE{
 
 	    //based on the fact that Rage's enum map to in [0..number-1]. This way the vector is easily built
 	    std::vector<short> Event::InitEventMapping()
-	    {
+		{
 		    std::vector<short> result;
 		    std::map<Event::Type,SDL_EventType> EventTyperage2sdlmap;
 
@@ -36,6 +36,7 @@ namespace RAGE{
 		result[(*it).first] = (*it).second;
 	}
 }
+return result;
 	    }
 
 	    std::vector<short> Event::EventTyperage2sdl = InitEventMapping();

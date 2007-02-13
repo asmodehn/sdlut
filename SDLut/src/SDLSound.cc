@@ -61,7 +61,7 @@ namespace RAGE
 #endif
 }
 		
- bool Sound::Convert (int DestinationFormat,int DestinationChannels,int DestinationFrequency)
+ int Sound::Convert (int DestinationFormat,int DestinationChannels,int DestinationFrequency)
 {
 #ifdef DEBUG
 	Log << nl << "Sound::Convert(" << DestinationFormat << " , " << DestinationChannels<< " , " << DestinationFrequency << ") called";

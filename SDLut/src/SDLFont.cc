@@ -86,6 +86,7 @@ namespace SDL
 // 				result->blit(_fontsurf,Rect(0,i*14,14,16),alphalookup[text[i]]);
 // 			}
 // 			return result;
+				return NULL;
 			}
 
 
