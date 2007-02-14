@@ -37,7 +37,7 @@ namespace SDL
 			
 			//Rendering
 			//bgc is used only if mode == shaded. Otherwise it s transparent
-			virtual SDL_Surface * render(const std::string & text,Color c, Color bgc, Font::RenderMode mode = Font::Solid );
+			virtual SDL_Surface * render(const std::string & text,Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid ) const;
 		
 	};
 
@@ -77,16 +77,16 @@ namespace SDL
 				alphalookup.clear();
 			}
 
-			SDL_Surface * FontImpl::render(const std::string & text,Color c, Color bgc, Font::RenderMode mode)
+			SDL_Surface * FontImpl::render(const std::string & text,Color c, Color bgc, Font::RenderMode mode) const
 			{
 			//TODO
-// 			SDL_Surface * result = new SDL_CreateRGBSurface(RGBFlags, getSize(text).getw(), getSize(text).geth(), 16, r_default_mask, g_default_mask, b_default_mask, a_default_mask);
+//  			SDL_Surface * result = SDL_CreateRGBSurface(RGBFlags, getSize(text).getw(), getSize(text).geth(), 16, r_default_mask, g_default_mask, b_default_mask, a_default_mask);
 // 			for (unsigned int i= 0; i< text.size(); i++)
 // 			{
 // 				result->blit(_fontsurf,Rect(0,i*14,14,16),alphalookup[text[i]]);
+// 				return NULL;
 // 			}
 // 			return result;
-				return NULL;
 			}
 
 
@@ -137,10 +137,7 @@ namespace SDL
 			Rect size(std::string text);
 
 			//The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-			SDL_Surface * render(std::string text, Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid) const;
-
-
-
+			SDL_Surface * render(const std::string& text, Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid) const;
 	};
 
 
@@ -172,7 +169,7 @@ namespace SDL
 				TTF_CloseFont(_ttfstruct), _ttfstruct=NULL;
 		}
 
-		SDL_Surface * FontExtend::render(std::string text, Color c, Color bgc, Font::RenderMode mode) const
+		SDL_Surface * FontExtend::render(const std::string& text, Color c, Color bgc, Font::RenderMode mode) const
 		{
 			SDL_Surface * surf;
 			switch ( mode )
