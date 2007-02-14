@@ -24,7 +24,6 @@ public:
 	//static bool Read_Ini_File(const string &filename, string content);
 
 	static string Get_Option_String(const string &filename, const char* Option_Name);
-	static int Get_Key_Value_From_Key_Name(string key_str);
 
 };
 

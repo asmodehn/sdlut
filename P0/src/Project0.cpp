@@ -35,7 +35,8 @@ bool InitEverything()
 	if (! App::getInstance().initText())
 		//if( TTF_Init() == -1 )
     {
-		P0_Logger << " TTF Init Error : " << TTF::GetError() << std::endl;
+		//P0_Logger << " TTF Init Error : " << TTF::GetError() << std::endl;
+		P0_Logger << " TTF Init Error : " << GetError() << std::endl;
         return false;
     }
 	P0_Logger << " TTF Init : OK " << std::endl;

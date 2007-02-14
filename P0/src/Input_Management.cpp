@@ -275,6 +275,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 			switch( s.getKey() )
 			{
 				case KReturn:
+				case KKEnter:
 				case KEscape:
 					//Save time in file
 					myVictory_Screen->Save_Time();

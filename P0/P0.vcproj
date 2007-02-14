@@ -68,7 +68,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				UseLibraryDependencyInputs="false"
-				AdditionalOptions="/NODEFAULTLIB:msvcrt.lib&#x0D;&#x0A;SDL.lib SDLmain.lib SDl_image.lib SDL_ttf.lib  sdl_net.lib&#x0D;&#x0A;opengl32.lib&#x0D;&#x0A;..\SDLut\build\lib\debug\SDLut.lib"
+				AdditionalOptions="/NODEFAULTLIB:msvcrt.lib&#x0D;&#x0A;SDL.lib SDLmain.lib SDl_image.lib SDL_ttf.lib  sdl_net.lib sdl_mixer.lib&#x0D;&#x0A;opengl32.lib&#x0D;&#x0A;..\SDLut\build\lib\debug\SDLut.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateManifest="true"
