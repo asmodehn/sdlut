@@ -116,7 +116,7 @@ namespace Optional
 					break;
 				case TTF:
 #ifdef HAVE_SDLTTF
-						return TTF_Init() == 0;
+						return TTF_Init() != 0;
 #endif
 					break;
 				case Image:
