@@ -87,6 +87,7 @@ namespace SDL
 // 				return NULL;
 // 			}
 // 			return result;
+				return NULL;
 			}
 
 
