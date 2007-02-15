@@ -2,7 +2,7 @@
 #define Daemons_HH
 
 #include "Monster_Factory.hh"
-#include "Base.hh"
+//#include "Base.hh"
 #include "Player_Base.hh"
 
 //Class that will only contains callback methods used by timers

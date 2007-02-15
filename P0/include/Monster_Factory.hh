@@ -2,8 +2,8 @@
 #define Monster_Factory_HH
 
 #include "Monsters.hh"
-#include "Base.hh"
-#include "BattleField.hh"
+//#include "Base.hh"
+//#include "BattleField.hh"
 
 //Monster Factory which create monsters, initialize them, move them, etc
 template <typename Monster_Template>

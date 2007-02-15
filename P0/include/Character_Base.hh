@@ -1,7 +1,7 @@
 #ifndef Character_Base_HH
 #define Character_Base_HH
 
-#include "Base.hh"
+//#include "Base.hh"
 #include "BattleField.hh"
 
 //Character Class

@@ -3,7 +3,7 @@
 //Constructor
 KeyboardInput::KeyboardInput()
 {
-	GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
+	//GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
 }
 //Private method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
 void KeyboardInput::Player_Moves_Consequences()

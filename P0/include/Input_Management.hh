@@ -2,10 +2,11 @@
 #define Input_Management_HH
 
 //#include "Character_Base.hh"
-//#include "Monster_Factory.hh"
-#include "Base.hh"
-//#include "Menus.hh"
-#include "Render_Engine.hh"
+#include "Monster_Factory.hh"
+//#include "Base.hh"
+#include "Menus.hh"
+//#include "Render_Engine.hh"
+#include "Player_Base.hh"
 #include "Daemons.hh"
 
 class KeyboardInput : public Keyboard
@@ -28,7 +29,7 @@ class KeyboardInput : public Keyboard
 		//std::vector<Character_Base*> Monster_Vector_Worm; //Vector which will contains all skeletons
 		std::vector< std::vector<Character_Base*> *>* Global_Player_Vector; //Pointer to the vector that contains pointer to all vectors of player
 		std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector; //Pointer to the vector that contains pointer to all vectors of monster
-		Render_Engine* myRender_Engine; //Engine
+		//Render_Engine* myRender_Engine; //Engine
 		Daemons* myDaemons; //Daemons
 
 		//Method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
@@ -83,10 +84,10 @@ class KeyboardInput : public Keyboard
 		{
 			Global_Monster_Vector = newGlobal_Monster_Vector;
 		}
-		inline void Set_Render_Engine(Render_Engine* newRender_Engine)
+		/*inline void Set_Render_Engine(Render_Engine* newRender_Engine)
 		{
 			myRender_Engine = newRender_Engine;
-		}
+		}*/
 		inline void Set_Daemons(Daemons* newDaemons)
 		{
 			myDaemons = newDaemons;

@@ -1,10 +1,11 @@
 #ifndef Render_Engine_HH
 #define Render_Engine_HH
 
-#include "Monster_Factory.hh"
-#include "Player_Base.hh"
-#include "Menus.hh"
-#include "Base.hh"
+//#include "Monster_Factory.hh"
+//#include "Player_Base.hh"
+//#include "Menus.hh"
+//#include "Base.hh"
+#include "Input_Management.hh"
 
 //Engine Class : that render the screen
 class Render_Engine : public Engine

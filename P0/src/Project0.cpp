@@ -205,10 +205,6 @@ try { //global error management
 	myKeyboardInput->Set_Victory_Screen( VictoryScreen );
 	myRender_Engine->Set_Victory_Screen(VictoryScreen);
 
-	//Inform the keyboard of the engine instance
-	myKeyboardInput->Set_Render_Engine(myRender_Engine);
-
-
 	/********DEAMONS CREATION********/
 	//Create monster's movement daemons
 	Timer<Daemons>* myMonster_Factory_Monsters_Moves_Timer = new Timer<Daemons>(); //set definition

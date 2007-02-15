@@ -8,10 +8,6 @@
 
 using namespace std;
 
-#include "SDL.hh"
-
-using namespace RAGE::SDL;
-
 //Ini Manager Class
 class Ini_Manager
 {
