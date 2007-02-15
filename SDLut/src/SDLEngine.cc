@@ -53,7 +53,7 @@ namespace RAGE
 
 	    
 		//this is run just before the render
-		void DefaultGLEngine::prerender(void)
+		void DefaultGLEngine::prerender(unsigned long deltaticks)
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear Screen And Depth Buffer
 		}

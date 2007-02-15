@@ -229,6 +229,7 @@ namespace RAGE
 					else
 					{
 #endif
+						//TODO background can be null, andthis will not be called.... ( speed improvemnt )
 						_screen->fill(_background);
 #ifdef HAVE_OPENGL
 					}
@@ -337,16 +338,16 @@ namespace RAGE
 
                 if (_screen !=NULL)
                 {
-					Uint32 lastframe = SDL_GetTicks();
+			unsigned long lastframe = SDL_GetTicks();;
 	                    while (!(_eventmanager->quitRequested()))
-						{
+						{ 
 							//handling all the events
 							_eventmanager->handleAll();
 							//applying the background
 							applyBGColor();
 	
 							//calling engine for prerender and render events
-							_engine->prerender();
+							_engine->prerender(SDL_GetTicks() - lastframe);
 							_engine->render(*_screen);
 							
 							

@@ -19,7 +19,8 @@ namespace RAGE
 
 		public:
 			//this is run just before the render
-			virtual void prerender(void) {}
+			//deltaticks is the amount of ticks between the end of the last render and now.
+			virtual void prerender(unsigned long deltaticks) {}
 
 			//this render function should not modify the engine
             virtual void render(VideoSurface & screen) const = 0;
@@ -73,7 +74,7 @@ namespace RAGE
 				~DefaultGLEngine();
 
 			//this is run just before the render
-			virtual void prerender(void);
+			virtual void prerender(unsigned long deltaticks);
 
 			//this render function should not modify the engine
             virtual void render(VideoSurface & screen) const;

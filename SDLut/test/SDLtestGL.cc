@@ -148,10 +148,10 @@ public:
 		
 	}
 
-	void prerender()
+	void prerender(unsigned long deltaticks)
 	{
-		return DefaultGLEngine::prerender();
-
+		return DefaultGLEngine::prerender(deltaticks);
+		//TODO : keep the rotation speed constant even if the framerate drops...
 	}
 
 	void render(VideoSurface & screen) const
