@@ -32,11 +32,6 @@ class KeyboardInput : public Keyboard
 		//Render_Engine* myRender_Engine; //Engine
 		Daemons* myDaemons; //Daemons
 
-		//Method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
-		void Player_Moves_Consequences();
-		//Method which will call all the method used when there is an attack by the character
-		void Player_Attack_Consequences();
-
 	public:
 
 		//Accessor
@@ -108,6 +103,10 @@ class KeyboardInput : public Keyboard
 		//Manage the key pressed
 		bool handleKeyEvent (const Sym &s, bool pressed);
     
+		//Method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
+		void Player_Moves_Consequences(unsigned long deltaticks);
+		//Method which will call all the method used when there is an attack by the character
+		void Player_Attack_Consequences();
 };
 
 #endif

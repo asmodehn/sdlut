@@ -91,7 +91,7 @@ try { //global error management
 	/********Classes Instanciation & Initialization********/
 	//Create the keyboard instance that will managed input
 	KeyboardInput* myKeyboardInput = new KeyboardInput();
-	myKeyboardInput->enableKeyRepeat();  //enable key repeat
+	//myKeyboardInput->enableKeyRepeat();  //enable key repeat
 
 
 	//Instanciate the timers class
@@ -204,6 +204,9 @@ try { //global error management
 	Victory_Screen* VictoryScreen = new Victory_Screen();
 	myKeyboardInput->Set_Victory_Screen( VictoryScreen );
 	myRender_Engine->Set_Victory_Screen(VictoryScreen);
+
+	//Inform the render engine of the keyboard instance
+	myRender_Engine->Set_Keyboard(myKeyboardInput);
 
 	/********DEAMONS CREATION********/
 	//Create monster's movement daemons

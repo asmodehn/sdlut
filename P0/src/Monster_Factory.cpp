@@ -94,7 +94,8 @@ try {
 	//Move Monsters
 	for(unsigned int i=0; i < Monster_Vector->size(); i++)
 	{
-		if( Monster_Vector->at(i)->move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
+		//deltatick is not used
+		if( Monster_Vector->at(i)->move( 0, Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
 		{ 
 			P0_Logger << " Failed to move monster N°" << i << std::endl;
 			return false; //error occured 

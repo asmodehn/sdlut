@@ -43,6 +43,8 @@ bool Ini_Manager::Append_To_Ini_File(const string &filename, string content)
 
 string Ini_Manager::Get_Option_String(const string &filename, const char* Option_Name)
 {
+	string res = "";
+
 	ifstream fi(filename.c_str());
 	if ( fi.fail() )
 	{
@@ -75,9 +77,9 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 							char* temp_res = new char;
 							//remove whitespace
 							std::stringstream( newline_str->substr(equal_loc+1) ) >> skipws >> temp_res;
-							//return the final clear string
-							fi.close();
-							return (string)temp_res;
+							//result is the clear string
+							res = (string)temp_res;
+							break;
 						}
 						else
 						{
@@ -85,13 +87,13 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 							string::size_type quote_2_loc = (newline_str->substr(quote_1_loc+1)).find("\"", 0);
 							if ( quote_2_loc == string::npos ) //the 2nd " wasn't found
 							{
-								fi.close();
-								//return the all string after the = (even with the only ")
-								return newline_str->substr(equal_loc+1);
+								//result is the all string after the = (even with the only ")
+								res = newline_str->substr(equal_loc+1);
+
 							} else {
-								fi.close();
-								//we return the string between the " "
-								return newline_str->substr(quote_1_loc+1, quote_2_loc);
+								//result is the string between the " "
+								res = newline_str->substr(quote_1_loc+1, quote_2_loc);
+								break;
 							}
 						}
 					}
@@ -101,8 +103,7 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 		//free before looping
 		//delete(newline_str);
 	}
-	
-	//Option not found !?!
+		
 	fi.close();
-	return NULL;
+	return res;
 }

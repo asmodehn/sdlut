@@ -136,14 +136,11 @@ try {
 	FiNiSH_TiME = (unsigned)time( NULL ) - FiNiSH_TiME;
 
 	GLOBAL_GAME_STATE = 5;
-	//
-	//todo: show score
-	//
 
 	return 0; //end of timer
 	
 } catch (...) {
-	P0_Logger << " Player's Arrow Animation Timer Failed " << std::endl;
+	P0_Logger << " Score manager Failed " << std::endl;
 	return 0; //end of timer
 }
 }

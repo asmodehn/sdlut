@@ -6,48 +6,57 @@ KeyboardInput::KeyboardInput()
 	//GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
 }
 //Private method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
-void KeyboardInput::Player_Moves_Consequences()
+void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
 {
-	//Get Monster's vectors
-	//Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
-	//Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
-
-	//set character sprite in function of the direction and dont move if it's only a direction change
-	if( myPlayer->assign_direction_sprite() == false )
-	{ 
-      P0_Logger << " Check character direction Failed " << std::endl;    
-    }
-
-	if ( myPlayer->Get_Moving_Status() ) //we're really moving but not simply changing the direction
+	//P0_Logger << " x: " << myPlayer->Get_X() << std::endl;
+	//P0_Logger << " y: " << myPlayer->Get_Y() << std::endl;
+	//P0_Logger << " xVel: " << myPlayer->Get_xVel() << std::endl;
+	//P0_Logger << " yVel: " << myPlayer->Get_yVel() << std::endl;
+	
+	//a movement has been triggered
+	if ( (myPlayer->Get_xVel() != 0) || (myPlayer->Get_yVel() != 0) )
 	{
-		//Move the character if possible
-		if( myPlayer->move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector)
-		 == false )
+		//Get Monster's vectors
+		//Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
+		//Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
+
+		//set character sprite in function of the direction and dont move if it's only a direction change
+		if( myPlayer->assign_direction_sprite() == false )
 		{ 
-		  P0_Logger << " Move player Failed " << std::endl;    
+			P0_Logger << " Check character direction Failed " << std::endl;    
+		}
+
+		if ( myPlayer->Get_Moving_Status() ) //we're really moving but not simply changing the direction
+		{
+			//Move the character if possible
+			if( myPlayer->move(deltaticks, Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector)
+			 == false )
+			{ 
+				P0_Logger << " Move player Failed " << std::endl;    
+			}
+			
+			//Set the camera
+			if( myPlayer->following_camera() == false )
+			{ 
+				P0_Logger << " Failed to set the camera" << std::endl;    
+			}
+
+			//Intervals between animation's frames
+			myPlayer_Move_Animation_Timer.setInterval( PLAYER_MOVE_ANIMATION_INTERVAL  );
+			//Set the callback method which will define the character appearance on the screen and start animation
+			myPlayer_Move_Animation_Timer.setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
+			//Start the animation
+			myPlayer_Move_Animation_Timer.start();
+
+			//Send the modified character's collision box to daemons
+			//myDaemons->Set_Player_Base(myPlayer);
 		}
 		
-		//Set the camera
-		if( myPlayer->following_camera() == false )
-		{ 
-		  P0_Logger << " Failed to set the camera" << std::endl;    
-		}
+		//Send the modified character to the render engine 
+		//myRender_Engine->Set_Player_Base(myPlayer);
 
-		//Intervals between animation's frames
-		myPlayer_Move_Animation_Timer.setInterval( PLAYER_MOVE_ANIMATION_INTERVAL  );
-		//Set the callback method which will define the character appearance on the screen and start animation
-		myPlayer_Move_Animation_Timer.setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
-		//Start the animation
-		myPlayer_Move_Animation_Timer.start();
-
-		//Send the modified character's collision box to daemons
-		//myDaemons->Set_Player_Base(myPlayer);
+		//P0_Logger << " Move " << std::endl;
 	}
-	
-	//Send the modified character to the render engine 
-	//myRender_Engine->Set_Player_Base(myPlayer);
-
-	//P0_Logger << " Move " << std::endl;
 }
 //Private method which will call all the method used when there is an attack by the character
 void KeyboardInput::Player_Attack_Consequences()
@@ -117,38 +126,49 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 			if ( !myPlayer->Get_Attack_Status() ) //If attack is occuring then no keys are available except escape/options keys
 			/************SEEMS TO BUG HERE WHEN CHANGING WEAPON DURING ATTACK ?****************/
 			{
-				bool move_key_pressed = false;
+				//bool move_key_pressed = false;
 
 				//Moves Keys
-				if ((s.getKey() == UP_1) || (s.getKey() == UP_2))
+				if ((s.getKey() == RIGHT_1) || (s.getKey() == RIGHT_2))
 				{
-					//myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
-					myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
-					move_key_pressed = true;
-					
-				}
+					//myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
+					//myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
+					if (myPlayer->Get_xVel() != CH_VEL )
+						myPlayer->Set_xVel( myPlayer->Get_xVel() + CH_VEL);
+
+					//move_key_pressed = true;
+				} 
 				if ((s.getKey() == DOWN_1) || (s.getKey() == DOWN_2))
 				{
 					//myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
-					myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
-					move_key_pressed = true;;
+					//myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
+					if (myPlayer->Get_yVel() != CH_VEL )
+						myPlayer->Set_yVel( myPlayer->Get_yVel() + CH_VEL);
+					//move_key_pressed = true;;
 				}
 				if ((s.getKey() == LEFT_1) || (s.getKey() == LEFT_2))
 				{
 					//myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
-					myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
-					move_key_pressed = true;
+					//myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
+					if (myPlayer->Get_xVel() != (-1*CH_VEL) )
+						myPlayer->Set_xVel( myPlayer->Get_xVel() - CH_VEL);
+					//move_key_pressed = true;
 				}
-				if ((s.getKey() == RIGHT_1) || (s.getKey() == RIGHT_2))
+				if ((s.getKey() == UP_1) || (s.getKey() == UP_2))
 				{
-					//myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
-					myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
-					move_key_pressed = true;
-				} 
-				 //a movement key has been pressed
-				if (move_key_pressed)
-					Player_Moves_Consequences();
+					//myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
+					//myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
+					if (myPlayer->Get_yVel() != (-1*CH_VEL) )
+						myPlayer->Set_yVel( myPlayer->Get_yVel() - CH_VEL);
+					//move_key_pressed = true;
+					
+				}
 
+				 //a movement key has been pressed
+				//if (move_key_pressed)
+					//Player_Moves_Consequences();
+
+				//Attack Keys
 				if ((s.getKey() == ATTACK_1) || (s.getKey() == ATTACK_2)) //Attacks Key
 				{
 					//Stop moving
@@ -156,6 +176,8 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					myPlayer->Set_yVel(0);
 					Player_Attack_Consequences();
 				}
+
+				//Attack Mode
 				if ((s.getKey() == CHANGE_ATTACK_MODE_1) || (s.getKey() == CHANGE_ATTACK_MODE_2))
 				{
 					//Change weapon style by looping between the available styles (2 for the moment)

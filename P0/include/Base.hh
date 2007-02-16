@@ -65,6 +65,9 @@ extern int MO_HEIGHT;
 extern int CH_INITIAL_X;
 extern int CH_INITIAL_Y;
 
+//Character velocity
+extern int CH_VEL;
+
 //The direction status of the character
 extern int CH_RIGHT;
 extern int CH_LEFT;

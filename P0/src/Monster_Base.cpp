@@ -99,7 +99,7 @@ Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 
 
 //Move monster randomly
-bool Monster_Base::move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+bool Monster_Base::move(unsigned long deltaticks, std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 try {
 	//move only if a random number between 0 and 133 is below 49: 2 chances of 3 (This speed down monster movement)
@@ -113,11 +113,21 @@ try {
 		xVel = (rand()%3-1);
 		yVel = (rand()%3-1);
 #endif
-		if (! Check_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) )
-		{ //No collisions found
-			X = Collision_Box.getx();
-			Y = Collision_Box.gety();
+		//Move collision box to the futute position
+		Collision_Box.setx(X + xVel);
+		Collision_Box.sety(Y + yVel);
+
+		//check collisions
+		if ( Check_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) )
+		{
+			//Collision found => move back collision box
+			Collision_Box.setx(X);
+			Collision_Box.sety(Y); 
 		}
+
+		//Update position
+		X = Collision_Box.getx();
+		Y = Collision_Box.gety();
 	}
 	return true; //no error
 } catch (...) {

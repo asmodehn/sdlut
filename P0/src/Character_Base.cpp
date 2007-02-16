@@ -109,37 +109,19 @@ bool Character_Base::Check_battlefield_allow_character(Rect Collision_Box, std::
 //Check collision with everything possible
 bool Character_Base::Check_Collisions(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
-	//Move the character's collision box
-	Collision_Box.setx(X + xVel);
-	Collision_Box.sety(Y + yVel);
-
 	//If the character went too far to the left or right
 	if((Collision_Box.getx() < 0) || (Collision_Box.getx() + MO_WIDTH > LEVEL_WIDTH) )
-	{
-		//move back
-		Collision_Box.setx(X);
-		Collision_Box.sety(Y);
 		//we have found a collision no need to work more
 		return true;
-	}
 
 	//If the character went too far up or down (minus the status bar)
 	if((Collision_Box.gety() < 0) || (Collision_Box.gety() + MO_HEIGHT > LEVEL_HEIGHT - STATUS_BAR_H) )
-	{
-		//move back
-		Collision_Box.setx(X);
-		Collision_Box.sety(Y); 
 		return true;   
-	}
+
 
 	//Check if the battlefield allow the move
 	if(! Check_battlefield_allow_character(Collision_Box, Environment_Sprite_Vector, BackGround_Sprite_Vector) )
-	{
-		//move back
-		Collision_Box.setx(X);
-		Collision_Box.sety(Y);
 		return true;
-	}
 	
 	//Check collision with Players
 	//Loop for all players's vector
@@ -155,10 +137,6 @@ bool Character_Base::Check_Collisions(std::vector< std::vector<Character_Base*> 
 				{
 					//we have found a collision inside the vector
 					P0_Logger << " Collision between character " << " @ [ " << X << ", " << Y << "]" << std::endl;
-					
-					//move back
-					Collision_Box.setx(X);
-					Collision_Box.sety(Y); 
 
 					//no need to work more
 					return true;
@@ -181,10 +159,6 @@ bool Character_Base::Check_Collisions(std::vector< std::vector<Character_Base*> 
 				{
 					//we have found a collision inside the vector
 					P0_Logger << " Collision between monster " << " @ [ " << X << ", " << Y << "]" << std::endl;
-					
-					//move back
-					Collision_Box.setx(X);
-					Collision_Box.sety(Y); 
 
 					//no need to work more
 					return true;

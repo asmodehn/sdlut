@@ -21,6 +21,7 @@ private:
 	Monster_Factory<Monster_Worm>* Monster_Factory_Worm;
 	Escape_Menu* EscMenu;
 	Victory_Screen* VictoryScreen;
+	KeyboardInput* MyKeyboard;
 
 	
 public:
@@ -66,6 +67,10 @@ public:
 	{
 		Monster_Factory_Worm = newMonster_Factory_Worm;
 	}
+	inline void Set_Keyboard(KeyboardInput* newKeyboard)
+	{
+		MyKeyboard = newKeyboard;
+	}
 
 	/****Methods****/
 	Render_Engine();
@@ -75,7 +80,7 @@ public:
 	//Called when the windows is resized and if the engine need to be updated
 	bool resize(int width, int height);
 	//Everything that must be calculated before the display of the screen must be defined in this method and then will be called by the mainloop each cycle
-	void prerender(void);
+	void prerender(unsigned long deltaticks);
 	//Draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
 	void render(VideoSurface & screen) const;
 	//Will be used by each cycle of mainloop after the draw of the screen. It designed to contain evrytinhg that will be updated after the render of the screen surface

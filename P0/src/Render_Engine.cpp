@@ -34,8 +34,10 @@ bool Render_Engine::resize(int width, int height)
 }
 
 //Everything that must be calculated before the display of the screen must be defined in this method and then will be called by the mainloop each cycle
-void Render_Engine::prerender(void)
+void Render_Engine::prerender(unsigned long deltaticks)
 {
+	//Handle movement each frames (for now)
+	MyKeyboard->Player_Moves_Consequences(deltaticks);
 }
 //Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
 void Render_Engine::render(VideoSurface & screen) const

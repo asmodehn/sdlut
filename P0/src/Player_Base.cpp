@@ -141,20 +141,31 @@ catch (...) {
   return false; //error occured
 }
 }
-//Show the Character on the screen
-bool Player_Base::move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+//Move the Player
+bool Player_Base::move(unsigned long deltaticks, std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 try {
-	if (! Check_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) )
-	{ //No collisions found
-		//move the player
-		X = Collision_Box.getx();
-		Y = Collision_Box.gety();
+	//Move collision box to the futute position
+	//Collision_Box.setx(X + (xVel*(deltaticks/1000)) );
+	//Collision_Box.sety(Y + (yVel*(deltaticks/1000)) );
+	Collision_Box.setx(X + xVel);
+	Collision_Box.sety(Y + yVel);
 
-		//...and the arrow with his owner^^
-		arrow_x = X;
-		arrow_y = Y;
+	//check collisions
+	if ( Check_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) )
+	{
+		//Collision found => move back collision box
+		Collision_Box.setx(X);
+		Collision_Box.sety(Y); 
 	}
+
+	//Update position
+	X = Collision_Box.getx();
+	Y = Collision_Box.gety();
+
+	//Update arrow position
+	arrow_x = X;
+	arrow_y = Y;
 
 	return true; //no error
 } catch (...) {  //error occured
@@ -274,8 +285,8 @@ try {
 		//Check if we are changing direction
 		if ( old_move_status != move_status )
 		{ //change but dont move
-			xVel = 0;
-			yVel = 0;
+			//xVel = 0;
+			//yVel = 0;
 			moving_status = false;
 		} else {
 			moving_status = true; //we're moving
