@@ -51,10 +51,15 @@ MACRO (RAGE_BUILD project_name project_type)
 	ENDIF(NOT CMAKE_BUILD_TYPE)
 	
 	IF (CMAKE_BUILD_TYPE STREQUAL Debug)
-	#todo : use default cmake debug definition instead
-		ADD_DEFINITIONS(-DDEBUG)
+	#todo : use default cmake debug definition
+		ADD_DEFINITIONS(-DDEBUG )
 		SET(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose build commands enabled for Debug build" FORCE)
 	ENDIF (CMAKE_BUILD_TYPE STREQUAL Debug)
+	IF (CMAKE_BUILD_TYPE STREQUAL Release)
+	#todo : use default cmake release definition
+		ADD_DEFINITIONS(-DNDEBUG -DNRAGELOG)
+		SET(CMAKE_VERBOSE_MAKEFILE OFF CACHE BOOL "Verbose build commands disabled for Release build" FORCE)
+	ENDIF (CMAKE_BUILD_TYPE STREQUAL Release)
 
 	FILE(GLOB HEADERS ${CMAKE_SOURCE_DIR}/include/*.hh)
 
@@ -123,7 +128,7 @@ ENDMACRO(RAGE_INSTALL project_name)
 #
 
 svn_repository_version( SVN_REV ${CMAKE_SOURCE_DIR})
-SET (VERSION ${SVN_REV} CACHE STRING "The detected revision of the source repository")
+SET (VERSION ${SVN_REV} CACHE STRING "The detected revision of the source repository" FORCE)
 
 SET(BUILD_SHARED_LIBS OFF)
 

@@ -20,6 +20,10 @@
 #define LOGPREFIX "RAGE Log"
 #endif
 
+///To disable logging
+#ifndef NRAGELOG
+#define RAGELOG
+#endif
 
 namespace RAGE
 {
@@ -82,15 +86,22 @@ namespace RAGE
             _consoleLog = false ;
         }
 
+	//warning, this is likely to return false in release build
         bool enableFileLog( const std::string & filename)
         {
+#ifdef RAGELOG
             _fileLog= true ;
             return setLogfile(filename);
+#else
+	return false;
+#endif
         }
         void disableFileLog()
         {
+#ifdef RAGELOG
             _fileLog = false ;
             _ofstr.close();
+#endif
         }
 
         //void add(const std::string & message); // not const because of initial '\n' in string from streams...
@@ -116,10 +127,12 @@ namespace RAGE
     template<typename M>
     Logger& Logger::operator<< ( const M & msg)
     {
+#ifdef RAGELOG
         if (_consoleLog)
             std::clog << msg;
         if (_fileLog)
             _ofstr << msg;
+#endif
         return *this;
     }
 
