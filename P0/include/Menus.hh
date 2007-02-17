@@ -8,7 +8,6 @@ class Escape_Menu
 {
     private:
 		int SelectedItemId;
-		int ValidatedItemId;
 
 	public:
 
@@ -23,20 +22,12 @@ class Escape_Menu
 		{
 			return SelectedItemId;
 		}
-		inline void Set_ValidatedItemId(int new_ValidatedItemId)
-		{
-			ValidatedItemId = new_ValidatedItemId;
-		}
-		inline int Get_ValidatedItemId()
-		{
-			return ValidatedItemId;
-		}
 
 		/****Methods****/
 		//Blit the good menu surface in function of what the user wants to select with the keyboard
 		bool Show_Menu(VideoSurface& Screen);
 		//Managed validation on one item (if return true => quit program)
-		bool Manage_Validation();
+		bool Manage_Validation(int ValidatedItemId);
 
 };
 

@@ -12,7 +12,25 @@ Render_Engine::Render_Engine()
 	Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>;
 	Monster_Factory_Worm = new Monster_Factory<Monster_Worm>;
 	EscMenu = new Escape_Menu() ;
+	VictoryScreen = new Victory_Screen();
+	MyKeyboard = new KeyboardInput();
 	P0_Logger << " Engine CONSTRUCTED Successfully " << std::endl;
+}
+
+//Destructor
+Render_Engine::~Render_Engine()
+{
+	//clean up
+	delete myPlayer, myPlayer = NULL;
+	delete myBackGround, myBackGround = NULL;
+	delete myEnvironment, myEnvironment = NULL;
+	delete BackGround_Sprite_Vector, BackGround_Sprite_Vector = NULL;
+	delete Environment_Sprite_Vector, Environment_Sprite_Vector = NULL;
+	delete Monster_Factory_Skeleton, Monster_Factory_Skeleton = NULL;
+	delete Monster_Factory_Worm, Monster_Factory_Worm = NULL;
+	delete EscMenu, EscMenu = NULL;
+	delete VictoryScreen, VictoryScreen = NULL;
+	delete MyKeyboard, MyKeyboard = NULL;
 }
 
 //Methods that is used when resetdisplay is called and not to initialize the engine like is name could let think. Its used to update the engine only when the windows settings change

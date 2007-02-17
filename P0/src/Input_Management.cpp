@@ -3,7 +3,7 @@
 //Constructor
 KeyboardInput::KeyboardInput()
 {
-	//GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
+	GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
 }
 //Private method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
 void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
@@ -16,10 +16,6 @@ void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
 	//a movement has been triggered
 	if ( (myPlayer->Get_xVel() != 0) || (myPlayer->Get_yVel() != 0) )
 	{
-		//Get Monster's vectors
-		//Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
-		//Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();
-
 		//set character sprite in function of the direction and dont move if it's only a direction change
 		if( myPlayer->assign_direction_sprite() == false )
 		{ 
@@ -47,13 +43,7 @@ void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
 			myPlayer_Move_Animation_Timer.setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
 			//Start the animation
 			myPlayer_Move_Animation_Timer.start();
-
-			//Send the modified character's collision box to daemons
-			//myDaemons->Set_Player_Base(myPlayer);
 		}
-		
-		//Send the modified character to the render engine 
-		//myRender_Engine->Set_Player_Base(myPlayer);
 
 		//P0_Logger << " Move " << std::endl;
 	}
@@ -64,9 +54,6 @@ void KeyboardInput::Player_Attack_Consequences()
 	//attack is occuring
 	myPlayer->Set_Attack_Status(true);
 
-	//Get Monster's vectors
-	/*Monster_Vector_Skeleton = myDaemons->Get_Monster_Vector_Skeleton();
-	Monster_Vector_Worm = myDaemons->Get_Monster_Vector_Worm();*/
 	
 	//Handle attacks & set the distance of the attack
 	/***WARNING !! IN CASE OF DISTANT ATTACK THE MONSTER IS CONSIDERED AS DEAD WHEN THE KEY IS PRESSED AND NOT WHEN THE ARROW REACHED THE TARGET => TODO: FIND A WAY TO SOLVE THAT (SEPARATE THE ATTACK METHOD IN TWO DISTINCT METHOD PERHAPS CAN HELP)***/
@@ -99,10 +86,6 @@ void KeyboardInput::Player_Attack_Consequences()
 		//Start arrow animation
 		myPlayer_Arrow_Animation_Timer.start();
 	}
-
-
-	//Send the modified character to the render engine 
-	//myRender_Engine->Set_Player_Base(myPlayer);
 
 	//P0_Logger << " Attack " << std::endl;
 }
@@ -188,8 +171,6 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
                     { 
 						P0_Logger << " Update Graphic Style FAILED " << std::endl;
                     }
-					//Send the modified character to the render engine 
-					//myRender_Engine->Set_Player_Base(myPlayer);
 				}
 				if ((s.getKey() == KKEnter) || (s.getKey() == KKEnter))
 				{
@@ -244,8 +225,6 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				//Decrement esc menu's selected item id until it reach the top than go back to the bottom
 				case KUp:
 					//play menu Fx	
-					//App::getInstance().getMixer()->toggleChannel(App::getInstance().getMixer()->mixSound(EscMenuButtonFx, true));
-					//App::getInstance().getMixer()->Play();
 					App::getInstance().getMixer()->playChannel(EscMenuButtonFx_Chan);
 					//loop between Y/N 
 					if ( myEsc_Menu->Get_SelectedItemId() > 1 )
@@ -263,8 +242,6 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				//Increment esc menu's selected item id until it reach the bottom than go back to the top
 				case KDown:
 					//play menu Fx
-					//App::getInstance().getMixer()->toggleChannel(App::getInstance().getMixer()->mixSound(EscMenuButtonFx, true));
-					//App::getInstance().getMixer()->Play();
 					App::getInstance().getMixer()->playChannel(EscMenuButtonFx_Chan);
 					//loop between Y/N 
 					if ( myEsc_Menu->Get_SelectedItemId() < 2 )
@@ -279,17 +256,21 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					//myRender_Engine->Set_Esc_Menu(myEsc_Menu);
 					break;
 
+				//Leave menu without validating
+				case KEscape:
+					//Work as if No has been selected
+					myEsc_Menu->Manage_Validation( 2 );
+					break;
+
 				//Validate the selected esc menu's item id
 				case KReturn:
-					//Esc Menu Validation
-					myEsc_Menu->Set_ValidatedItemId( myEsc_Menu->Get_SelectedItemId() );
 					//Manage esc menu validation: leave the game if return is true
-					Set_quitRequested( myEsc_Menu->Manage_Validation() );
+					Set_quitRequested( myEsc_Menu->Manage_Validation( myEsc_Menu->Get_SelectedItemId() ) );
 					break;
 			}
 		}
 	}
-	//Victory: Nothing work anymore we'll simply draw the score than quit.
+	//Victory: END, we'll simply draw the score than quit.
 	else if (GLOBAL_GAME_STATE == 5)
 	{
 		if (pressed) //Key pressed

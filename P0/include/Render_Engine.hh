@@ -74,6 +74,7 @@ public:
 
 	/****Methods****/
 	Render_Engine();
+	~Render_Engine();
 
 	//Methods that is used when resetdisplay is called and not to initialize the engine like is name could let think. Its used to update the engine only when the windows settings change
 	bool init(int width, int height);

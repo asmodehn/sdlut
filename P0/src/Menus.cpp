@@ -5,7 +5,6 @@
 Escape_Menu::Escape_Menu()
 {
 	SelectedItemId = 1; //initially select the first one (aka "Yes")
-	ValidatedItemId = 0; //No validated id 
 }
 
 //Blit the good menu surface in function of what the user wants to select with the keyboard
@@ -26,7 +25,7 @@ try {
 }
 }
 //Managed validation on one item
-bool Escape_Menu::Manage_Validation()
+bool Escape_Menu::Manage_Validation(int ValidatedItemId)
 {
 	if (ValidatedItemId == 1) //We have yes validated, the user wants to quit
 	{
@@ -36,7 +35,6 @@ bool Escape_Menu::Manage_Validation()
 	else if (ValidatedItemId == 2) //We have no validated, the user wants to go back to the game
 	{
 		SelectedItemId = 1; //Reinit select item id
-		ValidatedItemId = 0; //we leave the menu so no item is now validated
 		GLOBAL_GAME_STATE = 3; //go back to normal game state
 		return false;
 	}
