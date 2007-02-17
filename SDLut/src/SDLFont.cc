@@ -301,9 +301,12 @@ Font::Font(const Font &font)
 }
 
 
-	Font::~Font()
+Font::~Font()
 {
+ //doesn't work on VS coz the destructor is called 2 times and the 2nd time it coz the exception: 0xC0000005: Access violation reading location 0xfeeefeee.
+#ifndef WIN32
 	delete _font, _font=NULL;
+#endif
 }
 
 
