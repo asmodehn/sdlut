@@ -11,11 +11,6 @@
 #include <SDL_rwops.h>
 
 //utils
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <stdexcept>
-#include <vector>
 #include "Logger.hh"
 
 //TODO : look for a possibility to include all SDLs into RAGE::SDLut::SDL namespace after changed RAGE::SDL to RAGE::SDLut
@@ -109,9 +104,6 @@ class CPU
 }
 #endif
 
-#ifdef DEBUG
-#include <cassert>
-#endif
 
 	
 #endif

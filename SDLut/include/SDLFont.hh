@@ -5,6 +5,8 @@
 #include "SDLRect.hh"
 #include "SDLRGBSurface.hh"
 
+#include <vector>
+
 namespace RAGE
 {
     namespace SDL

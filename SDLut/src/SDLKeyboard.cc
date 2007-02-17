@@ -1,7 +1,7 @@
 #include "SDLKeyboard.hh"
 #include "SDLEventManager.hh"
 #include "SDLConfig.hh"
-
+#include <cassert>
 
 namespace RAGE
 {

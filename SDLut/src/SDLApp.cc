@@ -14,8 +14,8 @@ namespace RAGE
 
             setName();
             setIcon();
-            if (!Log.enableFileLog(logfilename))
-                throw std::logic_error("Log file creation FAILED !");
+	    //try to create the log file. this is likely to work only in debug mode.
+	    Log.enableFileLog(logfilename);
 	    
 #ifdef DEBUG
             Log << nl << "App::App() done";

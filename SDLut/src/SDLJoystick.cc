@@ -1,5 +1,6 @@
 #include "SDLJoystick.hh"
 #include "SDLConfig.hh"
+#include <cassert>
 
 namespace RAGE
 {
