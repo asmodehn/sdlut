@@ -50,9 +50,9 @@ try { //error management
 	fi_usr.close();
 
 		//Windows
-	std::stringstream( Ini_Manager::Get_Option_String("Config.ini", "SCREEN_WIDTH") ) >> (const int)SCREEN_WIDTH;
-	std::stringstream( Ini_Manager::Get_Option_String("Config.ini", "SCREEN_HEIGHT") ) >> (const int)SCREEN_HEIGHT;
-	std::stringstream( Ini_Manager::Get_Option_String("Config.ini", "SCREEN_BPP") ) >> (const int)SCREEN_BPP;
+	std::stringstream( Ini_Manager::Get_Option_String("Config.ini", "SCREEN_WIDTH") ) >> SCREEN_WIDTH;
+	std::stringstream( Ini_Manager::Get_Option_String("Config.ini", "SCREEN_HEIGHT") ) >> SCREEN_HEIGHT;
+	std::stringstream( Ini_Manager::Get_Option_String("Config.ini", "SCREEN_BPP") ) >> SCREEN_BPP;
 
 		//At the beginning the window as the initial attributes
 	CURRENT_SCREEN_WIDTH = SCREEN_WIDTH;
@@ -83,61 +83,61 @@ try { //error management
 	std::ifstream fi_dev("Config/Dev_Config.ini") ;
 	if (!fi_dev.fail())
 	{
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "FRAMES_PER_SECOND") ) >> (const int)FRAMES_PER_SECOND;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "FRAMES_PER_SECOND") ) >> FRAMES_PER_SECOND;
 		
 		Window_Name = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Window_Name");
 
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LEVEL_WIDTH") ) >> (const int)LEVEL_WIDTH;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LEVEL_HEIGHT") ) >> (const int)LEVEL_HEIGHT;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LEVEL_WIDTH") ) >> LEVEL_WIDTH;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LEVEL_HEIGHT") ) >> LEVEL_HEIGHT;
 		
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_WIDTH") ) >> (const int)CH_WIDTH;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_HEIGHT") ) >> (const int)CH_HEIGHT;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "MO_WIDTH") ) >> (const int)MO_WIDTH;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "MO_HEIGHT") ) >> (const int)MO_HEIGHT;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_WIDTH") ) >> CH_WIDTH;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_HEIGHT") ) >> CH_HEIGHT;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "MO_WIDTH") ) >> MO_WIDTH;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "MO_HEIGHT") ) >> MO_HEIGHT;
 		
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_INITIAL_X") ) >> (const int)CH_INITIAL_X;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_INITIAL_Y") ) >> (const int)CH_INITIAL_Y;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_INITIAL_X") ) >> CH_INITIAL_X;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_INITIAL_Y") ) >> CH_INITIAL_Y;
 		
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_VEL") ) >> (const int)CH_VEL;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_VEL") ) >> CH_VEL;
 
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_RIGHT") ) >> (const int)CH_RIGHT;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_RIGHT_DOWN") ) >> (const int)CH_RIGHT_DOWN;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_DOWN") ) >> (const int)CH_DOWN;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_LEFT_DOWN") ) >> (const int)CH_LEFT_DOWN;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_LEFT") ) >> (const int)CH_LEFT;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_LEFT_UP") ) >> (const int)CH_LEFT_UP;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_UP") ) >> (const int)CH_UP;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_RIGHT_UP") ) >> (const int)CH_RIGHT_UP;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_RIGHT") ) >> CH_RIGHT;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_RIGHT_DOWN") ) >> CH_RIGHT_DOWN;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_DOWN") ) >> CH_DOWN;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_LEFT_DOWN") ) >> CH_LEFT_DOWN;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_LEFT") ) >> CH_LEFT;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_LEFT_UP") ) >> CH_LEFT_UP;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_UP") ) >> CH_UP;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_RIGHT_UP") ) >> CH_RIGHT_UP;
 		
 		
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "INITIAL_MONSTERS") ) >> (const int)INITIAL_MONSTERS;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "MAX_MONSTERS_SIMULTANEOUSLY") ) >> (const int)MAX_MONSTERS_SIMULTANEOUSLY;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "INITIAL_MONSTERS") ) >> INITIAL_MONSTERS;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "MAX_MONSTERS_SIMULTANEOUSLY") ) >> MAX_MONSTERS_SIMULTANEOUSLY;
 		
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "STATUS_BAR_H") ) >> (const int)STATUS_BAR_H;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "STATUS_BAR_H") ) >> STATUS_BAR_H;
 
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LIFE_BAR_WIDTH") ) >> (const int)LIFE_BAR_WIDTH;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LIFE_BAR_HEIGHT") ) >> (const int)LIFE_BAR_HEIGHT;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LIFE_BAR_WIDTH") ) >> LIFE_BAR_WIDTH;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LIFE_BAR_HEIGHT") ) >> LIFE_BAR_HEIGHT;
 		
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "BATF_SPRITE_W") ) >> (const int)BATF_SPRITE_W;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "BATF_SPRITE_H") ) >> (const int)BATF_SPRITE_H;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "BATF_SPRITE_W") ) >> BATF_SPRITE_W;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "BATF_SPRITE_H") ) >> BATF_SPRITE_H;
 		
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "EMPTY_GROUND") ) >> (const int)EMPTY_GROUND;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "GRASS_GROUND") ) >> (const int)GRASS_GROUND;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "SAND_GROUND") ) >> (const int)SAND_GROUND;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "RIVER_GROUND") ) >> (const int)RIVER_GROUND;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LAKE_GROUND") ) >> (const int)LAKE_GROUND;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "EMPTY_GROUND") ) >> EMPTY_GROUND;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "GRASS_GROUND") ) >> GRASS_GROUND;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "SAND_GROUND") ) >> SAND_GROUND;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "RIVER_GROUND") ) >> RIVER_GROUND;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LAKE_GROUND") ) >> LAKE_GROUND;
 		
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "NOTHING_ENV_ITEM") ) >> (const int)NOTHING_ENV_ITEM;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "TREE_ENV_ITEM") ) >> (const int)TREE_ENV_ITEM;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "ROCK_ENV_ITEM") ) >> (const int)ROCK_ENV_ITEM;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "WALL_ENV_ITEM") ) >> (const int)WALL_ENV_ITEM;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "HOUSE_ENV_ITEM") ) >> (const int)HOUSE_ENV_ITEM;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "BRIDGE_ENV_ITEM") ) >> (const int)BRIDGE_ENV_ITEM;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "NOTHING_ENV_ITEM") ) >> NOTHING_ENV_ITEM;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "TREE_ENV_ITEM") ) >> TREE_ENV_ITEM;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "ROCK_ENV_ITEM") ) >> ROCK_ENV_ITEM;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "WALL_ENV_ITEM") ) >> WALL_ENV_ITEM;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "HOUSE_ENV_ITEM") ) >> HOUSE_ENV_ITEM;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "BRIDGE_ENV_ITEM") ) >> BRIDGE_ENV_ITEM;
 		
-		//std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Humanoid") ) >> (const int)Humanoid;
-		//std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Worm") ) >> (const int)Worm;
+		//std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Humanoid") ) >> Humanoid;
+		//std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Worm") ) >> Worm;
 
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "GLOBAL_GAME_STATE") ) >> (const int)GLOBAL_GAME_STATE;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "GLOBAL_GAME_STATE") ) >> GLOBAL_GAME_STATE;
 
 		Log_Name = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Log_Name");
 		//define log filename
@@ -150,14 +150,14 @@ try { //error management
 	std::ifstream fi_anim("Config/Anim_Config.ini") ;
 	if (!fi_anim.fail())
 	{
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_MOVE_ANIMATION_INTERVAL") ) >> (const long)PLAYER_MOVE_ANIMATION_INTERVAL;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL") ) >> (const long)PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_BOW_ATTACK_ANIMATION_INTERVAL") ) >> (const long)PLAYER_BOW_ATTACK_ANIMATION_INTERVAL;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_ARROW_MOVE_ANIMATION_INTERVAL") ) >> (const long)PLAYER_ARROW_MOVE_ANIMATION_INTERVAL;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_MOVE_ANIMATION_INTERVAL") ) >> PLAYER_MOVE_ANIMATION_INTERVAL;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL") ) >> PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_BOW_ATTACK_ANIMATION_INTERVAL") ) >> PLAYER_BOW_ATTACK_ANIMATION_INTERVAL;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_ARROW_MOVE_ANIMATION_INTERVAL") ) >> PLAYER_ARROW_MOVE_ANIMATION_INTERVAL;
 
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_SWORD_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_SWORD_ATTACK_ANIMATION_FRAME;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_BOW_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_BOW_ATTACK_ANIMATION_FRAME;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_ARROW_ATTACK_ANIMATION_FRAME") ) >> (const int)PLAYER_ARROW_ATTACK_ANIMATION_FRAME;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_SWORD_ATTACK_ANIMATION_FRAME") ) >> PLAYER_SWORD_ATTACK_ANIMATION_FRAME;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_BOW_ATTACK_ANIMATION_FRAME") ) >> PLAYER_BOW_ATTACK_ANIMATION_FRAME;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_ARROW_ATTACK_ANIMATION_FRAME") ) >> PLAYER_ARROW_ATTACK_ANIMATION_FRAME;
 	}
 	fi_anim.close();
 
@@ -166,8 +166,8 @@ try { //error management
 	std::ifstream fi_daemons("Config/Daemons_Config.ini") ;
 	if (!fi_daemons.fail())
 	{
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "MONSTERS_MOVEMENT_INTERVAL") ) >> (const long)MONSTERS_MOVEMENT_INTERVAL;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "MONSTERS_GENERATION_INTERVAL") ) >> (const long)MONSTERS_GENERATION_INTERVAL;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "MONSTERS_MOVEMENT_INTERVAL") ) >> MONSTERS_MOVEMENT_INTERVAL;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "MONSTERS_GENERATION_INTERVAL") ) >> MONSTERS_GENERATION_INTERVAL;
 	}
 	fi_daemons.close();
 	

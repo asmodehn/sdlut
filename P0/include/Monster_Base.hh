@@ -63,7 +63,7 @@ class Monster_Base : public Character_Base
 		//bool move_animation(Rect Camera, VideoSurface& Screen);
 
 		//Calculate the current life depending on damage, malus, etc and damage made by the opponent
-		bool Monster_Base::Calculate_Current_Life(int opponent_damage);
+		bool Calculate_Current_Life(int opponent_damage);
 
 		//Shows the life bar of the monster depending of it's current life
 		bool Show_Life_Bar(Rect Camera, VideoSurface& Screen);

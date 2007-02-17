@@ -262,8 +262,9 @@ try { //global error management
 
     return 0; //no error occured
 	
-} catch (...) {
-    P0_Logger << " Error in Main " << std::endl;
+} catch (std::exception e) {
+    P0_Logger << " Unhandled Exception occured in Main : " << e.what() << std::endl;
+    P0_Logger << " P0 stopped in emergency" << std::endl;
     Delay(2000);
     return 1;
 }
