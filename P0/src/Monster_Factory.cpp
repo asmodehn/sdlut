@@ -50,7 +50,7 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Char
 	}
 
 	//Create Monster & initialized it
-	Monster_Template* myMonster = new Monster_Template(MO_WIDTH * x, MO_HEIGHT * y);
+	Monster_Template* myMonster = new Monster_Template(BATF_SPRITE_W * x,  BATF_SPRITE_H * y);
 
 	return myMonster;
 }

@@ -15,6 +15,10 @@ Player_Base::Player_Base(int x, int y)
 	arrow_x = X;
 	arrow_y = Y;
 
+	//Sprite info
+	Sprite_Width = CH_WIDTH;
+	Sprite_Height = CH_HEIGHT;
+
 	//Initial moving status
 	moving_status = false;
 
@@ -26,10 +30,10 @@ Player_Base::Player_Base(int x, int y)
 	{
 		for (unsigned int j = 0; j < PLAYER_SWORD_ATTACK_ANIMATION_FRAME; j++) //Frames
 		{
-			_temp_ch_rect.setx( CH_WIDTH * j);
-			_temp_ch_rect.sety( CH_HEIGHT*i );
-			_temp_ch_rect.setw(CH_WIDTH);
-			_temp_ch_rect.seth(CH_HEIGHT);
+			_temp_ch_rect.setx( Sprite_Width * j);
+			_temp_ch_rect.sety( Sprite_Height * i );
+			_temp_ch_rect.setw( Sprite_Width );
+			_temp_ch_rect.seth( Sprite_Height );
 			Player_Attack_Tile_Rect->push_back(_temp_ch_rect);
 			//->at(i*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + j)
 			//
@@ -64,14 +68,14 @@ Player_Base::Player_Base(int x, int y)
 	//Collision Box Definition: The collision box has the size of the character
 	Collision_Box.setx(X);
     Collision_Box.sety(Y);
-    Collision_Box.setw(CH_WIDTH);
-    Collision_Box.seth(CH_HEIGHT);
+    Collision_Box.setw(Sprite_Width);
+    Collision_Box.seth(Sprite_Height);
 
 	//Attack collsion box: currently in the same place of the character
 	attack_collision_box.setx(X);
     attack_collision_box.sety(Y);
-    attack_collision_box.setw(CH_WIDTH);
-    attack_collision_box.seth(CH_HEIGHT);
+    attack_collision_box.setw(Sprite_Width);
+    attack_collision_box.seth(Sprite_Height);
 
 	/****Arrow***/
 	//Clip
@@ -80,9 +84,9 @@ Player_Base::Player_Base(int x, int y)
 	for (unsigned int i = 0; i < 8; i++)  //The 8 directions
 	{
 		_temp_arrow_rect.setx(0);
-		_temp_arrow_rect.sety(CH_HEIGHT*i);
-		_temp_arrow_rect.setw(CH_WIDTH);
-		_temp_arrow_rect.seth(CH_HEIGHT);
+		_temp_arrow_rect.sety(Sprite_Height*i);
+		_temp_arrow_rect.setw(Sprite_Width);
+		_temp_arrow_rect.seth(Sprite_Height);
 		Arrow_SpriteRect->push_back(_temp_arrow_rect);
 		//->at(i*PLAYER_ARROW_ATTACK_ANIMATION_FRAME)
 		//
@@ -485,43 +489,43 @@ bool Player_Base::Set_Arrow_Sprite_Coordinate()
 		//set coordinate in fonction of the character direction
 		if( move_status == CH_RIGHT )
 		{
-			arrow_x = X + (arrow_frame * CH_WIDTH);
+			arrow_x = X + (arrow_frame * Sprite_Width);
 			arrow_y = Y;
 		}
 		else if( move_status == CH_RIGHT_DOWN )
 		{
-			arrow_x = X + (arrow_frame * CH_WIDTH);
-			arrow_y = Y + (arrow_frame * CH_HEIGHT);
+			arrow_x = X + (arrow_frame * Sprite_Width);
+			arrow_y = Y + (arrow_frame * Sprite_Height);
 		}
 		else if( move_status == CH_DOWN )
 		{
 			arrow_x = X;
-			arrow_y = Y + (arrow_frame * CH_HEIGHT);
+			arrow_y = Y + (arrow_frame * Sprite_Height);
 		}
 		else if( move_status == CH_LEFT_DOWN )
 		{
-			arrow_x = X - (arrow_frame * CH_WIDTH);
-			arrow_y = Y + (arrow_frame * CH_HEIGHT);
+			arrow_x = X - (arrow_frame * Sprite_Width);
+			arrow_y = Y + (arrow_frame * Sprite_Height);
 		}
 		else if( move_status == CH_LEFT )
 		{
-			arrow_x = X - (arrow_frame * CH_WIDTH);
+			arrow_x = X - (arrow_frame * Sprite_Width);
 			arrow_y = Y;
 		}
 		else if( move_status == CH_LEFT_UP )
 		{
-			arrow_x = X - (arrow_frame * CH_WIDTH);
-			arrow_y = Y - (arrow_frame * CH_HEIGHT);
+			arrow_x = X - (arrow_frame * Sprite_Width);
+			arrow_y = Y - (arrow_frame * Sprite_Height);
 		}
 		else if( move_status == CH_UP )
 		{
 			arrow_x = X;
-			arrow_y = Y - (arrow_frame * CH_HEIGHT);
+			arrow_y = Y - (arrow_frame * Sprite_Height);
 		}
 		else if( move_status == CH_RIGHT_UP )
 		{
-			arrow_x = X + (arrow_frame * CH_WIDTH);
-			arrow_y = Y - (arrow_frame * CH_HEIGHT);
+			arrow_x = X + (arrow_frame * Sprite_Width);
+			arrow_y = Y - (arrow_frame * Sprite_Height);
 		}
 		return true;
 	} else { //end of animation
@@ -586,8 +590,8 @@ bool Player_Base::following_camera()
 {
 try {
     //Center the camera over the Character
-    Camera.setx( (X + CH_WIDTH / 2) - CURRENT_SCREEN_WIDTH / 2 );
-    Camera.sety( (Y + CH_HEIGHT / 2) - CURRENT_SCREEN_HEIGHT / 2 );
+    Camera.setx( (X + Sprite_Width / 2) - CURRENT_SCREEN_WIDTH / 2 );
+    Camera.sety( (Y + Sprite_Height / 2) - CURRENT_SCREEN_HEIGHT / 2 );
     //Keep the camera in bounds.
     if(Camera.getx() < 0)
     {

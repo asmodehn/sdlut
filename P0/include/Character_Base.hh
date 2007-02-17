@@ -21,6 +21,9 @@ protected:
 	//The velocity of the character
 	int xVel, yVel;
 
+	//Sprite Characteristics
+	int Sprite_Width, Sprite_Height;
+
 	//Characteristics of the character
 	int BASE_LIFE, Current_Life;
 	int BASE_ARMOR, Current_Armor;
@@ -34,6 +37,9 @@ protected:
 
 	//Bool that will indicate if the character is alive or dead
 	bool Alive_Status;
+
+	//The zone where the character is alloed to go (default: whole level)
+	Rect Allowed_Area;
 
 	//Battlefield rules (pure virtuals)
 	virtual int Get_BG_vs_CH_Rules(int bgType) = 0;

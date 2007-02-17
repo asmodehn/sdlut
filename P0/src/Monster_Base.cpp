@@ -7,14 +7,18 @@ Monster_Base::Monster_Base()
 	X = 0;
     Y = 0;
 
+	//Sprite info
+	Sprite_Width = 0;
+	Sprite_Height = 0;
+
 	//Monster Tile Surface with white transparent
 	Characters_Tile = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, 32);
 
-	 //Monster Clip definition range for the top left (Random monster from the 7th line)
-    _monster[0].setx( MO_WIDTH * (rand()%8) );
-	_monster[0].sety( MO_HEIGHT*6 );
-    _monster[0].setw( MO_WIDTH );
-    _monster[0].seth( MO_HEIGHT );
+	 //Monster Clip definition 
+    _monster[0].setx( 0 );
+	_monster[0].sety( 0 );
+    _monster[0].setw( 0 );
+    _monster[0].seth( 0 );
 
 	//Assign sprite
 	Characters_SpriteRect = _monster[0];
@@ -26,8 +30,8 @@ Monster_Base::Monster_Base()
 	//Collision Box Definition : The collision box has the size of the monster
 	Collision_Box.setx(0);
     Collision_Box.sety(0);
-    Collision_Box.setw(MO_WIDTH);
-    Collision_Box.seth(MO_HEIGHT);
+    Collision_Box.setw(Sprite_Width);
+    Collision_Box.seth(Sprite_Height);
 
 	//Monster type
 	Monster_ID = Humanoid;
@@ -56,14 +60,18 @@ Monster_Base::Monster_Base(int x, int y)
 	X = x;
     Y = y;
 
+	//Sprite info
+	Sprite_Width = MO_WIDTH;
+	Sprite_Height = MO_HEIGHT;
+
 	//Monster Tile Surface
 	Characters_Tile = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
-    _monster[0].setx( MO_WIDTH * (rand()%8) );
-	_monster[0].sety( MO_HEIGHT*6 );
-    _monster[0].setw( MO_WIDTH );
-    _monster[0].seth( MO_HEIGHT );
+    _monster[0].setx( Sprite_Width * (rand()%8) );
+	_monster[0].sety( Sprite_Height*6 );
+    _monster[0].setw( Sprite_Width );
+    _monster[0].seth( Sprite_Height );
 
 	//Assign sprite
 	Characters_SpriteRect = _monster[0];
@@ -78,11 +86,24 @@ Monster_Base::Monster_Base(int x, int y)
 	//Collision Box Definition : The collision box has the size of the monster
 	Collision_Box.setx(X);
     Collision_Box.sety(Y);
-    Collision_Box.setw(MO_WIDTH);
-    Collision_Box.seth(MO_HEIGHT);
+    Collision_Box.setw(Sprite_Width);
+    Collision_Box.seth(Sprite_Height);
 
 	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
 	Alive_Status = true;
+		
+	//Life bar infos
+	Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	
+	empty_life_bar_rect.setx(0);
+	empty_life_bar_rect.sety(0);
+	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+
+	current_life_bar_rect.setx(0);
+	current_life_bar_rect.sety(LIFE_BAR_HEIGHT);
+	current_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	current_life_bar_rect.seth(LIFE_BAR_HEIGHT);
 }
 
 //Copy construtor
@@ -95,6 +116,9 @@ Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 	xVel = ToCopy.xVel;
 	yVel = ToCopy.yVel;
 	Collision_Box = ToCopy.Collision_Box;
+	Life_Bar_Tile = ToCopy.Life_Bar_Tile;
+	empty_life_bar_rect = ToCopy.empty_life_bar_rect;
+	current_life_bar_rect = ToCopy.current_life_bar_rect;
 }
 
 
@@ -107,8 +131,8 @@ try {
 	{
 		//Random mvt
 #ifdef _DEBUG //debug mode
-		xVel = ((rand()%3-1)*MO_WIDTH);
-		yVel = ((rand()%3-1)*MO_HEIGHT);
+		xVel = ((rand()%3-1)*Sprite_Width);
+		yVel = ((rand()%3-1)*Sprite_Height);
 #else //rlz mode
 		xVel = (rand()%3-1);
 		yVel = (rand()%3-1);

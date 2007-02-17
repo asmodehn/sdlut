@@ -21,14 +21,21 @@ Monster_Skeleton::Monster_Skeleton(int x, int y)
 	}
 	fi_monster.close();
 
+	//
+	//TODO: put this in the ini file
+	//
+	//Sprite info
+	Sprite_Width = MO_WIDTH;
+	Sprite_Height = MO_HEIGHT;
+
 	//Monster Tile Surface
 	Characters_Tile = RGBSurface("Datas/Characters/Skeletons Tile.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	 //Monster Clip definition range for the top left (Random monster from the 1th line)
-    _monster[0].setx( MO_WIDTH * (rand()%7) );
+    _monster[0].setx( Sprite_Width * (rand()%7) );
 	_monster[0].sety( 0 );
-    _monster[0].setw( MO_WIDTH );
-    _monster[0].seth( MO_HEIGHT );
+    _monster[0].setw( Sprite_Width );
+    _monster[0].seth( Sprite_Height );
 
 	//Assign the sprite
 	Characters_SpriteRect = _monster[0];
@@ -43,8 +50,8 @@ Monster_Skeleton::Monster_Skeleton(int x, int y)
 	//Collision Box Definition : The collision box has the size of the monster
 	Collision_Box.setx(X);
     Collision_Box.sety(Y);
-    Collision_Box.setw(MO_WIDTH);
-    Collision_Box.seth(MO_HEIGHT);
+    Collision_Box.setw(Sprite_Width);
+    Collision_Box.seth(Sprite_Height);
 
 	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
 	Alive_Status = true;
@@ -100,14 +107,21 @@ Monster_Worm::Monster_Worm(int x, int y)
 	}
 	fi_monster.close();
 
+	//
+	//TODO: put this in the ini file
+	//
+	//Sprite info
+	Sprite_Width = MO_WIDTH;
+	Sprite_Height = MO_HEIGHT;
+
 	//Monster Tile Surface
 	Characters_Tile = RGBSurface("Datas/Characters/Worms Tile.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
-    _monster[0].setx( MO_WIDTH * (rand()%7) );
-	_monster[0].sety( MO_HEIGHT*6 );
-    _monster[0].setw( MO_WIDTH );
-    _monster[0].seth( MO_HEIGHT );
+    _monster[0].setx( Sprite_Width * (rand()%7) );
+	_monster[0].sety( Sprite_Height*6 );
+    _monster[0].setw( Sprite_Width );
+    _monster[0].seth( Sprite_Height );
 
 	//Assign the sprite
 	Characters_SpriteRect = _monster[0];
@@ -122,8 +136,8 @@ Monster_Worm::Monster_Worm(int x, int y)
 	//Collision Box Definition : The collision box has the size of the monster
 	Collision_Box.setx(X);
     Collision_Box.sety(Y);
-    Collision_Box.setw(MO_WIDTH);
-    Collision_Box.seth(MO_HEIGHT);
+    Collision_Box.setw(Sprite_Width);
+    Collision_Box.seth(Sprite_Height);
 
 	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
 	Alive_Status = true;

@@ -5,6 +5,7 @@ Character_Base::Character_Base()
 {
 	X = 0, Y =0;
 	xVel = 0, yVel = 0;
+	Sprite_Width = 0, Sprite_Height = 0;
 	BASE_LIFE = 0, Current_Life = BASE_LIFE;
 	BASE_ARMOR = 0, Current_Armor = BASE_ARMOR;
 
@@ -19,6 +20,11 @@ Character_Base::Character_Base()
 	Collision_Box.sety(0);
 	Collision_Box.setw(0);
 	Collision_Box.seth(0);
+
+	Allowed_Area.setx(0);
+	Allowed_Area.sety(0);
+	Allowed_Area.setw(LEVEL_WIDTH);
+	Allowed_Area.seth(LEVEL_HEIGHT);
 
 	Alive_Status = true;
 }
@@ -110,12 +116,12 @@ bool Character_Base::Check_battlefield_allow_character(Rect Collision_Box, std::
 bool Character_Base::Check_Collisions(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 	//If the character went too far to the left or right
-	if((Collision_Box.getx() < 0) || (Collision_Box.getx() + MO_WIDTH > LEVEL_WIDTH) )
+	if((Collision_Box.getx() < Allowed_Area.getx() ) || (Collision_Box.getx() + Sprite_Width > Allowed_Area.getx() + Allowed_Area.getw() ) )
 		//we have found a collision no need to work more
 		return true;
 
 	//If the character went too far up or down (minus the status bar)
-	if((Collision_Box.gety() < 0) || (Collision_Box.gety() + MO_HEIGHT > LEVEL_HEIGHT - STATUS_BAR_H) )
+	if((Collision_Box.gety() < Allowed_Area.gety() ) || (Collision_Box.gety() + Sprite_Height > Allowed_Area.gety() + Allowed_Area.geth() - STATUS_BAR_H) )
 		return true;   
 
 
