@@ -51,7 +51,8 @@ public :
 
 	void add(char newchar)
 	{
-		text += newchar;
+		if (newchar != NULL)
+			text += newchar;
 		draw();
 	}
 
