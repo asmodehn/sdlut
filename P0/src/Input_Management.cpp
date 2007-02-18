@@ -3,7 +3,18 @@
 //Constructor
 KeyboardInput::KeyboardInput()
 {
-	GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
+	myPlayer = new Player_Base(0,0);
+	myEsc_Menu = new Escape_Menu();
+	myVictory_Screen = new Victory_Screen();
+	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
+	Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
+	Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>;
+	Monster_Factory_Worm = new Monster_Factory<Monster_Worm>;
+	Global_Player_Vector = new std::vector< std::vector<Character_Base*> *>;
+	Global_Monster_Vector= new std::vector< std::vector<Character_Base*> *>;
+	myDaemons = new Daemons;
+
+	//GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
 }
 //Private method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
 void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
