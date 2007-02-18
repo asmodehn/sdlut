@@ -130,7 +130,7 @@ try {
 unsigned int Daemons::Score(unsigned int interval, void* args)
 {
 try {
-	while (ALiVE_MONSTERS > 0)
+	if (ALiVE_MONSTERS > 0)
 		return interval;
 
 	FiNiSH_TiME = (unsigned)time( NULL ) - FiNiSH_TiME;
