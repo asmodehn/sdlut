@@ -141,10 +141,9 @@ namespace SDL
 			SDL_Surface * render(const std::string& text, Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid) const;
 	};
 
-
 //Implementation of class Font
 	FontExtend::FontExtend(std::string filename, int ptsize) throw (std::logic_error)
-			try : FontImpl(),_ttfstruct(TTF_OpenFont(filename.c_str(),ptsize)), _ref(1)
+			try : FontImpl(),_ttfstruct(TTF_OpenFont(filename.c_str(),ptsize)),_ref(1)
 		{
 			if(_ttfstruct==NULL) {
 				throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
@@ -158,15 +157,13 @@ namespace SDL
 		};
 
 		FontExtend::FontExtend(const FontExtend & font)
+	:_ttfstruct(font._ttfstruct),_ref(font._ref+1)
 		{
-			++_ref;
-			_ttfstruct = font._ttfstruct;
 		}
 
 		FontExtend::~FontExtend()
 		{
-			--_ref;
-			if (_ref == 0)
+			if (--_ref == 0)
 				TTF_CloseFont(_ttfstruct), _ttfstruct=NULL;
 		}
 
@@ -278,9 +275,9 @@ namespace SDL
 	Font::Font(std::string filename, int ptsize) throw (std::logic_error)
 
 #ifdef HAVE_SDLTTF
-			try : _font( new FontExtend(filename,ptsize))
+			try : _font( new FontExtend(filename,ptsize)),ref(1)
 #else
-			try : _font( new FontImpl(filename,ptsize))
+			try : _font( new FontImpl(filename,ptsize)),ref(1)
 #endif
 {
 	if(_font==NULL) {
@@ -296,17 +293,16 @@ catch (std::exception& e)
 
 //Copy Constructor
 Font::Font(const Font &font)
-: _font(font._font)
+	: _font(font._font),ref(font.ref+1)
 {
 }
 
 
 Font::~Font()
 {
- //doesn't work on VS coz the destructor is called 2 times and the 2nd time it coz the exception: 0xC0000005: Access violation reading location 0xfeeefeee.
-#ifndef WIN32
-	delete _font, _font=NULL;
-#endif
+	if (--ref == 0)
+		delete _font, _font=NULL;
+
 }
 
 
