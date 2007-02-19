@@ -34,11 +34,11 @@ find_program( SVNVERSION
 )
 
 macro( svn_repository_version DESTVAR TOPDIR )
-	# Only work if ${SVNVERSION} exist (prog founded)
-	IF(${SVNVERSION})
+	# Only work if SVNVERSION exist (prog founded)
+	IF(SVNVERSION)
 		exec_program( ${SVNVERSION} ${TOPDIR} ARGS "." OUTPUT_VARIABLE DESTVARORI )
 		STRING(REGEX REPLACE "(.+):(.+)" "\\1_\\2" ${DESTVAR} ${DESTVARORI})
-	ENDIF(${SVNVERSION})
+	ENDIF(SVNVERSION)
 endmacro( svn_repository_version )
 
 
