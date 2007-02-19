@@ -11,6 +11,8 @@ Daemons::Daemons()
 	Monster_Factory_Worm = new Monster_Factory<Monster_Worm>;
 	Global_Player_Vector = new std::vector< std::vector<Character_Base*> *>;
 	Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;
+
+	P0_Logger << nl << "Deamons CONSTRUCTED Successfully " << std::endl;
 }
 //Destructor
 Daemons::~Daemons()
@@ -33,13 +35,13 @@ try {
 	{
 		Monster_Factory_Skeleton->Move_Monsters( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector );
 		Monster_Factory_Worm->Move_Monsters( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector );
-		P0_Logger << " Move Monsters " << std::endl;
+		P0_Logger << nl << "Move Monsters " << std::endl;
 		return interval; // loop
 	} else { //Victory: end of timer
 		return 0;
 	}
 } catch (...) {
-	P0_Logger << " Move Monsters Daemon Failed " << std::endl;
+	P0_Logger << nl << "Move Monsters Daemon Failed " << std::endl;
 	return interval; // loop
 }
 }
@@ -56,13 +58,13 @@ try {
 		//Worms
 		Global_Monster_Vector->at(1) = Monster_Factory_Worm->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
 
-		P0_Logger << " Generate Monsters " << std::endl;
+		P0_Logger << nl << "Generate Monsters " << std::endl;
 		return interval; // loop
 	} else { //Victory: end of timer
 		return 0;
 	}
 } catch (...) {
-	P0_Logger << " Generate Monsters Daemon Failed " << std::endl;
+	P0_Logger << nl << "Generate Monsters Daemon Failed " << std::endl;
 	return interval; // loop
 }
 }
@@ -77,7 +79,7 @@ try {
 	return 0; //end of timer
 	
 } catch (...) {
-	P0_Logger << " Player Move Animation Timer Failed " << std::endl;
+	P0_Logger << nl << "Player Move Animation Timer Failed " << std::endl;
 	return 0; //end of timer
 }
 }
@@ -105,7 +107,7 @@ try {
 	return 0; //end of timer
 
 } catch (...) {
-	P0_Logger << " Player Attack Animation Timer Failed " << std::endl;
+	P0_Logger << nl << "Player Attack Animation Timer Failed " << std::endl;
 	return 0; //end of timer
 }
 }
@@ -133,7 +135,7 @@ try {
 	return 0; //end of timer
 	
 } catch (...) {
-	P0_Logger << " Player's Arrow Animation Timer Failed " << std::endl;
+	P0_Logger << nl << "Player's Arrow Animation Timer Failed " << std::endl;
 	return 0; //end of timer
 }
 }
@@ -152,7 +154,7 @@ try {
 	return 0; //end of timer
 	
 } catch (...) {
-	P0_Logger << " Score manager Failed " << std::endl;
+	P0_Logger << nl << "Score manager Failed " << std::endl;
 	return 0; //end of timer
 }
 }

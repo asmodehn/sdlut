@@ -147,7 +147,7 @@ bool Character_Base::Check_Collisions(std::vector< std::vector<Character_Base*> 
 				if (check_collision( Collision_Box, Global_Player_Vector->at(j)->at(i)->Get_Collision_Box() ))
 				{
 					//we have found a collision inside the vector
-					P0_Logger << " Collision between character " << " @ [ " << X << ", " << Y << "]" << std::endl;
+					P0_Logger << nl << "Collision between character " << " @ [ " << X << ", " << Y << "]" << std::endl;
 
 					//no need to work more
 					return true;
@@ -169,7 +169,7 @@ bool Character_Base::Check_Collisions(std::vector< std::vector<Character_Base*> 
 				if (check_collision( Collision_Box, Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box() ))
 				{
 					//we have found a collision inside the vector
-					P0_Logger << " Collision between monster " << " @ [ " << X << ", " << Y << "]" << std::endl;
+					P0_Logger << nl << "Collision between monster " << " @ [ " << X << ", " << Y << "]" << std::endl;
 
 					//no need to work more
 					return true;

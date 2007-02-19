@@ -26,7 +26,7 @@ int EMPTY_GROUND = 0, GRASS_GROUND = 0, SAND_GROUND = 0, RIVER_GROUND = 0, LAKE_
 int NOTHING_ENV_ITEM = 0, TREE_ENV_ITEM = 0, ROCK_ENV_ITEM = 0, WALL_ENV_ITEM = 0, HOUSE_ENV_ITEM = 0, BRIDGE_ENV_ITEM = 0;
 //int Humanoid = 0, Worm = 0;
 int	GLOBAL_GAME_STATE = 3;
-RAGE::Logger P0_Logger("P0:"); //prefix
+Logger P0_Logger("P0"); //prefix
 string Log_Name = "P0.Log";
 string Window_Name = "P0";
 

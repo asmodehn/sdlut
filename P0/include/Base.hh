@@ -116,7 +116,7 @@ enum Monsters_Type {Humanoid = 1, Worm = 2};
 extern int GLOBAL_GAME_STATE;
 
 //Logger windows
-extern RAGE::Logger P0_Logger;
+extern Logger P0_Logger;
 extern string Log_Name;
 
 	///***Animations***///

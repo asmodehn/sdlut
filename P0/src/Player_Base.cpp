@@ -136,7 +136,7 @@ try
 		Characters_Tile = Players_Tile_Melee;
 		attack_msg_hit = attack_melee_msg_hit;
 		attack_msg_miss = attack_melee_msg_miss;
-		//P0_Logger << " Graphic Style Updated To Melee Style : OK " << std::endl;
+		//P0_Logger << nl << "Graphic Style Updated To Melee Style : OK " << std::endl;
 	}
 	// Distant Style
 	else if (attack_style == 2)
@@ -144,7 +144,7 @@ try
 		Characters_Tile = Players_Tile_Distant;
 		attack_msg_hit = attack_distant_msg_hit;
 		attack_msg_miss = attack_distant_msg_miss;
-		//P0_Logger << " Graphic Style Updated To Distant Style : OK " << std::endl;
+		//P0_Logger << nl << "Graphic Style Updated To Distant Style : OK " << std::endl;
 	}
 	return true;
 }
@@ -311,7 +311,7 @@ try {
 //define character sprite which appear on the screen during moves
 bool Player_Base::Set_Move_Animation_Sprite()
 {
-		//P0_Logger << " Set_Move_Animation_Sprite called" << std::endl;
+		//P0_Logger << nl << "Set_Move_Animation_Sprite called" << std::endl;
 
 		//end of the timer for the moment (until moved animation developped (future dev))
 		return false; //no animation
@@ -474,7 +474,7 @@ bool Player_Base::Set_Attack_Animation_Sprite()
 	}
 
 
-	P0_Logger << " Set_Attack_Animation_Sprite called FRAME:" << frame << std::endl;
+	P0_Logger << nl << "Set_Attack_Animation_Sprite called FRAME:" << frame << std::endl;
 
 	if ( frame == 0 )
 		return false; //end of anim
@@ -489,7 +489,7 @@ bool Player_Base::Set_Arrow_Sprite_Coordinate()
 	//increase arrow frame
 	arrow_frame++;
 
-	P0_Logger << " Set_Arrow_Sprite_Infos called FRAME:" << arrow_frame << std::endl;
+	P0_Logger << nl << "Set_Arrow_Sprite_Infos called FRAME:" << arrow_frame << std::endl;
 
 	if (arrow_frame <= hit_monster_distance) //Move the arrow until hit_monster_distance reached. Equal, monster hit!
 	{
@@ -573,14 +573,14 @@ try {
 			attack_msg = attack_msg_hit;
 
 			if (attack_successfull == 1)
-				P0_Logger << " >>> Skeleton Hit <<< " << std::endl;
+				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
 			if (attack_successfull == 2)
-				P0_Logger << " >>> Worm Hit <<< " << std::endl;
+				P0_Logger << nl << ">>> Worm Hit <<< " << std::endl;
 		}
 		else
 		{
 			attack_msg = attack_msg_miss;
-			P0_Logger << " >>> Monster Miss <<< " << std::endl;
+			P0_Logger << nl << ">>> Monster Miss <<< " << std::endl;
 		}
 
 		//Display attack msg is done, so now everything relative to the character attack is done, we can reset the status

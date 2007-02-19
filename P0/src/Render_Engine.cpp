@@ -14,7 +14,7 @@ Render_Engine::Render_Engine()
 	EscMenu = new Escape_Menu() ;
 	VictoryScreen = new Victory_Screen();
 	MyKeyboard = new KeyboardInput();
-	P0_Logger << " Engine CONSTRUCTED Successfully " << std::endl;
+	P0_Logger << nl << "Engine CONSTRUCTED Successfully " << std::endl;
 }
 
 //Destructor
@@ -47,7 +47,7 @@ bool Render_Engine::resize(int width, int height)
 	myPlayer->Get_Camera().setw(CURRENT_SCREEN_WIDTH);
 	myPlayer->Get_Camera().seth(CURRENT_SCREEN_HEIGHT);
 
-	P0_Logger << " Resize : OK " << std::endl;
+	P0_Logger << nl << "Resize : OK " << std::endl;
 	return true;
 }
 
@@ -64,20 +64,20 @@ void Render_Engine::render(VideoSurface & screen) const
 	//Generate the background on the screen
 	if( myBackGround->Render(BackGround_Sprite_Vector, myPlayer->Get_Camera(), screen) == false )
 	{ 
-      P0_Logger << " Background Render Failed " << std::endl;    
+      P0_Logger << nl << "Background Render Failed " << std::endl;    
     }
 
 
 	//Generate the environment on the screen
 	if( myEnvironment->Render(Environment_Sprite_Vector, myPlayer->Get_Camera(), screen) == false )
 	{ 
-      P0_Logger << " Environment Render Failed " << std::endl;    
+      P0_Logger << nl << "Environment Render Failed " << std::endl;    
     }
 
 	//Show the Character on the screen
 	if( myPlayer->Show(myPlayer->Get_Camera(), screen) == false )
 	{ 
-      P0_Logger << " Character Render Failed " << std::endl;    
+      P0_Logger << nl << "Character Render Failed " << std::endl;    
     }
 
 	//show the arrow of the screen (if necessary)
@@ -85,7 +85,7 @@ void Render_Engine::render(VideoSurface & screen) const
 	{
 		if( myPlayer->Show_Arrow(screen) == false )
 		{ 
-		  P0_Logger << " Arrow Render Failed " << std::endl;    
+		  P0_Logger << nl << "Arrow Render Failed " << std::endl;    
 		}
 	}
 
@@ -95,26 +95,26 @@ void Render_Engine::render(VideoSurface & screen) const
 	||
 	( Monster_Factory_Worm->Show_Monsters(myPlayer->Get_Camera(), screen) == false )
 	) {
-		P0_Logger << " Monster Render Failed " << std::endl;    
+		P0_Logger << nl << "Monster Render Failed " << std::endl;    
     }																 
 
 	//Display attack msg
 	if( myPlayer->Show_Attack_Msg(screen) == false )
 	{ 
-      P0_Logger << " Display Attack Msg Render Failed " << std::endl;    
+      P0_Logger << nl << "Display Attack Msg Render Failed " << std::endl;    
     }
 
 	//Display monsters numbers
 	if( VictoryScreen->Show_Monsters_Stats(screen) == false )
 	{ 
-      P0_Logger << " Display Monsters Stats Render Failed " << std::endl;    
+      P0_Logger << nl << "Display Monsters Stats Render Failed " << std::endl;    
     }
 	
 	if (GLOBAL_GAME_STATE == 4) {
 		//Show Escape menu
 		if( EscMenu->Show_Menu(screen) == false )
 		{ 
-	      P0_Logger << " Display Esc Menu Failed " << std::endl;    
+	      P0_Logger << nl << "Display Esc Menu Failed " << std::endl;    
 	    }
 	}
 
@@ -122,13 +122,13 @@ void Render_Engine::render(VideoSurface & screen) const
 		//Show Vicotry Screen menu
 		if( VictoryScreen->Show(screen) == false )
 		{ 
-	      P0_Logger << " Display Victory Screen Failed " << std::endl;    
+	      P0_Logger << nl << "Display Victory Screen Failed " << std::endl;    
 	    }
 	}
 	
 	//Auto Flip by the mainloop here
 
-	//P0_Logger << " Render_Engine::Render() Used " << std::endl;
+	//P0_Logger << nl << "Render_Engine::Render() Used " << std::endl;
 }
 
 //Finally the post render method will be used by each cycle of mainloop after the draw of the screen. It designed to contain evrytinhg that will be updated after the render of the screen surface

@@ -105,7 +105,7 @@ try {
 		//deltatick is not used
 		if( Monster_Vector->at(i)->move( 0, Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
 		{ 
-			P0_Logger << " Failed to move monster N°" << i << std::endl;
+			P0_Logger << nl << "Failed to move monster N°" << i << std::endl;
 			return false; //error occured 
    		}	
 	}
@@ -123,7 +123,7 @@ try {
 	{
 	 	if( Monster_Vector->at(i)->Show(Camera, Screen) == false )
 		{ 
-	    	P0_Logger << " Failed to render monster movement on monster N°" << i << std::endl;  
+	    	P0_Logger << nl << "Failed to render monster movement on monster N°" << i << std::endl;  
 			#ifdef _DEBUG //debug mode
 	    	  return false; //error occured
 			#endif
@@ -131,7 +131,7 @@ try {
    		}
 		if( ((Monster_Base*)Monster_Vector->at(i))->Show_Life_Bar(Camera, Screen) == false )
 		{ 
-			P0_Logger << " Failed to render monster life bar on monster N°" << i << std::endl;   
+			P0_Logger << nl << "Failed to render monster life bar on monster N°" << i << std::endl;   
 			#ifdef _DEBUG //debug mode
 	    		return false; //error occured
 			#endif

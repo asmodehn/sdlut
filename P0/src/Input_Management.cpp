@@ -15,14 +15,15 @@ KeyboardInput::KeyboardInput()
 	myDaemons = new Daemons;
 
 	//GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
+	P0_Logger << nl << "Input mgt CONSTRUCTED Successfully " << std::endl;
 }
 //Private method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
 void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
 {
-	//P0_Logger << " x: " << myPlayer->Get_X() << std::endl;
-	//P0_Logger << " y: " << myPlayer->Get_Y() << std::endl;
-	//P0_Logger << " xVel: " << myPlayer->Get_xVel() << std::endl;
-	//P0_Logger << " yVel: " << myPlayer->Get_yVel() << std::endl;
+	//P0_Logger << nl << "x: " << myPlayer->Get_X() << std::endl;
+	//P0_Logger << nl << "y: " << myPlayer->Get_Y() << std::endl;
+	//P0_Logger << nl << "xVel: " << myPlayer->Get_xVel() << std::endl;
+	//P0_Logger << nl << "yVel: " << myPlayer->Get_yVel() << std::endl;
 	
 	//a movement has been triggered
 	if ( (myPlayer->Get_xVel() != 0) || (myPlayer->Get_yVel() != 0) )
@@ -30,7 +31,7 @@ void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
 		//set character sprite in function of the direction and dont move if it's only a direction change
 		if( myPlayer->assign_direction_sprite() == false )
 		{ 
-			P0_Logger << " Check character direction Failed " << std::endl;    
+			P0_Logger << nl << "Check character direction Failed " << std::endl;    
 		}
 
 		if ( myPlayer->Get_Moving_Status() ) //we're really moving but not simply changing the direction
@@ -39,13 +40,13 @@ void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
 			if( myPlayer->move(deltaticks, Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector)
 			 == false )
 			{ 
-				P0_Logger << " Move player Failed " << std::endl;    
+				P0_Logger << nl << "Move player Failed " << std::endl;    
 			}
 			
 			//Set the camera
 			if( myPlayer->following_camera() == false )
 			{ 
-				P0_Logger << " Failed to set the camera" << std::endl;    
+				P0_Logger << nl << "Failed to set the camera" << std::endl;    
 			}
 
 			//Intervals between animation's frames
@@ -56,7 +57,7 @@ void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
 			myPlayer_Move_Animation_Timer.start();
 		}
 
-		//P0_Logger << " Move " << std::endl;
+		//P0_Logger << nl << "Move " << std::endl;
 	}
 }
 //Private method which will call all the method used when there is an attack by the character
@@ -98,7 +99,7 @@ void KeyboardInput::Player_Attack_Consequences()
 		myPlayer_Arrow_Animation_Timer.start();
 	}
 
-	//P0_Logger << " Attack " << std::endl;
+	//P0_Logger << nl << "Attack " << std::endl;
 }
 
 //Managed actions associated to key in function of the player interface context (defined by GLOBAL_GAME_STATE)
@@ -180,7 +181,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					//Update the graphic style of the character
 					if( myPlayer->Update_Graphic_Style() == false )
                     { 
-						P0_Logger << " Update Graphic Style FAILED " << std::endl;
+						P0_Logger << nl << "Update Graphic Style FAILED " << std::endl;
                     }
 				}
 				if ((s.getKey() == KKEnter) || (s.getKey() == KKEnter))
@@ -200,7 +201,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				CURRENT_SCREEN_HEIGHT = SCREEN_HEIGHT;
 				/*if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
 				{
-					P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
+					P0_Logger << nl << "Create Surface Failed : " << GetError() << std::endl;
 					return false;
 				}*/
 				//Go to fullscreen

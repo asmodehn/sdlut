@@ -3,6 +3,7 @@
 
 #include "SDL.hh"
 
+using namespace RAGE;
 using namespace RAGE::SDL;
 
 //Null sound (the default sound)

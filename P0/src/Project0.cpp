@@ -6,7 +6,7 @@ bool InitEverything()
 	//Load configuration from ini files
 	if (!Set_Config())
 	{
-		P0_Logger << " Configuration could not been set " << GetError() << std::endl;
+		P0_Logger << nl <<  " Configuration could not been set " << GetError() << std::endl;
         return false;
 	}
 
@@ -18,52 +18,52 @@ bool InitEverything()
     if (! App::getInstance().initVideo(false,false,true,false) )
 		//SDL_Init( SDL_INIT_EVERYTHING )
 	{
-		P0_Logger << " Init Video Failed : " << GetError() << std::endl;
+		P0_Logger << nl << "Init Video Failed : " << GetError() << std::endl;
         return false;
     }
-	P0_Logger << " Init Video : OK " << std::endl;
+	P0_Logger << nl << "Init Video : OK " << std::endl;
 
 	//Intialize Timer
 	if (! App::getInstance().initTimer() )
 	{
-		P0_Logger << " Init Timer Failed : " << GetError() << std::endl;
+		P0_Logger << nl << "Init Timer Failed : " << GetError() << std::endl;
         return false;
     }
-	P0_Logger << " Init Timer : OK " << std::endl;
+	P0_Logger << nl << "Init Timer : OK " << std::endl;
 
 	//Initialize SDL_ttf
 	if (! App::getInstance().initText())
 		//if( TTF_Init() == -1 )
     {
-		//P0_Logger << " TTF Init Error : " << TTF::GetError() << std::endl;
-		P0_Logger << " TTF Init Error : " << GetError() << std::endl;
+		//P0_Logger << nl << "TTF Init Error : " << TTF::GetError() << std::endl;
+		P0_Logger << nl <<  " TTF Init Error : " << GetError() << std::endl;
         return false;
     }
-	P0_Logger << " TTF Init : OK " << std::endl;
+	P0_Logger << nl << "TTF Init : OK " << std::endl;
 
 	//Create the video surface aka the display
 	if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
 	{
-		P0_Logger << " Create Surface Failed : " << GetError() << std::endl;
+		P0_Logger << nl << "Create Surface Failed : " << GetError() << std::endl;
         return false;
     }
-	P0_Logger << " Video Surface Creation : OK " << std::endl;
+	P0_Logger << nl << "Video Surface Creation : OK " << std::endl;
 
 	//Initialize Audio Mixer
 	if (!App::getInstance().initAudio())
     {
-		P0_Logger << " Audio Init Error : " << GetError() << std::endl;
+		P0_Logger << nl << "Audio Init Error : " << GetError() << std::endl;
         return false;
     }
-	P0_Logger << " Audio Init : OK " << std::endl;
+	P0_Logger << nl << "Audio Init : OK " << std::endl;
 
 	//Load Fxs & Musics Sounds Files to the mixer and set there respective channels
 	if (!Set_Sounds_Channels())
 	{
-		P0_Logger << " Mixing Sound Error : " << GetError() << std::endl;
+		P0_Logger << nl << "Mixing Sound Error : " << GetError() << std::endl;
         return false;
     }
-	P0_Logger << " Mixing Sound : OK " << std::endl;
+	P0_Logger << nl << "Mixing Sound : OK " << std::endl;
 
 	//If eveything loads fine
     return true;    
@@ -81,12 +81,12 @@ try { //global error management
 	//Create the windows and init everything (SDL, SDL_TTF, ...)
 	if( InitEverything() == false )
 	{ 
-		P0_Logger << " Init Windows failed... " << std::endl;
+		P0_Logger << nl << "Init Windows failed... " << std::endl;
 		Delay(2000);
 		//SDL_Delay(2000);
 		return 1;
 	}
-	P0_Logger << "-> Windows, SDL, SDL_TTF And VideoSurface Where Initialized Successfully <-" << std::endl;
+	P0_Logger << nl << "-> Windows, SDL, SDL_TTF And VideoSurface Where Initialized Successfully <-" << std::endl;
 	
 	/********Classes Instanciation & Initialization********/
 	//Create the keyboard instance that will managed input
@@ -104,7 +104,7 @@ try { //global error management
 		/****Battalefield****/
 	//Initialize the BackGround
 	BackGround* myBackGround = new BackGround();
-	P0_Logger << " BackGround Init: OK " << std::endl;
+	P0_Logger << nl << "BackGround Init: OK " << std::endl;
 	myRender_Engine->Set_BackGround(myBackGround); //inform the engine class of the background instance (as background is fixed for the moment)
 
 	//Fill the BackGround vector with all BackGround sprite corresponding to the map file
@@ -113,14 +113,14 @@ try { //global error management
 #else //rlz mode
 	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = myBackGround->BackGround_Vector(); //Vector which will contains all BackGround type and clip
 #endif
-	P0_Logger << " BackGround_Sprite Vector Fill: OK " << std::endl;
+	P0_Logger << nl << "BackGround_Sprite Vector Fill: OK " << std::endl;
 	myKeyboardInput->Set_BackGround_Sprite_Vector( BackGround_Sprite_Vector ); //inform the input management
 	myDaemons->Set_BackGround_Sprite_Vector( BackGround_Sprite_Vector ); //inform the timer class
 	myRender_Engine->Set_BackGround_Sprite_Vector( BackGround_Sprite_Vector ); //inform the timer class (this the only moment where we get informed of the background as background is fixed for the moment)
 
 	//Initialize the Environment
 	Environment* myEnvironment = new Environment();
-	P0_Logger << " Environment Init: OK " << std::endl;
+	P0_Logger << nl << "Environment Init: OK " << std::endl;
 	myRender_Engine->Set_Environment(myEnvironment); //inform the engine class of the environment instance
 
 	//Fill the Environment vector with all Environment sprite corresponding to the map file
@@ -129,7 +129,7 @@ try { //global error management
 #else //rlz mode*/
 	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector = myEnvironment->Environment_Vector(); //Vector which will contains all Environment items type and clip
 #endif
-	P0_Logger << " Environment_Sprite Vector Fill: OK " << std::endl;
+	P0_Logger << nl << "Environment_Sprite Vector Fill: OK " << std::endl;
 	myKeyboardInput->Set_Environment_Sprite_Vector( Environment_Sprite_Vector );
 	myDaemons->Set_Environment_Sprite_Vector( Environment_Sprite_Vector ); 
 	myRender_Engine->Set_Environment_Sprite_Vector( Environment_Sprite_Vector ); //inform the timer class (this the only moment where we get informed of the environnement as environment is fixed for the moment)
@@ -141,11 +141,11 @@ try { //global error management
 	Player_Base* myPlayer = new Player_Base(CH_INITIAL_X, CH_INITIAL_Y);
 	if( myPlayer->Update_Graphic_Style() == false ) //intialize Character's graphic aspect
 	{ 
-        P0_Logger << " Character Creation FAILED " << std::endl;
+        P0_Logger << nl << "Character Creation FAILED " << std::endl;
     	Delay(2000);
     	return 1;
     }
-    P0_Logger << " Character Creation: OK " << std::endl;
+    P0_Logger << nl << "Character Creation: OK " << std::endl;
 
 	//Vector of players
 	std::vector<Character_Base*>* Players_Vector = new std::vector<Character_Base*>;
@@ -165,25 +165,25 @@ try { //global error management
 		/****Monsters****/
 	//Initialize the skeleton factory
 	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS);  //A factory of Monster Skeletons
-	P0_Logger << " Skeleton Factory Init: OK " << std::endl;
+	P0_Logger << nl << "Skeleton Factory Init: OK " << std::endl;
 	myKeyboardInput->Set_Monster_Factory_Skeleton( Monster_Factory_Skeleton );
 	myDaemons->Set_Monster_Factory_Skeleton( Monster_Factory_Skeleton );
 	myRender_Engine->Set_Monster_Factory_Skeleton( Monster_Factory_Skeleton );
 
 	//Create all the monsters skeletons
 	std::vector<Character_Base*>* Monster_Vector_Skeleton = Monster_Factory_Skeleton->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector);  //Vector which will contains all skeletons
-	P0_Logger << " Skeleton Vector Fill: OK " << std::endl;
+	P0_Logger << nl << "Skeleton Vector Fill: OK " << std::endl;
 	
 	//Initialize the worm factory
 	Monster_Factory<Monster_Worm>* Monster_Factory_Worm = new Monster_Factory<Monster_Worm>(INITIAL_MONSTERS);  //A factory of Monster Worms
-	P0_Logger << " Worm Factory Init: OK " << std::endl;
+	P0_Logger << nl << "Worm Factory Init: OK " << std::endl;
 	myKeyboardInput->Set_Monster_Factory_Worm( Monster_Factory_Worm );
 	myDaemons->Set_Monster_Factory_Worm( Monster_Factory_Worm );
 	myRender_Engine->Set_Monster_Factory_Worm( Monster_Factory_Worm );
 
 	//Create all the monsters worms
 	std::vector<Character_Base*>* Monster_Vector_Worm = Monster_Factory_Worm->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector); //Vector which will contains all skeletons
-	P0_Logger << " Worm Vector Fill: OK " << std::endl;
+	P0_Logger << nl << "Worm Vector Fill: OK " << std::endl;
 
 	//Vector containing pointers to vector of pointers to monsters
 	std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;
@@ -263,8 +263,8 @@ try { //global error management
     return 0; //no error occured
 	
 } catch (std::exception e) {
-    P0_Logger << " Unhandled Exception occured in Main : " << e.what() << std::endl;
-    P0_Logger << " P0 stopped in emergency" << std::endl;
+    P0_Logger << nl << "Unhandled Exception occured in Main : " << e.what() << std::endl;
+    P0_Logger << nl << "P0 stopped in emergency" << std::endl;
     Delay(2000);
     return 1;
 }
