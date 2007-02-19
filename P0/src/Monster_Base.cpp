@@ -121,6 +121,10 @@ Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 	current_life_bar_rect = ToCopy.current_life_bar_rect;
 }
 
+//Destructor
+Monster_Base::~Monster_Base()
+{
+}
 
 //Move monster randomly
 bool Monster_Base::move(unsigned long deltaticks, std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)

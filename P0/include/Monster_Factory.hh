@@ -30,6 +30,9 @@ class Monster_Factory
 
 		//Constructor
 		Monster_Factory(int number_of_monsters);
+		
+		//Destructor
+		~Monster_Factory();
 
 		//Create Monster Method which create has many monsters has desired
 		std::vector<Character_Base*>* Create_Monsters(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* environment_sprite_vector, std::vector<BattleField_Sprite*>* background_sprite_vector);

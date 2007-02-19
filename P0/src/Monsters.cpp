@@ -56,6 +56,12 @@ Monster_Skeleton::Monster_Skeleton(int x, int y)
 	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
 	Alive_Status = true;
 }
+
+//Destructor
+Monster_Skeleton::~Monster_Skeleton()
+{
+}
+
 //Set ground vs skeleton rules
 int Monster_Skeleton::Get_BG_vs_CH_Rules(int bgType)
 {
@@ -84,6 +90,7 @@ int Monster_Skeleton::Get_BG_vs_CH_Rules(int bgType)
 		return 0;
 	}
 }
+
 
 
 //Worm Full constructor
@@ -141,6 +148,11 @@ Monster_Worm::Monster_Worm(int x, int y)
 
 	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
 	Alive_Status = true;
+}
+
+//Destructor
+Monster_Worm::~Monster_Worm()
+{
 }
 
 //Set ground vs worm rules

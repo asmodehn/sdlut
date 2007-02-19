@@ -18,6 +18,14 @@ Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters)
 	BattleField_Cutting_Vector = BattleField_Zone::Fill_Vector();
 }
 
+//Destructor
+template <typename Monster_Template>
+Monster_Factory<Monster_Template>::~Monster_Factory()
+{
+	delete Monster_Vector, Monster_Vector = NULL;
+	delete BattleField_Cutting_Vector, BattleField_Cutting_Vector = NULL;
+}
+
 //Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
 template <typename Monster_Template>
 Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Character_X, int Character_Y)

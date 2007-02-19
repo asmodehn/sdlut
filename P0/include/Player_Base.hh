@@ -70,6 +70,7 @@ class Player_Base : public Character_Base
 
 		//Initializes the variables
 		Player_Base(int X, int Y);
+		/* virtual */ ~Player_Base();
 
 		/****Accessor****/
 		inline void Set_Camera(Rect new_Camera)

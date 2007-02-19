@@ -43,8 +43,9 @@ class Victory_Screen
 		RGBSurface monsters_stats_msg;
 		
 	public:
-		//Constructor
 		Victory_Screen();
+		~Victory_Screen();
+
 		//Save Victory Time
 		bool Save_Time();
 		//show victory screen

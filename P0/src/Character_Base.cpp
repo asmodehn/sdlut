@@ -29,6 +29,11 @@ Character_Base::Character_Base()
 	Alive_Status = true;
 }
 
+//Destructor
+Character_Base::~Character_Base()
+{
+}
+
 //Check if the bg allow the character presence
 std::vector<int>* Character_Base::Check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector)
 {

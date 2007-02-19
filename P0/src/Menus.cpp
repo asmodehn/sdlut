@@ -55,6 +55,14 @@ Victory_Screen::Victory_Screen()
 	//Monsters Stats
 	Monsters_Stats_Font = new Font("Datas/Fonts/SlimSansSerif.ttf", 14);
 }
+
+//Destructor
+Victory_Screen::~Victory_Screen()
+{
+	delete Monsters_Stats_Font, Monsters_Stats_Font = NULL;
+	delete Monsters_Stats_Font, Monsters_Stats_Font = NULL;
+}
+
 //show victory screen
 bool Victory_Screen::Show(VideoSurface& Screen)
 {

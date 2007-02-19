@@ -87,6 +87,7 @@ public:
 
 	/****Methods****/
 	Daemons();
+	~Daemons();
 
 	//Callback method that will call monsters movement
 	unsigned int Move_Monsters(unsigned int interval, void* args);

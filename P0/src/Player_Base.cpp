@@ -118,6 +118,13 @@ Player_Base::Player_Base(int x, int y)
 	attack_distant_msg_miss = *AttackMsg_Font->render("Distant Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 }
 
+//Destructor
+Player_Base::~Player_Base()
+{
+	delete Player_Attack_Tile_Rect, Player_Attack_Tile_Rect = NULL;
+	delete Arrow_SpriteRect, Arrow_SpriteRect = NULL;
+}
+
 //Character Graphic Style Initialiation regarding the attack style
 bool Player_Base::Update_Graphic_Style()
 {

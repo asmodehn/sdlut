@@ -49,7 +49,7 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 	if ( fi.fail() )
 	{
 		fi.close();
-		return NULL;
+		return res;
 	}
 
 	char* newline = new char;
@@ -89,6 +89,7 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 							{
 								//result is the all string after the = (even with the only ")
 								res = newline_str->substr(equal_loc+1);
+								break;
 
 							} else {
 								//result is the string between the " "

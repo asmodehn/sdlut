@@ -31,6 +31,11 @@ BattleField_Zone::BattleField_Zone()
 	Area.seth(0);
 	Allowed_Monsters = new std::vector<int>;
 }
+
+BattleField_Zone::~BattleField_Zone()
+{
+	delete Allowed_Monsters, Allowed_Monsters = NULL;
+}
 BattleField_Zone::BattleField_Zone(int x, int y, int w, int h, int nb_args, ...)
 {
 	Area.setx(x);
@@ -95,6 +100,11 @@ BackGround::BackGround()
 	myBackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
 
 	P0_Logger << " BackGround Construction : OK " << std::endl;
+}
+//BackGround Destructor
+BackGround::~BackGround()
+{
+	delete myBackGround_Sprite_Vector, myBackGround_Sprite_Vector = NULL;
 }
 
 //BackGround interpretation from the file
@@ -324,6 +334,11 @@ Environment::Environment()
 	myEnvironment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
 
 	P0_Logger << " Environment Construction : OK " << std::endl;
+}
+//Environment Destructor
+Environment::~Environment()
+{
+	delete myEnvironment_Sprite_Vector, myEnvironment_Sprite_Vector = NULL;
 }
 
 //Environment interpretation from the file

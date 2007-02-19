@@ -118,8 +118,9 @@ public:
 		return Current_Armor;
 	}
 
-	//Constructor
+	//Init
 	Character_Base();
+	virtual ~Character_Base();
 
 	//Check if the battlefield allow the character presence
 	bool Check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector);

@@ -12,6 +12,18 @@ Daemons::Daemons()
 	Global_Player_Vector = new std::vector< std::vector<Character_Base*> *>;
 	Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;
 }
+//Destructor
+Daemons::~Daemons()
+{
+	//Allocations
+	delete myPlayer, myPlayer = NULL;
+	delete BackGround_Sprite_Vector, BackGround_Sprite_Vector = NULL;
+	delete Environment_Sprite_Vector, Environment_Sprite_Vector = NULL;
+	delete Monster_Factory_Skeleton, Monster_Factory_Skeleton = NULL;
+	delete Monster_Factory_Worm, Monster_Factory_Worm = NULL;
+	delete Global_Player_Vector, Global_Player_Vector = NULL;
+	delete Global_Monster_Vector, Global_Monster_Vector = NULL;
+}
 
 //Callback method that will call monsters movement
 unsigned int Daemons::Move_Monsters(unsigned int interval, void* args)

@@ -61,6 +61,7 @@ class BattleField_Zone
 		std::vector<int>* Allowed_Monsters;
 
 	public:
+		~BattleField_Zone();
 		BattleField_Zone();
 		BattleField_Zone(int x, int y, int w, int h, int num, ...);
 
@@ -107,6 +108,7 @@ class BackGround // : public BattleField_Sprite
 
 	public:
 		BackGround();
+		~BackGround();
 
 		/****Methods****/
 
@@ -132,6 +134,7 @@ class Environment // : public BattleField_Sprite
 
 	public:
 		Environment();
+		~Environment();
 
 		/****Methods****/
 
