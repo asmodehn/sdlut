@@ -68,6 +68,7 @@ bool InitEverything()
 	//If eveything loads fine
     return true;    
 }
+
 //Main
 int main( int argc, char* args[] )
 {
@@ -100,6 +101,8 @@ try { //global error management
 	//Engine instanciation
 	Render_Engine* myRender_Engine = new Render_Engine();
 
+	//Inform the render engine of the keyboard instance
+	myRender_Engine->Set_Keyboard(myKeyboardInput);
 
 		/****Battalefield****/
 	//Initialize the BackGround
@@ -205,9 +208,6 @@ try { //global error management
 	myKeyboardInput->Set_Victory_Screen( VictoryScreen );
 	myRender_Engine->Set_Victory_Screen(VictoryScreen);
 
-	//Inform the render engine of the keyboard instance
-	myRender_Engine->Set_Keyboard(myKeyboardInput);
-
 	/********DEAMONS CREATION********/
 	//Create monster's movement daemons
 	Timer<Daemons>* myMonster_Factory_Monsters_Moves_Timer = new Timer<Daemons>(); //set definition
@@ -249,16 +249,38 @@ try { //global error management
 	myMonster_Factory_Monsters_Generation_Timer->start(); //monsters generation
 	myScore->start(); //Score
 
-	/*******Score Management********/
-	FiNiSH_TiME = (unsigned)time( NULL );
+
 
 	/********Launch the mainloop that will use the render method of the Engine and so will render the screen and will manage all events********/
 	App::getInstance().getWindow()->mainLoop(FRAMES_PER_SECOND);
 
 
-	/********QUIT********/
-	//Quit SDL
-	//SDL_Quit();
+
+
+	/********Clean UP********/
+	delete myScore, myScore = NULL;
+	delete myMonster_Factory_Monsters_Generation_Timer, myMonster_Factory_Monsters_Generation_Timer = NULL;
+	delete myMonster_Factory_Monsters_Moves_Timer, myMonster_Factory_Monsters_Moves_Timer = NULL;
+	delete VictoryScreen, VictoryScreen = NULL;
+	delete EscMenu, EscMenu = NULL;
+	delete Monster_Factory_Worm, Monster_Factory_Worm = NULL;
+	delete Monster_Factory_Skeleton, Monster_Factory_Skeleton = NULL;
+	delete Global_Monster_Vector, Global_Monster_Vector = NULL;
+	delete myPlayer, myPlayer = NULL;
+
+	delete Players_Vector, Players_Vector = NULL;
+	
+	delete Global_Player_Vector, Global_Player_Vector = NULL;
+	delete myEnvironment, myEnvironment = NULL;
+	delete Environment_Sprite_Vector, Environment_Sprite_Vector = NULL;
+	delete myBackGround, myBackGround = NULL;
+	delete BackGround_Sprite_Vector, BackGround_Sprite_Vector = NULL;
+
+	delete myKeyboardInput, myKeyboardInput = NULL;
+	
+	delete myRender_Engine, myRender_Engine = NULL;
+	delete myDaemons, myDaemons = NULL;
+
 
     return 0; //no error occured
 	

@@ -60,7 +60,7 @@ Victory_Screen::Victory_Screen()
 Victory_Screen::~Victory_Screen()
 {
 	delete Monsters_Stats_Font, Monsters_Stats_Font = NULL;
-	delete Monsters_Stats_Font, Monsters_Stats_Font = NULL;
+	delete Time_Font, Time_Font = NULL;
 }
 
 //show victory screen

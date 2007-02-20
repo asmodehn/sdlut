@@ -13,9 +13,9 @@ class KeyboardInput : public Keyboard
 {
 	private:
 		//Character attack animation timer
-		Timer<Daemons> myPlayer_Attack_Animation_Timer;
-		Timer<Daemons> myPlayer_Move_Animation_Timer;
-		Timer<Daemons> myPlayer_Arrow_Animation_Timer;
+		Timer<Daemons>* myPlayer_Attack_Animation_Timer;
+		Timer<Daemons>* myPlayer_Move_Animation_Timer;
+		Timer<Daemons>* myPlayer_Arrow_Animation_Timer;
 
 		//Variables designed to be defined externaly
 		Player_Base* myPlayer; //The Character Definition
@@ -88,8 +88,9 @@ class KeyboardInput : public Keyboard
 			myDaemons = newDaemons;
 		}
 
-		//Constructor 
+		//Def 
 		KeyboardInput();
+		~KeyboardInput();
 
 		void Set_quitRequested(bool new_quitRequested)
 		{

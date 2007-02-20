@@ -26,9 +26,9 @@ Player_Base::Player_Base(int x, int y)
 	Player_Attack_Tile_Rect = new std::vector<Rect>;
 	Rect _temp_ch_rect;
 	//Character Clips definition
-	for (unsigned int i = 0; i < 8; i++)  //The 8 directions
+	for (signed int i = 0; i < 8; i++)  //The 8 directions
 	{
-		for (unsigned int j = 0; j < PLAYER_SWORD_ATTACK_ANIMATION_FRAME; j++) //Frames
+		for (signed int j = 0; j < PLAYER_SWORD_ATTACK_ANIMATION_FRAME; j++) //Frames
 		{
 			_temp_ch_rect.setx( Sprite_Width * j);
 			_temp_ch_rect.sety( Sprite_Height * i );
@@ -116,6 +116,8 @@ Player_Base::Player_Base(int x, int y)
 	attack_distant_msg_hit = *AttackMsg_Font->render("Distant Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 	attack_melee_msg_miss = *AttackMsg_Font->render("Melee Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 	attack_distant_msg_miss = *AttackMsg_Font->render("Distant Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+
+	delete AttackMsg_Font, AttackMsg_Font = NULL;
 }
 
 //Destructor

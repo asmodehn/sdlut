@@ -14,8 +14,22 @@ KeyboardInput::KeyboardInput()
 	Global_Monster_Vector= new std::vector< std::vector<Character_Base*> *>;
 	myDaemons = new Daemons;
 
+	myPlayer_Attack_Animation_Timer = new Timer<Daemons>;
+	myPlayer_Move_Animation_Timer = new Timer<Daemons>;
+	myPlayer_Arrow_Animation_Timer = new Timer<Daemons>;
+
 	//GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
 	P0_Logger << nl << "Input mgt CONSTRUCTED Successfully " << std::endl;
+}
+//Destructor
+KeyboardInput::~KeyboardInput()
+{
+	delete myPlayer_Attack_Animation_Timer, myPlayer_Attack_Animation_Timer = NULL;
+	delete myPlayer_Move_Animation_Timer, myPlayer_Move_Animation_Timer = NULL;
+	delete myPlayer_Arrow_Animation_Timer, myPlayer_Arrow_Animation_Timer = NULL;
+
+	//GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
+	P0_Logger << nl << "Input mgt DESTRUCTED Successfully " << std::endl;
 }
 //Private method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
 void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
@@ -50,11 +64,11 @@ void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
 			}
 
 			//Intervals between animation's frames
-			myPlayer_Move_Animation_Timer.setInterval( PLAYER_MOVE_ANIMATION_INTERVAL  );
+			myPlayer_Move_Animation_Timer->setInterval( PLAYER_MOVE_ANIMATION_INTERVAL  );
 			//Set the callback method which will define the character appearance on the screen and start animation
-			myPlayer_Move_Animation_Timer.setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
+			myPlayer_Move_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
 			//Start the animation
-			myPlayer_Move_Animation_Timer.start();
+			myPlayer_Move_Animation_Timer->start();
 		}
 
 		//P0_Logger << nl << "Move " << std::endl;
@@ -71,32 +85,32 @@ void KeyboardInput::Player_Attack_Consequences()
 	/***WARNING !! IN CASE OF DISTANT ATTACK THE MONSTER IS CONSIDERED AS DEAD WHEN THE KEY IS PRESSED AND NOT WHEN THE ARROW REACHED THE TARGET => TODO: FIND A WAY TO SOLVE THAT (SEPARATE THE ATTACK METHOD IN TWO DISTINCT METHOD PERHAPS CAN HELP)***/
 	myPlayer->Set_Hit_Monster_Distance( myPlayer->attack(Global_Monster_Vector) );
 	
-	//Set the callback method which will define the character appearance on the screen and start animation
-	myPlayer_Attack_Animation_Timer.setCallback(myDaemons,&Daemons::Player_Attack_Animation, (void*)NULL);
-	
 	//difference between attack styles
 	if ( myPlayer->Get_Attack_Style() == 1 ) 
 	{
 		//Intervals between animation's frames
-		myPlayer_Attack_Animation_Timer.setInterval( PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL );
+		myPlayer_Attack_Animation_Timer->setInterval( PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL );
 	}
 	else if ( myPlayer->Get_Attack_Style() == 2 )
 	{
 		//Intervals between animation's frames
-		myPlayer_Attack_Animation_Timer.setInterval( PLAYER_BOW_ATTACK_ANIMATION_INTERVAL );
+		myPlayer_Attack_Animation_Timer->setInterval( PLAYER_BOW_ATTACK_ANIMATION_INTERVAL );
 		//Arrow management
-		myPlayer_Arrow_Animation_Timer.setInterval( PLAYER_ARROW_MOVE_ANIMATION_INTERVAL );
-		myPlayer_Arrow_Animation_Timer.setCallback(myDaemons,&Daemons::Player_Arrow_Animation, (void*)NULL);
+		myPlayer_Arrow_Animation_Timer->setInterval( PLAYER_ARROW_MOVE_ANIMATION_INTERVAL );
+		myPlayer_Arrow_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Arrow_Animation, (void*)NULL);
 	}
+
+	//Set the callback method which will define the character appearance on the screen and start attack animation
+	myPlayer_Attack_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Attack_Animation, (void*)NULL);
 	
 	//Start the attack animation
-	myPlayer_Attack_Animation_Timer.start();
+	myPlayer_Attack_Animation_Timer->start();
 	
 	//In case of distant attack only
 	if ( myPlayer->Get_Attack_Style() == 2 )
 	{
 		//Start arrow animation
-		myPlayer_Arrow_Animation_Timer.start();
+		myPlayer_Arrow_Animation_Timer->start();
 	}
 
 	//P0_Logger << nl << "Attack " << std::endl;

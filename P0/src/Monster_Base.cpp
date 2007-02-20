@@ -14,7 +14,7 @@ Monster_Base::Monster_Base()
 	//Monster Tile Surface with white transparent
 	Characters_Tile = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, 32);
 
-	 //Monster Clip definition 
+	 //Monster Clip definition
     _monster[0].setx( 0 );
 	_monster[0].sety( 0 );
     _monster[0].setw( 0 );

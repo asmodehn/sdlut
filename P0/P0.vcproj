@@ -40,7 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions=" /wd4100 /wd4290&#x0D;&#x0A;/D &quot;VISUAL_STUDIO&quot;"
+				AdditionalOptions=" /wd4100 /wd4290 /wd4512&#x0D;&#x0A;/D &quot;VISUAL_STUDIO&quot;"
 				Optimization="0"
 				FavorSizeOrSpeed="0"
 				AdditionalIncludeDirectories="..\SDLut\include;include;..\Core\include;..\Math\include"

@@ -17,14 +17,7 @@ Daemons::Daemons()
 //Destructor
 Daemons::~Daemons()
 {
-	//Allocations
-	delete myPlayer, myPlayer = NULL;
-	delete BackGround_Sprite_Vector, BackGround_Sprite_Vector = NULL;
-	delete Environment_Sprite_Vector, Environment_Sprite_Vector = NULL;
-	delete Monster_Factory_Skeleton, Monster_Factory_Skeleton = NULL;
-	delete Monster_Factory_Worm, Monster_Factory_Worm = NULL;
-	delete Global_Player_Vector, Global_Player_Vector = NULL;
-	delete Global_Monster_Vector, Global_Monster_Vector = NULL;
+	P0_Logger << nl << "Deamons DESTRUCTED Successfully " << std::endl;
 }
 
 //Callback method that will call monsters movement
@@ -144,6 +137,7 @@ try {
 unsigned int Daemons::Score(unsigned int interval, void* args)
 {
 try {
+
 	if (ALiVE_MONSTERS > 0)
 		return interval;
 

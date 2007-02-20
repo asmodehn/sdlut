@@ -16,6 +16,7 @@ Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters)
 	Number_Of_Monsters = number_of_monsters;
 	Monster_Vector = new std::vector<Character_Base*>;
 	BattleField_Cutting_Vector = BattleField_Zone::Fill_Vector();
+	P0_Logger << nl << "Factory CONSTRUCTED Successfully " << std::endl;
 }
 
 //Destructor
