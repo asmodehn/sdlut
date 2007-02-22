@@ -18,6 +18,7 @@ namespace RAGE
         {
 
 		public:
+
 			//this is run just before the render
 			//deltaticks is the amount of ticks between the end of the last render and now.
 			virtual void prerender(unsigned long deltaticks) {}
@@ -26,13 +27,15 @@ namespace RAGE
             virtual void render(VideoSurface & screen) const = 0;
 
 			//this is run just after the render, and refresh of the screen
-			virtual void postrender(void) {}
+	    virtual void postrender(void) {}
 
 			//to initialise the engine, just called once before any render
             virtual bool init(int width, int height) = 0;
 
 			//call everytime the display is resized
             virtual bool resize(int width, int height) = 0;
+
+	    virtual ~Engine() {}
         };
 
 		// Default 2D Engine ( only used if no engine is defined )
@@ -45,7 +48,8 @@ namespace RAGE
 
 			public:
 
-			DefaultEngine() : _logo(NULL) {}
+				DefaultEngine();
+				virtual ~DefaultEngine();
 
 			//this render function should not modify the engine
             virtual void render(VideoSurface & screen) const;
@@ -71,7 +75,7 @@ namespace RAGE
 			public:
 
 				DefaultGLEngine();
-				~DefaultGLEngine();
+				virtual ~DefaultGLEngine();
 
 			//this is run just before the render
 			virtual void prerender(unsigned long deltaticks);

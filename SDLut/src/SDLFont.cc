@@ -275,9 +275,9 @@ namespace SDL
 	Font::Font(std::string filename, int ptsize) throw (std::logic_error)
 
 #ifdef HAVE_SDLTTF
-			try : _font( new FontExtend(filename,ptsize)),ref(1)
+			try : ref(1),_font( new FontExtend(filename,ptsize))
 #else
-			try : _font( new FontImpl(filename,ptsize)),ref(1)
+			try : ref(1),_font( new FontImpl(filename,ptsize))
 #endif
 {
 	if(_font==NULL) {
@@ -293,7 +293,7 @@ catch (std::exception& e)
 
 //Copy Constructor
 Font::Font(const Font &font)
-	: _font(font._font),ref(font.ref+1)
+	: ref(font.ref+1),_font(font._font)
 {
 }
 

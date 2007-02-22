@@ -7,7 +7,10 @@ namespace RAGE
     namespace SDL
     {
 
-
+	    DefaultEngine::DefaultEngine() : _logo(NULL)
+	    {
+	    }
+	    
 		//this render function should not modify the engine
 		void DefaultEngine::render(VideoSurface & screen) const
 		{
@@ -27,6 +30,10 @@ namespace RAGE
 		{
 			return true;
 		}
+		
+		DefaultEngine::~DefaultEngine()
+		{
+		}
 	}
 }
 
@@ -43,7 +50,6 @@ namespace RAGE
 {
     namespace SDL
     {
-#pragma message( "DefaultGLEngine not finished yet!!!")
 
 		DefaultGLEngine::DefaultGLEngine() : _logo(NULL),_logotexture(0) {}
 	    DefaultGLEngine::~DefaultGLEngine()

@@ -67,7 +67,7 @@
 /**
   * \defgroup CDROM
   * \defgroup Threads
-  * /
+  */
 /**
   * \defgroup Timers
   */

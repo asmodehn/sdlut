@@ -61,7 +61,7 @@ namespace RAGE
 			std::map<Key, SDLKey>::iterator itEnd = Keyrage2sdlmap.end();
 			for (; it != itEnd; ++it)
 			{
-				assert((*it).first >= 0 && (*it).first < result.size());
+				assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
 				result[(*it).first] = (*it).second;
 			}
 		}
@@ -88,7 +88,7 @@ namespace RAGE
 			std::map<Modifier, SDLMod>::iterator itEnd = Modrage2sdlmap.end();
 			for (; it != itEnd; ++it)
 			{
-				assert((*it).first >= 0 && (*it).first < result.size());
+				assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
 				result[(*it).first] = (*it).second;
 			}
 		}

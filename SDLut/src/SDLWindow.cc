@@ -259,7 +259,6 @@ namespace RAGE
             Log << nl << "Window::reset(" << width << "," << height << ") called ..." << std::endl;
 #endif
 
-            bool res = false;
             int _bpp=VideoSurface::getSuggestedBPP(width, height);
             //but beware about bpp == 0...
             if (_bpp == 0 )
@@ -299,7 +298,6 @@ namespace RAGE
             assert (_screen);
 #endif
 
-            bool res = false;
             if (_screen != NULL )
             {
                 _screen->resize(width,height);//doesnt keep content

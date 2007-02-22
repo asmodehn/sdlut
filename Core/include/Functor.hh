@@ -95,6 +95,7 @@ namespace RAGE
 		public:
 			virtual returnType operator()(arg1Type,arg2Type) = 0 ; //operator used for calling the function
 			virtual returnType call(arg1Type,arg2Type) = 0 ;//specific call function
+			virtual ~TFunctor2() {}
 	};
 
 	template <class TClass,typename returnType, typename arg1Type = void*, typename arg2Type = void *>
