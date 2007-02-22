@@ -238,6 +238,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\NPCs.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Player.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Player_Base.cpp"
 				>
 			</File>
@@ -297,6 +305,14 @@
 			</File>
 			<File
 				RelativePath=".\include\Monsters.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\NPCs.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Player.hh"
 				>
 			</File>
 			<File

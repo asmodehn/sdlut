@@ -5,22 +5,17 @@ Character_Base::Character_Base()
 {
 	X = 0, Y =0;
 	xVel = 0, yVel = 0;
+	//
+	//TODO: put this in ini file with default sprite w/h 
+	//
 	Sprite_Width = 0, Sprite_Height = 0;
+
 	BASE_LIFE = 0, Current_Life = BASE_LIFE;
 	BASE_ARMOR = 0, Current_Armor = BASE_ARMOR;
 
-	Characters_Tile = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, 32);
+	Characters_Tile = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, SCREEN_BPP);
 
-	Characters_SpriteRect.setx(0);
-	Characters_SpriteRect.sety(0);
-	Characters_SpriteRect.setw(0);
-	Characters_SpriteRect.seth(0);
-
-	Collision_Box.setx(0);
-	Collision_Box.sety(0);
-	Collision_Box.setw(0);
-	Collision_Box.seth(0);
-
+	//Default Area: the whole level
 	Allowed_Area.setx(0);
 	Allowed_Area.sety(0);
 	Allowed_Area.setw(LEVEL_WIDTH);

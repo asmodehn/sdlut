@@ -132,6 +132,7 @@ extern int PLAYER_ARROW_ATTACK_ANIMATION_FRAME;
 	///***Daemons***///
 extern long MONSTERS_MOVEMENT_INTERVAL;
 extern long MONSTERS_GENERATION_INTERVAL;
+extern long NPCS_MOVEMENT_INTERVAL;
 
 ///*******Base variable & methods*******///
 extern int ALiVE_MONSTERS;

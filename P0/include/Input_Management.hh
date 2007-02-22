@@ -1,12 +1,12 @@
 #ifndef Input_Management_HH
 #define Input_Management_HH
 
-//#include "Character_Base.hh"
 #include "Monster_Factory.hh"
+#include "NPCs.hh"
+#include "Player.hh"
 //#include "Base.hh"
 #include "Menus.hh"
 //#include "Render_Engine.hh"
-#include "Player_Base.hh"
 #include "Daemons.hh"
 
 class KeyboardInput : public Keyboard
@@ -18,7 +18,8 @@ class KeyboardInput : public Keyboard
 		Timer<Daemons>* myPlayer_Arrow_Animation_Timer;
 
 		//Variables designed to be defined externaly
-		Player_Base* myPlayer; //The Character Definition
+		Player* myPlayer; //The Player Definition
+		NPCs* myNPC; //The NPC Definition
 		Escape_Menu* myEsc_Menu; //The escape menu definition
 		Victory_Screen* myVictory_Screen; //The victory screen def
 		std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector; //Vector which will contains all BackGround type and clip
@@ -35,9 +36,13 @@ class KeyboardInput : public Keyboard
 	public:
 
 		//Accessor
-		inline void Set_Player_Base(Player_Base* newPlayerBase)
+		inline void Set_Player(Player* newPlayer)
 		{
-			myPlayer = newPlayerBase;
+			myPlayer = newPlayer;
+		}
+		inline void Set_NPC(NPCs* newNPC)
+		{
+			myNPC = newNPC;
 		}
 		inline void Set_Esc_Menu(Escape_Menu* newEsc_Menu)
 		{
@@ -105,7 +110,7 @@ class KeyboardInput : public Keyboard
 		bool handleKeyEvent (const Sym &s, bool pressed);
     
 		//Method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
-		void Player_Moves_Consequences(unsigned long deltaticks);
+		void Player_Moves_Consequences();
 		//Method which will call all the method used when there is an attack by the character
 		void Player_Attack_Consequences();
 };

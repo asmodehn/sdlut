@@ -3,7 +3,8 @@
 //Constructor
 KeyboardInput::KeyboardInput()
 {
-	myPlayer = new Player_Base(0,0);
+	myPlayer = new Player(0,0);
+	myNPC = new NPCs(0,0);
 	myEsc_Menu = new Escape_Menu();
 	myVictory_Screen = new Victory_Screen();
 	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
@@ -32,7 +33,7 @@ KeyboardInput::~KeyboardInput()
 	P0_Logger << nl << "Input mgt DESTRUCTED Successfully " << std::endl;
 }
 //Private method which will call all the method used when there is a deplacement by the character without knowing the direction of the movement
-void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
+void KeyboardInput::Player_Moves_Consequences()
 {
 	//P0_Logger << nl << "x: " << myPlayer->Get_X() << std::endl;
 	//P0_Logger << nl << "y: " << myPlayer->Get_Y() << std::endl;
@@ -43,7 +44,7 @@ void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
 	if ( (myPlayer->Get_xVel() != 0) || (myPlayer->Get_yVel() != 0) )
 	{
 		//set character sprite in function of the direction and dont move if it's only a direction change
-		if( myPlayer->assign_direction_sprite() == false )
+		if( myPlayer->Assign_Direction_Sprite() == false )
 		{ 
 			P0_Logger << nl << "Check character direction Failed " << std::endl;    
 		}
@@ -51,14 +52,14 @@ void KeyboardInput::Player_Moves_Consequences(unsigned long deltaticks)
 		if ( myPlayer->Get_Moving_Status() ) //we're really moving but not simply changing the direction
 		{
 			//Move the character if possible
-			if( myPlayer->move(deltaticks, Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector)
+			if( myPlayer->Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector)
 			 == false )
 			{ 
 				P0_Logger << nl << "Move player Failed " << std::endl;    
 			}
 			
 			//Set the camera
-			if( myPlayer->following_camera() == false )
+			if( myPlayer->Following_Camera() == false )
 			{ 
 				P0_Logger << nl << "Failed to set the camera" << std::endl;    
 			}
@@ -83,7 +84,7 @@ void KeyboardInput::Player_Attack_Consequences()
 	
 	//Handle attacks & set the distance of the attack
 	/***WARNING !! IN CASE OF DISTANT ATTACK THE MONSTER IS CONSIDERED AS DEAD WHEN THE KEY IS PRESSED AND NOT WHEN THE ARROW REACHED THE TARGET => TODO: FIND A WAY TO SOLVE THAT (SEPARATE THE ATTACK METHOD IN TWO DISTINCT METHOD PERHAPS CAN HELP)***/
-	myPlayer->Set_Hit_Monster_Distance( myPlayer->attack(Global_Monster_Vector) );
+	myPlayer->Set_Hit_Monster_Distance( myPlayer->Attack(Global_Monster_Vector) );
 	
 	//difference between attack styles
 	if ( myPlayer->Get_Attack_Style() == 1 ) 
@@ -193,9 +194,13 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					myPlayer->Set_Attack_Style( myPlayer->Get_Attack_Style() + 1 );
 					if (myPlayer->Get_Attack_Style() > 2) { myPlayer->Set_Attack_Style(1); } //loop between style
 					//Update the graphic style of the character
-					if( myPlayer->Update_Graphic_Style() == false )
+					if( myPlayer->Set_Graphic_Style() == false )
                     { 
 						P0_Logger << nl << "Update Graphic Style FAILED " << std::endl;
+                    }
+					if( myPlayer->Set_Attack_Msgs() == false )
+                    { 
+						P0_Logger << nl << "Update Attack Msgs FAILED " << std::endl;
                     }
 				}
 				if ((s.getKey() == KKEnter) || (s.getKey() == KKEnter))

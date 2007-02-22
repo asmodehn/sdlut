@@ -3,35 +3,8 @@
 //Default Constructor
 Monster_Base::Monster_Base()
 {
-	//Initial position
-	X = 0;
-    Y = 0;
-
-	//Sprite info
-	Sprite_Width = 0;
-	Sprite_Height = 0;
-
-	//Monster Tile Surface with white transparent
-	Characters_Tile = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, 32);
-
-	 //Monster Clip definition
-    _monster[0].setx( 0 );
-	_monster[0].sety( 0 );
-    _monster[0].setw( 0 );
-    _monster[0].seth( 0 );
-
 	//Assign sprite
 	Characters_SpriteRect = _monster[0];
-
-	//Initial velocity
-    xVel = 0;
-    yVel = 0;
-
-	//Collision Box Definition : The collision box has the size of the monster
-	Collision_Box.setx(0);
-    Collision_Box.sety(0);
-    Collision_Box.setw(Sprite_Width);
-    Collision_Box.seth(Sprite_Height);
 
 	//Monster type
 	Monster_ID = Humanoid;
@@ -56,17 +29,21 @@ Monster_Base::Monster_Base()
 //Full Construtor
 Monster_Base::Monster_Base(int x, int y)
 {
-    //Initial position
+	//Initial position
 	X = x;
     Y = y;
 
-	//Sprite info
-	Sprite_Width = MO_WIDTH;
-	Sprite_Height = MO_HEIGHT;
+	//
+	//TODO: put this in ini file with default monster sprite w/h 
+	//
+	Sprite_Width = MO_WIDTH, Sprite_Height = MO_HEIGHT;
 
 	//Monster Tile Surface
 	Characters_Tile = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
 	
+	//
+	//TODO: default monster sprite ?
+	//
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
     _monster[0].setx( Sprite_Width * (rand()%8) );
 	_monster[0].sety( Sprite_Height*6 );
@@ -75,10 +52,6 @@ Monster_Base::Monster_Base(int x, int y)
 
 	//Assign sprite
 	Characters_SpriteRect = _monster[0];
-
-	//Initial velocity
-    xVel = 0;
-    yVel = 0;
 
 	//Monster type
 	Monster_ID = Humanoid;
@@ -127,7 +100,7 @@ Monster_Base::~Monster_Base()
 }
 
 //Move monster randomly
-bool Monster_Base::move(unsigned long deltaticks, std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+bool Monster_Base::Move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 try {
 	//move only if a random number between 0 and 133 is below 49: 2 chances of 3 (This speed down monster movement)
@@ -203,7 +176,7 @@ int Monster_Base::Get_Env_vs_CH_Rules(int envType)
 }
 
 //Check if the battlefield cutting allow monster presence
-bool Monster_Base::check_cutting_allow_monster(int x, int y, std::vector<BattleField_Zone*>* BattleField_Cutting_Vector)
+bool Monster_Base::Check_Cutting_Allow_Monster(int x, int y, std::vector<BattleField_Zone*>* BattleField_Cutting_Vector)
 {
 	Rect Area;
 	std::vector<int>* Allowed_Monsters_Vector = new std::vector<int>;

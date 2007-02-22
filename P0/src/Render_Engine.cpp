@@ -4,7 +4,8 @@
 Render_Engine::Render_Engine()
 {
 	//Allocations
-	myPlayer = new Player_Base(0,0);
+	myPlayer = new Player(0,0);
+	myNPC = new NPCs(0,0);
 	myBackGround = new BackGround();
 	myEnvironment = new Environment;
 	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
@@ -44,8 +45,10 @@ bool Render_Engine::resize(int width, int height)
 //Everything that must be calculated before the display of the screen must be defined in this method and then will be called by the mainloop each cycle
 void Render_Engine::prerender(unsigned long deltaticks)
 {
-	//Handle movement each frames (for now)
-	MyKeyboard->Player_Moves_Consequences(deltaticks);
+	//To handle movement based on time instead of frame
+	myPlayer->Set_DeltaTicks(deltaticks);
+	//Handle movement
+	MyKeyboard->Player_Moves_Consequences();
 }
 //Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
 void Render_Engine::render(VideoSurface & screen) const
@@ -64,18 +67,33 @@ void Render_Engine::render(VideoSurface & screen) const
       P0_Logger << nl << "Environment Render Failed " << std::endl;    
     }
 
-	//Show the Character on the screen
+	//Show the Player on the screen
 	if( myPlayer->Show(myPlayer->Get_Camera(), screen) == false )
 	{ 
-      P0_Logger << nl << "Character Render Failed " << std::endl;    
+      P0_Logger << nl << "Player Render Failed " << std::endl;    
     }
 
 	//show the arrow of the screen (if necessary)
 	if (myPlayer->Get_Attack_Style() == 2)
 	{
-		if( myPlayer->Show_Arrow(screen) == false )
+		if( myPlayer->Show_Arrow(myPlayer->Get_Camera(), screen) == false )
 		{ 
-		  P0_Logger << nl << "Arrow Render Failed " << std::endl;    
+		  P0_Logger << nl << "Player's Arrow Render Failed " << std::endl;    
+		}
+	}
+
+	//Show the NPC on the screen
+	if( myNPC->Show(myPlayer->Get_Camera(), screen) == false )
+	{ 
+      P0_Logger << nl << "NPC Render Failed " << std::endl;    
+    }
+
+	//show the arrow of the screen (if necessary)
+	if (myNPC->Get_Attack_Style() == 2)
+	{
+		if( myNPC->Show_Arrow(myPlayer->Get_Camera(), screen) == false )
+		{ 
+		  P0_Logger << nl << "NPC's Arrow Render Failed " << std::endl;    
 		}
 	}
 

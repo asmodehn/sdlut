@@ -15,11 +15,12 @@ CONFIGURE_FILE(	Battlefield/Water.png ${Project_0_BINARY_DIR}/Datas/Battlefield/
 	#Characters
 CONFIGURE_FILE(	Characters/Character_Archer.png ${Project_0_BINARY_DIR}/Datas/Characters/Character_Archer.png COPYONLY)
 CONFIGURE_FILE(	Characters/Character_Fighter.png ${Project_0_BINARY_DIR}/Datas/Characters/Character_Fighter.png COPYONLY)
-CONFIGURE_FILE(	"Characters/Life Bar Tile.bmp" "${Project_0_BINARY_DIR}/DatasCharacters/Life Bar Tile.bmp" COPYONLY)
+CONFIGURE_FILE(	"Characters/Life Bar Tile.bmp" "${Project_0_BINARY_DIR}/Datas/Characters/Life Bar Tile.bmp" COPYONLY)
 CONFIGURE_FILE(	"Characters/Skeletons Tile.bmp" "${Project_0_BINARY_DIR}/Datas/Characters/Skeletons Tile.bmp" COPYONLY)
 CONFIGURE_FILE(	"Characters/Skeletons.ini" "${Project_0_BINARY_DIR}/Datas/Characters/Skeletons.ini" COPYONLY)
 CONFIGURE_FILE(	"Characters/Worms Tile.bmp" "${Project_0_BINARY_DIR}/Datas/Characters/Worms Tile.bmp" COPYONLY)
 CONFIGURE_FILE(	"Characters/Worms.ini" "${Project_0_BINARY_DIR}/Datas/Characters/Worms.ini" COPYONLY)
+CONFIGURE_FILE(	"Characters/Characters.bmp" "${Project_0_BINARY_DIR}/Datas/Characters/Characters.bmp" COPYONLY)
 
 	#Fonts
 CONFIGURE_FILE(	Fonts/SlimSansSerif.ttf ${Project_0_BINARY_DIR}/Datas/Fonts/SlimSansSerif.ttf COPYONLY)

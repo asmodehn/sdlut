@@ -117,6 +117,15 @@ public:
 	{
 		return Current_Armor;
 	}
+	inline void Set_Allowed_Area(Rect new_Allowed_Area)
+	{
+		Allowed_Area = new_Allowed_Area;
+	}
+	inline Rect Get_Allowed_Area()
+	{
+		return Allowed_Area;
+	}
+
 
 	//Init
 	Character_Base();
@@ -129,8 +138,7 @@ public:
 	bool Check_Collisions(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
 
 	//Move character (pure virtual)
-	virtual bool move(unsigned long deltaticks, std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector) = 0;
-
+	virtual bool Move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector) = 0;
 
 	//Show Character on the screen
 	bool Show(Rect Camera, VideoSurface& Screen);

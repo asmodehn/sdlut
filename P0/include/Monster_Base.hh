@@ -20,11 +20,6 @@ class Monster_Base : public Character_Base
 
 		/****Methods****/
 
-		//Check if the background allow the monster presence
-		//virtual std::vector<int> check_background_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
-		//Check if the environment allow the monster presence
-		//virtual std::vector<int> check_environment_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector);
-		
 		//Battlefield rules
 		virtual int Get_BG_vs_CH_Rules(int bgType);
 		/* virtual */ int Get_Env_vs_CH_Rules(int envType);
@@ -54,16 +49,10 @@ class Monster_Base : public Character_Base
 		virtual ~Monster_Base();
 
 		//Move the Monster and check collision with everything
-		bool move(unsigned long deltaticks, std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*> *BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
+		bool Move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*> *BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
 	    
-		//Check if the battlefield allow the monster presence
-		//virtual bool check_battlefield_allow_monster(Rect Collision_Box, std::vector<BattleField_Sprite*> Environment_Sprite_Vector, std::vector<BattleField_Sprite*> BackGround_Sprite_Vector);
-
 		//Check if the battlefield cutting allow monster presence
-		bool check_cutting_allow_monster(int x, int y, std::vector<BattleField_Zone*>* BattleField_Cutting_Vector);
-
-		//Shows the Monster movement on the screen
-		//bool move_animation(Rect Camera, VideoSurface& Screen);
+		bool Check_Cutting_Allow_Monster(int x, int y, std::vector<BattleField_Zone*>* BattleField_Cutting_Vector);
 
 		//Calculate the current life depending on damage, malus, etc and damage made by the opponent
 		bool Calculate_Current_Life(int opponent_damage);

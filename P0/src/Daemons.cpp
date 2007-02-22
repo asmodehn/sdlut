@@ -4,7 +4,8 @@
 Daemons::Daemons()
 {
 	//Allocations
-	myPlayer = new Player_Base(0,0);
+	myPlayer = new Player(0,0);
+	myNPC = new NPCs(0,0);
 	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
 	Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
 	Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>;
@@ -45,6 +46,9 @@ unsigned int Daemons::Generate_Monsters(unsigned int interval, void* args)
 try {
 	if (GLOBAL_GAME_STATE != 5 )//victory 
 	{
+		//
+		//TODO: cge that 
+		//
 		//Skeletons
 		Global_Monster_Vector->at(0) = Monster_Factory_Skeleton->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
 		//->swap( 
@@ -58,6 +62,27 @@ try {
 	}
 } catch (...) {
 	P0_Logger << nl << "Generate Monsters Daemon Failed " << std::endl;
+	return interval; // loop
+}
+}
+
+//Callback method that will call npcs movement
+unsigned int Daemons::Move_NPCs(unsigned int interval, void* args)
+{
+try {
+	if (GLOBAL_GAME_STATE != 5 )//victory 
+	{
+		if( myNPC->Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
+		{ 
+			P0_Logger << nl << "Move NPCs Failed " << std::endl;    
+		}
+		P0_Logger << nl << "Move NPCs " << std::endl;
+		return interval; // loop
+	} else { //Victory: end of timer
+		return 0;
+	}
+} catch (...) {
+	P0_Logger << nl << "Move NPCs Daemon Failed " << std::endl;
 	return interval; // loop
 }
 }

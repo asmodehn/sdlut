@@ -67,9 +67,12 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Char
 template <typename Monster_Template>
 std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* environment_sprite_vector, std::vector<BattleField_Sprite*>* background_sprite_vector)
 {
+	//
+	//TODO cge that
+	//
 	/******TEMPORARY: we only have one player for now and no npc ******/
-	int Character_X = Global_Player_Vector->at(0)->at(0)->Get_Collision_Box().getx();
-	int Character_Y = Global_Player_Vector->at(0)->at(0)->Get_Collision_Box().gety();
+	int Character_X = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().getx();
+	int Character_Y = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().gety();
 
 	//Loop until desired number of monsters has been reached
 	for(int i=1; i <= Number_Of_Monsters; i++)
@@ -79,7 +82,7 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters
 
 		//Check if the battlefield allow the monster creation
 		/******BUG HERE: We're not checking if other monsters allow the new created one *****/
-		while( !(newMonster->Check_battlefield_allow_character( newMonster->Get_Collision_Box(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->check_cutting_allow_monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
+		while( !(newMonster->Check_battlefield_allow_character( newMonster->Get_Collision_Box(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->Check_Cutting_Allow_Monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
 		{
 			//regeneration
 			delete(newMonster);
@@ -103,8 +106,7 @@ try {
 	//Move Monsters
 	for(unsigned int i=0; i < Monster_Vector->size(); i++)
 	{
-		//deltatick is not used
-		if( Monster_Vector->at(i)->move( 0, Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
+		if( Monster_Vector->at(i)->Move( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
 		{ 
 			P0_Logger << nl << "Failed to move monster N°" << i << std::endl;
 			return false; //error occured 
@@ -175,9 +177,12 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Mo
 {
 	unsigned int temp = 0;
 
+	//
+	//TODO cge that
+	//
 	/******TEMPORARY: we only have one player for now and no npc ******/
-	int Character_X = Global_Player_Vector->at(0)->at(0)->Get_Collision_Box().getx();
-	int Character_Y = Global_Player_Vector->at(0)->at(0)->Get_Collision_Box().gety();
+	int Character_X = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().getx();
+	int Character_Y = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().gety();
 	
 	//The more the monster on the battlefield, the less there a chance a new one is generated until we reached the MAX_MONSTERS_SIMULTANEOUSLY constant
 	temp = random(1, MAX_MONSTERS_SIMULTANEOUSLY);
@@ -188,7 +193,7 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Mo
 
 		//Check if the battlefield allow the monster creation
 		/******BUG HERE: We're not checking if other monsters allow the new created one *****/
-		while( !(newMonster->Check_battlefield_allow_character( newMonster->Get_Collision_Box(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->check_cutting_allow_monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
+		while( !(newMonster->Check_battlefield_allow_character( newMonster->Get_Collision_Box(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->Check_Cutting_Allow_Monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
 		{
 			//regeneration
 			delete(newMonster);

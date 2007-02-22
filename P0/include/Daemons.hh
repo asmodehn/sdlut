@@ -1,16 +1,19 @@
 #ifndef Daemons_HH
 #define Daemons_HH
 
-#include "Monster_Factory.hh"
 //#include "Base.hh"
-#include "Player_Base.hh"
+#include "Monster_Factory.hh"
+#include "NPCs.hh"
+#include "Player.hh"
+
 
 //Class that will only contains callback methods used by timers
 class Daemons
 {
 private:
 	//variables that need to be designed externally
-	Player_Base* myPlayer;
+	Player* myPlayer;
+	NPCs* myNPC; //The NPC Definition
 	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector;
 	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector;
 	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton;
@@ -25,9 +28,14 @@ private:
 public:
 
 	//Accessor
-	inline void Set_Player_Base(Player_Base* newPlayer_Base)
+	inline void Set_Player(Player* newPlayer)
 	{
-		myPlayer = newPlayer_Base;
+		myPlayer = newPlayer;
+	}
+
+	inline void Set_NPC(NPCs* newNPC)
+	{
+		myNPC = newNPC;
 	}
 
 	inline void Set_BackGround_Sprite_Vector(std::vector<BattleField_Sprite*>* newBackGround_Sprite_Vector)
@@ -93,6 +101,8 @@ public:
 	unsigned int Move_Monsters(unsigned int interval, void* args);
 	//Callback method that will eventually generate new monster (not to near from the character!)
 	unsigned int Generate_Monsters(unsigned int interval, void* args);
+	//Callback method that will call npcs movement
+	unsigned int Move_NPCs(unsigned int interval, void* args);
 	//Callback method that will launch the character's move animation
 	unsigned int Player_Move_Animation(unsigned int interval, void* args);
 	//Callback method that will launch the character's attack animation

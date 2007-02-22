@@ -12,7 +12,8 @@ class Render_Engine : public Engine
 {
 private:
 	//Variable that need to be designed externally
-	Player_Base* myPlayer;
+	Player* myPlayer;
+	NPCs* myNPC; //The NPC Definition
 	BackGround* myBackGround;
 	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector;
 	Environment* myEnvironment;
@@ -27,9 +28,13 @@ private:
 public:
 
 	//Accessor
-	inline void Set_Player_Base(Player_Base* newPlayerBase)
+	inline void Set_Player(Player* newPlayer)
 	{
-		myPlayer = newPlayerBase;
+		myPlayer = newPlayer;
+	}
+	inline void Set_NPC(NPCs* newNPC)
+	{
+		myNPC = newNPC;
 	}
 	/*inline void Set_Global_Player_Vector(std::vector< std::vector<Character_Base*> *>* newGlobal_Player_Vector)
 	{

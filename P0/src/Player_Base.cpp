@@ -1,5 +1,71 @@
 #include "Player_Base.hh"
 
+//Default construtor
+Player_Base::Player_Base()
+{
+	//Initial arrow position
+	arrow_x = 0;
+	arrow_y = 0;
+
+	//Initial moving status
+	moving_status = false;
+
+	//Empty clip for all directions
+	Player_Attack_Tile_Rect = new std::vector<Rect>;
+	Rect _temp_ch_rect;
+	//Character Clips definition
+	for (signed int i = 0; i < 8; i++)  //The 8 directions
+	{
+		Player_Attack_Tile_Rect->push_back(_temp_ch_rect);
+	}
+
+	//Initialize animation variables
+    frame = 0;  // for animation
+	arrow_frame = 0; //for arrow animation
+    move_status = CH_RIGHT;
+
+	//Default time between frame
+	DeltaTicks = 1000/FRAMES_PER_SECOND;
+
+	//Attack variable
+	attack_status = false; //false = 0
+	attack_style = 1; //0: nothing (future dev), 1: Sword attack (default), 2: Bow attack, 3: magic attack (future dev), ...
+	attack_successfull = 0; //Tells if a monster has been hit, by default no
+	hit_monster_distance = 0; //distance to the hitted monster
+
+	/****Arrow***/
+	//
+	//TODO: put these inside config file
+	//
+	int Arrow_Sprite_Width = CH_WIDTH, Arrow_Sprite_Height = CH_HEIGHT;
+	//Clip
+	Arrow_SpriteRect = new std::vector<Rect>;
+	Rect _temp_arrow_rect;
+	for (unsigned int i = 0; i < 8; i++)  //The 8 directions
+	{
+		_temp_arrow_rect.setx(0);
+		_temp_arrow_rect.sety(Arrow_Sprite_Height*i);
+		_temp_arrow_rect.setw(Arrow_Sprite_Width);
+		_temp_arrow_rect.seth(Arrow_Sprite_Height);
+		Arrow_SpriteRect->push_back(_temp_arrow_rect);
+		//->at(i*PLAYER_ARROW_ATTACK_ANIMATION_FRAME)
+		//
+		//TODO find a way to make insert by iterator insted of pushback
+		//
+	}
+
+	//default arrow sprite rect
+	Current_Arrow_SpriteRect = Arrow_SpriteRect->at(CH_RIGHT*PLAYER_ARROW_ATTACK_ANIMATION_FRAME);
+
+	/****Surfaces****/
+	//Characters Surfaces
+	Players_Tile_Melee = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, SCREEN_BPP);
+	Players_Tile_Distant = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, SCREEN_BPP);
+	Characters_Tile = Players_Tile_Melee; //Default tile: the melee tile
+	//Arrow surface
+	Arrow_Tile = RGBSurface("Datas/Items/Arrow.png", Color(0x80, 0x80, 0x80));
+}
+
 //Initialization construtor
 Player_Base::Player_Base(int x, int y)
 {
@@ -7,21 +73,21 @@ Player_Base::Player_Base(int x, int y)
 	X = x;
 	Y = y;
     
-    //Initial velocity
-    xVel = 0;
-    yVel = 0;
-
 	//Initial arrow position
 	arrow_x = X;
 	arrow_y = Y;
 
-	//Sprite info
-	Sprite_Width = CH_WIDTH;
-	Sprite_Height = CH_HEIGHT;
+	//
+	//TODO: put this in ini file with default player sprite w/h 
+	//
+	Sprite_Width = CH_WIDTH, Sprite_Height = CH_HEIGHT;
 
 	//Initial moving status
 	moving_status = false;
 
+	//
+	//TODO: default monster sprite/clip etc ?
+	//
 	//Rect Player_Attack_Tile_Rect[8][PLAYER_SWORD_ATTACK_ANIMATION_FRAME];
 	Player_Attack_Tile_Rect = new std::vector<Rect>;
 	Rect _temp_ch_rect;
@@ -50,20 +116,14 @@ Player_Base::Player_Base(int x, int y)
 	arrow_frame = 0; //for arrow animation
     move_status = CH_RIGHT;
 
+	//Default time between frame
+	DeltaTicks = 1000/FRAMES_PER_SECOND;
+
 	//Attack variable
 	attack_status = false; //false = 0
 	attack_style = 1; //0: nothing (future dev), 1: Sword attack (default), 2: Bow attack, 3: magic attack (future dev), ...
 	attack_successfull = 0; //Tells if a monster has been hit, by default no
 	hit_monster_distance = 0; //distance to the hitted monster
-
-	//Camera: at the begining it's in the top left corner of the level
-	//Camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-	Camera.setx(0);
-	Camera.sety(0);
-	//Camera.setx( (X + CH_WIDTH / 2) - CURRENT_SCREEN_WIDTH / 2 );
-	//Camera.sety( (Y + CH_HEIGHT / 2) - CURRENT_SCREEN_HEIGHT / 2 );
-	Camera.setw(CURRENT_SCREEN_WIDTH);
-	Camera.seth(CURRENT_SCREEN_HEIGHT);
 
 	//Collision Box Definition: The collision box has the size of the character
 	Collision_Box.setx(X);
@@ -72,10 +132,7 @@ Player_Base::Player_Base(int x, int y)
     Collision_Box.seth(Sprite_Height);
 
 	//Attack collsion box: currently in the same place of the character
-	attack_collision_box.setx(X);
-    attack_collision_box.sety(Y);
-    attack_collision_box.setw(Sprite_Width);
-    attack_collision_box.seth(Sprite_Height);
+	attack_collision_box = Collision_Box;
 
 	/****Arrow***/
 	//Clip
@@ -105,19 +162,6 @@ Player_Base::Player_Base(int x, int y)
 	Characters_Tile = Players_Tile_Melee; //Default tile: the melee tile
 	//Arrow surface
 	Arrow_Tile = RGBSurface("Datas/Items/Arrow.png", Color(0x80, 0x80, 0x80));
-
-	//Fight Msgs Style
-	//Font AttackMsg_Font("Datas/Fonts/ECHELON.TTF", 28);
-	Font* AttackMsg_Font = new Font("Datas/Fonts/SlimSansSerif.ttf", 28);
-
-	//Msgs displayed in the status bar
-	attack_msg = *AttackMsg_Font->render(" ", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0)); // Empty msg until the attack key is pressed once (when using empty msg the creator crash so until this bug is solved we will use " " insted of "")
-	attack_melee_msg_hit = *AttackMsg_Font->render("Melee Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-	attack_distant_msg_hit = *AttackMsg_Font->render("Distant Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-	attack_melee_msg_miss = *AttackMsg_Font->render("Melee Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-	attack_distant_msg_miss = *AttackMsg_Font->render("Distant Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-
-	delete AttackMsg_Font, AttackMsg_Font = NULL;
 }
 
 //Destructor
@@ -128,7 +172,7 @@ Player_Base::~Player_Base()
 }
 
 //Character Graphic Style Initialiation regarding the attack style
-bool Player_Base::Update_Graphic_Style()
+bool Player_Base::Set_Graphic_Style()
 {
 try
 {
@@ -136,16 +180,12 @@ try
 	if (attack_style == 1)
 	{
 		Characters_Tile = Players_Tile_Melee;
-		attack_msg_hit = attack_melee_msg_hit;
-		attack_msg_miss = attack_melee_msg_miss;
 		//P0_Logger << nl << "Graphic Style Updated To Melee Style : OK " << std::endl;
 	}
 	// Distant Style
 	else if (attack_style == 2)
 	{
 		Characters_Tile = Players_Tile_Distant;
-		attack_msg_hit = attack_distant_msg_hit;
-		attack_msg_miss = attack_distant_msg_miss;
 		//P0_Logger << nl << "Graphic Style Updated To Distant Style : OK " << std::endl;
 	}
 	return true;
@@ -155,12 +195,19 @@ catch (...) {
 }
 }
 //Move the Player
-bool Player_Base::move(unsigned long deltaticks, std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+bool Player_Base::Move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 try {
+		//Random mvt
+#ifdef _DEBUG //debug mode
+		xVel = ((rand()%3-1)*Sprite_Width);
+		yVel = ((rand()%3-1)*Sprite_Height);
+#else //rlz mode
+		xVel = (rand()%3-1);
+		yVel = (rand()%3-1);
+#endif
+
 	//Move collision box to the futute position
-	//Collision_Box.setx(X + (xVel*(deltaticks/1000)) );
-	//Collision_Box.sety(Y + (yVel*(deltaticks/1000)) );
 	Collision_Box.setx(X + xVel);
 	Collision_Box.sety(Y + yVel);
 
@@ -249,7 +296,7 @@ int Player_Base::Get_Env_vs_CH_Rules(int envType)
 }
 
 //check the move direction and assign the good sprite
-bool Player_Base::assign_direction_sprite()
+bool Player_Base::Assign_Direction_Sprite()
 {
 try {
 	if (!Get_Attack_Status()) //no attack is occuring
@@ -320,7 +367,7 @@ bool Player_Base::Set_Move_Animation_Sprite()
 
 }
 //Handle character attack on monsters for all attack style and return the distance where the attack took place (in case of a distant attack for example)
-int Player_Base::attack(std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+int Player_Base::Attack(std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 	int Hit_Distance = 0; //The Hit distance is the distance between the character and the monster by default the Melee Hit Distance (aka 0)
 
@@ -346,7 +393,7 @@ int Player_Base::attack(std::vector< std::vector<Character_Base*> *>* Global_Mon
 			Hit_Distance = character_max_range-1; //update the hit distance (used for arrow management)
 
 			//Check if one of the monster is on the arrow traject
-			attack_successfull = attack_check_status(character_max_range, character_current_damage, Global_Monster_Vector) ;
+			attack_successfull = Attack_Check_Status(character_max_range, character_current_damage, Global_Monster_Vector) ;
 			//if (attack_successfull != 0) //One monster has been hitted
 				
 
@@ -365,7 +412,7 @@ int Player_Base::attack(std::vector< std::vector<Character_Base*> *>* Global_Mon
 				character_current_damage = character_real_damage - (i-1)*character_real_damage/character_max_range;
 
 				//Check if one of the monster is on the arrow traject
-				attack_successfull = attack_check_status(i, character_current_damage, Global_Monster_Vector) ;
+				attack_successfull = Attack_Check_Status(i, character_current_damage, Global_Monster_Vector) ;
 				if (attack_successfull != 0) { //One monster has been hitted
 					Hit_Distance = i-1; //update the hit distance (used for arrow management)
 					break;
@@ -377,7 +424,7 @@ int Player_Base::attack(std::vector< std::vector<Character_Base*> *>* Global_Mon
 	return Hit_Distance;
 }
 //Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing
-int Player_Base::attack_check_status(int current_hit_distance, int character_damage, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+int Player_Base::Attack_Check_Status(int current_hit_distance, int character_damage, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 	int _attack_successfull = 0;
 	//Check attack direction
@@ -547,7 +594,7 @@ bool Player_Base::Set_Arrow_Sprite_Coordinate()
 }
 
 //blit the arrow on the screen
-bool Player_Base::Show_Arrow(VideoSurface& Screen)
+bool Player_Base::Show_Arrow(Rect Camera, VideoSurface& Screen)
 {
 try {
 	if ( (X != arrow_x) || (Y != arrow_y) ) //dont display the arrow when it's at the same place than the character
@@ -558,68 +605,4 @@ try {
 } catch (...) {
 	return false; //error occured
 }
-}
-//Display attack msg on the status bar (hit or miss)
-bool Player_Base::Show_Attack_Msg(VideoSurface& Screen)
-{
-try {
-	//Clean the status Bar
-	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - STATUS_BAR_H, CURRENT_SCREEN_WIDTH, STATUS_BAR_H) );
-
-	//If the player has pushed the attack key => display the good msg in the status bar
-	if (attack_status == true)
-	{
-		//If a monster has been hit displayed the hit msg, if no display miss msg
-		if (attack_successfull != 0)
-		{
-			attack_msg = attack_msg_hit;
-
-			if (attack_successfull == 1)
-				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
-			if (attack_successfull == 2)
-				P0_Logger << nl << ">>> Worm Hit <<< " << std::endl;
-		}
-		else
-		{
-			attack_msg = attack_msg_miss;
-			P0_Logger << nl << ">>> Monster Miss <<< " << std::endl;
-		}
-
-		//Display attack msg is done, so now everything relative to the character attack is done, we can reset the status
-		attack_status = false;
-	}
-	Screen.blit( attack_msg, Point::Point(5, CURRENT_SCREEN_HEIGHT - 30) );
-	return true; //no error
-} catch (...) {
-	return false; //error occured
-}
-}
-//Managed the camera
-bool Player_Base::following_camera()
-{
-try {
-    //Center the camera over the Character
-    Camera.setx( (X + Sprite_Width / 2) - CURRENT_SCREEN_WIDTH / 2 );
-    Camera.sety( (Y + Sprite_Height / 2) - CURRENT_SCREEN_HEIGHT / 2 );
-    //Keep the camera in bounds.
-    if(Camera.getx() < 0)
-    {
-        Camera.setx(0);    
-    }
-    if(Camera.gety() < 0)
-    {
-        Camera.sety(0);    
-    }
-    if( Camera.getx() > (LEVEL_WIDTH - Camera.getw()) )
-    {
-        Camera.setx(LEVEL_WIDTH - Camera.getw());    
-    }
-    if(Camera.gety() > (LEVEL_HEIGHT - Camera.geth()) )
-    {
-        Camera.sety(LEVEL_HEIGHT - Camera.geth());    
-    }
-	return true; //no error
-} catch (...) {
-	return false; //error occured
-}  
 }

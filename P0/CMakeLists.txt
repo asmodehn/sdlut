@@ -99,6 +99,8 @@ ADD_EXECUTABLE(
 		${Project_0_SOURCE_DIR}/src/Sounds.cpp ${Project_0_SOURCE_DIR}/include/Sounds.hh
 		${Project_0_SOURCE_DIR}/src/Character_Base.cpp ${Project_0_SOURCE_DIR}/include/Character_Base.hh
 		${Project_0_SOURCE_DIR}/src/Ini_Manager.cpp ${Project_0_SOURCE_DIR}/include/Ini_Manager.hh
+		${Project_0_SOURCE_DIR}/src/Player.cpp ${Project_0_SOURCE_DIR}/include/Player.hh
+		${Project_0_SOURCE_DIR}/src/NPCs.cpp ${Project_0_SOURCE_DIR}/include/NPCs.hh
 
 
 #adding datas to have them in generated projects
@@ -122,6 +124,7 @@ ADD_EXECUTABLE(
 		"${Project_0_SOURCE_DIR}/Datas/Characters/Skeletons.ini"
 		"${Project_0_SOURCE_DIR}/Datas/Characters/Worms Tile.bmp"
 		"${Project_0_SOURCE_DIR}/Datas/Characters/Worms.ini"
+		"${Project_0_SOURCE_DIR}/Datas/Characters/Characters.bmp"
 
 	#Fonts
 		"${Project_0_SOURCE_DIR}/Datas/Fonts/SlimSansSerif.ttf"
