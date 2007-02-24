@@ -63,7 +63,9 @@ try { //error management
 	UP_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "UP_1") );
 	DOWN_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "DOWN_1") );
 	LEFT_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "LEFT_1") );
+
 	RIGHT_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "RIGHT_1") );
+	
 	ATTACK_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "ATTACK_1") );
 	CHANGE_ATTACK_MODE_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "CHANGE_ATTACK_MODE_1") );
 	MENU_CALL_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "MENU_CALL_1") );
@@ -142,8 +144,15 @@ try { //error management
 		Log_Name = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Log_Name");
 		//define log filename
 		P0_Logger.enableFileLog(Log_Name);
+
+		//close file
+		fi_dev.close();
+	} else {
+		fi_dev.close();
+		cout << "Can't Read Config/Dev_Config.ini File" << endl;
+		 return false;
 	}
-	fi_dev.close();
+	
 
 		
 		///***Animations***///
@@ -158,8 +167,14 @@ try { //error management
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_SWORD_ATTACK_ANIMATION_FRAME") ) >> PLAYER_SWORD_ATTACK_ANIMATION_FRAME;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_BOW_ATTACK_ANIMATION_FRAME") ) >> PLAYER_BOW_ATTACK_ANIMATION_FRAME;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Anim_Config.ini", "PLAYER_ARROW_ATTACK_ANIMATION_FRAME") ) >> PLAYER_ARROW_ATTACK_ANIMATION_FRAME;
+	
+		fi_anim.close();
+	} else {
+		fi_anim.close();
+		cout << "Can't Read Config/Anim_Config.ini File" << endl;
+		 return false;
 	}
-	fi_anim.close();
+	
 
 
 		///***Deamons***///
@@ -169,8 +184,13 @@ try { //error management
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "MONSTERS_MOVEMENT_INTERVAL") ) >> MONSTERS_MOVEMENT_INTERVAL;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "MONSTERS_GENERATION_INTERVAL") ) >> MONSTERS_GENERATION_INTERVAL;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "NPCS_MOVEMENT_INTERVAL") ) >> NPCS_MOVEMENT_INTERVAL;
+
+		fi_daemons.close();
+	} else {
+		fi_daemons.close();
+		cout << "Can't Read Config/Daemons_Config.ini File" << endl;
+		 return false;
 	}
-	fi_daemons.close();
 	
 
 

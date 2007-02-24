@@ -96,6 +96,9 @@ INCLUDE_DIRECTORIES(${Project_0_SOURCE_DIR}/../Core/include )
 #include headers
 INCLUDE_DIRECTORIES(${Project_0_SOURCE_DIR}/include )
 
+#copy Config
+ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Config/ )
+
 #copy Datas
 ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Datas/ )
 

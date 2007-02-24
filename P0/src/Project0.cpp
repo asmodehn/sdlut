@@ -82,7 +82,7 @@ try { //global error management
 	//Create the windows and init everything (SDL, SDL_TTF, ...)
 	if( InitEverything() == false )
 	{ 
-		P0_Logger << nl << "Init Windows failed... " << std::endl;
+		P0_Logger << nl << "Init Everything failed... " << std::endl;
 		Delay(2000);
 		//SDL_Delay(2000);
 		return 1;

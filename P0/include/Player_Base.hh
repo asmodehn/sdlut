@@ -36,7 +36,7 @@ class Player_Base : public Character_Base
 		//animation variables
 		int frame, arrow_frame, move_status;
 
-		int DeltaTicks;
+		long DeltaTicks;
 
 		/***Arrow***/
 		RGBSurface Arrow_Tile;
@@ -110,11 +110,11 @@ class Player_Base : public Character_Base
             return moving_status;
         }
 
-		inline void Set_DeltaTicks(int new_DeltaTicks)
+		inline void Set_DeltaTicks(long new_DeltaTicks)
         {
             DeltaTicks = new_DeltaTicks;
         }
-        inline int Get_DeltaTicks() const
+        inline long Get_DeltaTicks() const
         {
             return DeltaTicks;
         }
