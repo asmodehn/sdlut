@@ -84,8 +84,8 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters
 		/******BUG HERE: We're not checking if other monsters allow the new created one *****/
 		while( !(newMonster->Check_battlefield_allow_character( newMonster->Get_Collision_Box(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->Check_Cutting_Allow_Monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
 		{
-			//regeneration
-			delete(newMonster);
+			//Monster regeneration
+			delete newMonster, newMonster = NULL;
 			newMonster = Create_One_Monster(Character_X, Character_Y);
 		}
 

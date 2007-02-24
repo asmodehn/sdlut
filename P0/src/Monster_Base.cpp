@@ -3,9 +3,6 @@
 //Default Constructor
 Monster_Base::Monster_Base()
 {
-	//Assign sprite
-	Characters_SpriteRect = _monster[0];
-
 	//Monster type
 	Monster_ID = Humanoid;
 
@@ -45,13 +42,13 @@ Monster_Base::Monster_Base(int x, int y)
 	//TODO: default monster sprite ?
 	//
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
-    _monster[0].setx( Sprite_Width * (rand()%8) );
-	_monster[0].sety( Sprite_Height*6 );
-    _monster[0].setw( Sprite_Width );
-    _monster[0].seth( Sprite_Height );
+    _monster_clip.setx( Sprite_Width * (rand()%8) );
+	_monster_clip.sety( Sprite_Height*6 );
+    _monster_clip.setw( Sprite_Width );
+    _monster_clip.seth( Sprite_Height );
 
 	//Assign sprite
-	Characters_SpriteRect = _monster[0];
+	Characters_SpriteRect = _monster_clip;
 
 	//Monster type
 	Monster_ID = Humanoid;

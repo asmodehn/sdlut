@@ -8,7 +8,7 @@ class Monster_Base : public Character_Base
 {
     protected:
 		//Monster Tile Clip
-		Rect _monster[1];
+		Rect _monster_clip;
 
 		//Monster type
 		Monsters_Type Monster_ID;

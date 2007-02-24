@@ -32,13 +32,13 @@ Monster_Skeleton::Monster_Skeleton(int x, int y)
 	Characters_Tile = RGBSurface("Datas/Characters/Skeletons Tile.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	 //Monster Clip definition range for the top left (Random monster from the 1th line)
-    _monster[0].setx( Sprite_Width * (rand()%7) );
-	_monster[0].sety( 0 );
-    _monster[0].setw( Sprite_Width );
-    _monster[0].seth( Sprite_Height );
+    _monster_clip.setx( Sprite_Width * (rand()%7) );
+	_monster_clip.sety( 0 );
+    _monster_clip.setw( Sprite_Width );
+    _monster_clip.seth( Sprite_Height );
 
 	//Assign the sprite
-	Characters_SpriteRect = _monster[0];
+	Characters_SpriteRect = _monster_clip;
 
 	//Initial velocity
     xVel = 0;
@@ -125,13 +125,13 @@ Monster_Worm::Monster_Worm(int x, int y)
 	Characters_Tile = RGBSurface("Datas/Characters/Worms Tile.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
-    _monster[0].setx( Sprite_Width * (rand()%7) );
-	_monster[0].sety( Sprite_Height*6 );
-    _monster[0].setw( Sprite_Width );
-    _monster[0].seth( Sprite_Height );
+    _monster_clip.setx( Sprite_Width * (rand()%7) );
+	_monster_clip.sety( Sprite_Height*6 );
+    _monster_clip.setw( Sprite_Width );
+    _monster_clip.seth( Sprite_Height );
 
 	//Assign the sprite
-	Characters_SpriteRect = _monster[0];
+	Characters_SpriteRect = _monster_clip;
 
 	//Initial velocity
     xVel = 0;
