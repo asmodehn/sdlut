@@ -149,7 +149,7 @@ try { //global error management
 	//
 	//TODO: put this in ini
 	//
-	NPCs* myNPC = new NPCs(32*32, 10*32);
+	NPCs* myNPC = new NPCs(33*32, 10*32);
 	if( myNPC->Set_Graphic_Style() == false ) //intialize Character's graphic aspect
 	{ 
         P0_Logger << nl << "Failed to set NPC Graphic " << std::endl;

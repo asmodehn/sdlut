@@ -46,10 +46,10 @@ NPCs::NPCs(int x, int y)
 
 		/****AREA****/
 	//Only allowed inside city walls
-	Allowed_Area.setx(31*32);
-	Allowed_Area.sety(9*32);
-	Allowed_Area.setw(6*32);
-	Allowed_Area.seth(10*32);
+	Allowed_Area.setx(33*32);
+	Allowed_Area.sety(10*32);
+	Allowed_Area.setw(5*32);
+	Allowed_Area.seth(9*32);
 }
 
 //Destructor
