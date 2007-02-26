@@ -52,48 +52,44 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 		return res;
 	}
 
-	char* newline = new char;
-	string* newline_str = new string;
+	string newline_str;
 	while (! fi.eof() )
 	{
-		fi.getline(newline, 256);
-		newline_str = new string(newline);
-		if (newline_str->find("#", 0) == string::npos ) //Only check un-commented line
+		getline(fi, newline_str);
+
+		if (newline_str.find("#", 0) == string::npos ) //Only check un-commented line
 		{
 			//find the option string is in this line
-			if ( newline_str->find(Option_Name, 0) != string::npos )
+			if ( newline_str.find(Option_Name, 0) != string::npos )
 			{
 				//Check if after the option name there is a space (for option name that have the same beginning)
-				if ( newline_str->substr( ((string)Option_Name).length() , 1) == " " )
+				if ( newline_str.substr( ((string)Option_Name).length() , 1) == " " )
 				{
-					string::size_type equal_loc = newline_str->find("=", 0);  //find the '='
+					string::size_type equal_loc = newline_str.find("=", 0);  //find the '='
 					if ( equal_loc != string::npos )
 					{
 						//find if string is between " "
-						string::size_type quote_1_loc = newline_str->find("\"", 0);
+						string::size_type quote_1_loc = newline_str.find("\"", 0);
 						
 						if ( quote_1_loc == string::npos ) //no " found
 						{
-							char* temp_res = new char;
-							//remove whitespace
-							std::stringstream( newline_str->substr(equal_loc+1) ) >> skipws >> temp_res;
-							//result is the clear string
-							res = (string)temp_res;
+							//remove whitespace: result is the clear string
+							std::stringstream( newline_str.substr(equal_loc+1) ) >> skipws >> res;
 							break;
 						}
 						else
 						{
 							//find the 2nd quote
-							string::size_type quote_2_loc = (newline_str->substr(quote_1_loc+1)).find("\"", 0);
+							string::size_type quote_2_loc = (newline_str.substr(quote_1_loc+1)).find("\"", 0);
 							if ( quote_2_loc == string::npos ) //the 2nd " wasn't found
 							{
 								//result is the all string after the = (even with the only ")
-								res = newline_str->substr(equal_loc+1);
+								res = newline_str.substr(equal_loc+1);
 								break;
 
 							} else {
 								//result is the string between the " "
-								res = newline_str->substr(quote_1_loc+1, quote_2_loc);
+								res = newline_str.substr(quote_1_loc+1, quote_2_loc);
 								break;
 							}
 						}
@@ -101,8 +97,6 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 				}
 			}
 		}
-		//free before looping
-		//delete(newline_str);
 	}
 		
 	fi.close();

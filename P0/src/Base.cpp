@@ -63,9 +63,7 @@ try { //error management
 	UP_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "UP_1") );
 	DOWN_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "DOWN_1") );
 	LEFT_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "LEFT_1") );
-
 	RIGHT_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "RIGHT_1") );
-	
 	ATTACK_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "ATTACK_1") );
 	CHANGE_ATTACK_MODE_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "CHANGE_ATTACK_MODE_1") );
 	MENU_CALL_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "MENU_CALL_1") );

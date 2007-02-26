@@ -6,9 +6,10 @@ bool InitEverything()
 	//Load configuration from ini files
 	if (!Set_Config())
 	{
-		P0_Logger << nl <<  " Configuration could not been set " << GetError() << std::endl;
+		cout << "\nConfiguration could not been set " << std::endl;
         return false;
 	}
+	P0_Logger << nl << "Configuration Set" << std::endl;
 
 	//Set window name
 	App::getInstance().setName(Window_Name);
