@@ -336,7 +336,8 @@ namespace RAGE
 
                 if (_screen !=NULL)
                 {
-			unsigned long lastframe = SDL_GetTicks();;
+			unsigned long lastframe = SDL_GetTicks();
+			unsigned long lastrender= SDL_GetTicks();
 	                    while (!(_eventmanager->quitRequested()))
 						{ 
 							//handling all the events
@@ -345,7 +346,7 @@ namespace RAGE
 							applyBGColor();
 	
 							//calling engine for prerender and render events
-							_engine->prerender(SDL_GetTicks() - lastframe);
+							_engine->prerender(lastrender = SDL_GetTicks() - lastrender);
 							_engine->render(*_screen);
 							
 							
