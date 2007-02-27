@@ -11,22 +11,18 @@ Monster_Skeleton::Monster_Skeleton(int x, int y)
 	//
 	//TODO: perhaps move that in another method (like monsters_config) and send the filename to this constructor
 	//
-	std::ifstream fi_monster("Datas/Characters/Skeletons.ini") ;
+	string Monster_Ini = "Datas/Characters/Skeletons.ini";
+	std::ifstream fi_monster(Monster_Ini.c_str()) ;
 	if (! fi_monster.fail()) //Check file present
 	{
-		std::stringstream( Ini_Manager::Get_Option_String("Datas/Characters/Skeletons.ini", "Life") ) >> BASE_LIFE;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
 		Current_Life = BASE_LIFE;
-		std::stringstream( Ini_Manager::Get_Option_String("Datas/Characters/Skeletons.ini", "Armor") ) >> BASE_ARMOR;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
 		Current_Armor = BASE_ARMOR;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
 	}
 	fi_monster.close();
-
-	//
-	//TODO: put this in the ini file
-	//
-	//Sprite info
-	Sprite_Width = MO_WIDTH;
-	Sprite_Height = MO_HEIGHT;
 
 	//Monster Tile Surface
 	Characters_Tile = RGBSurface("Datas/Characters/Skeletons Tile.bmp", Color(0xFF, 0xFF, 0xFF));
@@ -104,22 +100,18 @@ Monster_Worm::Monster_Worm(int x, int y)
 	//
 	//TODO: perhaps move that in another method (like monsters_config) and send the filename to this constructor
 	//
-	std::ifstream fi_monster("Datas/Characters/Worms.ini") ;
+	string Monster_Ini = "Datas/Characters/Worms.ini";
+	std::ifstream fi_monster(Monster_Ini.c_str()) ;
 	if (! fi_monster.fail()) //Check file present
 	{
-		std::stringstream( Ini_Manager::Get_Option_String("Datas/Characters/Worms.ini", "Life") ) >> BASE_LIFE;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
 		Current_Life = BASE_LIFE;
-		std::stringstream( Ini_Manager::Get_Option_String("Datas/Characters/Worms.ini", "Armor") ) >> BASE_ARMOR;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
 		Current_Armor = BASE_ARMOR;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
 	}
 	fi_monster.close();
-
-	//
-	//TODO: put this in the ini file
-	//
-	//Sprite info
-	Sprite_Width = MO_WIDTH;
-	Sprite_Height = MO_HEIGHT;
 
 	//Monster Tile Surface
 	Characters_Tile = RGBSurface("Datas/Characters/Worms Tile.bmp", Color(0xFF, 0xFF, 0xFF));

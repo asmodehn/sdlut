@@ -12,7 +12,7 @@ class Monster_Factory
 	private:
 
 		//How many monster must be generated
-		int Number_Of_Monsters;
+		int Initial_Number_Of_Monsters;
 		
 		//Monster Vector which contains all monsters present on the battlefield and all theirs infos
 		std::vector<Character_Base*>* Monster_Vector;

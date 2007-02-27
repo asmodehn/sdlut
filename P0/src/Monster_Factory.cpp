@@ -4,7 +4,7 @@
 template <typename Monster_Template>
 Monster_Factory<Monster_Template>::Monster_Factory()
 {
-	Number_Of_Monsters = 0;
+	Initial_Number_Of_Monsters = 0;
 	Monster_Vector = new std::vector<Character_Base*>;
 	BattleField_Cutting_Vector = new std::vector<BattleField_Zone*>;
 }
@@ -13,7 +13,7 @@ Monster_Factory<Monster_Template>::Monster_Factory()
 template <typename Monster_Template>
 Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters)
 {
-	Number_Of_Monsters = number_of_monsters;
+	Initial_Number_Of_Monsters = number_of_monsters;
 	Monster_Vector = new std::vector<Character_Base*>;
 	BattleField_Cutting_Vector = BattleField_Zone::Fill_Vector();
 	P0_Logger << nl << "Factory CONSTRUCTED Successfully " << std::endl;
@@ -75,7 +75,7 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters
 	int Character_Y = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().gety();
 
 	//Loop until desired number of monsters has been reached
-	for(int i=1; i <= Number_Of_Monsters; i++)
+	for(int i=1; i <= Initial_Number_Of_Monsters; i++)
 	{
 		//Monster generation
 		Monster_Template* newMonster = Create_One_Monster(Character_X, Character_Y);

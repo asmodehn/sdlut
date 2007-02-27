@@ -46,14 +46,10 @@ unsigned int Daemons::Generate_Monsters(unsigned int interval, void* args)
 try {
 	if (GLOBAL_GAME_STATE != 5 )//victory 
 	{
-		//
-		//TODO: cge that 
-		//
 		//Skeletons
-		Global_Monster_Vector->at(0) = Monster_Factory_Skeleton->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
-		//->swap( 
+		Monster_Factory_Skeleton->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
 		//Worms
-		Global_Monster_Vector->at(1) = Monster_Factory_Worm->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
+		Monster_Factory_Worm->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
 
 		P0_Logger << nl << "Generate Monsters " << std::endl;
 		return interval; // loop
