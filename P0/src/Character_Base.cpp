@@ -5,9 +5,7 @@ Character_Base::Character_Base()
 {
 	X = 0, Y =0;
 	xVel = 0, yVel = 0;
-	//
-	//TODO: put this in ini file with default sprite w/h 
-	//
+
 	Sprite_Width = 0, Sprite_Height = 0;
 
 	BASE_LIFE = 0, Current_Life = BASE_LIFE;
@@ -182,8 +180,8 @@ bool Character_Base::Show(Rect Camera, VideoSurface& Screen)
 {
 try {
 	//Check if the character sprite is present on the screen minus the status bar
-	//NOTE : CH_WIDTH/CH_HEIGHT are present because the camera is centered on the middle of the player and so we need to draw the screen a little more than the camera dim
-	if ( ( (Camera.getx()-CH_WIDTH) <= X) && (X < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= Y) && (Y < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
+	//NOTE : PC_WIDTH/PC_HEIGHT are present because the camera is centered on the middle of the player and so we need to draw the screen a little more than the camera dim
+	if ( ( (Camera.getx()-PC_WIDTH) <= X) && (X < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-PC_HEIGHT) <= Y) && (Y < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 	{
 		//It's present than draw it
 		Screen.blit(Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), Characters_SpriteRect);

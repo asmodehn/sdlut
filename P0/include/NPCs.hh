@@ -10,7 +10,7 @@ class NPCs : public Player_Base
 
 	public:
 		//Declaration
-		NPCs(int x, int y);
+		NPCs();
 		~NPCs();
 
 

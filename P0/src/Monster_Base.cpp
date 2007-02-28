@@ -3,9 +3,6 @@
 //Default Constructor
 Monster_Base::Monster_Base()
 {
-	//Monster type
-	Monster_ID = Humanoid;
-
 	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
 	Alive_Status = true;
 
@@ -30,9 +27,6 @@ Monster_Base::Monster_Base(int x, int y)
 	X = x;
     Y = y;
 
-	//
-	//TODO: put this in ini file with default monster sprite w/h 
-	//
 	Sprite_Width = MO_WIDTH, Sprite_Height = MO_HEIGHT;
 
 	//Monster Tile Surface
@@ -81,11 +75,16 @@ Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 {
 	X = ToCopy.X;
 	Y = ToCopy.Y;
+	Sprite_Width = ToCopy.Sprite_Width;
+	Sprite_Height = ToCopy.Sprite_Height;
 	Characters_Tile = ToCopy.Characters_Tile;
+	_monster_clip = ToCopy._monster_clip;
 	Characters_SpriteRect = ToCopy.Characters_SpriteRect;
+	Monster_ID = ToCopy.Monster_ID;
 	xVel = ToCopy.xVel;
 	yVel = ToCopy.yVel;
 	Collision_Box = ToCopy.Collision_Box;
+	Alive_Status = ToCopy.Alive_Status;
 	Life_Bar_Tile = ToCopy.Life_Bar_Tile;
 	empty_life_bar_rect = ToCopy.empty_life_bar_rect;
 	current_life_bar_rect = ToCopy.current_life_bar_rect;
@@ -208,7 +207,7 @@ bool Monster_Base::Check_Cutting_Allow_Monster(int x, int y, std::vector<BattleF
 //Calculate the current life of the monster depending on damage, malus, etc
 bool Monster_Base::Calculate_Current_Life(int opponent_damage = 0)
 {
-	int current_damage = (opponent_damage - Get_Current_Armor()); //TODO: Set the real damage formula
+	int current_damage = (opponent_damage - Get_Current_Armor()); //TODO(future): Set the real damage formula base on mo's condition
 
 	if ( (current_damage) < 0) //in case damage dont exceed armor value then set it to 0: no damage
 		current_damage = 0;
@@ -231,11 +230,8 @@ bool Monster_Base::Show_Life_Bar(Rect Camera, VideoSurface& Screen)
 		_current_life = 0;
 
 	current_life_bar_rect.setw( (LIFE_BAR_WIDTH * _current_life / BASE_LIFE) );
-	//
-	//ToDO: set get life bar width from config file Dev_Config.ini
-	//
 
-	//we blit the empty rect than the current life rect
+	//we blit the empty rect than the current life rect 8px on top of the monster
 	//positions are def by monster pos
 	Screen.blit(Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), empty_life_bar_rect);
 	Screen.blit(Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), current_life_bar_rect);

@@ -2,17 +2,36 @@
 
 /*****NPCs #1*****/
 //Constructor
-NPCs::NPCs(int x, int y)
+NPCs::NPCs()
 {
-		//Initial position
-	X = x;
-    Y = y;
+	string NPC_Ini = "Datas/Characters/NPC.ini";
+	std::ifstream fi_npc( NPC_Ini.c_str() ) ;
+	if (! fi_npc.fail()) //Check file present
+	{
+//Initial position
+		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Initial_Position_X") ) >> X;
+		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Initial_Position_Y") ) >> Y;
+/****AREA****/
+		int temp;
+		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Allowed_Area_X") ) >> temp;
+		Allowed_Area.setx( temp );
+		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Allowed_Area_Y") ) >> temp;
+		Allowed_Area.sety(  temp );
+		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Allowed_Area_W") ) >> temp;
+		Allowed_Area.setw( temp );
+		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Allowed_Area_H") ) >> temp;
+		Allowed_Area.seth( temp );
+/****Sprite****/
+		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Sprite_Width") ) >> Sprite_Width;
+		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Sprite_Height") ) >> Sprite_Height;
+/****Characts****/
+		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Life") ) >> BASE_LIFE;
+		Current_Life = BASE_LIFE;
+		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Armor") ) >> BASE_ARMOR;
+		Current_Armor = BASE_ARMOR;
 
-	//
-	//TODO: put this in the ini file with another name than CH_*
-	//
-	//Sprite info
-	Sprite_Width = CH_WIDTH, Sprite_Height = CH_HEIGHT;
+	}
+	fi_npc.close();
 
 		/****CLIP****/
 	//Rect Player_Attack_Tile_Rect[8][PLAYER_SWORD_ATTACK_ANIMATION_FRAME];
@@ -40,16 +59,9 @@ NPCs::NPCs(int x, int y)
 
 		/****Surfaces****/
 	//Characters Surfaces
-	Players_Tile_Melee = RGBSurface("Datas/Characters/Characters.bmp", Color(0xFF, 0xFF, 0xFF));
-	Players_Tile_Distant = RGBSurface("Datas/Characters/Characters.bmp", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile_Melee = RGBSurface("Datas/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile_Distant = RGBSurface("Datas/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
 	Characters_Tile = Players_Tile_Melee; //Default tile: the melee tile
-
-		/****AREA****/
-	//Only allowed inside city walls
-	Allowed_Area.setx(33*32);
-	Allowed_Area.sety(10*32);
-	Allowed_Area.setw(5*32);
-	Allowed_Area.seth(9*32);
 }
 
 //Destructor

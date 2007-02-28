@@ -232,7 +232,7 @@ try {
 	for(unsigned int i=0; i < BackGround_Sprite_Vector->size(); i++)
 	{
 		//Check if the BackGround sprite is present on the screen (in fact screen + character sprite dim)
-		if ( ((Camera.getx()-CH_WIDTH) <= BackGround_Sprite_Vector->at(i)->Get_X()) && ( BackGround_Sprite_Vector->at(i)->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= BackGround_Sprite_Vector->at(i)->Get_Y()) && ( BackGround_Sprite_Vector->at(i)->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
+		if ( ((Camera.getx()-PC_WIDTH) <= BackGround_Sprite_Vector->at(i)->Get_X()) && ( BackGround_Sprite_Vector->at(i)->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-PC_HEIGHT) <= BackGround_Sprite_Vector->at(i)->Get_Y()) && ( BackGround_Sprite_Vector->at(i)->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 		{
 			//switch( BackGround_Sprite_Vector->at(i)->Get_BattleField_Type() )
 			//{
@@ -474,7 +474,7 @@ try {
 	for(unsigned int i=0; i < Environment_Sprite_Vector->size(); i++)
 	{
 		//Check if the Environment sprite is present on the screen (in fact screen + character's sprite dim)
-		if ( ((Camera.getx()-CH_WIDTH) <= Environment_Sprite_Vector->at(i)->Get_X()) && ( Environment_Sprite_Vector->at(i)->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-CH_HEIGHT) <= Environment_Sprite_Vector->at(i)->Get_Y()) && ( Environment_Sprite_Vector->at(i)->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
+		if ( ((Camera.getx()-PC_WIDTH) <= Environment_Sprite_Vector->at(i)->Get_X()) && ( Environment_Sprite_Vector->at(i)->Get_X() < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-PC_HEIGHT) <= Environment_Sprite_Vector->at(i)->Get_Y()) && ( Environment_Sprite_Vector->at(i)->Get_Y() < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 		{
 
 			//switch( Environment_Sprite_Vector->at(i)->Get_BattleField_Type() )

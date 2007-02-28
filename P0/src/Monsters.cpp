@@ -9,7 +9,7 @@ Monster_Skeleton::Monster_Skeleton(int x, int y)
 
 	//Characteristics management
 	//
-	//TODO: perhaps move that in another method (like monsters_config) and send the filename to this constructor
+	//TODO: perhaps move that in another method (like monsters_config) and send the filename to this constructor?
 	//
 	string Monster_Ini = "Datas/Characters/Skeletons.ini";
 	std::ifstream fi_monster(Monster_Ini.c_str()) ;
@@ -35,10 +35,6 @@ Monster_Skeleton::Monster_Skeleton(int x, int y)
 
 	//Assign the sprite
 	Characters_SpriteRect = _monster_clip;
-
-	//Initial velocity
-    xVel = 0;
-    yVel = 0;
 
 	//Monster type
 	Monster_ID = Humanoid;
@@ -98,7 +94,7 @@ Monster_Worm::Monster_Worm(int x, int y)
 
 	//Characteristics management
 	//
-	//TODO: perhaps move that in another method (like monsters_config) and send the filename to this constructor
+	//TODO: perhaps move that in another method (like monsters_config) and send the filename to this constructor?
 	//
 	string Monster_Ini = "Datas/Characters/Worms.ini";
 	std::ifstream fi_monster(Monster_Ini.c_str()) ;
@@ -124,10 +120,6 @@ Monster_Worm::Monster_Worm(int x, int y)
 
 	//Assign the sprite
 	Characters_SpriteRect = _monster_clip;
-
-	//Initial velocity
-    xVel = 0;
-    yVel = 0;
 
 	//Monster type
 	Monster_ID = Worm;

@@ -4,8 +4,8 @@
 Player_Base::Player_Base()
 {
 	//Initial arrow position
-	arrow_x = 0;
-	arrow_y = 0;
+	arrow_x = X;
+	arrow_y = Y;
 
 	//Initial moving status
 	moving_status = false;
@@ -33,11 +33,17 @@ Player_Base::Player_Base()
 	attack_successfull = 0; //Tells if a monster has been hit, by default no
 	hit_monster_distance = 0; //distance to the hitted monster
 
+
 	/****Arrow***/
-	//
-	//TODO: put these inside config file
-	//
-	int Arrow_Sprite_Width = CH_WIDTH, Arrow_Sprite_Height = CH_HEIGHT;
+	string Arrow_Ini = "Datas/Items/Arrow.ini";
+	std::ifstream fi_arrow(Arrow_Ini.c_str()) ;
+	if (! fi_arrow.fail()) //Check file present
+	{
+		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Width") ) >> Arrow_Sprite_Width;
+		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Height") ) >> Arrow_Sprite_Height;
+	}
+	fi_arrow.close();
+
 	//Clip
 	Arrow_SpriteRect = new std::vector<Rect>;
 	Rect _temp_arrow_rect;
@@ -77,16 +83,13 @@ Player_Base::Player_Base(int x, int y)
 	arrow_x = X;
 	arrow_y = Y;
 
-	//
-	//TODO: put this in ini file with default player sprite w/h 
-	//
-	Sprite_Width = CH_WIDTH, Sprite_Height = CH_HEIGHT;
+	Sprite_Width = PC_WIDTH, Sprite_Height = PC_HEIGHT;
 
 	//Initial moving status
 	moving_status = false;
 
 	//
-	//TODO: default monster sprite/clip etc ?
+	//TODO: default player sprite/clip etc ?
 	//
 	//Rect Player_Attack_Tile_Rect[8][PLAYER_SWORD_ATTACK_ANIMATION_FRAME];
 	Player_Attack_Tile_Rect = new std::vector<Rect>;
@@ -135,6 +138,15 @@ Player_Base::Player_Base(int x, int y)
 	attack_collision_box = Collision_Box;
 
 	/****Arrow***/
+	string Arrow_Ini = "Datas/Items/Arrow.ini";
+	std::ifstream fi_arrow(Arrow_Ini.c_str()) ;
+	if (! fi_arrow.fail()) //Check file present
+	{
+		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Width") ) >> Arrow_Sprite_Width;
+		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Height") ) >> Arrow_Sprite_Height;
+	}
+	fi_arrow.close();
+
 	//Clip
 	Arrow_SpriteRect = new std::vector<Rect>;
 	Rect _temp_arrow_rect;
@@ -371,7 +383,7 @@ int Player_Base::Attack(std::vector< std::vector<Character_Base*> *>* Global_Mon
 {
 	int Hit_Distance = 0; //The Hit distance is the distance between the character and the monster by default the Melee Hit Distance (aka 0)
 
-	//If the player has pushed the attack key => check if attack was seccessfull or not and act accordingly
+	//If the player has pushed the attack key => check if attack was successfull or not and act accordingly
 	if ( Get_Attack_Status() )
 	{
 		//By default consider that no attack was successfull
@@ -379,8 +391,8 @@ int Player_Base::Attack(std::vector< std::vector<Character_Base*> *>* Global_Mon
 
 		//
 		//TODO: Get the weapon max hit range & damage and calculate character range and damage from them
-		//TODO: put these value's definitions inside the constructor
-		//TODO: use formula for character_real_damage
+		//TODO(future): put these value's definitions inside the constructor (when monster/npc will be allowed to attack)
+		//TODO(future): use formula for character_real_damage depending on character condition (disease, etc)
 		//
 		int character_max_damage = 100;
 		int character_real_damage = character_max_damage;
@@ -407,8 +419,10 @@ int Player_Base::Attack(std::vector< std::vector<Character_Base*> *>* Global_Mon
 			for (int i=1; i<=character_max_range; i++)
 			{
 				//
-				//TODO: Get this formula from config file if possible
+				//TODO: get this formula from ini if possible?
 				//
+
+				//calculate the final damage made by the character
 				character_current_damage = character_real_damage - (i-1)*character_real_damage/character_max_range;
 
 				//Check if one of the monster is on the arrow traject
@@ -430,43 +444,43 @@ int Player_Base::Attack_Check_Status(int current_hit_distance, int character_dam
 	//Check attack direction
 	if( move_status == CH_RIGHT )
 	{
-		attack_collision_box.setx ( Collision_Box.getx() + (CH_WIDTH * current_hit_distance) );
+		attack_collision_box.setx ( Collision_Box.getx() + (Sprite_Width * current_hit_distance) );
 		attack_collision_box.sety ( Collision_Box.gety());
 	}
 	else if( move_status == CH_RIGHT_DOWN )
 	{
-		attack_collision_box.setx ( Collision_Box.getx() + (CH_WIDTH * current_hit_distance) );
-		attack_collision_box.sety ( Collision_Box.gety() + (CH_HEIGHT * current_hit_distance) );
+		attack_collision_box.setx ( Collision_Box.getx() + (Sprite_Width * current_hit_distance) );
+		attack_collision_box.sety ( Collision_Box.gety() + (Sprite_Height * current_hit_distance) );
 	}
 	else if( move_status == CH_DOWN )
 	{
 		attack_collision_box.setx( Collision_Box.getx() );
-		attack_collision_box.sety( Collision_Box.gety() + (CH_HEIGHT * current_hit_distance) );
+		attack_collision_box.sety( Collision_Box.gety() + (Sprite_Height * current_hit_distance) );
 	}
 	else if( move_status == CH_LEFT_DOWN )
 	{
-		attack_collision_box.setx( Collision_Box.getx() - (CH_WIDTH * current_hit_distance) );
-		attack_collision_box.sety( Collision_Box.gety() + (CH_HEIGHT * current_hit_distance) );
+		attack_collision_box.setx( Collision_Box.getx() - (Sprite_Width * current_hit_distance) );
+		attack_collision_box.sety( Collision_Box.gety() + (Sprite_Height * current_hit_distance) );
 	}
 	else if( move_status == CH_LEFT )
 	{
-		attack_collision_box.setx( Collision_Box.getx() - (CH_WIDTH * current_hit_distance) );
+		attack_collision_box.setx( Collision_Box.getx() - (Sprite_Width * current_hit_distance) );
 		attack_collision_box.sety( Collision_Box.gety() );
 	}
 	else if( move_status == CH_LEFT_UP )
 	{
-		attack_collision_box.setx( Collision_Box.getx() - (CH_WIDTH * current_hit_distance) );
-		attack_collision_box.sety( Collision_Box.gety() - (CH_WIDTH * current_hit_distance) );
+		attack_collision_box.setx( Collision_Box.getx() - (Sprite_Width * current_hit_distance) );
+		attack_collision_box.sety( Collision_Box.gety() - (Sprite_Height * current_hit_distance) );
 	}
 	else if( move_status == CH_UP )
 	{
 		attack_collision_box.setx( Collision_Box.getx() );
-		attack_collision_box.sety( Collision_Box.gety() - (CH_WIDTH * current_hit_distance) );
+		attack_collision_box.sety( Collision_Box.gety() - (Sprite_Height * current_hit_distance) );
 	}
 	else if( move_status == CH_RIGHT_UP )
 	{
-		attack_collision_box.setx( Collision_Box.getx() + (CH_WIDTH * current_hit_distance) );
-		attack_collision_box.sety( Collision_Box.gety() - (CH_WIDTH * current_hit_distance) );
+		attack_collision_box.setx( Collision_Box.getx() + (Sprite_Width * current_hit_distance) );
+		attack_collision_box.sety( Collision_Box.gety() - (Sprite_Height * current_hit_distance) );
 	}
 	
 	//Collision with Monsters
@@ -517,7 +531,7 @@ bool Player_Base::Set_Attack_Animation_Sprite()
 			frame = 0; //reset frame anim
 		
 		//
-		//TODO: define the good character sprite (future devs: depending of the frame and the direction)
+		//TODO(future): define the good character sprite (future devs: depending of the frame and the direction)
 		//
 		//frame = 0;
 	}

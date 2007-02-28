@@ -5,7 +5,7 @@ Daemons::Daemons()
 {
 	//Allocations
 	myPlayer = new Player(0,0);
-	myNPC = new NPCs(0,0);
+	myNPC = new NPCs();
 	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
 	Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
 	Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>;

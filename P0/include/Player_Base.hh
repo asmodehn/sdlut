@@ -11,6 +11,7 @@ class Player_Base : public Character_Base
     protected:
 		//The X and Y offsets of the Arrow
 		int arrow_x, arrow_y;
+		int Arrow_Sprite_Width, Arrow_Sprite_Height;
 
 		//Moving status define if the player is moving or just changing direction or staying at the same place
 		bool moving_status;
@@ -30,7 +31,7 @@ class Player_Base : public Character_Base
 		//Character Clips Vector
 		std::vector<Rect>* Player_Attack_Tile_Rect;
 		//
-		//TODO: next version, define one vector per style
+		//TODO(future): define one vector per style
 		//
 
 		//animation variables

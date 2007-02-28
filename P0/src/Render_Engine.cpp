@@ -5,7 +5,7 @@ Render_Engine::Render_Engine()
 {
 	//Allocations
 	myPlayer = new Player(0,0);
-	myNPC = new NPCs(0,0);
+	myNPC = new NPCs();
 	myBackGround = new BackGround();
 	myEnvironment = new Environment;
 	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;

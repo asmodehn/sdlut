@@ -20,7 +20,8 @@ CONFIGURE_FILE(	"Characters/Skeletons Tile.bmp" "${Project_0_BINARY_DIR}/Datas/C
 CONFIGURE_FILE(	"Characters/Skeletons.ini" "${Project_0_BINARY_DIR}/Datas/Characters/Skeletons.ini" COPYONLY)
 CONFIGURE_FILE(	"Characters/Worms Tile.bmp" "${Project_0_BINARY_DIR}/Datas/Characters/Worms Tile.bmp" COPYONLY)
 CONFIGURE_FILE(	"Characters/Worms.ini" "${Project_0_BINARY_DIR}/Datas/Characters/Worms.ini" COPYONLY)
-CONFIGURE_FILE(	"Characters/Characters.bmp" "${Project_0_BINARY_DIR}/Datas/Characters/Characters.bmp" COPYONLY)
+CONFIGURE_FILE(	"Characters/NPC.bmp" "${Project_0_BINARY_DIR}/Datas/Characters/NPC.bmp" COPYONLY)
+CONFIGURE_FILE(	"Characters/NPC.ini" "${Project_0_BINARY_DIR}/Datas/Characters/NPC.ini" COPYONLY)
 
 	#Fonts
 CONFIGURE_FILE(	Fonts/SlimSansSerif.ttf ${Project_0_BINARY_DIR}/Datas/Fonts/SlimSansSerif.ttf COPYONLY)
@@ -33,6 +34,7 @@ CONFIGURE_FILE(	"Interface/Victory Screen.png" "${Project_0_BINARY_DIR}/Datas/In
 	#Items
 CONFIGURE_FILE( Items/Arrow.png "${Project_0_BINARY_DIR}/Datas/Items/Arrow.png")
 #!!!!! Cmake BUG on copying Arrow.png file: copy failed, dest file 1k instead of src 4k => dest completly unusable   !!!!!
+CONFIGURE_FILE( Items/Arrow.ini "${Project_0_BINARY_DIR}/Datas/Items/Arrow.ini")
 
 	#Movies
 

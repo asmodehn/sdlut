@@ -4,7 +4,7 @@
 KeyboardInput::KeyboardInput()
 {
 	myPlayer = new Player(0,0);
-	myNPC = new NPCs(0,0);
+	myNPC = new NPCs();
 	myEsc_Menu = new Escape_Menu();
 	myVictory_Screen = new Victory_Screen();
 	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
@@ -141,7 +141,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				//Moves Keys
 				if ((s.getKey() == RIGHT_1) || (s.getKey() == RIGHT_2))
 				{
-					//myCharacter->Set_xVel( myCharacter->Get_xVel() + CH_WIDTH);
+					//myCharacter->Set_xVel( myCharacter->Get_xVel() + PC_WIDTH);
 					//myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
 					if (myPlayer->Get_xVel() != CH_VEL )
 						myPlayer->Set_xVel( myPlayer->Get_xVel() + CH_VEL);
@@ -150,7 +150,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				} 
 				if ((s.getKey() == DOWN_1) || (s.getKey() == DOWN_2))
 				{
-					//myCharacter->Set_yVel( myCharacter->Get_yVel() + CH_HEIGHT);
+					//myCharacter->Set_yVel( myCharacter->Get_yVel() + PC_HEIGHT);
 					//myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
 					if (myPlayer->Get_yVel() != CH_VEL )
 						myPlayer->Set_yVel( myPlayer->Get_yVel() + CH_VEL);
@@ -158,7 +158,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				}
 				if ((s.getKey() == LEFT_1) || (s.getKey() == LEFT_2))
 				{
-					//myCharacter->Set_xVel( myCharacter->Get_xVel() - CH_WIDTH);
+					//myCharacter->Set_xVel( myCharacter->Get_xVel() - PC_WIDTH);
 					//myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
 					if (myPlayer->Get_xVel() != (-1*CH_VEL) )
 						myPlayer->Set_xVel( myPlayer->Get_xVel() - CH_VEL);
@@ -166,7 +166,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				}
 				if ((s.getKey() == UP_1) || (s.getKey() == UP_2))
 				{
-					//myCharacter->Set_yVel( myCharacter->Get_yVel() - CH_HEIGHT);
+					//myCharacter->Set_yVel( myCharacter->Get_yVel() - PC_HEIGHT);
 					//myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
 					if (myPlayer->Get_yVel() != (-1*CH_VEL) )
 						myPlayer->Set_yVel( myPlayer->Get_yVel() - CH_VEL);

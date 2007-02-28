@@ -35,12 +35,12 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Char
 	int x = 0, y = 0;
 
 	//mini distance (3 square radius from the character border)²
-	/*int distance_mini = int( 3.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );*/
-	int distance_mini_carre = int( 3.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) ); //int( 12.25*(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT ) );
+	/*int distance_mini = int( 3.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) );*/
+	int distance_mini_carre = int( 3.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) ); //int( 12.25*(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT ) );
 	
 	//(distance from the center - distance center to border of the character)²
-	/*int distance = int( sqrt( float( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)) ) )
-						- 0.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );*/
+	/*int distance = int( sqrt( float( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2)) ) )
+						- 0.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) );*/
 	int distance_carre = distance_mini_carre;
 	
 		//while (distance <= distance_mini) //we are too near
@@ -49,13 +49,13 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Char
 		//try coordinate
 		x = random(0,39);
 		y = random(0,39);
-		/*distance = int( sqrt( float( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)) ) )
-					- 0.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );*/
-		distance_carre = int( sqrt( float( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)) ) )
-						- 0.5*sqrt( float(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) ) );
-			/*int( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))
-						+ 0.25*(CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT)
-						- ( (x*CH_WIDTH - (Character_X+CH_WIDTH/2))*(x*CH_WIDTH - (Character_X+CH_WIDTH/2)) + (y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2))*(y*CH_HEIGHT - (Character_Y+CH_HEIGHT/2)) ) * (CH_WIDTH*CH_WIDTH + CH_HEIGHT*CH_HEIGHT) );*/
+		/*distance = int( sqrt( float( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2)) ) )
+					- 0.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) );*/
+		distance_carre = int( sqrt( float( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2)) ) )
+						- 0.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) );
+			/*int( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))
+						+ 0.25*(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT)
+						- ( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2)) ) * (PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) );*/
 	}
 
 	//Create Monster & initialized it

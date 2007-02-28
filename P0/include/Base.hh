@@ -56,8 +56,8 @@ extern int FRAMES_PER_SECOND;
 extern string Window_Name;
 
 //The dimensions of the Character
-extern int CH_WIDTH;
-extern int CH_HEIGHT;
+extern int PC_WIDTH;
+extern int PC_HEIGHT;
 extern int MO_WIDTH;
 extern int MO_HEIGHT;
 

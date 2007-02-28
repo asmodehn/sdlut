@@ -147,10 +147,7 @@ try { //global error management
 	std::vector<Character_Base*>* NPCs_Vector = new std::vector<Character_Base*>;
 
 	//Create npc & initialized it
-	//
-	//TODO: put this in ini
-	//
-	NPCs* myNPC = new NPCs(33*32, 10*32);
+	NPCs* myNPC = new NPCs();
 	if( myNPC->Set_Graphic_Style() == false ) //intialize Character's graphic aspect
 	{ 
         P0_Logger << nl << "Failed to set NPC Graphic " << std::endl;

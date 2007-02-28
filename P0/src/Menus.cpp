@@ -5,6 +5,8 @@
 Escape_Menu::Escape_Menu()
 {
 	SelectedItemId = 1; //initially select the first one (aka "Yes")
+	Yes_Tile = RGBSurface("Datas/Interface/LeaveMenu_YesSelected.png");
+	No_Tile = RGBSurface("Datas/Interface/LeaveMenu_NoSelected.png");
 }
 
 //Blit the good menu surface in function of what the user wants to select with the keyboard
@@ -13,11 +15,11 @@ bool Escape_Menu::Show_Menu(VideoSurface& Screen)
 try {
 	if (SelectedItemId == 1) //we want to show Yes selected
 	{
-		Screen.blit(RGBSurface("Datas/Interface/LeaveMenu_YesSelected.png"), Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
+		Screen.blit( Yes_Tile, Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
 	}
 	else if (SelectedItemId == 2) //we want to show No selected
 	{
-		Screen.blit(RGBSurface("Datas/Interface/LeaveMenu_NoSelected.png"), Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
+		Screen.blit( No_Tile, Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
 	}
 	return true; //no error
 } catch (...) {
@@ -54,6 +56,8 @@ Victory_Screen::Victory_Screen()
 	Time_Font = new Font("Datas/Fonts/SlimSansSerif.ttf", 20);
 	//Monsters Stats
 	Monsters_Stats_Font = new Font("Datas/Fonts/SlimSansSerif.ttf", 14);
+	//Victory Screen Tile
+	Victory_Tile = RGBSurface("Datas/Interface/Victory Screen.png");
 }
 
 //Destructor
@@ -68,7 +72,7 @@ bool Victory_Screen::Show(VideoSurface& Screen)
 {
 try {
 	//Show Victory Screen
-	Screen.blit(RGBSurface("Datas/Interface/Victory Screen.png"), Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
+	Screen.blit( Victory_Tile, Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
 	
 	//Show Time
 	time_msg = *Time_Font->render(Time_Style(FiNiSH_TiME), Color(0, 0, 0), Font::Shaded, Color(0xFF, 0xFF, 0xFF));

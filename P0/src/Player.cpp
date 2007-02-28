@@ -8,10 +8,10 @@ Player::Player(int x, int y)
     Y = y;
 
 	//
-	//TODO: put this in the ini file with another name than CH_*
+	//TODO: put this in the ini file
 	//
 	//Sprite info
-	Sprite_Width = CH_WIDTH, Sprite_Height = CH_HEIGHT;
+	Sprite_Width = PC_WIDTH, Sprite_Height = PC_HEIGHT;
 
 		/****CLIP****/
 	//Rect Player_Attack_Tile_Rect[8][PLAYER_SWORD_ATTACK_ANIMATION_FRAME];
@@ -39,11 +39,11 @@ Player::Player(int x, int y)
 
 		/****CAMERA****/
 	//Camera: at the begining it's in the top left corner of the level
-	//Camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+	//Camera = {0, 0, Sprite_Width, Sprite_Height};
 	Camera.setx(0);
 	Camera.sety(0);
-	//Camera.setx( (X + CH_WIDTH / 2) - CURRENT_SCREEN_WIDTH / 2 );
-	//Camera.sety( (Y + CH_HEIGHT / 2) - CURRENT_SCREEN_HEIGHT / 2 );
+	//Camera.setx( (X + Sprite_Width / 2) - CURRENT_SCREEN_WIDTH / 2 );
+	//Camera.sety( (Y + Sprite_Height / 2) - CURRENT_SCREEN_HEIGHT / 2 );
 	Camera.setw(CURRENT_SCREEN_WIDTH);
 	Camera.seth(CURRENT_SCREEN_HEIGHT);
 

@@ -8,6 +8,7 @@ class Escape_Menu
 {
     private:
 		int SelectedItemId;
+		RGBSurface Yes_Tile, No_Tile;
 
 	public:
 
@@ -35,12 +36,13 @@ class Escape_Menu
 class Victory_Screen
 {
 	private:
-		//Time
 		Font* Time_Font;
-		RGBSurface time_msg;
-		//Monsters Stats
 		Font* Monsters_Stats_Font;
+		RGBSurface Victory_Tile;
+
+		RGBSurface time_msg;
 		RGBSurface monsters_stats_msg;
+		
 		
 	public:
 		Victory_Screen();
