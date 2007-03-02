@@ -16,21 +16,25 @@ Player::Player(int x, int y)
 		/****CLIP****/
 	//Rect Player_Attack_Tile_Rect[8][PLAYER_SWORD_ATTACK_ANIMATION_FRAME];
 	Player_Attack_Tile_Rect = new std::vector<Rect>;
+	Player_Attack_Tile_Rect->reserve(8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME);
+
 	Rect _temp_ch_rect;
-	//Character Clips definition
+	_temp_ch_rect.setw( Sprite_Width );
+	_temp_ch_rect.seth( Sprite_Height );
+
+	//First allocation by pushback
+	for (signed int i = 0; i < 8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME; i++)
+	{
+		Player_Attack_Tile_Rect->push_back(_temp_ch_rect);
+	}
+	//Now allocation by iterator
 	for (signed int i = 0; i < 8; i++)  //The 8 directions
 	{
 		for (signed int j = 0; j < PLAYER_SWORD_ATTACK_ANIMATION_FRAME; j++) //Frames
 		{
 			_temp_ch_rect.setx( Sprite_Width * j );
 			_temp_ch_rect.sety( Sprite_Height * i );
-			_temp_ch_rect.setw( Sprite_Width );
-			_temp_ch_rect.seth( Sprite_Height );
-			Player_Attack_Tile_Rect->push_back(_temp_ch_rect);
-			//->at(i*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + j)
-			//
-			//TODO find a way to make insert by iterator insted of pushback
-			//
+			Player_Attack_Tile_Rect->at(i*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + j) = _temp_ch_rect;
 		}
 	}
 

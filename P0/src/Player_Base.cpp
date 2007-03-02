@@ -46,18 +46,22 @@ Player_Base::Player_Base()
 
 	//Clip
 	Arrow_SpriteRect = new std::vector<Rect>;
+
 	Rect _temp_arrow_rect;
-	for (unsigned int i = 0; i < 8; i++)  //The 8 directions
+	_temp_arrow_rect.setx(0);
+	_temp_arrow_rect.setw(Arrow_Sprite_Width);
+	_temp_arrow_rect.seth(Arrow_Sprite_Height);
+
+	//First allocation by pushback
+	for (signed int i = 0; i < 8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME; i++)
 	{
-		_temp_arrow_rect.setx(0);
-		_temp_arrow_rect.sety(Arrow_Sprite_Height*i);
-		_temp_arrow_rect.setw(Arrow_Sprite_Width);
-		_temp_arrow_rect.seth(Arrow_Sprite_Height);
 		Arrow_SpriteRect->push_back(_temp_arrow_rect);
-		//->at(i*PLAYER_ARROW_ATTACK_ANIMATION_FRAME)
-		//
-		//TODO find a way to make insert by iterator insted of pushback
-		//
+	}
+	//Now allocation by iterator
+	for (signed int i = 0; i < 8; i++)  //The 8 directions
+	{
+		_temp_arrow_rect.sety(Arrow_Sprite_Height*i);
+		Arrow_SpriteRect->at(i*PLAYER_ARROW_ATTACK_ANIMATION_FRAME) = _temp_arrow_rect;
 	}
 
 	//default arrow sprite rect
@@ -88,29 +92,29 @@ Player_Base::Player_Base(int x, int y)
 	//Initial moving status
 	moving_status = false;
 
-	//
-	//TODO: default player sprite/clip etc ?
-	//
-	//Rect Player_Attack_Tile_Rect[8][PLAYER_SWORD_ATTACK_ANIMATION_FRAME];
 	Player_Attack_Tile_Rect = new std::vector<Rect>;
+	Player_Attack_Tile_Rect->reserve(8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME);
+	
 	Rect _temp_ch_rect;
-	//Character Clips definition
+	_temp_ch_rect.setw( Sprite_Width );
+	_temp_ch_rect.seth( Sprite_Height );
+
+	//First allocation by pushback
+	for (signed int i = 0; i < 8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME; i++)
+	{
+		Player_Attack_Tile_Rect->push_back(_temp_ch_rect);
+	}
+	//Now allocation by iterator
 	for (signed int i = 0; i < 8; i++)  //The 8 directions
 	{
 		for (signed int j = 0; j < PLAYER_SWORD_ATTACK_ANIMATION_FRAME; j++) //Frames
 		{
-			_temp_ch_rect.setx( Sprite_Width * j);
+			_temp_ch_rect.setx( Sprite_Width * j );
 			_temp_ch_rect.sety( Sprite_Height * i );
-			_temp_ch_rect.setw( Sprite_Width );
-			_temp_ch_rect.seth( Sprite_Height );
-			Player_Attack_Tile_Rect->push_back(_temp_ch_rect);
-			//->at(i*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + j)
-			//
-			//TODO find a way to make insert by iterator insted of pushback
-			//
+			Player_Attack_Tile_Rect->at(i*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + j) = _temp_ch_rect;
 		}
 	}
-
+	
 	//Assign the right sprite to the player by default
 	Characters_SpriteRect = Player_Attack_Tile_Rect->at(CH_RIGHT*PLAYER_SWORD_ATTACK_ANIMATION_FRAME);
 
@@ -149,18 +153,22 @@ Player_Base::Player_Base(int x, int y)
 
 	//Clip
 	Arrow_SpriteRect = new std::vector<Rect>;
+
 	Rect _temp_arrow_rect;
-	for (unsigned int i = 0; i < 8; i++)  //The 8 directions
+	_temp_arrow_rect.setx(0);
+	_temp_arrow_rect.setw(Arrow_Sprite_Width);
+	_temp_arrow_rect.seth(Arrow_Sprite_Height);
+
+	//First allocation by pushback
+	for (signed int i = 0; i < 8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME; i++)
 	{
-		_temp_arrow_rect.setx(0);
-		_temp_arrow_rect.sety(Sprite_Height*i);
-		_temp_arrow_rect.setw(Sprite_Width);
-		_temp_arrow_rect.seth(Sprite_Height);
 		Arrow_SpriteRect->push_back(_temp_arrow_rect);
-		//->at(i*PLAYER_ARROW_ATTACK_ANIMATION_FRAME)
-		//
-		//TODO find a way to make insert by iterator insted of pushback
-		//
+	}
+	//Now allocation by iterator
+	for (signed int i = 0; i < 8; i++)  //The 8 directions
+	{
+		_temp_arrow_rect.sety(Arrow_Sprite_Height*i);
+		Arrow_SpriteRect->at(i*PLAYER_ARROW_ATTACK_ANIMATION_FRAME) = _temp_arrow_rect;
 	}
 
 	//default arrow sprite rect
@@ -168,9 +176,9 @@ Player_Base::Player_Base(int x, int y)
 
 
 	/****Surfaces****/
-	//Characters Surfaces
-	Players_Tile_Melee = RGBSurface("Datas/Characters/Character_Fighter.png", Color(0xFF, 0xFF, 0xFF));
-	Players_Tile_Distant = RGBSurface("Datas/Characters/Character_Archer.png", Color(0xFF, 0xFF, 0xFF));
+	//Characters Surfaces (default empty)
+	Players_Tile_Melee = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, SCREEN_BPP);
+	Players_Tile_Distant = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, SCREEN_BPP);
 	Characters_Tile = Players_Tile_Melee; //Default tile: the melee tile
 	//Arrow surface
 	Arrow_Tile = RGBSurface("Datas/Items/Arrow.png", Color(0x80, 0x80, 0x80));

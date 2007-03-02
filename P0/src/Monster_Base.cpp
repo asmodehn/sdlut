@@ -29,12 +29,9 @@ Monster_Base::Monster_Base(int x, int y)
 
 	Sprite_Width = MO_WIDTH, Sprite_Height = MO_HEIGHT;
 
-	//Monster Tile Surface
-	Characters_Tile = RGBSurface("Datas/Characters/Monsters5.bmp", Color(0xFF, 0xFF, 0xFF));
-	
-	//
-	//TODO: default monster sprite ?
-	//
+	//Monster Tile Surface (default empty)
+	Characters_Tile = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, SCREEN_BPP);
+
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
     _monster_clip.setx( Sprite_Width * (rand()%8) );
 	_monster_clip.sety( Sprite_Height*6 );
