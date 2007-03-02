@@ -4,7 +4,7 @@
 Render_Engine::Render_Engine()
 {
 	//Allocations
-	myPlayer = new Player(0,0);
+	myPlayer = new Player();
 	myNPC = new NPCs();
 	myBackGround = new BackGround();
 	myEnvironment = new Environment;

@@ -3,6 +3,10 @@
 //Default construtor
 Player_Base::Player_Base()
 {
+	//Initial positions
+	X = CH_INITIAL_X;
+	Y = CH_INITIAL_Y;
+
 	//Initial arrow position
 	arrow_x = X;
 	arrow_y = Y;
@@ -398,11 +402,11 @@ int Player_Base::Attack(std::vector< std::vector<Character_Base*> *>* Global_Mon
 		attack_successfull = 0;
 
 		//
-		//TODO: Get the weapon max hit range & damage and calculate character range and damage from them
+		//TODO(future): Set weapons max hit range & damage and calculate character range and damage from them
 		//TODO(future): put these value's definitions inside the constructor (when monster/npc will be allowed to attack)
 		//TODO(future): use formula for character_real_damage depending on character condition (disease, etc)
 		//
-		int character_max_damage = 100;
+		int character_max_damage = Current_Damage;
 		int character_real_damage = character_max_damage;
 		int character_current_damage = character_real_damage;
 
@@ -426,10 +430,6 @@ int Player_Base::Attack(std::vector< std::vector<Character_Base*> *>* Global_Mon
 			//loop for all the range traject
 			for (int i=1; i<=character_max_range; i++)
 			{
-				//
-				//TODO: get this formula from ini if possible?
-				//
-
 				//calculate the final damage made by the character
 				character_current_damage = character_real_damage - (i-1)*character_real_damage/character_max_range;
 

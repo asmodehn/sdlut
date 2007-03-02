@@ -169,7 +169,7 @@ try { //global error management
 	std::vector<Character_Base*>* Players_Vector = new std::vector<Character_Base*>;
 
 	//Create player & initialized it
-	Player* myPlayer = new Player(CH_INITIAL_X, CH_INITIAL_Y);
+	Player* myPlayer = new Player();
 	if( myPlayer->Set_Graphic_Style() == false ) //intialize Character's graphic aspect
 	{ 
         P0_Logger << nl << "Failed to set Player Graphic " << std::endl;

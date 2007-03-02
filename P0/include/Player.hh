@@ -32,7 +32,7 @@ class Player : public Player_Base
         }
 
 		//Definition
-		Player(int x, int y);
+		Player();
 		~Player();
 
 		//Display attack msg on the status bar (hit or miss)

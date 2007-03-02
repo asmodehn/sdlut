@@ -120,6 +120,9 @@ ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Config/ )
 #copy Datas
 ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Datas/ )
 
+#copy Save dir
+ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Saves/ )
+
 
 #adding with headers to have them in generated projects
 ADD_EXECUTABLE(

@@ -27,6 +27,7 @@ protected:
 	//Characteristics of the character
 	int BASE_LIFE, Current_Life;
 	int BASE_ARMOR, Current_Armor;
+	int BASE_DAMAGE, Current_Damage;
 
 	//Tile & Clip
 	RGBSurface Characters_Tile;

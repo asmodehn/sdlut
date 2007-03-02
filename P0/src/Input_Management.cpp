@@ -3,7 +3,7 @@
 //Constructor
 KeyboardInput::KeyboardInput()
 {
-	myPlayer = new Player(0,0);
+	myPlayer = new Player();
 	myNPC = new NPCs();
 	myEsc_Menu = new Escape_Menu();
 	myVictory_Screen = new Victory_Screen();

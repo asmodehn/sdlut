@@ -4,7 +4,7 @@
 Daemons::Daemons()
 {
 	//Allocations
-	myPlayer = new Player(0,0);
+	myPlayer = new Player();
 	myNPC = new NPCs();
 	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
 	Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;

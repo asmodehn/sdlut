@@ -10,6 +10,7 @@ Character_Base::Character_Base()
 
 	BASE_LIFE = 0, Current_Life = BASE_LIFE;
 	BASE_ARMOR = 0, Current_Armor = BASE_ARMOR;
+	BASE_DAMAGE = 0, Current_Damage = BASE_DAMAGE;
 
 	Characters_Tile = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, SCREEN_BPP);
 

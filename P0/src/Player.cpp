@@ -1,18 +1,37 @@
 #include "Player.hh"
 
 //Constructor
-Player::Player(int x, int y)
+Player::Player()
 {
-	//Initial position
-	X = x;
-    Y = y;
+	string Save_File = "Saves/player.sav";
+	std::ifstream fi_pc( Save_File.c_str() ) ;
+	if (fi_pc.fail()) //Check file present
+	{
+		Ini_Manager::Write_New_Ini_File(Save_File,
+			"Sprite_Width = 32\nSprite_Height = 32\n\nInitial_Position_X = 192\nInitial_Position_Y = 224\n\nLife = 100\nArmor = 0\n\nDamage = 100"
+			);
+		P0_Logger << nl << "Save File Creation Successfull " << std::endl;
+	}
+	fi_pc.close();
 
-	//
-	//TODO: put this in the ini file
-	//
-	//Sprite info
-	Sprite_Width = PC_WIDTH, Sprite_Height = PC_HEIGHT;
 
+//Initial position
+	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Initial_Position_X") ) >> X;
+	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Initial_Position_Y") ) >> Y;
+
+/****Sprite****/
+	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Sprite_Width") ) >> Sprite_Width;
+	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Sprite_Height") ) >> Sprite_Height;
+/****Characts****/
+	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Life") ) >> BASE_LIFE;
+	Current_Life = BASE_LIFE;
+	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Armor") ) >> BASE_ARMOR;
+	Current_Armor = BASE_ARMOR;
+	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Damage") ) >> BASE_DAMAGE;
+	Current_Damage = BASE_DAMAGE;
+
+	P0_Logger << nl << "Save File Parsed Successfully " << std::endl;
+	
 		/****CLIP****/
 	//Rect Player_Attack_Tile_Rect[8][PLAYER_SWORD_ATTACK_ANIMATION_FRAME];
 	Player_Attack_Tile_Rect = new std::vector<Rect>;
