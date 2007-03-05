@@ -1,0 +1,4 @@
+This is a BSD Modified License
+
+//TO FILL
+BSD License + tell us if you use it, and what for, and also if you made some modification so we can both improve the quality of our software together.

@@ -29,9 +29,6 @@ namespace RAGE
             return SDL_WM_GrabInput( SDL_GRAB_QUERY ) == SDL_GRAB_ON;
         }
 
-
-
-
         void Window::setCaption(std::string title, std::string iconname)
         {
             _title=title;

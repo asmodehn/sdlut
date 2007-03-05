@@ -1,0 +1,43 @@
+Here is how you should build the Rage components.
+
+Right now there are 2 / 3 components available in Rage.
+
+- Core : Contains the main usefull c++ feature everybody would like to use, like a logger, and functor, and this kind of stuff. Sadly right now it is not a project on its own and should not be built by itself. Its source will be
+included in the SDLut build.
+- SDLut : Contains the interfacing layer between the Rage Engine and an implementation library : SDL. This Utility Toolkit should be built first.
+- P0 : Containt a small game available as an exemple of what is possible with SDLut, but also to help and lead SDLut development. This one should be built last.
+
+Prerequisites
+=============
+
+To build the software, you need :
+- CMake
+- a build environment and compiler supported by CMake such as VS or GNUMake / GCC ( cf CMake supported build systems )
+- SDL installed
+- optionnaly SDL_ttf, SDL_image, SDL_mixer, SDL_net, OpenGL, depending on the feature set you want to use.
+
+To build the doc you need :
+- doxygen to generate the code documentation.
+- XMindXmlEditor to edit and generate the user documentation from XML Docbook files.
+
+SDLut
+=====
+
+As with every CMake build, you can use ccmake or CMakeSetup.exe to setup all your variables for your build.
+
+Once your build files have been generated, just build the software as you are used to do.
+
+Example : On Unix System for KDevelop:
+> cd [Your SVN_AML_Checkout_Dir]
+> mkdir build-kdev
+> mkdir build-kdev/SDLut
+> cd build-kdev/SDLut
+> ccmake -KDevelop3 ../../SDLut
+
+Then you setup up your variables, and generate build files.
+
+> make
+
+If everything has been built successfully, you can try :
+
+> ctest

@@ -3,8 +3,6 @@
    version of SDL
 */
 
-#include <stdio.h>
-
 #include "SDL.hh"
 using namespace RAGE;
 
@@ -17,7 +15,6 @@ int main(int argc, char *argv[])
     testlog <<nl << "Image : " << SDL::Version(SDL::Version::Image)<< std::endl;
     testlog <<nl << "Mixer : " << SDL::Version(SDL::Version::Mixer)<< std::endl;
     testlog <<nl << "Net : " << SDL::Version(SDL::Version::Net)<< std::endl;
-    
 
-	return 0;
+    return 0;
 }

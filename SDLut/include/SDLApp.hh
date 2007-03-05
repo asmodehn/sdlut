@@ -23,6 +23,10 @@
 #include "SDLJoystick.hh"
 #include "SDLMixer.hh"
 
+#ifndef LOGFILENAME
+#define LOGFILENAME "RAGE_SDLut.log"
+#endif //LOGFILENAME
+
 namespace RAGE
 {
     namespace SDL
@@ -32,83 +36,120 @@ namespace RAGE
 	    
         class App
         {
-            Manager * _manager;
+	    ///Managing the underlying SDL library
+            Manager * pvm_manager;
 
-            Window* _window; // for video
-            JoystickPool* _jpool; //for joystick
-            Mixer* _mixer; // for audio framework
+	    ///Handling Video Ouput related behaviour
+            Window* pvm_window; // for video
 
-            std::string _name,_icon;
+	    ///Handling Jostick Pool for input
+            JoystickPool* pvm_jpool; //for joystick
 
-            App(std::string logfilename = "RAGE_SDL.log");
+	    ///Handling Audio Ouput related behaviour
+            Mixer* pvm_mixer; // for audio framework
+
+	    ///Storing name and icon for this application
+            std::string pvm_name,pvm_icon;
+
+	    ///Constructor called privately by the static instanciator.
+	    ///setting default name and icons
+            App();
+	    ///Destructor
             ~App();
 
-            // undefined just here to prevent copies...
+            /// undefined. just here to prevent copies...
             App( const App & );
             App& operator=( App);
 
         public:
 
+		///static instanciator to create App if needed or return its unique instance
             static App& getInstance();
 
 
-            //systems initialisation...
-            void setName(std::string appName = DEFAULT_WINDOW_TITLE)
+	    ///Setting name for the application
+            void setName(std::string appName)
             {
-                _name = appName;
+                pvm_name = appName;
             }
+	    ///name accessor.
             std::string getName()
             {
-                return _name;
+                return pvm_name;
             }
 
-            void setIcon(std::string appIcon = "")
+	    ///Setting icon filename for the application
+            void setIcon(std::string appIcon)
             {
-                _icon = appIcon;
+                pvm_icon = appIcon;
             }
+	    ///icon filename accessor
             std::string getIcon()
             {
-                return _icon;
+                return pvm_icon;
             }
 
-			//just init SDL
-			bool init();
+	    ///Minimal init for SDL
+	    bool init();
+			
+	    ///Initializing Video
             ///this is mandatory to get a display and event handling (window manager, mouse, keyboard)
             bool initVideo(bool fullscreen = false,bool opengl = false,  bool resizable = true, bool noframe = false);
+
+	    ///Initializing Joystick-like inputs
             ///this is mandatory to get joystick event handling
             bool initJoystick();
-			bool initCDRom();
+
+	    ///Initializing CDRom
+	    bool initCDRom();
+
+	    ///Initializing Timers
             bool initTimer();
+
+	    ///Initializing Audio
 	    bool initAudio();
 
-            //Add more when they are tested and working...
-			bool initText();
-            
-			bool initNet();
+	    ///Initializing Text
+	    bool initText();
 
-            //Accessors
-            // may return NULL => always test the returned value!
+	    ///Initializing Network
+            bool initNet();
+
+            ///Accessor to the Window
             Window * getWindow()
             {
-                return _window;
+		assert (pvm_window);
+                return pvm_window;
             }
+	    
+	    
+	    ///Accessor to the Mixer
+	    Mixer * getMixer()
+	    {
+		    assert (pvm_mixer);
+		    return pvm_mixer;
+	    }
+	    
+	    ///Accessor to the Manager
             Manager* getManager()
             {
-                return _manager;
-            }
-            JoystickPool * getJoystickPool()
-            {
-                return _jpool;
-            }
-            void setJoystickPool( JoystickPool * jpool)
-            {
-                _jpool=jpool;
+		assert (pvm_manager);
+                return pvm_manager;
             }
 
-	Mixer * getMixer()
-	{
-		return _mixer;
-	}
+	    ///Accessor to the JoystickPool
+            JoystickPool * getJoystickPool()
+            {
+		assert (pvm_jpool);
+                return pvm_jpool;
+            }
+
+	    ///to change the joystick pool
+            void setJoystickPool( JoystickPool * jpool)
+            {
+                pvm_jpool=jpool;
+            }
+
 
         };
     }

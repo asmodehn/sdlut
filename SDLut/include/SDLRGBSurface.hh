@@ -19,18 +19,17 @@ class RGBSurface : public BaseSurface
 
 	//To be able to construct RGBSurface from Font :
 	friend class Font;
+	friend class FontImpl;
 	
 	///Conversion Constructor
     	explicit RGBSurface(SDL_Surface * s) : BaseSurface(s)
     	{} ///< This one should be called only by friends
 
 
-	static unsigned long RGBFlags;
-
-
-
 protected : //the client should not access to flags...
 
+	static unsigned long RGBFlags;
+	
 	//Constructor
 	//Beware : the default flags should be the same than in Factory for consistency
 	//BPP should NEVER be == 0 !!!!

@@ -6,16 +6,16 @@ namespace RAGE
     namespace SDL
     {
 
-	    App::App(std::string logfilename) :    _manager(NULL), _window(NULL), _mixer(NULL)
+	App::App() : pvm_manager(NULL), pvm_window(NULL), pvm_mixer(NULL)
         {
 #ifdef DEBUG
             Log << nl << "App::App() called";
 #endif
 
-            setName();
-            setIcon();
+            setName(DEFAULT_WINDOW_TITLE);
+            setIcon("");
 	    //try to create the log file. this is likely to work only in debug mode.
-	    Log.enableFileLog(logfilename);
+	    Log.enableFileLog(LOGFILENAME);
 	    
 #ifdef DEBUG
             Log << nl << "App::App() done";
@@ -35,11 +35,11 @@ namespace RAGE
 		Optional::Quit(Optional::Net);
 				
             //MAKE SURE those destructor dont need App. They shouldnt !
-            delete _window, _window = NULL;
-            delete _mixer, _mixer=NULL;
+            delete pvm_window, pvm_window = NULL;
+            delete pvm_mixer, pvm_mixer=NULL;
             //this one should be last because it calls SDL_Quit
-            delete _manager;
-            _manager = NULL;
+            delete pvm_manager;
+            pvm_manager = NULL;
 	    
 #ifdef DEBUG
             Log << nl << "App::~App() done";
@@ -88,14 +88,14 @@ namespace RAGE
 		//Initialize sdl cdrom
 		bool App::initCDRom()
 		{
-			if (_manager == NULL)
+			if (pvm_manager == NULL)
 			{
-				_manager = new Manager(false,false,false,true,false,false,false);
+				pvm_manager = new Manager(false,false,false,true,false,false,false);
 				return true;
 			}
 			else
 			{
-				return _manager->enableCdrom();
+				return pvm_manager->enableCdrom();
 			}
 			return false;
             
@@ -105,14 +105,14 @@ namespace RAGE
 		//Initialize sdl timer
 		bool App::initTimer()
 		{
-			if (_manager == NULL)
+			if (pvm_manager == NULL)
 			{
-				_manager = new Manager(false,false,true,false,false,false,false);
+				pvm_manager = new Manager(false,false,true,false,false,false,false);
 				return true;
 			}
 			else
 			{
-				return _manager->enableTimer();
+				return pvm_manager->enableTimer();
 			}
 			return false;
             
@@ -124,32 +124,32 @@ namespace RAGE
             bool res = false;
             try
             {
-                if (_manager == NULL)
+                if (pvm_manager == NULL)
                 {
-                    _manager = new Manager(true,false,false,false,false,false,false);
-					res = ( _manager != NULL );
+                    pvm_manager = new Manager(true,false,false,false,false,false,false);
+					res = ( pvm_manager != NULL );
                 }
                 else
                 {
-                    res = _manager->enableVideo();
+                    res = pvm_manager->enableVideo();
                 }
 
-                _window = new Window(_name);
+                pvm_window = new Window(pvm_name);
 
 
                 //setting the required flags...
 #ifdef HAVE_OPENGL
 
-		_window->setOpenGL(opengl);
+		pvm_window->setOpenGL(opengl);
 #else
 
                 if(opengl)
                     Log << nl << "Not compiled with opengl support --> Ignoring opengl window request"<< std::endl;
 #endif
 
-                    _window->setFullscreen(fullscreen);
-                    _window->setResizable(resizable);
-                    _window->setNoFrame(noframe);
+                    pvm_window->setFullscreen(fullscreen);
+                    pvm_window->setResizable(resizable);
+                    pvm_window->setNoFrame(noframe);
 
             }
             catch (std::exception &e)
@@ -164,11 +164,11 @@ namespace RAGE
         bool App::initJoystick()
         {
             bool res = false;
-            if (_manager == NULL)
+            if (pvm_manager == NULL)
             {
                 try
                 {
-                    _manager = new Manager(false,false,false,false,true,false,false);
+                    pvm_manager = new Manager(false,false,false,false,true,false,false);
                     res = true;
                 }
                 catch (std::exception &e)
@@ -180,17 +180,17 @@ namespace RAGE
             }
             else
             {
-                res = _manager->enableJoystick();
+                res = pvm_manager->enableJoystick();
             }
 
             if ( res == true )
-                _jpool = new JoystickPool();
+                pvm_jpool = new JoystickPool();
 #ifdef DEBUG
 
-            Log << nl << "Number of Joysticks available : " << _jpool->countAvailable();
+            Log << nl << "Number of Joysticks available : " << pvm_jpool->countAvailable();
 
-            for ( int i=0; i<  _jpool->countAvailable(); i++ )
-                Log << nl << " Joystick " << i << " : " << _jpool->getName(i) ;
+            for ( int i=0; i<  pvm_jpool->countAvailable(); i++ )
+                Log << nl << " Joystick " << i << " : " << pvm_jpool->getName(i) ;
 #endif
 
             return res;
@@ -202,19 +202,19 @@ namespace RAGE
 		try
 		{
 		
-			if (_manager == NULL)
+			if (pvm_manager == NULL)
 			{
-				_manager = new Manager(false,true,false,false,false,false,false);
-				res = (_manager != NULL);
+				pvm_manager = new Manager(false,true,false,false,false,false,false);
+				res = (pvm_manager != NULL);
 			}
 			else
 			{
-				res = _manager->enableAudio();
+				res = pvm_manager->enableAudio();
 			}
 		
 			if ( res == true )
 				//tmp for test
-				_mixer = new Mixer();
+				pvm_mixer = new Mixer();
 		
 		}
 		catch (std::exception &e)
@@ -231,10 +231,10 @@ namespace RAGE
 	
 		bool App::init()
 		{
-			if (_manager == NULL)
+			if (pvm_manager == NULL)
 			{
-				_manager = new Manager(false,false,false,false,false,false,false);
-				return (_manager != NULL);
+				pvm_manager = new Manager(false,false,false,false,false,false,false);
+				return (pvm_manager != NULL);
 			}
 			return false;
 			

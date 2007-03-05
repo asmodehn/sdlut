@@ -55,8 +55,10 @@ public:
 
 	//constructor
 	
-	//if filename empty or not found, uses default lib
-	Font(std::string filename = "", int ptsize = 16) throw (std::logic_error);
+	
+	Font() throw (std::logic_error);
+	//if filename not found, uses default lib
+	Font(std::string filename , int ptsize = 16);
 
 	//Copy constructor
 	//duplicate the TTF pointed class to avoid side effect of further modification
@@ -73,7 +75,7 @@ public:
 	{
 		return (_font != NULL) ;
 	}
-
+	bool setTTF(std::string filename , int ptsize = 16);
 
 	Style getStyle();
 	void setStyle(Style s);

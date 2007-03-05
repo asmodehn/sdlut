@@ -213,10 +213,10 @@ namespace RAGE
             //Blit src into the current surface.
             bool blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect);
 
-			bool resize(const Rect & r)
-			{
-				return resize(r.getw(),r.geth());
-			}
+	bool resize(const Rect & r)
+	{
+		return resize(r.getw(),r.geth());
+	}
 
 			virtual bool resize(int width, int height, bool keepcontent = false) = 0;
 

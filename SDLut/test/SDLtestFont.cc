@@ -59,6 +59,7 @@ public :
 	void draw()
 	{
 		RGBSurface * textsurf = _font.render(text,Color(255,255,255),Font::Solid);
+		assert(textsurf);
 		surf->fill(_bgColor);
 		surf->blit(*textsurf);
 		delete textsurf;
@@ -187,12 +188,14 @@ int main(int argc, char** argv)
  
     App::getInstance().getWindow()->setBGColor(Color (64,0,0));
 
-    //specific font
-    Font font("data/ECHELON.TTF",16);
+    Font font;
     
-    //default font
-    //Font font(16);
-    
+    if (argc > 1)
+    {
+	//specific font
+	font.setTTF(argv[1],16);
+    }
+
 	Console cons(font);
 	MyEngine engine;
 	engine.setConsole(&cons);
@@ -214,10 +217,9 @@ int main(int argc, char** argv)
     }
     else
     {
-
         App::getInstance().getWindow()->mainLoop();
-
     }
+    
     return 0;
 }
 

@@ -30,7 +30,7 @@ namespace SDL
 			FontImpl(const FontImpl & font);
 			virtual ~FontImpl();
 		
-			virtual Rect getSize(const std::string & text);
+			virtual Rect getSize(const std::string & text) const;
 
 			virtual Font::Style getStyle() { return Font::Default;}
 			virtual void setStyle(Font::Style s) { } //does nothing only one style available in default mode.
@@ -58,7 +58,7 @@ namespace SDL
 				Log << nl << "Exception caught in internal FontImpl constructor : " << e.what();
 			};
 
-			Rect FontImpl::getSize(const std::string & text)
+			Rect FontImpl::getSize(const std::string & text) const
 			{
 			//number of lines in text -> todo
 
@@ -79,15 +79,13 @@ namespace SDL
 
 			SDL_Surface * FontImpl::render(const std::string & text,Color c, Color bgc, Font::RenderMode mode) const
 			{
-			//TODO
-//  			SDL_Surface * result = SDL_CreateRGBSurface(RGBFlags, getSize(text).getw(), getSize(text).geth(), 16, r_default_mask, g_default_mask, b_default_mask, a_default_mask);
-// 			for (unsigned int i= 0; i< text.size(); i++)
-// 			{
-// 				result->blit(_fontsurf,Rect(0,i*14,14,16),alphalookup[text[i]]);
-// 				return NULL;
-// 			}
-// 			return result;
-				return NULL;
+
+				SDL_Surface * result = SDL_CreateRGBSurface(SDL_SWSURFACE, getSize(text).getw(), getSize(text).geth(), 16, BaseSurface::r_default_mask, BaseSurface::g_default_mask, BaseSurface::b_default_mask, BaseSurface::a_default_mask);
+				for (unsigned int i= 0; i< text.size(); i++)
+				{
+					SDL_BlitSurface(const_cast<SDL_Surface*>(_fontsurf.get_pSDL()),const_cast<SDL_Rect*>(alphalookup[text[i]].get_pSDL()),result,const_cast<SDL_Rect*>(Rect(0,i*14,14,16).get_pSDL()));
+				}
+				return result;
 			}
 
 
@@ -135,7 +133,7 @@ namespace SDL
 			std::string faceFamilyName();
 			std::string faceStyleName();
 			
-			Rect size(std::string text);
+			Rect getSize(const std::string& text) const;
 
 			//The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
 			SDL_Surface * render(const std::string& text, Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid) const;
@@ -252,7 +250,7 @@ namespace SDL
 				return std::string( TTF_FontFaceStyleName(_ttfstruct) );
 			}
 
-			Rect FontExtend::size(std::string text)
+			Rect FontExtend::getSize(const std::string & text) const
 			{
 				int w,h;
 				int test = TTF_SizeText(_ttfstruct,text.c_str(),&w,&h);
@@ -272,17 +270,13 @@ namespace SDL
 	///////////////////////////////////
 
 
-	Font::Font(std::string filename, int ptsize) throw (std::logic_error)
-
-#ifdef HAVE_SDLTTF
-			try : ref(1),_font( new FontExtend(filename,ptsize))
-#else
-			try : ref(1),_font( new FontImpl(filename,ptsize))
-#endif
+Font::Font() throw (std::logic_error)
+try : ref(1),_font( new FontImpl())
 {
-	if(_font==NULL) {
+	if(_font==NULL)
+	{
 		throw std::logic_error("Font Support not available");
-    }
+	}
 }
 catch (std::exception& e)
 {
@@ -290,6 +284,21 @@ catch (std::exception& e)
             e.what() << std::endl;
             //TODO : much more explicit error message...
 };
+
+Font::Font(std::string filename , int ptsize )
+try
+{
+	Font();
+	setTTF( filename, ptsize);
+}
+
+catch (std::exception& e)
+{
+	Log << nl << "Exception catched in Font Constructor :"  << nl <<
+			e.what() << std::endl;
+            //TODO : much more explicit error message...
+};
+		
 
 //Copy Constructor
 Font::Font(const Font &font)
@@ -311,6 +320,28 @@ RGBSurface * Font::render(std::string text, Color c, RenderMode mode, Color bgc)
 	return new RGBSurface(_font->render(text,c,bgc,mode));
 }
 
+	bool Font::setTTF(std::string filename, int ptsize)
+	{
+		bool changed = false;
+#ifdef HAVE_SDLTTF
+		try
+		{
+			if (ref-1 == 0) delete _font;
+			_font = new FontExtend(filename,ptsize);
+		}
+		catch (std::exception& e)
+		{
+			Log << nl << "Error in TTF File Loading :"  << nl <<
+					e.what() << std::endl;
+		};
+
+		changed = (_font != NULL );
+#else
+		Log << nl << "Feature not enabled. TTF loading is disabled.";
+#endif
+		return changed;
+	}
+			
 	Font::Style Font::getStyle()
 	{
 		return _font->getStyle();
