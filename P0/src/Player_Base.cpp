@@ -280,6 +280,10 @@ int Player_Base::Get_BG_vs_CH_Rules(int bgType)
 	{
 		return 0;
 	}
+	else if( bgType == BRIDGE_GROUND ) //Allow presence
+	{
+		return 1;
+	}
 	else // not listed type (impossible!!??). Don't allow move
 	{
 		return 0;
@@ -306,10 +310,6 @@ int Player_Base::Get_Env_vs_CH_Rules(int envType)
 		return 0;
 	}
 	else if( envType == HOUSE_ENV_ITEM ) //Allow presence
-	{
-		return 1;
-	}
-	else if( envType == BRIDGE_ENV_ITEM ) //Allow presence
 	{
 		return 1;
 	}

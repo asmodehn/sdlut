@@ -31,51 +31,51 @@ Character_Base::~Character_Base()
 //Check if the bg allow the character presence
 std::vector<int>* Character_Base::Check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector)
 {
-	std::vector<int>* res = new std::vector<int>; //vector of collision results
+	std::vector<int>* res_vect = new std::vector<int>; //vector of collision results
 	Rect env_rect;
+	env_rect.setw(BATF_SPRITE_W);
+	env_rect.seth(BATF_SPRITE_H);
 
 	//loop on all the vector
 	for(unsigned int i=0; i < BackGround_Sprite_Vector->size(); i++)
 	{
 		env_rect.setx(BackGround_Sprite_Vector->at(i)->Get_X());
 		env_rect.sety(BackGround_Sprite_Vector->at(i)->Get_Y());
-		env_rect.setw(BATF_SPRITE_W);
-		env_rect.seth(BATF_SPRITE_H);
 
 		//When collision...
 		if ( check_collision( Collision_Box, env_rect ) )
 		{
 			//... fill the vector in function of the destination background rules
-			res->push_back( Get_BG_vs_CH_Rules( BackGround_Sprite_Vector->at(i)->Get_BattleField_Type() ) );
+			res_vect->push_back( Get_BG_vs_CH_Rules( BackGround_Sprite_Vector->at(i)->Get_BattleField_Type() ) );
 		}
 	}
 
-	return res;
+	return res_vect;
 }
 
 //Check if the env allow the character presence
 std::vector<int>* Character_Base::Check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector)
 {
-	std::vector<int>* res = new std::vector<int>; //vector of collision results
+	std::vector<int>* res_vect = new std::vector<int>; //vector of collision results
 	Rect env_rect;
+	env_rect.setw(BATF_SPRITE_W);
+	env_rect.seth(BATF_SPRITE_H);
 
 	//loop on all the vector
 	for(unsigned int i=0; i < Environment_Sprite_Vector->size(); i++)
 	{
 		env_rect.setx(Environment_Sprite_Vector->at(i)->Get_X());
 		env_rect.sety(Environment_Sprite_Vector->at(i)->Get_Y());
-		env_rect.setw(BATF_SPRITE_W);
-		env_rect.seth(BATF_SPRITE_H);
 
 		//When collision...
 		if ( check_collision( Collision_Box, env_rect ) )
 		{
 			//... fill the vector in function of the destination background rules
-			res->push_back( Get_Env_vs_CH_Rules( Environment_Sprite_Vector->at(i)->Get_BattleField_Type() ) );
+			res_vect->push_back( Get_Env_vs_CH_Rules( Environment_Sprite_Vector->at(i)->Get_BattleField_Type() ) );
 		}
 	}
 
-	return res;
+	return res_vect;
 }
 
 //Check if the battlefield allow the character presence
@@ -86,29 +86,109 @@ bool Character_Base::Check_battlefield_allow_character(Rect Collision_Box, std::
 	std::vector<int>* env_vs_ch_collisions = Check_environment_allow_character(Collision_Box, Environment_Sprite_Vector);
 	std::vector<int>* bg_vs_ch_collisions = Check_background_allow_character(Collision_Box, BackGround_Sprite_Vector);
 
-	for (unsigned int i = 0; i < env_vs_ch_collisions->size(); i++)
+
+	if (bg_vs_ch_collisions->size() > 0)
 	{
-		if ( env_vs_ch_collisions->at(i) == -1 ) //environment is not present
+		for (unsigned int i = 0; i < bg_vs_ch_collisions->size(); i++)
 		{
-			if (bg_vs_ch_collisions->size() > 0) //in case of empty vector
+			if ( bg_vs_ch_collisions->at(i) == 0 )
 			{
-				if ( bg_vs_ch_collisions->at(i) == 0 )
+				res = false; //collision with bg
+				delete env_vs_ch_collisions, env_vs_ch_collisions = NULL;
+				delete bg_vs_ch_collisions, bg_vs_ch_collisions = NULL;
+				return res; //no need to work more
+			} else {
+				res = true; //no collision
+			}
+		}
+	} else {  //that means we have no bg 
+		if (env_vs_ch_collisions->size() > 0)
+		{
+			for (unsigned int i = 0; i < env_vs_ch_collisions->size(); i++)
+			{
+				if ( env_vs_ch_collisions->at(i) == 0 ) //not allowed
 				{
-					res = false; //collision with bg
+					res = false; //collision with env
+					delete env_vs_ch_collisions, env_vs_ch_collisions = NULL;
+					delete bg_vs_ch_collisions, bg_vs_ch_collisions = NULL;
 					return res; //no need to work more
+				} 
+				else //allowed or empty
+				{ 
+					res = true; //no collision
 				}
 			}
+		}
+		//battlefield allow collision box
+		delete env_vs_ch_collisions, env_vs_ch_collisions = NULL;
+		delete bg_vs_ch_collisions, bg_vs_ch_collisions = NULL;
+		return res;
+	}
 
-		} else if ( env_vs_ch_collisions->at(i) == 0 ) 
+	if (env_vs_ch_collisions->size() > 0)
+	{
+		for (unsigned int i = 0; i < env_vs_ch_collisions->size(); i++)
 		{
-			res = false; //collision with env
-			return res; //no need to work more
-		} else {
-			res = true; //no collision
+			if ( env_vs_ch_collisions->at(i) == 0 ) //not allowed
+			{
+				res = false; //collision with env
+				delete env_vs_ch_collisions, env_vs_ch_collisions = NULL;
+				delete bg_vs_ch_collisions, bg_vs_ch_collisions = NULL;
+				return res; //no need to work more
+			} 
+			else //allowed or empty
+			{ 
+				res = true; //no collision
+			}
 		}
 	}
-	
+	//battlefield allow collision box
+	delete env_vs_ch_collisions, env_vs_ch_collisions = NULL;
+	delete bg_vs_ch_collisions, bg_vs_ch_collisions = NULL;
 	return res;
+
+
+	/*if ( env_vs_ch_collisions->size() !=0 )
+	{
+		for (unsigned int i = 0; i < env_vs_ch_collisions->size(); i++)
+		{
+			if ( env_vs_ch_collisions->at(i) == -1 ) //environment is not present
+			{
+				if (bg_vs_ch_collisions->size() > 0) //in case of empty vector
+				{
+					if ( bg_vs_ch_collisions->at(i) == 0 )
+					{
+						res = false; //collision with bg
+						return res; //no need to work more
+					}
+				}
+			} else if ( env_vs_ch_collisions->at(i) == 0 ) 
+			{
+				res = false; //collision with env
+				return res; //no need to work more
+			} else {
+				res = true; //no collision
+			}
+		}
+		return res;
+	} 
+	else if (bg_vs_ch_collisions->size() > 0)
+	{
+		for (unsigned int i = 0; i < bg_vs_ch_collisions->size(); i++)
+		{
+			if ( bg_vs_ch_collisions->at(i) == 0 )
+			{
+				res = false; //collision with bg
+				return res; //no need to work more
+			} else {
+				res = true; //no collision
+			}
+		}
+		return res;
+	}
+	
+//never used
+	return res;*/
 }
 
 //Check collision with everything possible

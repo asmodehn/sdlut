@@ -7,12 +7,6 @@ BattleField_Sprite::BattleField_Sprite()
 
 	//Default Ground type
 	BattleField_Type = EMPTY_GROUND;
-
-	//Default Clip (minimal clip)
-	BattleField_Clip.setx(0);
-	BattleField_Clip.sety(0);
-	BattleField_Clip.setw(0);
-	BattleField_Clip.seth(0);
 }
 BattleField_Sprite::BattleField_Sprite(int x, int y, int battlefield_type, Rect battlefield_clip)
 {
@@ -89,6 +83,7 @@ BackGround::BackGround()
 	BackGround_Tileset_Sands = RGBSurface("Datas/Battlefield/Sand Tileset.png", Color(0x00, 0x00, 0x00));
 	BackGround_Tileset_Rivers = RGBSurface("Datas/Battlefield/Water.png", Color(0xFF, 0xFF, 0xFF));
 	BackGround_Tileset_Lakes = RGBSurface("Datas/Battlefield/Water.png", Color(0xFF, 0xFF, 0xFF));
+	BackGround_Tileset_Bridges = RGBSurface("Datas/Battlefield/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
 
 	//The default clip (minimal clip)
 	BackGround_Clip.setx(0);
@@ -182,6 +177,14 @@ std::vector<BattleField_Sprite*>* BackGround::BackGround_Vector()
 			//Lake clip
 			BackGround_Clip.setx(0);
 			BackGround_Clip.sety(0);
+			BackGround_Clip.setw(BATF_SPRITE_W);
+			BackGround_Clip.seth(BATF_SPRITE_H);
+		}
+		else if( Current_Ground_Type == BRIDGE_GROUND )
+		{
+			//Bridge Clip
+			BackGround_Clip.setx(297);
+			BackGround_Clip.sety(231);
 			BackGround_Clip.setw(BATF_SPRITE_W);
 			BackGround_Clip.seth(BATF_SPRITE_H);
 		}
@@ -296,6 +299,12 @@ try {
 				if (! Screen.blit( BackGround_Tileset_Lakes, Point::Point( BackGround_Sprite_Vector->at(i)->Get_X() - Camera.getx(), BackGround_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
 					P0_Logger << nl << "Lake Sprite Generation Failed " << GetError() << std::endl;
 			}
+			else if( Current_Bg_Type == BRIDGE_GROUND )
+			{
+				//Draw the BackGround Bridge sprite 
+				if (! Screen.blit( BackGround_Tileset_Bridges, Point::Point( BackGround_Sprite_Vector->at(i)->Get_X() - Camera.getx(), BackGround_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
+					P0_Logger << nl << "Bridge Sprite Generation Failed " << GetError() << std::endl;
+			}
 			else // not listed type(!!??) : impossible because the vector was created with Background::Background_Vector()
 			{
 				P0_Logger << nl << "Ground type present inside BackGround_Sprite_Vector not recognized !!?? X: " << BackGround_Sprite_Vector->at(i)->Get_X() << " Y: " << BackGround_Sprite_Vector->at(i)->Get_Y() << std::endl;
@@ -322,7 +331,6 @@ Environment::Environment()
 	Environment_Tileset_Rocks = RGBSurface("Datas/Battlefield/Rock.png", Color(0xFF, 0xFF, 0xFF));
 	Environment_Tileset_Walls = RGBSurface("Datas/Battlefield/Wall.png", Color(0xFF, 0xFF, 0xFF));
 	Environment_Tileset_Houses = RGBSurface("Datas/Battlefield/Houses Tileset.png", Color(0xBF, 0x7B, 0xC7));
-	Environment_Tileset_Bridges = RGBSurface("Datas/Battlefield/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
 
 	//The default clip is the minimal clip (we don't want to blit something in this case so it dont really matter)
 	Environment_Clip.setx(0);
@@ -419,14 +427,6 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 			Environment_Clip.setw(BATF_SPRITE_W);
 			Environment_Clip.seth(BATF_SPRITE_H);
 		}
-		else if( Current_Env_Item_Type == BRIDGE_ENV_ITEM )
-		{
-			//Bridge Clip
-			Environment_Clip.setx(297);
-			Environment_Clip.sety(231);
-			Environment_Clip.setw(BATF_SPRITE_W);
-			Environment_Clip.seth(BATF_SPRITE_H);
-		}
 		else // not listed type (??)
 		{
 			P0_Logger << nl << "Environment item present inside Environment_Map.txt not recognized " << std::endl;
@@ -439,12 +439,15 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 			Environment_Clip.seth(0);
 		}
 
-		//Create Monster & initialized it
-		BattleField_Sprite* TheEnvironment_Sprite = new BattleField_Sprite(x, y, Current_Env_Item_Type, Environment_Clip);
+		//if env is empty we wont add anything to the vector coz its not usefull
+		if ( Current_Env_Item_Type != NOTHING_ENV_ITEM)
+		{
+			//Create Monster & initialized it
+			BattleField_Sprite* TheEnvironment_Sprite = new BattleField_Sprite(x, y, Current_Env_Item_Type, Environment_Clip);
 
-		//store the monster at the end of the vector
-		myEnvironment_Sprite_Vector->push_back(TheEnvironment_Sprite);
-
+			//store the monster at the end of the vector
+			myEnvironment_Sprite_Vector->push_back(TheEnvironment_Sprite);
+		}
 		//Move to next position
         x += BATF_SPRITE_W;
         
@@ -545,12 +548,6 @@ try {
 			{
 				//Draw the Environment Wall sprite 
 				if (! Screen.blit( Environment_Tileset_Houses, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
-					P0_Logger << nl << "Wall Sprite Generation Failed " << GetError() << std::endl;
-			}
-			else if( Current_Env_Item_Type == BRIDGE_ENV_ITEM )
-			{
-				//Draw the Environment Bridge sprite 
-				if (! Screen.blit( Environment_Tileset_Bridges, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
 					P0_Logger << nl << "Wall Sprite Generation Failed " << GetError() << std::endl;
 			}
 			else // not listed type(!!??) : impossible because the vector was created with Environment::Environment_Vector()

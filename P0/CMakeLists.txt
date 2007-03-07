@@ -38,14 +38,27 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
 	SET( CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -pedantic" CACHE STRING
 	    "Flags used by the C compiler during debug builds."
 	    FORCE )
-	SET( CMAKE_EXE_LINKER_FLAGS_DEBUG
-	    "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Wl,--warn-unresolved-symbols,--warn-once" CACHE STRING
-	    "Flags used for linking binaries during debug builds."
-	    FORCE )
-	SET( CMAKE_SHARED_LINKER_FLAGS_DEBUG
-	    "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} -Wl,--warn-unresolved-symbols,--warn-once" CACHE STRING
-	    "Flags used by the shared libraries linker during debug builds."
-	    FORCE )
+	
+	IF (MSYS)
+	    SET( CMAKE_EXE_LINKER_FLAGS_DEBUG
+	     "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Wl,--warn-once" CACHE STRING
+	     "Flags used for linking binaries during debug builds."
+	     FORCE )
+	    SET( CMAKE_SHARED_LINKER_FLAGS_DEBUG
+	     "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} -Wl,--warn-once" CACHE STRING
+	     "Flags used by the shared libraries linker during debug builds."
+	     FORCE )
+	ELSE (MSYS)
+	    SET( CMAKE_EXE_LINKER_FLAGS_DEBUG
+	     "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Wl,--warn-unresolved-symbols,--warn-once" CACHE STRING
+	     "Flags used for linking binaries during debug builds."
+	     FORCE )
+	    SET( CMAKE_SHARED_LINKER_FLAGS_DEBUG
+	     "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} -Wl,--warn-unresolved-symbols,--warn-once" CACHE STRING
+	     "Flags used by the shared libraries linker during debug builds."
+	     FORCE )
+	ENDIF (MSYS)
+
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 
 

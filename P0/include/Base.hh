@@ -5,6 +5,7 @@
 //#include <string>
 #include <vector>
 //#include <fstream>
+#include <algorithm>
 #include <math.h>
 #include <stdarg.h> //for methods with an unllimited number of parameters
 
@@ -99,6 +100,7 @@ extern int GRASS_GROUND;
 extern int SAND_GROUND;
 extern int RIVER_GROUND;
 extern int LAKE_GROUND;
+extern int BRIDGE_GROUND;
 
 //Environment Item Type Const
 extern int NOTHING_ENV_ITEM;
@@ -106,8 +108,6 @@ extern int TREE_ENV_ITEM;
 extern int ROCK_ENV_ITEM;
 extern int WALL_ENV_ITEM;
 extern int HOUSE_ENV_ITEM;
-extern int BRIDGE_ENV_ITEM;
-
 
 //Monsters ID which defined type of monsters (used in coordination with battlefield cutting)
 enum Monsters_Type {Humanoid = 1, Worm = 2};

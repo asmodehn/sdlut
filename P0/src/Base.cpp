@@ -22,8 +22,8 @@ int INITIAL_MONSTERS = 0, MAX_MONSTERS_SIMULTANEOUSLY = 0;
 int LIFE_BAR_WIDTH = 0, LIFE_BAR_HEIGHT = 0;
 int STATUS_BAR_H = 0;
 int BATF_SPRITE_W = 0, BATF_SPRITE_H = 0;
-int EMPTY_GROUND = 0, GRASS_GROUND = 0, SAND_GROUND = 0, RIVER_GROUND = 0, LAKE_GROUND = 0;
-int NOTHING_ENV_ITEM = 0, TREE_ENV_ITEM = 0, ROCK_ENV_ITEM = 0, WALL_ENV_ITEM = 0, HOUSE_ENV_ITEM = 0, BRIDGE_ENV_ITEM = 0;
+int EMPTY_GROUND = 0, GRASS_GROUND = 0, SAND_GROUND = 0, RIVER_GROUND = 0, LAKE_GROUND = 0, BRIDGE_GROUND = 0;
+int NOTHING_ENV_ITEM = 0, TREE_ENV_ITEM = 0, ROCK_ENV_ITEM = 0, WALL_ENV_ITEM = 0, HOUSE_ENV_ITEM = 0;
 //int Humanoid = 0, Worm = 0;
 int	GLOBAL_GAME_STATE = 3;
 Logger P0_Logger("P0"); //prefix
@@ -126,14 +126,14 @@ try { //error management
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "SAND_GROUND") ) >> SAND_GROUND;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "RIVER_GROUND") ) >> RIVER_GROUND;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LAKE_GROUND") ) >> LAKE_GROUND;
-		
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "BRIDGE_GROUND") ) >> BRIDGE_GROUND;
+
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "NOTHING_ENV_ITEM") ) >> NOTHING_ENV_ITEM;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "TREE_ENV_ITEM") ) >> TREE_ENV_ITEM;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "ROCK_ENV_ITEM") ) >> ROCK_ENV_ITEM;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "WALL_ENV_ITEM") ) >> WALL_ENV_ITEM;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "HOUSE_ENV_ITEM") ) >> HOUSE_ENV_ITEM;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "BRIDGE_ENV_ITEM") ) >> BRIDGE_ENV_ITEM;
-		
+				
 		//std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Humanoid") ) >> Humanoid;
 		//std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Worm") ) >> Worm;
 

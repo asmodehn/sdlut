@@ -74,6 +74,10 @@ int Monster_Skeleton::Get_BG_vs_CH_Rules(int bgType)
 	{
 		return 0;
 	}
+	else if( bgType == BRIDGE_GROUND ) //Allow presence
+	{
+		return 1;
+	}
 	else // not listed type (impossible!!??). Don't allow move
 	{
 		return 0;
@@ -155,6 +159,10 @@ int Monster_Worm::Get_BG_vs_CH_Rules(int bgType)
 	else if( bgType == LAKE_GROUND ) //Don't allow move
 	{
 		return 0;
+	}
+	else if( bgType == BRIDGE_GROUND ) //Allow presence
+	{
+		return 1;
 	}
 	else // not listed type (impossible!!??). Don't allow move
 	{

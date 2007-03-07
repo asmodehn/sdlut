@@ -158,10 +158,6 @@ int Monster_Base::Get_Env_vs_CH_Rules(int envType)
 	{
 		return 0;
 	}
-	else if( envType == BRIDGE_ENV_ITEM ) //Allow presence
-	{
-		return 1;
-	}
 	else // not listed type (impossible!!??). Allow presence
 	{
 		return 1;
