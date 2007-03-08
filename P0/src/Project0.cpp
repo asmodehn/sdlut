@@ -303,15 +303,12 @@ try { //global error management
 	delete Monster_Factory_Skeleton, Monster_Factory_Skeleton = NULL;
 	delete Global_Monster_Vector, Global_Monster_Vector = NULL;
 	delete myPlayer, myPlayer = NULL;
-
+	delete myNPC, myNPC = NULL;
 	delete Players_Vector, Players_Vector = NULL;
-	
 	delete Global_Player_Vector, Global_Player_Vector = NULL;
 	delete myEnvironment, myEnvironment = NULL;
-	delete Environment_Sprite_Vector, Environment_Sprite_Vector = NULL;
 	delete myBackGround, myBackGround = NULL;
-	delete BackGround_Sprite_Vector, BackGround_Sprite_Vector = NULL;
-
+	
 	delete myKeyboardInput, myKeyboardInput = NULL;
 	
 	delete myRender_Engine, myRender_Engine = NULL;

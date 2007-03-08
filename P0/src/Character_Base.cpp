@@ -32,23 +32,68 @@ Character_Base::~Character_Base()
 std::vector<int>* Character_Base::Check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector)
 {
 	std::vector<int>* res_vect = new std::vector<int>; //vector of collision results
-	Rect env_rect;
-	env_rect.setw(BATF_SPRITE_W);
-	env_rect.seth(BATF_SPRITE_H);
+	Rect bf_rect;
+	bf_rect.setw(BATF_SPRITE_W);
+	bf_rect.seth(BATF_SPRITE_H);
 
-	//loop on all the vector
+	int it_x = 0, it_y = 0;
+	if (BackGround_Sprite_Vector->size() > 0)
+	{
+		//to determine iterator of the top left corner of the collision_box
+		for(int i=0; i < (LEVEL_WIDTH/BATF_SPRITE_W); i++)
+		{
+			if ( Collision_Box.getx()/BATF_SPRITE_W == (BackGround_Sprite_Vector->at(i)->Get_X())/BATF_SPRITE_W )
+			{
+				it_x = i;
+				break;
+			}
+		}
+		for(unsigned int i=0; i < BackGround_Sprite_Vector->size(); i+=(LEVEL_WIDTH/BATF_SPRITE_W) )
+		{
+			if ( Collision_Box.gety()/BATF_SPRITE_H == BackGround_Sprite_Vector->at(i)->Get_Y()/BATF_SPRITE_H )
+			{
+				it_y = i/(LEVEL_WIDTH/BATF_SPRITE_W);
+				break;
+			}
+		}
+	
+		//P0_Logger << nl << "it_x: " << it_x << "\nit_y: " << it_y << std::endl;
+		
+		//Loop only on vector elements that are present on the screen
+		unsigned int it = 0;
+		for(int i = it_y; i < it_y + Sprite_Height/BATF_SPRITE_H + 1; i++ )
+		{
+			for(int j = it_x; j < it_x + (Sprite_Width/BATF_SPRITE_W) + 1; j++)
+			{
+				it = i * (LEVEL_WIDTH/BATF_SPRITE_W) + j;
+				if (it >= BackGround_Sprite_Vector->size())
+					break;
+
+				bf_rect.setx(BackGround_Sprite_Vector->at(it)->Get_X());
+				bf_rect.sety(BackGround_Sprite_Vector->at(it)->Get_Y());
+
+				//When collision...
+				if ( check_collision( Collision_Box, bf_rect ) )
+				{
+					//... fill the vector in function of the destination background rules
+					res_vect->push_back( Get_BG_vs_CH_Rules( BackGround_Sprite_Vector->at(it)->Get_BattleField_Type() ) );
+				}
+			}
+		}
+	}
+	/*//loop on all the vector
 	for(unsigned int i=0; i < BackGround_Sprite_Vector->size(); i++)
 	{
-		env_rect.setx(BackGround_Sprite_Vector->at(i)->Get_X());
-		env_rect.sety(BackGround_Sprite_Vector->at(i)->Get_Y());
+		bf_rect.setx(BackGround_Sprite_Vector->at(i)->Get_X());
+		bf_rect.sety(BackGround_Sprite_Vector->at(i)->Get_Y());
 
 		//When collision...
-		if ( check_collision( Collision_Box, env_rect ) )
+		if ( check_collision( Collision_Box, bf_rect ) )
 		{
 			//... fill the vector in function of the destination background rules
 			res_vect->push_back( Get_BG_vs_CH_Rules( BackGround_Sprite_Vector->at(i)->Get_BattleField_Type() ) );
 		}
-	}
+	}*/
 
 	return res_vect;
 }
@@ -57,18 +102,18 @@ std::vector<int>* Character_Base::Check_background_allow_character(Rect Collisio
 std::vector<int>* Character_Base::Check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector)
 {
 	std::vector<int>* res_vect = new std::vector<int>; //vector of collision results
-	Rect env_rect;
-	env_rect.setw(BATF_SPRITE_W);
-	env_rect.seth(BATF_SPRITE_H);
+	Rect bf_rect;
+	bf_rect.setw(BATF_SPRITE_W);
+	bf_rect.seth(BATF_SPRITE_H);
 
 	//loop on all the vector
 	for(unsigned int i=0; i < Environment_Sprite_Vector->size(); i++)
 	{
-		env_rect.setx(Environment_Sprite_Vector->at(i)->Get_X());
-		env_rect.sety(Environment_Sprite_Vector->at(i)->Get_Y());
+		bf_rect.setx(Environment_Sprite_Vector->at(i)->Get_X());
+		bf_rect.sety(Environment_Sprite_Vector->at(i)->Get_Y());
 
 		//When collision...
-		if ( check_collision( Collision_Box, env_rect ) )
+		if ( check_collision( Collision_Box, bf_rect ) )
 		{
 			//... fill the vector in function of the destination background rules
 			res_vect->push_back( Get_Env_vs_CH_Rules( Environment_Sprite_Vector->at(i)->Get_BattleField_Type() ) );
