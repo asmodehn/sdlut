@@ -113,9 +113,9 @@ try {
 	if ( (myPlayer->Get_Attack_Successfull() != 0 ) && ( myPlayer->Get_Attack_Style() == 1 ) )
 	{//Now that attack anim is finished, remove Dead monsters from theirs respective vector
 			//Skeletons
-		Global_Monster_Vector->at(0) = Monster_Factory_Skeleton->Remove_Dead_Monsters();
+		Monster_Factory_Skeleton->Remove_Dead_Monsters();
 			//Worms
-		Global_Monster_Vector->at(1) = Monster_Factory_Worm->Remove_Dead_Monsters();
+		Monster_Factory_Worm->Remove_Dead_Monsters();
 	}
 	myPlayer->Set_Attack_Status(false); //end of attack
 	return 0; //end of timer
@@ -141,9 +141,9 @@ try {
 	if ( (myPlayer->Get_Attack_Successfull() != 0 ) && ( myPlayer->Get_Attack_Style() == 2 ) )
 	{//Now that arrow anim is finished, remove Dead monsters from theirs respective vector
 			//Skeletons
-		Global_Monster_Vector->at(0) = Monster_Factory_Skeleton->Remove_Dead_Monsters();
+		Monster_Factory_Skeleton->Remove_Dead_Monsters();
 			//Worms
-		Global_Monster_Vector->at(1) = Monster_Factory_Worm->Remove_Dead_Monsters();
+		Monster_Factory_Worm->Remove_Dead_Monsters();
 	}
 	myPlayer->Set_Attack_Status(false); //end of attack
 	return 0; //end of timer

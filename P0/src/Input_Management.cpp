@@ -40,39 +40,41 @@ void KeyboardInput::Player_Moves_Consequences()
 	//P0_Logger << nl << "xVel: " << myPlayer->Get_xVel() << std::endl;
 	//P0_Logger << nl << "yVel: " << myPlayer->Get_yVel() << std::endl;
 	
-	//a movement has been triggered
-	if ( (myPlayer->Get_xVel() != 0) || (myPlayer->Get_yVel() != 0) )
+	if ( !myPlayer->Get_Attack_Status() )
 	{
-		//set character sprite in function of the direction and dont move if it's only a direction change
-		if( myPlayer->Assign_Direction_Sprite() == false )
-		{ 
-			P0_Logger << nl << "Check character direction Failed " << std::endl;    
-		}
-
-		if ( myPlayer->Get_Moving_Status() ) //we're really moving but not simply changing the direction
+		//a movement has been triggered
+		if ( (myPlayer->Get_xVel() != 0) || (myPlayer->Get_yVel() != 0) )
 		{
-			//Move the character if possible
-			if( myPlayer->Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector)
-			 == false )
+			//set character sprite in function of the direction and dont move if it's only a direction change
+			if( myPlayer->Assign_Direction_Sprite() == false )
 			{ 
-				P0_Logger << nl << "Move player Failed " << std::endl;    
-			}
-			
-			//Set the camera
-			if( myPlayer->Following_Camera() == false )
-			{ 
-				P0_Logger << nl << "Failed to set the camera" << std::endl;    
+				P0_Logger << nl << "Check character direction Failed " << std::endl;    
 			}
 
-			//Intervals between animation's frames
-			myPlayer_Move_Animation_Timer->setInterval( PLAYER_MOVE_ANIMATION_INTERVAL  );
-			//Set the callback method which will define the character appearance on the screen and start animation
-			myPlayer_Move_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
-			//Start the animation
-			myPlayer_Move_Animation_Timer->start();
-		}
+			if ( myPlayer->Get_Moving_Status() ) //we're really moving but not simply changing the direction
+			{
+				//Move the character if possible
+				if( myPlayer->Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector)
+				 == false )
+				{ 
+					P0_Logger << nl << "Move player Failed " << std::endl;    
+				}
+				
+				//Set the camera
+				if( myPlayer->Following_Camera() == false )
+				{ 
+					P0_Logger << nl << "Failed to set the camera" << std::endl;    
+				}
 
+				//Intervals between animation's frames
+				myPlayer_Move_Animation_Timer->setInterval( PLAYER_MOVE_ANIMATION_INTERVAL  );
+				//Set the callback method which will define the character appearance on the screen and start animation
+				myPlayer_Move_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
+				//Start the animation
+				myPlayer_Move_Animation_Timer->start();
+			}
 		//P0_Logger << nl << "Move " << std::endl;
+		}
 	}
 }
 //Private method which will call all the method used when there is an attack by the character
