@@ -12,8 +12,6 @@ Character_Base::Character_Base()
 	BASE_ARMOR = 0, Current_Armor = BASE_ARMOR;
 	BASE_DAMAGE = 0, Current_Damage = BASE_DAMAGE;
 
-	Characters_Tile = RGBSurface(Color(0xFF, 0xFF, 0xFF), 0, 0, SCREEN_BPP);
-
 	//Default Area: the whole level
 	Allowed_Area.setx(0);
 	Allowed_Area.sety(0);
@@ -240,12 +238,12 @@ bool Character_Base::Check_battlefield_allow_character(Rect Collision_Box, std::
 bool Character_Base::Check_Collisions(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 	//If the character went too far to the left or right
-	if((Collision_Box.getx() < Allowed_Area.getx() ) || (Collision_Box.getx() + Sprite_Width > Allowed_Area.getx() + Allowed_Area.getw() ) )
+	if((Collision_Box.getx() < Allowed_Area.getx() ) || ( (signed)(Collision_Box.getx() + Sprite_Width) > (signed)(Allowed_Area.getx() + Allowed_Area.getw()) ) )
 		//we have found a collision no need to work more
 		return true;
 
 	//If the character went too far up or down (minus the status bar)
-	if((Collision_Box.gety() < Allowed_Area.gety() ) || (Collision_Box.gety() + Sprite_Height > Allowed_Area.gety() + Allowed_Area.geth() - STATUS_BAR_H) )
+	if ( (Collision_Box.gety() < Allowed_Area.gety() ) || ( (signed)(Collision_Box.gety() + Sprite_Height) > (signed)(Allowed_Area.gety() + Allowed_Area.geth() - STATUS_BAR_H) ) )
 		return true;   
 
 
@@ -307,7 +305,7 @@ bool Character_Base::Show(Rect Camera, VideoSurface& Screen)
 try {
 	//Check if the character sprite is present on the screen minus the status bar
 	//NOTE : PC_WIDTH/PC_HEIGHT are present because the camera is centered on the middle of the player and so we need to draw the screen a little more than the camera dim
-	if ( ( (Camera.getx()-PC_WIDTH) <= X) && (X < (Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-PC_HEIGHT) <= Y) && (Y < (Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
+	if ( ( (Camera.getx()-PC_WIDTH) <= X) && (X < (signed)(Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-PC_HEIGHT) <= Y) && (Y < (signed)(Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 	{
 		//It's present than draw it
 		Screen.blit(Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), Characters_SpriteRect);

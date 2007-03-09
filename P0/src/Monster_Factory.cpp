@@ -16,6 +16,10 @@ Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters)
 	Initial_Number_Of_Monsters = number_of_monsters;
 	Monster_Vector = new std::vector<Character_Base*>;
 	BattleField_Cutting_Vector = BattleField_Zone::Fill_Vector();
+
+	Monster_Template::Initialize(BASE_LIFE, Current_Life, BASE_ARMOR, Current_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
+								Life_Bar_Tile, empty_life_bar_rect, current_life_bar_rect);
+
 	P0_Logger << nl << "Factory CONSTRUCTED Successfully " << std::endl;
 }
 
@@ -59,7 +63,9 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Char
 	}
 
 	//Create Monster & initialized it
-	Monster_Template* myMonster = new Monster_Template(BATF_SPRITE_W * x,  BATF_SPRITE_H * y);
+	Monster_Template* myMonster = new Monster_Template(BATF_SPRITE_W * x,  BATF_SPRITE_H * y, 
+														BASE_LIFE, Current_Life, BASE_ARMOR, Current_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
+														Life_Bar_Tile, empty_life_bar_rect, current_life_bar_rect);
 
 	return myMonster;
 }

@@ -1,14 +1,28 @@
 #include "Monsters.hh"
 
 //Skeleton Full constructor
-Monster_Skeleton::Monster_Skeleton(int x, int y)
+Monster_Skeleton::Monster_Skeleton(int x, int y, 
+								   int &BASE_LIFE, int &Current_Life, int &BASE_ARMOR, int &Current_Armor, int &Sprite_Width, int &Sprite_Height,
+								   RGBSurface &Characters_Tile, RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &current_life_bar_rect
+								   )
 {
     //Initial position
 	X = x;
     Y = y;
 
+	this->BASE_LIFE = BASE_LIFE;
+	this->Current_Life = Current_Life;
+	this->BASE_ARMOR = BASE_ARMOR;
+	this->Current_Armor = Current_Armor;
+	this->Sprite_Width = Sprite_Width;
+	this->Sprite_Height = Sprite_Height;
+	this->Characters_Tile = Characters_Tile;
+	this->Life_Bar_Tile = Life_Bar_Tile;
+	this->empty_life_bar_rect = empty_life_bar_rect;
+	this->current_life_bar_rect = current_life_bar_rect;
+								   
 	//Characteristics management
-	string Monster_Ini = "Datas/Characters/Skeletons.ini";
+	/*string Monster_Ini = "Datas/Characters/Skeletons.ini";
 	std::ifstream fi_monster(Monster_Ini.c_str()) ;
 	if (! fi_monster.fail()) //Check file present
 	{
@@ -22,7 +36,7 @@ Monster_Skeleton::Monster_Skeleton(int x, int y)
 	fi_monster.close();
 
 	//Monster Tile Surface
-	Characters_Tile = RGBSurface("Datas/Characters/Skeletons Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile = RGBSurface("Datas/Characters/Skeletons Tile.bmp", Color(0xFF, 0xFF, 0xFF));*/
 	
 	 //Monster Clip definition range for the top left (Random monster from the 1th line)
     _monster_clip.setx( Sprite_Width * (rand()%7) );
@@ -41,14 +55,52 @@ Monster_Skeleton::Monster_Skeleton(int x, int y)
     Collision_Box.sety(Y);
     Collision_Box.setw(Sprite_Width);
     Collision_Box.seth(Sprite_Height);
-
-	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
-	Alive_Status = true;
 }
 
 //Destructor
 Monster_Skeleton::~Monster_Skeleton()
 {
+}
+
+//Intialize Monster: get all data from external files, assign surface, boxs, ...
+void Monster_Skeleton::Initialize(int &BASE_LIFE, int &Current_Life, int &BASE_ARMOR, int &Current_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface &Characters_Tile, 
+								  RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &current_life_bar_rect)
+{
+try {
+	//Characteristics management
+	string Monster_Ini = "Datas/Characters/Skeletons.ini";
+	std::ifstream fi_monster(Monster_Ini.c_str()) ;
+	if (! fi_monster.fail()) //Check file present
+	{
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
+		Current_Life = BASE_LIFE;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
+		Current_Armor = BASE_ARMOR;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
+	}
+	fi_monster.close();
+
+	//Monster Tile Surface
+	Characters_Tile = RGBSurface("Datas/Characters/Skeletons Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+
+	//Life bar infos
+	Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	
+	empty_life_bar_rect.setx(0);
+	empty_life_bar_rect.sety(0);
+	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+
+	current_life_bar_rect.setx(0);
+	current_life_bar_rect.sety(LIFE_BAR_HEIGHT);
+	current_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	current_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+
+} catch (...) {
+	//error occured
+	P0_Logger << nl << "Monster_Skeleton::Initialize ErrOr " << std::endl;
+}
 }
 
 //Set ground vs skeleton rules
@@ -87,13 +139,27 @@ int Monster_Skeleton::Get_BG_vs_CH_Rules(int bgType)
 
 
 //Worm Full constructor
-Monster_Worm::Monster_Worm(int x, int y)
+Monster_Worm::Monster_Worm(int x, int y,
+						   int &BASE_LIFE, int &Current_Life, int &BASE_ARMOR, int &Current_Armor, int &Sprite_Width, int &Sprite_Height,
+						   RGBSurface &Characters_Tile, RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &current_life_bar_rect
+						   )
 {
     //Initial position
 	X = x;
     Y = y;
 
-	//Characteristics management
+	this->BASE_LIFE = BASE_LIFE;
+	this->Current_Life = Current_Life;
+	this->BASE_ARMOR = BASE_ARMOR;
+	this->Current_Armor = Current_Armor;
+	this->Sprite_Width = Sprite_Width;
+	this->Sprite_Height = Sprite_Height;
+	this->Characters_Tile = Characters_Tile;
+	this->Life_Bar_Tile = Life_Bar_Tile;
+	this->empty_life_bar_rect = empty_life_bar_rect;
+	this->current_life_bar_rect = current_life_bar_rect;
+
+	/*//Characteristics management
 	string Monster_Ini = "Datas/Characters/Worms.ini";
 	std::ifstream fi_monster(Monster_Ini.c_str()) ;
 	if (! fi_monster.fail()) //Check file present
@@ -108,7 +174,7 @@ Monster_Worm::Monster_Worm(int x, int y)
 	fi_monster.close();
 
 	//Monster Tile Surface
-	Characters_Tile = RGBSurface("Datas/Characters/Worms Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile = RGBSurface("Datas/Characters/Worms Tile.bmp", Color(0xFF, 0xFF, 0xFF));*/
 	
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
     _monster_clip.setx( Sprite_Width * (rand()%7) );
@@ -127,14 +193,52 @@ Monster_Worm::Monster_Worm(int x, int y)
     Collision_Box.sety(Y);
     Collision_Box.setw(Sprite_Width);
     Collision_Box.seth(Sprite_Height);
-
-	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
-	Alive_Status = true;
 }
 
 //Destructor
 Monster_Worm::~Monster_Worm()
 {
+}
+
+//Intialize Monster: get all data from external files, assign surface, boxs, ...
+void Monster_Worm::Initialize(int &BASE_LIFE, int &Current_Life, int &BASE_ARMOR, int &Current_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface &Characters_Tile,  
+								  RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &current_life_bar_rect)
+{
+try {
+	//Characteristics management
+	string Monster_Ini = "Datas/Characters/Worms.ini";
+	std::ifstream fi_monster(Monster_Ini.c_str()) ;
+	if (! fi_monster.fail()) //Check file present
+	{
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
+		Current_Life = BASE_LIFE;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
+		Current_Armor = BASE_ARMOR;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
+		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
+	}
+	fi_monster.close();
+
+	//Monster Tile Surface
+	Characters_Tile = RGBSurface("Datas/Characters/Worms Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+
+	//Life bar infos
+	Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	
+	empty_life_bar_rect.setx(0);
+	empty_life_bar_rect.sety(0);
+	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+
+	current_life_bar_rect.setx(0);
+	current_life_bar_rect.sety(LIFE_BAR_HEIGHT);
+	current_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	current_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+
+} catch (...) {
+	//error occured
+	P0_Logger << nl << "Monster_Worm::Initialize ErrOr " << std::endl;
+}
 }
 
 //Set ground vs worm rules

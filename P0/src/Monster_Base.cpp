@@ -3,11 +3,8 @@
 //Default Constructor
 Monster_Base::Monster_Base()
 {
-	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
-	Alive_Status = true;
-
 	//Life bar infos
-	Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	/*Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	empty_life_bar_rect.setx(0);
 	empty_life_bar_rect.sety(0);
@@ -17,7 +14,7 @@ Monster_Base::Monster_Base()
 	current_life_bar_rect.setx(0);
 	current_life_bar_rect.sety(LIFE_BAR_HEIGHT);
 	current_life_bar_rect.setw(LIFE_BAR_WIDTH);
-	current_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+	current_life_bar_rect.seth(LIFE_BAR_HEIGHT);*/
 }
 
 //Full Construtor
@@ -178,7 +175,7 @@ bool Monster_Base::Check_Cutting_Allow_Monster(int x, int y, std::vector<BattleF
 		Allowed_Monsters_Vector = BattleField_Cutting_Vector->at(i)->Get_Allowed_Monsters();
 
 		//Check if the monster is designed to be present in the Area
-		if ( ( x >= Area.getx() ) && ( x < (Area.getx() + Area.getw()) ) && ( y >= Area.gety() ) && ( y < (Area.gety() + Area.geth()) ) )
+		if ( ( x >= Area.getx() ) && ( (signed)x < (signed)(Area.getx() + Area.getw()) ) && ( y >= Area.gety() ) && ( (signed)y < (signed)(Area.gety() + Area.geth()) ) )
 		{
 			//Check if monster ID allow them to born in the area
 			for(unsigned int j=0; j < Allowed_Monsters_Vector->size(); j++)

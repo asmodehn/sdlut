@@ -182,11 +182,11 @@ try {
     {
         Camera.sety(0);    
     }
-    if( Camera.getx() > (LEVEL_WIDTH - Camera.getw()) )
+    if( (signed)Camera.getx() > (signed)(LEVEL_WIDTH - Camera.getw()) )
     {
         Camera.setx(LEVEL_WIDTH - Camera.getw());    
     }
-    if(Camera.gety() > (LEVEL_HEIGHT - Camera.geth()) )
+    if( (signed)Camera.gety() > (signed)(LEVEL_HEIGHT - Camera.geth()) )
     {
         Camera.sety(LEVEL_HEIGHT - Camera.geth());    
     }
