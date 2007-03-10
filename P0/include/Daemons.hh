@@ -18,85 +18,20 @@ private:
 	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector;
 	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton;
 	Monster_Factory<Monster_Worm>* Monster_Factory_Worm;
-	/*std::vector<Character_Base*>* Monster_Vector_Skeleton;
-	std::vector<Character_Base*>* Monster_Vector_Worm;*/
 	std::vector< std::vector<Character_Base*> *>* Global_Player_Vector; //Pointer to the vector that contains pointer to all vectors of player
 	std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector; //Pointer to the vector that contains pointer to all vectors of monster
 		
 	
 
 public:
-
-	//Accessor
-	inline void Set_Player(Player* newPlayer)
-	{
-		myPlayer = newPlayer;
-	}
-
-	inline void Set_NPC(NPCs* newNPC)
-	{
-		myNPC = newNPC;
-	}
-
-	inline void Set_BackGround_Sprite_Vector(std::vector<BattleField_Sprite*>* newBackGround_Sprite_Vector)
-	{
-		BackGround_Sprite_Vector = newBackGround_Sprite_Vector;
-	}
-	
-	inline void Set_Environment_Sprite_Vector(std::vector<BattleField_Sprite*>* newEnvironment_Sprite_Vector)
-	{
-		Environment_Sprite_Vector = newEnvironment_Sprite_Vector;
-	}
-
-	inline void Set_Monster_Factory_Skeleton(Monster_Factory<Monster_Skeleton>* newMonster_Factory_Skeleton)
-	{
-		Monster_Factory_Skeleton = newMonster_Factory_Skeleton;
-	}
-	/*Monster_Factory<Monster_Base>* Get_Monster_Factory_Skeleton() const
-    {
-        return Monster_Factory_Skeleton;
-    }*/
-
-	inline void Set_Monster_Factory_Worm(Monster_Factory<Monster_Worm>* newMonster_Factory_Worm)
-	{
-		Monster_Factory_Worm = newMonster_Factory_Worm;
-	}
-	/*Monster_Factory<Monster_Base>* Get_Monster_Factory_Worm() const
-    {
-        return Monster_Factory_Worm;
-    }*/
-
-	inline void Set_Global_Player_Vector(std::vector< std::vector<Character_Base*> *>* newGlobal_Player_Vector)
-	{
-		Global_Player_Vector = newGlobal_Player_Vector;
-	}
-	inline void Set_Global_Monster_Vector(std::vector< std::vector<Character_Base*> *>* newGlobal_Monster_Vector)
-	{
-		Global_Monster_Vector = newGlobal_Monster_Vector;
-	}
-
-	/*void Set_Monster_Vector_Skeleton(std::vector<Character_Base*> newMonster_Vector_Skeleton)
-	{
-		Monster_Vector_Skeleton = newMonster_Vector_Skeleton;
-	}
-	std::vector<Character_Base*>* Get_Monster_Vector_Skeleton() const
-    {
-        return Monster_Vector_Skeleton;
-    }*/
-
-	/*void Set_Monster_Vector_Worm(std::vector<Character_Base*> newMonster_Vector_Worm)
-	{
-		Monster_Vector_Worm = newMonster_Vector_Worm;
-	}
-	std::vector<Character_Base*>* Get_Monster_Vector_Worm() const
-    {
-        return Monster_Vector_Worm;
-    }*/
-
-	/****Methods****/
-	Daemons();
+/***Def****/	
+	Daemons(Player* &myPlayer, NPCs* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
+				 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
+				 std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector
+				 );
 	~Daemons();
 
+/****Methods****/
 	//Callback method that will call monsters movement
 	unsigned int Move_Monsters(unsigned int interval, void* args);
 	//Callback method that will eventually generate new monster (not to near from the character!)

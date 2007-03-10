@@ -20,81 +20,24 @@ class KeyboardInput : public Keyboard
 		//Variables designed to be defined externaly
 		Player* myPlayer; //The Player Definition
 		NPCs* myNPC; //The NPC Definition
-		Escape_Menu* myEsc_Menu; //The escape menu definition
-		Victory_Screen* myVictory_Screen; //The victory screen def
 		std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector; //Vector which will contains all BackGround type and clip
 		std::vector<BattleField_Sprite*>* Environment_Sprite_Vector; //Vector which will contains all Environment items type and clip
 		Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton; //A factory of Monster Skeletons
-		//std::vector<Character_Base*> Monster_Vector_Skeleton; //Vector which will contains all skeletons
 		Monster_Factory<Monster_Worm>* Monster_Factory_Worm; //A factory of Monster Worms
-		//std::vector<Character_Base*> Monster_Vector_Worm; //Vector which will contains all skeletons
 		std::vector< std::vector<Character_Base*> *>* Global_Player_Vector; //Pointer to the vector that contains pointer to all vectors of player
 		std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector; //Pointer to the vector that contains pointer to all vectors of monster
-		//Render_Engine* myRender_Engine; //Engine
+		Escape_Menu* myEsc_Menu; //The escape menu definition
+		Victory_Screen* myVictory_Screen; //The victory screen def
 		Daemons* myDaemons; //Daemons
 
 	public:
 
-		//Accessor
-		inline void Set_Player(Player* newPlayer)
-		{
-			myPlayer = newPlayer;
-		}
-		inline void Set_NPC(NPCs* newNPC)
-		{
-			myNPC = newNPC;
-		}
-		inline void Set_Esc_Menu(Escape_Menu* newEsc_Menu)
-		{
-			myEsc_Menu = newEsc_Menu;
-		}
-		inline void Set_Victory_Screen(Victory_Screen* newVictory_Screen)
-		{
-			myVictory_Screen = newVictory_Screen;
-		}
-		inline void Set_BackGround_Sprite_Vector(std::vector<BattleField_Sprite*>* newBackGround_Sprite_Vector)
-		{
-			BackGround_Sprite_Vector = newBackGround_Sprite_Vector;
-		}
-		inline void Set_Environment_Sprite_Vector(std::vector<BattleField_Sprite*>* newEnvironment_Sprite_Vector)
-		{
-			Environment_Sprite_Vector = newEnvironment_Sprite_Vector;
-		}
-		inline void Set_Monster_Factory_Skeleton(Monster_Factory<Monster_Skeleton>* newMonster_Factory_Skeleton)
-		{
-			Monster_Factory_Skeleton = newMonster_Factory_Skeleton;
-		}
-		/*void Set_Monster_Vector_Skeleton(std::vector<Character_Base*> newMonster_Vector_Skeleton)
-		{
-			Monster_Vector_Skeleton = newMonster_Vector_Skeleton;
-		}*/
-		inline void Set_Monster_Factory_Worm(Monster_Factory<Monster_Worm>* newMonster_Factory_Worm)
-		{
-			Monster_Factory_Worm = newMonster_Factory_Worm;
-		}
-		/*void Set_Monster_Vector_Worm(std::vector<Character_Base*> newMonster_Vector_Worm)
-		{
-			Monster_Vector_Worm = newMonster_Vector_Worm;
-		}*/
-		inline void Set_Global_Player_Vector(std::vector< std::vector<Character_Base*> *>* newGlobal_Player_Vector)
-		{
-			Global_Player_Vector = newGlobal_Player_Vector;
-		}
-		inline void Set_Global_Monster_Vector(std::vector< std::vector<Character_Base*> *>* newGlobal_Monster_Vector)
-		{
-			Global_Monster_Vector = newGlobal_Monster_Vector;
-		}
-		/*inline void Set_Render_Engine(Render_Engine* newRender_Engine)
-		{
-			myRender_Engine = newRender_Engine;
-		}*/
-		inline void Set_Daemons(Daemons* newDaemons)
-		{
-			myDaemons = newDaemons;
-		}
-
 		//Def 
-		KeyboardInput();
+		KeyboardInput(Player* &myPlayer, NPCs* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
+				 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
+				 std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector,
+				 Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, Daemons* &myDaemons
+				 );
 		~KeyboardInput();
 
 		void Set_quitRequested(bool new_quitRequested)

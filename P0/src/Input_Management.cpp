@@ -1,19 +1,23 @@
 #include "Input_Management.hh"
 
 //Constructor
-KeyboardInput::KeyboardInput()
+KeyboardInput::KeyboardInput(Player* &myPlayer, NPCs* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
+				 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
+				 std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector,
+				 Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, Daemons* &myDaemons
+				 )
 {
-	myPlayer = new Player();
-	myNPC = new NPCs();
-	myEsc_Menu = new Escape_Menu();
-	myVictory_Screen = new Victory_Screen();
-	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
-	Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
-	Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>;
-	Monster_Factory_Worm = new Monster_Factory<Monster_Worm>;
-	Global_Player_Vector = new std::vector< std::vector<Character_Base*> *>;
-	Global_Monster_Vector= new std::vector< std::vector<Character_Base*> *>;
-	myDaemons = new Daemons;
+	this->myPlayer = myPlayer;
+	this->myNPC = myNPC;
+	this->BackGround_Sprite_Vector = BackGround_Sprite_Vector;
+	this->Environment_Sprite_Vector = Environment_Sprite_Vector;
+	this->Monster_Factory_Skeleton = Monster_Factory_Skeleton;
+	this->Monster_Factory_Worm = Monster_Factory_Worm;
+	this->Global_Player_Vector = Global_Player_Vector;
+	this->Global_Monster_Vector = Global_Monster_Vector;
+	this->myEsc_Menu = myEsc_Menu;
+	this->myVictory_Screen = myVictory_Screen;
+	this->myDaemons = myDaemons;
 
 	myPlayer_Attack_Animation_Timer = new Timer<Daemons>;
 	myPlayer_Move_Animation_Timer = new Timer<Daemons>;

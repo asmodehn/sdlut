@@ -116,7 +116,7 @@ class BackGround // : public BattleField_Sprite
 		std::vector<BattleField_Sprite*>* BackGround_Vector();
 
 		//Generate the background of the screen
-		bool Render(std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, Rect Camera, VideoSurface & Screen);
+		bool Render(Rect Camera, VideoSurface & Screen);
 };
 
 //Environment class which is designed to manage everything relative to the environment layer of the battlefield
@@ -141,7 +141,7 @@ class Environment // : public BattleField_Sprite
 		std::vector<BattleField_Sprite*>* Environment_Vector();
 
 		//Generate the background of the screen
-		bool Render(std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, Rect Camera, VideoSurface & Screen);
+		bool Render(Rect Camera, VideoSurface & Screen);
 };
 
 #endif

@@ -1,20 +1,22 @@
 #include "Render_Engine.hh"
 
 //Constructor
-Render_Engine::Render_Engine()
+Render_Engine::Render_Engine(Player* &myPlayer, NPCs* &myNPC, BackGround* &myBackGround, Environment* &myEnvironment,
+							 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
+							 Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, KeyboardInput* &myKeyboardInput
+							 )
 {
 	//Allocations
-	myPlayer = new Player();
-	myNPC = new NPCs();
-	myBackGround = new BackGround();
-	myEnvironment = new Environment;
-	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
-	Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
-	Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>;
-	Monster_Factory_Worm = new Monster_Factory<Monster_Worm>;
-	EscMenu = new Escape_Menu() ;
-	VictoryScreen = new Victory_Screen();
-	MyKeyboard = new KeyboardInput();
+	this->myPlayer = myPlayer;
+	this->myNPC = myNPC;
+	this->myBackGround = myBackGround;
+	this->myEnvironment = myEnvironment;
+	this->Monster_Factory_Skeleton = Monster_Factory_Skeleton;
+	this->Monster_Factory_Worm = Monster_Factory_Worm;
+	this->myEsc_Menu = myEsc_Menu;
+	this->myVictory_Screen = myVictory_Screen;
+	this->myKeyboardInput = myKeyboardInput;
+
 	P0_Logger << nl << "Engine CONSTRUCTED Successfully " << std::endl;
 }
 
@@ -48,21 +50,21 @@ void Render_Engine::prerender(unsigned long deltaticks)
 	//To handle movement based on time instead of frame
 	myPlayer->Set_DeltaTicks(deltaticks);
 	//Handle movement
-	MyKeyboard->Player_Moves_Consequences();
+	myKeyboardInput->Player_Moves_Consequences();
 }
 //Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
 void Render_Engine::render(VideoSurface & screen) const
 {
 	//VideoSurface* Screen = &screen;
 	//Generate the background on the screen
-	if( myBackGround->Render(BackGround_Sprite_Vector, myPlayer->Get_Camera(), screen) == false )
+	if( myBackGround->Render(myPlayer->Get_Camera(), screen) == false )
 	{ 
       P0_Logger << nl << "Background Render Failed " << std::endl;    
     }
 
 
 	//Generate the environment on the screen
-	if( myEnvironment->Render(Environment_Sprite_Vector, myPlayer->Get_Camera(), screen) == false )
+	if( myEnvironment->Render(myPlayer->Get_Camera(), screen) == false )
 	{ 
       P0_Logger << nl << "Environment Render Failed " << std::endl;    
     }
@@ -113,14 +115,14 @@ void Render_Engine::render(VideoSurface & screen) const
     }
 
 	//Display monsters numbers
-	if( VictoryScreen->Show_Monsters_Stats(screen) == false )
+	if( myVictory_Screen->Show_Monsters_Stats(screen) == false )
 	{ 
       P0_Logger << nl << "Display Monsters Stats Render Failed " << std::endl;    
     }
 	
 	if (GLOBAL_GAME_STATE == 4) {
 		//Show Escape menu
-		if( EscMenu->Show_Menu(screen) == false )
+		if( myEsc_Menu->Show_Menu(screen) == false )
 		{ 
 	      P0_Logger << nl << "Display Esc Menu Failed " << std::endl;    
 	    }
@@ -128,7 +130,7 @@ void Render_Engine::render(VideoSurface & screen) const
 
 	if (GLOBAL_GAME_STATE == 5) {
 		//Show Vicotry Screen menu
-		if( VictoryScreen->Show(screen) == false )
+		if( myVictory_Screen->Show(screen) == false )
 		{ 
 	      P0_Logger << nl << "Display Victory Screen Failed " << std::endl;    
 	    }

@@ -1,17 +1,28 @@
 #include "Daemons.hh"
 
 //Constructor
-Daemons::Daemons()
+Daemons::Daemons(Player* &myPlayer, NPCs* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
+				 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
+				 std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector
+				 )
 {
 	//Allocations
-	myPlayer = new Player();
+	/*myPlayer = new Player();
 	myNPC = new NPCs();
 	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
 	Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
 	Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>;
 	Monster_Factory_Worm = new Monster_Factory<Monster_Worm>;
 	Global_Player_Vector = new std::vector< std::vector<Character_Base*> *>;
-	Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;
+	Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;*/
+	this->myPlayer = myPlayer;
+	this->myNPC = myNPC;
+	this->BackGround_Sprite_Vector = BackGround_Sprite_Vector;
+	this->Environment_Sprite_Vector = Environment_Sprite_Vector;
+	this->Monster_Factory_Skeleton = Monster_Factory_Skeleton;
+	this->Monster_Factory_Worm = Monster_Factory_Worm;
+	this->Global_Player_Vector = Global_Player_Vector;
+	this->Global_Monster_Vector = Global_Monster_Vector;
 
 	P0_Logger << nl << "Deamons CONSTRUCTED Successfully " << std::endl;
 }

@@ -90,27 +90,11 @@ try { //global error management
 	}
 	P0_Logger << nl << "-> Windows, SDL, SDL_TTF And VideoSurface Where Initialized Successfully <-" << std::endl;
 	
-/********Classes Instanciation & Initialization********/
-	//Create the keyboard instance that will managed input
-	KeyboardInput* myKeyboardInput = new KeyboardInput();
-	//myKeyboardInput->enableKeyRepeat();  //enable key repeat
-
-
-	//Instanciate the timers class
-	Daemons* myDaemons = new Daemons();
-
-	//Engine instanciation
-	Render_Engine* myRender_Engine = new Render_Engine();
-
-	//Inform the render engine of the keyboard instance
-	myRender_Engine->Set_Keyboard(myKeyboardInput);
-
 /****Battlefield****/
 	//Initialize the BackGround
 	BackGround* myBackGround = new BackGround();
 	P0_Logger << nl << "BackGround Init: OK " << std::endl;
-	myRender_Engine->Set_BackGround(myBackGround); //inform the engine class of the background instance (as background is fixed for the moment)
-
+	
 	//Fill the BackGround vector with all BackGround sprite corresponding to the map file
 #ifdef _DEBUG //debug mode
 	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
@@ -118,14 +102,10 @@ try { //global error management
 	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = myBackGround->BackGround_Vector(); //Vector which will contains all BackGround type and clip
 #endif
 	P0_Logger << nl << "BackGround_Sprite Vector Fill: OK " << std::endl;
-	myKeyboardInput->Set_BackGround_Sprite_Vector( BackGround_Sprite_Vector ); //inform the input management
-	myDaemons->Set_BackGround_Sprite_Vector( BackGround_Sprite_Vector ); //inform the timer class
-	myRender_Engine->Set_BackGround_Sprite_Vector( BackGround_Sprite_Vector ); //inform the timer class (this the only moment where we get informed of the background as background is fixed for the moment)
-
+	
 	//Initialize the Environment
 	Environment* myEnvironment = new Environment();
 	P0_Logger << nl << "Environment Init: OK " << std::endl;
-	myRender_Engine->Set_Environment(myEnvironment); //inform the engine class of the environment instance
 
 	//Fill the Environment vector with all Environment sprite corresponding to the map file
 #ifdef _DEBUG //debug mode
@@ -134,10 +114,7 @@ try { //global error management
 	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector = myEnvironment->Environment_Vector(); //Vector which will contains all Environment items type and clip
 #endif
 	P0_Logger << nl << "Environment_Sprite Vector Fill: OK " << std::endl;
-	myKeyboardInput->Set_Environment_Sprite_Vector( Environment_Sprite_Vector );
-	myDaemons->Set_Environment_Sprite_Vector( Environment_Sprite_Vector ); 
-	myRender_Engine->Set_Environment_Sprite_Vector( Environment_Sprite_Vector ); //inform the timer class (this the only moment where we get informed of the environnement as environment is fixed for the moment)
-
+	
 /****PlayerS****/
 	//Vector containing pointers to vector of pointers to monsters
 	std::vector< std::vector<Character_Base*> *>* Global_Player_Vector = new std::vector< std::vector<Character_Base*> *>;
@@ -157,10 +134,6 @@ try { //global error management
     P0_Logger << nl << "NPC Creation: OK " << std::endl;
 
 	NPCs_Vector->push_back(myNPC);
-
-	myKeyboardInput->Set_NPC( myNPC );
-	myDaemons->Set_NPC(myNPC);
-	myRender_Engine->Set_NPC( myNPC );
 
 	Global_Player_Vector->push_back(NPCs_Vector);
 
@@ -185,25 +158,15 @@ try { //global error management
     P0_Logger << nl << "Player Creation: OK " << std::endl;
 
 	Players_Vector->push_back(myPlayer);
-	
-	myKeyboardInput->Set_Player( myPlayer );
-	myDaemons->Set_Player(myPlayer);
-	myRender_Engine->Set_Player( myPlayer );
 
 	Global_Player_Vector->push_back(Players_Vector);
 
-	myKeyboardInput->Set_Global_Player_Vector(Global_Player_Vector);
-	//myRender_Engine->Set_Global_Player_Vector(Global_Player_Vector);
-	myDaemons->Set_Global_Player_Vector(Global_Player_Vector);
 
 
 /****Monsters****/
 	//Initialize the skeleton factory
 	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS);  //A factory of Monster Skeletons
 	P0_Logger << nl << "Skeleton Factory Init: OK " << std::endl;
-	myKeyboardInput->Set_Monster_Factory_Skeleton( Monster_Factory_Skeleton );
-	myDaemons->Set_Monster_Factory_Skeleton( Monster_Factory_Skeleton );
-	myRender_Engine->Set_Monster_Factory_Skeleton( Monster_Factory_Skeleton );
 
 	//Create all the monsters skeletons
 	std::vector<Character_Base*>* Monster_Vector_Skeleton = Monster_Factory_Skeleton->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector);  //Vector which will contains all skeletons
@@ -212,9 +175,6 @@ try { //global error management
 	//Initialize the worm factory
 	Monster_Factory<Monster_Worm>* Monster_Factory_Worm = new Monster_Factory<Monster_Worm>(INITIAL_MONSTERS);  //A factory of Monster Worms
 	P0_Logger << nl << "Worm Factory Init: OK " << std::endl;
-	myKeyboardInput->Set_Monster_Factory_Worm( Monster_Factory_Worm );
-	myDaemons->Set_Monster_Factory_Worm( Monster_Factory_Worm );
-	myRender_Engine->Set_Monster_Factory_Worm( Monster_Factory_Worm );
 
 	//Create all the monsters worms
 	std::vector<Character_Base*>* Monster_Vector_Worm = Monster_Factory_Worm->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector); //Vector which will contains all skeletons
@@ -225,22 +185,19 @@ try { //global error management
 	Global_Monster_Vector->push_back(Monster_Vector_Skeleton);
 	Global_Monster_Vector->push_back(Monster_Vector_Worm);
 
-	myKeyboardInput->Set_Global_Monster_Vector(Global_Monster_Vector);
-	myDaemons->Set_Global_Monster_Vector(Global_Monster_Vector);
-
 /*********ENGINE************/
 
 	//Create the ingame escape menu
-	Escape_Menu* EscMenu = new Escape_Menu();
-	myKeyboardInput->Set_Esc_Menu( EscMenu );
-	myRender_Engine->Set_Esc_Menu( EscMenu );
+	Escape_Menu* myEsc_Menu = new Escape_Menu();
 
 	//Create the victory screen
-	Victory_Screen* VictoryScreen = new Victory_Screen();
-	myKeyboardInput->Set_Victory_Screen( VictoryScreen );
-	myRender_Engine->Set_Victory_Screen(VictoryScreen);
+	Victory_Screen* myVictory_Screen = new Victory_Screen();
 
 /********DEAMONS CREATION********/
+	//Instanciate the daemon class
+	Daemons* myDaemons = new Daemons(myPlayer, myNPC, BackGround_Sprite_Vector, Environment_Sprite_Vector, Monster_Factory_Skeleton,
+									Monster_Factory_Worm, Global_Player_Vector, Global_Monster_Vector );
+
 	//Create monster's movement daemons
 	Timer<Daemons>* myMonster_Factory_Monsters_Moves_Timer = new Timer<Daemons>(); //set definition
 	myMonster_Factory_Monsters_Moves_Timer->setInterval( MONSTERS_MOVEMENT_INTERVAL ); //set interval
@@ -261,16 +218,24 @@ try { //global error management
 	myScore->setInterval( 1000 / FRAMES_PER_SECOND ); //set interval
 	myScore->setCallback(myDaemons,&Daemons::Score, (void*)NULL); //set callback
 
-	//inform the keyboard of daemons process instance
-	myKeyboardInput->Set_Daemons(myDaemons);
-
 
 /********ENGINE********/
-	//Affect the game render engine to the windows
-	App::getInstance().getWindow()->setEngine(myRender_Engine);
+	//Create the keyboard instance that will managed input
+	KeyboardInput* myKeyboardInput = new KeyboardInput(myPlayer, myNPC, BackGround_Sprite_Vector, Environment_Sprite_Vector, Monster_Factory_Skeleton,
+													Monster_Factory_Worm, Global_Player_Vector, Global_Monster_Vector, myEsc_Menu,
+													myVictory_Screen, myDaemons );
+	//myKeyboardInput->enableKeyRepeat();  //enable key repeat
+
+	//Engine instanciation
+	Render_Engine* myRender_Engine = new Render_Engine(myPlayer, myNPC, myBackGround, myEnvironment, Monster_Factory_Skeleton,
+														Monster_Factory_Worm, myEsc_Menu, myVictory_Screen, myKeyboardInput );
+
 
 	//Affect the keyboard instance to the windows
     App::getInstance().getWindow()->getEventManager()->setKeyboard(myKeyboardInput);
+
+	//Affect the game render engine to the windows
+	App::getInstance().getWindow()->setEngine(myRender_Engine);
 
 
 /********Start music********/
@@ -288,7 +253,6 @@ try { //global error management
 	myScore->start(); //Score
 
 
-
 /********Launch the mainloop that will use the render method of the Engine and so will render the screen and will manage all events********/
 	App::getInstance().getWindow()->mainLoop(FRAMES_PER_SECOND);
 
@@ -297,8 +261,8 @@ try { //global error management
 	delete myScore, myScore = NULL;
 	delete myMonster_Factory_Monsters_Generation_Timer, myMonster_Factory_Monsters_Generation_Timer = NULL;
 	delete myMonster_Factory_Monsters_Moves_Timer, myMonster_Factory_Monsters_Moves_Timer = NULL;
-	delete VictoryScreen, VictoryScreen = NULL;
-	delete EscMenu, EscMenu = NULL;
+	delete myVictory_Screen, myVictory_Screen = NULL;
+	delete myEsc_Menu, myEsc_Menu = NULL;
 	delete Monster_Factory_Worm, Monster_Factory_Worm = NULL;
 	delete Monster_Factory_Skeleton, Monster_Factory_Skeleton = NULL;
 	delete Global_Monster_Vector, Global_Monster_Vector = NULL;
