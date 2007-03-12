@@ -335,7 +335,6 @@ try {
 		else if ( (Get_xVel() > 0) && (Get_yVel() > 0) )  //right down
 		{
 			move_status = CH_RIGHT_DOWN;
-
 		}
 		else if ( (Get_xVel() == 0) && (Get_yVel() > 0) )  //down
 		{

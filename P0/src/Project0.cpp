@@ -253,9 +253,17 @@ try { //global error management
 	myScore->start(); //Score
 
 
+
 /********Launch the mainloop that will use the render method of the Engine and so will render the screen and will manage all events********/
 	App::getInstance().getWindow()->mainLoop(FRAMES_PER_SECOND);
 
+
+
+/********Stop Daemons Process********/
+	myMonster_Factory_Monsters_Moves_Timer->stop(); //monsters movements
+	myMonster_Factory_Monsters_Generation_Timer->stop(); //monsters generation
+	myNPCs_Moves_Timer->stop(); //npcs movements
+	myScore->stop(); //Score
 
 /********Clean UP********/
 	delete myScore, myScore = NULL;

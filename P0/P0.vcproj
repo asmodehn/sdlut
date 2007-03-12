@@ -400,6 +400,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Datas\Characters\NPC.bmp"
+					>
+				</File>
+				<File
+					RelativePath=".\Datas\Characters\NPC.ini"
+					>
+				</File>
+				<File
 					RelativePath=".\Datas\Characters\Skeletons Tile.bmp"
 					>
 				</File>
