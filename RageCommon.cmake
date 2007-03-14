@@ -50,18 +50,15 @@ MACRO (RAGE_BUILD project_name project_type)
 	# Managing Build Types
 	# default build type
 	IF(NOT CMAKE_BUILD_TYPE)
-	  SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: None Debug Release." FORCE)
+	  SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel." FORCE)
 	ENDIF(NOT CMAKE_BUILD_TYPE)
 	
-	IF (CMAKE_BUILD_TYPE STREQUAL Debug)
-	#todo : use default cmake debug definition
-		ADD_DEFINITIONS(-DDEBUG )
-		SET(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose build commands enabled for Debug build" FORCE)
-	ENDIF (CMAKE_BUILD_TYPE STREQUAL Debug)
+	#Verbose Makefile if not release build
 	IF (CMAKE_BUILD_TYPE STREQUAL Release)
-	#todo : use default cmake release definition
-		ADD_DEFINITIONS(-DNDEBUG -DNRAGELOG)
-		SET(CMAKE_VERBOSE_MAKEFILE OFF CACHE BOOL "Verbose build commands disabled for Release build" FORCE)
+		#on for debugging build commands only. should be off otherwise
+		SET(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose build commands disabled for Release build" FORCE)
+	ELSE (CMAKE_BUILD_TYPE STREQUAL Release)
+		SET(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose build commands enabled for Non Release build" FORCE)
 	ENDIF (CMAKE_BUILD_TYPE STREQUAL Release)
 
 	FILE(GLOB HEADERS ${CMAKE_SOURCE_DIR}/include/*.hh)
@@ -137,6 +134,7 @@ SET(BUILD_SHARED_LIBS OFF)
 
 #
 #Compiler Specific rules
+# All modifications for Flags should be here
 #
 IF(MSVC)
 	MESSAGE( STATUS "Visual Studio Compiler detected. Adjusting C++ flags...")
@@ -146,32 +144,62 @@ IF(MSVC)
 ENDIF(MSVC)
 IF(CMAKE_COMPILER_IS_GNUCXX)
 	MESSAGE( STATUS "GCC Compiler detected. Adjusting C++ flags...")
-	SET( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wabi" CACHE STRING
-	    "Flags used by the C++ compiler during debug builds."
+
+	SET(GENERATE_PROFILING_INFO OFF CACHE BOOL "On to generate profiling information to use with gprof.")
+	SET(PROFILE_FLAG)	
+	IF(GENERATE_PROFILING_INFO)
+		SET(PROFILE_FLAG -pg)
+	ENDIF(GENERATE_PROFILING_INFO)
+	
+	
+	SET( CMAKE_C_FLAGS "${PROFILE_FLAG} -Wall -pedantic" CACHE STRING
+	    "Flags for C compiler."
 	    FORCE )
-	SET( CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -pedantic" CACHE STRING
+	SET( CMAKE_C_FLAGS_DEBUG "-g -D_DEBUG" CACHE STRING
 	    "Flags used by the C compiler during debug builds."
 	    FORCE )
-
+	SET( CMAKE_C_FLAGS_MINSIZEREL "-Os -DNDEBUG -DNRAGELOG" CACHE STRING
+	    "Flags used by the C compiler during release minsize builds."
+	    FORCE )
+	SET( CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG -DNRAGELOG" CACHE STRING
+	    "Flags used by the C compiler during release builds."
+	    FORCE )
+	SET( CMAKE_C_FLAGS_RELWITHDEBINFO "-O2 -g" CACHE STRING
+	    "Flags used by the C compiler during release with debug info builds."
+	    FORCE )
+    
+    	SET( CMAKE_CXX_FLAGS "${PROFILE_FLAG} -Wall -Wabi" CACHE STRING
+	    "Flags for C++ compiler."
+	    FORCE )
+	SET( CMAKE_CXX_FLAGS_DEBUG "-g -D_DEBUG" CACHE STRING
+	    "Flags used by the C++ compiler during debug builds."
+	    FORCE )
+	SET( CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG -DNRAGELOG" CACHE STRING
+	    "Flags used by the C++ compiler during release minsize builds."
+	    FORCE )
+	SET( CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -DNRAGELOG" CACHE STRING
+	    "Flags used by the C++ compiler during release builds."
+	    FORCE )
+	SET( CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g" CACHE STRING
+	    "Flags used by the C++ compiler during release with debug info builds."
+	    FORCE )
+	
+	SET(RAGE_COMMON_LINKER_FLAGS)
 	IF (MSYS)
-	    SET( CMAKE_EXE_LINKER_FLAGS_DEBUG
-	     "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Wl,--warn-once" CACHE STRING
-	     "Flags used for linking binaries during debug builds."
-	     FORCE )
-	    SET( CMAKE_SHARED_LINKER_FLAGS_DEBUG
-	     "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} -Wl,--warn-once" CACHE STRING
-	     "Flags used by the shared libraries linker during debug builds."
-	     FORCE )
+		SET(RAGE_COMMON_LINKER_FLAGS -Wl,--warn-once)
 	ELSE (MSYS)
-	    SET( CMAKE_EXE_LINKER_FLAGS_DEBUG
-	     "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Wl,--warn-unresolved-symbols,--warn-once" CACHE STRING
-	     "Flags used for linking binaries during debug builds."
-	     FORCE )
-	    SET( CMAKE_SHARED_LINKER_FLAGS_DEBUG
-	     "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} -Wl,--warn-unresolved-symbols,--warn-once" CACHE STRING
-	     "Flags used by the shared libraries linker during debug builds."
-	     FORCE )
+		SET(RAGE_COMMON_LINKER_FLAGS -Wl,--warn-unresolved-symbols,--warn-once)
 	ENDIF (MSYS)
+	
+	SET( CMAKE_EXE_LINKER_FLAGS
+	     "${PROFILE_FLAG} ${RAGE_COMMON_LINKER_FLAGS}" CACHE STRING
+	     "Flags used by the linker."
+	     FORCE )
+	     
+     	SET( CMAKE_SHARED_LINKER_FLAGS
+	     "${PROFILE_FLAG} ${RAGE_COMMON_LINKER_FLAGS}" CACHE STRING
+	     "Flags used by the linker."
+	     FORCE )
 
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 
