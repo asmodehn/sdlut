@@ -74,8 +74,7 @@ void Render_Engine::render(VideoSurface & screen) const
 	{ 
       P0_Logger << nl << "Player Render Failed " << std::endl;    
     }
-
-	//show the arrow of the screen (if necessary)
+	//Show the PC's arrow on the screen (if necessary)
 	if (myPlayer->Get_Attack_Style() == 2)
 	{
 		if( myPlayer->Show_Arrow(myPlayer->Get_Camera(), screen) == false )
@@ -84,13 +83,13 @@ void Render_Engine::render(VideoSurface & screen) const
 		}
 	}
 
+	
 	//Show the NPC on the screen
 	if( myNPC->Show(myPlayer->Get_Camera(), screen) == false )
 	{ 
       P0_Logger << nl << "NPC Render Failed " << std::endl;    
     }
-
-	//show the arrow of the screen (if necessary)
+	//Show the npc's arrow on the screen (if necessary)
 	if (myNPC->Get_Attack_Style() == 2)
 	{
 		if( myNPC->Show_Arrow(myPlayer->Get_Camera(), screen) == false )
@@ -98,6 +97,7 @@ void Render_Engine::render(VideoSurface & screen) const
 		  P0_Logger << nl << "NPC's Arrow Render Failed " << std::endl;    
 		}
 	}
+
 
 	//Apply monsters to the screen
 	if(

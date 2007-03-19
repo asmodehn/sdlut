@@ -2,8 +2,8 @@
 
 //Skeleton Full constructor
 Monster_Skeleton::Monster_Skeleton(int x, int y, 
-								   int &BASE_LIFE, int &Current_Life, int &BASE_ARMOR, int &Current_Armor, int &Sprite_Width, int &Sprite_Height,
-								   RGBSurface &Characters_Tile, RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &current_life_bar_rect
+								   int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height,
+								   RGBSurface &Characters_Tile, RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
 								   )
 {
     //Initial position
@@ -11,33 +11,16 @@ Monster_Skeleton::Monster_Skeleton(int x, int y,
     Y = y;
 
 	this->BASE_LIFE = BASE_LIFE;
-	this->Current_Life = Current_Life;
+	this->Real_Life = Real_Life;
 	this->BASE_ARMOR = BASE_ARMOR;
-	this->Current_Armor = Current_Armor;
+	this->Real_Armor = Real_Armor;
 	this->Sprite_Width = Sprite_Width;
 	this->Sprite_Height = Sprite_Height;
 	this->Characters_Tile = Characters_Tile;
 	this->Life_Bar_Tile = Life_Bar_Tile;
 	this->empty_life_bar_rect = empty_life_bar_rect;
-	this->current_life_bar_rect = current_life_bar_rect;
+	this->real_life_bar_rect = real_life_bar_rect;
 								   
-	//Characteristics management
-	/*string Monster_Ini = "Datas/Characters/Skeletons.ini";
-	std::ifstream fi_monster(Monster_Ini.c_str()) ;
-	if (! fi_monster.fail()) //Check file present
-	{
-		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
-		Current_Life = BASE_LIFE;
-		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
-		Current_Armor = BASE_ARMOR;
-		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
-		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
-	}
-	fi_monster.close();
-
-	//Monster Tile Surface
-	Characters_Tile = RGBSurface("Datas/Characters/Skeletons Tile.bmp", Color(0xFF, 0xFF, 0xFF));*/
-	
 	 //Monster Clip definition range for the top left (Random monster from the 1th line)
     _monster_clip.setx( Sprite_Width * (rand()%7) );
 	_monster_clip.sety( 0 );
@@ -63,8 +46,8 @@ Monster_Skeleton::~Monster_Skeleton()
 }
 
 //Intialize Monster: get all data from external files, assign surface, boxs, ...
-void Monster_Skeleton::Initialize(int &BASE_LIFE, int &Current_Life, int &BASE_ARMOR, int &Current_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface &Characters_Tile, 
-								  RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &current_life_bar_rect)
+void Monster_Skeleton::Initialize(int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface &Characters_Tile, 
+								  RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect)
 {
 try {
 	//Characteristics management
@@ -73,9 +56,9 @@ try {
 	if (! fi_monster.fail()) //Check file present
 	{
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
-		Current_Life = BASE_LIFE;
+		Real_Life = BASE_LIFE;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
-		Current_Armor = BASE_ARMOR;
+		Real_Armor = BASE_ARMOR;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
 	}
@@ -92,10 +75,10 @@ try {
 	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
 	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
 
-	current_life_bar_rect.setx(0);
-	current_life_bar_rect.sety(LIFE_BAR_HEIGHT);
-	current_life_bar_rect.setw(LIFE_BAR_WIDTH);
-	current_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+	real_life_bar_rect.setx(0);
+	real_life_bar_rect.sety(LIFE_BAR_HEIGHT);
+	real_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	real_life_bar_rect.seth(LIFE_BAR_HEIGHT);
 
 } catch (...) {
 	//error occured
@@ -140,8 +123,8 @@ int Monster_Skeleton::Get_BG_vs_CH_Rules(int bgType)
 
 //Worm Full constructor
 Monster_Worm::Monster_Worm(int x, int y,
-						   int &BASE_LIFE, int &Current_Life, int &BASE_ARMOR, int &Current_Armor, int &Sprite_Width, int &Sprite_Height,
-						   RGBSurface &Characters_Tile, RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &current_life_bar_rect
+						   int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height,
+						   RGBSurface &Characters_Tile, RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
 						   )
 {
     //Initial position
@@ -149,15 +132,15 @@ Monster_Worm::Monster_Worm(int x, int y,
     Y = y;
 
 	this->BASE_LIFE = BASE_LIFE;
-	this->Current_Life = Current_Life;
+	this->Real_Life = Real_Life;
 	this->BASE_ARMOR = BASE_ARMOR;
-	this->Current_Armor = Current_Armor;
+	this->Real_Armor = Real_Armor;
 	this->Sprite_Width = Sprite_Width;
 	this->Sprite_Height = Sprite_Height;
 	this->Characters_Tile = Characters_Tile;
 	this->Life_Bar_Tile = Life_Bar_Tile;
 	this->empty_life_bar_rect = empty_life_bar_rect;
-	this->current_life_bar_rect = current_life_bar_rect;
+	this->real_life_bar_rect = real_life_bar_rect;
 
 	/*//Characteristics management
 	string Monster_Ini = "Datas/Characters/Worms.ini";
@@ -165,9 +148,9 @@ Monster_Worm::Monster_Worm(int x, int y,
 	if (! fi_monster.fail()) //Check file present
 	{
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
-		Current_Life = BASE_LIFE;
+		Real_Life = BASE_LIFE;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
-		Current_Armor = BASE_ARMOR;
+		Real_Armor = BASE_ARMOR;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
 	}
@@ -201,8 +184,8 @@ Monster_Worm::~Monster_Worm()
 }
 
 //Intialize Monster: get all data from external files, assign surface, boxs, ...
-void Monster_Worm::Initialize(int &BASE_LIFE, int &Current_Life, int &BASE_ARMOR, int &Current_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface &Characters_Tile,  
-								  RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &current_life_bar_rect)
+void Monster_Worm::Initialize(int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface &Characters_Tile,  
+								  RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect)
 {
 try {
 	//Characteristics management
@@ -211,9 +194,9 @@ try {
 	if (! fi_monster.fail()) //Check file present
 	{
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
-		Current_Life = BASE_LIFE;
+		Real_Life = BASE_LIFE;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
-		Current_Armor = BASE_ARMOR;
+		Real_Armor = BASE_ARMOR;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
 	}
@@ -230,10 +213,10 @@ try {
 	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
 	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
 
-	current_life_bar_rect.setx(0);
-	current_life_bar_rect.sety(LIFE_BAR_HEIGHT);
-	current_life_bar_rect.setw(LIFE_BAR_WIDTH);
-	current_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+	real_life_bar_rect.setx(0);
+	real_life_bar_rect.sety(LIFE_BAR_HEIGHT);
+	real_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	real_life_bar_rect.seth(LIFE_BAR_HEIGHT);
 
 } catch (...) {
 	//error occured

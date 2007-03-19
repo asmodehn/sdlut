@@ -17,8 +17,8 @@ Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters)
 	Monster_Vector = new std::vector<Character_Base*>;
 	BattleField_Cutting_Vector = BattleField_Zone::Fill_Vector();
 
-	Monster_Template::Initialize(BASE_LIFE, Current_Life, BASE_ARMOR, Current_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
-								Life_Bar_Tile, empty_life_bar_rect, current_life_bar_rect);
+	Monster_Template::Initialize(BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
+								Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
 	P0_Logger << nl << "Factory CONSTRUCTED Successfully " << std::endl;
 }
@@ -40,7 +40,7 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Char
 
 	//mini distance (3 square radius from the character border)²
 	/*int distance_mini = int( 3.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) );*/
-	int distance_mini_carre = int( 3.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) ); //int( 12.25*(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT ) );
+	int distance_mini_carre = int( 3.5*sqrt( float((PC_WIDTH*PC_WIDTH) + (PC_HEIGHT*PC_HEIGHT)) ) ); //int( 12.25*(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT ) );
 	
 	//(distance from the center - distance center to border of the character)²
 	/*int distance = int( sqrt( float( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2)) ) )
@@ -55,8 +55,8 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Char
 		y = random(0,39);
 		/*distance = int( sqrt( float( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2)) ) )
 					- 0.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) );*/
-		distance_carre = int( sqrt( float( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2)) ) )
-						- 0.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) );
+		distance_carre = int( sqrt( float( ((x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2))) + ((y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))) ) )
+						- 0.5*sqrt( float((PC_WIDTH*PC_WIDTH) + (PC_HEIGHT*PC_HEIGHT)) ) );
 			/*int( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))
 						+ 0.25*(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT)
 						- ( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2)) ) * (PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) );*/
@@ -64,8 +64,8 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Char
 
 	//Create Monster & initialized it
 	Monster_Template* myMonster = new Monster_Template(BATF_SPRITE_W * x,  BATF_SPRITE_H * y, 
-														BASE_LIFE, Current_Life, BASE_ARMOR, Current_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
-														Life_Bar_Tile, empty_life_bar_rect, current_life_bar_rect);
+														BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
+														Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
 	return myMonster;
 }

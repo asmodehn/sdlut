@@ -43,7 +43,7 @@ public:
 	//Callback method that will launch the character's attack animation
 	unsigned int Player_Attack_Animation(unsigned int interval, void* args);
 	//Callback method that will launch the arrow attack animation
-	unsigned int Player_Arrow_Animation(unsigned int interval, void* args);
+	unsigned int Player_Arrow_Movement(unsigned int interval, void* args);
 	//Callback method that will manage score
 	unsigned int Score(unsigned int interval, void* args);
 

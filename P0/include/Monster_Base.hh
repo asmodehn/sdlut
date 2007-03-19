@@ -16,7 +16,7 @@ class Monster_Base : public Character_Base
 		//Life bar infos
 		RGBSurface Life_Bar_Tile;
 		Rect empty_life_bar_rect;
-		Rect current_life_bar_rect;
+		Rect real_life_bar_rect;
 
 		/****Methods****/
 
@@ -55,7 +55,7 @@ class Monster_Base : public Character_Base
 		bool Check_Cutting_Allow_Monster(int x, int y, std::vector<BattleField_Zone*>* BattleField_Cutting_Vector);
 
 		//Calculate the current life depending on damage, malus, etc and damage made by the opponent
-		bool Calculate_Current_Life(int opponent_damage);
+		bool Calculate_Real_Life(int received_damage);
 
 		//Shows the life bar of the monster depending of it's current life
 		bool Show_Life_Bar(Rect Camera, VideoSurface& Screen);

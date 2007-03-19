@@ -8,9 +8,10 @@ Character_Base::Character_Base()
 
 	Sprite_Width = 0, Sprite_Height = 0;
 
-	BASE_LIFE = 0, Current_Life = BASE_LIFE;
-	BASE_ARMOR = 0, Current_Armor = BASE_ARMOR;
-	BASE_DAMAGE = 0, Current_Damage = BASE_DAMAGE;
+	BASE_LIFE = 0, Real_Life = BASE_LIFE;
+	BASE_ARMOR = 0, Real_Armor = BASE_ARMOR;
+	BASE_INFLICTED_DAMAGE = 0, Real_Inflicted_Damage = BASE_INFLICTED_DAMAGE;
+	BASE_RANGE = 0, Real_Range = BASE_RANGE;
 
 	//Default Area: the whole level
 	Allowed_Area.setx(0);

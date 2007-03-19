@@ -25,9 +25,10 @@ protected:
 	int Sprite_Width, Sprite_Height;
 
 	//Characteristics of the character
-	int BASE_LIFE, Current_Life;
-	int BASE_ARMOR, Current_Armor;
-	int BASE_DAMAGE, Current_Damage;
+	int BASE_LIFE, Real_Life;
+	int BASE_ARMOR, Real_Armor;
+	int BASE_INFLICTED_DAMAGE, Real_Inflicted_Damage;
+	int BASE_RANGE, Real_Range;
 
 	//Tile & Clip
 	RGBSurface Characters_Tile;
@@ -102,21 +103,37 @@ public:
     {
         return Alive_Status;
 	}
-	inline void Set_Current_Life(int new_Current_Life)
+	inline void Set_Real_Life(int new_Real_Life)
 	{
-		Current_Life = new_Current_Life;
+		Real_Life = new_Real_Life;
 	}
-	inline int Get_Current_Life()
+	inline int Get_Real_Life()
 	{
-		return Current_Life;
+		return Real_Life;
 	}
-	inline void Set_Current_Armor(int new_Current_Armor)
+	inline void Set_Real_Armor(int new_Real_Armor)
 	{
-		Current_Armor = new_Current_Armor;
+		Real_Armor = new_Real_Armor;
 	}
-	inline int Get_Current_Armor()
+	inline int Get_Real_Armor()
 	{
-		return Current_Armor;
+		return Real_Armor;
+	}
+	inline void Set_Real_Inflicted_Damage(int new_Real_Inflicted_Damage)
+	{
+		Real_Inflicted_Damage = new_Real_Inflicted_Damage;
+	}
+	inline int Get_Real_Inflicted_Damage()
+	{
+		return Real_Inflicted_Damage;
+	}
+	inline void Set_Real_Range(int new_Real_Range)
+	{
+		Real_Range = new_Real_Range;
+	}
+	inline int Get_Real_Range()
+	{
+		return Real_Range;
 	}
 	inline void Set_Allowed_Area(Rect new_Allowed_Area)
 	{

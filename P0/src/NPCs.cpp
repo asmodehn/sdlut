@@ -26,9 +26,9 @@ NPCs::NPCs()
 		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Sprite_Height") ) >> Sprite_Height;
 /****Characts****/
 		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Life") ) >> BASE_LIFE;
-		Current_Life = BASE_LIFE;
+		Real_Life = BASE_LIFE;
 		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Armor") ) >> BASE_ARMOR;
-		Current_Armor = BASE_ARMOR;
+		Real_Armor = BASE_ARMOR;
 
 	}
 	fi_npc.close();

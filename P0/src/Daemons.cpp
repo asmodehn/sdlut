@@ -114,21 +114,29 @@ unsigned int Daemons::Player_Attack_Animation(unsigned int interval, void* args)
 {
 try {
 	
-	if ( myPlayer->Set_Attack_Animation_Sprite() ) //attack anim is still ocuring than loop
+	if ( myPlayer->Set_Attack_Animation_Sprite(Global_Monster_Vector) ) //attack anim is still occuring than loop
 	{ 
-		myPlayer->Set_Attack_Status(true); //attack occuring
 		return interval;
 	} 
 	
-	//if the attack was succesfull
-	if ( (myPlayer->Get_Attack_Successfull() != 0 ) && ( myPlayer->Get_Attack_Style() == 1 ) )
-	{//Now that attack anim is finished, remove Dead monsters from theirs respective vector
-			//Skeletons
-		Monster_Factory_Skeleton->Remove_Dead_Monsters();
-			//Worms
-		Monster_Factory_Worm->Remove_Dead_Monsters();
+	//for melee attack we can check if it was successfull and reset attack
+	if ( myPlayer->Get_Attack_Style() == 1 )
+	{
+		//if the attack was successfull
+		if (myPlayer->Get_Attack_Successfull() != 0 )
+		{
+			//Remove dead Monsters
+			Monster_Factory_Skeleton->Remove_Dead_Monsters();
+			Monster_Factory_Worm->Remove_Dead_Monsters();
+		}
+			//Set the good msg
+		myPlayer->Set_Attack_Msg();
+			//reset attack
+		myPlayer->Set_Attack_Initial_X(-1);
+		myPlayer->Set_Attack_Initial_Y(-1);
+		myPlayer->Set_Attack_Direction(-1);
 	}
-	myPlayer->Set_Attack_Status(false); //end of attack
+	myPlayer->Set_Attack_Status(false); //end of attack for the character (arrow is independent)
 	return 0; //end of timer
 
 } catch (...) {
@@ -138,26 +146,46 @@ try {
 }
 
 //Callback method that will launch the arrow attack animation
-unsigned int Daemons::Player_Arrow_Animation(unsigned int interval, void* args)
+unsigned int Daemons::Player_Arrow_Movement(unsigned int interval, void* args)
 {
 try {
+	//
+	//TODO (future): only "launch" the arrow at the good distant attack animation frame until that w8
+	//TODO (future): use real arrow speed depending on character's characteristics
+	//
+
+	int xc = myPlayer->Get_Attack_CB().getx() - myPlayer->Get_Attack_Initial_X() ;
+	xc *= xc;
+	int yc = myPlayer->Get_Attack_CB().gety() - myPlayer->Get_Attack_Initial_Y() ;
+	yc *= yc;
+	int Distance_2_CH = (int)( sqrt ( (float)( xc + yc ) ) );
+
+	int Arrow_Current_Damage = myPlayer->Get_Real_Inflicted_Damage() - ( Distance_2_CH*myPlayer->Get_Real_Inflicted_Damage()/myPlayer->Get_Real_Range() );
+
+	myPlayer->Set_Attack_Successfull( myPlayer->Attack_Check_Status(myPlayer->Get_Arrow_Vel(), Arrow_Current_Damage, Global_Monster_Vector) );
 	
-	if ( myPlayer->Set_Arrow_Sprite_Coordinate() ) //arrow anim is still ocuring than loop
+	myPlayer->Set_Arrow_Sprite_Coordinate();
+
+	//if the attack was succesfull
+	if (myPlayer->Get_Attack_Successfull() != 0 ) //&& ( myPlayer->Get_Attack_Style() == 2 ) )
+	{
+		//Remove Dead Monsters
+		Monster_Factory_Skeleton->Remove_Dead_Monsters();
+		Monster_Factory_Worm->Remove_Dead_Monsters();
+	} 
+	else if ( Distance_2_CH <= myPlayer->Get_Real_Range() ) //Set_Arrow_Sprite_Coordinate() ) //arrow anim is still occuring than loop
 	{ 
-		myPlayer->Set_Attack_Status(true); //attack occuring
 		return interval;
 	} 
 	
-	//if the attack was succesfull
-	if ( (myPlayer->Get_Attack_Successfull() != 0 ) && ( myPlayer->Get_Attack_Style() == 2 ) )
-	{//Now that arrow anim is finished, remove Dead monsters from theirs respective vector
-			//Skeletons
-		Monster_Factory_Skeleton->Remove_Dead_Monsters();
-			//Worms
-		Monster_Factory_Worm->Remove_Dead_Monsters();
-	}
-	myPlayer->Set_Attack_Status(false); //end of attack
-	return 0; //end of timer
+	//set attack msg, reset & end timer
+	myPlayer->Set_Attack_Msg();
+	myPlayer->Set_Arrow_X(myPlayer->Get_X());
+	myPlayer->Set_Arrow_Y(myPlayer->Get_Y());
+	myPlayer->Set_Attack_Initial_X(-1);
+	myPlayer->Set_Attack_Initial_Y(-1);
+	myPlayer->Set_Attack_Direction(-1);
+	return 0; 
 	
 } catch (...) {
 	P0_Logger << nl << "Player's Arrow Animation Timer Failed " << std::endl;
@@ -168,7 +196,7 @@ try {
 //Callback method that will manage score
 unsigned int Daemons::Score(unsigned int interval, void* args)
 {
-try {
+//try {
 
 	if (ALiVE_MONSTERS > 0)
 		return interval;
@@ -179,8 +207,8 @@ try {
 
 	return 0; //end of timer
 	
-} catch (...) {
-	P0_Logger << nl << "Score manager Failed " << std::endl;
-	return 0; //end of timer
-}
+//} catch (...) {
+//	P0_Logger << nl << "Score manager Failed " << std::endl;
+//	return 0; //end of timer
+//}
 }

@@ -24,11 +24,11 @@ Player::Player()
 	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Sprite_Height") ) >> Sprite_Height;
 /****Characts****/
 	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Life") ) >> BASE_LIFE;
-	Current_Life = BASE_LIFE;
+	Real_Life = BASE_LIFE;
 	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Armor") ) >> BASE_ARMOR;
-	Current_Armor = BASE_ARMOR;
-	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Damage") ) >> BASE_DAMAGE;
-	Current_Damage = BASE_DAMAGE;
+	Real_Armor = BASE_ARMOR;
+	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Damage") ) >> BASE_INFLICTED_DAMAGE;
+	Real_Inflicted_Damage = BASE_INFLICTED_DAMAGE;
 
 	P0_Logger << nl << "Save File Parsed Successfully " << std::endl;
 	
@@ -77,9 +77,6 @@ Player::Player()
     Collision_Box.setw(Sprite_Width);
     Collision_Box.seth(Sprite_Height);
 
-	//Attack collsion box: currently in the same place of the character
-	attack_collision_box = Collision_Box;
-
 		/****Surfaces****/
 	//Characters Surfaces
 	Players_Tile_Melee = RGBSurface("Datas/Characters/Character_Fighter.png", Color(0xFF, 0xFF, 0xFF));
@@ -107,21 +104,47 @@ Player::~Player()
 }
 
 //Manage Attack Msg regarding the attack style
-bool Player::Set_Attack_Msgs()
+bool Player::Set_Attack_Msg()
 {
 try
 {
 	// Melee Style
 	if (attack_style == 1)
 	{
-		attack_msg_hit = attack_melee_msg_hit;
-		attack_msg_miss = attack_melee_msg_miss;
+		//If a monster has been hit displayed the hit msg, if no display miss msg
+		if (attack_successfull != 0)
+		{
+			attack_msg = attack_melee_msg_hit;
+
+			if (attack_successfull == 1)
+				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
+			if (attack_successfull == 2)
+				P0_Logger << nl << ">>> Worm Hit <<< " << std::endl;
+		}
+		else
+		{
+			attack_msg = attack_melee_msg_miss;
+			P0_Logger << nl << ">>> Monster Miss <<< " << std::endl;
+		}
 	}
 	// Distant Style
 	else if (attack_style == 2)
 	{
-		attack_msg_hit = attack_distant_msg_hit;
-		attack_msg_miss = attack_distant_msg_miss;
+		//If a monster has been hit displayed the hit msg, if no display miss msg
+		if (attack_successfull != 0)
+		{
+			attack_msg = attack_distant_msg_hit;
+
+			if (attack_successfull == 1)
+				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
+			if (attack_successfull == 2)
+				P0_Logger << nl << ">>> Worm Hit <<< " << std::endl;
+		}
+		else
+		{
+			attack_msg = attack_distant_msg_miss;
+			P0_Logger << nl << ">>> Monster Miss <<< " << std::endl;
+		}
 	}
 	return true;
 }
@@ -136,29 +159,7 @@ bool Player::Show_Attack_Msg(VideoSurface& Screen)
 try {
 	//Clean the status Bar
 	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - STATUS_BAR_H, CURRENT_SCREEN_WIDTH, STATUS_BAR_H) );
-
-	//If the player has pushed the attack key => display the good msg in the status bar
-	if (attack_status == true)
-	{
-		//If a monster has been hit displayed the hit msg, if no display miss msg
-		if (attack_successfull != 0)
-		{
-			attack_msg = attack_msg_hit;
-
-			if (attack_successfull == 1)
-				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
-			if (attack_successfull == 2)
-				P0_Logger << nl << ">>> Worm Hit <<< " << std::endl;
-		}
-		else
-		{
-			attack_msg = attack_msg_miss;
-			P0_Logger << nl << ">>> Monster Miss <<< " << std::endl;
-		}
-
-		//Display attack msg is done, so now everything relative to the character attack is done, we can reset the status
-		attack_status = false;
-	}
+	
 	Screen.blit( attack_msg, Point::Point(5, CURRENT_SCREEN_HEIGHT - 30) );
 	return true; //no error
 } catch (...) {
@@ -217,10 +218,6 @@ try {
 	//Update position
 	X = Collision_Box.getx();
 	Y = Collision_Box.gety();
-
-	//Update arrow position
-	arrow_x = X;
-	arrow_y = Y;
 
 	return true; //no error
 } catch (...) {  //error occured

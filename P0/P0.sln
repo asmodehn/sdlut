@@ -17,4 +17,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		AMDCaProjectFile = C:\Boulot\Project0\AML\trunk\P0\CodeAnalyst\P0.caw
+	EndGlobalSection
 EndGlobal

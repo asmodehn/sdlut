@@ -11,10 +11,10 @@ Monster_Base::Monster_Base()
 	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
 	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
 
-	current_life_bar_rect.setx(0);
-	current_life_bar_rect.sety(LIFE_BAR_HEIGHT);
-	current_life_bar_rect.setw(LIFE_BAR_WIDTH);
-	current_life_bar_rect.seth(LIFE_BAR_HEIGHT);*/
+	real_life_bar_rect.setx(0);
+	real_life_bar_rect.sety(LIFE_BAR_HEIGHT);
+	real_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	real_life_bar_rect.seth(LIFE_BAR_HEIGHT);*/
 }
 
 //Full Construtor
@@ -58,10 +58,10 @@ Monster_Base::Monster_Base(int x, int y)
 	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
 	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
 
-	current_life_bar_rect.setx(0);
-	current_life_bar_rect.sety(LIFE_BAR_HEIGHT);
-	current_life_bar_rect.setw(LIFE_BAR_WIDTH);
-	current_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+	real_life_bar_rect.setx(0);
+	real_life_bar_rect.sety(LIFE_BAR_HEIGHT);
+	real_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	real_life_bar_rect.seth(LIFE_BAR_HEIGHT);
 }
 
 //Copy construtor
@@ -81,7 +81,7 @@ Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 	Alive_Status = ToCopy.Alive_Status;
 	Life_Bar_Tile = ToCopy.Life_Bar_Tile;
 	empty_life_bar_rect = ToCopy.empty_life_bar_rect;
-	current_life_bar_rect = ToCopy.current_life_bar_rect;
+	real_life_bar_rect = ToCopy.real_life_bar_rect;
 }
 
 //Destructor
@@ -97,13 +97,9 @@ try {
 	if (rand()%200 <= 133) 
 	{
 		//Random mvt
-#ifdef _DEBUG //debug mode
-		xVel = ((rand()%3-1)*Sprite_Width);
-		yVel = ((rand()%3-1)*Sprite_Height);
-#else //rlz mode
 		xVel = (rand()%3-1);
 		yVel = (rand()%3-1);
-#endif
+
 		//Move collision box to the futute position
 		Collision_Box.setx(X + xVel);
 		Collision_Box.sety(Y + yVel);
@@ -195,17 +191,17 @@ bool Monster_Base::Check_Cutting_Allow_Monster(int x, int y, std::vector<BattleF
 }
 
 //Calculate the current life of the monster depending on damage, malus, etc
-bool Monster_Base::Calculate_Current_Life(int opponent_damage = 0)
+bool Monster_Base::Calculate_Real_Life(int received_damage = 0)
 {
-	int current_damage = (opponent_damage - Get_Current_Armor()); //TODO(future): Set the real damage formula base on mo's condition
+	int real_received_damage = (received_damage - Get_Real_Armor()); //TODO(future): Set the real damage formula base on mo's condition
 
-	if ( (current_damage) < 0) //in case damage dont exceed armor value then set it to 0: no damage
-		current_damage = 0;
+	if ( (real_received_damage) < 0) //in case damage dont exceed armor value then set it to 0: no damage
+		real_received_damage = 0;
 
-	Set_Current_Life( Get_Current_Life() - current_damage) ;
+	Set_Real_Life( Get_Real_Life() - real_received_damage) ;
 	
 	//Monster as no life => dead
-	if ( Get_Current_Life() <= 0 )
+	if ( Get_Real_Life() <= 0 )
 		Set_Alive_Status(false);
 
 	return true; //everything went fine
@@ -214,17 +210,17 @@ bool Monster_Base::Calculate_Current_Life(int opponent_damage = 0)
 //Shows the life bar of the monster depending of it's current life
 bool Monster_Base::Show_Life_Bar(Rect Camera, VideoSurface& Screen)
 {
-	int _current_life = Get_Current_Life();
+	int _Real_Life = Get_Real_Life();
 	//to avoid draw pb when life is < 0
-	if (_current_life < 0)
-		_current_life = 0;
+	if (_Real_Life < 0)
+		_Real_Life = 0;
 
-	current_life_bar_rect.setw( (LIFE_BAR_WIDTH * _current_life / BASE_LIFE) );
+	real_life_bar_rect.setw( (LIFE_BAR_WIDTH * _Real_Life / BASE_LIFE) );
 
 	//we blit the empty rect than the current life rect 8px on top of the monster
 	//positions are def by monster pos
 	Screen.blit(Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), empty_life_bar_rect);
-	Screen.blit(Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), current_life_bar_rect);
+	Screen.blit(Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), real_life_bar_rect);
 
 	return true;  //everything went fine
 }

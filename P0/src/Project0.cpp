@@ -125,7 +125,7 @@ try { //global error management
 
 	//Create npc & initialized it
 	NPCs* myNPC = new NPCs();
-	if( myNPC->Set_Graphic_Style() == false ) //intialize Character's graphic aspect
+	if( myNPC->Set_Attack_Style() == false ) //intialize Character's graphic aspect
 	{ 
         P0_Logger << nl << "Failed to set NPC Graphic " << std::endl;
     	Delay(2000);
@@ -143,15 +143,9 @@ try { //global error management
 
 	//Create player & initialized it
 	Player* myPlayer = new Player();
-	if( myPlayer->Set_Graphic_Style() == false ) //intialize Character's graphic aspect
+	if( myPlayer->Set_Attack_Style() == false ) //intialize Character's graphic aspect
 	{ 
         P0_Logger << nl << "Failed to set Player Graphic " << std::endl;
-    	Delay(2000);
-    	return 1;
-    }
-	if( myPlayer->Set_Attack_Msgs() == false ) //intialize Character's predef msgs
-	{ 
-        P0_Logger << nl << "Failed to set predefined msgs " << std::endl;
     	Delay(2000);
     	return 1;
     }

@@ -29,8 +29,11 @@ KeyboardInput::KeyboardInput(Player* &myPlayer, NPCs* &myNPC, std::vector<Battle
 //Destructor
 KeyboardInput::~KeyboardInput()
 {
+	myPlayer_Attack_Animation_Timer->stop();
 	delete myPlayer_Attack_Animation_Timer, myPlayer_Attack_Animation_Timer = NULL;
+	myPlayer_Move_Animation_Timer->stop();
 	delete myPlayer_Move_Animation_Timer, myPlayer_Move_Animation_Timer = NULL;
+	myPlayer_Arrow_Animation_Timer->stop();
 	delete myPlayer_Arrow_Animation_Timer, myPlayer_Arrow_Animation_Timer = NULL;
 
 	//GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
@@ -44,41 +47,38 @@ void KeyboardInput::Player_Moves_Consequences()
 	//P0_Logger << nl << "xVel: " << myPlayer->Get_xVel() << std::endl;
 	//P0_Logger << nl << "yVel: " << myPlayer->Get_yVel() << std::endl;
 	
-	if ( !myPlayer->Get_Attack_Status() )
+	//a movement has been triggered
+	if ( (myPlayer->Get_xVel() != 0) || (myPlayer->Get_yVel() != 0) )
 	{
-		//a movement has been triggered
-		if ( (myPlayer->Get_xVel() != 0) || (myPlayer->Get_yVel() != 0) )
-		{
-			//set character sprite in function of the direction and dont move if it's only a direction change
-			if( myPlayer->Assign_Direction_Sprite() == false )
-			{ 
-				P0_Logger << nl << "Check character direction Failed " << std::endl;    
-			}
-
-			if ( myPlayer->Get_Moving_Status() ) //we're really moving but not simply changing the direction
-			{
-				//Move the character if possible
-				if( myPlayer->Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector)
-				 == false )
-				{ 
-					P0_Logger << nl << "Move player Failed " << std::endl;    
-				}
-				
-				//Set the camera
-				if( myPlayer->Following_Camera() == false )
-				{ 
-					P0_Logger << nl << "Failed to set the camera" << std::endl;    
-				}
-
-				//Intervals between animation's frames
-				myPlayer_Move_Animation_Timer->setInterval( PLAYER_MOVE_ANIMATION_INTERVAL  );
-				//Set the callback method which will define the character appearance on the screen and start animation
-				myPlayer_Move_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
-				//Start the animation
-				myPlayer_Move_Animation_Timer->start();
-			}
-		//P0_Logger << nl << "Move " << std::endl;
+		//set character sprite in function of the direction and dont move if it's only a direction change
+		if( myPlayer->Assign_Direction_Sprite() == false )
+		{ 
+			P0_Logger << nl << "Check character direction Failed " << std::endl;    
 		}
+
+		if ( myPlayer->Get_Moving_Status() ) //we're really moving but not simply changing the direction
+		{
+			//Move the character if possible
+			if( myPlayer->Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector)
+			 == false )
+			{ 
+				P0_Logger << nl << "Move player Failed " << std::endl;    
+			}
+			
+			//Set the camera
+			if( myPlayer->Following_Camera() == false )
+			{ 
+				P0_Logger << nl << "Failed to set the camera" << std::endl;    
+			}
+
+			//Intervals between animation's frames
+			myPlayer_Move_Animation_Timer->setInterval( PLAYER_MOVE_ANIMATION_INTERVAL  );
+			//Set the callback method which will define the character appearance on the screen and start animation
+			myPlayer_Move_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
+			//Start the animation
+			myPlayer_Move_Animation_Timer->start();
+		}
+	//P0_Logger << nl << "Move " << std::endl;
 	}
 }
 //Private method which will call all the method used when there is an attack by the character
@@ -86,11 +86,9 @@ void KeyboardInput::Player_Attack_Consequences()
 {
 	//attack is occuring
 	myPlayer->Set_Attack_Status(true);
-
 	
 	//Handle attacks & set the distance of the attack
-	/***WARNING !! IN CASE OF DISTANT ATTACK THE MONSTER IS CONSIDERED AS DEAD WHEN THE KEY IS PRESSED AND NOT WHEN THE ARROW REACHED THE TARGET => TODO: FIND A WAY TO SOLVE THAT (SEPARATE THE ATTACK METHOD IN TWO DISTINCT METHOD PERHAPS CAN HELP)***/
-	myPlayer->Set_Hit_Monster_Distance( myPlayer->Attack(Global_Monster_Vector) );
+	myPlayer->Attack();
 	
 	//difference between attack styles
 	if ( myPlayer->Get_Attack_Style() == 1 ) 
@@ -104,7 +102,7 @@ void KeyboardInput::Player_Attack_Consequences()
 		myPlayer_Attack_Animation_Timer->setInterval( PLAYER_BOW_ATTACK_ANIMATION_INTERVAL );
 		//Arrow management
 		myPlayer_Arrow_Animation_Timer->setInterval( PLAYER_ARROW_MOVE_ANIMATION_INTERVAL );
-		myPlayer_Arrow_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Arrow_Animation, (void*)NULL);
+		myPlayer_Arrow_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Arrow_Movement, (void*)NULL);
 	}
 
 	//Set the callback method which will define the character appearance on the screen and start attack animation
@@ -140,7 +138,6 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 			//switch( s.getKey() )
 			//{
 			if ( !myPlayer->Get_Attack_Status() ) //If attack is occuring then no keys are available except escape/options keys
-			/************SEEMS TO BUG HERE WHEN CHANGING WEAPON DURING ATTACK ?****************/
 			{
 				//bool move_key_pressed = false;
 
@@ -151,8 +148,6 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					//myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
 					if (myPlayer->Get_xVel() != CH_VEL )
 						myPlayer->Set_xVel( myPlayer->Get_xVel() + CH_VEL);
-
-					//move_key_pressed = true;
 				} 
 				if ((s.getKey() == DOWN_1) || (s.getKey() == DOWN_2))
 				{
@@ -160,7 +155,6 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					//myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
 					if (myPlayer->Get_yVel() != CH_VEL )
 						myPlayer->Set_yVel( myPlayer->Get_yVel() + CH_VEL);
-					//move_key_pressed = true;;
 				}
 				if ((s.getKey() == LEFT_1) || (s.getKey() == LEFT_2))
 				{
@@ -168,7 +162,6 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					//myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
 					if (myPlayer->Get_xVel() != (-1*CH_VEL) )
 						myPlayer->Set_xVel( myPlayer->Get_xVel() - CH_VEL);
-					//move_key_pressed = true;
 				}
 				if ((s.getKey() == UP_1) || (s.getKey() == UP_2))
 				{
@@ -176,13 +169,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					//myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
 					if (myPlayer->Get_yVel() != (-1*CH_VEL) )
 						myPlayer->Set_yVel( myPlayer->Get_yVel() - CH_VEL);
-					//move_key_pressed = true;
-					
 				}
-
-				 //a movement key has been pressed
-				//if (move_key_pressed)
-					//Player_Moves_Consequences();
 
 				//Attack Keys
 				if ((s.getKey() == ATTACK_1) || (s.getKey() == ATTACK_2)) //Attacks Key
@@ -200,13 +187,9 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					myPlayer->Set_Attack_Style( myPlayer->Get_Attack_Style() + 1 );
 					if (myPlayer->Get_Attack_Style() > 2) { myPlayer->Set_Attack_Style(1); } //loop between style
 					//Update the graphic style of the character
-					if( myPlayer->Set_Graphic_Style() == false )
+					if( myPlayer->Set_Attack_Style() == false )
                     { 
 						P0_Logger << nl << "Update Graphic Style FAILED " << std::endl;
-                    }
-					if( myPlayer->Set_Attack_Msgs() == false )
-                    { 
-						P0_Logger << nl << "Update Attack Msgs FAILED " << std::endl;
                     }
 				}
 				if ((s.getKey() == KKEnter) || (s.getKey() == KKEnter))
@@ -272,8 +255,6 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					{
 						myEsc_Menu->Set_SelectedItemId(2); //The bottom SelectItem id is 2 at this time
 					}
-					//Send the modified Esc_Menu to the render engine 
-					//myRender_Engine->Set_Esc_Menu(myEsc_Menu);
 					break;
 				
 				//Increment esc menu's selected item id until it reach the bottom than go back to the top
@@ -289,8 +270,6 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					{
 						myEsc_Menu->Set_SelectedItemId(1); //The top SelectItem id is 1 at this time
 					}
-					//Send the modified Esc_Menu to the render engine 
-					//myRender_Engine->Set_Esc_Menu(myEsc_Menu);
 					break;
 
 				//Leave menu without validating
