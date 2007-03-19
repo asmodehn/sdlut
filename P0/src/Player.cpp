@@ -204,8 +204,15 @@ try {
 	//Move collision box to the futute position
 	//Collision_Box.setx(X + (xVel*(DeltaTicks/1000)) );
 	//Collision_Box.sety(Y + (yVel*(DeltaTicks/1000)) );
-	Collision_Box.setx(X + xVel);
-	Collision_Box.sety(Y + yVel);
+	if ( (move_status == CH_RIGHT ) || (move_status == CH_LEFT) || (move_status == CH_DOWN) || (move_status == CH_UP) )
+	{
+		Collision_Box.setx(X + xVel);
+		Collision_Box.sety(Y + yVel);
+	} else //diagonals
+	{
+		Collision_Box.setx( (int)ceil(X + (xVel/sqrt(2.f))) );
+		Collision_Box.sety( (int)ceil(Y + (yVel/sqrt(2.f))) );
+	}
 
 	//check collisions
 	if ( Check_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) )
