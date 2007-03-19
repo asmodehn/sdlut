@@ -86,6 +86,8 @@ void KeyboardInput::Player_Attack_Consequences()
 {
 	//attack is occuring
 	myPlayer->Set_Attack_Status(true);
+	//stop old timer if necessary
+	myPlayer_Arrow_Animation_Timer->stop();
 	
 	//Handle attacks & set the distance of the attack
 	myPlayer->Attack();
