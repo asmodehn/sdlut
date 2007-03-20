@@ -1,6 +1,6 @@
 #include "Ini_Manager.hh"
 
-bool Ini_Manager::Write_New_Ini_File(const string &filename, string content)
+bool Ini_Manager::Write_New_Ini_File(const string &filename, const string &content)
 {
 	ofstream fo(filename.c_str());
 	if ( !fo.fail() )
@@ -14,7 +14,7 @@ bool Ini_Manager::Write_New_Ini_File(const string &filename, string content)
 	}
 }
 
-bool Ini_Manager::Append_To_Ini_File(const string &filename, string content)
+bool Ini_Manager::Append_To_Ini_File(const string &filename, const string &content)
 {
 	ofstream fo(filename.c_str(), ofstream::app);
 	if ( !fo.fail() )
@@ -43,7 +43,7 @@ bool Ini_Manager::Append_To_Ini_File(const string &filename, string content)
 
 string Ini_Manager::Get_Option_String(const string &filename, const char* Option_Name)
 {
-	string res = "";
+	string res;
 
 	ifstream fi(filename.c_str());
 	if ( fi.fail() )
@@ -100,5 +100,6 @@ string Ini_Manager::Get_Option_String(const string &filename, const char* Option
 	}
 		
 	fi.close();
+
 	return res;
 }

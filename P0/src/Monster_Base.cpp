@@ -90,7 +90,7 @@ Monster_Base::~Monster_Base()
 }
 
 //Move monster randomly
-bool Monster_Base::Move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+bool Monster_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
 	//move only if a random number between 0 and 133 is below 49: 2 chances of 3 (This speed down monster movement)
@@ -158,7 +158,7 @@ int Monster_Base::Get_Env_vs_CH_Rules(int envType)
 }
 
 //Check if the battlefield cutting allow monster presence
-bool Monster_Base::Check_Cutting_Allow_Monster(int x, int y, std::vector<BattleField_Zone*>* BattleField_Cutting_Vector)
+bool Monster_Base::Check_Cutting_Allow_Monster(int x, int y, std::vector<BattleField_Zone*>* &BattleField_Cutting_Vector)
 {
 	Rect Area;
 	std::vector<int>* Allowed_Monsters_Vector = new std::vector<int>;

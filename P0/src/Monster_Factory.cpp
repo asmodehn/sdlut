@@ -71,7 +71,7 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Char
 }
 //Create Monsters Method which create as many monsters has desired
 template <typename Monster_Template>
-std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* environment_sprite_vector, std::vector<BattleField_Sprite*>* background_sprite_vector)
+std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector)
 {
 	//
 	//TODO cge that
@@ -88,7 +88,7 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters
 
 		//Check if the battlefield allow the monster creation
 		/******BUG HERE: We're not checking if other monsters allow the new created one *****/
-		while( !(newMonster->Check_battlefield_allow_character( newMonster->Get_Collision_Box(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->Check_Cutting_Allow_Monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
+		while( !(newMonster->Check_battlefield_allow_character( newMonster->Get_Collision_Box(), Environment_Sprite_Vector, BackGround_Sprite_Vector) ) || !(newMonster->Check_Cutting_Allow_Monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
 		{
 			//Monster regeneration
 			delete newMonster, newMonster = NULL;
@@ -106,7 +106,7 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters
 }
 //Invoke all monsters movements
 template <typename Monster_Template>
-bool Monster_Factory<Monster_Template>::Move_Monsters(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector) //int nb_vector, ... )//, std::vector<Character_Base*> Monster_Vector_Skeleton, std::vector<Character_Base*> Monster_Vector_Worm)
+bool Monster_Factory<Monster_Template>::Move_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector) //int nb_vector, ... )//, std::vector<Character_Base*> Monster_Vector_Skeleton, std::vector<Character_Base*> Monster_Vector_Worm)
 {
 try {
 	//Move Monsters
@@ -179,7 +179,7 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Remove_Dead_Mon
 
 //Generate new monsters until max monster has been reached
 template <typename Monster_Template>
-std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Monster(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* environment_sprite_vector, std::vector<BattleField_Sprite*>* background_sprite_vector)
+std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Monster(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector)
 {
 	unsigned int temp = 0;
 
@@ -199,7 +199,7 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Mo
 
 		//Check if the battlefield allow the monster creation
 		/******BUG HERE: We're not checking if other monsters allow the new created one *****/
-		while( !(newMonster->Check_battlefield_allow_character( newMonster->Get_Collision_Box(), environment_sprite_vector, background_sprite_vector) ) || !(newMonster->Check_Cutting_Allow_Monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
+		while( !(newMonster->Check_battlefield_allow_character( newMonster->Get_Collision_Box(), Environment_Sprite_Vector, BackGround_Sprite_Vector) ) || !(newMonster->Check_Cutting_Allow_Monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
 		{
 			//regeneration
 			delete(newMonster);

@@ -23,6 +23,9 @@ extern int CURRENT_SCREEN_WIDTH;
 extern int CURRENT_SCREEN_HEIGHT;
 extern int CURRENT_SCREEN_BPP;
 
+//Audio
+extern bool ENABLE_AUDIO;
+
 //KEYS 1
 extern int UP_1;
 extern int DOWN_1;

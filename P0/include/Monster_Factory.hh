@@ -40,10 +40,10 @@ class Monster_Factory
 		~Monster_Factory();
 
 		//Create Monster Method which create has many monsters has desired
-		std::vector<Character_Base*>* Create_Monsters(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* environment_sprite_vector, std::vector<BattleField_Sprite*>* background_sprite_vector);
+		std::vector<Character_Base*>* Create_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector);
 		
 		//Invoke all monsters movements
-		bool Move_Monsters(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector ); //int nb_vector, ... );//, std::vector<Character_Base*> Monster_Vector_Skeleton, std::vector<Character_Base*> Monster_Vector_Worm);
+		bool Move_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector );
 
 		//Render all monsters on the screen
 		bool Show_Monsters(Rect Camera, VideoSurface& Screen);
@@ -52,7 +52,7 @@ class Monster_Factory
 		std::vector<Character_Base*>* Remove_Dead_Monsters();
 		
 		//Generate new monsters until max monster has been reached
-		std::vector<Character_Base*>* Generate_New_Monster(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*> *environment_sprite_vector, std::vector<BattleField_Sprite*>* background_sprite_vector);
+		std::vector<Character_Base*>* Generate_New_Monster(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector);
 		
 };
 

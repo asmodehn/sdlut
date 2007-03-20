@@ -233,9 +233,8 @@ try { //global error management
 
 
 /********Start music********/
-#ifndef _DEBUG //only on rlz mode
+if (ENABLE_AUDIO)
 	App::getInstance().getMixer()->playChannel(GlobalMusic_Chan);
-#endif
 
 /*******Score Management********/
 	FiNiSH_TiME = (unsigned)time( NULL );

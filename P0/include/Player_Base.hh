@@ -179,7 +179,7 @@ class Player_Base : public Character_Base
 		bool Set_Attack_Style();
 	    
 		//Move the Character and check collisions with everything (default: random move)
-		virtual bool Move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
+		virtual bool Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 
 		//check the direction where the character is turn to
 		bool Assign_Direction_Sprite();

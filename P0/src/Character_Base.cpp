@@ -123,7 +123,7 @@ std::vector<int>* Character_Base::Check_environment_allow_character(Rect Collisi
 }
 
 //Check if the battlefield allow the character presence
-bool Character_Base::Check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector)
+bool Character_Base::Check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector)
 {
 	bool res = true;
 
@@ -236,7 +236,7 @@ bool Character_Base::Check_battlefield_allow_character(Rect Collision_Box, std::
 }
 
 //Check collision with everything possible
-bool Character_Base::Check_Collisions(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+bool Character_Base::Check_Collisions(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 	//If the character went too far to the left or right
 	if((Collision_Box.getx() < Allowed_Area.getx() ) || ( (signed)(Collision_Box.getx() + Sprite_Width) > (signed)(Allowed_Area.getx() + Allowed_Area.getw()) ) )

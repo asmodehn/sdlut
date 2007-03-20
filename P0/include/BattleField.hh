@@ -76,7 +76,7 @@ class BattleField_Zone
             return Area;
         }
 		
-		inline void Set_Allowed_Monsters(std::vector<int>* new_Allowed_Monsters)
+		inline void Set_Allowed_Monsters(std::vector<int>* &new_Allowed_Monsters)
         {
             Allowed_Monsters = new_Allowed_Monsters;
         }
@@ -104,7 +104,7 @@ class BackGround // : public BattleField_Sprite
 		RGBSurface BackGround_Tileset_Lakes, BackGround_Tileset_Bridges;
 
 		//The vector that will contains the BackGround sprites corresponding to the BackGround map
-		std::vector<BattleField_Sprite*>* myBackGround_Sprite_Vector;
+		std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector;
 
 	public:
 		BackGround();
@@ -129,7 +129,7 @@ class Environment // : public BattleField_Sprite
 		RGBSurface Environment_Tileset_Trees, Environment_Tileset_Rocks, Environment_Tileset_Walls, Environment_Tileset_Houses;
 
 		//The vector that will contains the BackGround sprites corresponding to the BackGround map
-		std::vector<BattleField_Sprite*>* myEnvironment_Sprite_Vector;
+		std::vector<BattleField_Sprite*>* Environment_Sprite_Vector;
 
 	public:
 		Environment();

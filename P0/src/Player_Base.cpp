@@ -232,7 +232,7 @@ catch (...) {
 }
 }
 //Move the Player
-bool Player_Base::Move(std::vector< std::vector<Character_Base*> *>* Global_Player_Vector, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+bool Player_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
 	//Random mvt
@@ -478,8 +478,8 @@ try
 		}
 		else if( attack_direction == CH_RIGHT_DOWN )
 		{
-			attack_initial_x = (int)( X+(PC_WIDTH/sqrt(2.f)) ) ;
-			attack_initial_y = (int)( Y+(PC_HEIGHT/sqrt(2.f)) ) ;
+			attack_initial_x = (int)( X+ceil(PC_WIDTH/sqrt(2.f)) ) ;
+			attack_initial_y = (int)( Y+ceil(PC_HEIGHT/sqrt(2.f)) ) ;
 		}
 		else if( attack_direction == CH_DOWN )
 		{
@@ -488,8 +488,8 @@ try
 		}
 		else if( attack_direction == CH_LEFT_DOWN )
 		{
-			attack_initial_x = (int)( X+PC_WIDTH-(PC_WIDTH/sqrt(2.f)) );
-			attack_initial_y = (int)( Y+PC_HEIGHT/sqrt(2.f) );
+			attack_initial_x = (int)( X+PC_WIDTH-ceil(PC_WIDTH/sqrt(2.f)) );
+			attack_initial_y = (int)( Y+ceil(PC_HEIGHT/sqrt(2.f)) );
 		}
 		else if( attack_direction == CH_LEFT )
 		{
@@ -498,8 +498,8 @@ try
 		}
 		else if( attack_direction == CH_LEFT_UP )
 		{
-			attack_initial_x = (int)( X+PC_WIDTH-(PC_WIDTH/sqrt(2.f)) );
-			attack_initial_y = (int)( Y+PC_HEIGHT-(PC_HEIGHT/sqrt(2.f)) );
+			attack_initial_x = (int)( X+PC_WIDTH-ceil(PC_WIDTH/sqrt(2.f)) );
+			attack_initial_y = (int)( Y+PC_HEIGHT-ceil(PC_HEIGHT/sqrt(2.f)) );
 		}
 		else if( attack_direction == CH_UP )
 		{
@@ -508,8 +508,8 @@ try
 		}
 		else if( attack_direction == CH_RIGHT_UP )
 		{
-			attack_initial_x = (int)( X+(PC_WIDTH/sqrt(2.f)) );
-			attack_initial_y = (int)( Y+PC_HEIGHT-(PC_HEIGHT/sqrt(2.f)) );
+			attack_initial_x = (int)( X+ceil(PC_WIDTH/sqrt(2.f)) );
+			attack_initial_y = (int)( Y+PC_HEIGHT-ceil(PC_HEIGHT/sqrt(2.f)) );
 		}
 		
 		//Good Arrow sprite
@@ -543,8 +543,8 @@ int Player_Base::Attack_Check_Status(int attack_distance, int inflicted_damage, 
 	}
 	else if( attack_direction == CH_RIGHT_DOWN )
 	{
-		attack_CB.setx ( (int)(attack_CB.getx() + (attack_distance/sqrt(2.f))) );
-		attack_CB.sety ( (int)(attack_CB.gety() + (attack_distance/sqrt(2.f))) );
+		attack_CB.setx ( (int)(attack_CB.getx() + ceil(attack_distance/sqrt(2.f))) );
+		attack_CB.sety ( (int)(attack_CB.gety() + ceil(attack_distance/sqrt(2.f))) );
 	}
 	else if( attack_direction == CH_DOWN )
 	{
@@ -552,8 +552,8 @@ int Player_Base::Attack_Check_Status(int attack_distance, int inflicted_damage, 
 	}
 	else if( attack_direction == CH_LEFT_DOWN )
 	{
-		attack_CB.setx( (int)(attack_CB.getx() - (attack_distance/sqrt(2.f))) );
-		attack_CB.sety( (int)(attack_CB.gety() + (attack_distance/sqrt(2.f))) );
+		attack_CB.setx( (int)(attack_CB.getx() - ceil(attack_distance/sqrt(2.f))) );
+		attack_CB.sety( (int)(attack_CB.gety() + ceil(attack_distance/sqrt(2.f))) );
 	}
 	else if( attack_direction == CH_LEFT )
 	{
@@ -561,8 +561,8 @@ int Player_Base::Attack_Check_Status(int attack_distance, int inflicted_damage, 
 	}
 	else if( attack_direction == CH_LEFT_UP )
 	{
-		attack_CB.setx( (int)(attack_CB.getx() - (attack_distance/sqrt(2.f))) );
-		attack_CB.sety( (int)(attack_CB.gety() - (attack_distance/sqrt(2.f))) );
+		attack_CB.setx( (int)(attack_CB.getx() - ceil(attack_distance/sqrt(2.f))) );
+		attack_CB.sety( (int)(attack_CB.gety() - ceil(attack_distance/sqrt(2.f))) );
 	}
 	else if( attack_direction == CH_UP )
 	{
@@ -570,8 +570,8 @@ int Player_Base::Attack_Check_Status(int attack_distance, int inflicted_damage, 
 	}
 	else if( attack_direction == CH_RIGHT_UP )
 	{
-		attack_CB.setx( (int)(attack_CB.getx() + (attack_distance/sqrt(2.f))) );
-		attack_CB.sety( (int)(attack_CB.gety() - (attack_distance/sqrt(2.f))) );
+		attack_CB.setx( (int)(attack_CB.getx() + ceil(attack_distance/sqrt(2.f))) );
+		attack_CB.sety( (int)(attack_CB.gety() - ceil(attack_distance/sqrt(2.f))) );
 	}
 	
 	//Collision with Monsters
@@ -654,8 +654,8 @@ try {
 	}
 	else if( attack_direction == CH_RIGHT_DOWN )
 	{
-		arrow_x = (int)(attack_CB.getx() - (PC_WIDTH/sqrt(2.f)) );
-		arrow_y = (int)( attack_CB.gety() - (PC_HEIGHT/sqrt(2.f)) );
+		arrow_x = (int)(attack_CB.getx() - ceil(PC_WIDTH/sqrt(2.f)) );
+		arrow_y = (int)( attack_CB.gety() - ceil(PC_HEIGHT/sqrt(2.f)) );
 	}
 	else if( attack_direction == CH_DOWN )
 	{
@@ -664,8 +664,8 @@ try {
 	}
 	else if( attack_direction == CH_LEFT_DOWN )
 	{
-		arrow_x = (int)( attack_CB.getx() - PC_WIDTH+(PC_WIDTH/sqrt(2.f)) );
-		arrow_y = (int)( attack_CB.gety() - (PC_HEIGHT/sqrt(2.f)) );
+		arrow_x = (int)( attack_CB.getx() - PC_WIDTH+ceil(PC_WIDTH/sqrt(2.f)) );
+		arrow_y = (int)( attack_CB.gety() - ceil(PC_HEIGHT/sqrt(2.f)) );
 	}
 	else if( attack_direction == CH_LEFT )
 	{
@@ -674,8 +674,8 @@ try {
 	}
 	else if( attack_direction == CH_LEFT_UP )
 	{
-		arrow_x = (int)( attack_CB.getx() - PC_WIDTH+(PC_WIDTH/sqrt(2.f)) );
-		arrow_y = (int)( attack_CB.gety() - PC_HEIGHT+(PC_HEIGHT/sqrt(2.f)) );
+		arrow_x = (int)( attack_CB.getx() - PC_WIDTH+ceil(PC_WIDTH/sqrt(2.f)) );
+		arrow_y = (int)( attack_CB.gety() - PC_HEIGHT+ceil(PC_HEIGHT/sqrt(2.f)) );
 	}
 	else if( attack_direction == CH_UP )
 	{
@@ -684,7 +684,7 @@ try {
 	}
 	else if( attack_direction == CH_RIGHT_UP )
 	{
-		arrow_x = (int)( attack_CB.getx() - (PC_WIDTH/sqrt(2.f)) );
+		arrow_x = (int)( attack_CB.getx() - ceil(PC_WIDTH/sqrt(2.f)) );
 		arrow_y = (int)( attack_CB.gety() - PC_HEIGHT+(PC_HEIGHT/sqrt(2.f)) );
 	}
 
