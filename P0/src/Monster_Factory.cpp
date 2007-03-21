@@ -7,14 +7,18 @@ Monster_Factory<Monster_Template>::Monster_Factory()
 	Initial_Number_Of_Monsters = 0;
 	Monster_Vector = new std::vector<Character_Base*>;
 	BattleField_Cutting_Vector = new std::vector<BattleField_Zone*>;
+
+	Monster_Template::Initialize(BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
+								Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 }
 
 //Constructor
 template <typename Monster_Template>
-Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters)
+Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 	Initial_Number_Of_Monsters = number_of_monsters;
 	Monster_Vector = new std::vector<Character_Base*>;
+	Global_Monster_Vector->push_back(Monster_Vector);
 	BattleField_Cutting_Vector = BattleField_Zone::Fill_Vector();
 
 	Monster_Template::Initialize(BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
@@ -33,67 +37,81 @@ Monster_Factory<Monster_Template>::~Monster_Factory()
 
 //Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
 template <typename Monster_Template>
-Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(int Character_X, int Character_Y)
+Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
+	//
+	//TODO(future) cge that when necessary
+	//
+	/******TEMPORARY: we only have one player for now******/
+	int Character_X = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().getx();
+	int Character_Y = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().gety();
+
 	//Determine monster creation position
-	int x = 0, y = 0;
+	int x = random(0,LEVEL_WIDTH-1), y = random(0,LEVEL_HEIGHT-1);
 
 	//mini distance (3 square radius from the character border)²
-	/*int distance_mini = int( 3.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) );*/
-	int distance_mini_carre = int( 3.5*sqrt( float((PC_WIDTH*PC_WIDTH) + (PC_HEIGHT*PC_HEIGHT)) ) ); //int( 12.25*(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT ) );
+	int distance_mini_carre = int( 3.5*sqrt( float((PC_WIDTH*PC_WIDTH) + (PC_HEIGHT*PC_HEIGHT)) ) );
 	
 	//(distance from the center - distance center to border of the character)²
-	/*int distance = int( sqrt( float( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2)) ) )
-						- 0.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) );*/
-	int distance_carre = distance_mini_carre;
-	
-		//while (distance <= distance_mini) //we are too near
-	while ( distance_carre <= distance_mini_carre ) //we are too near
-	{
-		//try coordinate
-		x = random(0,39);
-		y = random(0,39);
-		/*distance = int( sqrt( float( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2)) ) )
-					- 0.5*sqrt( float(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) ) );*/
-		distance_carre = int( sqrt( float( ((x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2))) + ((y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))) ) )
+	int distance_carre = (int)( sqrt( float( ((x - (Character_X+PC_WIDTH/2))*(x - (Character_X+PC_WIDTH/2))) + ((y - (Character_Y+PC_HEIGHT/2))*(y - (Character_Y+PC_HEIGHT/2))) ) )
 						- 0.5*sqrt( float((PC_WIDTH*PC_WIDTH) + (PC_HEIGHT*PC_HEIGHT)) ) );
-			/*int( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))
-						+ 0.25*(PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT)
-						- ( (x*PC_WIDTH - (Character_X+PC_WIDTH/2))*(x*PC_WIDTH - (Character_X+PC_WIDTH/2)) + (y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2))*(y*PC_HEIGHT - (Character_Y+PC_HEIGHT/2)) ) * (PC_WIDTH*PC_WIDTH + PC_HEIGHT*PC_HEIGHT) );*/
+	
+	//1st chek if we'r not too near
+	while (distance_carre <= distance_mini_carre) 
+	{
+			//retry coordinate
+			x = random(0,LEVEL_WIDTH-1);
+			y = random(0,LEVEL_HEIGHT-1);
+				
+			distance_carre = int( sqrt( float( ((x - (Character_X+PC_WIDTH/2))*(x - (Character_X+PC_WIDTH/2))) + ((y - (Character_Y+PC_HEIGHT/2))*(y - (Character_Y+PC_HEIGHT/2))) ) )
+								- 0.5*sqrt( float((PC_WIDTH*PC_WIDTH) + (PC_HEIGHT*PC_HEIGHT)) ) );
+					
 	}
 
-	//Create Monster & initialized it
-	Monster_Template* myMonster = new Monster_Template(BATF_SPRITE_W * x,  BATF_SPRITE_H * y, 
-														BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
-														Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
+	//first attempt to create the monster
+	Monster_Template* myMonster = new Monster_Template(x, y, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
+													Characters_Tile, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
+	//if something don't allow the monster, loop
+	while ( (! (myMonster->Check_Cutting_Allow_Monster(x, y, BattleField_Cutting_Vector)) ) || (myMonster->Check_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) ) )
+	{
+		//retry coordinate
+		x = random(0,LEVEL_WIDTH-1);
+		y = random(0,LEVEL_HEIGHT-1);
+		distance_carre = int( sqrt( float( ((x - (Character_X+PC_WIDTH/2))*(x - (Character_X+PC_WIDTH/2))) + ((y - (Character_Y+PC_HEIGHT/2))*(y - (Character_Y+PC_HEIGHT/2))) ) )
+							- 0.5*sqrt( float((PC_WIDTH*PC_WIDTH) + (PC_HEIGHT*PC_HEIGHT)) ) );
+
+		//Check if we'r to near
+		while (distance_carre <= distance_mini_carre) 
+		{
+			//retry coordinate
+			x = random(0,LEVEL_WIDTH-1);
+			y = random(0,LEVEL_HEIGHT-1);
+				
+			distance_carre = int( sqrt( float( ((x - (Character_X+PC_WIDTH/2))*(x - (Character_X+PC_WIDTH/2))) + ((y - (Character_Y+PC_HEIGHT/2))*(y - (Character_Y+PC_HEIGHT/2))) ) )
+								- 0.5*sqrt( float((PC_WIDTH*PC_WIDTH) + (PC_HEIGHT*PC_HEIGHT)) ) );
+					
+		}
+		
+
+		delete myMonster, myMonster = NULL;
+		//ReCreate Monster
+		myMonster = new Monster_Template(x, y, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
+										Characters_Tile, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
+
+	}
+	
 	return myMonster;
 }
 //Create Monsters Method which create as many monsters has desired
 template <typename Monster_Template>
-std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector)
+std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
-	//
-	//TODO cge that
-	//
-	/******TEMPORARY: we only have one player for now and no npc ******/
-	int Character_X = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().getx();
-	int Character_Y = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().gety();
-
 	//Loop until desired number of monsters has been reached
 	for(int i=1; i <= Initial_Number_Of_Monsters; i++)
 	{
 		//Monster generation
-		Monster_Template* newMonster = Create_One_Monster(Character_X, Character_Y);
-
-		//Check if the battlefield allow the monster creation
-		/******BUG HERE: We're not checking if other monsters allow the new created one *****/
-		while( !(newMonster->Check_battlefield_allow_character( newMonster->Get_Collision_Box(), Environment_Sprite_Vector, BackGround_Sprite_Vector) ) || !(newMonster->Check_Cutting_Allow_Monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
-		{
-			//Monster regeneration
-			delete newMonster, newMonster = NULL;
-			newMonster = Create_One_Monster(Character_X, Character_Y);
-		}
+		Monster_Template* newMonster = Create_One_Monster(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
 
 		//Store the monster at the end of the vector
 		Monster_Vector->push_back(newMonster);
@@ -179,32 +197,16 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Remove_Dead_Mon
 
 //Generate new monsters until max monster has been reached
 template <typename Monster_Template>
-std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Monster(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector)
+std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Monster(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 	unsigned int temp = 0;
 
-	//
-	//TODO cge that
-	//
-	/******TEMPORARY: we only have one player for now and no npc ******/
-	int Character_X = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().getx();
-	int Character_Y = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().gety();
-	
 	//The more the monster on the battlefield, the less there a chance a new one is generated until we reached the MAX_MONSTERS_SIMULTANEOUSLY constant
 	temp = random(1, MAX_MONSTERS_SIMULTANEOUSLY);
 	if (temp > Monster_Vector->size())
 	{
 		//Monster generation
-		Monster_Template* newMonster = Create_One_Monster(Character_X, Character_Y);
-
-		//Check if the battlefield allow the monster creation
-		/******BUG HERE: We're not checking if other monsters allow the new created one *****/
-		while( !(newMonster->Check_battlefield_allow_character( newMonster->Get_Collision_Box(), Environment_Sprite_Vector, BackGround_Sprite_Vector) ) || !(newMonster->Check_Cutting_Allow_Monster(newMonster->Get_X(), newMonster->Get_Y(), BattleField_Cutting_Vector)) )
-		{
-			//regeneration
-			delete(newMonster);
-			newMonster = Create_One_Monster(Character_X, Character_Y);
-		}
+		Monster_Template* newMonster = Create_One_Monster(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
 
 		//Store the monster at the end of the vector
 		Monster_Vector->push_back(newMonster);

@@ -158,26 +158,31 @@ try { //global error management
 
 
 /****Monsters****/
+	//Vector containing pointers to vector of pointers to monsters
+	std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;
+	
 	//Initialize the skeleton factory
-	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS);  //A factory of Monster Skeletons
+	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS, Global_Monster_Vector);  //A factory of Monster Skeletons
 	P0_Logger << nl << "Skeleton Factory Init: OK " << std::endl;
 
 	//Create all the monsters skeletons
-	std::vector<Character_Base*>* Monster_Vector_Skeleton = Monster_Factory_Skeleton->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector);  //Vector which will contains all skeletons
+	//std::vector<Character_Base*>* Monster_Vector_Skeleton = 
+	Monster_Factory_Skeleton->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);  //Vector which will contains all skeletons
 	P0_Logger << nl << "Skeleton Vector Fill: OK " << std::endl;
 	
 	//Initialize the worm factory
-	Monster_Factory<Monster_Worm>* Monster_Factory_Worm = new Monster_Factory<Monster_Worm>(INITIAL_MONSTERS);  //A factory of Monster Worms
+	Monster_Factory<Monster_Worm>* Monster_Factory_Worm = new Monster_Factory<Monster_Worm>(INITIAL_MONSTERS, Global_Monster_Vector);  //A factory of Monster Worms
 	P0_Logger << nl << "Worm Factory Init: OK " << std::endl;
 
 	//Create all the monsters worms
-	std::vector<Character_Base*>* Monster_Vector_Worm = Monster_Factory_Worm->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector); //Vector which will contains all skeletons
+	//std::vector<Character_Base*>* Monster_Vector_Worm = 
+	Monster_Factory_Worm->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector); //Vector which will contains all skeletons
 	P0_Logger << nl << "Worm Vector Fill: OK " << std::endl;
 
 	//Vector containing pointers to vector of pointers to monsters
-	std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;
+	/*std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;
 	Global_Monster_Vector->push_back(Monster_Vector_Skeleton);
-	Global_Monster_Vector->push_back(Monster_Vector_Worm);
+	Global_Monster_Vector->push_back(Monster_Vector_Worm);*/
 
 /*********ENGINE************/
 

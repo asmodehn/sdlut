@@ -26,7 +26,7 @@ class Monster_Factory
 		std::vector<BattleField_Zone*>* BattleField_Cutting_Vector;
 
 		//Create Monster Method which create ONE SINGLE MONSTER ONLY and check if not to near from the character
-		Monster_Template* Create_One_Monster(int Character_X, int Character_Y);
+		Monster_Template* Create_One_Monster(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 
 	public:
 
@@ -34,13 +34,13 @@ class Monster_Factory
 		Monster_Factory();
 
 		//Constructor
-		Monster_Factory(int number_of_monsters);
+		Monster_Factory(int number_of_monsters, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 		
 		//Destructor
 		~Monster_Factory();
 
 		//Create Monster Method which create has many monsters has desired
-		std::vector<Character_Base*>* Create_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector);
+		std::vector<Character_Base*>* Create_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 		
 		//Invoke all monsters movements
 		bool Move_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector );
@@ -52,7 +52,7 @@ class Monster_Factory
 		std::vector<Character_Base*>* Remove_Dead_Monsters();
 		
 		//Generate new monsters until max monster has been reached
-		std::vector<Character_Base*>* Generate_New_Monster(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector);
+		std::vector<Character_Base*>* Generate_New_Monster(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 		
 };
 

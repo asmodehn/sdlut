@@ -58,9 +58,9 @@ try {
 	if (GLOBAL_GAME_STATE != 5 )//victory 
 	{
 		//Skeletons
-		Monster_Factory_Skeleton->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
+		Monster_Factory_Skeleton->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector );
 		//Worms
-		Monster_Factory_Worm->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector );
+		Monster_Factory_Worm->Generate_New_Monster( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector );
 
 		P0_Logger << nl << "Generate Monsters " << std::endl;
 		return interval; // loop
