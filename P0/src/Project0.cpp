@@ -96,11 +96,11 @@ try { //global error management
 	P0_Logger << nl << "BackGround Init: OK " << std::endl;
 	
 	//Fill the BackGround vector with all BackGround sprite corresponding to the map file
-#ifdef _DEBUG //debug mode
-	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
-#else //rlz mode
+//#ifdef _DEBUG //debug mode
+//	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
+//#else //rlz mode
 	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = myBackGround->BackGround_Vector(); //Vector which will contains all BackGround type and clip
-#endif
+//#endif
 	P0_Logger << nl << "BackGround_Sprite Vector Fill: OK " << std::endl;
 	
 	//Initialize the Environment
@@ -108,11 +108,11 @@ try { //global error management
 	P0_Logger << nl << "Environment Init: OK " << std::endl;
 
 	//Fill the Environment vector with all Environment sprite corresponding to the map file
-#ifdef _DEBUG //debug mode
-	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
-#else //rlz mode*/
+//#ifdef _DEBUG //debug mode
+//	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
+//#else //rlz mode*/
 	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector = myEnvironment->Environment_Vector(); //Vector which will contains all Environment items type and clip
-#endif
+//#endif
 	P0_Logger << nl << "Environment_Sprite Vector Fill: OK " << std::endl;
 	
 /****PlayerS****/
@@ -178,11 +178,6 @@ try { //global error management
 	//std::vector<Character_Base*>* Monster_Vector_Worm = 
 	Monster_Factory_Worm->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector); //Vector which will contains all skeletons
 	P0_Logger << nl << "Worm Vector Fill: OK " << std::endl;
-
-	//Vector containing pointers to vector of pointers to monsters
-	/*std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;
-	Global_Monster_Vector->push_back(Monster_Vector_Skeleton);
-	Global_Monster_Vector->push_back(Monster_Vector_Worm);*/
 
 /*********ENGINE************/
 

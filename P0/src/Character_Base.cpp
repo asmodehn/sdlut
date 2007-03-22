@@ -243,8 +243,8 @@ bool Character_Base::Check_Collisions(std::vector< std::vector<Character_Base*> 
 		//we have found a collision no need to work more
 		return true;
 
-	//If the character went too far up or down (minus the status bar)
-	if ( (Collision_Box.gety() < Allowed_Area.gety() ) || ( (signed)(Collision_Box.gety() + Sprite_Height) > (signed)(Allowed_Area.gety() + Allowed_Area.geth() - STATUS_BAR_H) ) )
+	//If the character went too far up or down
+	if ( (Collision_Box.gety() < Allowed_Area.gety() ) || ( (signed)(Collision_Box.gety() + Sprite_Height) > (signed)(Allowed_Area.gety() + Allowed_Area.geth()) ) )
 		return true;   
 
 

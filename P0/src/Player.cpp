@@ -187,9 +187,9 @@ try {
     {
         Camera.setx(LEVEL_WIDTH - Camera.getw());    
     }
-    if( (signed)Camera.gety() > (signed)(LEVEL_HEIGHT - Camera.geth()) )
+	if( (signed)Camera.gety() > (signed)(LEVEL_HEIGHT + STATUS_BAR_H - Camera.geth()) )
     {
-        Camera.sety(LEVEL_HEIGHT - Camera.geth());    
+        Camera.sety(LEVEL_HEIGHT + STATUS_BAR_H - Camera.geth());    
     }
 	return true; //no error
 } catch (...) {
@@ -210,8 +210,8 @@ try {
 		Collision_Box.sety(Y + yVel);
 	} else //diagonals
 	{
-		Collision_Box.setx( (int)ceil(X + (xVel/sqrt(2.f))) );
-		Collision_Box.sety( (int)ceil(Y + (yVel/sqrt(2.f))) );
+		Collision_Box.setx( X + (int)ceil(xVel/sqrt(2.f)) );
+		Collision_Box.sety( Y + (int)ceil(yVel/sqrt(2.f)) );
 	}
 
 	//check collisions
