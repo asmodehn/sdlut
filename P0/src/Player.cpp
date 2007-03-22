@@ -201,17 +201,17 @@ try {
 bool Player::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
-	//Move collision box to the futute position
-	//Collision_Box.setx(X + (xVel*(DeltaTicks/1000)) );
-	//Collision_Box.sety(Y + (yVel*(DeltaTicks/1000)) );
+		//Move collision box to the futute position
 	if ( (move_status == CH_RIGHT ) || (move_status == CH_LEFT) || (move_status == CH_DOWN) || (move_status == CH_UP) )
 	{
-		Collision_Box.setx(X + xVel);
-		Collision_Box.sety(Y + yVel);
+		Collision_Box.setx(X + ( (xVel*DeltaTicks)/1000) );
+		Collision_Box.sety(Y + ( (yVel*DeltaTicks)/1000) );
+		/*Collision_Box.setx(X + xVel);
+		Collision_Box.sety(Y + yVel);*/
 	} else //diagonals
 	{
-		Collision_Box.setx( X + (int)ceil(xVel/sqrt(2.f)) );
-		Collision_Box.sety( Y + (int)ceil(yVel/sqrt(2.f)) );
+		Collision_Box.setx( X + (int)ceil( ((xVel*DeltaTicks)/1000)/sqrt(2.f)) );
+		Collision_Box.sety( Y + (int)ceil( ((yVel*DeltaTicks)/1000)/sqrt(2.f)) );
 	}
 
 	//check collisions
