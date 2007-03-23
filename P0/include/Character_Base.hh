@@ -86,6 +86,24 @@ public:
         return yVel;
     }
 
+	inline void Set_Sprite_Width(int new_Sprite_Width)
+    {
+        Sprite_Width = new_Sprite_Width;
+    }
+    inline int Get_Sprite_Width() const
+    {
+        return Sprite_Width;
+    }
+	inline void Set_Sprite_Height(int new_Sprite_Height)
+    {
+        Sprite_Height = new_Sprite_Height;
+    }
+    inline int Get_Sprite_Height() const
+    {
+        return Sprite_Height;
+    }
+	
+
 	inline void Set_Collision_Box(Rect new_Collision_Box)
     {
         Collision_Box = new_Collision_Box;

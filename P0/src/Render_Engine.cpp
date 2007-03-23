@@ -37,8 +37,12 @@ bool Render_Engine::resize(int width, int height)
 {
 	CURRENT_SCREEN_WIDTH = width;
 	CURRENT_SCREEN_HEIGHT = height;
-	myPlayer->Get_Camera().setw(CURRENT_SCREEN_WIDTH);
-	myPlayer->Get_Camera().seth(CURRENT_SCREEN_HEIGHT);
+	//reset camera
+	Rect NewCamera;
+	NewCamera.setw(CURRENT_SCREEN_WIDTH);
+	NewCamera.seth(CURRENT_SCREEN_HEIGHT);
+	myPlayer->Set_Camera(NewCamera);
+	myPlayer->Following_Camera();
 
 	P0_Logger << nl << "Resize : OK " << std::endl;
 	return true;
