@@ -32,9 +32,8 @@ CONFIGURE_FILE(	Interface/LeaveMenu_YesSelected.png ${Project_0_BINARY_DIR}/Data
 CONFIGURE_FILE(	"Interface/Victory Screen.png" "${Project_0_BINARY_DIR}/Datas/Interface/Victory Screen.png" COPYONLY)
 
 	#Items
-CONFIGURE_FILE( Items/Arrow.png "${Project_0_BINARY_DIR}/Datas/Items/Arrow.png")
-#!!!!! Cmake BUG on copying Arrow.png file: copy failed, dest file 1k instead of src 4k => dest completly unusable   !!!!!
-CONFIGURE_FILE( Items/Arrow.ini "${Project_0_BINARY_DIR}/Datas/Items/Arrow.ini")
+CONFIGURE_FILE( Items/Arrow.png "${Project_0_BINARY_DIR}/Datas/Items/Arrow.png" COPYONLY)
+CONFIGURE_FILE( Items/Arrow.ini "${Project_0_BINARY_DIR}/Datas/Items/Arrow.ini" COPYONLY)
 
 	#Movies
 
