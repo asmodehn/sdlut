@@ -3,18 +3,6 @@
 //Default Constructor
 Monster_Base::Monster_Base()
 {
-	//Life bar infos
-	/*Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
-	
-	empty_life_bar_rect.setx(0);
-	empty_life_bar_rect.sety(0);
-	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
-	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
-
-	real_life_bar_rect.setx(0);
-	real_life_bar_rect.sety(LIFE_BAR_HEIGHT);
-	real_life_bar_rect.setw(LIFE_BAR_WIDTH);
-	real_life_bar_rect.seth(LIFE_BAR_HEIGHT);*/
 }
 
 //Full Construtor
@@ -97,8 +85,8 @@ try {
 	if (rand()%200 <= 133) 
 	{
 		//Random mvt
-		xVel = (rand()%3-1);
-		yVel = (rand()%3-1);
+		xVel = (rand()%3-1)*Ch_Vel;
+		yVel = (rand()%3-1)*Ch_Vel;
 
 		//Move collision box to the futute position
 		Collision_Box.setx(X + xVel);

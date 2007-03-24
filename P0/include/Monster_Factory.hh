@@ -12,6 +12,7 @@ class Monster_Factory
 	private:
 
 		//Monsters variables
+		int Ch_Vel;
 		int BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height;
 		RGBSurface Characters_Tile, Life_Bar_Tile;
 		Rect empty_life_bar_rect, real_life_bar_rect;

@@ -19,7 +19,7 @@ protected:
 	int X, Y;
 	
 	//The velocity of the character
-	int xVel, yVel;
+	int Ch_Vel, xVel, yVel;
 
 	//Sprite Characteristics
 	int Sprite_Width, Sprite_Height;

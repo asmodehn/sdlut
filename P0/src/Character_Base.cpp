@@ -4,6 +4,7 @@
 Character_Base::Character_Base()
 {
 	X = 0, Y =0;
+	Ch_Vel = CH_VEL;
 	xVel = 0, yVel = 0;
 
 	Sprite_Width = 0, Sprite_Height = 0;

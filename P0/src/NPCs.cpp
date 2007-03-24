@@ -24,6 +24,8 @@ NPCs::NPCs()
 /****Sprite****/
 		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Sprite_Width") ) >> Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Sprite_Height") ) >> Sprite_Height;
+/****Velocity****/
+		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "CH_VEL") ) >> Ch_Vel;
 /****Characts****/
 		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Life") ) >> BASE_LIFE;
 		Real_Life = BASE_LIFE;

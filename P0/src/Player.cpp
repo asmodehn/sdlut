@@ -61,12 +61,6 @@ Player::Player()
 	Characters_SpriteRect = Player_Attack_Tile_Rect->at(CH_RIGHT*PLAYER_SWORD_ATTACK_ANIMATION_FRAME);
 
 		/****CAMERA****/
-	//Camera: at the begining it's in the top left corner of the level
-	//Camera = {0, 0, Sprite_Width, Sprite_Height};
-	Camera.setx(0);
-	Camera.sety(0);
-	//Camera.setx( (X + Sprite_Width / 2) - CURRENT_SCREEN_WIDTH / 2 );
-	//Camera.sety( (Y + Sprite_Height / 2) - CURRENT_SCREEN_HEIGHT / 2 );
 	Camera.setw(CURRENT_SCREEN_WIDTH);
 	Camera.seth(CURRENT_SCREEN_HEIGHT);
 
@@ -204,14 +198,14 @@ try {
 		//Move collision box to the futute position
 	if ( (move_status == CH_RIGHT ) || (move_status == CH_LEFT) || (move_status == CH_DOWN) || (move_status == CH_UP) )
 	{
-		Collision_Box.setx(X + ( (xVel*DeltaTicks)/1000) );
-		Collision_Box.sety(Y + ( (yVel*DeltaTicks)/1000) );
+		Collision_Box.setx(X + ( (xVel*Ch_Vel*DeltaTicks)/1000) );
+		Collision_Box.sety(Y + ( (yVel*Ch_Vel*DeltaTicks)/1000) );
 		/*Collision_Box.setx(X + xVel);
 		Collision_Box.sety(Y + yVel);*/
 	} else //diagonals
 	{
-		Collision_Box.setx( X + (int)ceil( ((xVel*DeltaTicks)/1000)/sqrt(2.f)) );
-		Collision_Box.sety( Y + (int)ceil( ((yVel*DeltaTicks)/1000)/sqrt(2.f)) );
+		Collision_Box.setx( X + (int)ceil( ((xVel*Ch_Vel*DeltaTicks)/1000)/sqrt(2.f)) );
+		Collision_Box.sety( Y + (int)ceil( ((yVel*Ch_Vel*DeltaTicks)/1000)/sqrt(2.f)) );
 	}
 
 	//check collisions

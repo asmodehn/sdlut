@@ -236,8 +236,8 @@ bool Player_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Pla
 {
 try {
 	//Random mvt
-	xVel = (rand()%3-1);
-	yVel = (rand()%3-1);
+	xVel = (rand()%3-1)*Ch_Vel;
+	yVel = (rand()%3-1)*Ch_Vel;
 
 	//Move collision box to the futute position
 	Collision_Box.setx(X + xVel);

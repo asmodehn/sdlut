@@ -148,29 +148,29 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				{
 					//myCharacter->Set_xVel( myCharacter->Get_xVel() + PC_WIDTH);
 					//myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
-					if (myPlayer->Get_xVel() != CH_VEL )
-						myPlayer->Set_xVel( myPlayer->Get_xVel() + CH_VEL);
+					if (myPlayer->Get_xVel() != 1 )
+						myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
 				} 
 				if ((s.getKey() == DOWN_1) || (s.getKey() == DOWN_2))
 				{
 					//myCharacter->Set_yVel( myCharacter->Get_yVel() + PC_HEIGHT);
 					//myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
-					if (myPlayer->Get_yVel() != CH_VEL )
-						myPlayer->Set_yVel( myPlayer->Get_yVel() + CH_VEL);
+					if (myPlayer->Get_yVel() != 1 )
+						myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
 				}
 				if ((s.getKey() == LEFT_1) || (s.getKey() == LEFT_2))
 				{
 					//myCharacter->Set_xVel( myCharacter->Get_xVel() - PC_WIDTH);
 					//myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
-					if (myPlayer->Get_xVel() != (-1*CH_VEL) )
-						myPlayer->Set_xVel( myPlayer->Get_xVel() - CH_VEL);
+					if (myPlayer->Get_xVel() != -1)
+						myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
 				}
 				if ((s.getKey() == UP_1) || (s.getKey() == UP_2))
 				{
 					//myCharacter->Set_yVel( myCharacter->Get_yVel() - PC_HEIGHT);
 					//myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
-					if (myPlayer->Get_yVel() != (-1*CH_VEL) )
-						myPlayer->Set_yVel( myPlayer->Get_yVel() - CH_VEL);
+					if (myPlayer->Get_yVel() != -1 )
+						myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
 				}
 
 				//Attack Keys

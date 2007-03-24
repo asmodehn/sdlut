@@ -143,6 +143,12 @@ try { //global error management
 
 	//Create player & initialized it
 	Player* myPlayer = new Player();
+	if( myPlayer->Following_Camera() == false ) //center camera
+	{ 
+        P0_Logger << nl << "Failed to center camera over Player" << std::endl;
+    	Delay(2000);
+    	return 1;
+    }
 	if( myPlayer->Set_Attack_Style() == false ) //intialize Character's graphic aspect
 	{ 
         P0_Logger << nl << "Failed to set Player Graphic " << std::endl;
@@ -259,6 +265,7 @@ if (ENABLE_AUDIO)
 	myScore->stop(); //Score
 
 /********Clean UP********/
+#ifdef _DEBUG //debug mode
 	delete myScore, myScore = NULL;
 	delete myMonster_Factory_Monsters_Generation_Timer, myMonster_Factory_Monsters_Generation_Timer = NULL;
 	delete myMonster_Factory_Monsters_Moves_Timer, myMonster_Factory_Monsters_Moves_Timer = NULL;
@@ -278,7 +285,7 @@ if (ENABLE_AUDIO)
 	
 	delete myRender_Engine, myRender_Engine = NULL;
 	delete myDaemons, myDaemons = NULL;
-
+#endif
 
     return 0; //no error occured
 	

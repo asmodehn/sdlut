@@ -8,7 +8,7 @@ Monster_Factory<Monster_Template>::Monster_Factory()
 	Monster_Vector = new std::vector<Character_Base*>;
 	BattleField_Cutting_Vector = new std::vector<BattleField_Zone*>;
 
-	Monster_Template::Initialize(BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
+	Monster_Template::Initialize(Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
 								Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 }
 
@@ -21,7 +21,7 @@ Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters, std::
 	Global_Monster_Vector->push_back(Monster_Vector);
 	BattleField_Cutting_Vector = BattleField_Zone::Fill_Vector();
 
-	Monster_Template::Initialize(BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
+	Monster_Template::Initialize(Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
 								Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
 	P0_Logger << nl << "Factory CONSTRUCTED Successfully " << std::endl;
@@ -69,7 +69,7 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 	}
 
 	//first attempt to create the monster
-	Monster_Template* myMonster = new Monster_Template(x, y, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
+	Monster_Template* myMonster = new Monster_Template(x, y, Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
 													Characters_Tile, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
 	//if something don't allow the monster, loop
@@ -96,7 +96,7 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 
 		delete myMonster, myMonster = NULL;
 		//ReCreate Monster
-		myMonster = new Monster_Template(x, y, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
+		myMonster = new Monster_Template(x, y, Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
 										Characters_Tile, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
 	}
