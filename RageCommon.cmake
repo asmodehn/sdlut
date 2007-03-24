@@ -138,7 +138,7 @@ SET(BUILD_SHARED_LIBS OFF)
 #
 IF(MSVC)
 	MESSAGE( STATUS "Visual Studio Compiler detected. Adjusting C++ flags...")
-	SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /wd4290" CACHE STRING "Flags used by the compiler during all build types" FORCE)
+	SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /wd4290" CACHE STRING "Flags used by the compiler during all build types")
 	#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB")
 	#MODULE and SHARED also ??
 ENDIF(MSVC)
@@ -154,35 +154,35 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
 	
 	SET( CMAKE_C_FLAGS "${PROFILE_FLAG} -Wall -pedantic" CACHE STRING
 	    "Flags for C compiler."
-	    FORCE )
+	   )
 	SET( CMAKE_C_FLAGS_DEBUG "-g -D_DEBUG" CACHE STRING
 	    "Flags used by the C compiler during debug builds."
-	    FORCE )
+	   )
 	SET( CMAKE_C_FLAGS_MINSIZEREL "-Os -DNDEBUG -DNRAGELOG" CACHE STRING
 	    "Flags used by the C compiler during release minsize builds."
-	    FORCE )
+	   )
 	SET( CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG -DNRAGELOG" CACHE STRING
 	    "Flags used by the C compiler during release builds."
-	    FORCE )
+	   )
 	SET( CMAKE_C_FLAGS_RELWITHDEBINFO "-O2 -g" CACHE STRING
 	    "Flags used by the C compiler during release with debug info builds."
-	    FORCE )
+	   )
     
     	SET( CMAKE_CXX_FLAGS "${PROFILE_FLAG} -Wall -Wabi" CACHE STRING
 	    "Flags for C++ compiler."
-	    FORCE )
+	   )
 	SET( CMAKE_CXX_FLAGS_DEBUG "-g -D_DEBUG" CACHE STRING
 	    "Flags used by the C++ compiler during debug builds."
-	    FORCE )
+	   )
 	SET( CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG -DNRAGELOG" CACHE STRING
 	    "Flags used by the C++ compiler during release minsize builds."
-	    FORCE )
+	   )
 	SET( CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -DNRAGELOG" CACHE STRING
 	    "Flags used by the C++ compiler during release builds."
-	    FORCE )
+	   )
 	SET( CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g" CACHE STRING
 	    "Flags used by the C++ compiler during release with debug info builds."
-	    FORCE )
+	   )
 	
 	SET(RAGE_COMMON_LINKER_FLAGS)
 	IF (MSYS)
@@ -194,12 +194,12 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
 	SET( CMAKE_EXE_LINKER_FLAGS
 	     "${PROFILE_FLAG} ${RAGE_COMMON_LINKER_FLAGS}" CACHE STRING
 	     "Flags used by the linker."
-	     FORCE )
+	    )
 	     
      	SET( CMAKE_SHARED_LINKER_FLAGS
 	     "${PROFILE_FLAG} ${RAGE_COMMON_LINKER_FLAGS}" CACHE STRING
 	     "Flags used by the linker."
-	     FORCE )
+	    )
 
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 
