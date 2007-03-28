@@ -239,7 +239,7 @@ try { //global error management
 
 
 /********Start music********/
-if (ENABLE_AUDIO)
+if (ENABLE_MUSIC)
 	App::getInstance().getMixer()->playChannel(GlobalMusic_Chan);
 
 /*******Score Management********/

@@ -8,7 +8,7 @@ int FiNiSH_TiME = 0;
 //Default config def to solve extern's linker pb
 	//Default user Cfg
 int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600, SCREEN_BPP = 16, CURRENT_SCREEN_WIDTH = 800, CURRENT_SCREEN_HEIGHT = 600, CURRENT_SCREEN_BPP = 32;
-bool ENABLE_AUDIO = 0;
+bool ENABLE_MUSIC = 0;
 int UP_1 = 0, DOWN_1 = 0, LEFT_1 = 0, RIGHT_1 = 0, ATTACK_1 = 0, CHANGE_ATTACK_MODE_1 = 0, MENU_CALL_1 = 0, WINDOW_MODE_1 = 0;
 int UP_2 = 0, DOWN_2 = 0, LEFT_2 = 0, RIGHT_2 = 0, ATTACK_2 = 0, CHANGE_ATTACK_MODE_2 = 0, MENU_CALL_2 = 0, WINDOW_MODE_2 = 0;
 
@@ -24,7 +24,9 @@ int LIFE_BAR_WIDTH = 0, LIFE_BAR_HEIGHT = 0;
 int STATUS_BAR_H = 0;
 int BATF_SPRITE_W = 0, BATF_SPRITE_H = 0;
 int EMPTY_GROUND = 0, GRASS_GROUND = 0, SAND_GROUND = 0, RIVER_GROUND = 0, LAKE_GROUND = 0, BRIDGE_GROUND = 0;
-int NOTHING_ENV_ITEM = 0, TREE_ENV_ITEM = 0, ROCK_ENV_ITEM = 0, WALL_ENV_ITEM = 0, HOUSE_ENV_ITEM = 0;
+string GRASS_GROUND_Filename = "", SAND_GROUND_Filename = "", RIVER_GROUND_Filename = "", LAKE_GROUND_Filename = "", BRIDGE_GROUND_Filename = "";
+int NOTHING_ENV = 0, TREE_ENV = 0, ROCK_ENV = 0, WALL_ENV = 0, HOUSE_ENV = 0;
+string TREE_ENV_Filename = "", ROCK_ENV_Filename= "", WALL_ENV_Filename = "", HOUSE_ENV_Filename = "";
 //int Humanoid = 0, Worm = 0;
 int	GLOBAL_GAME_STATE = 3;
 Logger P0_Logger("P0"); //prefix
@@ -46,7 +48,7 @@ try { //error management
 	std::ifstream fi_usr("Config.ini") ;
 	if (fi_usr.fail()) //File does not exist so create it with default values
 		Ini_Manager::Write_New_Ini_File("Config.ini",
-		"#screen def\nSCREEN_WIDTH = 800\nSCREEN_HEIGHT = 600\nSCREEN_BPP = 16\n\n#Audio\nENABLE_AUDIO = 1\n\n###KEYS NAMES ARE ALL CAPITALIZED EXCEPT LETTERS NAME###\n#Keys 1\nUP_1 = KKP8\nDOWN_1 = KKP5\nLEFT_1 = KKP7\nRIGHT_1 = KKP9\nATTACK_1 = KKPDIVIDE\nCHANGE_ATTACK_MODE_1 = KKPMULTIPLY\nMENU_CALL_1 = KESCAPE\nWINDOW_MODE_1 = KF11\n\n#Keys 2\nUP_2 = KUP\nDOWN_2 = KDOWN\nLEFT_2 = KLEFT\nRIGHT_2 = KRIGHT\nATTACK_2 = KRCTRL\nCHANGE_ATTACK_MODE_2 = KRSHIFT\nMENU_CALL_2 = \nWINDOW_MODE_2 = \n"
+		"#screen def\nSCREEN_WIDTH = 800\nSCREEN_HEIGHT = 600\nSCREEN_BPP = 16\n\n#Audio\nENABLE_MUSIC = 1\n\n###KEYS NAMES ARE ALL CAPITALIZED EXCEPT LETTERS NAME###\n#Keys 1\nUP_1 = KKP8\nDOWN_1 = KKP5\nLEFT_1 = KKP7\nRIGHT_1 = KKP9\nATTACK_1 = KKPDIVIDE\nCHANGE_ATTACK_MODE_1 = KKPMULTIPLY\nMENU_CALL_1 = KESCAPE\nWINDOW_MODE_1 = KF11\n\n#Keys 2\nUP_2 = KUP\nDOWN_2 = KDOWN\nLEFT_2 = KLEFT\nRIGHT_2 = KRIGHT\nATTACK_2 = KRCTRL\nCHANGE_ATTACK_MODE_2 = KRSHIFT\nMENU_CALL_2 = \nWINDOW_MODE_2 = \n"
 			);
 	fi_usr.close();
 
@@ -61,7 +63,7 @@ try { //error management
 	CURRENT_SCREEN_BPP = SCREEN_BPP;
 
 		//Audio
-	std::stringstream( Ini_Manager::Get_Option_String("Config.ini", "ENABLE_AUDIO") ) >> ENABLE_AUDIO;
+	std::stringstream( Ini_Manager::Get_Option_String("Config.ini", "ENABLE_MUSIC") ) >> ENABLE_MUSIC;
 
 		//Keys #1
 	UP_1 = Keyboard::str2Key( Ini_Manager::Get_Option_String("Config.ini", "UP_1") );
@@ -132,11 +134,22 @@ try { //error management
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LAKE_GROUND") ) >> LAKE_GROUND;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "BRIDGE_GROUND") ) >> BRIDGE_GROUND;
 
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "NOTHING_ENV_ITEM") ) >> NOTHING_ENV_ITEM;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "TREE_ENV_ITEM") ) >> TREE_ENV_ITEM;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "ROCK_ENV_ITEM") ) >> ROCK_ENV_ITEM;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "WALL_ENV_ITEM") ) >> WALL_ENV_ITEM;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "HOUSE_ENV_ITEM") ) >> HOUSE_ENV_ITEM;
+		GRASS_GROUND_Filename = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "GRASS_GROUND_Filename");
+		SAND_GROUND_Filename = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "SAND_GROUND_Filename");
+		RIVER_GROUND_Filename = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "RIVER_GROUND_Filename");
+		LAKE_GROUND_Filename = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LAKE_GROUND_Filename");
+		BRIDGE_GROUND_Filename = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "BRIDGE_GROUND_Filename");
+
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "NOTHING_ENV") ) >> NOTHING_ENV;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "TREE_ENV") ) >> TREE_ENV;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "ROCK_ENV") ) >> ROCK_ENV;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "WALL_ENV") ) >> WALL_ENV;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "HOUSE_ENV") ) >> HOUSE_ENV;
+
+		TREE_ENV_Filename = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "TREE_ENV_Filename");
+		ROCK_ENV_Filename = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "ROCK_ENV_Filename");
+		WALL_ENV_Filename = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "WALL_ENV_Filename");
+		HOUSE_ENV_Filename = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "HOUSE_ENV_Filename");
 				
 		//std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Humanoid") ) >> Humanoid;
 		//std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Worm") ) >> Worm;
@@ -146,6 +159,10 @@ try { //error management
 		Log_Name = Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "Log_Name");
 		//define log filename
 		P0_Logger.enableFileLog(Log_Name);
+		
+#ifdef NDEBUG //rlz mode
+		P0_Logger.disableConsoleLog();
+#endif
 
 		//close file
 		fi_dev.close();

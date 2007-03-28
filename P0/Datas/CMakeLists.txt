@@ -44,4 +44,8 @@ CONFIGURE_FILE(	"Musics/Temple.wav" "${Project_0_BINARY_DIR}/Datas/Musics/Temple
 	#SFXs
 CONFIGURE_FILE(	SFXs/esc_menu_sound.wav ${Project_0_BINARY_DIR}/Datas/SFXs/esc_menu_sound.wav COPYONLY)
 CONFIGURE_FILE(	SFXs/null.wav ${Project_0_BINARY_DIR}/Datas/SFXs/null.wav COPYONLY)
+CONFIGURE_FILE(	SFXs/Hit.wav ${Project_0_BINARY_DIR}/Datas/SFXs/Hit.wav COPYONLY)
+CONFIGURE_FILE(	SFXs/Miss.wav ${Project_0_BINARY_DIR}/Datas/SFXs/Miss.wav COPYONLY)
+CONFIGURE_FILE(	SFXs/Bow.wav ${Project_0_BINARY_DIR}/Datas/SFXs/Bow.wav COPYONLY)
+CONFIGURE_FILE(	SFXs/Sword.wav ${Project_0_BINARY_DIR}/Datas/SFXs/Sword.wav COPYONLY)
 

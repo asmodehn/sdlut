@@ -24,7 +24,7 @@ extern int CURRENT_SCREEN_HEIGHT;
 extern int CURRENT_SCREEN_BPP;
 
 //Audio
-extern bool ENABLE_AUDIO;
+extern bool ENABLE_MUSIC;
 
 //KEYS 1
 extern int UP_1;
@@ -100,17 +100,26 @@ extern int BATF_SPRITE_H;
 //BackGround Type Const
 extern int EMPTY_GROUND;
 extern int GRASS_GROUND;
+extern string GRASS_GROUND_Filename;
 extern int SAND_GROUND;
+extern string SAND_GROUND_Filename;
 extern int RIVER_GROUND;
+extern string RIVER_GROUND_Filename;
 extern int LAKE_GROUND;
+extern string LAKE_GROUND_Filename;
 extern int BRIDGE_GROUND;
+extern string BRIDGE_GROUND_Filename;
 
 //Environment Item Type Const
-extern int NOTHING_ENV_ITEM;
-extern int TREE_ENV_ITEM;
-extern int ROCK_ENV_ITEM;
-extern int WALL_ENV_ITEM;
-extern int HOUSE_ENV_ITEM;
+extern int NOTHING_ENV;
+extern int TREE_ENV;
+extern string TREE_ENV_Filename;
+extern int ROCK_ENV;
+extern string ROCK_ENV_Filename;
+extern int WALL_ENV;
+extern string WALL_ENV_Filename;
+extern int HOUSE_ENV;
+extern string HOUSE_ENV_Filename;
 
 //Monsters ID which defined type of monsters (used in coordination with battlefield cutting)
 enum Monsters_Type {Humanoid = 1, Worm = 2};

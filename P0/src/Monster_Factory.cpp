@@ -72,8 +72,8 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 	Monster_Template* myMonster = new Monster_Template(x, y, Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
 													Characters_Tile, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
-	//if something don't allow the monster, loop
-	while ( (! (myMonster->Check_Cutting_Allow_Monster(x, y, BattleField_Cutting_Vector)) ) || (myMonster->Check_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) ) )
+	//if something don't allow the monster to be here, loop
+	while ( (! (myMonster->Check_Cutting_Allow_Monster(x, y, BattleField_Cutting_Vector)) ) || (! myMonster->Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, false) ) )
 	{
 		//retry coordinate
 		x = random(0,LEVEL_WIDTH-1);

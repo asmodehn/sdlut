@@ -92,17 +92,13 @@ try {
 		Collision_Box.setx(X + xVel);
 		Collision_Box.sety(Y + yVel);
 
-		//check collisions
-		if ( Check_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) )
+		//handle collisions
+		if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
 		{
-			//Collision found => move back collision box
-			Collision_Box.setx(X);
-			Collision_Box.sety(Y); 
+			//No Error => Update position 
+			X = Collision_Box.getx();
+			Y = Collision_Box.gety();
 		}
-
-		//Update position
-		X = Collision_Box.getx();
-		Y = Collision_Box.gety();
 	}
 	return true; //no error
 } catch (...) {
@@ -119,23 +115,23 @@ int Monster_Base::Get_BG_vs_CH_Rules(int bgType)
 //Check if the environmemt allow the monster presence
 int Monster_Base::Get_Env_vs_CH_Rules(int envType)
 {
-	if( envType == NOTHING_ENV_ITEM )  //indicate no environement is present
+	if( envType == NOTHING_ENV )  //indicate no environement is present
 	{
 		return -1;
 	}
-	else if( envType == TREE_ENV_ITEM ) //Don't allow presence
+	else if( envType == TREE_ENV ) //Don't allow presence
 	{
 		return 0;
 	}
-	else if( envType == ROCK_ENV_ITEM ) //Don't allow presence
+	else if( envType == ROCK_ENV ) //Don't allow presence
 	{
 		return 0;
 	}
-	else if( envType == WALL_ENV_ITEM ) //Don't allow presence
+	else if( envType == WALL_ENV ) //Don't allow presence
 	{
 		return 0;
 	}
-	else if( envType == HOUSE_ENV_ITEM ) //Allow presence
+	else if( envType == HOUSE_ENV ) //Allow presence
 	{
 		return 0;
 	}

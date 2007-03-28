@@ -19,10 +19,6 @@ BattleField_Sprite::BattleField_Sprite(int x, int y, int battlefield_type, Rect 
 
 BattleField_Zone::BattleField_Zone()
 {
-	Area.setx(0);
-	Area.sety(0);
-	Area.setw(0);
-	Area.seth(0);
 	Allowed_Monsters = new std::vector<int>;
 }
 
@@ -79,17 +75,11 @@ std::vector<BattleField_Zone*>* BattleField_Zone::Fill_Vector()
 BackGround::BackGround()
 {
 	//Create tileset surface
-	BackGround_Tileset_Grass = RGBSurface("Datas/Battlefield/Grass.png", Color(0xFF, 0xFF, 0xFF));
-	BackGround_Tileset_Sands = RGBSurface("Datas/Battlefield/Sand Tileset.png", Color(0x00, 0x00, 0x00));
-	BackGround_Tileset_Rivers = RGBSurface("Datas/Battlefield/Water.png", Color(0xFF, 0xFF, 0xFF));
-	BackGround_Tileset_Lakes = RGBSurface("Datas/Battlefield/Water.png", Color(0xFF, 0xFF, 0xFF));
-	BackGround_Tileset_Bridges = RGBSurface("Datas/Battlefield/tankbrigade.bmp", Color(0xFF, 0xFF, 0xFF));
-
-	//The default clip (minimal clip)
-	BackGround_Clip.setx(0);
-	BackGround_Clip.sety(0);
-	BackGround_Clip.setw(0);
-	BackGround_Clip.seth(0);
+	BackGround_Tileset_Grass = RGBSurface(GRASS_GROUND_Filename, Color(0xFF, 0xFF, 0xFF));
+	BackGround_Tileset_Sands = RGBSurface(SAND_GROUND_Filename, Color(0x00, 0x00, 0x00));
+	BackGround_Tileset_Rivers = RGBSurface(RIVER_GROUND_Filename, Color(0xFF, 0xFF, 0xFF));
+	BackGround_Tileset_Lakes = RGBSurface(LAKE_GROUND_Filename, Color(0xFF, 0xFF, 0xFF));
+	BackGround_Tileset_Bridges = RGBSurface(BRIDGE_GROUND_Filename, Color(0xFF, 0xFF, 0xFF));
 
 	//Initialize vector
 	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
@@ -328,16 +318,10 @@ try {
 Environment::Environment()
 {
 	//Create tileset surface
-	Environment_Tileset_Trees = RGBSurface("Datas/Battlefield/Trees Tileset.png", Color(0x73, 0x6D, 0xB5));
-	Environment_Tileset_Rocks = RGBSurface("Datas/Battlefield/Rock.png", Color(0xFF, 0xFF, 0xFF));
-	Environment_Tileset_Walls = RGBSurface("Datas/Battlefield/Wall.png", Color(0xFF, 0xFF, 0xFF));
-	Environment_Tileset_Houses = RGBSurface("Datas/Battlefield/Houses Tileset.png", Color(0xBF, 0x7B, 0xC7));
-
-	//The default clip is the minimal clip (we don't want to blit something in this case so it dont really matter)
-	Environment_Clip.setx(0);
-	Environment_Clip.sety(0);
-	Environment_Clip.setw(0);
-	Environment_Clip.seth(0);
+	Environment_Tileset_Trees = RGBSurface(TREE_ENV_Filename, Color(0x73, 0x6D, 0xB5));
+	Environment_Tileset_Rocks = RGBSurface(ROCK_ENV_Filename, Color(0xFF, 0xFF, 0xFF));
+	Environment_Tileset_Walls = RGBSurface(WALL_ENV_Filename, Color(0xFF, 0xFF, 0xFF));
+	Environment_Tileset_Houses = RGBSurface(HOUSE_ENV_Filename, Color(0xBF, 0x7B, 0xC7));
 
 	//Initialize vector
 	Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
@@ -357,7 +341,7 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
     int x=0, y=0;
 
 	//The type of Ground that must be generated, by default empty
-	int Current_Env_Item_Type = NOTHING_ENV_ITEM;
+	int Current_Env_Item_Type = NOTHING_ENV;
     
     //Open the map
     std::ifstream Environment_Map("Datas/Battlefield/Environment_Map.txt");
@@ -388,7 +372,7 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 		}
 
 		//assign the good clip relative to the type read from the map file
-		if( Current_Env_Item_Type == NOTHING_ENV_ITEM )
+		if( Current_Env_Item_Type == NOTHING_ENV )
 		{
 			//Minimal clip (we won't blit something in this case so it dont really matter)
 			Environment_Clip.setx(0);
@@ -396,7 +380,7 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 			Environment_Clip.setw(0);
 			Environment_Clip.seth(0);
 		}
-		else if( Current_Env_Item_Type == TREE_ENV_ITEM )
+		else if( Current_Env_Item_Type == TREE_ENV )
 		{
 			//Tree Clip (random tree the tileset)
 			Environment_Clip.setx(BATF_SPRITE_W * random(0,3));
@@ -404,7 +388,7 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 			Environment_Clip.setw(BATF_SPRITE_W);
 			Environment_Clip.seth(BATF_SPRITE_H);
 		}
-		else if( Current_Env_Item_Type == ROCK_ENV_ITEM )
+		else if( Current_Env_Item_Type == ROCK_ENV )
 		{
 			//Rock Clip
 			Environment_Clip.setx(0);
@@ -412,7 +396,7 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 			Environment_Clip.setw(BATF_SPRITE_W);
 			Environment_Clip.seth(BATF_SPRITE_H);
 		}
-		else if( Current_Env_Item_Type == WALL_ENV_ITEM )
+		else if( Current_Env_Item_Type == WALL_ENV )
 		{
 			//Wall Clip
 			Environment_Clip.setx(0);
@@ -420,7 +404,7 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 			Environment_Clip.setw(BATF_SPRITE_W);
 			Environment_Clip.seth(BATF_SPRITE_H);
 		}
-		else if( Current_Env_Item_Type == HOUSE_ENV_ITEM )
+		else if( Current_Env_Item_Type == HOUSE_ENV )
 		{
 			//House Clip(random from the tileset)
 			Environment_Clip.setx(BATF_SPRITE_W * random(0,5));
@@ -431,7 +415,7 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 		else // not listed type (??)
 		{
 			P0_Logger << nl << "Environment item present inside Environment_Map.txt not recognized " << std::endl;
-			Current_Env_Item_Type = NOTHING_ENV_ITEM; //set the environment type to nothing in order to not crash
+			Current_Env_Item_Type = NOTHING_ENV; //set the environment type to nothing in order to not crash
 		
 			//Minimal clip (we won't blit something in this case so it dont really matter)
 			Environment_Clip.setx(0);
@@ -441,7 +425,7 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 		}
 
 		//if env is empty we wont add anything to the vector coz its not usefull
-		if ( Current_Env_Item_Type != NOTHING_ENV_ITEM)
+		if ( Current_Env_Item_Type != NOTHING_ENV)
 		{
 			//Create Monster & initialized it
 			BattleField_Sprite* TheEnvironment_Sprite = new BattleField_Sprite(x, y, Current_Env_Item_Type, Environment_Clip);
@@ -483,29 +467,29 @@ try {
 			int Current_Env_Item_Type = Environment_Sprite_Vector->at(i)->Get_BattleField_Type();
 
 			//It's present, then select the good tileset according to the environment item type
-			if ( Current_Env_Item_Type == NOTHING_ENV_ITEM )
+			if ( Current_Env_Item_Type == NOTHING_ENV )
 			{
 				//Don't draw anything
 			}
-			else if( Current_Env_Item_Type == TREE_ENV_ITEM )
+			else if( Current_Env_Item_Type == TREE_ENV )
 			{
 				//Draw the Environment Tree sprite 
 				if (! Screen.blit( Environment_Tileset_Trees, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
 					P0_Logger << nl << "Tree Sprite Generation Failed " << GetError() << std::endl;
 			}
-			else if( Current_Env_Item_Type == ROCK_ENV_ITEM )
+			else if( Current_Env_Item_Type == ROCK_ENV )
 			{
 				//Draw the Environment Rock sprite 
 				if (! Screen.blit( Environment_Tileset_Rocks, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
 					P0_Logger << nl << "Rock Sprite Generation Failed " << GetError() << std::endl;
 			}
-			else if( Current_Env_Item_Type == WALL_ENV_ITEM )
+			else if( Current_Env_Item_Type == WALL_ENV )
 			{
 				//Draw the Environment Wall sprite 
 				if (! Screen.blit( Environment_Tileset_Walls, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
 					P0_Logger << nl << "Wall Sprite Generation Failed " << GetError() << std::endl;
 			}
-			else if( Current_Env_Item_Type == HOUSE_ENV_ITEM )
+			else if( Current_Env_Item_Type == HOUSE_ENV )
 			{
 				//Draw the Environment Wall sprite 
 				if (! Screen.blit( Environment_Tileset_Houses, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )

@@ -125,6 +125,9 @@ try {
 		//if the attack was successfull
 		if (myPlayer->Get_Attack_Successfull() != 0 )
 		{
+			//play hit Fx	
+			App::getInstance().getMixer()->playChannel(HitFx_Chan);
+
 			//Remove dead Monsters
 			Monster_Factory_Skeleton->Remove_Dead_Monsters();
 			Monster_Factory_Worm->Remove_Dead_Monsters();
@@ -169,13 +172,20 @@ try {
 	//if the attack was succesfull
 	if (myPlayer->Get_Attack_Successfull() != 0 ) //&& ( myPlayer->Get_Attack_Style() == 2 ) )
 	{
+		//play hit Fx	
+		App::getInstance().getMixer()->playChannel(HitFx_Chan);
+
 		//Remove Dead Monsters
 		Monster_Factory_Skeleton->Remove_Dead_Monsters();
 		Monster_Factory_Worm->Remove_Dead_Monsters();
 	} 
-	else if ( Distance_2_CH <= myPlayer->Get_Real_Range() ) //Set_Arrow_Sprite_Coordinate() ) //arrow anim is still occuring than loop
+	else
 	{ 
-		return interval;
+		if ( Distance_2_CH <= myPlayer->Get_Real_Range() ) //arrow anim is still occuring than loop
+			return interval;
+
+		//play miss Fx	
+		App::getInstance().getMixer()->playChannel(MissFx_Chan);
 	} 
 	
 	//set attack msg, reset & end timer

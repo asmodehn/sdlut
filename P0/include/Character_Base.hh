@@ -8,11 +8,6 @@
 class Character_Base
 {
 private:
-	//Check if the ground allow the character presence
-	std::vector<int>* Check_background_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector);
-	
-	//Check if the environment allow the character presence
-	std::vector<int>* Check_environment_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* Environment_Sprite_Vector);
 	
 protected:
 	//The X and Y offsets of the character
@@ -34,7 +29,7 @@ protected:
 	RGBSurface Characters_Tile;
 	Rect Characters_SpriteRect;
 
-	//The collision boxes of the Monster
+	//The collision boxes of the character
 	Rect Collision_Box;
 
 	//Bool that will indicate if the character is alive or dead
@@ -43,10 +38,12 @@ protected:
 	//The zone where the character is alloed to go (default: whole level)
 	Rect Allowed_Area;
 
+	//moving direction
+	int move_status;
+
 	//Battlefield rules (pure virtuals)
 	virtual int Get_BG_vs_CH_Rules(int bgType) = 0;
 	virtual int Get_Env_vs_CH_Rules(int envType) = 0;
-
 	
 public:
 	/****Accessor****/
@@ -167,11 +164,11 @@ public:
 	Character_Base();
 	virtual ~Character_Base();
 
-	//Check if the battlefield allow the character presence
-	bool Check_battlefield_allow_character(Rect Collision_Box, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector);
-
+	//move the character_base's collision box to a place its allowed to be when moving
+	bool Manage_Collisions( std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector, bool Handle_Collisions = 0);
+	
 	//Check collision with everything possible
-	bool Check_Collisions(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
+	//bool Check_Collisions(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 
 	//Move character (pure virtual)
 	virtual bool Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector) = 0;

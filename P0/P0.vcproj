@@ -78,6 +78,7 @@
 				OptimizeForWindows98="1"
 				SetChecksum="false"
 				TargetMachine="1"
+				Profile="false"
 			/>
 			<Tool
 				Name="VCALinkTool"

@@ -40,7 +40,7 @@ class Player_Base : public Character_Base
 		//
 
 		//animation variables
-		int frame, move_status;
+		int frame;
 
 		long DeltaTicks;
 

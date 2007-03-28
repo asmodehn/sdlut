@@ -208,17 +208,13 @@ try {
 		Collision_Box.sety( Y + (int)ceil( ((yVel*Ch_Vel*DeltaTicks)/1000)/sqrt(2.f)) );
 	}
 
-	//check collisions
-	if ( Check_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) )
+	//Handle collisions
+	if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
 	{
-		//Collision found => move back collision box
-		Collision_Box.setx(X);
-		Collision_Box.sety(Y); 
+		//No Error => Update position 
+		X = Collision_Box.getx();
+		Y = Collision_Box.gety();
 	}
-
-	//Update position
-	X = Collision_Box.getx();
-	Y = Collision_Box.gety();
 
 	return true; //no error
 } catch (...) {  //error occured

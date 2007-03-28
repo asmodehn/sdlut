@@ -3,6 +3,10 @@
 //init each chan to the default chan
 	//sfxs
 int EscMenuButtonFx_Chan = NullSound_Chan;
+int MissFx_Chan = NullSound_Chan;
+int HitFx_Chan = NullSound_Chan;
+int BowFx_Chan = NullSound_Chan;
+int SwordFx_Chan = NullSound_Chan;
 
 	//musics
 int GlobalMusic_Chan = NullSound_Chan;
@@ -21,9 +25,17 @@ try {
 
 	//Load Fxs Sounds
 	Sound EscMenuButtonFx("Datas/SFXs/esc_menu_sound.wav");
+	Sound MissFx("Datas/SFXs/Miss.wav");
+	Sound HitFx("Datas/SFXs/Hit.wav");
+	Sound BowFx("Datas/SFXs/Bow.wav");
+	Sound SwordFx("Datas/SFXs/Sword.wav");
 
 	//Set Fxs Channels
 	EscMenuButtonFx_Chan = App::getInstance().getMixer()->mixSound(EscMenuButtonFx, false, false);
+	MissFx_Chan = App::getInstance().getMixer()->mixSound(MissFx, false, false);
+	HitFx_Chan = App::getInstance().getMixer()->mixSound(HitFx, false, false);
+	BowFx_Chan = App::getInstance().getMixer()->mixSound(BowFx, false, false);
+	SwordFx_Chan = App::getInstance().getMixer()->mixSound(SwordFx, false, false);
 
 	//Load Musics Sounds
 	Sound GlobalMusic("Datas/Musics/Temple.wav");

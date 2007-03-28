@@ -120,7 +120,6 @@ Player_Base::Player_Base(int x, int y)
 
 	//Initialize animation variables
     frame = 0;  // for animation
-    move_status = CH_RIGHT;
 
 	//Default time between frame
 	DeltaTicks = 1000/FRAMES_PER_SECOND;
@@ -243,17 +242,13 @@ try {
 	Collision_Box.setx(X + xVel);
 	Collision_Box.sety(Y + yVel);
 
-	//check collisions
-	if ( Check_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) )
+	//handle collisions
+	if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
 	{
-		//Collision found => move back collision box
-		Collision_Box.setx(X);
-		Collision_Box.sety(Y); 
+		//No Error => Update position 
+		X = Collision_Box.getx();
+		Y = Collision_Box.gety();
 	}
-
-	//Update position
-	X = Collision_Box.getx();
-	Y = Collision_Box.gety();
 
 	return true; //no error
 } catch (...) {  //error occured
@@ -297,23 +292,23 @@ int Player_Base::Get_BG_vs_CH_Rules(int bgType)
 //Set env vs player rules
 int Player_Base::Get_Env_vs_CH_Rules(int envType)
 {
-	if( envType == NOTHING_ENV_ITEM )  //indicate no environement is present
+	if( envType == NOTHING_ENV )  //indicate no environement is present
 	{
 		return -1;
 	}
-	else if( envType == TREE_ENV_ITEM ) //Don't allow presence
+	else if( envType == TREE_ENV ) //Don't allow presence
 	{
 		return 0;
 	}
-	else if( envType == ROCK_ENV_ITEM ) //Don't allow presence
+	else if( envType == ROCK_ENV ) //Don't allow presence
 	{
 		return 0;
 	}
-	else if( envType == WALL_ENV_ITEM ) //Don't allow presence
+	else if( envType == WALL_ENV ) //Don't allow presence
 	{
 		return 0;
 	}
-	else if( envType == HOUSE_ENV_ITEM ) //Allow presence
+	else if( envType == HOUSE_ENV ) //Allow presence
 	{
 		return 1;
 	}
@@ -405,6 +400,9 @@ try
 
 	if (attack_style == 1)
 	{
+		//play sword Fx	
+		App::getInstance().getMixer()->playChannel(SwordFx_Chan);
+
 		//Move the attack box at border of the character sprite in the good direction
 		if( attack_direction == CH_RIGHT )
 		{
@@ -470,6 +468,9 @@ try
 	}
 	else if (attack_style == 2)
 	{
+		//play bow Fx	
+		App::getInstance().getMixer()->playChannel(BowFx_Chan);
+
 		//Move the attack box at the middle of the character sprite in the good direction
 		if( attack_direction == CH_RIGHT )
 		{
