@@ -4,7 +4,7 @@
 //Constructor
 NPCs::NPCs()
 {
-	string NPC_Ini = "Datas/Characters/NPC.ini";
+	string NPC_Ini = "Data/Characters/NPC.ini";
 	std::ifstream fi_npc( NPC_Ini.c_str() ) ;
 	if (! fi_npc.fail()) //Check file present
 	{
@@ -62,8 +62,8 @@ NPCs::NPCs()
 
 		/****Surfaces****/
 	//Characters Surfaces
-	Players_Tile_Melee = RGBSurface("Datas/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
-	Players_Tile_Distant = RGBSurface("Datas/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile_Melee = RGBSurface("Data/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile_Distant = RGBSurface("Data/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
 	Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF)); //Default tile
 }
 

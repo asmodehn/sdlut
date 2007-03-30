@@ -8,7 +8,7 @@ Player::Player()
 	if (fi_pc.fail()) //Check file present
 	{
 		Ini_Manager::Write_New_Ini_File(Save_File,
-			"Sprite_Width = 32\nSprite_Height = 32\nSprite_Filename = \"Datas/Characters/Character_Fighter.png\"\n\nInitial_Position_X = 192\nInitial_Position_Y = 224\n\nLife = 100\nArmor = 0\n\nDamage = 100"
+			"Sprite_Width = 32\nSprite_Height = 32\nSprite_Filename = \"Data/Characters/Character_Fighter.png\"\n\nInitial_Position_X = 192\nInitial_Position_Y = 224\n\nLife = 100\nArmor = 0\n\nDamage = 100"
 			);
 		P0_Logger << nl << "Save File Creation Successfull " << std::endl;
 	}
@@ -75,13 +75,13 @@ Player::Player()
 
 		/****Surfaces****/
 	//Characters Surfaces
-	Players_Tile_Melee = RGBSurface("Datas/Characters/Character_Fighter.png", Color(0xFF, 0xFF, 0xFF));
-	Players_Tile_Distant = RGBSurface("Datas/Characters/Character_Archer.png", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile_Melee = RGBSurface("Data/Characters/Character_Fighter.png", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile_Distant = RGBSurface("Data/Characters/Character_Archer.png", Color(0xFF, 0xFF, 0xFF));
 	Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF)); //Default tile
 
 	//Fight Msgs Style
-	//Font AttackMsg_Font("Datas/Fonts/ECHELON.TTF", 28);
-	Font* AttackMsg_Font = new Font("Datas/Fonts/SlimSansSerif.ttf", 28);
+	//Font AttackMsg_Font("Data/Fonts/ECHELON.TTF", 28);
+	Font* AttackMsg_Font = new Font("Data/Fonts/SlimSansSerif.ttf", 28);
 
 		/****MSGs****/
 	//Msgs displayed in the status bar

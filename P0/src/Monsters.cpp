@@ -52,7 +52,7 @@ void Monster_Skeleton::Initialize(int &Ch_Vel, int &BASE_LIFE, int &Real_Life, i
 {
 try {
 	//Characteristics management
-	string Monster_Ini = "Datas/Characters/Skeletons.ini";
+	string Monster_Ini = "Data/Characters/Skeletons.ini";
 	std::ifstream fi_monster(Monster_Ini.c_str()) ;
 	if (! fi_monster.fail()) //Check file present
 	{
@@ -72,7 +72,7 @@ try {
 	//Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
 
 	//Life bar infos
-	Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	Life_Bar_Tile = RGBSurface("Data/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	empty_life_bar_rect.setx(0);
 	empty_life_bar_rect.sety(0);
@@ -177,7 +177,7 @@ void Monster_Worm::Initialize(int &Ch_Vel, int &BASE_LIFE, int &Real_Life, int &
 {
 try {
 	//Characteristics management
-	string Monster_Ini = "Datas/Characters/Worms.ini";
+	string Monster_Ini = "Data/Characters/Worms.ini";
 	std::ifstream fi_monster(Monster_Ini.c_str()) ;
 	if (! fi_monster.fail()) //Check file present
 	{
@@ -197,7 +197,7 @@ try {
 	//Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
 
 	//Life bar infos
-	Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	Life_Bar_Tile = RGBSurface("Data/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	empty_life_bar_rect.setx(0);
 	empty_life_bar_rect.sety(0);

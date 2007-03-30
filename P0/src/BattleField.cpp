@@ -102,7 +102,7 @@ std::vector<BattleField_Sprite*>* BackGround::BackGround_Vector()
 	int Current_Ground_Type = EMPTY_GROUND;
     
     //Open the map
-    std::ifstream BackGround_Map("Datas/Battlefield/BackGround_Map.txt");
+    std::ifstream BackGround_Map("Data/Battlefield/BackGround_Map.txt");
 
 	//check if map has been loaded succesfully
     if(! BackGround_Map )
@@ -344,7 +344,7 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 	int Current_Env_Item_Type = NOTHING_ENV;
     
     //Open the map
-    std::ifstream Environment_Map("Datas/Battlefield/Environment_Map.txt");
+    std::ifstream Environment_Map("Data/Battlefield/Environment_Map.txt");
 
 	//check if map has been loaded succesfully
     if(! Environment_Map )

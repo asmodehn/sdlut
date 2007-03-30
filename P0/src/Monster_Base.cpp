@@ -40,7 +40,7 @@ Monster_Base::Monster_Base(int x, int y)
 	Alive_Status = true;
 		
 	//Life bar infos
-	Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	Life_Bar_Tile = RGBSurface("Data/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	empty_life_bar_rect.setx(0);
 	empty_life_bar_rect.sety(0);

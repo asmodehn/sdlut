@@ -5,8 +5,8 @@
 Escape_Menu::Escape_Menu()
 {
 	SelectedItemId = 1; //initially select the first one (aka "Yes")
-	Yes_Tile = RGBSurface("Datas/Interface/LeaveMenu_YesSelected.png");
-	No_Tile = RGBSurface("Datas/Interface/LeaveMenu_NoSelected.png");
+	Yes_Tile = RGBSurface("Data/Interface/LeaveMenu_YesSelected.png");
+	No_Tile = RGBSurface("Data/Interface/LeaveMenu_NoSelected.png");
 }
 
 //Blit the good menu surface in function of what the user wants to select with the keyboard
@@ -53,11 +53,11 @@ bool Escape_Menu::Manage_Validation(int ValidatedItemId)
 Victory_Screen::Victory_Screen()
 {
 	//Time
-	Time_Font = new Font("Datas/Fonts/SlimSansSerif.ttf", 20);
+	Time_Font = new Font("Data/Fonts/SlimSansSerif.ttf", 20);
 	//Monsters Stats
-	Monsters_Stats_Font = new Font("Datas/Fonts/SlimSansSerif.ttf", 14);
+	Monsters_Stats_Font = new Font("Data/Fonts/SlimSansSerif.ttf", 14);
 	//Victory Screen Tile
-	Victory_Tile = RGBSurface("Datas/Interface/Victory Screen.png");
+	Victory_Tile = RGBSurface("Data/Interface/Victory Screen.png");
 }
 
 //Destructor

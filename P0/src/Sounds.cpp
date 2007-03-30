@@ -15,7 +15,7 @@ bool Set_Sounds_Channels()
 {
 try {
 	//define the null sound
-	Sound NullSound("Datas/SFXs/null.wav");
+	Sound NullSound("Data/SFXs/null.wav");
 
 	//Set the null sound to the channel 0 (the 1st one)
 	if (App::getInstance().getMixer()->mixSound(NullSound, false, false) != 0)
@@ -24,11 +24,11 @@ try {
 	}
 
 	//Load Fxs Sounds
-	Sound EscMenuButtonFx("Datas/SFXs/esc_menu_sound.wav");
-	Sound MissFx("Datas/SFXs/Miss.wav");
-	Sound HitFx("Datas/SFXs/Hit.wav");
-	Sound BowFx("Datas/SFXs/Bow.wav");
-	Sound SwordFx("Datas/SFXs/Sword.wav");
+	Sound EscMenuButtonFx("Data/SFXs/esc_menu_sound.wav");
+	Sound MissFx("Data/SFXs/Miss.wav");
+	Sound HitFx("Data/SFXs/Hit.wav");
+	Sound BowFx("Data/SFXs/Bow.wav");
+	Sound SwordFx("Data/SFXs/Sword.wav");
 
 	//Set Fxs Channels
 	EscMenuButtonFx_Chan = App::getInstance().getMixer()->mixSound(EscMenuButtonFx, false, false);
@@ -38,7 +38,7 @@ try {
 	SwordFx_Chan = App::getInstance().getMixer()->mixSound(SwordFx, false, false);
 
 	//Load Musics Sounds
-	Sound GlobalMusic("Datas/Musics/Temple.wav");
+	Sound GlobalMusic("Data/Musics/Temple.wav");
 
 	//Set Musics Channels
 	GlobalMusic_Chan = App::getInstance().getMixer()->mixSound(GlobalMusic, true, false);

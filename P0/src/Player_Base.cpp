@@ -39,12 +39,14 @@ Player_Base::Player_Base()
 	attack_direction = -1;
 
 	/****Arrow***/
-	string Arrow_Ini = "Datas/Items/Arrow.ini";
+	string Arrow_Ini = "Data/Items/Arrow.ini";
 	std::ifstream fi_arrow(Arrow_Ini.c_str()) ;
 	if (! fi_arrow.fail()) //Check file present
 	{
 		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Width") ) >> Arrow_Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Height") ) >> Arrow_Sprite_Height;
+		//Arrow surface
+		Arrow_Tile = RGBSurface( Ini_Manager::Get_Option_String(Arrow_Ini, "Filename") , Color(0x80, 0x80, 0x80));
 		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Arrow_Vel") ) >> Arrow_Vel;
 	}
 	fi_arrow.close();
@@ -73,7 +75,7 @@ Player_Base::Player_Base()
 	Current_Arrow_SpriteRect = Arrow_SpriteRect->at(CH_RIGHT*PLAYER_ARROW_ATTACK_ANIMATION_FRAME);
 
 	//Arrow surface
-	Arrow_Tile = RGBSurface("Datas/Items/Arrow.png", Color(0x80, 0x80, 0x80));
+	Arrow_Tile = RGBSurface("Data/Items/Arrow.png", Color(0x80, 0x80, 0x80));
 }
 
 //Initialization construtor
@@ -143,7 +145,7 @@ Player_Base::Player_Base(int x, int y)
     Collision_Box.seth(Sprite_Height);
 
 	/****Arrow***/
-	string Arrow_Ini = "Datas/Items/Arrow.ini";
+	string Arrow_Ini = "Data/Items/Arrow.ini";
 	std::ifstream fi_arrow(Arrow_Ini.c_str()) ;
 	if (! fi_arrow.fail()) //Check file present
 	{
@@ -177,7 +179,7 @@ Player_Base::Player_Base(int x, int y)
 	Current_Arrow_SpriteRect = Arrow_SpriteRect->at(CH_RIGHT*PLAYER_ARROW_ATTACK_ANIMATION_FRAME);
 
 	//Arrow surface
-	Arrow_Tile = RGBSurface("Datas/Items/Arrow.png", Color(0x80, 0x80, 0x80));
+	Arrow_Tile = RGBSurface("Data/Items/Arrow.png", Color(0x80, 0x80, 0x80));
 
 	//initialize
 	Set_Attack_Style();
