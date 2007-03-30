@@ -8,7 +8,7 @@ Player::Player()
 	if (fi_pc.fail()) //Check file present
 	{
 		Ini_Manager::Write_New_Ini_File(Save_File,
-			"Sprite_Width = 32\nSprite_Height = 32\n\nInitial_Position_X = 192\nInitial_Position_Y = 224\n\nLife = 100\nArmor = 0\n\nDamage = 100"
+			"Sprite_Width = 32\nSprite_Height = 32\nSprite_Filename = \"Datas/Characters/Character_Fighter.png\"\n\nInitial_Position_X = 192\nInitial_Position_Y = 224\n\nLife = 100\nArmor = 0\n\nDamage = 100"
 			);
 		P0_Logger << nl << "Save File Creation Successfull " << std::endl;
 	}
@@ -22,6 +22,8 @@ Player::Player()
 /****Sprite****/
 	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Sprite_Width") ) >> Sprite_Width;
 	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Sprite_Height") ) >> Sprite_Height;
+	Sprite_Filename = Ini_Manager::Get_Option_String(Save_File, "Sprite_Filename");
+
 /****Characts****/
 	std::stringstream( Ini_Manager::Get_Option_String(Save_File, "Life") ) >> BASE_LIFE;
 	Real_Life = BASE_LIFE;
@@ -75,7 +77,7 @@ Player::Player()
 	//Characters Surfaces
 	Players_Tile_Melee = RGBSurface("Datas/Characters/Character_Fighter.png", Color(0xFF, 0xFF, 0xFF));
 	Players_Tile_Distant = RGBSurface("Datas/Characters/Character_Archer.png", Color(0xFF, 0xFF, 0xFF));
-	Characters_Tile = Players_Tile_Melee; //Default tile: the melee tile
+	Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF)); //Default tile
 
 	//Fight Msgs Style
 	//Font AttackMsg_Font("Datas/Fonts/ECHELON.TTF", 28);

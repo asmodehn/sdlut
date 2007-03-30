@@ -8,6 +8,7 @@ Character_Base::Character_Base()
 	xVel = 0, yVel = 0;
 
 	Sprite_Width = 0, Sprite_Height = 0;
+	Sprite_Filename = "";
 
 	BASE_LIFE = 0, Real_Life = BASE_LIFE;
 	BASE_ARMOR = 0, Real_Armor = BASE_ARMOR;
@@ -104,45 +105,27 @@ Rect inf_rect;
 						{
 							if ( inf_rect.getw() <= inf_rect.geth() )
 							{
-								if (Collision_Box.getx() - X > 0 ) //we r moving right
+								if ( inf_rect.getx() <= ( BackGround_Sprite_Vector->at(it)->Get_X() + BATF_SPRITE_W/2 ) )
 								{
-									Collision_Box.setx( Collision_Box.getx() - inf_rect.getw() ) ;
+									Collision_Box.setx( BackGround_Sprite_Vector->at(it)->Get_X() - Sprite_Width );
 								} 
-								else if (Collision_Box.getx() - X < 0 )
+								else 
 								{
-									Collision_Box.setx( Collision_Box.getx() + inf_rect.getw() ) ;
+									Collision_Box.setx( BackGround_Sprite_Vector->at(it)->Get_X() + BATF_SPRITE_W );
 								}
+								
 							} 
-							else if ( inf_rect.getw() > inf_rect.geth() )
+							else
 							{
-								if (Collision_Box.gety() - Y > 0 ) //we r moving down
+								if ( inf_rect.gety() <= ( BackGround_Sprite_Vector->at(it)->Get_Y() + BATF_SPRITE_H/2 ) ) 
 								{
-									Collision_Box.sety( Collision_Box.gety() - inf_rect.geth() );
-								}
-								else if (Collision_Box.gety() - Y < 0 )
-								{
-									Collision_Box.sety( Collision_Box.gety() + inf_rect.geth() );
-								}
-							} 
-							/*else  // =
-							{
-								if (Collision_Box.getx() - X > 0 ) //we r moving right
-								{
-									Collision_Box.setx( Collision_Box.getx() - inf_rect.getw() ) ;
+									Collision_Box.sety( BackGround_Sprite_Vector->at(it)->Get_Y() - Sprite_Height );
 								} 
-								else if (Collision_Box.getx() - X < 0 )
+								else 
 								{
-									Collision_Box.setx( Collision_Box.getx() + inf_rect.getw() ) ;
+									Collision_Box.sety( BackGround_Sprite_Vector->at(it)->Get_Y() + BATF_SPRITE_H );
 								}
-								if (Collision_Box.gety() - Y > 0 ) //we r moving down
-								{
-									Collision_Box.sety( Collision_Box.gety() - inf_rect.geth() );
-								}
-								else if (Collision_Box.gety() - Y < 0 )
-								{
-									Collision_Box.sety( Collision_Box.gety() + inf_rect.geth() );
-								}
-							}*/
+							}
 						} else { //Handle Mode OFF
 							return false; //presence not allowed no need to work more
 						}
@@ -168,45 +151,27 @@ Rect inf_rect;
 				{
 					if ( inf_rect.getw() <= inf_rect.geth() )
 					{
-						if (Collision_Box.getx() - X > 0 ) //we r moving right
+						if ( inf_rect.getx() <= ( Environment_Sprite_Vector->at(i)->Get_X() + BATF_SPRITE_W/2 ) )
 						{
-							Collision_Box.setx( Collision_Box.getx() - inf_rect.getw() ) ;
+							Collision_Box.setx( Environment_Sprite_Vector->at(i)->Get_X() - Sprite_Width );
 						} 
-						else if (Collision_Box.getx() - X < 0 )
+						else 
 						{
-							Collision_Box.setx( Collision_Box.getx() + inf_rect.getw() ) ;
+							Collision_Box.setx( Environment_Sprite_Vector->at(i)->Get_X() + BATF_SPRITE_W );
 						}
+						
 					} 
-					else if ( inf_rect.getw() > inf_rect.geth() )
+					else
 					{
-						if (Collision_Box.gety() - Y > 0 ) //we r moving down
+						if ( inf_rect.gety() <= ( Environment_Sprite_Vector->at(i)->Get_Y() + BATF_SPRITE_H/2) )
 						{
-							Collision_Box.sety( Collision_Box.gety() - inf_rect.geth() );
-						}
-						else if (Collision_Box.gety() - Y < 0 )
-						{
-							Collision_Box.sety( Collision_Box.gety() + inf_rect.geth() );
-						}
-					} 
-					/*else  // =
-					{
-						if (Collision_Box.getx() - X > 0 ) //we r moving right
-						{
-							Collision_Box.setx( Collision_Box.getx() - inf_rect.getw() ) ;
+							Collision_Box.sety( Environment_Sprite_Vector->at(i)->Get_Y() - Sprite_Height );
 						} 
-						else if (Collision_Box.getx() - X < 0 )
+						else 
 						{
-							Collision_Box.setx( Collision_Box.getx() + inf_rect.getw() ) ;
+							Collision_Box.sety( Environment_Sprite_Vector->at(i)->Get_Y() + BATF_SPRITE_H );
 						}
-						if (Collision_Box.gety() - Y > 0 ) //we r moving down
-						{
-							Collision_Box.sety( Collision_Box.gety() - inf_rect.geth() );
-						}
-						else if (Collision_Box.gety() - Y < 0 )
-						{
-							Collision_Box.sety( Collision_Box.gety() + inf_rect.geth() );
-						}
-					}*/
+					}
 				} else { //Handle Mode OFF
 					return false; //presence not allowed no need to work more
 				}
@@ -232,45 +197,27 @@ Rect inf_rect;
 					{
 						if ( inf_rect.getw() <= inf_rect.geth() )
 						{
-							if (Collision_Box.getx() - X > 0 ) //we r moving right
+							if ( inf_rect.getx() <= (Global_Player_Vector->at(j)->at(i)->Get_X() + (Global_Player_Vector->at(j)->at(i)->Get_Sprite_Width()/2) ) )
 							{
-								Collision_Box.setx( Collision_Box.getx() - inf_rect.getw() ) ;
+								Collision_Box.setx( Global_Player_Vector->at(j)->at(i)->Get_X() - Sprite_Width );
 							} 
-							else if (Collision_Box.getx() - X < 0 )
+							else 
 							{
-								Collision_Box.setx( Collision_Box.getx() + inf_rect.getw() ) ;
+								Collision_Box.setx( Global_Player_Vector->at(j)->at(i)->Get_X() + Global_Player_Vector->at(j)->at(i)->Get_Sprite_Width() );
 							}
+							
 						} 
-						else if ( inf_rect.getw() > inf_rect.geth() )
+						else
 						{
-							if (Collision_Box.gety() - Y > 0 ) //we r moving down
+							if ( inf_rect.gety() <= (Global_Player_Vector->at(j)->at(i)->Get_Y() + (Global_Player_Vector->at(j)->at(i)->Get_Sprite_Height()/2) ) )
 							{
-								Collision_Box.sety( Collision_Box.gety() - inf_rect.geth() );
-							}
-							else if (Collision_Box.gety() - Y < 0 )
-							{
-								Collision_Box.sety( Collision_Box.gety() + inf_rect.geth() );
-							}
-						} 
-						/*else  // =
-						{
-							if (Collision_Box.getx() - X > 0 ) //we r moving right
-							{
-								Collision_Box.setx( Collision_Box.getx() - inf_rect.getw() ) ;
+								Collision_Box.sety( Global_Player_Vector->at(j)->at(i)->Get_Y() - Sprite_Height );
 							} 
-							else if (Collision_Box.getx() - X < 0 )
+							else 
 							{
-								Collision_Box.setx( Collision_Box.getx() + inf_rect.getw() ) ;
+								Collision_Box.sety( Global_Player_Vector->at(j)->at(i)->Get_Y() + Global_Player_Vector->at(j)->at(i)->Get_Sprite_Height() );
 							}
-							if (Collision_Box.gety() - Y > 0 ) //we r moving down
-							{
-								Collision_Box.sety( Collision_Box.gety() - inf_rect.geth() );
-							}
-							else if (Collision_Box.gety() - Y < 0 )
-							{
-								Collision_Box.sety( Collision_Box.gety() + inf_rect.geth() );
-							}
-						}*/
+						}
 					} else { //Handle Mode OFF
 						return false; //presence not allowed no need to work more
 					}
@@ -296,26 +243,49 @@ Rect inf_rect;
 					{
 						if ( inf_rect.getw() <= inf_rect.geth() )
 						{
-							if (Collision_Box.getx() - X > 0 ) //we r moving right
+							if ( inf_rect.getx() <= (Global_Monster_Vector->at(j)->at(i)->Get_X() + (Global_Monster_Vector->at(j)->at(i)->Get_Sprite_Width()/2) ) )
+							{
+								Collision_Box.setx( Global_Monster_Vector->at(j)->at(i)->Get_X() - Sprite_Width );
+							} 
+							else 
+							{
+								Collision_Box.setx( Global_Monster_Vector->at(j)->at(i)->Get_X() + Global_Monster_Vector->at(j)->at(i)->Get_Sprite_Width() );
+							}
+							
+						} 
+						else
+						{
+							if ( inf_rect.gety() <= (Global_Monster_Vector->at(j)->at(i)->Get_Y() + (Global_Monster_Vector->at(j)->at(i)->Get_Sprite_Height()/2) ) )
+							{
+								Collision_Box.sety( Global_Monster_Vector->at(j)->at(i)->Get_Y() - Sprite_Height );
+							} 
+							else 
+							{
+								Collision_Box.sety( Global_Monster_Vector->at(j)->at(i)->Get_Y() + Global_Monster_Vector->at(j)->at(i)->Get_Sprite_Height() );
+							}
+						}
+						/*if ( inf_rect.getw() <= inf_rect.geth() )
+						{
+							if ( (Collision_Box.getx() - X > 0 ) || (Collision_Box.gety() - Y > 0 ) )//we r moving right or down
 							{
 								Collision_Box.setx( Collision_Box.getx() - inf_rect.getw() ) ;
 							} 
-							else if (Collision_Box.getx() - X < 0 )
+							else if ( (Collision_Box.getx() - X < 0 ) || (Collision_Box.gety() - Y < 0 ) ) //we r moving up or left
 							{
 								Collision_Box.setx( Collision_Box.getx() + inf_rect.getw() ) ;
 							}
 						} 
 						else if ( inf_rect.getw() > inf_rect.geth() )
 						{
-							if (Collision_Box.gety() - Y > 0 ) //we r moving down
+							if ( (Collision_Box.getx() - X > 0 ) || (Collision_Box.gety() - Y > 0 ) )//we r moving right or down
 							{
 								Collision_Box.sety( Collision_Box.gety() - inf_rect.geth() );
 							}
-							else if (Collision_Box.gety() - Y < 0 )
+							else if ( (Collision_Box.getx() - X < 0 ) || (Collision_Box.gety() - Y < 0 ) ) //we r moving up or left
 							{
 								Collision_Box.sety( Collision_Box.gety() + inf_rect.geth() );
 							}
-						} 
+						} */
 						/*else  // =
 						{
 							if (Collision_Box.getx() - X > 0 ) //we r moving right

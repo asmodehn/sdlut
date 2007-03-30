@@ -58,6 +58,8 @@ try {
 	{
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
+		Characters_Tile = RGBSurface(Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Filename") , Color(0xFF, 0xFF, 0xFF));
+		//Sprite_Filename = Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Filename");
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "CH_VEL") ) >> Ch_Vel;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
 		Real_Life = BASE_LIFE;
@@ -67,7 +69,7 @@ try {
 	fi_monster.close();
 
 	//Monster Tile Surface
-	Characters_Tile = RGBSurface("Datas/Characters/Skeletons Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	//Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
 
 	//Life bar infos
 	Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
@@ -181,6 +183,8 @@ try {
 	{
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
+		Characters_Tile = RGBSurface(Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Filename") , Color(0xFF, 0xFF, 0xFF));
+		//Sprite_Filename = Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Filename");
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "CH_VEL") ) >> Ch_Vel;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
 		Real_Life = BASE_LIFE;
@@ -190,7 +194,7 @@ try {
 	fi_monster.close();
 
 	//Monster Tile Surface
-	Characters_Tile = RGBSurface("Datas/Characters/Worms Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	//Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
 
 	//Life bar infos
 	Life_Bar_Tile = RGBSurface("Datas/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));

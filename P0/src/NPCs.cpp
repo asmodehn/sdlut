@@ -24,6 +24,7 @@ NPCs::NPCs()
 /****Sprite****/
 		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Sprite_Width") ) >> Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "Sprite_Height") ) >> Sprite_Height;
+		Sprite_Filename = Ini_Manager::Get_Option_String(NPC_Ini, "Sprite_Filename");
 /****Velocity****/
 		std::stringstream( Ini_Manager::Get_Option_String(NPC_Ini, "CH_VEL") ) >> Ch_Vel;
 /****Characts****/
@@ -63,7 +64,7 @@ NPCs::NPCs()
 	//Characters Surfaces
 	Players_Tile_Melee = RGBSurface("Datas/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
 	Players_Tile_Distant = RGBSurface("Datas/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
-	Characters_Tile = Players_Tile_Melee; //Default tile: the melee tile
+	Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF)); //Default tile
 }
 
 //Destructor

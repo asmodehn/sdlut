@@ -88,6 +88,10 @@ Player_Base::Player_Base(int x, int y)
 	arrow_y = Y;
 
 	Sprite_Width = PC_WIDTH, Sprite_Height = PC_HEIGHT;
+	Sprite_Filename = ""; //Empty sprite for now
+
+	//Player Tile Surface
+	Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
 
 	//Initial moving status
 	moving_status = false;

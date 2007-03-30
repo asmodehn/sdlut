@@ -18,6 +18,7 @@ protected:
 
 	//Sprite Characteristics
 	int Sprite_Width, Sprite_Height;
+	string Sprite_Filename;
 
 	//Characteristics of the character
 	int BASE_LIFE, Real_Life;
