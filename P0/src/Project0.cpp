@@ -96,11 +96,11 @@ try { //global error management
 	P0_Logger << nl << "BackGround Init: OK " << std::endl;
 	
 	//Fill the BackGround vector with all BackGround sprite corresponding to the map file
-//#ifdef _DEBUG //debug mode
-//	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
-//#else //rlz mode
+#ifdef _DEBUG //debug mode
+	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
+#else //rlz mode
 	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = myBackGround->BackGround_Vector(); //Vector which will contains all BackGround type and clip
-//#endif
+#endif
 	P0_Logger << nl << "BackGround_Sprite Vector Fill: OK " << std::endl;
 	
 	//Initialize the Environment
