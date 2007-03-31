@@ -130,8 +130,8 @@ INCLUDE_DIRECTORIES(${Project_0_SOURCE_DIR}/include )
 #copy Config
 ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Config/ )
 
-#copy Datas
-ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Datas/ )
+#copy Data
+ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Data/ )
 
 #copy Save dir
 ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Saves/ )
