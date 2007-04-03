@@ -91,7 +91,7 @@ try {
 }
 
 //Set ground vs skeleton rules
-int Monster_Skeleton::Get_BG_vs_CH_Rules(int bgType)
+int Monster_Skeleton::Get_BG_vs_CH_Rules(const int& bgType)
 {
 	if( bgType == EMPTY_GROUND ) //Don't allow move
 	{
@@ -216,7 +216,7 @@ try {
 }
 
 //Set ground vs worm rules
-int Monster_Worm::Get_BG_vs_CH_Rules(int bgType)
+int Monster_Worm::Get_BG_vs_CH_Rules(const int& bgType)
 {
 	if( bgType == EMPTY_GROUND ) //Don't allow move
 	{

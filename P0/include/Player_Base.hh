@@ -51,8 +51,8 @@ class Player_Base : public Character_Base
 		Rect Current_Arrow_SpriteRect;
 
 		//Battlefield rules
-		/* virtual */ int Get_BG_vs_CH_Rules(int bgType);
-		/* virtual */ int Get_Env_vs_CH_Rules(int envType);
+		/* virtual */ int Get_BG_vs_CH_Rules(const int& bgType);
+		/* virtual */ int Get_Env_vs_CH_Rules(const int& envType);
 	public:
 
 		/****Definition****/
@@ -200,7 +200,7 @@ class Player_Base : public Character_Base
 		bool Set_Arrow_Sprite_Coordinate();
 
 		//blit the arrow on the screen
-		bool Show_Arrow(Rect Camera, VideoSurface& Screen);
+		bool Show_Arrow(const Rect& Camera, VideoSurface& Screen);
 };
 
 #endif

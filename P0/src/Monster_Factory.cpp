@@ -143,7 +143,7 @@ try {
 }
 //Invoke all monsters movements animation on the screen
 template <typename Monster_Template>
-bool Monster_Factory<Monster_Template>::Show_Monsters(Rect Camera, VideoSurface& Screen)
+bool Monster_Factory<Monster_Template>::Show_Monsters(const Rect& Camera, VideoSurface& Screen)
 {
 try {
 	for(unsigned int i=0; i < Monster_Vector->size(); i++)

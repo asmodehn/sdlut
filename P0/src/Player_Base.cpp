@@ -263,7 +263,7 @@ try {
 }
 
 //Set ground vs player rules
-int Player_Base::Get_BG_vs_CH_Rules(int bgType)
+int Player_Base::Get_BG_vs_CH_Rules(const int& bgType)
 {
 	if( bgType == EMPTY_GROUND ) //Don't allow move
 	{
@@ -296,7 +296,7 @@ int Player_Base::Get_BG_vs_CH_Rules(int bgType)
 }
 
 //Set env vs player rules
-int Player_Base::Get_Env_vs_CH_Rules(int envType)
+int Player_Base::Get_Env_vs_CH_Rules(const int& envType)
 {
 	if( envType == NOTHING_ENV )  //indicate no environement is present
 	{
@@ -704,7 +704,7 @@ try {
 }
 
 //blit the arrow on the screen
-bool Player_Base::Show_Arrow(Rect Camera, VideoSurface& Screen)
+bool Player_Base::Show_Arrow(const Rect& Camera, VideoSurface& Screen)
 {
 try {
 	if ( attack_direction != -1 ) //dont display the arrow when its not useffull

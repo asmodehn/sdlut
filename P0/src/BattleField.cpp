@@ -8,7 +8,7 @@ BattleField_Sprite::BattleField_Sprite()
 	//Default Ground type
 	BattleField_Type = EMPTY_GROUND;
 }
-BattleField_Sprite::BattleField_Sprite(int x, int y, int battlefield_type, Rect battlefield_clip)
+BattleField_Sprite::BattleField_Sprite(const int& x, const int& y, int& battlefield_type, Rect& battlefield_clip)
 {
 	X = x;
 	Y = y;
@@ -218,7 +218,7 @@ std::vector<BattleField_Sprite*>* BackGround::BackGround_Vector()
 	return(BackGround_Sprite_Vector);
 }
 //BackGround Render
-bool BackGround::Render(Rect Camera, VideoSurface & Screen)
+bool BackGround::Render(const Rect& Camera, VideoSurface& Screen)
 {
 try {
 	int it_x = 0, it_y = 0;
@@ -455,7 +455,7 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 	return(Environment_Sprite_Vector);
 }
 //Environment Render
-bool Environment::Render(Rect Camera, VideoSurface & Screen)
+bool Environment::Render(const Rect& Camera, VideoSurface& Screen)
 {
 try {
 	//Loop on all the vector

@@ -221,7 +221,7 @@ try { //error management
 }
 
 //To check colission (small beginning of a physical engine^^)
-bool check_collision(Rect A, Rect B)
+bool check_collision(const Rect& A, const Rect& B)
 {
     //The sides of the rectangles
     int leftA, leftB;
@@ -283,7 +283,7 @@ std::string Int_To_String(int to_convert)
 }
 
 //Style the time to "Xd Xh Xmin Xs"
-std::string Time_Style(int time)
+std::string Time_Style(const int& time)
 {
 	int day=0, hour=0, minute=0, second=0;
 	

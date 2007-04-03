@@ -43,8 +43,8 @@ protected:
 	int move_status;
 
 	//Battlefield rules (pure virtuals)
-	virtual int Get_BG_vs_CH_Rules(int bgType) = 0;
-	virtual int Get_Env_vs_CH_Rules(int envType) = 0;
+	virtual int Get_BG_vs_CH_Rules(const int& bgType) = 0;
+	virtual int Get_Env_vs_CH_Rules(const int& envType) = 0;
 	
 public:
 	/****Accessor****/
@@ -168,14 +168,11 @@ public:
 	//move the character_base's collision box to a place its allowed to be when moving
 	bool Manage_Collisions( std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector, bool Handle_Collisions = 0);
 	
-	//Check collision with everything possible
-	//bool Check_Collisions(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
-
 	//Move character (pure virtual)
 	virtual bool Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector) = 0;
 
 	//Show Character on the screen
-	bool Show(Rect Camera, VideoSurface& Screen);
+	bool Show(const Rect& Camera, VideoSurface& Screen);
 
 };
 

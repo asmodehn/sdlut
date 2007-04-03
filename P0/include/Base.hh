@@ -155,7 +155,7 @@ extern int FiNiSH_TiME;
 bool Set_Config();
 
 //To check colission (small beginning of a physical engine^^)
-bool check_collision(Rect A, Rect B);
+bool check_collision(const Rect& A, const Rect& B);
 
 //random function
 int random(int min, int max);
@@ -164,6 +164,6 @@ int random(int min, int max);
 std::string Int_To_String(int to_convert);
 
 //Style the time to "Xd Xh Xmin Xs"
-std::string Time_Style(int time);
+std::string Time_Style(const int& time);
 
 #endif

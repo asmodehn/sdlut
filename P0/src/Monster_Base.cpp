@@ -6,7 +6,7 @@ Monster_Base::Monster_Base()
 }
 
 //Full Construtor
-Monster_Base::Monster_Base(int x, int y)
+Monster_Base::Monster_Base(int& x, int& y)
 {
 	//Initial position
 	X = x;
@@ -108,13 +108,13 @@ try {
 }
 
 //By default the ground allow the undefined monster presence
-int Monster_Base::Get_BG_vs_CH_Rules(int bgType)
+int Monster_Base::Get_BG_vs_CH_Rules(const int& bgType)
 {
 	return 1;
 }
 
 //Check if the environmemt allow the monster presence
-int Monster_Base::Get_Env_vs_CH_Rules(int envType)
+int Monster_Base::Get_Env_vs_CH_Rules(const int& envType)
 {
 	if( envType == NOTHING_ENV )  //indicate no environement is present
 	{
@@ -143,7 +143,7 @@ int Monster_Base::Get_Env_vs_CH_Rules(int envType)
 }
 
 //Check if the battlefield cutting allow monster presence
-bool Monster_Base::Check_Cutting_Allow_Monster(int x, int y, std::vector<BattleField_Zone*>* &BattleField_Cutting_Vector)
+bool Monster_Base::Check_Cutting_Allow_Monster(int& x, int& y, std::vector<BattleField_Zone*>* &BattleField_Cutting_Vector)
 {
 	Rect Area;
 	std::vector<int>* Allowed_Monsters_Vector = new std::vector<int>;
@@ -176,7 +176,7 @@ bool Monster_Base::Check_Cutting_Allow_Monster(int x, int y, std::vector<BattleF
 }
 
 //Calculate the current life of the monster depending on damage, malus, etc
-bool Monster_Base::Calculate_Real_Life(int received_damage = 0)
+bool Monster_Base::Calculate_Real_Life(int received_damage)
 {
 	int real_received_damage = (received_damage - Get_Real_Armor()); //TODO(future): Set the real damage formula base on mo's condition
 
@@ -193,7 +193,7 @@ bool Monster_Base::Calculate_Real_Life(int received_damage = 0)
 }
 
 //Shows the life bar of the monster depending of it's current life
-bool Monster_Base::Show_Life_Bar(Rect Camera, VideoSurface& Screen)
+bool Monster_Base::Show_Life_Bar(const Rect& Camera, VideoSurface& Screen)
 {
 	int _Real_Life = Get_Real_Life();
 	//to avoid draw pb when life is < 0

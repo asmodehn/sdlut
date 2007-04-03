@@ -21,8 +21,8 @@ class Monster_Base : public Character_Base
 		/****Methods****/
 
 		//Battlefield rules
-		virtual int Get_BG_vs_CH_Rules(int bgType);
-		/* virtual */ int Get_Env_vs_CH_Rules(int envType);
+		virtual int Get_BG_vs_CH_Rules(const int& bgType);
+		/* virtual */ int Get_Env_vs_CH_Rules(const int& envType);
 
 	public:
 		inline void Set_Monster_ID(Monsters_Type new_Monster_ID)
@@ -40,7 +40,7 @@ class Monster_Base : public Character_Base
 		Monster_Base();
 
 		//Constructor that initialize the variables
-		Monster_Base(int x, int y);
+		Monster_Base(int& x, int& y);
 
 		//Copy construtor
 		Monster_Base(const Monster_Base& ToCopy);
@@ -52,13 +52,13 @@ class Monster_Base : public Character_Base
 		bool Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 	    
 		//Check if the battlefield cutting allow monster presence
-		bool Check_Cutting_Allow_Monster(int x, int y, std::vector<BattleField_Zone*>* &BattleField_Cutting_Vector);
+		bool Check_Cutting_Allow_Monster(int& x, int& y, std::vector<BattleField_Zone*>* &BattleField_Cutting_Vector);
 
 		//Calculate the current life depending on damage, malus, etc and damage made by the opponent
-		bool Calculate_Real_Life(int received_damage);
+		bool Calculate_Real_Life(int received_damage = 0);
 
 		//Shows the life bar of the monster depending of it's current life
-		bool Show_Life_Bar(Rect Camera, VideoSurface& Screen);
+		bool Show_Life_Bar(const Rect& Camera, VideoSurface& Screen);
 };
 
 #endif

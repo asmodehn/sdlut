@@ -321,7 +321,7 @@ Rect inf_rect;
 }
 
 //Show Character on the screen
-bool Character_Base::Show(Rect Camera, VideoSurface& Screen)
+bool Character_Base::Show(const Rect& Camera, VideoSurface& Screen)
 {
 try {
 	//Check if the character sprite is present on the screen minus the status bar

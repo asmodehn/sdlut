@@ -14,7 +14,7 @@ class BattleField_Sprite
 		
 	public:
 		BattleField_Sprite();
-		BattleField_Sprite(int x, int y, int battlefield_type, Rect battlefield_clip);
+		BattleField_Sprite(const int& x, const int& y, int& battlefield_type, Rect& battlefield_clip);
 
 		/****Accessor****/
 		inline void Set_X(int new_X)
@@ -35,7 +35,7 @@ class BattleField_Sprite
             return Y;
         }
 
-		inline void Set_BattleField_Type(int new_BattleField_Type)
+		inline void Set_BattleField_Type(int& new_BattleField_Type)
         {
             BattleField_Type = new_BattleField_Type;
         }
@@ -44,7 +44,7 @@ class BattleField_Sprite
             return BattleField_Type;
         }
 
-		inline void Set_BattleField_Clip(Rect new_BattleField_Clip)
+		inline void Set_BattleField_Clip(Rect& new_BattleField_Clip)
         {
             BattleField_Clip = new_BattleField_Clip;
         }
@@ -76,7 +76,7 @@ class BattleField_Zone
             return Area;
         }
 		
-		inline void Set_Allowed_Monsters(std::vector<int>* &new_Allowed_Monsters)
+		inline void Set_Allowed_Monsters(std::vector<int>* new_Allowed_Monsters)
         {
             Allowed_Monsters = new_Allowed_Monsters;
         }
@@ -116,7 +116,7 @@ class BackGround // : public BattleField_Sprite
 		std::vector<BattleField_Sprite*>* BackGround_Vector();
 
 		//Generate the background of the screen
-		bool Render(Rect Camera, VideoSurface & Screen);
+		bool Render(const Rect& Camera, VideoSurface& Screen);
 };
 
 //Environment class which is designed to manage everything relative to the environment layer of the battlefield
@@ -141,7 +141,7 @@ class Environment // : public BattleField_Sprite
 		std::vector<BattleField_Sprite*>* Environment_Vector();
 
 		//Generate the background of the screen
-		bool Render(Rect Camera, VideoSurface & Screen);
+		bool Render(const Rect& Camera, VideoSurface& Screen);
 };
 
 #endif

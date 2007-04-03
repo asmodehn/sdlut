@@ -20,7 +20,7 @@ class Monster_Skeleton : public Monster_Base
 						RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect);
 
 		//Battlefield rules
-		int Get_BG_vs_CH_Rules(int bgType);
+		int Get_BG_vs_CH_Rules(const int& bgType);
 };
 
 //Worm specifics
@@ -40,7 +40,7 @@ class Monster_Worm : public Monster_Base
 						RGBSurface &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect);
 
 		//Battlefield rules
-		int Get_BG_vs_CH_Rules(int bgType);
+		int Get_BG_vs_CH_Rules(const int& bgType);
 };
 
 #endif
