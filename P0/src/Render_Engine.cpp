@@ -59,7 +59,7 @@ void Render_Engine::prerender(unsigned long deltaticks)
 //Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
 void Render_Engine::render(VideoSurface & screen) const
 {
-	//VideoSurface* Screen = &screen;
+	
 	//Generate the background on the screen
 	if( myBackGround->Render(myPlayer->Get_Camera(), screen) == false )
 	{ 
@@ -123,7 +123,7 @@ void Render_Engine::render(VideoSurface & screen) const
 	{ 
       P0_Logger << nl << "Display Monsters Stats Render Failed " << std::endl;    
     }
-	
+
 	if (GLOBAL_GAME_STATE == 4) {
 		//Show Escape menu
 		if( myEsc_Menu->Show_Menu(screen) == false )

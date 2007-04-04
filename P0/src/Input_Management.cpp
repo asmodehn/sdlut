@@ -198,7 +198,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				{
 					//Leave/appears on the Battlefield and save but do not quit
 					//case KKEnter:
-					//To DO *******
+					//To DO (future)
 					
 				}
 			}
@@ -209,11 +209,11 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				//reset the display
 				CURRENT_SCREEN_WIDTH = SCREEN_WIDTH;
 				CURRENT_SCREEN_HEIGHT = SCREEN_HEIGHT;
-				/*if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
-				{
-					P0_Logger << nl << "Create Surface Failed : " << GetError() << std::endl;
-					return false;
-				}*/
+				//if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
+				//{
+				//	P0_Logger << nl << "Create Surface Failed : " << GetError() << std::endl;
+				//	return false;
+				//}
 				//Go to fullscreen
 				//App::getInstance().getWindow()->setFullscreen(true);
 				//App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen()); not working dont know why ...

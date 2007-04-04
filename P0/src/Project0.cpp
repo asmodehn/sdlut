@@ -276,6 +276,7 @@ if (ENABLE_MUSIC)
 	delete Global_Monster_Vector, Global_Monster_Vector = NULL;
 	delete myPlayer, myPlayer = NULL;
 	delete myNPC, myNPC = NULL;
+	delete NPCs_Vector, NPCs_Vector = NULL;
 	delete Players_Vector, Players_Vector = NULL;
 	delete Global_Player_Vector, Global_Player_Vector = NULL;
 	delete myEnvironment, myEnvironment = NULL;
