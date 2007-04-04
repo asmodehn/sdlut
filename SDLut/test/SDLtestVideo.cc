@@ -51,7 +51,7 @@ public:
 	RGBSurface loadedimage;
 	Point imagepos;
 
-	MyEngine( const std::string & imagefilename) : loadedimage(imagefilename),imagepos()
+	MyEngine( const std::string & imagefilename) : loadedimage(imagefilename,Color(0,0,0)),imagepos()
 	{}
 
     virtual ~MyEngine(){}
@@ -112,7 +112,7 @@ int main(int argc, char** argv)
     else
     {
         App::getInstance().getWindow()->mainLoop(2);
-		//think about automatic exit after timeout...
+	//think about automatic exit after timeout...
     }
     return 0;
 }
