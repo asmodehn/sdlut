@@ -101,7 +101,7 @@ try {
 	{
 		Ini_Manager::Write_New_Ini_File("Best_Times.txt", Int_To_String(KiLLED_MONSTERS) + " Monsters Killed in : " + Time_Style(FiNiSH_TiME) + "\n" );
 	} else {
-		//Ini_Manager::Append_To_Ini_File("Best_Times.txt", "\n");
+		
 		Ini_Manager::Append_To_Ini_File("Best_Times.txt", Int_To_String(KiLLED_MONSTERS) + " Monsters Killed in : " + Time_Style(FiNiSH_TiME) + "\n" );
 	}
 
@@ -117,12 +117,9 @@ bool Victory_Screen::Show_Monsters_Stats(VideoSurface& Screen)
 {
 try {
 	//Show Numbers
-	//monsters_stats_msg = *Monsters_Stats_Font->render("Monsters ALiVED: " + Int_To_String(ALiVE_MONSTERS) + "; Monsters KiLLED: " + Int_To_String(KiLLED_MONSTERS) , Color(0xFF, 0xFF, 0xFF), Font::Shaded);
 	Screen.blit( *Monsters_Stats_Font->render("Monsters ALiVED: " + Int_To_String(ALiVE_MONSTERS) + "; Monsters KiLLED: " + Int_To_String(KiLLED_MONSTERS) , Color(0xFF, 0xFF, 0xFF), Font::Shaded),
 				Point::Point(CURRENT_SCREEN_WIDTH - 200, CURRENT_SCREEN_HEIGHT - 20) );
-
-	//delete Numbers_Font;
-
+	
 	return true;
 } catch (...) {
     return false; //error occured
