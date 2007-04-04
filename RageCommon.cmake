@@ -168,10 +168,10 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
 	SET( CMAKE_C_FLAGS_DEBUG "-g -D_DEBUG" CACHE STRING
 	    "Flags used by the C compiler during debug builds."
 	   )
-	SET( CMAKE_C_FLAGS_MINSIZEREL "-Os -DNDEBUG -DNRAGELOG" CACHE STRING
+	SET( CMAKE_C_FLAGS_MINSIZEREL "-Os -DNDEBUG " CACHE STRING
 	    "Flags used by the C compiler during release minsize builds."
 	   )
-	SET( CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG -DNRAGELOG" CACHE STRING
+	SET( CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG " CACHE STRING
 	    "Flags used by the C compiler during release builds."
 	   )
 	SET( CMAKE_C_FLAGS_RELWITHDEBINFO "-O2 -g" CACHE STRING
@@ -184,10 +184,10 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
 	SET( CMAKE_CXX_FLAGS_DEBUG "-g -D_DEBUG" CACHE STRING
 	    "Flags used by the C++ compiler during debug builds."
 	   )
-	SET( CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG -DNRAGELOG" CACHE STRING
+	SET( CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG " CACHE STRING
 	    "Flags used by the C++ compiler during release minsize builds."
 	   )
-	SET( CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -DNRAGELOG" CACHE STRING
+	SET( CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG " CACHE STRING
 	    "Flags used by the C++ compiler during release builds."
 	   )
 	SET( CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g" CACHE STRING

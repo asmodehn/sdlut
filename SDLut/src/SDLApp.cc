@@ -14,8 +14,10 @@ namespace RAGE
 
             setName(DEFAULT_WINDOW_TITLE);
             setIcon("");
-	    //try to create the log file. this is likely to work only in debug mode.
 	    Log.enableFileLog(LOGFILENAME);
+#ifndef DEBUG
+	    Log.disableConsoleLog();
+#endif
 	    
 #ifdef DEBUG
             Log << nl << "App::App() done";

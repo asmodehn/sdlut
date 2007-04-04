@@ -31,11 +31,11 @@ namespace RAGE
     /**
      * \class Logger
      *
-     * \brief This class defines loglevel on top of clog
+     * \brief This class defines loglevel on top of Logger
      *
      * This Logger use indentation levels, usually defined on build time.
      * TODO : Add LogLevels to filter the console output as well as the file output (3 loglevel : quiet / normal / verbose)
-     * Not yet in SDL namespace because it doesnt depend on SDL. However, later it should be made threadsafe, therefore it will rely on SDLThreads.
+     * Not yet in SDL namespace because it doesnt depend on SDL. However, later it should be made threadsafe, somehow...
      *
      * \author Alex
      *
