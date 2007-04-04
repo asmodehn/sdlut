@@ -89,10 +89,11 @@ namespace RAGE
     //handle all the events in the queue in a loop
     void EventManager::handleAll()
     {
-        SDL_Event* sdlevent=new SDL_Event();
-        while( SDL_PollEvent(sdlevent))
+	Event event(new SDL_Event());
+
+	//TODO : replace with a get_SDL here...
+        while( SDL_PollEvent(event._event))
         {
-            Event event(sdlevent);
 #ifdef DEBUG
             assert(ghndlr);
            assert(khndlr);
@@ -108,18 +109,17 @@ namespace RAGE
     bool EventManager::handleNext()
     {
 
-        SDL_Event* sdlevent=new SDL_Event();
+	Event event(new SDL_Event());
         bool ev_handled = false;
 
-        if( SDL_PollEvent(sdlevent)!= 0)
+        if( SDL_PollEvent(event._event)!= 0)
         {
-            Event event(sdlevent);
+            
 #ifdef DEBUG
             assert(ghndlr);
            assert(khndlr);
             assert(mhndlr);
 #endif
-
             if(! event.callHandler(ghndlr, khndlr, mhndlr) )
                 ev_handled = ghndlr->handleEvent(event);
         }
