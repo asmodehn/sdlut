@@ -117,6 +117,7 @@ namespace RAGE
             {
                 _state[i]= (keystate[i] !=0);
             }
+	    delete keystate;
             return _state;
         }
 
