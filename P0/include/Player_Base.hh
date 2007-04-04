@@ -30,8 +30,8 @@ class Player_Base : public Character_Base
 		int attack_direction;
 
 		//players specifics tiles
-		RGBSurface Players_Tile_Melee;
-		RGBSurface Players_Tile_Distant;
+		RGBSurface* Players_Tile_Melee;
+		RGBSurface* Players_Tile_Distant;
 
 		//Character Clips Vector
 		std::vector<Rect>* Player_Attack_Tile_Rect;
@@ -45,7 +45,7 @@ class Player_Base : public Character_Base
 		long DeltaTicks;
 
 		/***Arrow***/
-		RGBSurface Arrow_Tile;
+		RGBSurface* Arrow_Tile;
 		std::vector<Rect>* Arrow_SpriteRect;
 		//Rect Arrow_SpriteRect[8][PLAYER_ARROW_ATTACK_ANIMATION_FRAME];
 		Rect Current_Arrow_SpriteRect;

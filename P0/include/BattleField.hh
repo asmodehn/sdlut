@@ -100,8 +100,8 @@ class BackGround // : public BattleField_Sprite
 		//Default sprite clip
 		Rect BackGround_Clip;
 		//Tilesets surface
-		RGBSurface BackGround_Tileset_Grass, BackGround_Tileset_Sands, BackGround_Tileset_Rivers;
-		RGBSurface BackGround_Tileset_Lakes, BackGround_Tileset_Bridges;
+		RGBSurface *BackGround_Tileset_Grass, *BackGround_Tileset_Sands, *BackGround_Tileset_Rivers;
+		RGBSurface *BackGround_Tileset_Lakes, *BackGround_Tileset_Bridges;
 
 		//The vector that will contains the BackGround sprites corresponding to the BackGround map
 		std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector;
@@ -126,7 +126,7 @@ class Environment // : public BattleField_Sprite
 		//Default sprite clip
 		Rect Environment_Clip;
 		//Tilesets surface
-		RGBSurface Environment_Tileset_Trees, Environment_Tileset_Rocks, Environment_Tileset_Walls, Environment_Tileset_Houses;
+		RGBSurface *Environment_Tileset_Trees, *Environment_Tileset_Rocks, *Environment_Tileset_Walls, *Environment_Tileset_Houses;
 
 		//The vector that will contains the BackGround sprites corresponding to the BackGround map
 		std::vector<BattleField_Sprite*>* Environment_Sprite_Vector;

@@ -31,6 +31,8 @@ Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters, std::
 template <typename Monster_Template>
 Monster_Factory<Monster_Template>::~Monster_Factory()
 {
+	delete Characters_Tile, Characters_Tile = NULL;
+	delete Life_Bar_Tile, Life_Bar_Tile = NULL;
 	delete Monster_Vector, Monster_Vector = NULL;
 	delete BattleField_Cutting_Vector, BattleField_Cutting_Vector = NULL;
 }
@@ -73,7 +75,7 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 													Characters_Tile, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
 	//if something don't allow the monster to be here, loop
-	while ( (! (myMonster->Check_Cutting_Allow_Monster(x, y, BattleField_Cutting_Vector)) ) || (! myMonster->Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, false) ) )
+	while ( (! (myMonster->Check_Cutting_Allow_Monster(BattleField_Cutting_Vector)) ) || (! myMonster->Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, false) ) )
 	{
 		//retry coordinate
 		x = random(0,LEVEL_WIDTH-1);
@@ -93,11 +95,20 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 					
 		}
 		
-
-		delete myMonster, myMonster = NULL;
+		//update the monster to the new coordinate with his CB
+		myMonster->Set_X(x);
+		myMonster->Set_Y(y);
+		Rect NewCB;
+		NewCB.setx(x);
+		NewCB.sety(y);
+		NewCB.setw(Sprite_Width);
+		NewCB.seth(Sprite_Height);
+		myMonster->Set_Collision_Box(NewCB);
+		
+		//delete myMonster, myMonster = NULL;
 		//ReCreate Monster
-		myMonster = new Monster_Template(x, y, Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
-										Characters_Tile, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
+		//myMonster = new Monster_Template(x, y, Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
+									//	Characters_Tile, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
 	}
 	
@@ -110,11 +121,8 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters
 	//Loop until desired number of monsters has been reached
 	for(int i=1; i <= Initial_Number_Of_Monsters; i++)
 	{
-		//Monster generation
-		Monster_Template* newMonster = Create_One_Monster(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
-
-		//Store the monster at the end of the vector
-		Monster_Vector->push_back(newMonster);
+		//Store the created monster at the end of the vector
+		Monster_Vector->push_back( Create_One_Monster(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) );
 		
 		//Add 1 to the number of monsters present
 		ALiVE_MONSTERS++;
@@ -179,6 +187,9 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Remove_Dead_Mon
 		//Check if Alive_Status is false
 		if (Monster_Vector->at(i)->Get_Alive_Status() == false)
 		{
+			//clean the dead monster
+			delete Monster_Vector->at(i), Monster_Vector->at(i) == NULL;
+
 			//remove the monster from the scope (only the ième monster at a time)
 			Monster_Vector->erase(Monster_Vector->begin()+i, Monster_Vector->begin()+i+1);
 
@@ -205,11 +216,8 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Mo
 	temp = random(1, MAX_MONSTERS_SIMULTANEOUSLY);
 	if (temp > Monster_Vector->size())
 	{
-		//Monster generation
-		Monster_Template* newMonster = Create_One_Monster(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
-
-		//Store the monster at the end of the vector
-		Monster_Vector->push_back(newMonster);
+		//Store the new monster at the end of the vector
+		Monster_Vector->push_back( Create_One_Monster(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) );
 
 		//Add 1 to the number of monsters present
 		ALiVE_MONSTERS++;

@@ -5,8 +5,15 @@
 Escape_Menu::Escape_Menu()
 {
 	SelectedItemId = 1; //initially select the first one (aka "Yes")
-	Yes_Tile = RGBSurface("Data/Interface/LeaveMenu_YesSelected.png");
-	No_Tile = RGBSurface("Data/Interface/LeaveMenu_NoSelected.png");
+	Yes_Tile = new RGBSurface("Data/Interface/LeaveMenu_YesSelected.png");
+	No_Tile = new RGBSurface("Data/Interface/LeaveMenu_NoSelected.png");
+}
+
+//Destructor
+Escape_Menu::~Escape_Menu()
+{
+	delete Yes_Tile, Yes_Tile = NULL;
+	delete No_Tile, No_Tile = NULL;;
 }
 
 //Blit the good menu surface in function of what the user wants to select with the keyboard
@@ -15,11 +22,11 @@ bool Escape_Menu::Show_Menu(VideoSurface& Screen)
 try {
 	if (SelectedItemId == 1) //we want to show Yes selected
 	{
-		Screen.blit( Yes_Tile, Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
+		Screen.blit( *Yes_Tile, Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
 	}
 	else if (SelectedItemId == 2) //we want to show No selected
 	{
-		Screen.blit( No_Tile, Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
+		Screen.blit( *No_Tile, Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
 	}
 	return true; //no error
 } catch (...) {
@@ -57,12 +64,13 @@ Victory_Screen::Victory_Screen()
 	//Monsters Stats
 	Monsters_Stats_Font = new Font("Data/Fonts/SlimSansSerif.ttf", 14);
 	//Victory Screen Tile
-	Victory_Tile = RGBSurface("Data/Interface/Victory Screen.png");
+	Victory_Tile = new RGBSurface("Data/Interface/Victory Screen.png");
 }
 
 //Destructor
 Victory_Screen::~Victory_Screen()
 {
+	delete Victory_Tile, Victory_Tile = NULL;
 	delete Monsters_Stats_Font, Monsters_Stats_Font = NULL;
 	delete Time_Font, Time_Font = NULL;
 }
@@ -72,11 +80,11 @@ bool Victory_Screen::Show(VideoSurface& Screen)
 {
 try {
 	//Show Victory Screen
-	Screen.blit( Victory_Tile, Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
+	Screen.blit( *Victory_Tile, Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
 	
 	//Show Time
-	time_msg = *Time_Font->render(Time_Style(FiNiSH_TiME), Color(0, 0, 0), Font::Shaded, Color(0xFF, 0xFF, 0xFF));
-	Screen.blit(time_msg, Point::Point(CURRENT_SCREEN_WIDTH/2 - 10 , CURRENT_SCREEN_HEIGHT/2 + 7 ) );
+	Screen.blit(*Time_Font->render(Time_Style(FiNiSH_TiME), Color(0, 0, 0), Font::Shaded, Color(0xFF, 0xFF, 0xFF)),
+				Point::Point(CURRENT_SCREEN_WIDTH/2 - 10 , CURRENT_SCREEN_HEIGHT/2 + 7 ) );
 	
 	return true;
 } catch (...) {
@@ -109,8 +117,9 @@ bool Victory_Screen::Show_Monsters_Stats(VideoSurface& Screen)
 {
 try {
 	//Show Numbers
-	monsters_stats_msg = *Monsters_Stats_Font->render("Monsters ALiVED: " + Int_To_String(ALiVE_MONSTERS) + "; Monsters KiLLED: " + Int_To_String(KiLLED_MONSTERS) , Color(0xFF, 0xFF, 0xFF), Font::Shaded);
-	Screen.blit( monsters_stats_msg, Point::Point(CURRENT_SCREEN_WIDTH - 200, CURRENT_SCREEN_HEIGHT - 20) );
+	//monsters_stats_msg = *Monsters_Stats_Font->render("Monsters ALiVED: " + Int_To_String(ALiVE_MONSTERS) + "; Monsters KiLLED: " + Int_To_String(KiLLED_MONSTERS) , Color(0xFF, 0xFF, 0xFF), Font::Shaded);
+	Screen.blit( *Monsters_Stats_Font->render("Monsters ALiVED: " + Int_To_String(ALiVE_MONSTERS) + "; Monsters KiLLED: " + Int_To_String(KiLLED_MONSTERS) , Color(0xFF, 0xFF, 0xFF), Font::Shaded),
+				Point::Point(CURRENT_SCREEN_WIDTH - 200, CURRENT_SCREEN_HEIGHT - 20) );
 
 	//delete Numbers_Font;
 

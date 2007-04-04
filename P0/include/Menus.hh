@@ -8,11 +8,12 @@ class Escape_Menu
 {
     private:
 		int SelectedItemId;
-		RGBSurface Yes_Tile, No_Tile;
+		RGBSurface *Yes_Tile, *No_Tile;
 
 	public:
 
 		Escape_Menu();
+		~Escape_Menu();
 
 		/****Wrapper****/
 		inline void Set_SelectedItemId(int new_SelectedItemId)
@@ -38,11 +39,7 @@ class Victory_Screen
 	private:
 		Font* Time_Font;
 		Font* Monsters_Stats_Font;
-		RGBSurface Victory_Tile;
-
-		RGBSurface time_msg;
-		RGBSurface monsters_stats_msg;
-		
+		RGBSurface *Victory_Tile;
 		
 	public:
 		Victory_Screen();

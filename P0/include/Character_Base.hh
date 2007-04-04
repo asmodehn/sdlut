@@ -27,7 +27,7 @@ protected:
 	int BASE_RANGE, Real_Range;
 
 	//Tile & Clip
-	RGBSurface Characters_Tile;
+	RGBSurface* Characters_Tile;
 	Rect Characters_SpriteRect;
 
 	//The collision boxes of the character

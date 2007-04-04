@@ -16,7 +16,7 @@ Monster_Base::Monster_Base(int& x, int& y)
 	Sprite_Filename = ""; //Empty sprite for now
 
 	//Monster Tile Surface
-	Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile = new RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
 
 	 //Monster Clip definition range for the top left (Random monster from the 7th line)
     _monster_clip.setx( Sprite_Width * (rand()%8) );
@@ -40,7 +40,7 @@ Monster_Base::Monster_Base(int& x, int& y)
 	Alive_Status = true;
 		
 	//Life bar infos
-	Life_Bar_Tile = RGBSurface("Data/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	Life_Bar_Tile = new RGBSurface("Data/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
 	
 	empty_life_bar_rect.setx(0);
 	empty_life_bar_rect.sety(0);
@@ -143,7 +143,7 @@ int Monster_Base::Get_Env_vs_CH_Rules(const int& envType)
 }
 
 //Check if the battlefield cutting allow monster presence
-bool Monster_Base::Check_Cutting_Allow_Monster(int& x, int& y, std::vector<BattleField_Zone*>* &BattleField_Cutting_Vector)
+bool Monster_Base::Check_Cutting_Allow_Monster(std::vector<BattleField_Zone*>* &BattleField_Cutting_Vector)
 {
 	Rect Area;
 	std::vector<int>* Allowed_Monsters_Vector = new std::vector<int>;
@@ -156,7 +156,7 @@ bool Monster_Base::Check_Cutting_Allow_Monster(int& x, int& y, std::vector<Battl
 		Allowed_Monsters_Vector = BattleField_Cutting_Vector->at(i)->Get_Allowed_Monsters();
 
 		//Check if the monster is designed to be present in the Area
-		if ( ( x >= Area.getx() ) && ( (signed)x < (signed)(Area.getx() + Area.getw()) ) && ( y >= Area.gety() ) && ( (signed)y < (signed)(Area.gety() + Area.geth()) ) )
+		if ( ( X >= Area.getx() ) && ( (signed)X < (signed)(Area.getx() + Area.getw()) ) && ( Y >= Area.gety() ) && ( (signed)Y < (signed)(Area.gety() + Area.geth()) ) )
 		{
 			//Check if monster ID allow them to born in the area
 			for(unsigned int j=0; j < Allowed_Monsters_Vector->size(); j++)
@@ -204,8 +204,8 @@ bool Monster_Base::Show_Life_Bar(const Rect& Camera, VideoSurface& Screen)
 
 	//we blit the empty rect than the current life rect 8px on top of the monster
 	//positions are def by monster pos
-	Screen.blit(Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), empty_life_bar_rect);
-	Screen.blit(Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), real_life_bar_rect);
+	Screen.blit(*Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), empty_life_bar_rect);
+	Screen.blit(*Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), real_life_bar_rect);
 
 	return true;  //everything went fine
 }

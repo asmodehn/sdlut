@@ -62,9 +62,9 @@ NPCs::NPCs()
 
 		/****Surfaces****/
 	//Characters Surfaces
-	Players_Tile_Melee = RGBSurface("Data/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
-	Players_Tile_Distant = RGBSurface("Data/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
-	Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF)); //Default tile
+	Players_Tile_Melee = new RGBSurface("Data/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile_Distant = new RGBSurface("Data/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile = new RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF)); //Default tile
 }
 
 //Destructor

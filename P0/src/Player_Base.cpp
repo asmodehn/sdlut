@@ -46,7 +46,7 @@ Player_Base::Player_Base()
 		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Width") ) >> Arrow_Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Height") ) >> Arrow_Sprite_Height;
 		//Arrow surface
-		Arrow_Tile = RGBSurface( Ini_Manager::Get_Option_String(Arrow_Ini, "Filename") , Color(0x80, 0x80, 0x80));
+		Arrow_Tile = new RGBSurface( Ini_Manager::Get_Option_String(Arrow_Ini, "Filename") , Color(0x80, 0x80, 0x80));
 		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Arrow_Vel") ) >> Arrow_Vel;
 	}
 	fi_arrow.close();
@@ -73,9 +73,6 @@ Player_Base::Player_Base()
 
 	//default arrow sprite rect
 	Current_Arrow_SpriteRect = Arrow_SpriteRect->at(CH_RIGHT*PLAYER_ARROW_ATTACK_ANIMATION_FRAME);
-
-	//Arrow surface
-	Arrow_Tile = RGBSurface("Data/Items/Arrow.png", Color(0x80, 0x80, 0x80));
 }
 
 //Initialization construtor
@@ -93,7 +90,7 @@ Player_Base::Player_Base(int x, int y)
 	Sprite_Filename = ""; //Empty sprite for now
 
 	//Player Tile Surface
-	Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile = new RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
 
 	//Initial moving status
 	moving_status = false;
@@ -151,6 +148,8 @@ Player_Base::Player_Base(int x, int y)
 	{
 		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Width") ) >> Arrow_Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Height") ) >> Arrow_Sprite_Height;
+		//Arrow surface
+		Arrow_Tile = new RGBSurface( Ini_Manager::Get_Option_String(Arrow_Ini, "Filename") , Color(0x80, 0x80, 0x80));
 		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Arrow_Vel") ) >> Arrow_Vel;
 	}
 	fi_arrow.close();
@@ -178,9 +177,6 @@ Player_Base::Player_Base(int x, int y)
 	//default arrow sprite rect
 	Current_Arrow_SpriteRect = Arrow_SpriteRect->at(CH_RIGHT*PLAYER_ARROW_ATTACK_ANIMATION_FRAME);
 
-	//Arrow surface
-	Arrow_Tile = RGBSurface("Data/Items/Arrow.png", Color(0x80, 0x80, 0x80));
-
 	//initialize
 	Set_Attack_Style();
 }
@@ -188,6 +184,8 @@ Player_Base::Player_Base(int x, int y)
 //Destructor
 Player_Base::~Player_Base()
 {
+	delete Players_Tile_Distant, Players_Tile_Distant = NULL;
+	delete Players_Tile_Melee, Players_Tile_Melee = NULL;
 	delete Player_Attack_Tile_Rect, Player_Attack_Tile_Rect = NULL;
 	delete Arrow_SpriteRect, Arrow_SpriteRect = NULL;
 }
@@ -709,7 +707,7 @@ bool Player_Base::Show_Arrow(const Rect& Camera, VideoSurface& Screen)
 try {
 	if ( attack_direction != -1 ) //dont display the arrow when its not useffull
 	{
-		Screen.blit(Arrow_Tile, Point::Point(arrow_x - Camera.getx(), arrow_y - Camera.gety()), Current_Arrow_SpriteRect);
+		Screen.blit(*Arrow_Tile, Point::Point(arrow_x - Camera.getx(), arrow_y - Camera.gety()), Current_Arrow_SpriteRect);
 	}
 	return true; //no error
 } catch (...) {

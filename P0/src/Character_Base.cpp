@@ -28,7 +28,7 @@ Character_Base::Character_Base()
 
 //Destructor
 Character_Base::~Character_Base()
-{
+{	
 }
 
 //move the character_base's collision box to a place its allowed to be when moving
@@ -329,7 +329,7 @@ try {
 	if ( ( (Camera.getx()-PC_WIDTH) <= X) && (X < (signed)(Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-PC_HEIGHT) <= Y) && (Y < (signed)(Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 	{
 		//It's present than draw it
-		Screen.blit(Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), Characters_SpriteRect);
+		Screen.blit(*Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), Characters_SpriteRect);
 	}
 	return true; //no error
 } catch (...) {

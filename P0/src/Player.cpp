@@ -75,9 +75,9 @@ Player::Player()
 
 		/****Surfaces****/
 	//Characters Surfaces
-	Players_Tile_Melee = RGBSurface("Data/Characters/Character_Fighter.png", Color(0xFF, 0xFF, 0xFF));
-	Players_Tile_Distant = RGBSurface("Data/Characters/Character_Archer.png", Color(0xFF, 0xFF, 0xFF));
-	Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF)); //Default tile
+	Players_Tile_Melee = new RGBSurface("Data/Characters/Character_Fighter.png", Color(0xFF, 0xFF, 0xFF));
+	Players_Tile_Distant = new RGBSurface("Data/Characters/Character_Archer.png", Color(0xFF, 0xFF, 0xFF));
+	Characters_Tile = new RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF)); //Default tile
 
 	//Fight Msgs Style
 	//Font AttackMsg_Font("Data/Fonts/ECHELON.TTF", 28);
@@ -85,11 +85,11 @@ Player::Player()
 
 		/****MSGs****/
 	//Msgs displayed in the status bar
-	attack_msg = *AttackMsg_Font->render(" ", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0)); // Empty msg until the attack key is pressed once (when using empty msg the creator crash so until this bug is solved we will use " " insted of "")
-	attack_melee_msg_hit = *AttackMsg_Font->render("Melee Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-	attack_distant_msg_hit = *AttackMsg_Font->render("Distant Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-	attack_melee_msg_miss = *AttackMsg_Font->render("Melee Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-	attack_distant_msg_miss = *AttackMsg_Font->render("Distant Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_msg = AttackMsg_Font->render(" ", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0)); // Empty msg until the attack key is pressed once (when using empty msg the creator crash so until this bug is solved we will use " " insted of "")
+	attack_melee_msg_hit = AttackMsg_Font->render("Melee Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_distant_msg_hit = AttackMsg_Font->render("Distant Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_melee_msg_miss = AttackMsg_Font->render("Melee Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_distant_msg_miss = AttackMsg_Font->render("Distant Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 
 	delete AttackMsg_Font, AttackMsg_Font = NULL;
 }
@@ -97,6 +97,10 @@ Player::Player()
 //Destructor
 Player::~Player()
 {
+	delete attack_melee_msg_hit, attack_melee_msg_hit = NULL;
+	delete attack_distant_msg_hit, attack_distant_msg_hit = NULL;
+	delete attack_melee_msg_miss, attack_melee_msg_miss = NULL;
+	delete attack_distant_msg_miss, attack_distant_msg_miss = NULL;
 }
 
 //Manage Attack Msg regarding the attack style
@@ -156,7 +160,7 @@ try {
 	//Clean the status Bar
 	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - STATUS_BAR_H, CURRENT_SCREEN_WIDTH, STATUS_BAR_H) );
 	
-	Screen.blit( attack_msg, Point::Point(5, CURRENT_SCREEN_HEIGHT - 30) );
+	Screen.blit( *attack_msg, Point::Point(5, CURRENT_SCREEN_HEIGHT - 30) );
 	return true; //no error
 } catch (...) {
 	return false; //error occured

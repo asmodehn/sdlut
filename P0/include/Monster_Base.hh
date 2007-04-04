@@ -14,7 +14,7 @@ class Monster_Base : public Character_Base
 		Monsters_Type Monster_ID;
 
 		//Life bar infos
-		RGBSurface Life_Bar_Tile;
+		RGBSurface *Life_Bar_Tile;
 		Rect empty_life_bar_rect;
 		Rect real_life_bar_rect;
 
@@ -52,7 +52,7 @@ class Monster_Base : public Character_Base
 		bool Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 	    
 		//Check if the battlefield cutting allow monster presence
-		bool Check_Cutting_Allow_Monster(int& x, int& y, std::vector<BattleField_Zone*>* &BattleField_Cutting_Vector);
+		bool Check_Cutting_Allow_Monster(std::vector<BattleField_Zone*>* &BattleField_Cutting_Vector);
 
 		//Calculate the current life depending on damage, malus, etc and damage made by the opponent
 		bool Calculate_Real_Life(int received_damage = 0);
