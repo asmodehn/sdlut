@@ -8,7 +8,7 @@ namespace RAGE {
 			// The size loss of using png, is not that relevant anyway.
 
 	//icon in png format
-	static const unsigned char _defaultIcon[1858] = {
+	 static const signed char _defaultIcon[1858] = {
 	'\x89','\x50','\x4e','\x47','\x0d','\x0a','\x1a','\x0a','\x00','\x00','\x00','\x0d','\x49','\x48','\x44','\x52','\x00','\x00','\x00','\x20',
 	'\x00','\x00','\x00','\x20','\x08','\x02','\x00','\x00','\x00','\xfc','\x18','\xed','\xa3','\x00','\x00','\x00','\x01','\x73','\x52','\x47',
 	'\x42','\x00','\xae','\xce','\x1c','\xe9','\x00','\x00','\x00','\x04','\x67','\x41','\x4d','\x41','\x00','\x00','\xb1','\x8f','\x0b','\xfc',
@@ -105,7 +105,7 @@ namespace RAGE {
 };
 
 	//image in png format
-	static const unsigned char _defaultImage[2147] = {
+	 static const signed char _defaultImage[2147] = {
 	'\x89','\x50','\x4e','\x47','\x0d','\x0a','\x1a','\x0a','\x00','\x00','\x00','\x0d','\x49','\x48','\x44','\x52','\x00','\x00','\x00','\x80',
 	'\x00','\x00','\x00','\x40','\x08','\x03','\x00','\x00','\x00','\xe5','\x08','\x8f','\x4d','\x00','\x00','\x00','\x01','\x73','\x52','\x47',
 	'\x42','\x00','\xae','\xce','\x1c','\xe9','\x00','\x00','\x00','\x04','\x67','\x41','\x4d','\x41','\x00','\x00','\xb1','\x8f','\x0b','\xfc',
@@ -217,7 +217,7 @@ namespace RAGE {
 };
 
 	//default font image in png
-	static const unsigned char _defaultFont[1825] = {
+	 static const signed char _defaultFont[1825] = {
 	'\x89','\x50','\x4e','\x47','\x0d','\x0a','\x1a','\x0a','\x00','\x00','\x00','\x0d','\x49','\x48','\x44','\x52','\x00','\x00','\x00','\xe0',
 	'\x00','\x00','\x00','\xe0','\x01','\x03','\x00','\x00','\x00','\x20','\xe3','\xf8','\xa2','\x00','\x00','\x00','\x01','\x73','\x52','\x47',
 	'\x42','\x00','\xae','\xce','\x1c','\xe9','\x00','\x00','\x00','\x04','\x67','\x41','\x4d','\x41','\x00','\x00','\xb1','\x8f','\x0b','\xfc',
@@ -317,7 +317,7 @@ namespace RAGE {
 #else
 
 	//same icon in bmp format
-  static const unsigned char _defaultIcon[3126] = {
+  static const signed char _defaultIcon[3126] = {
 	'\x42','\x4d','\x36','\x0c','\x00','\x00','\x00','\x00','\x00','\x00','\x36','\x00','\x00','\x00','\x28','\x00','\x00','\x00','\x20','\x00',
 	'\x00','\x00','\x20','\x00','\x00','\x00','\x01','\x00','\x18','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x75','\x0a',
 	'\x00','\x00','\x75','\x0a','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x40','\x20','\x20','\x40','\x20','\x20',
@@ -478,7 +478,7 @@ namespace RAGE {
 	//same image in BMP format 128x64
 	static const int _defaultImageWidth = 128;
 	static const int _defaultImageHeight = 64;
-	static const unsigned char _defaultImage[24630] = {
+	 static const signed char _defaultImage[24630] = {
 	'\x42','\x4d','\x36','\x60','\x00','\x00','\x00','\x00','\x00','\x00','\x36','\x00','\x00','\x00','\x28','\x00','\x00','\x00','\x80','\x00',
 	'\x00','\x00','\x40','\x00','\x00','\x00','\x01','\x00','\x18','\x00','\x00','\x00','\x00','\x00','\x00','\x60','\x00','\x00','\xc4','\x0e',
 	'\x00','\x00','\xc4','\x0e','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\xff','\xff','\xff','\xff','\xff','\xff',
@@ -1714,7 +1714,7 @@ namespace RAGE {
 };
 
 	//same font image in bmp
-	static const unsigned char _defaultFont[6334] = {
+	 static const signed char _defaultFont[6334] = {
 	'\x42','\x4d','\xbe','\x18','\x00','\x00','\x00','\x00','\x00','\x00','\x3e','\x00','\x00','\x00','\x28','\x00','\x00','\x00','\xe0','\x00',
 	'\x00','\x00','\xe0','\x00','\x00','\x00','\x01','\x00','\x01','\x00','\x00','\x00','\x00','\x00','\x80','\x18','\x00','\x00','\xc4','\x0e',
 	'\x00','\x00','\xc4','\x0e','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\x00','\xff','\xff',
