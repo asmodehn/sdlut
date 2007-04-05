@@ -154,7 +154,12 @@ namespace RAGE
             if(_surf == NULL)
             {
                 Log << nl << "Unable to set rgb surface from " << filename << std::endl;
-                throw std::logic_error("SDL_LoadBMP returns NULL");
+		throw std::logic_error(
+#ifdef HAVE_SDLIMAGE
+					"IMG_Load returns NULL");
+#else
+					"SDL_LoadBMP returns NULL");
+#endif
             }
             else
                 setColorKey(colorKey);
