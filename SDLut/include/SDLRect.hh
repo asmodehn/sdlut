@@ -50,6 +50,9 @@ public:
 	//Copy Constructor
 	Rect( const Rect& r);
 
+	//Destructor
+	~Rect();
+	
     Rect& operator=(const Rect& p);
 
     void setw(unsigned int nw );

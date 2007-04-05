@@ -36,6 +36,9 @@ namespace RAGE
 		    _rect->h=r.geth();
 	    }
 
+	    Rect::~Rect()
+	    {
+	    }
 	    
 	    void Rect::setw(unsigned int nw )
 	    {

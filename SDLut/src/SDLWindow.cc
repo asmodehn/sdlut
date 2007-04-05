@@ -98,11 +98,15 @@ namespace RAGE
 
                 if (_screen->isFullScreenset() != val ) //if called inside mainLoop while screen is active
                 {
-					VideoSurface::setFullscreen(val);
+			VideoSurface::setFullscreen(val);
                     if (! resetDisplay(_screen->getWidth(),_screen->getHeight()))
                         res=false;
                 }
             }
+	    
+#ifdef DEBUG
+            Log << nl << "Window::setFullscreen(" << val << ") done" << std::endl;
+#endif
             return res;
         }
 
@@ -147,7 +151,53 @@ namespace RAGE
         }
 #endif
 
-
+	//to check the current properties of the display
+	bool Window::isFullscreen()
+	{
+		if (_screen!=NULL)
+		{
+			return _screen->isFullScreenset();
+		}
+		else
+		{
+			return ( SDL_FULLSCREEN & VideoSurface::_defaultflags ) != 0;
+		}
+	}
+	bool Window::isResizable()
+	{
+		if (_screen!=NULL)
+		{
+			return _screen->isResizableset();
+		}
+		else
+		{
+			return ( SDL_RESIZABLE & VideoSurface::_defaultflags ) != 0;
+		}
+	}
+	bool Window::isOpenGL()
+	{
+		if (_screen!=NULL)
+		{
+			return _screen->isOpenGLset();
+		}
+		else
+		{
+			return ( SDL_OPENGL & VideoSurface::_defaultflags ) != 0;
+		}
+	}
+	bool Window::isNoFrame()
+	{
+		
+		if (_screen!=NULL)
+		{
+			return _screen->isNoFrameset();
+		}
+		else
+		{
+			return ( SDL_NOFRAME & VideoSurface::_defaultflags ) != 0;
+		}
+	}
+	
         Window::Window(std::string title)
                 : _title(title),_background(Color(0,0,0))
         {

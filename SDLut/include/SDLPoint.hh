@@ -46,7 +46,7 @@ namespace RAGE
 
 		Point( const Point& p );
 
-		~Point();
+		virtual ~Point();
 
             //Accessors
 

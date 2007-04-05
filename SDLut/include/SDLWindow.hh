@@ -63,7 +63,7 @@ namespace RAGE
 #endif
 
             VideoSurface * _screen;
-			RGBSurface _icon;
+		RGBSurface _icon;
 
             Window(std::string title); // TODO :: add the icon here
 
@@ -81,6 +81,7 @@ namespace RAGE
 
             VideoSurface * getDisplay( void )
             {
+		    //if (_screen == NULL) _screen = resetDisplay();
                 return _screen;
             }
 //            void setDisplay( VideoSurface * display)
@@ -112,10 +113,10 @@ namespace RAGE
             bool setNoFrame(bool val);
 
 			//to check the current properties of the display
-			bool isFullscreen() {return _screen->isFullScreenset();}
-			bool isResizable() {return _screen->isResizableset();}
-			bool isOpenGL() {return _screen->isOpenGLset();}
-			bool isNoFrame() {return _screen->isNoFrameset();}
+			bool isFullscreen();
+			bool isResizable();
+			bool isOpenGL();
+			bool isNoFrame();
 
 
             void setEngine(Engine * engine);
