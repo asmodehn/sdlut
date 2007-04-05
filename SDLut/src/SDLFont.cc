@@ -56,7 +56,7 @@ namespace SDL
 			catch (std::exception& e)
 			{
 				Log << nl << "Exception caught in internal FontImpl constructor : " << e.what();
-			};
+			}
 
 			Rect FontImpl::getSize(const std::string & text) const
 			{
@@ -152,7 +152,7 @@ namespace SDL
 			Log << nl << "Exception catched in internal FontExtent Constructor :"  << nl <<
 					e.what() << std::endl;
 		            //TODO : much more explicit error message...
-		};
+		}
 
 		FontExtend::FontExtend(const FontExtend & font)
 	:_ttfstruct(font._ttfstruct),_ref(font._ref+1)
@@ -283,7 +283,7 @@ catch (std::exception& e)
 	Log << nl << "Exception catched in Font Constructor :"  << nl <<
             e.what() << std::endl;
             //TODO : much more explicit error message...
-};
+}
 
 Font::Font(std::string filename , int ptsize )
 try
@@ -297,7 +297,7 @@ catch (std::exception& e)
 	Log << nl << "Exception catched in Font Constructor :"  << nl <<
 			e.what() << std::endl;
             //TODO : much more explicit error message...
-};
+}
 		
 
 //Copy Constructor

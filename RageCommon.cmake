@@ -178,7 +178,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
 	    "Flags used by the C compiler during release with debug info builds."
 	   )
     
-    	SET( CMAKE_CXX_FLAGS "${PROFILE_FLAG} -Wall -Wabi" CACHE STRING
+    	SET( CMAKE_CXX_FLAGS "${PROFILE_FLAG} -Wall -Wabi -pedantic" CACHE STRING
 	    "Flags for C++ compiler."
 	   )
 	SET( CMAKE_CXX_FLAGS_DEBUG "-g -D_DEBUG" CACHE STRING

@@ -59,7 +59,7 @@ namespace RAGE
         catch (std::exception &e)
         {
             Log << nl << "Exception catched in Manager Constructor" << nl << e.what();
-        };
+        }
 
 Manager::~Manager()
         {

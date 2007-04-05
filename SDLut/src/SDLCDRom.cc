@@ -34,7 +34,7 @@ namespace RAGE
     catch (std::exception & e)
     {
 		Log << e.what() << std::endl;
-    };
+    }
 
     CDRom::~CDRom()
     {

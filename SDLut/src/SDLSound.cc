@@ -35,7 +35,7 @@ namespace RAGE
 			{
 				Log << e.what();
 				Log<< GetError();
-			};
+			}
 
 		Sound::Sound( const Sound & s)
 {

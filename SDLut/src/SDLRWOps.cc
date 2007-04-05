@@ -14,7 +14,7 @@ namespace RAGE {
 		catch (std::exception & e)
 		{
 			Log << "Exception cought in RWOps Constructor : " << e.what();
-		};
+		}
 
 
 		RWOps::RWOps(const std::string & file, const char *mode) throw (std::logic_error)
@@ -27,7 +27,7 @@ namespace RAGE {
 		catch (std::exception & e)
 		{
 			Log << "Exception cought in RWOps Constructor : " << e.what();
-		};
+		}
 
 		//RWOps::RWOps(FILE *fp, int autoclose) throw (std::logic_error)
 		//		try : _rwops(NULL)
@@ -51,7 +51,7 @@ namespace RAGE {
 		catch (std::exception & e)
 		{
 			Log << "Exception cought in RWOps Constructor : " << e.what();
-		};
+		}
 		
 		RWOps::RWOps(const void *mem, int size) throw (std::logic_error)
 			try : _rwops(NULL)
@@ -63,7 +63,7 @@ namespace RAGE {
 		catch (std::exception & e)
 		{
 			Log << "Exception cought in RWOps Constructor : " << e.what();
-		};
+		}
 
 		SDL_RWops RWOps::get_SDL() const
 		{

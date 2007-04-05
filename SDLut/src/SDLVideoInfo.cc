@@ -36,7 +36,7 @@ namespace RAGE
             Log << "VideoInfo:: Exception in Constructor !" << nl << e.what() << std::endl;
             //_info should remain NULL if there was an error...
             //and *this* is not constructed since we throw an exception
-        };
+        }
 
         VideoInfo::~VideoInfo()
         {

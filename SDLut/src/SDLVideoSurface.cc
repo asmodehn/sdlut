@@ -37,7 +37,7 @@ namespace RAGE
             Log << nl << "VideoSurface:: Exception in Constructor !" <<
             nl << e.what() << nl << GetError() << std::endl;
             //TODO : much more explicit error message...
-        };
+        }
 
         VideoSurface::~VideoSurface()
         {}

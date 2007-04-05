@@ -25,7 +25,7 @@ namespace RAGE
 	{
 		if (_rect!=NULL)
 			delete _rect;
-	};
+	}
 
 	//usefull to get the SDL rect without any risk of modification
 	SDL_Rect Point::get_SDL() const
@@ -61,7 +61,7 @@ namespace RAGE
 	{
 		_rect->x+=x;
 		_rect->y+=y;
-	};
+	}
 
 
 	

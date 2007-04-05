@@ -40,7 +40,7 @@ namespace RAGE
             Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
             e.what() << nl << GetError() << std::endl;
             //TODO : much more explicit error message...
-        };
+        }
 
         RGBSurface::RGBSurface(void* pixeldata, int depth, int pitch, int width, int height) throw (std::logic_error)
         try
@@ -66,7 +66,7 @@ namespace RAGE
             Log << "Exception catched in RGBSurface Constructor !!!" << nl <<
             e.what() << nl << GetError() ;
             //TODO : much more explicit error message...
-        };
+        }
 
         RGBSurface::RGBSurface(const Color & color, int width, int height, int bpp )throw (std::logic_error)
         try
@@ -97,7 +97,7 @@ namespace RAGE
             Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
             e.what() << nl << GetError() << std::endl ;
             //TODO : much more explicit error message...
-        };
+        }
 
         RGBSurface::RGBSurface( std::string filename )throw (std::logic_error)
 			try :
@@ -135,7 +135,7 @@ namespace RAGE
             Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
             e.what() << nl << GetError();
             //TODO : much more explicit error message...
-        };
+        }
 
         RGBSurface::RGBSurface( std::string filename, const Color & colorKey )throw (std::logic_error)
         try
@@ -174,7 +174,7 @@ namespace RAGE
             Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
             e.what() << nl << GetError();
             //TODO : much more explicit error message...
-        };
+        }
 
 
 		RGBSurface::RGBSurface (const RWOps & rwops) throw (std::logic_error)
@@ -213,7 +213,7 @@ namespace RAGE
             Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
             e.what() << nl << GetError();
             //TODO : much more explicit error message...
-        };
+        }
 
 		//default constructor
 		RGBSurface::RGBSurface () throw (std::logic_error)
@@ -252,7 +252,7 @@ namespace RAGE
             Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
             e.what() << nl << GetError();
             //TODO : much more explicit error message...
-        };
+        }
 
 
 //
@@ -375,7 +375,7 @@ namespace RAGE
         {
             Log << nl << "Exception catched in RGBSurface Copy Constructor !!!" << nl <<
             e.what() << nl << GetError() << std::endl;
-        };
+        }
 
         RGBSurface& RGBSurface::operator=(const RGBSurface& s)
         {
@@ -405,7 +405,7 @@ namespace RAGE
         {
             Log << nl << "Exception catched in RGBSurface Conversion Constructor !!!" << nl <<
             e.what() << nl << GetError() << std::endl;
-        };
+        }
 
         RGBSurface& RGBSurface::operator=(const BaseSurface& s)
         {

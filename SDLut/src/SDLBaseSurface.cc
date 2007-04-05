@@ -56,7 +56,7 @@ const std::string errstr = "SDL_ConvertSurface";
         {
             Log << nl << "Exception catched in SDLBaseSurface Copy Constructor !!!" << nl <<
             e.what() << nl << GetError();
-        };
+        }
 
 BaseSurface& BaseSurface::operator=(const BaseSurface& s)
 {
@@ -104,7 +104,7 @@ BaseSurface::~BaseSurface()
         {
             Log << nl << "Exception catched in SDLBaseSurface Copy Constructor !!!" << nl <<
             e.what() << nl << GetError();
-        };
+        }
 
 	//usefull to get the SDL structure without no risk of modifying it
 	SDL_Surface BaseSurface::get_SDL() const
