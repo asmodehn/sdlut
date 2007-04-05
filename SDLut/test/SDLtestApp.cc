@@ -4,6 +4,7 @@
 
 #include "SDL.hh"
 using namespace RAGE;
+using namespace RAGE::SDL;
 
 int main(int argc, char *argv[])
 {
@@ -28,7 +29,18 @@ int main(int argc, char *argv[])
 	testlog << ( (SDL::App::getInstance().initAudio())? "OK" : "FAILED" );
 	testlog << nl << " Retrieving Mixer... " << std::endl;
 	testlog << ( (SDL::App::getInstance().getMixer() != NULL)? "OK" : "FAILED" );
-	
+
+	//Timer Init
+	testlog << nl << " Enabling Timer... " << std::endl;
+	testlog << ( (SDL::App::getInstance().initTimer())? "OK" : "FAILED" );
+
+#ifdef HAVE_SDLTTF
+	//Font Init
+	testlog << nl << " Enabling Text... " << std::endl;
+	testlog << ( (SDL::App::getInstance().initText())? "OK" : "FAILED" );
+#endif
+
+	Delay(10000);
 	return 0;
 }
 
