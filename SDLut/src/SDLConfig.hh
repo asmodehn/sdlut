@@ -4,6 +4,13 @@
 //Forced Config
 #undef THREAD
 
+//use "conventional debug define"
+#ifdef _DEBUG
+#define DEBUG 1
+#endif
+//TODO : change all DEBUG here to RAGE_SDL_DEBUG and map it to DEBUG here.
+//find a way to manage debug level also... ( for logging stuff in tights loops )
+
 //Mandatory
 #include "CMakeConfig.hh"
 #include <SDL.h>
