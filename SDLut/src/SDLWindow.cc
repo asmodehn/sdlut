@@ -367,6 +367,7 @@ namespace RAGE
 
         bool Window::mainLoop(unsigned int framerate)
         {
+			assert(framerate>0&&"framerate must be superior to 0 !");
             bool res = false;
 #ifdef DEBUG
 
