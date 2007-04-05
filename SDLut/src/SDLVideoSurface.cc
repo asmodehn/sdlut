@@ -135,7 +135,7 @@ namespace RAGE
             Log << nl << "VideoSurface::resize(" << width << ", " << height << ") called...";
 #endif
 
-			SDL_Surface * oldSurf;
+			SDL_Surface * oldSurf = NULL;
 			if ( keepcontent && !isOpenGLset())
 			{
 				oldSurf = SDL_CreateRGBSurface(SDL_SWSURFACE,getWidth(),getHeight(),getBPP(),r_default_mask,g_default_mask, b_default_mask, a_default_mask);
@@ -156,8 +156,9 @@ namespace RAGE
                 return false;
             }
 
-			if (keepcontent  && !isOpenGLset())
+			if (keepcontent  && !isOpenGLset() && oldSurf != NULL)
 			{
+				assert(oldSurf);
 				SDL_BlitSurface(oldSurf, NULL , newSurf, NULL);
 				SDL_FreeSurface(oldSurf);
 			}
