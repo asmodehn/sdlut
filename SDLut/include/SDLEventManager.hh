@@ -92,7 +92,14 @@ namespace RAGE
 	    EventManager()  : /*_criticaltypes( 0),*/ ghndlr(new GeneralHandler()),mhndlr(new Mouse()), khndlr(NULL)
             {}
             ~EventManager()
-            {}
+            {
+				if (ghndlr != NULL)
+					delete ghndlr, ghndlr = NULL;
+				if (mhndlr != NULL)
+					delete mhndlr, mhndlr = NULL;
+				if (khndlr != NULL)
+					delete khndlr, khndlr = NULL;
+			}
 
 
 

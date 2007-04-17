@@ -118,24 +118,23 @@ namespace RAGE
 
         PixelColor PixelFormat::getValueFromRGB(const RGBColor& val) const
         {
-            //copy the format because we don't want it to be modified...
-            SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
-            return SDL_MapRGB(fmt, val.getR(), val.getG(), val.getB());
+            
+            //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
+            return SDL_MapRGB(const_cast<SDL_PixelFormat*>(_pformat), val.getR(), val.getG(), val.getB());
+			
         }
 
         PixelColor PixelFormat::getValueFromRGBA(const RGBAColor& val) const
         {
-            //copy the format because we don't want it to be modified...
-            SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
-			return SDL_MapRGBA(fmt, val.getR(), val.getG(), val.getB(), val.getA());
+            //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
+			return SDL_MapRGBA(const_cast<SDL_PixelFormat*>(_pformat), val.getR(), val.getG(), val.getB(), val.getA());
         }
 
         RGBColor PixelFormat::getRGBValue(const PixelColor& color) const
         {
             Uint8 r, g, b;
-            //copy the format because we don't want it to be modified...
-            SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
-            SDL_GetRGB(color, fmt, &r, &b, &g);
+            //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
+            SDL_GetRGB(color, const_cast<SDL_PixelFormat*>(_pformat), &r, &b, &g);
             return RGBColor(r, g, b);
         }
 
@@ -143,9 +142,8 @@ namespace RAGE
         {
 
             Uint8 r, g, b, a;
-            //copy the format because we don't want it to be modified...
-            SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
-            SDL_GetRGBA(color, fmt, &r, &b, &g, &a);
+            //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
+            SDL_GetRGBA(color, const_cast<SDL_PixelFormat*>(_pformat), &r, &b, &g, &a);
             return RGBAColor(r, g, b, a);
         }
     }

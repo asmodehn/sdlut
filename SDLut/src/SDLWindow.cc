@@ -128,15 +128,13 @@ namespace RAGE
         {
             bool res = true;
 			
-			Engine * newengine;
-			if (val)
-				newengine = new DefaultGLEngine();
-			else
-				newengine = new DefaultEngine();
-			
-			if (!_userengine) delete _engine;
-			_engine=newengine;
+			if (!_userengine && _engine!=NULL) delete _engine, _engine=NULL;
 
+			if (val)
+				_engine = new DefaultGLEngine();
+			else
+				_engine = new DefaultEngine();
+			
             if (_screen == NULL )
 			{
 				VideoSurface::setOpenGL(val);
@@ -249,8 +247,8 @@ namespace RAGE
 
             delete _glmanager, _glmanager = NULL;
 #endif
-
-            if (!_userengine)
+			delete _eventmanager, _eventmanager = NULL;
+            if (!_userengine) //if the user set his own engine , he is responsible for deleting it
                 delete _engine, _engine = NULL;
             delete _videoinfo, _videoinfo = NULL;
             BaseSurface::_vinfo = NULL;
@@ -390,8 +388,18 @@ namespace RAGE
 	                    while (!(_eventmanager->quitRequested()))
 						{ 
 							//handling all the events
+
+							//
+							//semble leak la qd touche souris utilisée jamé del de la ram et aussi qd la souris passe la 1ere fois sur lecran ram utilisée jamé del: leak ds la prise en charge par de fo de la souris ?
+							//le clavier étant implementé ds le test directement ya pa de perte avec lui apparement ^^
+							//
 							_eventmanager->handleAll();
+							
 							//applying the background
+
+							//
+							//Gro leak la!
+							//
 							applyBGColor();
 	
 							//calling engine for prerender and render events
@@ -405,7 +413,13 @@ namespace RAGE
 							//Log << nl << "before :" << SDL_GetTicks() - lastframe ;
 							if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
 								SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
+							
+							//
+							//petit leak la de 4k occasionnel
+							//
 							_screen->refresh();
+
+
 							//Log << nl << "after :" << SDL_GetTicks() - lastframe ;
 							
 							lastframe=SDL_GetTicks();
@@ -414,8 +428,7 @@ namespace RAGE
 							_engine ->postrender();
 
 						}
-                    delete _screen; // to delete the wrapper class (not the actual video surface in memory...)
-                    _screen = NULL;
+                    delete _screen, _screen = NULL; // to delete the wrapper class (not the actual video surface in memory...)
                     res = true;
                 }
                 else
@@ -424,8 +437,8 @@ namespace RAGE
                     Log  << nl <<" Ignoring mainLoop call." << std::endl;
                 }
                 //Loop finished, the EventManager should be reinitialized
-                delete _eventmanager;
-                _eventmanager = new EventManager();
+                //delete _eventmanager;
+                //_eventmanager = new EventManager();
             }
             else
             {

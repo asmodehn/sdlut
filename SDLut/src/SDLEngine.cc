@@ -7,7 +7,8 @@ namespace RAGE
     namespace SDL
     {
 
-	    DefaultEngine::DefaultEngine() : _logo(NULL)
+		//loading the default RGBSurface from the Resources as logo
+	    DefaultEngine::DefaultEngine() : _logo(new RGBSurface())
 	    {
 	    }
 	    
@@ -20,9 +21,7 @@ namespace RAGE
 			//to initialise the engine, just called once before any render
 		bool DefaultEngine::init(int width, int height)
 		{
-			//loading the default RGBSurface from the Resources
-			_logo = new RGBSurface();
-			return _logo != NULL;
+			return true;
 		}
 
 		//get called everytime the display is resized
@@ -33,6 +32,8 @@ namespace RAGE
 		
 		DefaultEngine::~DefaultEngine()
 		{
+			if (_logo!=NULL)
+				delete _logo, _logo = NULL;
 		}
 	}
 }
@@ -51,7 +52,13 @@ namespace RAGE
     namespace SDL
     {
 
-		DefaultGLEngine::DefaultGLEngine() : _logo(NULL),_logotexture(0) {}
+		DefaultGLEngine::DefaultGLEngine() : _logo(new RGBSurface()),_logotexture(_logo->generateTexture())
+		{
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	// Linear Filtering
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	// Linear Filtering
+			
+		}
+
 	    DefaultGLEngine::~DefaultGLEngine()
 	    {
 		    if (_logotexture!=0) glDeleteTextures(1, &_logotexture);
@@ -106,19 +113,6 @@ namespace RAGE
 			//to initialise the engine, just called once before any render
 		bool DefaultGLEngine::init(int width, int height)
 		{
-			if ( _logo == NULL )
-			{
-				//loading the default RGBSurface from the Resources
-				_logo = new RGBSurface();
-				 
-			}
-			//if ( image->isGLvalid() )
-			_logotexture=_logo->generateTexture();
-			Log << nl << "generated texture : " << _logotexture;
-			
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	// Linear Filtering
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	// Linear Filtering
-			
 			//actual init code
 			glShadeModel(GL_SMOOTH);       // Enable Smooth Shading
 			glClearDepth(1.0f);         // Depth Buffer Setup
