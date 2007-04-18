@@ -51,4 +51,3 @@
   App::getInstance().getWindow()->mainLoop();
   return 0;
  }
- 

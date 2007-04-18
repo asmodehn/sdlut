@@ -28,6 +28,8 @@ class RGBSurface : public BaseSurface
 
 protected : //the client should not access to flags...
 
+	static RWOps defaultContent;
+			
 	static unsigned long RGBFlags;
 	
 	//Constructor
