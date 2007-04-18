@@ -81,7 +81,12 @@ BackGround::BackGround()
 //BackGround Destructor
 BackGround::~BackGround()
 {
+	for (unsigned int i = 0; i < BackGround_Sprite_Vector->size(); i++)
+	{
+		delete BackGround_Sprite_Vector->at(i), BackGround_Sprite_Vector->at(i) = NULL;
+	}
 	delete BackGround_Sprite_Vector, BackGround_Sprite_Vector = NULL;
+
 	delete BackGround_Tileset_Grass, BackGround_Tileset_Grass = NULL;
 	delete BackGround_Tileset_Sands, BackGround_Tileset_Sands = NULL;
 	delete BackGround_Tileset_Rivers, BackGround_Tileset_Rivers = NULL;
@@ -332,7 +337,12 @@ Environment::Environment()
 //Environment Destructor
 Environment::~Environment()
 {
+	for (unsigned int i = 0; i < Environment_Sprite_Vector->size(); i++)
+	{
+		delete Environment_Sprite_Vector->at(i), Environment_Sprite_Vector->at(i) = NULL;
+	}
 	delete Environment_Sprite_Vector, Environment_Sprite_Vector = NULL;
+
 	delete Environment_Tileset_Trees, Environment_Tileset_Trees = NULL;
 	delete Environment_Tileset_Rocks, Environment_Tileset_Rocks = NULL;
 	delete Environment_Tileset_Walls, Environment_Tileset_Walls = NULL;
