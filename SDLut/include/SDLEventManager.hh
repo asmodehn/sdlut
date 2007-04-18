@@ -80,24 +80,29 @@ namespace RAGE
             friend class Window; // to build the unique instance of EventManager
 
         protected:
-            //filter to decide if an event is set as critical or not
-  //          Uint8 _criticaltypes;
 
-            //WARNING : the handler must be initialized properly before setting a corresponding type as critical
-            GeneralHandler * ghndlr;
+
+		bool usergeneral;
+		GeneralHandler * ghndlr;
+
+		bool usermouse;
             Mouse * mhndlr;
+
+	    bool userkeyboard;
             Keyboard * khndlr;
 
 
-	    EventManager()  : /*_criticaltypes( 0),*/ ghndlr(new GeneralHandler()),mhndlr(new Mouse()), khndlr(NULL)
-            {}
+	    EventManager()  : usergeneral(false),ghndlr(new GeneralHandler()),usermouse(false),mhndlr(new Mouse()),userkeyboard(false), khndlr(new Keyboard())
+            {
+		    
+	    }
             ~EventManager()
             {
-				if (ghndlr != NULL)
+				if (ghndlr != NULL && !usergeneral)
 					delete ghndlr, ghndlr = NULL;
-				if (mhndlr != NULL)
+				if (mhndlr != NULL && !usermouse)
 					delete mhndlr, mhndlr = NULL;
-				if (khndlr != NULL)
+				if (khndlr != NULL && !userkeyboard)
 					delete khndlr, khndlr = NULL;
 			}
 
@@ -107,14 +112,17 @@ namespace RAGE
 
             void setKeyboard(Keyboard * newkhndlr)
             {
+		userkeyboard = true;
                 khndlr = newkhndlr;
             }
             void setGeneralHandler(GeneralHandler * newghndlr)
             {
+		usergeneral = true;
                 ghndlr = newghndlr;
             }
             void setMouse(Mouse * newmhndlr)
             {
+		usermouse = true;
                 mhndlr = newmhndlr;
             }
 

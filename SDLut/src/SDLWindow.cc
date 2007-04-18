@@ -317,6 +317,7 @@ namespace RAGE
                 try
                 {
                     //REMINDER : SDL_SetVideoMode, takes care of freeing the old surfaces (according to the doc)
+			if (_screen != NULL) delete _screen;
                         _screen = new VideoSurface(width, height, _bpp);
 						_engine->init(width, height);
                         applyBGColor();

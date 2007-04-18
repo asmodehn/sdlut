@@ -64,7 +64,7 @@ Event::Event(Event::Type type) : _event()
 
 Event::~Event()
 {
-	delete _event;
+	if (_event != NULL) delete _event;
 }
 
 bool Event::push()

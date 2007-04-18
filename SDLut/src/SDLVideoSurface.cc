@@ -87,7 +87,8 @@ namespace RAGE
             }
 
 
-
+	delete[] modes;
+	delete test_fmt;
             return res;
         }
 
@@ -153,8 +154,10 @@ namespace RAGE
 #ifdef DEBUG
         Log << nl << "VideoSurface::resize(" << width << ", " << height << ") failed.";
 #endif
-                return false;
+		
             }
+	    else
+	    {
 
 			if (keepcontent  && !isOpenGLset() && oldSurf != NULL)
 			{
@@ -169,8 +172,12 @@ namespace RAGE
 #ifdef DEBUG
         Log << nl << "VideoSurface::resize(" << width << ", " << height << ") succeeded.";
 #endif
+	
+	    }
 
-        return true;
+	    if (oldSurf != NULL) delete oldSurf;
+
+	return (newSurf != NULL);
     }
 
 

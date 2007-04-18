@@ -149,15 +149,33 @@ namespace RAGE
             return SDL_EnableKeyRepeat(delay, interval) == 0;
         }
 
-        //    bool Keyboard::handleKeyEvent (SDL_keysym &keysym, bool pressed)
-        //    {
-        //        bool res = false;
-        //#ifdef DEBUG
-        //            Log << nl << " Key Name : " << getKeyName(keysym.sym) <<  " pressed : " << pressed << std::endl;
-        //            res=true;
-        //#endif
-        //        return res;
-        //    }
+
+        bool Keyboard::handleKeyEvent (const Sym &s, bool pressed)
+           {
+               bool res = false;
+        #ifdef DEBUG
+                   Log << nl << " Key Name : " << getKeyName(s.getKey()) <<  " pressed : " << pressed << std::endl;
+                   res=true;
+        #endif
+
+	//default keyboard behaviour : ESC quits
+            switch( s.getKey() )
+            {
+                case KEscape:
+                if (pressed==false)
+                {
+#ifdef DEBUG
+                    Log << nl << "Quit requested !" << std::endl;
+#endif
+                    _quitRequested=true;
+                    res=true;
+                }
+                break;
+                default:
+                res = false;
+            }
+               return res;
+           }
 
 	
 	Keyboard::Sym::Sym(const SDL_keysym & ksym) : _key(sdl2Key(ksym.sym)), _mod(sdl2Modifier(ksym.mod)), _unicode(ksym.unicode)

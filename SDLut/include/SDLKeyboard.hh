@@ -237,7 +237,7 @@ namespace RAGE
 
 
             //Callbacks on SDL_KEYUP or SDL_KEYDOWN
-            virtual bool handleKeyEvent (const Sym &s, bool pressed) = 0;
+            virtual bool handleKeyEvent (const Sym &s, bool pressed);
             inline bool handleKeyPressEvent (const Sym &s)
             {
                 return handleKeyEvent (s, true);

@@ -10,7 +10,6 @@
 /**
   * \defgroup Utils
   */
-#include "vld.h"
 #include "Logger.hh"
 
 
