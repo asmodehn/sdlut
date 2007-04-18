@@ -114,6 +114,7 @@ namespace RAGE
 #ifdef DEBUG
 			Log << nl << "Sound::~Sound() called";
 #endif
+			delete _aInfo;
 			SDL_FreeWAV(_buf);
 			
 #ifdef DEBUG

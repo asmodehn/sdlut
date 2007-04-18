@@ -26,6 +26,7 @@ namespace RAGE
 			if (_activechannels[i])
 {
 				//TODO : replace mixaudio with my own mix function, in case there is no SDL_mixer
+				//hint : from http://www.libsdl.org/cgi/docwiki.cgi/Audio_20Examples
 				waveptr = _channels[i]->_buf + _channelscursor[i] ;
 				waveleft = MIN(_channels[i]->_length - _channelscursor[i],static_cast<unsigned int>(len));//test end of sound buffer
 
