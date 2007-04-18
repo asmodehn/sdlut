@@ -33,7 +33,17 @@ Monster_Factory<Monster_Template>::~Monster_Factory()
 {
 	delete Characters_Tile, Characters_Tile = NULL;
 	delete Life_Bar_Tile, Life_Bar_Tile = NULL;
+
+	for (unsigned int i = 0; i < Monster_Vector->size(); i++)
+	{
+		delete Monster_Vector->at(i), Monster_Vector->at(i) = NULL;
+	}
 	delete Monster_Vector, Monster_Vector = NULL;
+	
+	for (unsigned int i = 0; i < BattleField_Cutting_Vector->size(); i++)
+	{
+		delete BattleField_Cutting_Vector->at(i), BattleField_Cutting_Vector->at(i) = NULL;
+	}
 	delete BattleField_Cutting_Vector, BattleField_Cutting_Vector = NULL;
 }
 

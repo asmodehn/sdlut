@@ -128,13 +128,15 @@ namespace RAGE
         {
             bool res = true;
 			
-			if (!_userengine && _engine!=NULL) delete _engine, _engine=NULL;
-
 			if (val)
-				_engine = new DefaultGLEngine();
+			{
+				setEngine(new DefaultGLEngine());
+			}
 			else
-				_engine = new DefaultEngine();
-			
+			{
+				setEngine(new DefaultEngine());
+			}
+
             if (_screen == NULL )
 			{
 				VideoSurface::setOpenGL(val);
@@ -212,7 +214,6 @@ namespace RAGE
                 _glmanager = new GLManager();
 
 #endif
-
 				_engine = new DefaultEngine();
                 _userengine=false;
 
@@ -260,7 +261,7 @@ namespace RAGE
         }
 
 
-            void Window::applyBGColor() const
+        void Window::applyBGColor() const
             {
                 if (_screen != NULL)
 				{
@@ -288,6 +289,7 @@ namespace RAGE
             Log << nl << "Window::setEngine(" << engine << ") called ...";
 #endif
             assert(engine);
+			delete _engine, _engine=NULL;
             _userengine=true;
             _engine=engine;
 

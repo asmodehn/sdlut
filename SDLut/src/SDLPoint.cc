@@ -23,7 +23,8 @@ namespace RAGE
 
 	Point::~Point()
 	{
-		if (_rect!=NULL)
+		//always true
+		//if (_rect!=NULL)
 			delete _rect;
 	}
 

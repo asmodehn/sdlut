@@ -98,11 +98,11 @@ namespace RAGE
 	    }
             ~EventManager()
             {
-				if (ghndlr != NULL && !usergeneral)
+				if (!usergeneral)
 					delete ghndlr, ghndlr = NULL;
-				if (mhndlr != NULL && !usermouse)
+				if (!usermouse)
 					delete mhndlr, mhndlr = NULL;
-				if (khndlr != NULL && !userkeyboard)
+				if (!userkeyboard)
 					delete khndlr, khndlr = NULL;
 			}
 
@@ -112,17 +112,20 @@ namespace RAGE
 
             void setKeyboard(Keyboard * newkhndlr)
             {
-		userkeyboard = true;
+				delete khndlr,khndlr=NULL;
+				userkeyboard = true;
                 khndlr = newkhndlr;
             }
             void setGeneralHandler(GeneralHandler * newghndlr)
             {
-		usergeneral = true;
+				delete ghndlr,ghndlr=NULL;
+				usergeneral = true;
                 ghndlr = newghndlr;
             }
             void setMouse(Mouse * newmhndlr)
             {
-		usermouse = true;
+				delete mhndlr,mhndlr=NULL;
+				usermouse = true;
                 mhndlr = newmhndlr;
             }
 

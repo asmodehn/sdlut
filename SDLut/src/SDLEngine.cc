@@ -8,14 +8,14 @@ namespace RAGE
     {
 
 		//loading the default RGBSurface from the Resources as logo
-	    DefaultEngine::DefaultEngine() : _logo(new RGBSurface())
+	    DefaultEngine::DefaultEngine()
 	    {
 	    }
 	    
 		//this render function should not modify the engine
 		void DefaultEngine::render(VideoSurface & screen) const
 		{
-			screen.blit(*_logo,Point( screen.getWidth() - _logo->getWidth(), screen.getHeight() - _logo->getHeight()));
+			screen.blit(_logo,Point( screen.getWidth() - _logo.getWidth(), screen.getHeight() - _logo.getHeight()));
 		}
 
 			//to initialise the engine, just called once before any render
@@ -32,8 +32,6 @@ namespace RAGE
 		
 		DefaultEngine::~DefaultEngine()
 		{
-			if (_logo!=NULL)
-				delete _logo, _logo = NULL;
 		}
 	}
 }
@@ -52,11 +50,15 @@ namespace RAGE
     namespace SDL
     {
 
-		DefaultGLEngine::DefaultGLEngine() : _logo(new RGBSurface()),_logotexture(_logo->generateTexture())
+		DefaultGLEngine::DefaultGLEngine() : _logotexture(_logo.generateTexture())
 		{
+			if (glIsTexture(_logotexture) !=GL_TRUE)
+			{
+				Log << nl << "Unable to generate logo texture" ;
+			}
+
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	// Linear Filtering
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	// Linear Filtering
-			
 		}
 
 	    DefaultGLEngine::~DefaultGLEngine()
@@ -93,16 +95,16 @@ namespace RAGE
 
 			glBegin( GL_QUADS ) ;
 				glTexCoord2i( 0,0) ;
-				glVertex2i( screen.getWidth() - _logo->getWidth() , screen.getHeight()- _logo->getHeight() ) ;
+				glVertex2i( screen.getWidth() - _logo.getWidth() , screen.getHeight()- _logo.getHeight() ) ;
 	
 				glTexCoord2i( 0, 1) ;
-				glVertex2i( screen.getWidth() - _logo->getWidth() , screen.getHeight()) ;
+				glVertex2i( screen.getWidth() - _logo.getWidth() , screen.getHeight()) ;
 	
 				glTexCoord2i( 1, 1) ;
 				glVertex2i( screen.getWidth() , screen.getHeight()) ;
 				
 				glTexCoord2i( 1, 0) ;
-				glVertex2i( screen.getWidth(), screen.getHeight() - _logo->getHeight() ) ;
+				glVertex2i( screen.getWidth(), screen.getHeight() - _logo.getHeight() ) ;
 			glEnd() ;
 
 

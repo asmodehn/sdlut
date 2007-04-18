@@ -286,9 +286,12 @@ catch (std::exception& e)
 }
 
 Font::Font(std::string filename , int ptsize )
-try
+try : ref(1),_font( new FontImpl())
 {
-	Font();
+	if(_font==NULL)
+	{
+		throw std::logic_error("Font Support not available");
+	}
 	setTTF( filename, ptsize);
 }
 
@@ -326,8 +329,11 @@ RGBSurface * Font::render(std::string text, Color c, RenderMode mode, Color bgc)
 #ifdef HAVE_SDLTTF
 		try
 		{
-			if (ref-1 == 0) delete _font;
-			_font = new FontExtend(filename,ptsize);
+			if (ref-1 == 0)
+			{
+				delete _font;
+				_font = new FontExtend(filename,ptsize);
+			}
 		}
 		catch (std::exception& e)
 		{

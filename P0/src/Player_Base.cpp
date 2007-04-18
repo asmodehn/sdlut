@@ -14,15 +14,6 @@ Player_Base::Player_Base()
 	//Initial moving status
 	moving_status = false;
 
-	//Empty clip for all directions
-	Player_Attack_Tile_Rect = new std::vector<Rect>;
-	Rect _temp_ch_rect;
-	//Character Clips definition
-	for (signed int i = 0; i < 8; i++)  //The 8 directions
-	{
-		Player_Attack_Tile_Rect->push_back(_temp_ch_rect);
-	}
-
 	//Initialize animation variables
     frame = 0;  // for animation
     move_status = CH_RIGHT;
@@ -188,6 +179,10 @@ Player_Base::~Player_Base()
 	delete Players_Tile_Melee, Players_Tile_Melee = NULL;
 	delete Player_Attack_Tile_Rect, Player_Attack_Tile_Rect = NULL;
 	delete Arrow_SpriteRect, Arrow_SpriteRect = NULL;
+	delete Arrow_Tile, Arrow_Tile = NULL;
+
+	//if ( Characters_Tile != NULL)
+	//	delete Characters_Tile, Characters_Tile = NULL;
 }
 
 //Character Graphic Style Initialiation regarding the attack style

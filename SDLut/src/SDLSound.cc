@@ -21,10 +21,16 @@ namespace RAGE
 
 			Uint32 len;
 			if ( SDL_LoadWAV(filename.c_str(),_aspec,&_buf,&len) == NULL)
+			{
+				delete _aspec;
 				throw std::logic_error(" Unable to open the sound file !");
+			}
 
 			_length = static_cast<unsigned long>(len);
 			_aInfo = new AudioInfo(_aspec);
+
+			//SDL_FreeWAV(_buf);
+			//OK
 
 			_loop_status = loop_status;
 #ifdef DEBUG
@@ -43,7 +49,7 @@ namespace RAGE
 #ifdef DEBUG
 			Log << nl << "Sound::Sound(" << &s << ") called";
 #endif
-			//TODO : manual allocation or use of SDL_LoadWAV_RW (RWops)
+			//TODO :use of SDL_LoadWAV_RW (RWops) !!!
 	
 			_aInfo = new AudioInfo(s._aInfo->_spec);
 
@@ -53,7 +59,9 @@ namespace RAGE
 			{
 				_buf[i] = s._buf[i];
 			}
-			
+			//SDL_FreeWAV(s._buf);
+			//SDL_FreeWAV(_buf); //crash
+
 			_loop_status=s._loop_status;
 
 #ifdef DEBUG
@@ -61,7 +69,7 @@ namespace RAGE
 #endif
 }
 		
- int Sound::Convert (int DestinationFormat,int DestinationChannels,int DestinationFrequency)
+ bool Sound::Convert (int DestinationFormat,int DestinationChannels,int DestinationFrequency)
 {
 #ifdef DEBUG
 	Log << nl << "Sound::Convert(" << DestinationFormat << " , " << DestinationChannels<< " , " << DestinationFrequency << ") called";
@@ -92,8 +100,17 @@ namespace RAGE
 	//return cvt.convert();
 	int res = SDL_ConvertAudio(_convertTable);
 
-	_length = _convertTable->len_cvt;
-	_buf = _convertTable->buf;
+	if (res !=-1)
+	{
+		_length = _convertTable->len_cvt;
+		//if (_buf!=NULL) delete _buf, _buf=NULL;
+		if (_buf!=NULL) delete _buf, _buf=NULL;
+		_buf = _convertTable->buf;
+	}
+	else
+	{
+		delete[] _convertTable->buf;
+	}
 
 // 	_aInfo->_spec->format = DestinationFormat;
 // 	_aInfo->_spec->channels = DestinationChannels;
@@ -103,8 +120,8 @@ namespace RAGE
 	//TODO : find a way to have an accurate AudioInfo after convert
 	
 	delete _convertTable;
-	//TODO : change this to bool with a check
-	return res;
+	
+	return res == 0;
 	
 }
 

@@ -146,7 +146,7 @@ int Monster_Base::Get_Env_vs_CH_Rules(const int& envType)
 bool Monster_Base::Check_Cutting_Allow_Monster(std::vector<BattleField_Zone*>* &BattleField_Cutting_Vector)
 {
 	Rect Area;
-	std::vector<int>* Allowed_Monsters_Vector = new std::vector<int>;
+	std::vector<int>* Allowed_Monsters_Vector;
 
 	//loop on all areas
 	for(unsigned int i=0; i < BattleField_Cutting_Vector->size(); i++)

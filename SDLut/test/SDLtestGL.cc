@@ -256,7 +256,8 @@ int main(int argc, char** argv)
     //App::getInstance().getWindow()->setOpenGL(true);
 	
 	//Comment this line to use the default engine
-	App::getInstance().getWindow()->setEngine(new MyEngine());
+	MyEngine engine;
+	App::getInstance().getWindow()->setEngine(&engine);
 
     if(App::getInstance().getWindow()->resetDisplay())
     {

@@ -659,6 +659,7 @@ namespace RAGE
 			glBindTexture(GL_TEXTURE_2D, texture);
 			//Generate the texture
 			glTexImage2D(GL_TEXTURE_2D, 0, 3, getWidth(),getHeight(), 0, GL_BGR, GL_UNSIGNED_BYTE, _surf->pixels);
+
 			return texture;
 		}
 #endif

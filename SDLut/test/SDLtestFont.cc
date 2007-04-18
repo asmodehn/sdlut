@@ -139,16 +139,16 @@ public:
 	bool init(int width, int height)
 	{
 		DefaultEngine::init(width,height);
-		console->init(width,height - 2 * DefaultEngine::_logo->getHeight());
-		consolePos.sety(DefaultEngine::_logo->getHeight());
+		console->init(width,height - 2 * DefaultEngine::_logo.getHeight());
+		consolePos.sety(DefaultEngine::_logo.getHeight());
 		return true;
 	}
 
 	bool resize(int width, int height)
 	{
 		DefaultEngine::resize(width,height);
-		console->resize(width,height - 2 * DefaultEngine::_logo->getHeight());
-		consolePos.sety(DefaultEngine::_logo->getHeight());
+		console->resize(width,height - 2 * DefaultEngine::_logo.getHeight());
+		consolePos.sety(DefaultEngine::_logo.getHeight());
 		return true;
 	}
 

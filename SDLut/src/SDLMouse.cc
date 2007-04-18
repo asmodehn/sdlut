@@ -80,7 +80,9 @@ return result;
     Mouse::Mouse()
     {
 	    if (Buttonrage2sdl.empty())
-		InitButtonMapping();
+		{
+			InitButtonMapping();
+		}
     }
 
     Mouse::~Mouse()

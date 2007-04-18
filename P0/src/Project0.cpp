@@ -96,11 +96,7 @@ try { //global error management
 	P0_Logger << nl << "BackGround Init: OK " << std::endl;
 	
 	//Fill the BackGround vector with all BackGround sprite corresponding to the map file
-#ifdef _DEBUG //debug mode
-	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
-#else //rlz mode
 	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = myBackGround->BackGround_Vector(); //Vector which will contains all BackGround type and clip
-#endif
 	P0_Logger << nl << "BackGround_Sprite Vector Fill: OK " << std::endl;
 	
 	//Initialize the Environment
@@ -108,11 +104,7 @@ try { //global error management
 	P0_Logger << nl << "Environment Init: OK " << std::endl;
 
 	//Fill the Environment vector with all Environment sprite corresponding to the map file
-#ifdef _DEBUG //debug mode
-	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
-#else //rlz mode*/
 	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector = myEnvironment->Environment_Vector(); //Vector which will contains all Environment items type and clip
-#endif
 	P0_Logger << nl << "Environment_Sprite Vector Fill: OK " << std::endl;
 	
 /****PlayerS****/
@@ -266,6 +258,11 @@ if (ENABLE_MUSIC)
 
 /********Clean UP********/
 #ifdef _DEBUG //debug mode
+	delete myMonster_Factory_Monsters_Moves_Timer, myMonster_Factory_Monsters_Moves_Timer = NULL;
+	delete myMonster_Factory_Monsters_Generation_Timer, myMonster_Factory_Monsters_Generation_Timer = NULL;
+	delete myNPCs_Moves_Timer, myNPCs_Moves_Timer = NULL;
+	delete myScore, myScore = NULL;
+
 	delete myScore, myScore = NULL;
 	delete myMonster_Factory_Monsters_Generation_Timer, myMonster_Factory_Monsters_Generation_Timer = NULL;
 	delete myMonster_Factory_Monsters_Moves_Timer, myMonster_Factory_Monsters_Moves_Timer = NULL;

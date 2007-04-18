@@ -51,7 +51,7 @@ namespace RAGE
 
 		//Length and data of the Sound
 	unsigned long _length;
-	unsigned char * _buf;
+	unsigned char *_buf;
 
 	//manage if the sound is looping after it end
 	bool _loop_status;
@@ -65,7 +65,7 @@ namespace RAGE
 		//Sound destructor
 		~Sound();
 
-		int Convert (int DestinationFormat,int DestinationChannels,int DestinationFrequency);
+		bool Convert (int DestinationFormat,int DestinationChannels,int DestinationFrequency);
 		
 	
 };//class Sound

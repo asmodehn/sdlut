@@ -100,9 +100,14 @@ int main(int argc, char** argv)
     App::getInstance().getWindow()->setBGColor(Color (128,0,0));
 	
 	//if argument we load the image in the test engine 
+	MyEngine * engine = NULL;
 	if ( argc > 1)
-		App::getInstance().getWindow()->setEngine(new MyEngine(std::string(argv[1])));
+	{
+		engine = new MyEngine( static_cast<std::string>(argv[1]));
+
+		App::getInstance().getWindow()->setEngine(engine);
 	//otherwise we use the default engine only.
+	}
 
     if (! (App::getInstance().getWindow()->resetDisplay()))
     {
@@ -114,6 +119,7 @@ int main(int argc, char** argv)
         App::getInstance().getWindow()->mainLoop(2);
 	//think about automatic exit after timeout...
     }
+	delete engine;
     return 0;
 }
 

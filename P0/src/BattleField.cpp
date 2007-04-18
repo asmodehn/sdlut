@@ -47,6 +47,7 @@ BattleField_Zone::BattleField_Zone(int x, int y, int w, int h, int nb_args, ...)
 	}
 
 	//close the list
+
 	va_end(args);
 }
 std::vector<BattleField_Zone*>* BattleField_Zone::Fill_Vector()
@@ -54,19 +55,10 @@ std::vector<BattleField_Zone*>* BattleField_Zone::Fill_Vector()
 	std::vector<BattleField_Zone*>* BattleField_Zone_Vector = new std::vector<BattleField_Zone*>;
 	
 	//Areas
-	BattleField_Zone* myArea;
-	
-	myArea = new BattleField_Zone(0, 0, 640, 640, 1, Humanoid);
-	BattleField_Zone_Vector->push_back(myArea);
-
-	myArea = new BattleField_Zone(640, 0, 640, 640, 0);
-	BattleField_Zone_Vector->push_back(myArea);
-
-	myArea = new BattleField_Zone(0, 640, 640, 640, 2, Humanoid, Worm);
-	BattleField_Zone_Vector->push_back(myArea);
-
-	myArea = new BattleField_Zone(640, 640, 640, 640, 1, Worm);
-	BattleField_Zone_Vector->push_back(myArea);
+	BattleField_Zone_Vector->push_back( new BattleField_Zone(0, 0, 640, 640, 1, Humanoid) );
+	BattleField_Zone_Vector->push_back( new BattleField_Zone(640, 0, 640, 640, 0) );
+	BattleField_Zone_Vector->push_back( new BattleField_Zone(0, 640, 640, 640, 2, Humanoid, Worm) );
+	BattleField_Zone_Vector->push_back( new BattleField_Zone(640, 640, 640, 640, 1, Worm) );
 
 	return BattleField_Zone_Vector;
 }
@@ -100,6 +92,9 @@ BackGround::~BackGround()
 //BackGround interpretation from the file
 std::vector<BattleField_Sprite*>* BackGround::BackGround_Vector()
 {
+
+#ifndef _DEBUG //on debug mode we only have an empty vector
+
 	//The tile offset
     int x=0, y=0;
 
@@ -218,6 +213,7 @@ std::vector<BattleField_Sprite*>* BackGround::BackGround_Vector()
 	//Close the BackGround map file
 	BackGround_Map.close();
 
+#endif
 	P0_Logger << nl << "BackGround Sprite Vector Creation : OK " << std::endl;
 
 	return(BackGround_Sprite_Vector);
@@ -346,6 +342,9 @@ Environment::~Environment()
 //Environment interpretation from the file
 std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 {
+
+#ifndef _DEBUG //on debug mode we only have an empty vector
+
 	//The tile offset
     int x=0, y=0;
 
@@ -458,6 +457,8 @@ std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
 
 	//Close the Environment map file
 	Environment_Map.close();
+
+#endif
 
 	P0_Logger << nl << "Environment Sprite Vector Creation : OK " << std::endl;
 

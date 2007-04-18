@@ -179,9 +179,9 @@ namespace RAGE
 	Sound* cvtsound = new Sound(sound);
 	
 	//is the test the other way around ?
-	if (cvtsound->Convert(_hwspec->format(), _hwspec->channels(), _hwspec->frequency()))
+	if (!cvtsound->Convert(_hwspec->format(), _hwspec->channels(), _hwspec->frequency()))
 	    {
-		    Log << "Erreur lors de la conversion du fichier audio:" << GetError();
+		    Log << nl << "Erreur lors de la conversion du fichier audio:" << GetError();
 		    delete cvtsound;
 	    } else
 	    {
@@ -201,10 +201,11 @@ namespace RAGE
 
 int Mixer::freeChannel(int index)
 {
-	delete _channels[index];
-	_activechannels[index] = false;
-	_channelscursor[index] = 0;
-	_loopchannels[index] = false;
+	delete _channels.at(index);
+	_channels.erase(_channels.begin()+index, _channels.begin()+index+1);
+	_activechannels.erase(_activechannels.begin()+index, _activechannels.begin()+index+1);
+	_channelscursor.erase(_channelscursor.begin()+index, _channelscursor.begin()+index+1);
+	_loopchannels.erase(_loopchannels.begin()+index, _loopchannels.begin()+index+1);
 	return 0;
 }
 

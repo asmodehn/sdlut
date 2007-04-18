@@ -35,7 +35,7 @@ namespace RAGE
 			//call everytime the display is resized
             virtual bool resize(int width, int height) = 0;
 
-	    virtual ~Engine() {}
+			virtual ~Engine() {}
         };
 
 		// Default 2D Engine ( only used if no engine is defined )
@@ -44,7 +44,8 @@ namespace RAGE
 			protected:
 			//will be initialized in init
 			//might be better in a constructor actually...
-			RGBSurface * _logo;
+			RGBSurface _logo;
+			//TODO : change to RGBSurface, used as reference where needed.
 
 			public:
 
@@ -68,7 +69,7 @@ namespace RAGE
 		protected:
 			//will be initialized in init
 			//might be better in a constructor actually...
-			RGBSurface * _logo;
+			RGBSurface _logo;
 			unsigned int _logotexture;
 			
 
