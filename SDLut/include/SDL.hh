@@ -1,6 +1,13 @@
 #ifndef SDL_HH
 #define SDL_HH
 
+/*Checking memory leaks with VLD under Win32 only !*/
+#ifdef WIN32
+	#ifdef VLD
+		#include "vld.h"
+	#endif
+#endif
+
 /** This file gather all the header files a user need to include to be able to use RAGE::SDL
   * So the user just has to include SDL.hh to have full access to the whole RAGE wrapper
  *

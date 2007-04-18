@@ -8,9 +8,9 @@ namespace RAGE
     namespace SDL
     {
 
-	RWOps RGBSurface::defaultContent(_defaultImage,sizeof(_defaultImage));
-
-        unsigned long RGBSurface::RGBFlags=SDL_SWSURFACE;
+       unsigned long RGBSurface::RGBFlags=SDL_SWSURFACE;
+	   RWOps RGBSurface::defaultContent(_defaultImage,sizeof(_defaultImage));
+	   int RGBSurface::offset = defaultContent.tell();
 
         RGBSurface::RGBSurface(int width, int height, int bpp) throw (std::logic_error)
         try
@@ -203,6 +203,10 @@ namespace RAGE
 #endif
       
             }
+
+			//We put back the RWOps read cursor at the beginning
+			offset = defaultContent.seek(0,RWOps::Set);
+
 #ifdef DEBUG
 
             Log << nl << "RGBSurface::RGBSurface(RWOps) done.";
@@ -221,9 +225,10 @@ namespace RAGE
         try
 :
 #ifdef HAVE_SDLIMAGE
-			BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(defaultContent.get_pSDL()),0))
+			//BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(RWOps(_defaultImage,sizeof(_defaultImage)).get_pSDL()),0))
+		BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(defaultContent.get_pSDL()),0))
 #else
-			BaseSurface(SDL_LoadBMP_RW(const_cast<SDL_RWops*>(defaultContent.get_pSDL()),0))
+		BaseSurface(SDL_LoadBMP_RW(const_cast<SDL_RWops*>(defaultContent.get_pSDL()),0))
 #endif
         {
 #ifdef DEBUG
@@ -242,11 +247,14 @@ namespace RAGE
 #endif
       
             }
+
+			//We put back the RWOps read cursor at the beginning
+			offset = defaultContent.seek(0,RWOps::Set);
+
 #ifdef DEBUG
 
             Log << nl << "RGBSurface::RGBSurface(RWOps) done.";
 #endif
-
         }
         catch (std::exception &e)
         {

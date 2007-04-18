@@ -28,10 +28,10 @@ class RGBSurface : public BaseSurface
 
 protected : //the client should not access to flags...
 
-	static RWOps defaultContent;
-			
 	static unsigned long RGBFlags;
-	
+	static RWOps defaultContent;
+	static int offset;
+				
 	//Constructor
 	//Beware : the default flags should be the same than in Factory for consistency
 	//BPP should NEVER be == 0 !!!!

@@ -1,7 +1,6 @@
 #ifndef SDLRWOPS_HH
 #define SDLRWOPS_HH
 
-
 #include <fstream>
 #include <string>
 #include <stdexcept>
@@ -13,7 +12,6 @@ namespace RAGE
 {
     namespace SDL
     {
-
 
         /**
         * \class RWOps
@@ -33,8 +31,6 @@ namespace RAGE
         class RWOps
         {
 
-			typedef enum {Set = SEEK_SET, Cur = SEEK_CUR, End = SEEK_END }Seek;
-
 			SDL_RWops * _rwops;
 		protected:
 			RWOps() throw (std::logic_error);
@@ -53,12 +49,18 @@ namespace RAGE
 
 			const SDL_RWops * get_pSDL() const;
 
-			/*int Seek(int offset,Seek start);
-			Tell();
-			read();
-			write();
-			close();*/
+			typedef enum {Set, Cur, End}Seek;
 
+			int tell() const;
+			int seek(int offset,Seek start);
+
+			//TODO : read();
+			//TODO : write();
+			
+			bool close();
+
+			//TODO : http://www.xgarreau.org/aide/devel/sdl/rwops.php
+			//faire un packer / unpacker similaire...
 			bool dumpCode(const std::string & filename, const std::string & id);
 
         };

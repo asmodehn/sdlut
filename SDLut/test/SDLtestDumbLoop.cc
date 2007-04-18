@@ -6,16 +6,7 @@
  #include "SDL.hh"
  using namespace RAGE;
  using namespace RAGE::SDL;
- class KeyboardInput : public Keyboard
- {
-  bool handleKeyEvent (const Sym &s, bool pressed)
-  {
-   if (pressed)
-    if ( s.getKey() == KEscape )
-     _quitRequested=true;
-   return true;
-  }
- };
+
  int main(int argc, char *argv[])
  {
   Logger testlog("testApp");
@@ -46,8 +37,6 @@
   testlog << ( (SDL::App::getInstance().initText())? "OK" : "FAILED" );
  #endif
   App::getInstance().getWindow()->resetDisplay();
-  KeyboardInput* myKeyboardInput = new KeyboardInput();
-  App::getInstance().getWindow()->getEventManager()->setKeyboard(myKeyboardInput);
   App::getInstance().getWindow()->mainLoop();
   return 0;
  }

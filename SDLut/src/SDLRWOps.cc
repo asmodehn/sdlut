@@ -80,6 +80,35 @@ namespace RAGE {
 			SDL_FreeRW(_rwops);
 		}
 
+
+		int RWOps::tell() const
+		{
+			return SDL_RWtell(_rwops);
+		}
+		
+		int RWOps::seek(int offset,Seek start)
+		{
+			int newoffset = 0;
+			switch(start)
+			{
+			case Set:
+				newoffset = SDL_RWseek(_rwops,offset,SEEK_SET);
+				break;
+			case Cur:
+				newoffset = SDL_RWseek(_rwops,offset,SEEK_CUR);
+				break;
+			case End:
+				newoffset = SDL_RWseek(_rwops,offset,SEEK_END);
+				break;
+			}
+			return newoffset;
+		}
+
+		bool RWOps::close()
+		{
+			return SDL_RWtell(_rwops) == 0;
+		}
+
 		bool RWOps::dumpCode(const std::string & filename, const std::string & id)
 		{
 			
