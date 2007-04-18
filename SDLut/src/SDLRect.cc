@@ -12,28 +12,28 @@ namespace RAGE
 	    //also used to convert point for main methods use...
 	    Rect::Rect(const Point& p , unsigned int nw, unsigned int nh) : Point(p.getx(),p.gety())
 	    {
-		    _rect->w=nw;
-		    _rect->h=nh;
+		    _rect->w=(Uint16) nw;
+		    _rect->h=(Uint16) nh;
 	    }
 
 	    Rect::Rect(int x, int y , unsigned int nw, unsigned int nh) : Point(x,y)
 	    {
-		    _rect->w=nw;
-		    _rect->h=nh;
+		    _rect->w=(Uint16) nw;
+		    _rect->h=(Uint16) nh;
 	    }
 
 	//2 parameter define only a rectangular zone
 	    Rect::Rect( unsigned int nw, unsigned int nh) : Point(0,0)
 	    {
-		    _rect->w=nw;
-		    _rect->h=nh;
+		    _rect->w=(Uint16) nw;
+		    _rect->h=(Uint16) nh;
 	    }
 
 	//Copy Constructor
 	    Rect::Rect( const Rect& r) : Point(r.getx(),r.gety())
 	    {
-		    _rect->w=r.getw();
-		    _rect->h=r.geth();
+		    _rect->w=(Uint16) r.getw();
+		    _rect->h=(Uint16) r.geth();
 	    }
 
 	    Rect::~Rect()
@@ -42,11 +42,11 @@ namespace RAGE
 	    
 	    void Rect::setw(unsigned int nw )
 	    {
-		    _rect->w=nw;
+		    _rect->w=(Uint16) nw;
 	    }
 	    void Rect::seth(unsigned int nh )
 	    {
-		    _rect->h=nh;
+		    _rect->h=(Uint16) nh;
 	    }
 
 	    unsigned int Rect::getw() const
@@ -59,32 +59,32 @@ namespace RAGE
 	    }
 
 	    //scalar operations
-	    
-	    Rect& Rect::operator*=(int s)
+	    //dont use -1 scalar right now (later for reverse maybe ??
+	    Rect& Rect::operator*=(unsigned int s)
 	    {
-		    _rect->w *= s;
-		    _rect->h *= s;
+		    _rect->w = (Uint16) (_rect->w * s);
+		    _rect->h = (Uint16) (_rect->h * s);
 		    return *this;
 	    }
 
-	    Rect& Rect::operator/=(int s)
+	    Rect& Rect::operator/=(unsigned int s)
 	    {
-		    _rect->w /= s;
-		    _rect->h /= s;
+		    _rect->w = (Uint16) (_rect->w / s);
+		    _rect->h = (Uint16) (_rect->h / s);
 		    return *this;
 	    }
 
-	     Rect operator*(int s, const Rect& u)
+	     Rect operator*(unsigned int s, const Rect& u)
 	    {
 		    return Rect ( u._rect->w * s, u._rect->h * s );
 	    }
 
-	     Rect operator*(const Rect& u, int s)
+	     Rect operator*(const Rect& u,unsigned int s)
 	    {
 		    return Rect ( u._rect->w * s, u._rect->h * s );
 	    }
 
-		Rect operator/(const Rect& u, int s)
+		Rect operator/(const Rect& u,unsigned int s)
 	    {
 		    return Rect ( u._rect->w / s, u._rect->h / s );
 	    }
@@ -93,8 +93,8 @@ namespace RAGE
         Rect& Rect::operator=(const Rect& r)
         {
             Point::operator=(r);
-            _rect->w=r.getw();
-            _rect->h=r.geth();
+            _rect->w=(Uint16)r.getw();
+            _rect->h=(Uint16)r.geth();
             return *this;
         }
 

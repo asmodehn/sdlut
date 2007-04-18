@@ -146,7 +146,7 @@ namespace Optional
 				case TTF:
 #ifdef HAVE_SDLTTF	
 						//TODO : change int to bool with a check
-						return TTF_WasInit();
+						return TTF_WasInit() == SDL_TRUE;
 #endif
 					break;
 				case Image:

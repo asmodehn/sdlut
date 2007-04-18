@@ -33,7 +33,7 @@ namespace RAGE{
 	for (; it != itEnd; ++it)
 	{
 		assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
-		result[(*it).first] = (*it).second;
+		result[(*it).first] = (short int) (*it).second;
 	}
 }
 return result;
@@ -58,7 +58,7 @@ return result;
 Event::Event(Event::Type type) : _event()
 {
     //syntax to put in the constructor call to get rid of the warning ?
-	_event->type=type;
+	_event->type=(Uint8)type;
 }
 
 

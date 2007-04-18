@@ -197,30 +197,30 @@ BaseSurface::~BaseSurface()
             switch(_surf->format->BytesPerPixel)
             {
                 case 1:
-                *p = pixel;
+                *p = (Uint8) pixel;
                 break;
 
                 case 2:
-                *(Uint16 *)p = pixel;
+                *(Uint16 *)p = (Uint16) pixel;
                 break;
 
                 case 3:
                 if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
                 {
-                    p[0] = (pixel >> 16) & 0xff;
-                    p[1] = (pixel >> 8) & 0xff;
-                    p[2] = pixel & 0xff;
+                    p[0] = (Uint8) (pixel >> 16) & 0xff;
+                    p[1] = (Uint8) (pixel >> 8) & 0xff;
+                    p[2] = (Uint8) pixel & 0xff;
                 }
                 else
                 {
-                    p[0] = pixel & 0xff;
-                    p[1] = (pixel >> 8) & 0xff;
-                    p[2] = (pixel >> 16) & 0xff;
+                    p[0] = (Uint8) pixel & 0xff;
+                    p[1] = (Uint8) (pixel >> 8) & 0xff;
+                    p[2] = (Uint8) (pixel >> 16) & 0xff;
                 }
                 break;
 
                 case 4:
-                *(Uint32 *)p = pixel;
+                *(Uint32 *)p = (Uint32) pixel;
                 break;
             }
             unlock();

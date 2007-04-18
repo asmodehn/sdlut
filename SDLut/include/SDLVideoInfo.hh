@@ -41,6 +41,7 @@ namespace RAGE
             //read-only access
             //the address of the SDL_VideoInfo struct should not change
             const SDL_VideoInfo* const _info;
+			//BEWARE : this is managed by SDL. we get it from SDL as read-only, and we dont free it either
 
         protected:
             PixelFormat * _pformat; //dynamically constructed when needed

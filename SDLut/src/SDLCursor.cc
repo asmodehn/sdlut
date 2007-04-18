@@ -174,7 +174,7 @@ catch (std::exception & e)
 		    }
 		    void Cursor::warpCurrent (Point p)
 		    {
-			    SDL_WarpMouse(p.getx(),p.gety());
+			    SDL_WarpMouse((Uint16)p.getx(),(Uint16)p.gety());
 			    std::cout << "Mouse warped !" << std::endl;
 		    }
 

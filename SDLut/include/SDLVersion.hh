@@ -33,7 +33,6 @@ namespace RAGE
 	    class Version
         {
 
-		
 		SDL_version* _compiled;
         SDL_version* _linked;
 

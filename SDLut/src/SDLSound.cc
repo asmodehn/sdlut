@@ -72,7 +72,7 @@ namespace RAGE
 	SDL_AudioCVT * _convertTable = new SDL_AudioCVT();
 
 				if (SDL_BuildAudioCVT(_convertTable, _aInfo->_spec->format, _aInfo->_spec->channels, _aInfo->_spec->freq,
-				    DestinationFormat, DestinationChannels, DestinationFrequency) < 0)
+				    (Uint16) DestinationFormat, (Uint8) DestinationChannels, DestinationFrequency) < 0)
 				{
 					throw std::logic_error("Impossible de construire le convertisseur audio!");
 				}

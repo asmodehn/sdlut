@@ -30,7 +30,7 @@ protected : //the client should not access to flags...
 
 	static unsigned long RGBFlags;
 	static RWOps defaultContent;
-	static int offset;
+	static int offset;//usefull to debug RWOps
 				
 	//Constructor
 	//Beware : the default flags should be the same than in Factory for consistency

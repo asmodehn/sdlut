@@ -24,7 +24,7 @@ namespace RAGE
 	    
 	    bool RemoveGlobalTimer(SDL_TimerID t)
 	    {
-		    return SDL_RemoveTimer(t);
+		    return SDL_RemoveTimer(t) == SDL_TRUE;
 	    }
 
 

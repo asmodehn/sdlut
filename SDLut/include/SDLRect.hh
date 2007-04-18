@@ -69,11 +69,11 @@ public:
 	Rect sup(const Rect & r);
 
   //scalar operations
-		Rect& operator*=(int s);
-		Rect& operator/=(int s);
-		friend Rect operator*(int s, const Rect& u);
-		friend Rect operator*(const Rect& u, int s);
-		friend Rect operator/(const Rect& u, int s);
+		Rect& operator*=(unsigned int s);
+		Rect& operator/=(unsigned int s);
+		friend Rect operator*(unsigned int s, const Rect& u);
+		friend Rect operator*(const Rect& u, unsigned int s);
+		friend Rect operator/(const Rect& u, unsigned int s);
 		
 	//TODO growCenter, growCorner, rotate90, rotate180, rotate270
 

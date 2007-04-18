@@ -12,12 +12,11 @@ namespace RAGE
 			//This handle explicit casts
 		AudioInfo::AudioInfo(const SDL_AudioSpec* as): _spec(as)
 		{
-			pointerCopy = true;
 		}
 			
 		AudioInfo::~AudioInfo(void)
 		{
-			if (!pointerCopy) delete _spec;
+			delete _spec;
 		}
 
 		

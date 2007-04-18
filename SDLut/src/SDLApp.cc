@@ -95,12 +95,7 @@ namespace RAGE
 				pvm_manager = new Manager(false,false,false,true,false,false,false);
 				return true;
 			}
-			else
-			{
-				return pvm_manager->enableCdrom();
-			}
-			return false;
-            
+			return pvm_manager->enableCdrom();          
 			
 		}
 
@@ -112,13 +107,8 @@ namespace RAGE
 				pvm_manager = new Manager(false,false,true,false,false,false,false);
 				return true;
 			}
-			else
-			{
-				return pvm_manager->enableTimer();
-			}
-			return false;
-            
-			
+			return pvm_manager->enableTimer();
+		
 		}
 
         bool App::initVideo( bool fullscreen,bool opengl, bool resizable, bool noframe)

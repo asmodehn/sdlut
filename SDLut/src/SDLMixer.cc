@@ -78,24 +78,41 @@ namespace RAGE
 			//ID : time measure and compare with frequency and samples number ?
 			desired->userdata=NULL;
 			
-			SDL_AudioSpec * _spec = new SDL_AudioSpec();
-			
-			try
+			SDL_AudioSpec * _spec;
+
+			//if autoconvert, "desired" is the next _hwspec
+			if (_autoConvert)
 			{
-				if (SDL_OpenAudio(desired, _autoConvert?NULL:_spec)!=0)
+				try
 				{
-					Log << "Error Initialising Audio";
-					throw std::logic_error("Error initializing Audio");
+					if (SDL_OpenAudio(desired, NULL)!=0)
+					{
+						Log << "Error Initialising Audio";
+						throw std::logic_error("Error initializing Audio");
+					}
 				}
-	
-				if (_autoConvert)
+				catch (std::exception& e)
 				{
-					_spec=desired;
+					Log << "Exception caught in Mixer::Mixer() : " << e.what();
 				}
+				_spec=desired;
 			}
-			catch (std::exception& e)
+			else //if no autoconvert, the next _hwspec is filled by OpenAudio
 			{
-				Log << "Exception caught in Mixer::Mixer() : " << e.what();
+				_spec = new SDL_AudioSpec();
+				try
+				{
+					if (SDL_OpenAudio(desired,_spec)!=0)
+					{
+						Log << "Error Initialising Audio";
+						throw std::logic_error("Error initializing Audio");
+					}
+				}
+				catch (std::exception& e)
+				{
+					Log << "Exception caught in Mixer::Mixer() : " << e.what();
+				}
+				delete desired;
 			}
 
 			_hwspec = new AudioInfo(_spec);

@@ -44,8 +44,8 @@ namespace RAGE
             Log << nl << "VideoInfo::~VideoInfo() called ...";
 #endif
 
-            delete _pformat;
-//            delete _info; //shouldnt need that, should be managed by SDL
+            delete _pformat, _pformat = NULL;
+            //delete _info; //This is managed by SDL, we cant delete that here
 
 #ifdef DEBUG
 

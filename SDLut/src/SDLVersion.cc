@@ -82,6 +82,9 @@ namespace RAGE
             Log << nl << "Version::~Version() called ...";
 #endif
 
+			delete _compiled;
+			delete _linked;
+
 #ifdef DEBUG
 
             Log << nl << "Version::~Version() done.";

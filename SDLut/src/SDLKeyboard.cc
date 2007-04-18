@@ -62,7 +62,7 @@ namespace RAGE
 			for (; it != itEnd; ++it)
 			{
 				assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
-				result[(*it).first] = (*it).second;
+				result[(*it).first] = (short int)(*it).second;
 			}
 		}
 		return result;
@@ -89,7 +89,7 @@ namespace RAGE
 			for (; it != itEnd; ++it)
 			{
 				assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
-				result[(*it).first] = (*it).second;
+				result[(*it).first] = (short int)(*it).second;
 			}
 		}
 		return result;
@@ -178,7 +178,7 @@ namespace RAGE
            }
 
 	
-	Keyboard::Sym::Sym(const SDL_keysym & ksym) : _key(sdl2Key(ksym.sym)), _mod(sdl2Modifier(ksym.mod)), _unicode(ksym.unicode)
+	Keyboard::Sym::Sym(const SDL_keysym & ksym) : _key(sdl2Key((short int)ksym.sym)), _mod(sdl2Modifier((short int)ksym.mod)), _unicode(ksym.unicode)
 	{
 	}
 

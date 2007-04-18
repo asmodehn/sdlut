@@ -7,16 +7,16 @@ namespace RAGE
 {
 	Point::Point(int nx, int ny) : _rect(new SDL_Rect)
 	{
-		_rect->x=nx;
-		_rect->y=ny;
+		_rect->x=(Sint16) nx;
+		_rect->y=(Sint16) ny;
 		_rect->w=0;
 		_rect->h=0;
 	}
 
 	Point::Point( const Point& p ) : _rect(new SDL_Rect)
 	{
-		_rect->x=p.getx();
-		_rect->y=p.gety();
+		_rect->x=(Sint16) p.getx();
+		_rect->y=(Sint16) p.gety();
 		_rect->w=0;
 		_rect->h=0;
 	}
@@ -40,11 +40,11 @@ namespace RAGE
 	
 	void Point::setx(int nx )
 	{
-		_rect->x=nx;
+		_rect->x=(Sint16) nx;
 	}
 	void Point::sety(int ny )
 	{
-		_rect->y=ny;
+		_rect->y=(Sint16) ny;
 	}
 
 	int Point::getx() const
@@ -59,8 +59,8 @@ namespace RAGE
 	
 	void Point::translate(int x ,int y)
 	{
-		_rect->x+=x;
-		_rect->y+=y;
+		_rect->x=(Sint16)(_rect->x + x);
+		_rect->y=(Sint16)(_rect->y + y);
 	}
 
 
@@ -75,14 +75,14 @@ namespace RAGE
 	}
 	Point& Point::operator+=(const Point &p)
 	{
-		_rect->x += p.getx();
-		_rect->y += p.gety();
+		_rect->x =(Sint16) (_rect->x + p.getx());
+		_rect->y =(Sint16) (_rect->y + p.gety());
 		return *this;
 	}
 	Point& Point::operator-=(const Point &p)
 	{
-		_rect->x -= p.getx();
-		_rect->y -= p.gety();
+		_rect->x =(Sint16) (_rect->x - p.getx());
+		_rect->y =(Sint16) (_rect->y - p.gety());
 		return *this;
 	}
 	
@@ -96,8 +96,8 @@ namespace RAGE
 	
     Point& Point::operator=(const Point& p)
     {
-        _rect->x=p.getx();
-        _rect->y=p.gety();
+        _rect->x=(Sint16) p.getx();
+        _rect->y=(Sint16) p.gety();
         _rect->w=0;
         _rect->h=0;
         return *this;
