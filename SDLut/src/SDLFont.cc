@@ -269,14 +269,19 @@ namespace SDL
 	// INTERFACE FONT IMPLEMENTATION //
 	///////////////////////////////////
 
+	
+	std::vector<FontImpl *> Font::references;
+	std::vector<unsigned int> Font::refcount;
 
 Font::Font() throw (std::logic_error)
-try : ref(1),_font( new FontImpl())
+try : _font( new FontImpl())
 {
 	if(_font==NULL)
 	{
 		throw std::logic_error("Font Support not available");
 	}
+	references.push_back(_font);
+	refcount.push_back(1);
 }
 catch (std::exception& e)
 {
@@ -286,13 +291,15 @@ catch (std::exception& e)
 }
 
 Font::Font(std::string filename , int ptsize )
-try : ref(1),_font( new FontImpl())
+try : _font( new FontImpl())
 {
 	if(_font==NULL)
 	{
 		throw std::logic_error("Font Support not available");
 	}
 	setTTF( filename, ptsize);
+	references.push_back(_font);
+	refcount.push_back(1);
 }
 
 catch (std::exception& e)
@@ -305,15 +312,36 @@ catch (std::exception& e)
 
 //Copy Constructor
 Font::Font(const Font &font)
-	: ref(font.ref+1),_font(font._font)
+	: _font(font._font)
 {
+	for(unsigned int i=0; i< references.size(); i++)
+	{
+		if ( references[i] == _font)
+		{
+			refcount[i]++;
+			break;
+		}
+	}
+	
 }
 
 
 Font::~Font()
 {
-	if (--ref == 0)
-		delete _font, _font=NULL;
+	for(unsigned int i=0; i< references.size(); i++)
+	{
+		if ( references[i] == _font)
+		{
+			if (--refcount[i] == 0)
+			{
+				delete _font, _font=NULL;
+				references.erase(references.begin()+i,references.begin()+i+1);
+				refcount.erase(refcount.begin()+i,refcount.begin()+i+1);
+			}
+			break;
+		}
+	}
+
 
 }
 
@@ -329,11 +357,20 @@ RGBSurface * Font::render(std::string text, Color c, RenderMode mode, Color bgc)
 #ifdef HAVE_SDLTTF
 		try
 		{
-			if (ref-1 == 0)
+			for(int i=0; i< references.size(); i++)
 			{
-				delete _font;
-				_font = new FontExtend(filename,ptsize);
+				if ( references[i] == _font)
+				{
+					if (--refcount[i] == 0)
+					{
+						delete _font, _font=NULL;
+						references.erase(references.begin()+i,references.begin()+i+1);
+						refcount.erase(refcount.begin()+i,refcount.begin()+i+1);
+					}
+				break;
+				}
 			}
+			_font = new FontExtend(filename,ptsize);
 		}
 		catch (std::exception& e)
 		{

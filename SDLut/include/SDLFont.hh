@@ -45,7 +45,11 @@ public:
 	typedef enum { Solid, Shaded, Blended } RenderMode;
 
 private:
-	int ref;
+	//TODO : make a generic resource manager...
+	//to manage resources between copies and so on...
+	static std::vector<FontImpl *> references;
+	static std::vector<unsigned int> refcount;
+	
 	//TODO : fix the problem when the TTF is absent !!!
 	FontImpl * _font;//private class to handle SDL_ttf detection and use
 		//_font == NULL if TTF not available ( or unable to initialise the font )
