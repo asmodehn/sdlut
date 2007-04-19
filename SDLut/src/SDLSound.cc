@@ -1,5 +1,4 @@
 #include "SDLSound.hh"
-#include "SDLRWOps.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE
@@ -50,27 +49,16 @@ namespace RAGE
 #ifdef DEBUG
 			Log << nl << "Sound::Sound(" << &s << ") called";
 #endif
-			SDL_AudioSpec * _aspec = new SDL_AudioSpec();
+			//TODO :use of SDL_LoadWAV_RW (RWops) !!!
+	
+			_aInfo = new AudioInfo(s._aInfo->_spec);
 
-			Uint32 len;
-			RWOps myrwo(s._buf,s._length);
-			int offset = myrwo.tell();
-			if ( SDL_LoadWAV_RW(const_cast<SDL_RWops*>(myrwo.get_pSDL()),0,_aspec,&_buf,&len) == NULL)
-			{
-				delete _aspec;
-				throw std::logic_error(" Unable to copy the sound in memory !");
-			}
-
-			_length = static_cast<unsigned long>(len);
-			_aInfo = new AudioInfo(_aspec);
-
-					/*
 			_length=s._length;
 			_buf= new Uint8[s._length];
 			for (unsigned int i=0; i<s._length; i++)
 			{
 				_buf[i] = s._buf[i];
-			}*/
+			}
 			//SDL_FreeWAV(s._buf);
 			//SDL_FreeWAV(_buf); //crash
 
