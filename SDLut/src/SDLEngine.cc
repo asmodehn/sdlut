@@ -50,15 +50,8 @@ namespace RAGE
     namespace SDL
     {
 
-		DefaultGLEngine::DefaultGLEngine() : _logotexture(_logo.generateTexture())
+		DefaultGLEngine::DefaultGLEngine() : _logotexture(0)
 		{
-			if (glIsTexture(_logotexture) !=GL_TRUE)
-			{
-				Log << nl << "Unable to generate logo texture" ;
-			}
-
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	// Linear Filtering
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	// Linear Filtering
 		}
 
 	    DefaultGLEngine::~DefaultGLEngine()
@@ -115,6 +108,16 @@ namespace RAGE
 			//to initialise the engine, just called once before any render
 		bool DefaultGLEngine::init(int width, int height)
 		{
+			//texture generation
+			_logotexture=_logo.generateTexture();
+			if (glIsTexture(_logotexture) !=GL_TRUE)
+			{
+				Log << nl << "Unable to generate logo texture" ;
+			}
+
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);	// Linear Filtering
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);	// Linear Filtering
+			
 			//actual init code
 			glShadeModel(GL_SMOOTH);       // Enable Smooth Shading
 			glClearDepth(1.0f);         // Depth Buffer Setup
@@ -122,7 +125,7 @@ namespace RAGE
 			glDepthFunc(GL_LEQUAL);        // The Type Of Depth Testing To Do
 			glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); // Really Nice Perspective Calculations
 
-	        glViewport(0,0,width,height);      // Reset The Current Viewport
+			glViewport(0,0,width,height);      // Reset The Current Viewport
 	
 			glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix
 			glLoadIdentity();         // Reset The Projection Matrix
