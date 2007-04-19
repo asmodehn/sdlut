@@ -6,19 +6,20 @@ namespace RAGE
 	namespace SDL
 	{
 
+		std::map<AudioInfo*,int> Sound::airef;
 
 		//class Sound
 		
 //		int Sound::resourcecount = 0;
 		
 		Sound::Sound(std::string filename, bool loop_status) throw ( std::logic_error)
-		try
+			try : frommem(false)
 		{
 #ifdef DEBUG
 			Log << nl << "Sound::Sound(" << filename << ") called";
 #endif
 			SDL_AudioSpec * _aspec = new SDL_AudioSpec();
-
+			
 			Uint32 len;
 			if ( SDL_LoadWAV(filename.c_str(),_aspec,&_buf,&len) == NULL)
 			{
@@ -31,6 +32,8 @@ namespace RAGE
 
 			//SDL_FreeWAV(_buf);
 			//OK
+
+			airef[_aInfo] = 1;
 
 			_loop_status = loop_status;
 #ifdef DEBUG
@@ -51,7 +54,7 @@ namespace RAGE
 #endif
 			//TODO :use of SDL_LoadWAV_RW (RWops) !!!
 	
-			_aInfo = new AudioInfo(s._aInfo->_spec);
+			_aInfo = s._aInfo;
 
 			_length=s._length;
 			_buf= new Uint8[s._length];
@@ -64,6 +67,8 @@ namespace RAGE
 
 			_loop_status=s._loop_status;
 
+			airef[_aInfo] ++;
+			frommem=true;
 #ifdef DEBUG
 			Log << nl << "Sound::Sound(" << &s << ") done";
 #endif
@@ -103,8 +108,7 @@ namespace RAGE
 	if (res !=-1)
 	{
 		_length = _convertTable->len_cvt;
-		//if (_buf!=NULL) delete _buf, _buf=NULL;
-		if (_buf!=NULL) delete _buf, _buf=NULL;
+		if (_buf!=NULL) delete[] _buf, _buf=NULL;
 		_buf = _convertTable->buf;
 	}
 	else
@@ -131,8 +135,18 @@ namespace RAGE
 #ifdef DEBUG
 			Log << nl << "Sound::~Sound() called";
 #endif
-			delete _aInfo;
-			SDL_FreeWAV(_buf);
+			if ( --airef[_aInfo] == 0 ) 
+			{
+				delete _aInfo,_aInfo = NULL;
+			}
+			if ( frommem )
+			{
+				delete[] _buf;
+			}
+			else
+			{
+				SDL_FreeWAV(_buf);
+			}
 			
 #ifdef DEBUG
 			Log << nl << "Sound::~Sound() done";

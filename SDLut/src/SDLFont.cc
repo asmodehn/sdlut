@@ -102,7 +102,9 @@ namespace SDL
 	{
 		//shared between copies of the same instance
 		TTF_Font * _ttfstruct;
-		int _ref;
+	
+		static std::vector<TTF_Font *> references;
+		static std::vector<unsigned int> refcount;
 
 		public:
 			//Constructor
@@ -139,13 +141,19 @@ namespace SDL
 			SDL_Surface * render(const std::string& text, Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid) const;
 	};
 
+
+		std::vector<TTF_Font *> FontExtend::references;
+		std::vector<unsigned int> FontExtend::refcount;
+
 //Implementation of class Font
 	FontExtend::FontExtend(std::string filename, int ptsize) throw (std::logic_error)
-			try : FontImpl(),_ttfstruct(TTF_OpenFont(filename.c_str(),ptsize)),_ref(1)
+			try : FontImpl(),_ttfstruct(TTF_OpenFont(filename.c_str(),ptsize))
 		{
 			if(_ttfstruct==NULL) {
 				throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
 			}
+			references.push_back(_ttfstruct);
+			refcount.push_back(1);
 		}
 		catch (std::exception& e)
 		{
@@ -155,14 +163,33 @@ namespace SDL
 		}
 
 		FontExtend::FontExtend(const FontExtend & font)
-	:_ttfstruct(font._ttfstruct),_ref(font._ref+1)
+	:_ttfstruct(font._ttfstruct)
 		{
+			for(unsigned int i=0; i< references.size(); i++)
+			{
+				if ( references[i] == _ttfstruct)
+				{
+					refcount[i]++;
+					break;
+				}
+			}
 		}
 
 		FontExtend::~FontExtend()
 		{
-			if (--_ref == 0)
-				TTF_CloseFont(_ttfstruct), _ttfstruct=NULL;
+			for(unsigned int i=0; i< references.size(); i++)
+			{
+				if ( references[i] == _ttfstruct)
+				{
+					if (--refcount[i] == 0)
+					{
+						TTF_CloseFont(_ttfstruct), _ttfstruct=NULL;
+						references.erase(references.begin()+i,references.begin()+i+1);
+						refcount.erase(refcount.begin()+i,refcount.begin()+i+1);
+					}
+					break;
+				}
+			}
 		}
 
 		SDL_Surface * FontExtend::render(const std::string& text, Color c, Color bgc, Font::RenderMode mode) const
@@ -291,15 +318,13 @@ catch (std::exception& e)
 }
 
 Font::Font(std::string filename , int ptsize )
-try : _font( new FontImpl())
+try : _font()
 {
+	setTTF( filename, ptsize);
 	if(_font==NULL)
 	{
 		throw std::logic_error("Font Support not available");
 	}
-	setTTF( filename, ptsize);
-	references.push_back(_font);
-	refcount.push_back(1);
 }
 
 catch (std::exception& e)
@@ -357,7 +382,7 @@ RGBSurface * Font::render(std::string text, Color c, RenderMode mode, Color bgc)
 #ifdef HAVE_SDLTTF
 		try
 		{
-			for(int i=0; i< references.size(); i++)
+			for(unsigned int i=0; i< references.size(); i++)
 			{
 				if ( references[i] == _font)
 				{
@@ -371,6 +396,8 @@ RGBSurface * Font::render(std::string text, Color c, RenderMode mode, Color bgc)
 				}
 			}
 			_font = new FontExtend(filename,ptsize);
+			references.push_back(_font);
+			refcount.push_back(1);
 		}
 		catch (std::exception& e)
 		{

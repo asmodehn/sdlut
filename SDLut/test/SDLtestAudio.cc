@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 		//testlog << nl<<  "playing channel 2";
 		//SDL::App::getInstance().getMixer()->toggleChannel(wav_channel_2);
 
-		SDL::Delay(15000);
+		SDL::Delay(1000);
 		//SDL::App::getInstance().getMixer()->freeChannel(wav_channel_2);
 		SDL::App::getInstance().getMixer()->freeChannel(wav_channel_1);
 	}

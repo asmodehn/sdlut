@@ -19,6 +19,7 @@
 #include "SDLAudioInfo.hh"
 #include <string>
 #include <stdexcept>
+#include <map>
 
 namespace RAGE
 {
@@ -47,9 +48,12 @@ namespace RAGE
 	int resourceindex;*/
 
 	friend class Mixer;
+
+	static std::map<AudioInfo*,int> airef;
 	AudioInfo * _aInfo;
 
-		//Length and data of the Sound
+	bool frommem;
+	//Length and data of the Sound
 	unsigned long _length;
 	unsigned char *_buf;
 

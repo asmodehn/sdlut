@@ -290,7 +290,7 @@ if (ENABLE_MUSIC)
 } catch (std::exception e) {
     P0_Logger << nl << "Unhandled Exception occured in Main : " << e.what() << std::endl;
     P0_Logger << nl << "P0 stopped in emergency" << std::endl;
-    Delay(2000);
+    Delay(30000);
     return 1;
 }
 }

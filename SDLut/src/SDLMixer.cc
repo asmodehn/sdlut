@@ -147,6 +147,11 @@ namespace RAGE
 #ifdef DEBUG
 			Log << nl << "Mixer::~Mixer() called";
 #endif
+			//delete all remaining channels
+			for (unsigned int i= 0 ; i< _activechannels.size();i++)
+			{
+				freeChannel(i);
+			}
 			SDL_CloseAudio();
 			delete _hwspec, _hwspec = NULL;
 #ifdef DEBUG
