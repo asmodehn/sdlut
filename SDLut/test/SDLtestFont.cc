@@ -128,19 +128,25 @@ public:
 
 	Point consolePos;
 	Console * console;
-
+	RGBSurface *HelpMsg;
+		
 	MyEngine() : consolePos(0,0), console (NULL)
-	{}
+	{ HelpMsg = NULL; }
 
 	void setConsole( Console * cons ) { console = cons;}
 
-    virtual ~MyEngine(){}
+    virtual ~MyEngine()
+	{
+		if (HelpMsg != NULL)
+			delete HelpMsg, HelpMsg = NULL;
+	}
 
 	bool init(int width, int height)
 	{
 		DefaultEngine::init(width,height);
 		console->init(width,height - 2 * DefaultEngine::_logo.getHeight());
 		consolePos.sety(DefaultEngine::_logo.getHeight());
+		HelpMsg = console->_font.render("Plz Use Keyboard To Write Text Down", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 		return true;
 	}
 
@@ -160,6 +166,10 @@ public:
 	void render(VideoSurface & screen) const
     {
 		DefaultEngine::render(screen);
+
+		if (HelpMsg != NULL) 
+			screen.blit( *HelpMsg, Point::Point(5, 5) );
+
 		if (console !=NULL)
 			screen.blit(*(console->surf),consolePos);
     }
@@ -193,7 +203,7 @@ int main(int argc, char** argv)
     if (argc > 1)
     {
 	//specific font
-	font.setTTF(argv[1],16);
+	font.setTTF(argv[1],24);
     }
 
 	Console cons(font);
