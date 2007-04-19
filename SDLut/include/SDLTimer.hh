@@ -52,7 +52,7 @@ namespace RAGE
 			bool running;
 			unsigned int _interval;
 			
-			void* _args;
+			cbargs* _cbargs;
 
 
 			//static table lookup that stores pointer to callback
@@ -62,15 +62,8 @@ namespace RAGE
 
 		    	//static callback function who calls the right functor from the table
 				static unsigned int callback(unsigned int, void* args);
-			
-			
-			
-			
-			
-
+	
 			SDL_TimerID _timerid; //set after timer is started
-
-
 
 			Timer();
 			~Timer();
@@ -97,13 +90,24 @@ namespace RAGE
 		template<class TClass>
 				void Timer<TClass>::setCallback(TClass* instance,unsigned int (TClass::*func) (unsigned int, void*), void* args)
 		{
-			
+			if (_cbtable[_index] != NULL)
+				delete _cbtable[_index];
+			_cbtable.erase(_index);
+
 			_cbtable.insert(std::make_pair(_index,new Callback(instance,func)));
-			_args = args;
+			
+			//reinit _cbargs when needed
+			if (_cbargs != NULL)
+			{
+				delete _cbargs, _cbargs = NULL;
+			}
+			_cbargs = new cbargs();
+			_cbargs->lookupindex = _index;
+			_cbargs->args = args;
 		}
 
 		template<class TClass>
-		Timer<TClass>::Timer() : running(false), _interval(0), _args(NULL), _timerid()
+		Timer<TClass>::Timer() : running(false), _interval(0), _cbargs(NULL), _timerid()
 		{
 			
 			//setting the index for the current instance
@@ -121,15 +125,17 @@ namespace RAGE
 		{
 			if (running)
 				RemoveGlobalTimer(_timerid);
+			if (_cbargs != NULL)
+				delete _cbargs, _cbargs = NULL;
+			if (_cbtable[_index] != NULL)
+				delete _cbtable[_index];
+			_cbtable.erase(_index);
 		}
 
 		template<class TClass>
 		void Timer<TClass>::start()
 		{
 			running = true;
-			cbargs* _cbargs = new cbargs();
-			_cbargs->lookupindex = _index;
-			_cbargs->args = _args;
 			_timerid = AddGlobalTimer(_interval,callback,_cbargs);
 		}
 
