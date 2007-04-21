@@ -108,8 +108,16 @@ namespace RAGE
 	if (res !=-1)
 	{
 		_length = _convertTable->len_cvt;
-		if (_buf!=NULL) delete[] _buf, _buf=NULL;
+		if ( frommem )
+		{
+			delete[] _buf;
+		}
+		else
+		{
+			SDL_FreeWAV(_buf);
+		}
 		_buf = _convertTable->buf;
+		frommem = true;
 	}
 	else
 	{
