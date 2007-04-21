@@ -36,3 +36,23 @@ try {
     return false; //error occured
 }
 }
+
+bool Clean_Sounds_Channels()
+{
+try {
+	App::getInstance().getMixer()->freeChannel(NullSound_Chan);
+
+	App::getInstance().getMixer()->freeChannel(EscMenuButtonFx_Chan);
+	App::getInstance().getMixer()->freeChannel(MissFx_Chan);
+	App::getInstance().getMixer()->freeChannel(HitFx_Chan);
+	App::getInstance().getMixer()->freeChannel(BowFx_Chan);
+	App::getInstance().getMixer()->freeChannel(SwordFx_Chan);
+
+	App::getInstance().getMixer()->freeChannel(GlobalMusic_Chan);
+
+return true; //no error
+
+} catch (...) {
+    return false; //error occured
+}
+}

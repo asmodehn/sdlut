@@ -71,6 +71,8 @@ void KeyboardInput::Player_Moves_Consequences()
 				P0_Logger << nl << "Failed to set the camera" << std::endl;    
 			}
 
+			//stop in case it is currently runing (usefull for now coz there is no animation and it *seems* to make timers crash when they're empty)
+			myPlayer_Move_Animation_Timer->stop();
 			//Intervals between animation's frames
 			myPlayer_Move_Animation_Timer->setInterval( PLAYER_MOVE_ANIMATION_INTERVAL  );
 			//Set the callback method which will define the character appearance on the screen and start animation

@@ -132,6 +132,11 @@ try {
 			Monster_Factory_Skeleton->Remove_Dead_Monsters();
 			Monster_Factory_Worm->Remove_Dead_Monsters();
 		}
+		else 
+		{
+			//play miss Fx	
+			App::getInstance().getMixer()->playChannel(MissFx_Chan);
+		} 
 			//Set the good msg
 		myPlayer->Set_Attack_Msg();
 			//reset attack

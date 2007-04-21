@@ -21,6 +21,7 @@ extern int GlobalMusic_Chan;
 
 //Methods
 bool Set_Sounds_Channels();
+bool Clean_Sounds_Channels();
 
 
 #endif
