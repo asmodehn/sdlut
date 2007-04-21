@@ -206,12 +206,19 @@ namespace RAGE
 
 int Mixer::freeChannel(int index)
 {
-	delete _channels.at(index);
-	_channels.erase(_channels.begin()+index, _channels.begin()+index+1);
+	if ( _channels.at(index) != NULL)
+		delete _channels.at(index), _channels.at(index) = NULL;
+
+	//dont erase channel from vector, else the vector size will disminuish from 1
+	//and so all channels numbers currently in use will be false !!
+
+	/*_channels.erase(_channels.begin()+index, _channels.begin()+index+1);
 	_activechannels.erase(_activechannels.begin()+index, _activechannels.begin()+index+1);
 	_channelscursor.erase(_channelscursor.begin()+index, _channelscursor.begin()+index+1);
-	_loopchannels.erase(_loopchannels.begin()+index, _loopchannels.begin()+index+1);
-	return 0;
+	_loopchannels.erase(_loopchannels.begin()+index, _loopchannels.begin()+index+1);*/
+	
+	//to know which channel was deleted
+	return index;
 }
 
 	std::string Mixer::getDriverName()

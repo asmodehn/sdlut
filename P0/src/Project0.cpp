@@ -284,11 +284,6 @@ if (ENABLE_MUSIC)
 	delete myRender_Engine, myRender_Engine = NULL;
 	delete myDaemons, myDaemons = NULL;
 	
-	if (!Clean_Sounds_Channels())
-	{
-		P0_Logger << nl << "Mixing Sound Error : " << GetError() << std::endl;
-        return false;
-    }
 #endif
 
     return 0; //no error occured
