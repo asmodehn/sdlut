@@ -18,10 +18,12 @@
 
 void dbgmem_log(const char * str, const char * file,int line,...)
 {
-	va_list argptr;             
-	va_start( argptr, str );          
-
 	char logstr[DBGMEM_LOGMESSAGE_MAXLENGTH];
+
+	va_list argptr;             
+	va_start( argptr, line );          
+
+	
 	sprintf(logstr, "%s:%d: ",file,line);
 	strncat(logstr,str,strlen(str));
 	vprintf(logstr,argptr);
@@ -70,7 +72,7 @@ typedef struct dbgmem_block_s{
 /* Managing a memory pool */
 static dbgmem_list_entry_t dbgmem_blocklist;
 
-void dbgmem_debug_heap_init()
+void dbgmem_debug_heap_init(void)
 {
 	dbgmem_list_init(&dbgmem_blocklist);
 }
@@ -89,7 +91,7 @@ static void dbgmem_dump_blocks()
     }
 }
 
-void dbgmem_debug_heap_fini()
+void dbgmem_debug_heap_fini(void)
 {
 	dbgmem_dump_blocks();
 }
@@ -122,9 +124,11 @@ void * dbgmem_store( size_t size, const char* filename, int line )
 
 void dbgmem_remove( void* ptr, const char* filename, int line  )
 {
+	dbgmem_block_t * block;
+
 	if (ptr == NULL) { return; }
 	
-	dbgmem_block_t * block = (dbgmem_block_t *) ptr - 1 ;
+	block = (dbgmem_block_t *) ptr - 1 ;
 	
 	if (block -> checker != DBGMEM_CHECKER)
 	{
@@ -147,10 +151,12 @@ void dbgmem_remove( void* ptr, const char* filename, int line  )
 /* To overload C standard memory functions */
 void * dbgmem_calloc( size_t num, size_t size , const char* filename, int line)
 {
+	void* ptr;
+	int tsize;
+
     if ( no_dbgmem ) { return calloc( num, size ); }
-    void* ptr;    
     
-    int tsize = size * num;
+    tsize = num * size;
 
     ptr = dbgmem_store( size, filename, line);
 
@@ -169,8 +175,8 @@ void * dbgmem_calloc( size_t num, size_t size , const char* filename, int line)
 
 void * dbgmem_malloc( size_t size, const char* filename, int line)
 {
+	void* ptr;
     if ( no_dbgmem ) { return malloc( size ); }
-    void* ptr;
     
     ptr = dbgmem_store( size, filename, line);
     
@@ -186,6 +192,8 @@ void * dbgmem_malloc( size_t size, const char* filename, int line)
 
 void * dbgmem_realloc( void *ptr, size_t size, const char* filename, int line)
 {
+	void* newptr;
+
     if ( no_dbgmem ) { return realloc( ptr, size ); }
     
     if ( ptr == NULL ) {
@@ -198,7 +206,7 @@ void * dbgmem_realloc( void *ptr, size_t size, const char* filename, int line)
         return NULL;
     }
 
-    void* newptr = dbgmem_store(size, filename, line);
+    newptr = dbgmem_store(size, filename, line);
     memcpy(newptr,ptr,size); /* copy memory content */
     dbgmem_remove(ptr, filename, line);
     

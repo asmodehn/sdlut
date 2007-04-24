@@ -26,7 +26,7 @@ void * dbgmem_malloc( size_t size, const char* filename, int line);
 void * dbgmem_realloc( void *ptr, size_t size, const char* filename, int line);
 void   dbgmem_free( void *ptr, const char* filename, int line);
 
-void dbgmem_debug_heap_init();
-void dbgmem_debug_heap_fini();
+void dbgmem_debug_heap_init(void);
+void dbgmem_debug_heap_fini(void);
 
-#endif // DBGMEM_H
+#endif /* DBGMEM_H*/
