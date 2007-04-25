@@ -110,7 +110,7 @@ void list_test()
 		if ( iters % 100 == 0 )
 			fputc((iters % 1000 == 0) ? '*' : '.', stdout);
 		for ( i = 0; i < NUMELEMS(str); i ++ ) {
-			struct Node* node = mknode(str[i]);
+			struct Node* node = mknode( (char*)str[i]);
 			if ( list == NULL ) {
 				/* list empty */
 				list = node;
@@ -149,7 +149,7 @@ void list_test()
 	}
 
 	end = clock();
-	printf("\nElapsed: %dsecs.\n", (end-start)/CLOCKS_PER_SEC);
+	printf("\nElapsed: %lusecs.\n", (end-start)/CLOCKS_PER_SEC);
 
 	/* dump the list */
 	/*
@@ -168,7 +168,7 @@ void list_test()
 		tmp = next;
 	}
 	end = clock();
-	printf("\nElapsed: %d secs.\n", (end-start)/CLOCKS_PER_SEC);
+	printf("\nElapsed: %lu secs.\n", (end-start)/CLOCKS_PER_SEC);
 	assert( dbgmem_dump_blocks() );
 }
 
@@ -177,7 +177,7 @@ int main()
 	dbgmem_debug_heap_init();
 	atexit ( dbgmem_debug_heap_fini );
 
-	//str2 = strdup(str);	// DOES NOT CATCH THE LEAK!
+	/*str2 = strdup(str);	*/ /* DOES NOT CATCH THE LEAK! */
 
 	string_test();
 	list_test();

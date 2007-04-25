@@ -5,6 +5,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#define min(a,b) (a < b) ? a : b
+
 #ifdef DEBUG_MEMORY /* so se dont infinitely loop on dbg_* calls */
 #	undef calloc
 #	undef malloc
