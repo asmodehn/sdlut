@@ -28,5 +28,6 @@ void   dbgmem_free( void *ptr, const char* filename, int line);
 
 void dbgmem_debug_heap_init(void);
 void dbgmem_debug_heap_fini(void);
+int dbgmem_dump_blocks();
 
 #endif /* DBGMEM_H*/
