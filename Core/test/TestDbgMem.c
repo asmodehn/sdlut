@@ -45,7 +45,8 @@ void string_test()
 	printf("End string test 1\n");
 	
 	big_string = curptr = NULL;
-#define NUM_ITERATIONS 10		/* fails on 17 on my machine!  Try a higher number if it doesn't on yours! */
+#define NUM_ITERATIONS 100		/* fails on 17 on my machine!  Try a higher number if it doesn't on yours! */
+					/* 100 on mine and still doesnt fail... - AV */
 	for ( j = 0; j < NUM_ITERATIONS; j ++ ) {
 		for ( i = 0; i < NUMELEMS(str); i ++ ) {
 			if ( big_string == NULL ) {
@@ -174,10 +175,13 @@ void list_test()
 
 int main()
 {
+
+	char * str2;
+	
 	dbgmem_debug_heap_init();
 	atexit ( dbgmem_debug_heap_fini );
 
-	/*str2 = strdup(str);	*/ /* DOES NOT CATCH THE LEAK! */
+	str2 = strdup(str[2]);	/* DOES NOT CATCH THE LEAK! -> try again - AV */
 
 	string_test();
 	list_test();

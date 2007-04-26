@@ -5,13 +5,19 @@
 #include <string.h>
 #include <ctype.h>
 
-#define min(a,b) (a < b) ? a : b
+#ifndef min
+#	define min(a,b) (a < b) ? a : b
+#endif
 
-#ifdef DEBUG_MEMORY /* so se dont infinitely loop on dbg_* calls */
+#ifdef DEBUG_MEMORY /* so se dont infinitely loop on dbgmem_* calls */
 #	undef calloc
 #	undef malloc
 #	undef realloc
 #	undef free
+#ifdef strdup
+#	undef strdup
+#endif
+
 #endif
 
 /* re-ordered parameters!  for varargs, format string always come before varargs, so to avoid confusion, 
@@ -148,6 +154,55 @@ void * dbgmem_store( size_t size, const char* filename, int line )
 	return block + 1;
 }
 
+void * dbgmem_mvstore( void* ptr, size_t size, const char* filename, int line )
+{
+	dbgmem_block_t * block;
+	
+	if ( ptr == NULL ) return NULL;
+	
+	block = (dbgmem_block_t *) ptr - 1 ;
+	if ( block -> checker != DBGMEM_CHECKER )
+	{
+		dbgmem_log(filename, line, "Error: Corrupted Memory.");
+		assert(0);
+	}
+	
+	/* Compare the checker at the end of the memory block */
+	if ( 0 != memcmp( (char*)ptr + block->size, &DBGMEM_CHECKER, sizeof( DBGMEM_CHECKER ) ) )
+	{
+		dbgmem_log(filename, line, "Error: Checker corrupted.");
+		assert(0);
+	}
+	
+	block = (dbgmem_block_t*) realloc(block, sizeof(dbgmem_block_t) + size + DBGMEM_CHECKER_SIZE);
+	
+	if ( block -> checker != DBGMEM_CHECKER )
+	{
+		dbgmem_log(filename, line, "Error: Corrupted Memory after realloc.");
+		assert(0);
+	}
+	
+	if (block == NULL)
+	{
+		dbgmem_log(filename, line, "Error: realloc returned NULL");
+		return NULL; 
+	}
+	
+
+	block -> size = size;
+	strncpy( block -> filename, filename, DBGMEM_FILENAME_MAXLENGTH );
+	block->filename[DBGMEM_FILENAME_MAXLENGTH] = '\0';	/* Read strncpy doc, does not null terminate if exceeds length */
+	block -> line = line;
+	
+	/* Copy the checker at the end of the memory block */
+	memcpy( (char*)block + sizeof(*block) + size, &DBGMEM_CHECKER, sizeof( DBGMEM_CHECKER ) );
+	
+	/* position in list remains the same */
+		
+	return block + 1;
+}
+
+
 void dbgmem_remove( void* ptr, const char* filename, int line  )
 {
 	dbgmem_block_t * block;
@@ -190,7 +245,7 @@ void * dbgmem_calloc( size_t num, size_t size , const char* filename, int line)
         return NULL;
     }
 
-    memset( ptr, 0, size );
+    memset( ptr, 0, size ); /* calloc specificity : all bits 0 */
     dbgmem_log(filename, line, "calloc of %d bytes [0x%08x] OK.\n", tsize, ptr);
     return ptr;
 }
@@ -223,13 +278,32 @@ void * dbgmem_realloc( void *ptr, size_t size, const char* filename, int line)
         return NULL;
     }
 
-	/* TODO: Should resize!! The way to do this, is to allocate in bigger blocks, e.g. in 1024 blocks, just readjust size.
-	   Other scheme can be implemented, but this is the easiest */
-    newptr = dbgmem_store(size, filename, line);
-    memcpy(newptr,ptr,size); /* copy memory content */
-    dbgmem_remove(ptr, filename, line);
+    newptr = dbgmem_mvstore(ptr, size, filename, line);
+
     /*dbgmem_log( filename, line, "realloc of %d bytes [0x%08x] OK.\n", size, ptr);*/
     return newptr;
+}
+
+char* dbgmem_strdup( const char* str, const char* filename, int line )
+{
+    int size;
+    char* ptr;
+    assert( str );
+
+    if ( no_dbgmem ) return strdup( str );
+
+    size = strlen( str ) + 1;
+    ptr = (char*)dbgmem_store(size, filename, line);
+    if ( ptr == NULL ) {
+	/*dbgmem_log(filename, line, "strdup of %d bytes for %s [0x%08x] FAILED !\n", size, str, ptr);*/
+        return NULL;
+    }
+
+    /*dbgmem_log( filename, line, "strdup of %d bytes for %s [0x%08x] OK.\n", size, str, ptr);*/
+
+    strcpy( ptr, str );
+
+    return ptr;
 }
 
 void dbgmem_free(void *ptr, const char* filename, int line)
