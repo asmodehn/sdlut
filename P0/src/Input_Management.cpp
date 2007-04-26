@@ -225,8 +225,11 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 			//Menu call
 			if ((s.getKey() == MENU_CALL_1) || (s.getKey() == MENU_CALL_2))
 			{
-
-				GLOBAL_GAME_STATE = 4;//Escape Menu called
+				//Stop moving
+				myPlayer->Set_xVel(0);
+				myPlayer->Set_yVel(0);
+				//Escape Menu called
+				GLOBAL_GAME_STATE = 4;
 			}
 		}
 		else // Key released

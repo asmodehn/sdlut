@@ -70,53 +70,37 @@ bool InitEverything()
     return true;    
 }
 
-//Main
-int main( int argc, char* args[] )
+//Implementation
+bool ImplementEverything()
 {
-try { //global error management
-	
-	//Init the rand method using the current time in order to generate more random numbers
-	srand( (unsigned)time( NULL ) );
-
-
-/********INIT********/
-	//Create the windows and init everything (SDL, SDL_TTF, ...)
-	if( InitEverything() == false )
-	{ 
-		P0_Logger << nl << "Init Everything failed... " << std::endl;
-		Delay(2000);
-		//SDL_Delay(2000);
-		return 1;
-	}
-	P0_Logger << nl << "-> Windows, SDL, SDL_TTF And VideoSurface Where Initialized Successfully <-" << std::endl;
-	
-/****Battlefield****/
+try {
+	/****Battlefield****/
 	//Initialize the BackGround
-	BackGround* myBackGround = new BackGround();
+	myBackGround = new BackGround();
 	P0_Logger << nl << "BackGround Init: OK " << std::endl;
 	
 	//Fill the BackGround vector with all BackGround sprite corresponding to the map file
-	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector = myBackGround->BackGround_Vector(); //Vector which will contains all BackGround type and clip
+	BackGround_Sprite_Vector = myBackGround->BackGround_Vector(); //Vector which will contains all BackGround type and clip
 	P0_Logger << nl << "BackGround_Sprite Vector Fill: OK " << std::endl;
 	
 	//Initialize the Environment
-	Environment* myEnvironment = new Environment();
+	myEnvironment = new Environment();
 	P0_Logger << nl << "Environment Init: OK " << std::endl;
 
 	//Fill the Environment vector with all Environment sprite corresponding to the map file
-	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector = myEnvironment->Environment_Vector(); //Vector which will contains all Environment items type and clip
+	Environment_Sprite_Vector = myEnvironment->Environment_Vector(); //Vector which will contains all Environment items type and clip
 	P0_Logger << nl << "Environment_Sprite Vector Fill: OK " << std::endl;
 	
 /****PlayerS****/
 	//Vector containing pointers to vector of pointers to monsters
-	std::vector< std::vector<Character_Base*> *>* Global_Player_Vector = new std::vector< std::vector<Character_Base*> *>;
+	Global_Player_Vector = new std::vector< std::vector<Character_Base*> *>;
 
 			/****NPCs****/
 	//Vector of npcs
-	std::vector<Character_Base*>* NPCs_Vector = new std::vector<Character_Base*>;
+	NPCs_Vector = new std::vector<Character_Base*>;
 
 	//Create npc & initialized it
-	NPCs* myNPC = new NPCs();
+	myNPC = new NPCs();
 	if( myNPC->Set_Attack_Style() == false ) //intialize Character's graphic aspect
 	{ 
         P0_Logger << nl << "Failed to set NPC Graphic " << std::endl;
@@ -131,10 +115,10 @@ try { //global error management
 
 			/****Player****/
 	//Vector of players
-	std::vector<Character_Base*>* Players_Vector = new std::vector<Character_Base*>;
+	Players_Vector = new std::vector<Character_Base*>;
 
 	//Create player & initialized it
-	Player* myPlayer = new Player();
+	myPlayer = new Player();
 	if( myPlayer->Following_Camera() == false ) //center camera
 	{ 
         P0_Logger << nl << "Failed to center camera over Player" << std::endl;
@@ -157,10 +141,10 @@ try { //global error management
 
 /****Monsters****/
 	//Vector containing pointers to vector of pointers to monsters
-	std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;
+	Global_Monster_Vector = new std::vector< std::vector<Character_Base*> *>;
 	
 	//Initialize the skeleton factory
-	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS, Global_Monster_Vector);  //A factory of Monster Skeletons
+	Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>(INITIAL_MONSTERS, Global_Monster_Vector);  //A factory of Monster Skeletons
 	P0_Logger << nl << "Skeleton Factory Init: OK " << std::endl;
 
 	//Create all the monsters skeletons
@@ -169,7 +153,7 @@ try { //global error management
 	P0_Logger << nl << "Skeleton Vector Fill: OK " << std::endl;
 	
 	//Initialize the worm factory
-	Monster_Factory<Monster_Worm>* Monster_Factory_Worm = new Monster_Factory<Monster_Worm>(INITIAL_MONSTERS, Global_Monster_Vector);  //A factory of Monster Worms
+	Monster_Factory_Worm = new Monster_Factory<Monster_Worm>(INITIAL_MONSTERS, Global_Monster_Vector);  //A factory of Monster Worms
 	P0_Logger << nl << "Worm Factory Init: OK " << std::endl;
 
 	//Create all the monsters worms
@@ -177,49 +161,49 @@ try { //global error management
 	Monster_Factory_Worm->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector); //Vector which will contains all skeletons
 	P0_Logger << nl << "Worm Vector Fill: OK " << std::endl;
 
-/*********ENGINE************/
+/*********Interface's Menus************/
 
 	//Create the ingame escape menu
-	Escape_Menu* myEsc_Menu = new Escape_Menu();
+	myEsc_Menu = new Escape_Menu();
 
 	//Create the victory screen
-	Victory_Screen* myVictory_Screen = new Victory_Screen();
+	myVictory_Screen = new Victory_Screen();
 
 /********DEAMONS CREATION********/
 	//Instanciate the daemon class
-	Daemons* myDaemons = new Daemons(myPlayer, myNPC, BackGround_Sprite_Vector, Environment_Sprite_Vector, Monster_Factory_Skeleton,
+	myDaemons = new Daemons(myPlayer, myNPC, BackGround_Sprite_Vector, Environment_Sprite_Vector, Monster_Factory_Skeleton,
 									Monster_Factory_Worm, Global_Player_Vector, Global_Monster_Vector );
 
 	//Create monster's movement daemons
-	Timer<Daemons>* myMonster_Factory_Monsters_Moves_Timer = new Timer<Daemons>(); //set definition
+	myMonster_Factory_Monsters_Moves_Timer = new Timer<Daemons>(); //set definition
 	myMonster_Factory_Monsters_Moves_Timer->setInterval( MONSTERS_MOVEMENT_INTERVAL ); //set interval
 	myMonster_Factory_Monsters_Moves_Timer->setCallback(myDaemons,&Daemons::Move_Monsters, (void*)NULL); //set callback
 
 	//Create monster's generation daemons
-	Timer<Daemons>* myMonster_Factory_Monsters_Generation_Timer = new Timer<Daemons>; //set definition
+	myMonster_Factory_Monsters_Generation_Timer = new Timer<Daemons>; //set definition
 	myMonster_Factory_Monsters_Generation_Timer->setInterval( MONSTERS_GENERATION_INTERVAL ); //set interval
 	myMonster_Factory_Monsters_Generation_Timer->setCallback(myDaemons,&Daemons::Generate_Monsters, (void*)NULL); //set callback
 
 	//Create npcs's movement daemons
-	Timer<Daemons>* myNPCs_Moves_Timer = new Timer<Daemons>(); //set definition
+	myNPCs_Moves_Timer = new Timer<Daemons>(); //set definition
 	myNPCs_Moves_Timer->setInterval( NPCS_MOVEMENT_INTERVAL ); //set interval
 	myNPCs_Moves_Timer->setCallback(myDaemons,&Daemons::Move_NPCs, (void*)NULL); //set callback
 
 	//Manage score
-	Timer<Daemons>* myScore = new Timer<Daemons>; //set definition
+	myScore = new Timer<Daemons>; //set definition
 	myScore->setInterval( 1000 / FRAMES_PER_SECOND ); //set interval
 	myScore->setCallback(myDaemons,&Daemons::Score, (void*)NULL); //set callback
 
 
 /********ENGINE********/
 	//Create the keyboard instance that will managed input
-	KeyboardInput* myKeyboardInput = new KeyboardInput(myPlayer, myNPC, BackGround_Sprite_Vector, Environment_Sprite_Vector, Monster_Factory_Skeleton,
+	myKeyboardInput = new KeyboardInput(myPlayer, myNPC, BackGround_Sprite_Vector, Environment_Sprite_Vector, Monster_Factory_Skeleton,
 													Monster_Factory_Worm, Global_Player_Vector, Global_Monster_Vector, myEsc_Menu,
 													myVictory_Screen, myDaemons );
 	//myKeyboardInput->enableKeyRepeat();  //enable key repeat
 
 	//Engine instanciation
-	Render_Engine* myRender_Engine = new Render_Engine(myPlayer, myNPC, myBackGround, myEnvironment, Monster_Factory_Skeleton,
+	myRender_Engine = new Render_Engine(myPlayer, myNPC, myBackGround, myEnvironment, Monster_Factory_Skeleton,
 														Monster_Factory_Worm, myEsc_Menu, myVictory_Screen, myKeyboardInput );
 
 
@@ -229,26 +213,46 @@ try { //global error management
 	//Affect the game render engine to the windows
 	App::getInstance().getWindow()->setEngine(myRender_Engine);
 
+	return true; //no error
 
-/********Start music********/
-if (ENABLE_MUSIC)
-	App::getInstance().getMixer()->playChannel(GlobalMusic_Chan);
+} catch (...) {
+	return false; //error occured
+}
+}
 
-/*******Score Management********/
+//Run
+bool RunGame()
+{
+try {
+
+	/********Start music********/
+	if (ENABLE_MUSIC)
+		App::getInstance().getMixer()->playChannel(GlobalMusic_Chan);
+
+	/*******Score Management********/
 	FiNiSH_TiME = (unsigned)time( NULL );
 
-/********Start Daemons Process********/
+	/********Start Daemons Process********/
 	myMonster_Factory_Monsters_Moves_Timer->start(); //monsters movements
 	myMonster_Factory_Monsters_Generation_Timer->start(); //monsters generation
 	myNPCs_Moves_Timer->start(); //npcs movements
 	myScore->start(); //Score
 
 
-
-/********Launch the mainloop that will use the render method of the Engine and so will render the screen and will manage all events********/
+	/********Launch the mainloop that will use the render method of the Engine and so will render the screen and will manage all events********/
 	App::getInstance().getWindow()->mainLoop(FRAMES_PER_SECOND);
 
+	return true; //no error
 
+} catch (...) {
+	return false; //error occured
+}
+}
+
+//Clean Up
+bool CleanEverything()
+{
+try {
 
 /********Stop Daemons Process********/
 	myMonster_Factory_Monsters_Moves_Timer->stop(); //monsters movements
@@ -257,34 +261,93 @@ if (ENABLE_MUSIC)
 	myScore->stop(); //Score
 
 /********Clean UP********/
-#ifdef _DEBUG //debug mode
 	delete myMonster_Factory_Monsters_Moves_Timer, myMonster_Factory_Monsters_Moves_Timer = NULL;
 	delete myMonster_Factory_Monsters_Generation_Timer, myMonster_Factory_Monsters_Generation_Timer = NULL;
 	delete myNPCs_Moves_Timer, myNPCs_Moves_Timer = NULL;
 	delete myScore, myScore = NULL;
 
-	delete myScore, myScore = NULL;
-	delete myMonster_Factory_Monsters_Generation_Timer, myMonster_Factory_Monsters_Generation_Timer = NULL;
-	delete myMonster_Factory_Monsters_Moves_Timer, myMonster_Factory_Monsters_Moves_Timer = NULL;
 	delete myVictory_Screen, myVictory_Screen = NULL;
+
 	delete myEsc_Menu, myEsc_Menu = NULL;
+
 	delete Monster_Factory_Worm, Monster_Factory_Worm = NULL;
 	delete Monster_Factory_Skeleton, Monster_Factory_Skeleton = NULL;
 	delete Global_Monster_Vector, Global_Monster_Vector = NULL;
+
 	delete myPlayer, myPlayer = NULL;
 	delete myNPC, myNPC = NULL;
 	delete NPCs_Vector, NPCs_Vector = NULL;
 	delete Players_Vector, Players_Vector = NULL;
 	delete Global_Player_Vector, Global_Player_Vector = NULL;
+
 	delete myEnvironment, myEnvironment = NULL;
 	delete myBackGround, myBackGround = NULL;
 	
 	delete myKeyboardInput, myKeyboardInput = NULL;
 	
 	delete myRender_Engine, myRender_Engine = NULL;
+
 	delete myDaemons, myDaemons = NULL;
+
+	return true; //no error
+
+} catch (...) {
+	return false; //error occured
+}
+}
+
+//Main
+int main( int argc, char* args[] )
+{
+try { //global error management
 	
-#endif
+	//Init the rand method using the current time in order to generate more random numbers
+	srand( (unsigned)time( NULL ) );
+
+
+/********INIT********/
+	//Create the windows and init everything (SDL, SDL_TTF, ...)
+	if( InitEverything() == false )
+	{ 
+		P0_Logger << nl << "Init Everything failed... " << std::endl;
+		Delay(2000);
+		//SDL_Delay(2000);
+		return 1;
+	}
+	P0_Logger << nl << "-> Windows, SDL, SDL_TTF And VideoSurface Where Initialized Successfully <-" << std::endl;
+	
+	//implement everything needed by the game
+	if( ImplementEverything() == false )
+	{ 
+		P0_Logger << nl << "Implementation failed... " << std::endl;
+		Delay(2000);
+		//SDL_Delay(2000);
+		return 1;
+	}
+	P0_Logger << nl << "-> Everything Was Implemented Successfully <-" << std::endl;
+
+	//Start everything needed during play time
+	if( RunGame() == false )
+	{ 
+		P0_Logger << nl << "Run Game failed... " << std::endl;
+		Delay(2000);
+		//SDL_Delay(2000);
+		return 1;
+	}
+
+
+	P0_Logger << nl << "-> Game Stopped Running Succesffully <-" << std::endl;
+
+	//Game stopeed, clean b4 exit
+	if( CleanEverything() == false )
+	{ 
+		P0_Logger << nl << "Clean Up failed... " << std::endl;
+		Delay(2000);
+		//SDL_Delay(2000);
+		return 1;
+	}
+
+	P0_Logger << nl << "-> Everything Was Clean Up Succesffully <-" << std::endl;
 
     return 0; //no error occured
 	
