@@ -163,6 +163,7 @@ ADD_EXECUTABLE(
 		${Project_0_SOURCE_DIR}/src/Ini_Manager.cpp ${Project_0_SOURCE_DIR}/include/Ini_Manager.hh
 		${Project_0_SOURCE_DIR}/src/Player.cpp ${Project_0_SOURCE_DIR}/include/Player.hh
 		${Project_0_SOURCE_DIR}/src/NPCs.cpp ${Project_0_SOURCE_DIR}/include/NPCs.hh
+		${Project_0_SOURCE_DIR}/src/Messages.cpp ${Project_0_SOURCE_DIR}/include/Messages.hh
 
 #adding spec to have it in generated projects
 		"${Project_0_SOURCE_DIR}/Specifs/2D/2D Design v0.03.odt"

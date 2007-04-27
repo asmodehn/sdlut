@@ -138,7 +138,10 @@ try {
 			App::getInstance().getMixer()->playChannel(MissFx_Chan);
 		} 
 			//Set the good msg
-		myPlayer->Set_Attack_Msg();
+		if (! myPlayer->Set_Attack_Msg() )
+		{
+			P0_Logger << nl << "Player Set Attack Message Failed " << std::endl;
+		}
 			//reset attack
 		myPlayer->Set_Attack_Initial_X(-1);
 		myPlayer->Set_Attack_Initial_Y(-1);

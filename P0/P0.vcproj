@@ -226,6 +226,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Messages.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Monster_Base.cpp"
 				>
 			</File>
@@ -293,6 +297,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Menus.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Messages.hh"
 				>
 			</File>
 			<File
@@ -486,7 +494,7 @@
 			Name="Specifs"
 			>
 			<File
-				RelativePath=".\Specifs\2D\2D Design v0.03.odt"
+				RelativePath=".\Specifs\2D\2D Design v0.04.odt"
 				>
 			</File>
 		</Filter>

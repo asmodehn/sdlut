@@ -145,6 +145,7 @@ extern int PLAYER_ARROW_ATTACK_ANIMATION_FRAME;
 extern long MONSTERS_MOVEMENT_INTERVAL;
 extern long MONSTERS_GENERATION_INTERVAL;
 extern long NPCS_MOVEMENT_INTERVAL;
+extern long RESET_STATUS_MSG_INTERVAL;
 
 ///*******Base variable & methods*******///
 extern int ALiVE_MONSTERS;

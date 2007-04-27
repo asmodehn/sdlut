@@ -2,17 +2,20 @@
 #define Player_HH
 
 #include "Player_Base.hh"
+#include "Messages.hh"
 
 //Player Base Class
 class Player : public Player_Base
 {
     private:
-		//Attack msg, font & color
-		RGBSurface *attack_msg; //Will contains the final attack display msg after all other check (style, status, attack successfull, ...)
+		Messages *myMessages;
+		//Attack msgs
 		RGBSurface *attack_melee_msg_hit;
 		RGBSurface *attack_melee_msg_miss;
 		RGBSurface *attack_distant_msg_hit;
 		RGBSurface *attack_distant_msg_miss;
+
+		Timer<Messages>* Reset_Status_Msg_Timer;
 
 		//The Camera that follow the character
 		Rect Camera;
@@ -32,8 +35,8 @@ class Player : public Player_Base
 		Player();
 		~Player();
 
-		//Display attack msg on the status bar (hit or miss)
-		bool Show_Attack_Msg(VideoSurface& Screen);
+		//Display the status msg on the status bar
+		bool Show_Status_Msg(VideoSurface& Screen);
 		
 		//Camera which follow the Character
 		bool Following_Camera();

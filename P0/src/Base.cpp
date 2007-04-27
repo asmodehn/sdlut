@@ -38,7 +38,7 @@ long PLAYER_MOVE_ANIMATION_INTERVAL = 0, PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL 
 int PLAYER_SWORD_ATTACK_ANIMATION_FRAME = 0, PLAYER_BOW_ATTACK_ANIMATION_FRAME = 0, PLAYER_ARROW_ATTACK_ANIMATION_FRAME = 0;
 
 	//Daemons Dev Config
-long MONSTERS_MOVEMENT_INTERVAL = 0, MONSTERS_GENERATION_INTERVAL = 0, NPCS_MOVEMENT_INTERVAL = 0;
+long MONSTERS_MOVEMENT_INTERVAL = 0, MONSTERS_GENERATION_INTERVAL = 0, NPCS_MOVEMENT_INTERVAL = 0, RESET_STATUS_MSG_INTERVAL = 0;
 
 bool Set_Config()
 {
@@ -203,6 +203,7 @@ try { //error management
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "MONSTERS_MOVEMENT_INTERVAL") ) >> MONSTERS_MOVEMENT_INTERVAL;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "MONSTERS_GENERATION_INTERVAL") ) >> MONSTERS_GENERATION_INTERVAL;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "NPCS_MOVEMENT_INTERVAL") ) >> NPCS_MOVEMENT_INTERVAL;
+		std::stringstream( Ini_Manager::Get_Option_String("Config/Daemons_Config.ini", "RESET_STATUS_MSG_INTERVAL") ) >> RESET_STATUS_MSG_INTERVAL;
 
 		fi_daemons.close();
 	} else {

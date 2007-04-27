@@ -112,8 +112,8 @@ void Render_Engine::render(VideoSurface & screen) const
 		P0_Logger << nl << "Monster Render Failed " << std::endl;    
     }																 
 
-	//Display attack msg
-	if( myPlayer->Show_Attack_Msg(screen) == false )
+	//Display status msg
+	if( myPlayer->Show_Status_Msg(screen) == false )
 	{ 
       P0_Logger << nl << "Display Attack Msg Render Failed " << std::endl;    
     }

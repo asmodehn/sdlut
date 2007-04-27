@@ -603,7 +603,7 @@ int Player_Base::Attack_Check_Status(int attack_distance, int inflicted_damage, 
 //Set Character Sprite Which change when attack occured (callback)
 bool Player_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
-	//increase frame each time the timer is run (from 0 to 2)
+	//increase frame each time the timer is run (from 0 to the number of frame for the animation)
 	frame++;
 
 	//reset the frame status at end of animation depending of the attack style 
@@ -623,7 +623,7 @@ bool Player_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Character
 	}
 	else if ( Get_Attack_Style() == 2 ) // Distant Style
 	{
-		if (frame > (PLAYER_BOW_ATTACK_ANIMATION_FRAME-1) )
+		if (frame >= PLAYER_BOW_ATTACK_ANIMATION_FRAME )
 			frame = 0; //reset frame anim
 		
 		//
@@ -633,7 +633,7 @@ bool Player_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Character
 	}
 
 
-	P0_Logger << nl << "Set_Attack_Animation_Sprite called FRAME:" << frame << std::endl;
+	//P0_Logger << nl << "Set_Attack_Animation_Sprite called FRAME:" << frame << std::endl;
 
 	if ( frame == 0 )
 		return false; //end of anim
