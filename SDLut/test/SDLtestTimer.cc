@@ -8,28 +8,90 @@ using namespace RAGE;
 
 static long ticks;
 
-class ObjectWithCallback
+
+class ObjectWithCallback2
 {
-
-
 	public:
 		
-		unsigned int callback1(unsigned int interval, void* args)
+	unsigned int callback2_1(unsigned int interval, void* args)
 	{
-		std::cout << SDL::GetTicks() - ticks  << " ms : Instance Method 1 Called back ! " << std::endl;
+		std::cout << SDL::GetTicks() - ticks  << " ms : Instance 2 Method 1 Called back ! " << std::endl;
+		return 0; //stop timer
+	}
+		
+};
+
+class ObjectWithMethod
+{
+	public:
+	
+	SDL::Timer<ObjectWithCallback2>* timer2_1;
+	ObjectWithCallback2* myObjectWithCallback2;
+		
+	ObjectWithMethod()
+	{
+		myObjectWithCallback2 = new ObjectWithCallback2();
+
+		timer2_1 = new SDL::Timer<ObjectWithCallback2>;
+		timer2_1->setInterval(100);
+		timer2_1->setCallback(myObjectWithCallback2,&ObjectWithCallback2::callback2_1,(void*)NULL);
+	}
+
+	~ObjectWithMethod()
+	{
+		delete myObjectWithCallback2, myObjectWithCallback2 = NULL;
+		timer2_1->stop();
+		delete timer2_1, timer2_1 = NULL;
+	}
+
+	bool Method()
+	{
+		//start the timer from the other class
+		timer2_1->stop();
+		timer2_1->start();
+		return true;
+	}
+		
+};
+
+class ObjectWithCallback
+{
+	public:
+	
+	ObjectWithMethod* myObjectWithMethod;
+
+	ObjectWithCallback()
+	{
+		myObjectWithMethod = new ObjectWithMethod();
+	}
+	~ObjectWithCallback()
+	{
+		delete myObjectWithMethod, myObjectWithMethod = NULL;
+	}
+		
+	unsigned int callback1_1(unsigned int interval, void* args)
+	{
+		std::cout << SDL::GetTicks() - ticks  << " ms : Instance 1 Method 1 Called back ! " << std::endl;
 		return 0;
 	}
 	
-	unsigned int callback2(unsigned int interval, void* args)
+	unsigned int callback1_2(unsigned int interval, void* args)
 	{
 		//this should be only called 3 times
 		static int iter = 5;
-		std::cout << SDL::GetTicks() - ticks  << " ms : Instance Method 2 Called back ! Number: " << iter-- << std::endl;
+		std::cout << SDL::GetTicks() - ticks  << " ms : Instance 1 Method 2 Called back ! Number: " << iter-- << std::endl;
+
 		if ( iter != 0 )
 			return interval;
+
+		//call the mehod which willll start another timer
+		myObjectWithMethod->Method();
+
+		//stop the current timer /*BUG HERE WE'RE NOT STOPPING JUST COZ OF THE START LINE 51*/
 		return 0;
 	}
 };
+
 
 static unsigned int callback(unsigned int interval, void * args)
 {
@@ -53,9 +115,9 @@ int main(int argc, char *argv[])
 	SDL::Timer<ObjectWithCallback> timer2;
 
 	timer1.setInterval(2000);
-	timer1.setCallback(&obj,&ObjectWithCallback::callback1,(void*)NULL);
+	timer1.setCallback(&obj,&ObjectWithCallback::callback1_1,(void*)NULL);
 	timer2.setInterval(500);
-	timer2.setCallback(&obj,&ObjectWithCallback::callback2,(void*)NULL);
+	timer2.setCallback(&obj,&ObjectWithCallback::callback1_2,(void*)NULL);
 
 	ticks = SDL::GetTicks();
 	testlog << "Starting instance timer1 ( 2 sec )" << std::endl;
@@ -65,7 +127,7 @@ int main(int argc, char *argv[])
 	testlog << "Starting static SDL timer ( 4 sec )"<< std::endl;
 	SDL::AddGlobalTimer(4000,callback,NULL);
 
-	SDL::Delay(6000); //TODO Display time running
+	SDL::Delay(10000); //TODO Display time running
 
 	return 0;
 }
