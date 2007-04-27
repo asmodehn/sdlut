@@ -66,10 +66,16 @@ try {
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
 		Real_Armor = BASE_ARMOR;		
 	}
+	else { //in case of can't read file
+		Sprite_Width = 0, Sprite_Height = 0;
+		Characters_Tile = NULL;
+		Ch_Vel = 0;
+		BASE_LIFE = 0;
+		BASE_ARMOR = 0;
+		fi_monster.close();
+		throw std::logic_error("Can't Read File " + Monster_Ini);
+	}
 	fi_monster.close();
-
-	//Monster Tile Surface
-	//Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
 
 	//Life bar infos
 	Life_Bar_Tile = new RGBSurface("Data/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
@@ -191,10 +197,16 @@ try {
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
 		Real_Armor = BASE_ARMOR;
 	}
+	else { //in case of can't read file
+		Sprite_Width = 0, Sprite_Height = 0;
+		Characters_Tile = NULL;
+		Ch_Vel = 0;
+		BASE_LIFE = 0;
+		BASE_ARMOR = 0;
+		fi_monster.close();
+		throw std::logic_error("Can't Read File " + Monster_Ini);
+	}
 	fi_monster.close();
-
-	//Monster Tile Surface
-	//Characters_Tile = RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
 
 	//Life bar infos
 	Life_Bar_Tile = new RGBSurface("Data/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));

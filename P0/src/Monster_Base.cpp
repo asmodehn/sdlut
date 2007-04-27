@@ -200,7 +200,8 @@ bool Monster_Base::Show_Life_Bar(const Rect& Camera, VideoSurface& Screen)
 	if (_Real_Life < 0)
 		_Real_Life = 0;
 
-	real_life_bar_rect.setw( (LIFE_BAR_WIDTH * _Real_Life / BASE_LIFE) );
+	assert(BASE_LIFE>0 && "BASE_LIFE MUST BE SUPERIOR TO 0 TO DRAW The real_life_bar_rect !");
+	real_life_bar_rect.setw( LIFE_BAR_WIDTH * _Real_Life / BASE_LIFE );
 
 	//we blit the empty rect than the current life rect 8px on top of the monster
 	//positions are def by monster pos

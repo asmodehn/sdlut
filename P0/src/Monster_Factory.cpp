@@ -222,9 +222,9 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Mo
 {
 	unsigned int temp = 0;
 
-	//The more the monster on the battlefield, the less there a chance a new one is generated until we reached the MAX_MONSTERS_SIMULTANEOUSLY constant
-	temp = random(1, MAX_MONSTERS_SIMULTANEOUSLY);
-	if (temp > Monster_Vector->size())
+	// Rebirth probabilities: 1/3 probability at MAX_MONSTERS_SIMULTANEOUSLY & 2/3 at 0 monsters with the number of monsters <= MAX_MONSTERS_SIMULTANEOUSLY
+	temp = random(0, 100);
+	if ( ( temp > (unsigned int)( 100 * ( (Monster_Vector->size() + (float)MAX_MONSTERS_SIMULTANEOUSLY) / (3*(float)MAX_MONSTERS_SIMULTANEOUSLY) ) ) ) && ( Monster_Vector->size() <= (unsigned)MAX_MONSTERS_SIMULTANEOUSLY ) )
 	{
 		//Store the new monster at the end of the vector
 		Monster_Vector->push_back( Create_One_Monster(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) );
@@ -237,7 +237,7 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Mo
 	return Monster_Vector;
 }
 
-//If we build using VS, To solve linking problem with template we have to defined allowed template values (See: http://www.parashift.com/c++-faq-lite/templates.html#faq-35.15 for more info)
+//To solve linking problem with template class defined in .cpp, we have to defined allowed template values (See: http://www.parashift.com/c++-faq-lite/templates.html#faq-35.15 for more info)
 //#ifdef VISUAL_STUDIO
 	//template class Monster_Factory<Monster_Base>;
 	template class Monster_Factory<Monster_Skeleton>;
