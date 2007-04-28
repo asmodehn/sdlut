@@ -7,7 +7,7 @@ int FiNiSH_TiME = 0;
 
 //Default config def to solve extern's linker pb
 	//Default user Cfg
-int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600, SCREEN_BPP = 16, CURRENT_SCREEN_WIDTH = 800, CURRENT_SCREEN_HEIGHT = 600, CURRENT_SCREEN_BPP = 32;
+int SCREEN_WIDTH = 1024, SCREEN_HEIGHT = 768, SCREEN_BPP = 16, CURRENT_SCREEN_WIDTH = 800, CURRENT_SCREEN_HEIGHT = 600, CURRENT_SCREEN_BPP = 32;
 bool ENABLE_MUSIC = 0;
 int UP_1 = 0, DOWN_1 = 0, LEFT_1 = 0, RIGHT_1 = 0, ATTACK_1 = 0, CHANGE_ATTACK_MODE_1 = 0, MENU_CALL_1 = 0, WINDOW_MODE_1 = 0;
 int UP_2 = 0, DOWN_2 = 0, LEFT_2 = 0, RIGHT_2 = 0, ATTACK_2 = 0, CHANGE_ATTACK_MODE_2 = 0, MENU_CALL_2 = 0, WINDOW_MODE_2 = 0;
@@ -48,7 +48,7 @@ try { //error management
 	std::ifstream fi_usr("Config.ini") ;
 	if (fi_usr.fail()) //File does not exist so create it with default values
 		Ini_Manager::Write_New_Ini_File("Config.ini",
-		"#screen def\nSCREEN_WIDTH = 800\nSCREEN_HEIGHT = 600\nSCREEN_BPP = 16\n\n#Audio\nENABLE_MUSIC = 1\n\n###KEYS NAMES ARE ALL CAPITALIZED EXCEPT LETTERS NAME###\n#Keys 1\nUP_1 = KKP8\nDOWN_1 = KKP5\nLEFT_1 = KKP7\nRIGHT_1 = KKP9\nATTACK_1 = KKPDIVIDE\nCHANGE_ATTACK_MODE_1 = KKPMULTIPLY\nMENU_CALL_1 = KESCAPE\nWINDOW_MODE_1 = KF11\n\n#Keys 2\nUP_2 = KUP\nDOWN_2 = KDOWN\nLEFT_2 = KLEFT\nRIGHT_2 = KRIGHT\nATTACK_2 = KRCTRL\nCHANGE_ATTACK_MODE_2 = KRSHIFT\nMENU_CALL_2 = \nWINDOW_MODE_2 = \n"
+		"#screen def\nSCREEN_WIDTH = 1024\nSCREEN_HEIGHT = 768\nSCREEN_BPP = 16\n\n#Audio\nENABLE_MUSIC = 1\n\n###KEYS NAMES ARE ALL CAPITALIZED EXCEPT LETTERS NAME###\n#Keys 1\nUP_1 = KKP8\nDOWN_1 = KKP5\nLEFT_1 = KKP7\nRIGHT_1 = KKP9\nATTACK_1 = KKPDIVIDE\nCHANGE_ATTACK_MODE_1 = KKPMULTIPLY\nMENU_CALL_1 = KESCAPE\nWINDOW_MODE_1 = KF11\n\n#Keys 2\nUP_2 = KUP\nDOWN_2 = KDOWN\nLEFT_2 = KLEFT\nRIGHT_2 = KRIGHT\nATTACK_2 = KRCTRL\nCHANGE_ATTACK_MODE_2 = KRSHIFT\nMENU_CALL_2 = \nWINDOW_MODE_2 = \n"
 			);
 	fi_usr.close();
 
@@ -168,8 +168,7 @@ try { //error management
 		fi_dev.close();
 	} else {
 		fi_dev.close();
-		cout << "Can't Read Config/Dev_Config.ini File" << endl;
-		 return false;
+		throw std::logic_error("Can't Read Config/Dev_Config.ini File");
 	}
 	
 
@@ -190,8 +189,7 @@ try { //error management
 		fi_anim.close();
 	} else {
 		fi_anim.close();
-		cout << "Can't Read Config/Anim_Config.ini File" << endl;
-		 return false;
+		throw std::logic_error("Can't Read Config/Anim_Config.ini File");
 	}
 	
 
@@ -208,16 +206,18 @@ try { //error management
 		fi_daemons.close();
 	} else {
 		fi_daemons.close();
-		cout << "Can't Read Config/Daemons_Config.ini File" << endl;
-		 return false;
+		throw std::logic_error("Can't Read Config/Daemons_Config.ini File");
 	}
 	
 
 
 	return true; //no error
-
+} catch (std::exception &exc) {
+	cout << exc.what() << endl;
+    return false; //eror occured
 } catch (...) {
-    return false;
+	cout << "Unknown Exception" << endl;
+    return false; //eror occured
 }
 }
 
