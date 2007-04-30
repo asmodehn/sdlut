@@ -10,6 +10,12 @@ static long ticks;
 
 Logger testlog("testTimer");
 
+static unsigned int callback(unsigned int interval, void * args)
+{
+	testlog << nl << SDL::GetTicks() - ticks  << " ms : Static Function called back !" ;
+	return 0;
+}
+
 class ObjectWithCallback
 {
 	public:
@@ -29,16 +35,14 @@ class ObjectWithCallback
 		if ( iter != 0 )
 			return interval;
 
+		//SDL doesnt support calling timer from another timer ( because of threads implementation differences )
+		//However SDLut implemented a workaround for timer called from another timer. seems to work fine so far
+		SDL::AddGlobalTimer(50,callback,NULL);
+
 		return 0;
 	}
 };
 
-
-static unsigned int callback(unsigned int interval, void * args)
-{
-	testlog << nl << SDL::GetTicks() - ticks  << " ms : Static Function called back !" ;
-	return 0;
-}
 
 int main(int argc, char *argv[])
 {

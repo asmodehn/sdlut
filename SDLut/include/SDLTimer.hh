@@ -100,6 +100,31 @@ namespace RAGE
 				//else doesnt exists anymore ? should not happen, but it s fine...
 			}
 			return res;
+
+			//This fix the problem when calling a timer from another timer, by handling return 0 to cancel next timer call.
+			//however it seems to bug from time to time in P0.
+			//
+			//cbargs* callargs= static_cast<cbargs*>(args);
+			//typename std::map<unsigned int,Callback* >::iterator itcb=_cbtable.find(callargs->lookupindex);
+			//if ( itcb == _cbtable.end() ) return 0; //stop callback : function to call doesnt exists
+
+			////find corresponding timer
+			//std::map<unsigned int,SDL_TimerID* >::iterator ittimer=_timertable.find(callargs->lookupindex);
+
+			////Do the actual client callback if timer still exist ( not aborted or terminated )
+			//int res = 0;
+			//if ( ittimer != _timertable.end() )
+			//{
+			//	res = itcb->second->call(interval,callargs->args);
+			//	if ( res == 0)
+			//	{
+			//		 // to set timer to 0 and erase it from the list, to flag termination of timer, so it can be launched again.
+			//		*(ittimer->second) = 0;
+			//		_timertable.erase(ittimer);
+			//	}
+			//}
+
+			//return res;
 		}
 		
 		template<class TClass>
