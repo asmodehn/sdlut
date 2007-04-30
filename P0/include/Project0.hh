@@ -29,6 +29,7 @@ Monster_Factory<Monster_Worm>* Monster_Factory_Worm;
 
 Escape_Menu* myEsc_Menu;
 Victory_Screen* myVictory_Screen;
+Messages* myMessages;
 
 Daemons* myDaemons;
 Timer<Daemons>* myMonster_Factory_Monsters_Moves_Timer;

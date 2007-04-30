@@ -21,12 +21,13 @@ private:
 	Escape_Menu* myEsc_Menu;
 	Victory_Screen* myVictory_Screen;
 	KeyboardInput* myKeyboardInput;
+	Messages* myMessages;
 
 	
 public:
 /****Def****/
 	Render_Engine(Player* &myPlayer, NPCs* &myNPC, BackGround* &myBackGround, Environment* &myEnvironment, Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton,
-				Monster_Factory<Monster_Worm>* &Monster_Factory_Worm, Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, KeyboardInput* &myKeyboardInput
+				Monster_Factory<Monster_Worm>* &Monster_Factory_Worm, Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, KeyboardInput* &myKeyboardInput, Messages* &myMessages
 				);
 	~Render_Engine();
 

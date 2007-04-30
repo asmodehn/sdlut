@@ -29,11 +29,11 @@ KeyboardInput::KeyboardInput(Player* &myPlayer, NPCs* &myNPC, std::vector<Battle
 //Destructor
 KeyboardInput::~KeyboardInput()
 {
-	myPlayer_Attack_Animation_Timer->stop();
+	myPlayer_Attack_Animation_Timer->abort();
 	delete myPlayer_Attack_Animation_Timer, myPlayer_Attack_Animation_Timer = NULL;
-	myPlayer_Move_Animation_Timer->stop();
+	myPlayer_Move_Animation_Timer->abort();
 	delete myPlayer_Move_Animation_Timer, myPlayer_Move_Animation_Timer = NULL;
-	myPlayer_Arrow_Animation_Timer->stop();
+	myPlayer_Arrow_Animation_Timer->abort();
 	delete myPlayer_Arrow_Animation_Timer, myPlayer_Arrow_Animation_Timer = NULL;
 
 	//GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
@@ -72,13 +72,11 @@ void KeyboardInput::Player_Moves_Consequences()
 			}
 
 			//stop in case it is currently runing (usefull for now coz there is no animation and it *seems* to make timers crash when they're empty)
-			myPlayer_Move_Animation_Timer->stop();
-			//Intervals between animation's frames
-			myPlayer_Move_Animation_Timer->setInterval( PLAYER_MOVE_ANIMATION_INTERVAL  );
+			myPlayer_Move_Animation_Timer->abort();
 			//Set the callback method which will define the character appearance on the screen and start animation
 			myPlayer_Move_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
-			//Start the animation
-			myPlayer_Move_Animation_Timer->start();
+			//Start the animation every PLAYER_MOVE_ANIMATION_INTERVAL
+			myPlayer_Move_Animation_Timer->launch(PLAYER_MOVE_ANIMATION_INTERVAL);
 		}
 	//P0_Logger << nl << "Move " << std::endl;
 	}
@@ -89,37 +87,25 @@ void KeyboardInput::Player_Attack_Consequences()
 	//attack is occuring
 	myPlayer->Set_Attack_Status(true);
 	//stop old timer if necessary
-	myPlayer_Arrow_Animation_Timer->stop();
+	myPlayer_Arrow_Animation_Timer->abort();
 	
 	//Handle attacks & set the distance of the attack
 	myPlayer->Attack();
 	
-	//difference between attack styles
-	if ( myPlayer->Get_Attack_Style() == 1 ) 
-	{
-		//Intervals between animation's frames
-		myPlayer_Attack_Animation_Timer->setInterval( PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL );
-	}
-	else if ( myPlayer->Get_Attack_Style() == 2 )
-	{
-		//Intervals between animation's frames
-		myPlayer_Attack_Animation_Timer->setInterval( PLAYER_BOW_ATTACK_ANIMATION_INTERVAL );
-		//Arrow management
-		myPlayer_Arrow_Animation_Timer->setInterval( PLAYER_ARROW_MOVE_ANIMATION_INTERVAL );
-		myPlayer_Arrow_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Arrow_Movement, (void*)NULL);
-	}
-
 	//Set the callback method which will define the character appearance on the screen and start attack animation
 	myPlayer_Attack_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Attack_Animation, (void*)NULL);
-	
-	//Start the attack animation
-	myPlayer_Attack_Animation_Timer->start();
-	
-	//In case of distant attack only
+	//arrow management callback
+	myPlayer_Arrow_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Arrow_Movement, (void*)NULL);
+		
+	//different animations between attack styles
+	if ( myPlayer->Get_Attack_Style() == 1 ) 
+	{
+		myPlayer_Attack_Animation_Timer->launch(PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL);
+	}
 	if ( myPlayer->Get_Attack_Style() == 2 )
 	{
-		//Start arrow animation
-		myPlayer_Arrow_Animation_Timer->start();
+		myPlayer_Attack_Animation_Timer->launch(PLAYER_BOW_ATTACK_ANIMATION_INTERVAL);
+		myPlayer_Arrow_Animation_Timer->launch(PLAYER_ARROW_MOVE_ANIMATION_INTERVAL);
 	}
 
 	//P0_Logger << nl << "Attack " << std::endl;

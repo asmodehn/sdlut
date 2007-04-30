@@ -93,13 +93,7 @@ Player::Player()
 	delete AttackMsg_Font, AttackMsg_Font = NULL;
 	
 	//Messages Implementation
-	myMessages = new Messages();
-	//status_msg = NULL; //AttackMsg_Font->render(" ", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0)); // Empty msg until the attack key is pressed once (when using empty msg the creator crash so until this bug is solved we will use " " insted of "")
-
-	//msg reseter
-	Reset_Status_Msg_Timer = new Timer<Messages>();
-	Reset_Status_Msg_Timer->setInterval( RESET_STATUS_MSG_INTERVAL );
-	Reset_Status_Msg_Timer->setCallback(myMessages,&Messages::Reset_Status_Msg, (void*)NULL);
+	//Status_Msg = NULL; //AttackMsg_Font->render(" ", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0)); // Empty msg until the attack key is pressed once (when using empty msg the creator crash so until this bug is solved we will use " " insted of "")
 }
 
 //Destructor
@@ -109,10 +103,6 @@ Player::~Player()
 	delete attack_distant_msg_hit, attack_distant_msg_hit = NULL;
 	delete attack_melee_msg_miss, attack_melee_msg_miss = NULL;
 	delete attack_distant_msg_miss, attack_distant_msg_miss = NULL;
-
-	Reset_Status_Msg_Timer->stop();
-	delete Reset_Status_Msg_Timer, Reset_Status_Msg_Timer = NULL;
-	delete myMessages, myMessages = NULL;
 }
 
 //Manage Attack Msg regarding the attack style
@@ -126,7 +116,7 @@ try
 		//If a monster has been hit displayed the hit msg, if no display miss msg
 		if (attack_successfull != 0)
 		{
-			myMessages->status_msg = attack_melee_msg_hit;
+			Messages::Status_Msg = attack_melee_msg_hit;
 
 			if (attack_successfull == 1)
 				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
@@ -135,7 +125,7 @@ try
 		}
 		else
 		{
-			myMessages->status_msg = attack_melee_msg_miss;
+			Messages::Status_Msg = attack_melee_msg_miss;
 			P0_Logger << nl << ">>> Monster Miss <<< " << std::endl;
 		}
 	}
@@ -145,7 +135,7 @@ try
 		//If a monster has been hit displayed the hit msg, if no display miss msg
 		if (attack_successfull != 0)
 		{
-			myMessages->status_msg = attack_distant_msg_hit;
+			Messages::Status_Msg = attack_distant_msg_hit;
 
 			if (attack_successfull == 1)
 				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
@@ -154,38 +144,19 @@ try
 		}
 		else
 		{
-			myMessages->status_msg = attack_distant_msg_miss;
+			Messages::Status_Msg = attack_distant_msg_miss;
 			P0_Logger << nl << ">>> Monster Miss <<< " << std::endl;
 		}
 	}
 
-	//launch the timer that will reset the status message
-//
-//TODO: when bug in timer solvedun comment below. The bug is that the timer calling this method dont stop when returning 0 coz this method start a new timer (it continue to loop one more time instead of exiting) 
-//
-	//Reset_Status_Msg_Timer->stop();//stop if timer running
-	//Reset_Status_Msg_Timer->start();
+	//inform the msg class that their msg has been changed
+	Messages::has_status_msg_changed = true ;
 
 
 	return true;
 }
 catch (...) {
   return false; //error occured
-}
-}
-
-//Display the status msg on the status bar
-bool Player::Show_Status_Msg(VideoSurface& Screen)
-{
-try {
-	//Clean the status Bar
-	Screen.fill( Color(0x00, 0x00, 0x00), Rect(0, CURRENT_SCREEN_HEIGHT - STATUS_BAR_H, CURRENT_SCREEN_WIDTH, STATUS_BAR_H) );
-	
-	if (myMessages->status_msg != NULL) //when there is no msg to display like at the begining
-		Screen.blit( *myMessages->status_msg, Point::Point(5, CURRENT_SCREEN_HEIGHT - 30) );
-	return true; //no error
-} catch (...) {
-	return false; //error occured
 }
 }
 

@@ -74,7 +74,17 @@ bool InitEverything()
 bool ImplementEverything()
 {
 try {
-	/****Battlefield****/
+/*********Interface Stuff************/
+
+	//Create the ingame escape menu
+	myEsc_Menu = new Escape_Menu();
+
+	//Create the victory screen
+	myVictory_Screen = new Victory_Screen();
+
+	myMessages = new Messages();
+
+/****Battlefield****/
 	//Initialize the BackGround
 	myBackGround = new BackGround();
 	P0_Logger << nl << "BackGround Init: OK " << std::endl;
@@ -161,14 +171,6 @@ try {
 	Monster_Factory_Worm->Create_Monsters(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector); //Vector which will contains all skeletons
 	P0_Logger << nl << "Worm Vector Fill: OK " << std::endl;
 
-/*********Interface's Menus************/
-
-	//Create the ingame escape menu
-	myEsc_Menu = new Escape_Menu();
-
-	//Create the victory screen
-	myVictory_Screen = new Victory_Screen();
-
 /********DEAMONS CREATION********/
 	//Instanciate the daemon class
 	myDaemons = new Daemons(myPlayer, myNPC, BackGround_Sprite_Vector, Environment_Sprite_Vector, Monster_Factory_Skeleton,
@@ -176,22 +178,18 @@ try {
 
 	//Create monster's movement daemons
 	myMonster_Factory_Monsters_Moves_Timer = new Timer<Daemons>(); //set definition
-	myMonster_Factory_Monsters_Moves_Timer->setInterval( MONSTERS_MOVEMENT_INTERVAL ); //set interval
 	myMonster_Factory_Monsters_Moves_Timer->setCallback(myDaemons,&Daemons::Move_Monsters, (void*)NULL); //set callback
 
 	//Create monster's generation daemons
 	myMonster_Factory_Monsters_Generation_Timer = new Timer<Daemons>; //set definition
-	myMonster_Factory_Monsters_Generation_Timer->setInterval( MONSTERS_GENERATION_INTERVAL ); //set interval
 	myMonster_Factory_Monsters_Generation_Timer->setCallback(myDaemons,&Daemons::Generate_Monsters, (void*)NULL); //set callback
 
 	//Create npcs's movement daemons
 	myNPCs_Moves_Timer = new Timer<Daemons>(); //set definition
-	myNPCs_Moves_Timer->setInterval( NPCS_MOVEMENT_INTERVAL ); //set interval
 	myNPCs_Moves_Timer->setCallback(myDaemons,&Daemons::Move_NPCs, (void*)NULL); //set callback
 
 	//Manage score
 	myScore = new Timer<Daemons>; //set definition
-	myScore->setInterval( 1000 / FRAMES_PER_SECOND ); //set interval
 	myScore->setCallback(myDaemons,&Daemons::Score, (void*)NULL); //set callback
 
 
@@ -204,7 +202,7 @@ try {
 
 	//Engine instanciation
 	myRender_Engine = new Render_Engine(myPlayer, myNPC, myBackGround, myEnvironment, Monster_Factory_Skeleton,
-														Monster_Factory_Worm, myEsc_Menu, myVictory_Screen, myKeyboardInput );
+														Monster_Factory_Worm, myEsc_Menu, myVictory_Screen, myKeyboardInput, myMessages );
 
 
 	//Affect the keyboard instance to the windows
@@ -233,10 +231,10 @@ try {
 	FiNiSH_TiME = (unsigned)time( NULL );
 
 	/********Start Daemons Process********/
-	myMonster_Factory_Monsters_Moves_Timer->start(); //monsters movements
-	myMonster_Factory_Monsters_Generation_Timer->start(); //monsters generation
-	myNPCs_Moves_Timer->start(); //npcs movements
-	myScore->start(); //Score
+	myMonster_Factory_Monsters_Moves_Timer->launch(MONSTERS_MOVEMENT_INTERVAL); //monsters movements
+	myMonster_Factory_Monsters_Generation_Timer->launch(MONSTERS_GENERATION_INTERVAL); //monsters generation
+	myNPCs_Moves_Timer->launch(NPCS_MOVEMENT_INTERVAL); //npcs movements
+	myScore->launch(1000 / FRAMES_PER_SECOND); //Score
 
 
 	/********Launch the mainloop that will use the render method of the Engine and so will render the screen and will manage all events********/
@@ -255,10 +253,10 @@ bool CleanEverything()
 try {
 
 /********Stop Daemons Process********/
-	myMonster_Factory_Monsters_Moves_Timer->stop(); //monsters movements
-	myMonster_Factory_Monsters_Generation_Timer->stop(); //monsters generation
-	myNPCs_Moves_Timer->stop(); //npcs movements
-	myScore->stop(); //Score
+	myMonster_Factory_Monsters_Moves_Timer->abort(); //monsters movements
+	myMonster_Factory_Monsters_Generation_Timer->abort(); //monsters generation
+	myNPCs_Moves_Timer->abort(); //npcs movements
+	myScore->abort(); //Score
 
 /********Clean UP********/
 	delete myMonster_Factory_Monsters_Moves_Timer, myMonster_Factory_Monsters_Moves_Timer = NULL;
@@ -267,8 +265,8 @@ try {
 	delete myScore, myScore = NULL;
 
 	delete myVictory_Screen, myVictory_Screen = NULL;
-
 	delete myEsc_Menu, myEsc_Menu = NULL;
+	delete myMessages, myMessages = NULL;	
 
 	delete Monster_Factory_Worm, Monster_Factory_Worm = NULL;
 	delete Monster_Factory_Skeleton, Monster_Factory_Skeleton = NULL;

@@ -3,7 +3,7 @@
 //Constructor
 Render_Engine::Render_Engine(Player* &myPlayer, NPCs* &myNPC, BackGround* &myBackGround, Environment* &myEnvironment,
 							 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
-							 Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, KeyboardInput* &myKeyboardInput
+							 Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, KeyboardInput* &myKeyboardInput, Messages* &myMessages
 							 )
 {
 	//Allocations
@@ -16,6 +16,7 @@ Render_Engine::Render_Engine(Player* &myPlayer, NPCs* &myNPC, BackGround* &myBac
 	this->myEsc_Menu = myEsc_Menu;
 	this->myVictory_Screen = myVictory_Screen;
 	this->myKeyboardInput = myKeyboardInput;
+	this->myMessages = myMessages;
 
 	P0_Logger << nl << "Engine CONSTRUCTED Successfully " << std::endl;
 }
@@ -113,7 +114,7 @@ void Render_Engine::render(VideoSurface & screen) const
     }																 
 
 	//Display status msg
-	if( myPlayer->Show_Status_Msg(screen) == false )
+	if( myMessages->Show_Status_Msg(screen) == false )
 	{ 
       P0_Logger << nl << "Display Attack Msg Render Failed " << std::endl;    
     }
