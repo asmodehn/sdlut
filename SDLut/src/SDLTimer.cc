@@ -19,12 +19,25 @@ namespace RAGE
 	    
 	    SDL_TimerID AddGlobalTimer(unsigned int interval, unsigned int callback(unsigned int,void*) , void *param)
 	    {
-		    return SDL_AddTimer(interval,static_cast<SDL_NewTimerCallback>(callback),param);
+		    SDL_TimerID res = SDL_AddTimer(interval,static_cast<SDL_NewTimerCallback>(callback),param);
+		    
+#ifdef DEBUG
+			if ( res != 0) { Log << nl << "SDL_Timer " << res << " launched." ; }
+#endif
+		    
+		    return res;
 	    }
 	    
 	    bool RemoveGlobalTimer(SDL_TimerID t)
 	    {
-		    return SDL_RemoveTimer(t) == SDL_TRUE;
+		    if ( SDL_RemoveTimer(t) == SDL_TRUE )
+		    {
+#ifdef DEBUG
+			Log << nl << "SDL_Timer " << t << " aborted.";
+#endif
+			return true;
+		    }
+		    return false;
 	    }
 
 
