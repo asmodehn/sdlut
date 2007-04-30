@@ -39,31 +39,26 @@ ENDIF (CMAKE_BUILD_TYPE STREQUAL Release)
 #Compiler Specific rules
 IF(CMAKE_COMPILER_IS_GNUCXX)
 	MESSAGE( STATUS "GCC Compiler detected. Adjusting C++ flags...")
-	SET( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wabi" CACHE STRING
-	    "Flags used by the C++ compiler during debug builds."
-	    FORCE )
-	SET( CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -pedantic" CACHE STRING
-	    "Flags used by the C compiler during debug builds."
-	    FORCE )
+	SET( CMAKE_CXX_FLAGS_DEBUG "-g -D_DEBUG -Wall -Wabi" CACHE STRING
+	    "Flags used by the C++ compiler during debug builds." )
+	SET( CMAKE_C_FLAGS_DEBUG "-g -D_DEBUG -Wall -pedantic" CACHE STRING
+	    "Flags used by the C compiler during debug builds." )
 	
 	IF (MSYS)
 	    SET( CMAKE_EXE_LINKER_FLAGS_DEBUG
-	     "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Wl,--warn-once" CACHE STRING
+	     " -Wl,--warn-once" CACHE STRING
 	     "Flags used for linking binaries during debug builds."
 	     FORCE )
 	    SET( CMAKE_SHARED_LINKER_FLAGS_DEBUG
-	     "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} -Wl,--warn-once" CACHE STRING
-	     "Flags used by the shared libraries linker during debug builds."
-	     FORCE )
+	     " -Wl,--warn-once" CACHE STRING
+	     "Flags used by the shared libraries linker during debug builds." )
 	ELSE (MSYS)
 	    SET( CMAKE_EXE_LINKER_FLAGS_DEBUG
-	     "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Wl,--warn-unresolved-symbols,--warn-once" CACHE STRING
-	     "Flags used for linking binaries during debug builds."
-	     FORCE )
+	     " -Wl,--warn-unresolved-symbols,--warn-once" CACHE STRING
+	     "Flags used for linking binaries during debug builds." )
 	    SET( CMAKE_SHARED_LINKER_FLAGS_DEBUG
-	     "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} -Wl,--warn-unresolved-symbols,--warn-once" CACHE STRING
-	     "Flags used by the shared libraries linker during debug builds."
-	     FORCE )
+	     " -Wl,--warn-unresolved-symbols,--warn-once" CACHE STRING
+	     "Flags used by the shared libraries linker during debug builds." )
 	ENDIF (MSYS)
 
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
