@@ -106,8 +106,11 @@ namespace RAGE
 				void Timer<TClass>::setCallback(TClass* instance,unsigned int (TClass::*func) (unsigned int, void*), void* args)
 		{
 			typename std::map<unsigned int, Callback*>::iterator it=_cbtable.find(_index);
-			if ( it != _cbtable.end() ) delete it->second;
-			it->second = new Callback(instance,func);
+			if ( it != _cbtable.end() )
+			{
+				delete it->second;
+			}
+			_cbtable[_index] = new Callback(instance,func);
 			
 			//reinit _cbargs when needed
 			if (_cbargs != NULL)
