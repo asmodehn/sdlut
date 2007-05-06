@@ -17,6 +17,7 @@
 #include <sstream>
 #include <fstream>
 #include <stdio.h>
+#include <stdexcept>
 #include "libxml/xmlreader.h"
 
 using namespace std;
@@ -40,4 +41,4 @@ public:
 	
 };
 
-#endif;
+#endif
