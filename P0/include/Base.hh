@@ -2,15 +2,14 @@
 #define Base_HH
 
 #include <ctime>
-//#include <string>
 #include <vector>
-//#include <fstream>
 #include <algorithm>
 #include <math.h>
 #include <stdarg.h> //for methods with an unllimited number of parameters
 
 #include "Sounds.hh"
 #include "Ini_Manager.hh"
+#include "XML_Manager.hh"
 
 ///*******Usr config*******///
 //The initial attributes of the window
@@ -162,7 +161,9 @@ bool check_collision(const Rect& A, const Rect& B);
 int random(int min, int max);
 
 //Convert Int To String
-std::string Int_To_String(int to_convert);
+std::string Int_To_String(const int &to_convert);
+//Convert String To Int
+int String_To_Int(const std::string &to_convert);
 
 //Style the time to "Xd Xh Xmin Xs"
 std::string Time_Style(const int& time);

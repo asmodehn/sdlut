@@ -109,6 +109,7 @@ ELSE(NEW_CMAKE_MODULE_PATH)
 
 ENDIF(NEW_CMAKE_MODULE_PATH)
 
+
 #check for openGL
 FIND_PACKAGE(OpenGL)
 
@@ -120,6 +121,22 @@ IF(OPENGL_FOUND)
 ELSE(OPENGL_FOUND)
 	MESSAGE (STATUS "OpenGL not found." )
 ENDIF(OPENGL_FOUND)
+
+
+#check for libxml2
+FIND_PACKAGE(LibXml2 REQUIRED)
+
+#Clear the ADVANCED default status for libxml2
+MARK_AS_ADVANCED(CLEAR LIBXML2_INCLUDE_DIR LIBXML2_LIBRARIES)
+
+#test for libxml2
+IF(LIBXML2_FOUND)
+	MESSAGE (STATUS "LibXml2 found, adjusting build options..." )
+	INCLUDE_DIRECTORIES(${LIBXML2_INCLUDE_DIR})
+	LINK_LIBRARIES (${LIBXML2_LIBRARY})
+ELSE(LIBXML2_FOUND)
+	MESSAGE (STATUS "LibXml2 not found." )
+ENDIF(LIBXML2_FOUND)
 
 
 #Include Core
@@ -159,9 +176,10 @@ ADD_EXECUTABLE(
 		${Project_0_SOURCE_DIR}/src/Player.cpp ${Project_0_SOURCE_DIR}/include/Player.hh
 		${Project_0_SOURCE_DIR}/src/NPCs.cpp ${Project_0_SOURCE_DIR}/include/NPCs.hh
 		${Project_0_SOURCE_DIR}/src/Messages.cpp ${Project_0_SOURCE_DIR}/include/Messages.hh
+		${Project_0_SOURCE_DIR}/src/XML_Manager.cpp ${Project_0_SOURCE_DIR}/include/XML_Manager.hh
 
 #adding spec to have it in generated projects
-		"${Project_0_SOURCE_DIR}/Specifs/2D/2D Design v0.03.odt"
+		"${Project_0_SOURCE_DIR}/Specifs/2D/2D Design v0.04.odt"
 	)
 
 

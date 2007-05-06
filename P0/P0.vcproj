@@ -43,7 +43,7 @@
 				AdditionalOptions=" /wd4100 /wd4290 /wd4512 /D&quot;VLD&quot;"
 				Optimization="0"
 				FavorSizeOrSpeed="0"
-				AdditionalIncludeDirectories="..\SDLut\include;include;..\Core\include;..\Math\include"
+				AdditionalIncludeDirectories="..\SDLut\include;include;..\Core\include;..\Math\include;Depends\libxml2-2.6.27.win32\include\;Depends\iconv-1.9.2.win32\include\"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;"
 				MinimalRebuild="true"
 				ExceptionHandling="1"
@@ -68,7 +68,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				UseLibraryDependencyInputs="false"
-				AdditionalOptions="/NODEFAULTLIB:msvcrt.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDL.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDLmain.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDl_image.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDL_ttf.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\sdl_net.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\sdl_mixer.lib&#x0D;&#x0A;opengl32.lib&#x0D;&#x0A;..\SDLut\build\lib\debug\SDLut.lib"
+				AdditionalOptions="/NODEFAULTLIB:msvcrt.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDL.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDLmain.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDl_image.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDL_ttf.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\sdl_net.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\sdl_mixer.lib&#x0D;&#x0A;opengl32.lib&#x0D;&#x0A;..\SDLut\build\lib\debug\SDLut.lib&#x0D;&#x0A;Depends\libxml2-2.6.27.win32\lib\libxml2.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				GenerateManifest="true"
@@ -265,6 +265,10 @@
 				RelativePath=".\src\Sounds.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\XML_Manager.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Headers"
@@ -337,6 +341,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Sounds.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\XML_Manager.hh"
 				>
 			</File>
 		</Filter>

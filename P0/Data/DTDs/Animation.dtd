@@ -1,0 +1,18 @@
+<!ELEMENT Animation ( Animation_TS_Filename, (TS_ColorKey_RGB | TS_Alpha_Channel)?, Sprite_Dimensions, Animation_Characteristics, Collision_Box_Modifier?)>
+	<!ELEMENT Animation_TS_Filename (#PCDATA)>
+	<!ELEMENT TS_ColorKey_RGB (ColorKey_R, ColorKey_G, ColorKey_B)>
+		<!ELEMENT ColorKey_R (#PCDATA)>
+		<!ELEMENT ColorKey_G (#PCDATA)>
+		<!ELEMENT ColorKey_B (#PCDATA)>
+	<!ELEMENT TS_Alpha_Channel (#PCDATA)>
+	<!ELEMENT Sprite_Dimensions (Width, Height)>
+		<!ELEMENT Width (#PCDATA)>
+		<!ELEMENT Height (#PCDATA)>
+	<!ELEMENT Animation_Characteristics (Frames, Frames_Interval)>
+		<!ELEMENT Frames (#PCDATA)>
+		<!ELEMENT Frames_Interval (#PCDATA)>
+	<!ELEMENT Collision_Box_Modifier (X_Modifier, Y_Modifier, W_Modifier, H_Modifier)>
+		<!ELEMENT X_Modifier (#PCDATA)>
+		<!ELEMENT Y_Modifier (#PCDATA)>
+		<!ELEMENT W_Modifier (#PCDATA)>
+		<!ELEMENT H_Modifier (#PCDATA)>

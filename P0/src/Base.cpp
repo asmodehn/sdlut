@@ -273,7 +273,7 @@ int random(int min, int max)
 	return min + (rand()%(max+1-min));
 }
 
-std::string Int_To_String(int to_convert)
+std::string Int_To_String(const int &to_convert)
 {
 	std::stringstream s;
     if (s << to_convert) // conversion worked
@@ -281,6 +281,13 @@ std::string Int_To_String(int to_convert)
 
 	//failed
 	return NULL;
+}
+
+int String_To_Int(const std::string &to_convert)
+{
+	int res = 0;
+	std::stringstream(to_convert) >> res;
+	return res;
 }
 
 //Style the time to "Xd Xh Xmin Xs"

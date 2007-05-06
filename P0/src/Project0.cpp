@@ -302,8 +302,6 @@ try { //global error management
 	//Init the rand method using the current time in order to generate more random numbers
 	srand( (unsigned)time( NULL ) );
 
-
-/********INIT********/
 	//Create the windows and init everything (SDL, SDL_TTF, ...)
 	if( InitEverything() == false )
 	{ 
@@ -314,6 +312,40 @@ try { //global error management
 	}
 	P0_Logger << nl << "-> Windows, SDL, SDL_TTF And VideoSurface Where Initialized Successfully <-" << std::endl;
 	
+
+
+//
+//XML TESTS
+//
+	//if ( XML_Manager::Validate_File( "Data/Characters/Player.xml" ) )
+	//	P0_Logger << nl << "File Player.xml is valid " << std::endl;
+
+	//string Death_Animation_Filename = XML_Manager::Get_Option_String("Data/Characters/Player.xml", "Death_Animation_Filename", true);
+	//P0_Logger << nl << "Death_Animation_Filename: " << Death_Animation_Filename << std::endl;
+
+	//string Data_Root_Directory = XML_Manager::Get_Option_String("Data/Characters/Player.xml", "Data_Root_Directory", true);
+	//P0_Logger << nl << "Data_Root_Directory: " << Data_Root_Directory << std::endl;
+
+	//int Default_Sprite_Width = XML_Manager::Get_Option_Value("Data/Characters/Player.xml", "Default_Sprite_Width");
+	//P0_Logger << nl << "Default_Sprite_Width: " << Default_Sprite_Width << std::endl;
+
+	//long Initial_Position_X_false_long = XML_Manager::Get_Option_Value_Long("Data/Characters/Player.xml", "Initial_Position_X");
+	//P0_Logger << nl << "Initial_Position_X_false_long: " << Initial_Position_X_false_long << std::endl;
+
+
+	//if ( XML_Manager::Validate_File( "Data/Characters/Human_w_Bow_Animations.xml" ) )
+	//	P0_Logger << nl << "File Human_w_Bow_Animations.xml is valid " << std::endl;
+
+	//string Attack_Animation_Filename = XML_Manager::Get_Option_String("Data/Characters/Human_w_Bow_Animations.xml", "Attack_Animation_Filename");
+	//P0_Logger << nl << "Attack_Animation_Filename: " << Attack_Animation_Filename << std::endl;
+
+	//long Frames_Interval = XML_Manager::Get_Option_Value_Long(Data_Root_Directory+Attack_Animation_Filename, "Frames_Interval", true);
+	//P0_Logger << nl << "Attack_Animation\\Frames_Interval: " << Frames_Interval << std::endl;
+
+	//XML_Manager::Clean_Up();
+
+
+
 	//implement everything needed by the game
 	if( ImplementEverything() == false )
 	{ 
