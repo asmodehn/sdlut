@@ -1,7 +1,9 @@
 #include "SDLMixer.hh"
 #include "SDLConfig.hh"
 
-#define MIN(a,b) (a<b)?a:b;
+#ifndef min
+#define min(a,b) (a<b)?a:b;
+#endif
 
 namespace RAGE
 {
@@ -13,7 +15,7 @@ namespace RAGE
 		std::vector<bool> Mixer::_activechannels;
 		std::vector<bool> Mixer::_loopchannels;
 		
-		//class Mixer
+		// This function is called when the audio device needs more data
 		void Mixer::callback(void *userdata, Uint8 *stream, int len)
 		{
 			Uint8 *waveptr;
@@ -24,11 +26,11 @@ namespace RAGE
 			for (i = 0; i < _activechannels.size(); i++)
 			{
 			if (_activechannels[i])
-{
+			{
 				//TODO : replace mixaudio with my own mix function, in case there is no SDL_mixer
 				//hint : from http://www.libsdl.org/cgi/docwiki.cgi/Audio_20Examples
 				waveptr = _channels[i]->_buf + _channelscursor[i] ;
-				waveleft = MIN(_channels[i]->_length - _channelscursor[i],static_cast<unsigned int>(len));//test end of sound buffer
+				waveleft = min(_channels[i]->_length - _channelscursor[i],static_cast<unsigned int>(len));//test end of sound buffer
 
 				SDL_MixAudio(stream, waveptr, waveleft, SDL_MIX_MAXVOLUME);
 				_channelscursor[i] += waveleft;
@@ -41,7 +43,7 @@ namespace RAGE
 					{
 						stream += waveleft;
 						len -= waveleft;
-						waveleft = MIN(static_cast<unsigned int>(len),_channels[i]->_length);
+						waveleft = min(static_cast<unsigned int>(len),_channels[i]->_length);
 						SDL_MixAudio(stream, _channels[i]->_buf, waveleft, SDL_MIX_MAXVOLUME);
 						_channelscursor[i] += waveleft;
 					}
@@ -51,80 +53,30 @@ namespace RAGE
 					}
 					
 				}
-}					
-						
-// 					Log << nl <<" Channel "<< i<<" after callback at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
+			}
+			//	Log << nl <<" Channel "<< i<<" after callback at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
 			}
 
 		}
 		
-		Mixer::Mixer(int frequency,unsigned short channels,unsigned short samples, bool SDLemulated) : _autoConvert(SDLemulated)
+		Mixer::Mixer(int frequency,unsigned short channels,unsigned short samples)
 		{
 #ifdef DEBUG
-		Log << nl << "Mixer::Mixer(" << frequency << ", " << channels << ", " << samples << ", " << SDLemulated << ") called";
+		Log << nl << "Mixer::Mixer(" << frequency << ", " << channels << ", " << samples << ") called";
 #endif
 
-
-			SDL_AudioSpec* desired = new SDL_AudioSpec();
-			desired->freq = frequency;		// DSP frequency -- samples per second
-			desired->format = AUDIO_S16SYS;		// Audio data format
-			//WARNING : as for SDL_MixAudio in V 1.2.11, AUDIO_U16 is unknown...
-			desired->channels = static_cast<Uint8>(channels);	// Number of channels: 1 mono, 2 stereo
-			desired->samples = samples;		// Audio buffer size in samples (power of 2)
-	
-			// This function is called when the audio device needs more data
-			
-			desired->callback = Mixer::callback;
-			//TODO : if possible use this field to optimize output... problem : qualitative measure by hearing the sound...
+			_hwspec = new AudioInfo(frequency, static_cast<Uint8>(channels), samples, Mixer::callback );
+			//TODO : if possible use the userdata field to optimize output with mixer... problem : qualitative measure by hearing the sound...
 			//ID : time measure and compare with frequency and samples number ?
-			desired->userdata=NULL;
+
+			Log << nl << _hwspec;
 			
-			SDL_AudioSpec * _spec;
-
-			//if autoconvert, "desired" is the next _hwspec
-			if (_autoConvert)
-			{
-				try
-				{
-					if (SDL_OpenAudio(desired, NULL)!=0)
-					{
-						Log << "Error Initialising Audio";
-						throw std::logic_error("Error initializing Audio");
-					}
-				}
-				catch (std::exception& e)
-				{
-					Log << "Exception caught in Mixer::Mixer() : " << e.what();
-				}
-				_spec=desired;
-			}
-			else //if no autoconvert, the next _hwspec is filled by OpenAudio
-			{
-				_spec = new SDL_AudioSpec();
-				try
-				{
-					if (SDL_OpenAudio(desired,_spec)!=0)
-					{
-						Log << "Error Initialising Audio";
-						throw std::logic_error("Error initializing Audio");
-					}
-				}
-				catch (std::exception& e)
-				{
-					Log << "Exception caught in Mixer::Mixer() : " << e.what();
-				}
-				delete desired;
-			}
-
-			_hwspec = new AudioInfo(_spec);
-
-			Log << nl << "Using Driver : " << getDriverName();
+			Log << nl << "Using Audio Driver : " << getDriverName();
 
 			PlayAll();	
 
-
 #ifdef DEBUG
-		Log << nl << "Mixer::Mixer(" << frequency << ", " << channels << ", " << samples << ", " << SDLemulated << ") done";
+		Log << nl << "Mixer::Mixer(" << frequency << ", " << channels << ", " << samples << ") done";
 #endif
 		}
 		
@@ -197,7 +149,7 @@ namespace RAGE
 		    _loopchannels.push_back(loop);
 		    SDL_UnlockAudio();
 	    }
-	
+
 #ifdef DEBUG
 			Log << nl << "Mixer::mixSound("<<&sound<< ", " << autoplay <<") done";
 #endif

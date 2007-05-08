@@ -49,8 +49,7 @@ namespace RAGE
 
 	friend class Mixer;
 
-	static std::map<AudioInfo*,int> airef;
-	AudioInfo * _aInfo;
+	AudioInfo _aInfo;
 
 	bool frommem;
 	//Length and data of the Sound
@@ -69,7 +68,7 @@ namespace RAGE
 		//Sound destructor
 		~Sound();
 
-		bool Convert (int DestinationFormat,int DestinationChannels,int DestinationFrequency);
+		bool Convert (unsigned short DestinationFormat,unsigned short DestinationChannels,int DestinationFrequency);
 		
 	
 };//class Sound

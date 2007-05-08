@@ -16,6 +16,10 @@
  *
  */
 
+#include "Logger.hh"
+#include <memory>
+#include <stdexcept>
+
 //declarign SDL_type for late binding
 struct SDL_AudioSpec;
 
@@ -43,34 +47,36 @@ namespace RAGE
 	//Only one instance of this class should be used.
 	class AudioInfo
 	{
-		friend class Mixer;
 		friend class Sound;
 		
-		
-		///> to store true if the spec is actually emulated by SDL.
-		bool pointerCopy;
-
 		protected :
 
-			const SDL_AudioSpec * const _spec;
+			std::auto_ptr<SDL_AudioSpec> _spec;
 			
-			//Copy Constructor from SDL_AudioSpec
 			//This handle explicit casts
-			explicit AudioInfo(const SDL_AudioSpec* as);
-			
-			~AudioInfo(void);
+			explicit AudioInfo(SDL_AudioSpec* as);
 
 		public :
 
-	
-			int frequency();
-			unsigned int format();
-			unsigned int channels();
-			unsigned long samples();
-			void* userdata();
+			//if autoConvert is true, then the constructed AudioInfo will be what has been asked for, and if the hardware is different, SDL will take care of conversion
+			//if autoConvert is false, the constructed AudioInfo might be different from what has been asked for.
+			//in everycase, the current AudioInfo values must be used for Conversion, and this is handled by Mixer. Default for this value not yet chosen.
+			static bool autoConvert;
+			
+			AudioInfo(int frequency, unsigned char channels, unsigned short samples, void (*callback)(void *userdata, unsigned char *stream, int len), void* userdata = 0 ) throw (std::logic_error);
+			AudioInfo(const AudioInfo &);
+			~AudioInfo(void);
+			
+			int frequency() const;
+			unsigned int format() const;
+			unsigned int channels() const;
+			unsigned long samples() const;
+			void* userdata() const;
 
+			SDL_AudioSpec get_SDL();
+			SDL_AudioSpec* get_pSDL() { return _spec.get(); }
 
-	
+			friend Logger & operator << (Logger & ostr, const AudioInfo & ai);
 	
 	}; //class Audio
 

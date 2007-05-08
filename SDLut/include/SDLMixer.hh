@@ -30,8 +30,6 @@ class Mixer
 	//To store the Hardware audio format
 	AudioInfo * _hwspec;
 
-	bool _autoConvert;
-	
 	//here we store a converted version of the Sound depending on Audio Specs
 	//these are the sound currently being played and their order is not the same as the previous vectors.
 	static std::vector<const Sound*> _channels;
@@ -54,7 +52,7 @@ class Mixer
 		//SDLemulated : runtime dynamic conversion from asked format to obtained format.
 		//false to preconvert all sounds.
 		//true to preconvert only to asked format. SDL will do runtime conversion if needed for obtained format.
-		Mixer(int frequency = 44100,unsigned short channels = 2,unsigned short samples = 512, bool SDLemulated = false);
+		Mixer(int frequency = 44100,unsigned short channels = 2,unsigned short samples = 512);
 		Mixer(const Mixer& m);
 		~Mixer();
 
