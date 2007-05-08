@@ -37,7 +37,7 @@ class ObjectWithCallback
 
 		//SDL doesnt support calling timer from another timer ( because of threads implementation differences )
 		//However SDLut implemented a workaround for timer called from another timer. seems to work fine so far
-		SDL::AddGlobalTimer(50,callback,NULL);
+		//SDL::AddGlobalTimer(50,callback,NULL);
 
 		return 0;
 	}

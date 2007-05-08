@@ -4,7 +4,7 @@
 #include "Functor.hh"
 #include <utility>
 #include <map>
-
+#include <memory>
 #include <iostream>
 
 typedef struct _SDL_TimerID *SDL_TimerID;
@@ -50,7 +50,7 @@ namespace RAGE
 		    	//index of this functor instance in the static lookuptable
 			unsigned int _index;
 			
-			cbargs* _cbargs;
+			std::auto_ptr<cbargs> _cbargs;
 
 			//static table lookup that stores pointer to callback
 			static std::map<unsigned int, Callback* > _cbtable;
@@ -138,17 +138,17 @@ namespace RAGE
 			_cbtable[_index] = new Callback(instance,func);
 			
 			//reinit _cbargs when needed
-			if (_cbargs != NULL)
-			{
-				delete _cbargs, _cbargs = NULL;
-			}
-			_cbargs = new cbargs();
+			//if (_cbargs.get() != 0)
+			//{
+			//	delete _cbargs, _cbargs = NULL;
+			//}
+			_cbargs.reset( new cbargs() );
 			_cbargs->lookupindex = _index;
 			_cbargs->args = args;
 		}
 
 		template<class TClass>
-		Timer<TClass>::Timer() : _cbargs(NULL), _timerid()
+		Timer<TClass>::Timer() : _cbargs(0), _timerid()
 		{
 			
 			//setting the index for the current instance
@@ -164,8 +164,8 @@ namespace RAGE
 		Timer<TClass>::~Timer()
 		{
 			abort();// destructor abort a running timer if needed
-			if (_cbargs != NULL)
-				delete _cbargs, _cbargs = NULL;
+			//if (_cbargs != NULL)
+			//	delete _cbargs, _cbargs = NULL;
 			typename std::map<unsigned int, Callback*>::iterator it=_cbtable.find(_index);
 			if (it != _cbtable.end())
 			{
@@ -182,7 +182,7 @@ namespace RAGE
 		{
 			if ( interval > 0 && _timerid == 0 && _timertable.count(_index) == 0)
 			{
-				_timerid = AddGlobalTimer(interval,callback,_cbargs);
+				_timerid = AddGlobalTimer(interval,callback,_cbargs.get());
 				std::pair<std::map<unsigned int,SDL_TimerID* >::iterator, bool > result = _timertable.insert(std::make_pair(_index,&_timerid));
 				return result.second;
 			}
