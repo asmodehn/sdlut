@@ -43,10 +43,10 @@ CONFIGURE_FILE(	"Human Unarmed Walk.png" "${Project_0_BINARY_DIR}/Data/Character
 	#npc_merchant
 		#xml
 CONFIGURE_FILE(	NPC_Merchant.xml ${Project_0_BINARY_DIR}/Data/Characters/NPC_Merchant.xml COPYONLY)
-CONFIGURE_FILE(	NPC_Merchant_Run.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Run.xml COPYONLY)
-CONFIGURE_FILE(	NPC_Merchant_Stop.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Stop.xml COPYONLY)
-CONFIGURE_FILE(	NPC_Merchant_Talk.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Talk.xml COPYONLY)
-CONFIGURE_FILE(	NPC_Merchant_Walk.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Walk.xml COPYONLY)
+CONFIGURE_FILE(	Merchant_Run.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Run.xml COPYONLY)
+CONFIGURE_FILE(	Merchant_Stop.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Stop.xml COPYONLY)
+CONFIGURE_FILE(	Merchant_Talk.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Talk.xml COPYONLY)
+CONFIGURE_FILE(	Merchant_Walk.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Walk.xml COPYONLY)
 		#tilesets
 CONFIGURE_FILE(	"Merchant Run.png" "${Project_0_BINARY_DIR}/Data/Characters/Merchant Run.png" COPYONLY)
 CONFIGURE_FILE(	"Merchant Stop.png" "${Project_0_BINARY_DIR}/Data/Characters/Merchant Stop.png" COPYONLY)
