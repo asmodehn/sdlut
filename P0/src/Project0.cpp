@@ -206,7 +206,7 @@ try {
 
 
 	//Affect the keyboard instance to the windows
-    App::getInstance().getWindow()->getEventManager()->setKeyboard(myKeyboardInput);
+    App::getInstance().getWindow()->getEventManager().setKeyboard(myKeyboardInput);
 
 	//Affect the game render engine to the windows
 	App::getInstance().getWindow()->setEngine(myRender_Engine);

@@ -131,12 +131,14 @@ namespace RAGE
 			if (val)
 			{
 				setEngine(new DefaultGLEngine());
+				_userengine=false;
 			}
 			else
 			{
 				setEngine(new DefaultEngine());
+				_userengine=false;
 			}
-
+			
             if (!pvm_screen.get())
 			{
 				VideoSurface::setOpenGL(val);
@@ -276,7 +278,8 @@ namespace RAGE
             Log << nl << "Window::setEngine(" << engine << ") called ...";
 #endif
             assert(engine);
-			delete _engine, _engine=NULL;
+			if(!_userengine)
+				delete _engine, _engine=NULL;
             _userengine=true;
             _engine=engine;
 
