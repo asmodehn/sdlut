@@ -64,7 +64,7 @@ namespace RAGE
         public:
 
 	Event(Type type = User );
-
+	Event(const Event & e);
 
 	//list of accessors to make the event we want
         //    set...

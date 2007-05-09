@@ -61,6 +61,31 @@ Event::Event(Event::Type type) : _event( new SDL_Event() )
 	_event->type=(Uint8)type;
 }
 
+Event::Event(const Event & e) : _event( new SDL_Event() )
+{
+	//duplicated
+	*_event=*(e._event);
+	/*switch(_event->type)
+	{
+		case SDL_ACTIVEEVENT : _event->active = e._event->active;
+	}
+  Uint8 gain;
+  Uint8 state;
+SDL_KEYDOWN/UP 	SDL_KeyboardEvent
+SDL_MOUSEMOTION 	SDL_MouseMotionEvent
+SDL_MOUSEBUTTONDOWN/UP 	SDL_MouseButtonEvent
+SDL_JOYAXISMOTION 	SDL_JoyAxisEvent
+SDL_JOYBALLMOTION 	SDL_JoyBallEvent
+SDL_JOYHATMOTION 	SDL_JoyHatEvent
+SDL_JOYBUTTONDOWN/UP 	SDL_JoyButtonEvent
+SDL_VIDEORESIZE 	SDL_ResizeEvent
+SDL_VIDEOEXPOSE 	SDL_ExposeEvent
+SDL_QUIT 	SDL_QuitEvent
+SDL_USEREVENT 	SDL_UserEvent
+SDL_SYSWMEVENT 	SDL_SysWMEvent
+*/
+}
+
 
 Event::Event(SDL_Event * const event) : _event(event)
 {

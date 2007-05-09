@@ -74,14 +74,15 @@ namespace RAGE
 			Log << nl << "AudioInfo::AudioInfo( "<< &ai << ") called";
 #endif
 			//duplicated
-			_spec->freq = ai._spec->freq;
+			*_spec = *(ai._spec);
+			/*_spec->freq = ai._spec->freq;
 			_spec->format = ai._spec->format;
 			_spec->channels = ai._spec->channels;
 			_spec->silence = ai._spec->silence;
 			_spec->samples = ai._spec->samples;
 			_spec->size = ai._spec->size;
 			_spec->callback = ai._spec->callback;
-			_spec->userdata = ai._spec->userdata;
+			_spec->userdata = ai._spec->userdata;*/
 #ifdef DEBUG
 			Log << nl << "AudioInfo::AudioInfo( "<< &ai << ") done.";
 #endif
