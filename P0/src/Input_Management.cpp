@@ -199,7 +199,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				//CURRENT_SCREEN_WIDTH = SCREEN_WIDTH;
 				//CURRENT_SCREEN_HEIGHT = SCREEN_HEIGHT;
 				//resize display to the configured resolutions which is a supported FS res
-				if (App::getInstance().getWindow()->resizeDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
+				if (! App::getInstance().getWindow()->resizeDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) )
 				{
 					P0_Logger << nl << "Create Surface Failed : " << GetError() << std::endl;
 					return false;
