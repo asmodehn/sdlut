@@ -4,14 +4,15 @@
 #include "Player_Base.hh"
 
 //Merchant NPC
-class NPCs : public Player_Base
+class NPC_Merchant : public Player_Base
 {
 	private:
+		void Clean_NPC_Merchant();
 
 	public:
 		//Declaration
-		NPCs();
-		~NPCs();
+		NPC_Merchant();
+		~NPC_Merchant();
 
 
 };

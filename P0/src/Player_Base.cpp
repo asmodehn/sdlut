@@ -16,18 +16,21 @@ Player_Base::Player_Base()
 
 	//Initialize animation variables
     frame = 0;  // for animation
-    move_status = CH_RIGHT;
+    Move_Status = CH_RIGHT;
 
 	//Default time between frame
 	DeltaTicks = 1000/FRAMES_PER_SECOND;
 
 	//Attack variable
 	attack_status = false; //false = 0
-	attack_style = 1; //0: nothing (future dev), 1: Sword attack (default), 2: Bow attack, 3: magic attack (future dev), ...
+	attack_style = 0; //default: unarmed
 	attack_successfull = 0; //Tells if a monster has been hit, by default no
 	attack_initial_x = -1;
 	attack_initial_y = -1;
 	attack_direction = -1;
+
+	Players_Tile_Melee = NULL; //designed to disapear
+	Players_Tile_Distant = NULL; //designed to disapear
 
 	/****Arrow***/
 	string Arrow_Ini = "Data/Items/Arrow.ini";
@@ -67,126 +70,130 @@ Player_Base::Player_Base()
 }
 
 //Initialization construtor
-Player_Base::Player_Base(int x, int y)
-{
-    //Initial position
-	X = x;
-	Y = y;
-    
-	//Initial arrow position
-	arrow_x = X;
-	arrow_y = Y;
-
-	Sprite_Width = PC_WIDTH, Sprite_Height = PC_HEIGHT;
-	Sprite_Filename = ""; //Empty sprite for now
-
-	//Player Tile Surface
-	Characters_Tile = new RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
-
-	//Initial moving status
-	moving_status = false;
-
-	Player_Attack_Tile_Rect = new std::vector<Rect>;
-	Player_Attack_Tile_Rect->reserve(8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME);
-	
-	Rect _temp_ch_rect;
-	_temp_ch_rect.setw( Sprite_Width );
-	_temp_ch_rect.seth( Sprite_Height );
-
-	//First allocation by pushback
-	for (signed int i = 0; i < 8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME; i++)
-	{
-		Player_Attack_Tile_Rect->push_back(_temp_ch_rect);
-	}
-	//Now allocation by iterator
-	for (signed int i = 0; i < 8; i++)  //The 8 directions
-	{
-		for (signed int j = 0; j < PLAYER_SWORD_ATTACK_ANIMATION_FRAME; j++) //Frames
-		{
-			_temp_ch_rect.setx( Sprite_Width * j );
-			_temp_ch_rect.sety( Sprite_Height * i );
-			Player_Attack_Tile_Rect->at(i*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + j) = _temp_ch_rect;
-		}
-	}
-	
-	//Assign the right sprite to the player by default
-	Characters_SpriteRect = Player_Attack_Tile_Rect->at(CH_RIGHT*PLAYER_SWORD_ATTACK_ANIMATION_FRAME);
-
-	//Initialize animation variables
-    frame = 0;  // for animation
-
-	//Default time between frame
-	DeltaTicks = 1000/FRAMES_PER_SECOND;
-
-	//Attack variable
-	attack_status = false; //false = 0
-	attack_style = 1; //0: nothing (future dev), 1: Sword attack (default), 2: Bow attack, 3: magic attack (future dev), ...
-	attack_successfull = 0; //Tells if a monster has been hit, by default no
-	attack_initial_x = -1;
-	attack_initial_y = -1;
-	attack_direction = -1;
-
-	//Collision Box Definition: The collision box has the size of the character
-	Collision_Box.setx(X);
-    Collision_Box.sety(Y);
-    Collision_Box.setw(Sprite_Width);
-    Collision_Box.seth(Sprite_Height);
-
-	/****Arrow***/
-	string Arrow_Ini = "Data/Items/Arrow.ini";
-	std::ifstream fi_arrow(Arrow_Ini.c_str()) ;
-	if (! fi_arrow.fail()) //Check file present
-	{
-		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Width") ) >> Arrow_Sprite_Width;
-		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Height") ) >> Arrow_Sprite_Height;
-		//Arrow surface
-		Arrow_Tile = new RGBSurface( Ini_Manager::Get_Option_String(Arrow_Ini, "Filename") , Color(0x80, 0x80, 0x80));
-		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Arrow_Vel") ) >> Arrow_Vel;
-	}
-	fi_arrow.close();
-
-	//Clip
-	Arrow_SpriteRect = new std::vector<Rect>;
-
-	Rect _temp_arrow_rect;
-	_temp_arrow_rect.setx(0);
-	_temp_arrow_rect.setw(Arrow_Sprite_Width);
-	_temp_arrow_rect.seth(Arrow_Sprite_Height);
-
-	//First allocation by pushback
-	for (signed int i = 0; i < 8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME; i++)
-	{
-		Arrow_SpriteRect->push_back(_temp_arrow_rect);
-	}
-	//Now allocation by iterator
-	for (signed int i = 0; i < 8; i++)  //The 8 directions
-	{
-		_temp_arrow_rect.sety(Arrow_Sprite_Height*i);
-		Arrow_SpriteRect->at(i*PLAYER_ARROW_ATTACK_ANIMATION_FRAME) = _temp_arrow_rect;
-	}
-
-	//default arrow sprite rect
-	Current_Arrow_SpriteRect = Arrow_SpriteRect->at(CH_RIGHT*PLAYER_ARROW_ATTACK_ANIMATION_FRAME);
-
-	//initialize
-	Set_Attack_Style();
-}
+//Player_Base::Player_Base(int x, int y)
+//{
+//    //Initial position
+//	X = x;
+//	Y = y;
+//    
+//	//Initial arrow position
+//	arrow_x = X;
+//	arrow_y = Y;
+//
+//	Sprite_Width = PC_WIDTH, Sprite_Height = PC_HEIGHT;
+//	Sprite_Filename = ""; //Empty sprite for now
+//
+//	//Player Tile Surface
+//	Characters_Tile = new RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
+//
+//	//Initial moving status
+//	moving_status = false;
+//
+//	Attack_Tile_Rect = new std::vector<Rect>;
+//	Attack_Tile_Rect->reserve(8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME);
+//	
+//	Rect _temp_ch_rect;
+//	_temp_ch_rect.setw( Sprite_Width );
+//	_temp_ch_rect.seth( Sprite_Height );
+//
+//	//First allocation by pushback
+//	for (signed int i = 0; i < 8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME; i++)
+//	{
+//		Attack_Tile_Rect->push_back(_temp_ch_rect);
+//	}
+//	//Now allocation by iterator
+//	for (signed int i = 0; i < 8; i++)  //The 8 directions
+//	{
+//		for (signed int j = 0; j < PLAYER_SWORD_ATTACK_ANIMATION_FRAME; j++) //Frames
+//		{
+//			_temp_ch_rect.setx( Sprite_Width * j );
+//			_temp_ch_rect.sety( Sprite_Height * i );
+//			Attack_Tile_Rect->at(i*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + j) = _temp_ch_rect;
+//		}
+//	}
+//	
+//	//Assign the right sprite to the player by default
+//	Current_Tile_Rect = Attack_Tile_Rect->at(CH_RIGHT*PLAYER_SWORD_ATTACK_ANIMATION_FRAME);
+//
+//	//Initialize animation variables
+//    frame = 0;  // for animation
+//
+//	//Default time between frame
+//	DeltaTicks = 1000/FRAMES_PER_SECOND;
+//
+//	//Attack variable
+//	attack_status = false; //false = 0
+//	attack_style = 0; //default: unarmed
+//	attack_successfull = 0; //Tells if a monster has been hit, by default no
+//	attack_initial_x = -1;
+//	attack_initial_y = -1;
+//	attack_direction = -1;
+//
+//	//Collision Box Definition: The collision box has the size of the character
+//	Collision_Box.setx(X);
+//    Collision_Box.sety(Y);
+//    Collision_Box.setw(Sprite_Width);
+//    Collision_Box.seth(Sprite_Height);
+//
+//	/****Arrow***/
+//	string Arrow_Ini = "Data/Items/Arrow.ini";
+//	std::ifstream fi_arrow(Arrow_Ini.c_str()) ;
+//	if (! fi_arrow.fail()) //Check file present
+//	{
+//		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Width") ) >> Arrow_Sprite_Width;
+//		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Sprite_Height") ) >> Arrow_Sprite_Height;
+//		//Arrow surface
+//		Arrow_Tile = new RGBSurface( Ini_Manager::Get_Option_String(Arrow_Ini, "Filename") , Color(0x80, 0x80, 0x80));
+//		std::stringstream( Ini_Manager::Get_Option_String(Arrow_Ini, "Arrow_Vel") ) >> Arrow_Vel;
+//	}
+//	fi_arrow.close();
+//
+//	//Clip
+//	Arrow_SpriteRect = new std::vector<Rect>;
+//
+//	Rect _temp_arrow_rect;
+//	_temp_arrow_rect.setx(0);
+//	_temp_arrow_rect.setw(Arrow_Sprite_Width);
+//	_temp_arrow_rect.seth(Arrow_Sprite_Height);
+//
+//	//First allocation by pushback
+//	for (signed int i = 0; i < 8 * PLAYER_SWORD_ATTACK_ANIMATION_FRAME; i++)
+//	{
+//		Arrow_SpriteRect->push_back(_temp_arrow_rect);
+//	}
+//	//Now allocation by iterator
+//	for (signed int i = 0; i < 8; i++)  //The 8 directions
+//	{
+//		_temp_arrow_rect.sety(Arrow_Sprite_Height*i);
+//		Arrow_SpriteRect->at(i*PLAYER_ARROW_ATTACK_ANIMATION_FRAME) = _temp_arrow_rect;
+//	}
+//
+//	//default arrow sprite rect
+//	Current_Arrow_SpriteRect = Arrow_SpriteRect->at(CH_RIGHT*PLAYER_ARROW_ATTACK_ANIMATION_FRAME);
+//
+//	//initialize
+//	Manage_Attack_Style_Graphic();
+//}
 
 //Destructor
 Player_Base::~Player_Base()
 {
-	delete Players_Tile_Distant, Players_Tile_Distant = NULL;
-	delete Players_Tile_Melee, Players_Tile_Melee = NULL;
-	delete Player_Attack_Tile_Rect, Player_Attack_Tile_Rect = NULL;
 	delete Arrow_SpriteRect, Arrow_SpriteRect = NULL;
 	delete Arrow_Tile, Arrow_Tile = NULL;
+}
 
-	//if ( Characters_Tile != NULL)
-	//	delete Characters_Tile, Characters_Tile = NULL;
+//Manage attack between distant & melee style if these style are or non present
+bool Player_Base::Manage_Attack_Style_Characteristics()
+{
+	//Change weapon style by looping between the available styles (2 for the moment)
+	Set_Attack_Style( Get_Attack_Style() + 1 );
+	if (Get_Attack_Style() > 2) { Set_Attack_Style(1); } //loop between style
+
+	return true;
 }
 
 //Character Graphic Style Initialiation regarding the attack style
-bool Player_Base::Set_Attack_Style()
+bool Player_Base::Manage_Attack_Style_Graphic()
 {
 try
 {
@@ -201,10 +208,16 @@ try
 
 	//int character_max_range = 0;
 
-	// Melee Style
-	if (attack_style == 1)
+	//Unarmed Style
+	if (attack_style == 0)
 	{
-		Characters_Tile = Players_Tile_Melee;
+		Characters_Current_Tileset = Characters_Current_Unarmed_Tileset;
+		//P0_Logger << nl << "Graphic Style Updated To Unarmed Style : OK " << std::endl;
+	}
+	// Melee Style
+	else if (attack_style == 1)
+	{
+		Characters_Current_Tileset = Players_Tile_Melee;
 		
 		//range: Only hit at contact (TODO future: find a more realistic hit with the sword)
 		BASE_RANGE = 1;
@@ -215,7 +228,7 @@ try
 	// Distant Style
 	else if (attack_style == 2)
 	{
-		Characters_Tile = Players_Tile_Distant;
+		Characters_Current_Tileset = Players_Tile_Distant;
 			
 		//range: 6 square
 		BASE_RANGE = BATF_SPRITE_W*6;
@@ -237,16 +250,24 @@ try {
 	xVel = (rand()%3-1)*Ch_Vel;
 	yVel = (rand()%3-1)*Ch_Vel;
 
-	//Move collision box to the futute position
-	Collision_Box.setx(X + xVel);
-	Collision_Box.sety(Y + yVel);
-
-	//handle collisions
-	if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
+	if( Assign_Direction_Sprite() == false )
+	{ 
+		P0_Logger << nl << "Check character direction Failed " << std::endl;    
+	}
+	if ( Get_Moving_Status() ) //we're really moving but not simply changing the direction
 	{
-		//No Error => Update position 
-		X = Collision_Box.getx();
-		Y = Collision_Box.gety();
+
+		//Move collision box to the futute position
+		Collision_Box.setx(X + xVel);
+		Collision_Box.sety(Y + yVel);
+
+		//handle collisions
+		if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
+		{
+			//No Error => Update position 
+			X = Collision_Box.getx();
+			Y = Collision_Box.gety();
+		}
 	}
 
 	return true; //no error
@@ -323,47 +344,48 @@ bool Player_Base::Assign_Direction_Sprite()
 try {
 	if (!Get_Attack_Status()) //no attack is occuring
 	{
-		int old_move_status = move_status;
+		int old_Move_Status = Move_Status;
 
 		//check velocities
 		if ( (Get_xVel() > 0) && (Get_yVel() == 0) ) //CH is moving right
 		{
-			move_status = CH_RIGHT;
+			Move_Status = CH_RIGHT;
 		}
 		else if ( (Get_xVel() > 0) && (Get_yVel() > 0) )  //right down
 		{
-			move_status = CH_RIGHT_DOWN;
+			Move_Status = CH_RIGHT_DOWN;
 		}
 		else if ( (Get_xVel() == 0) && (Get_yVel() > 0) )  //down
 		{
-			move_status = CH_DOWN;
+			Move_Status = CH_DOWN;
 		}
 		else if ( (Get_xVel() < 0) && (Get_yVel() > 0) ) //left down
 		{
-			move_status = CH_LEFT_DOWN;
+			Move_Status = CH_LEFT_DOWN;
 		}
 		else if ( (Get_xVel() < 0) && (Get_yVel() == 0) ) //left
 		{
-			move_status = CH_LEFT;
+			Move_Status = CH_LEFT;
 		}
 		else if ( (Get_xVel() < 0) && (Get_yVel() < 0) ) //left up
 		{
-			move_status = CH_LEFT_UP;
+			Move_Status = CH_LEFT_UP;
 		}
 		else if ( (Get_xVel() == 0) && (Get_yVel() < 0) ) //up
 		{
-			move_status = CH_UP;
+			Move_Status = CH_UP;
 		}
 		else if ( (Get_xVel() > 0) && (Get_yVel() < 0) ) //right up
 		{
-			move_status = CH_RIGHT_UP;
+			Move_Status = CH_RIGHT_UP;
 		}
 		
 		//Good sprite for the direction
-		Characters_SpriteRect = Player_Attack_Tile_Rect->at(move_status*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + 0);
+		//Current_Tile_Rect = Attack_Tile_Rect->at(Move_Status*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + 0);
+		Current_Tile_Rect = Stop_Animation->Get_Animation_Tile_Rect()->at(Move_Status);
 
 		//Check if we are changing direction
-		if ( old_move_status != move_status )
+		if ( old_Move_Status != Move_Status )
 		{ //change but dont move
 			//xVel = 0;
 			//yVel = 0;
@@ -392,7 +414,7 @@ bool Player_Base::Attack()
 try
 {
 	attack_status = true;
-	attack_direction = move_status;
+	attack_direction = Move_Status;
 
 	//By default consider that no attack was successfull
 	attack_successfull = 0;
@@ -613,7 +635,8 @@ bool Player_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Character
 			frame = 0; //reset frame anim
 
 		//assign the good sprite rect to the character sprite rect depending on the frame and the direction
-		Characters_SpriteRect = Player_Attack_Tile_Rect->at(attack_direction*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + frame);
+		Current_Tile_Rect = Stop_Animation->Get_Animation_Tile_Rect()->at(attack_direction * Stop_Animation->Get_Animation_Frame_Number() + frame );
+		//Current_Tile_Rect = Attack_Tile_Rect->at(attack_direction*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + frame);
 		
 		//at the second frame of the anim we check if attack hit a monster
 		if ( frame == 1 )

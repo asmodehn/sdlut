@@ -40,7 +40,7 @@ class Monster_Base : public Character_Base
 		Monster_Base();
 
 		//Constructor that initialize the variables
-		Monster_Base(int& x, int& y);
+		//Monster_Base(int& x, int& y);
 
 		//Copy construtor
 		Monster_Base(const Monster_Base& ToCopy);

@@ -13,7 +13,7 @@ class Daemons
 private:
 	//variables that need to be designed externally
 	Player* myPlayer;
-	NPCs* myNPC; //The NPC Definition
+	NPC_Merchant* myNPC; //The NPC Definition
 	std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector;
 	std::vector<BattleField_Sprite*>* Environment_Sprite_Vector;
 	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton;
@@ -25,7 +25,7 @@ private:
 
 public:
 /***Def****/	
-	Daemons(Player* &myPlayer, NPCs* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
+	Daemons(Player* &myPlayer, NPC_Merchant* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
 				 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
 				 std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector
 				 );

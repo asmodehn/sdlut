@@ -1,12 +1,7 @@
 #ifndef Ini_Manager_HH
 #define Ini_Manager_HH
 
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
-using namespace std;
+#include "Base.hh"
 
 //Ini Manager Class
 class Ini_Manager

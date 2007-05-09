@@ -1,7 +1,7 @@
 #include "Input_Management.hh"
 
 //Constructor
-KeyboardInput::KeyboardInput(Player* &myPlayer, NPCs* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
+KeyboardInput::KeyboardInput(Player* &myPlayer, NPC_Merchant* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
 				 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
 				 std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector,
 				 Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, Daemons* &myDaemons
@@ -173,13 +173,15 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				//Attack Mode
 				if ((s.getKey() == CHANGE_ATTACK_MODE_1) || (s.getKey() == CHANGE_ATTACK_MODE_2))
 				{
-					//Change weapon style by looping between the available styles (2 for the moment)
-					myPlayer->Set_Attack_Style( myPlayer->Get_Attack_Style() + 1 );
-					if (myPlayer->Get_Attack_Style() > 2) { myPlayer->Set_Attack_Style(1); } //loop between style
-					//Update the graphic style of the character
-					if( myPlayer->Set_Attack_Style() == false )
+					//Update the attack style of the character
+					if( myPlayer->Manage_Attack_Style_Characteristics() == false )
                     { 
-						P0_Logger << nl << "Update Graphic Style FAILED " << std::endl;
+						P0_Logger << nl << "Update Attack Style Characteristics FAILED " << std::endl;
+                    }
+					//Update the attack style's graphiks of the character
+					if( myPlayer->Manage_Attack_Style_Graphic() == false )
+                    { 
+						P0_Logger << nl << "Update Attack's Graphic Style FAILED " << std::endl;
                     }
 				}
 				if ((s.getKey() == KKEnter) || (s.getKey() == KKEnter))

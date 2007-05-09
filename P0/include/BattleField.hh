@@ -2,7 +2,7 @@
 #define BattleField_HH
 
 //#include "BattleField_Sprite.hh"
-#include "Base.hh"
+#include "Config.hh"
 
 //Battlefield Sprites will be referenced inside a vector which will be used to generate the battlefield (background or environment)
 class BattleField_Sprite

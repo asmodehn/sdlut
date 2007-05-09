@@ -1,7 +1,7 @@
 #include "Render_Engine.hh"
 
 //Constructor
-Render_Engine::Render_Engine(Player* &myPlayer, NPCs* &myNPC, BackGround* &myBackGround, Environment* &myEnvironment,
+Render_Engine::Render_Engine(Player* &myPlayer, NPC_Merchant* &myNPC, BackGround* &myBackGround, Environment* &myEnvironment,
 							 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
 							 Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, KeyboardInput* &myKeyboardInput, Messages* &myMessages
 							 )

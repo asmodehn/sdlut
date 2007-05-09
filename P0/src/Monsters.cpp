@@ -3,7 +3,7 @@
 //Skeleton Full constructor
 Monster_Skeleton::Monster_Skeleton(int x, int y, 
 								   int &Ch_Vel, int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height,
-								   RGBSurface* &Characters_Tile, RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
+								   RGBSurface* &Characters_Current_Tileset, RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
 								   )
 {
     //Initial position
@@ -17,7 +17,7 @@ Monster_Skeleton::Monster_Skeleton(int x, int y,
 	this->Real_Armor = Real_Armor;
 	this->Sprite_Width = Sprite_Width;
 	this->Sprite_Height = Sprite_Height;
-	this->Characters_Tile = Characters_Tile;
+	this->Characters_Current_Tileset = Characters_Current_Tileset;
 	this->Life_Bar_Tile = Life_Bar_Tile;
 	this->empty_life_bar_rect = empty_life_bar_rect;
 	this->real_life_bar_rect = real_life_bar_rect;
@@ -29,7 +29,7 @@ Monster_Skeleton::Monster_Skeleton(int x, int y,
     _monster_clip.seth( Sprite_Height );
 
 	//Assign the sprite
-	Characters_SpriteRect = _monster_clip;
+	Current_Tile_Rect = _monster_clip;
 
 	//Monster type
 	Monster_ID = Humanoid;
@@ -47,7 +47,7 @@ Monster_Skeleton::~Monster_Skeleton()
 }
 
 //Intialize Monster: get all data from external files, assign surface, boxs, ...
-void Monster_Skeleton::Initialize(int &Ch_Vel, int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface* &Characters_Tile, 
+void Monster_Skeleton::Initialize(int &Ch_Vel, int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface* &Characters_Current_Tileset, 
 								  RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect)
 {
 try {
@@ -58,7 +58,7 @@ try {
 	{
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
-		Characters_Tile = new RGBSurface(Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Filename") , Color(0xFF, 0xFF, 0xFF));
+		Characters_Current_Tileset = new RGBSurface(Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Filename") , Color(0xFF, 0xFF, 0xFF));
 		//Sprite_Filename = Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Filename");
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "CH_VEL") ) >> Ch_Vel;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
@@ -66,9 +66,9 @@ try {
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
 		Real_Armor = BASE_ARMOR;		
 	}
-	else { //in case of can't read file
+	else { //can't read file
 		Sprite_Width = 0, Sprite_Height = 0;
-		Characters_Tile = NULL;
+		Characters_Current_Tileset = NULL;
 		Ch_Vel = 0;
 		BASE_LIFE = 0;
 		BASE_ARMOR = 0;
@@ -134,7 +134,7 @@ int Monster_Skeleton::Get_BG_vs_CH_Rules(const int& bgType)
 //Worm Full constructor
 Monster_Worm::Monster_Worm(int x, int y,
 						   int &Ch_Vel, int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height,
-						   RGBSurface* &Characters_Tile, RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
+						   RGBSurface* &Characters_Current_Tileset, RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
 						   )
 {
     //Initial position
@@ -148,7 +148,7 @@ Monster_Worm::Monster_Worm(int x, int y,
 	this->Real_Armor = Real_Armor;
 	this->Sprite_Width = Sprite_Width;
 	this->Sprite_Height = Sprite_Height;
-	this->Characters_Tile = Characters_Tile;
+	this->Characters_Current_Tileset = Characters_Current_Tileset;
 	this->Life_Bar_Tile = Life_Bar_Tile;
 	this->empty_life_bar_rect = empty_life_bar_rect;
 	this->real_life_bar_rect = real_life_bar_rect;
@@ -160,7 +160,7 @@ Monster_Worm::Monster_Worm(int x, int y,
     _monster_clip.seth( Sprite_Height );
 
 	//Assign the sprite
-	Characters_SpriteRect = _monster_clip;
+	Current_Tile_Rect = _monster_clip;
 
 	//Monster type
 	Monster_ID = Worm;
@@ -178,7 +178,7 @@ Monster_Worm::~Monster_Worm()
 }
 
 //Intialize Monster: get all data from external files, assign surface, boxs, ...
-void Monster_Worm::Initialize(int &Ch_Vel, int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface* &Characters_Tile,  
+void Monster_Worm::Initialize(int &Ch_Vel, int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface* &Characters_Current_Tileset,  
 								  RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect)
 {
 try {
@@ -189,7 +189,7 @@ try {
 	{
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Width") ) >> Sprite_Width;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Height") ) >> Sprite_Height;
-		Characters_Tile = new RGBSurface(Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Filename") , Color(0xFF, 0xFF, 0xFF));
+		Characters_Current_Tileset = new RGBSurface(Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Filename") , Color(0xFF, 0xFF, 0xFF));
 		//Sprite_Filename = Ini_Manager::Get_Option_String(Monster_Ini, "Sprite_Filename");
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "CH_VEL") ) >> Ch_Vel;
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Life") ) >> BASE_LIFE;
@@ -197,9 +197,9 @@ try {
 		std::stringstream( Ini_Manager::Get_Option_String(Monster_Ini, "Armor") ) >> BASE_ARMOR;
 		Real_Armor = BASE_ARMOR;
 	}
-	else { //in case of can't read file
+	else { //can't read file
 		Sprite_Width = 0, Sprite_Height = 0;
-		Characters_Tile = NULL;
+		Characters_Current_Tileset = NULL;
 		Ch_Vel = 0;
 		BASE_LIFE = 0;
 		BASE_ARMOR = 0;

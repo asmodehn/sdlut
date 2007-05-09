@@ -105,13 +105,13 @@ try {
 	//Vector containing pointers to vector of pointers to monsters
 	Global_Player_Vector = new std::vector< std::vector<Character_Base*> *>;
 
-			/****NPCs****/
+			/****NPC_Merchant****/
 	//Vector of npcs
 	NPCs_Vector = new std::vector<Character_Base*>;
 
 	//Create npc & initialized it
-	myNPC = new NPCs();
-	if( myNPC->Set_Attack_Style() == false ) //intialize Character's graphic aspect
+	myNPC = new NPC_Merchant();
+	if( myNPC->Manage_Attack_Style_Graphic() == false ) //intialize Character's graphic aspect
 	{ 
         P0_Logger << nl << "Failed to set NPC Graphic " << std::endl;
     	Delay(2000);
@@ -135,7 +135,7 @@ try {
     	Delay(2000);
     	return 1;
     }
-	if( myPlayer->Set_Attack_Style() == false ) //intialize Character's graphic aspect
+	if( myPlayer->Manage_Attack_Style_Graphic() == false ) //intialize Character's graphic aspect
 	{ 
         P0_Logger << nl << "Failed to set Player Graphic " << std::endl;
     	Delay(2000);
@@ -253,10 +253,14 @@ bool CleanEverything()
 try {
 
 /********Stop Daemons Process********/
-	myMonster_Factory_Monsters_Moves_Timer->abort(); //monsters movements
-	myMonster_Factory_Monsters_Generation_Timer->abort(); //monsters generation
-	myNPCs_Moves_Timer->abort(); //npcs movements
-	myScore->abort(); //Score
+	if ( myMonster_Factory_Monsters_Moves_Timer != NULL )
+		myMonster_Factory_Monsters_Moves_Timer->abort(); //monsters movements
+	if ( myMonster_Factory_Monsters_Generation_Timer != NULL )
+		myMonster_Factory_Monsters_Generation_Timer->abort(); //monsters generation
+	if ( myNPCs_Moves_Timer != NULL )
+		myNPCs_Moves_Timer->abort(); //npcs movements
+	if ( myScore != NULL )
+		myScore->abort(); //Score
 
 /********Clean UP********/
 	delete myMonster_Factory_Monsters_Moves_Timer, myMonster_Factory_Monsters_Moves_Timer = NULL;
@@ -287,6 +291,8 @@ try {
 
 	delete myDaemons, myDaemons = NULL;
 
+	XML_Manager::Clean_Up();
+
 	return true; //no error
 
 } catch (...) {
@@ -305,10 +311,7 @@ try { //global error management
 	//Create the windows and init everything (SDL, SDL_TTF, ...)
 	if( InitEverything() == false )
 	{ 
-		P0_Logger << nl << "Init Everything failed... " << std::endl;
-		Delay(2000);
-		//SDL_Delay(2000);
-		return 1;
+		throw std::logic_error("Init Everything failed... ");
 	}
 	P0_Logger << nl << "-> Windows, SDL, SDL_TTF And VideoSurface Where Initialized Successfully <-" << std::endl;
 	
@@ -349,26 +352,21 @@ try { //global error management
 	//implement everything needed by the game
 	if( ImplementEverything() == false )
 	{ 
-		P0_Logger << nl << "Implementation failed... " << std::endl;
-		Delay(2000);
-		//SDL_Delay(2000);
-		return 1;
+		throw std::logic_error("Implementation failed... ");
 	}
 	P0_Logger << nl << "-> Everything Was Implemented Successfully <-" << std::endl;
 
 	//Start everything needed during play time
 	if( RunGame() == false )
 	{ 
-		P0_Logger << nl << "Run Game failed... " << std::endl;
-		Delay(2000);
-		//SDL_Delay(2000);
-		return 1;
+		throw std::logic_error("Run Game failed... ");
 	}
+
 
 
 	P0_Logger << nl << "-> Game Stopped Running Succesffully <-" << std::endl;
 
-	//Game stopeed, clean b4 exit
+	//Game stoped, clean b4 exit
 	if( CleanEverything() == false )
 	{ 
 		P0_Logger << nl << "Clean Up failed... " << std::endl;
@@ -380,12 +378,24 @@ try { //global error management
 	P0_Logger << nl << "-> Everything Was Clean Up Succesffully <-" << std::endl;
 
     return 0; //no error occured
-	
-} catch (std::exception e) {
-    P0_Logger << nl << "Unhandled Exception occured in Main : " << e.what() << std::endl;
+
+} catch (std::exception &exc)
+{
+	P0_Logger << nl << exc.what() << std::endl;
+	if( CleanEverything() == false )
+		P0_Logger << nl << "Clean Up failed... " << std::endl;
+	Delay(2000);
+	return 1;
+}
+catch (...)
+{
+    P0_Logger << nl << "Unhandled Exception occured in Main : " << std::endl;
     P0_Logger << nl << "P0 stopped in emergency" << std::endl;
+	if( CleanEverything() == false )
+		P0_Logger << nl << "Clean Up failed... " << std::endl;
+
     Delay(30000);
-    return 1;
+	return 1;
 }
 }
 

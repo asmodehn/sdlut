@@ -8,7 +8,7 @@ void XML_Manager::Clean_Up()
 }
 
 //parse a file and validate it: check file exist, validate file vs is dtd, check pedantic error
-bool XML_Manager::Validate_File(const string &filename)
+void XML_Manager::Validate_File(const string &filename)
 {
 try {
 	xmlTextReaderPtr Reader = xmlReaderForFile( filename.c_str(), NULL,
@@ -36,17 +36,62 @@ try {
 
 	xmlFreeTextReader(Reader);
 
-	return true; //file validated
+	//File validation OK
 
 } catch (std::exception &exc) {
-	cout << exc.what() << endl;
-    return false; //file is not valid
+	throw std::logic_error(exc.what());
 } catch (...) {
-	cout << "Unknown Exception" << endl;
-    return false; //eror occured
+	throw std::logic_error("Unknown Exception When trying To Validate " + filename);
 }
 }
 
+//Check if a node exists inside an xml file
+bool XML_Manager::Check_Node_Exists(const string &filename, const char* Option_Name, bool force_validation /*=0*/)
+{
+try {
+	if (force_validation) //the user ask for file validation
+	{
+		Validate_File(filename);
+	}
+
+	//node name
+	const xmlChar *node_name;
+	//parse file
+	xmlTextReaderPtr Reader = xmlReaderForFile( filename.c_str(), NULL, XML_PARSE_NOBLANKS);
+	//read the 1st node
+	int Read_Node = xmlTextReaderRead(Reader);
+	//loop while there is nodes
+	while ( Read_Node == 1)
+	{
+		node_name = xmlTextReaderConstName(Reader);
+		//check the current node for the option
+		if (! xmlStrcmp( node_name, (const xmlChar*)Option_Name ) )
+		{
+			//node found
+			xmlFreeTextReader(Reader); //free memory
+			return true;
+		}
+
+		//read the next node
+		Read_Node = xmlTextReaderRead(Reader);
+	}
+
+	//node not found
+	xmlFreeTextReader(Reader);
+	return false;
+
+}
+catch (std::exception &exc)
+{
+	throw std::logic_error(exc.what());
+}
+catch (...)
+{
+	throw std::logic_error("Error When Cheking Node Existance In File: " + filename );
+}
+}
+
+//Get an option value string from an xml file and throw an error when option not found
 std::string XML_Manager::Get_Option_String(const string &filename, const char* Option_Name, bool force_validation /*=0*/)
 {
 try {
@@ -55,11 +100,7 @@ try {
 
 	if (force_validation) //the user ask for file validation
 	{
-		if (! Validate_File(filename) )//validate the file
-		{
-			cout << "Error when reading file: " << filename << endl;
-			return res; //invalid file
-		}
+		Validate_File(filename);
 	}
 
 	//node name & value
@@ -89,33 +130,61 @@ try {
 
 	//option not found
 	xmlFreeTextReader(Reader);
-	cout << "Option " << Option_Name << " Not Found In File " << filename << endl;
-	return res;
+	throw std::logic_error("Option: " + (string)Option_Name + " Not Found In File: " + filename );
 
-
-} catch (...) {
-	cout << "Error when reading file: " << filename << endl;
-	return ""; //error occured
+}
+catch (std::exception &exc)
+{
+	throw std::logic_error(exc.what());
+}
+catch (...)
+{
+	throw std::logic_error("Unknow Error When Trying To Get Option: " + (string)Option_Name + " From File: " + filename );
 }
 }
 
+//Get an option value from an xml file when the option is an int and throw an error when option not found
 int XML_Manager::Get_Option_Value(const string &filename, const char* Option_Name, bool force_validation /*= 0*/)
 {
+try {
 	int res = -1;
 	string str_res = Get_Option_String(filename, Option_Name, force_validation);
 	if ( str_res != "")
 		std::stringstream( str_res ) >> res;
 	
 
-	return res;
+	return res; //return the option
+
+}
+catch (std::exception &exc)
+{
+	throw std::logic_error(exc.what());
+}
+catch (...)
+{
+	throw std::logic_error("Unknow Error When Trying To Get Option Value: " + (string)Option_Name + " From File: " + filename );
+}
 }
 
+//Get an option value from an xml file when the option is a long and throw an error when option not found
 long XML_Manager::Get_Option_Value_Long(const string &filename, const char* Option_Name, bool force_validation /*= 0*/)
 {
+try {
+
 	long res = -1;
 	string str_res = Get_Option_String(filename, Option_Name, force_validation);
 	if ( str_res != "")
 		std::stringstream( str_res ) >> res;
 
 	return res;
+
+}
+catch (std::exception &exc)
+{
+	throw std::logic_error(exc.what());
+}
+catch (...)
+{
+	throw std::logic_error("Unknow Error When Trying To Get Option Value Long: " + (string)Option_Name + " From File: " + filename );
+}
 }

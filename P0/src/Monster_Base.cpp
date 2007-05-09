@@ -6,63 +6,66 @@ Monster_Base::Monster_Base()
 }
 
 //Full Construtor
-Monster_Base::Monster_Base(int& x, int& y)
-{
-	//Initial position
-	X = x;
-    Y = y;
-
-	Sprite_Width = MO_WIDTH, Sprite_Height = MO_HEIGHT;
-	Sprite_Filename = ""; //Empty sprite for now
-
-	//Monster Tile Surface
-	Characters_Tile = new RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
-
-	 //Monster Clip definition range for the top left (Random monster from the 7th line)
-    _monster_clip.setx( Sprite_Width * (rand()%8) );
-	_monster_clip.sety( Sprite_Height*6 );
-    _monster_clip.setw( Sprite_Width );
-    _monster_clip.seth( Sprite_Height );
-
-	//Assign sprite
-	Characters_SpriteRect = _monster_clip;
-
-	//Monster type
-	Monster_ID = Humanoid;
-
-	//Collision Box Definition : The collision box has the size of the monster
-	Collision_Box.setx(X);
-    Collision_Box.sety(Y);
-    Collision_Box.setw(Sprite_Width);
-    Collision_Box.seth(Sprite_Height);
-
-	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
-	Alive_Status = true;
-		
-	//Life bar infos
-	Life_Bar_Tile = new RGBSurface("Data/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
-	
-	empty_life_bar_rect.setx(0);
-	empty_life_bar_rect.sety(0);
-	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
-	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
-
-	real_life_bar_rect.setx(0);
-	real_life_bar_rect.sety(LIFE_BAR_HEIGHT);
-	real_life_bar_rect.setw(LIFE_BAR_WIDTH);
-	real_life_bar_rect.seth(LIFE_BAR_HEIGHT);
-}
+//Monster_Base::Monster_Base(int& x, int& y)
+//{
+//	//Initial position
+//	X = x;
+//    Y = y;
+//
+//	Sprite_Width = MO_WIDTH, Sprite_Height = MO_HEIGHT;
+//	Sprite_Filename = ""; //Empty sprite for now
+//
+//	//Monster Tile Surface
+//	Characters_Tile = new RGBSurface(Sprite_Filename, Color(0xFF, 0xFF, 0xFF));
+//
+//	 //Monster Clip definition range for the top left (Random monster from the 7th line)
+//    _monster_clip.setx( Sprite_Width * (rand()%8) );
+//	_monster_clip.sety( Sprite_Height*6 );
+//    _monster_clip.setw( Sprite_Width );
+//    _monster_clip.seth( Sprite_Height );
+//
+//	//Assign sprite
+//	Current_Tile_Rect = _monster_clip;
+//
+//	//Monster type
+//	Monster_ID = Humanoid;
+//
+//	//Collision Box Definition : The collision box has the size of the monster
+//	Collision_Box.setx(X);
+//    Collision_Box.sety(Y);
+//    Collision_Box.setw(Sprite_Width);
+//    Collision_Box.seth(Sprite_Height);
+//
+//	//Bool that indicate if the monster is alive or dead: by default the monster is created alive
+//	Alive_Status = true;
+//		
+//	//Life bar infos
+//	Life_Bar_Tile = new RGBSurface("Data/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+//	
+//	empty_life_bar_rect.setx(0);
+//	empty_life_bar_rect.sety(0);
+//	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
+//	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+//
+//	real_life_bar_rect.setx(0);
+//	real_life_bar_rect.sety(LIFE_BAR_HEIGHT);
+//	real_life_bar_rect.setw(LIFE_BAR_WIDTH);
+//	real_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+//}
 
 //Copy construtor
 Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 {
+	//
+	//TODO: complete list
+	//
 	X = ToCopy.X;
 	Y = ToCopy.Y;
 	Sprite_Width = ToCopy.Sprite_Width;
 	Sprite_Height = ToCopy.Sprite_Height;
-	Characters_Tile = ToCopy.Characters_Tile;
+	Characters_Current_Tileset = ToCopy.Characters_Current_Tileset;
 	_monster_clip = ToCopy._monster_clip;
-	Characters_SpriteRect = ToCopy.Characters_SpriteRect;
+	Current_Tile_Rect = ToCopy.Current_Tile_Rect;
 	Monster_ID = ToCopy.Monster_ID;
 	xVel = ToCopy.xVel;
 	yVel = ToCopy.yVel;

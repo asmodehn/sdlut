@@ -1,14 +1,14 @@
 #include "Daemons.hh"
 
 //Constructor
-Daemons::Daemons(Player* &myPlayer, NPCs* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
+Daemons::Daemons(Player* &myPlayer, NPC_Merchant* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
 				 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
 				 std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector
 				 )
 {
 	//Allocations
 	/*myPlayer = new Player();
-	myNPC = new NPCs();
+	myNPC = new NPC_Merchant();
 	BackGround_Sprite_Vector = new std::vector<BattleField_Sprite*>;
 	Environment_Sprite_Vector = new std::vector<BattleField_Sprite*>;
 	Monster_Factory_Skeleton = new Monster_Factory<Monster_Skeleton>;
@@ -81,15 +81,15 @@ try {
 	{
 		if( myNPC->Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
 		{ 
-			P0_Logger << nl << "Move NPCs Failed " << std::endl;    
+			P0_Logger << nl << "Move NPC_Merchant Failed " << std::endl;    
 		}
-		P0_Logger << nl << "Move NPCs " << std::endl;
+		P0_Logger << nl << "Move NPC_Merchant " << std::endl;
 		return interval; // loop
 	} else { //Victory: end of timer
 		return 0;
 	}
 } catch (...) {
-	P0_Logger << nl << "Move NPCs Daemon Failed " << std::endl;
+	P0_Logger << nl << "Move NPC_Merchant Daemon Failed " << std::endl;
 	return interval; // loop
 }
 }

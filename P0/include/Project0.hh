@@ -19,7 +19,7 @@ std::vector<BattleField_Sprite*>* Environment_Sprite_Vector;
 
 std::vector< std::vector<Character_Base*> *>* Global_Player_Vector;
 std::vector<Character_Base*>* NPCs_Vector;
-NPCs* myNPC;
+NPC_Merchant* myNPC;
 std::vector<Character_Base*>* Players_Vector;
 Player* myPlayer;
 

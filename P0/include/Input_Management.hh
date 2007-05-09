@@ -19,7 +19,7 @@ class KeyboardInput : public Keyboard
 
 		//Variables designed to be defined externaly
 		Player* myPlayer; //The Player Definition
-		NPCs* myNPC; //The NPC Definition
+		NPC_Merchant* myNPC; //The NPC Definition
 		std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector; //Vector which will contains all BackGround type and clip
 		std::vector<BattleField_Sprite*>* Environment_Sprite_Vector; //Vector which will contains all Environment items type and clip
 		Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton; //A factory of Monster Skeletons
@@ -33,7 +33,7 @@ class KeyboardInput : public Keyboard
 	public:
 
 		//Def 
-		KeyboardInput(Player* &myPlayer, NPCs* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
+		KeyboardInput(Player* &myPlayer, NPC_Merchant* &myNPC, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector,
 				 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
 				 std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector,
 				 Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, Daemons* &myDaemons

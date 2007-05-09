@@ -3,12 +3,12 @@
 <!DOCTYPE Animation SYSTEM "../DTDs/Animation.dtd">
 
 <Animation>
-	<Animation_TS_Filename>Human_w_Bow_Pause.png</Animation_TS_Filename>
+	<Animation_TS_Filename>Merchant Run.png</Animation_TS_Filename>
 	
 	<TS_ColorKey_RGB>
-		<ColorKey_R>106</ColorKey_R>
-		<ColorKey_G>76</ColorKey_G>
-		<ColorKey_B>48</ColorKey_B>
+		<ColorKey_R>94</ColorKey_R>
+		<ColorKey_G>66</ColorKey_G>
+		<ColorKey_B>41</ColorKey_B>
 	</TS_ColorKey_RGB>
 	
 	<Sprite_Dimensions>
@@ -17,6 +17,7 @@
 	</Sprite_Dimensions>
 
 	<Animation_Characteristics>
-		<Frames>1</Frames>
+		<Frames>8</Frames>
+		<Frames_Interval>130</Frames_Interval>
 	</Animation_Characteristics>
 </Animation>

@@ -1,10 +1,7 @@
 #ifndef Sounds_HH
 #define Sounds_HH
 
-#include "SDL.hh"
-
-using namespace RAGE;
-using namespace RAGE::SDL;
+#include "Base.hh"
 
 //Channel of the null sound (the default chan)
 const int NullSound_Chan = 0;

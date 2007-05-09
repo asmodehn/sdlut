@@ -22,7 +22,7 @@ class Player_Base : public Character_Base
 
 		//Fight variables
 		bool attack_status; //Attack key pressed yes or no 
-		int attack_style; //Manage the style of attack (0: nothing, 1: melee attack success; 2: distant attack success; 3&+: TO DO)
+		int attack_style; //Manage the style of attack (0: unarmed, 1: melee attack, 2: distant attack, 3&+: TODO(future) )
 		int attack_successfull; //get the monster ID that has been hitted to print the good attack msg
 			//initial info of the attack (-1 means no attack)
 		int attack_initial_x;
@@ -30,14 +30,8 @@ class Player_Base : public Character_Base
 		int attack_direction;
 
 		//players specifics tiles
-		RGBSurface* Players_Tile_Melee;
-		RGBSurface* Players_Tile_Distant;
-
-		//Character Clips Vector
-		std::vector<Rect>* Player_Attack_Tile_Rect;
-		//
-		//TODO(future): define one vector per style
-		//
+		RGBSurface* Players_Tile_Melee; //designed to disapear
+		RGBSurface* Players_Tile_Distant; //designed to disapear
 
 		//animation variables
 		int frame;
@@ -59,7 +53,7 @@ class Player_Base : public Character_Base
 
 		//Initialize
 		Player_Base();
-		Player_Base(int X, int Y);
+		//Player_Base(int X, int Y);
 		virtual ~Player_Base();
 
 		/****Accessor****/
@@ -175,8 +169,11 @@ class Player_Base : public Character_Base
 
 		/****Methods****/
 
-		//Update the graphic regarding the attack style
-		bool Set_Attack_Style();
+		//Manage attack characteristics regarding the attack style
+		bool Manage_Attack_Style_Characteristics();
+
+		//Manage the attack style's graphic regarding the attack style
+		bool Manage_Attack_Style_Graphic();
 	    
 		//Move the Character and check collisions with everything (default: random move)
 		virtual bool Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);

@@ -3,6 +3,7 @@
 
 //#include "Base.hh"
 #include "BattleField.hh"
+#include "Animations.hh"
 
 //Character Class
 class Character_Base
@@ -18,7 +19,7 @@ protected:
 
 	//Sprite Characteristics
 	int Sprite_Width, Sprite_Height;
-	string Sprite_Filename;
+	string Sprite_Filename; //designed to disapear
 
 	//Characteristics of the character
 	int BASE_LIFE, Real_Life;
@@ -26,12 +27,27 @@ protected:
 	int BASE_INFLICTED_DAMAGE, Real_Inflicted_Damage;
 	int BASE_RANGE, Real_Range;
 
-	//Tile & Clip
-	RGBSurface* Characters_Tile;
-	Rect Characters_SpriteRect;
+	//Attack Styles
+	bool Melee_Style_Available, Distant_Style_Available, Throwing_Style_Available, Magic_Style_Available;
+
+	//Clip (never deleted coz are only there to link with the real animation tile rect)
+	Rect Current_Tile_Rect;
+	
+	//Tileset (never deleted coz are only there to link with the real animation tileset)
+	RGBSurface* Characters_Current_Tileset;
+	RGBSurface* Characters_Current_Unarmed_Tileset;
+	RGBSurface* Characters_Current_Melee_Tileset;
+	RGBSurface* Characters_Current_Distant_Tileset;
+
+	//Animations (designed to be deleted where it's used not in character_base's destructor)
+	Character_Animation *Attack_Animation, *Death_Animation, *Run_Animation, *Walk_Animation, *Hit_Animation, *Stop_Animation, *Pause_Animation;
 
 	//The collision boxes of the character
 	Rect Collision_Box;
+	int CB_X_Modifier;
+	int CB_Y_Modifier;
+	int CB_Width;
+	int CB_Height;
 
 	//Bool that will indicate if the character is alive or dead
 	bool Alive_Status;
@@ -40,7 +56,10 @@ protected:
 	Rect Allowed_Area;
 
 	//moving direction
-	int move_status;
+	int Move_Status;
+
+	//Parse the xml file (called by the constructor)
+	void Parse_Description_File(const string &Description_Filename);
 
 	//Battlefield rules (pure virtuals)
 	virtual int Get_BG_vs_CH_Rules(const int& bgType) = 0;

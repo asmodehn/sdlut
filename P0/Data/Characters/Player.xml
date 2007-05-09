@@ -3,15 +3,21 @@
 <Character_Description>
 	<Character_Type>Player</Character_Type>
 	<Data_Root_Directory>Data/Characters/</Data_Root_Directory>
-	<Sprite>
-		<Sprite_Filename>Character_Fighter.png</Sprite_Filename>
-		<Default_Sprite_Width>96</Default_Sprite_Width>
-		<Default_Sprite_Height>96</Default_Sprite_Height>
-	</Sprite>
 	<Coords>
 		<Initial_Position_X>192</Initial_Position_X>
 		<Initial_Position_Y>224</Initial_Position_Y>
 	</Coords>
+	<Default_Sprite>
+		<Default_Sprite_Width>96</Default_Sprite_Width>
+		<Default_Sprite_Height>96</Default_Sprite_Height>
+	</Default_Sprite>
+	<Default_Collision_Box>
+		<X_Modifier>+33</X_Modifier>
+		<Y_Modifier>+20</Y_Modifier>
+		<CB_Width>34</CB_Width>
+		<CB_Height>59</CB_Height>
+	</Default_Collision_Box>
+
 	<Characteristics>
 		<Velocity>120</Velocity><!-- Eceptionnaly it's in px/s coz its the player-->
 		<Life>100</Life>
@@ -19,8 +25,8 @@
 		<Damage>100</Damage>
 	</Characteristics>
 	<Default_Animations>
-		<Style>Unarmed</Style>
-		<Type>Melee</Type>
+		<Style>Unarmed</Style><!-- Unarmed|Melee|Distant  ONLY !!-->
+		<Type>Unarmed</Type><!-- Unarmed|Sword|Bow  ONLY !!-->
 		<Attack_Animation_Filename>Human_Unarmed_Attack.xml</Attack_Animation_Filename>
 		<Death_Animation_Filename>Human_Unarmed_Death.xml</Death_Animation_Filename>
 		<Hit_Animation_Filename>Human_Unarmed_Hit.xml</Hit_Animation_Filename>

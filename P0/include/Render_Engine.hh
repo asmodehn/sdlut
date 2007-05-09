@@ -13,7 +13,7 @@ class Render_Engine : public Engine
 private:
 	//Variable that need to be designed externally
 	Player* myPlayer;
-	NPCs* myNPC; //The NPC Definition
+	NPC_Merchant* myNPC; //The NPC Definition
 	BackGround* myBackGround;
 	Environment* myEnvironment;
 	Monster_Factory<Monster_Skeleton>* Monster_Factory_Skeleton;
@@ -26,7 +26,7 @@ private:
 	
 public:
 /****Def****/
-	Render_Engine(Player* &myPlayer, NPCs* &myNPC, BackGround* &myBackGround, Environment* &myEnvironment, Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton,
+	Render_Engine(Player* &myPlayer, NPC_Merchant* &myNPC, BackGround* &myBackGround, Environment* &myEnvironment, Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton,
 				Monster_Factory<Monster_Worm>* &Monster_Factory_Worm, Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, KeyboardInput* &myKeyboardInput, Messages* &myMessages
 				);
 	~Render_Engine();

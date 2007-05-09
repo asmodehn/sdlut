@@ -8,7 +8,7 @@ Monster_Factory<Monster_Template>::Monster_Factory()
 	Monster_Vector = new std::vector<Character_Base*>;
 	BattleField_Cutting_Vector = new std::vector<BattleField_Zone*>;
 
-	Monster_Template::Initialize(Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
+	Monster_Template::Initialize(Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Current_Tileset,
 								Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 }
 
@@ -21,7 +21,7 @@ Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters, std::
 	Global_Monster_Vector->push_back(Monster_Vector);
 	BattleField_Cutting_Vector = BattleField_Zone::Fill_Vector();
 
-	Monster_Template::Initialize(Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Tile,
+	Monster_Template::Initialize(Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Current_Tileset,
 								Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
 	P0_Logger << nl << "Factory CONSTRUCTED Successfully " << std::endl;
@@ -31,7 +31,7 @@ Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters, std::
 template <typename Monster_Template>
 Monster_Factory<Monster_Template>::~Monster_Factory()
 {
-	delete Characters_Tile, Characters_Tile = NULL;
+	delete Characters_Current_Tileset, Characters_Current_Tileset = NULL;
 	delete Life_Bar_Tile, Life_Bar_Tile = NULL;
 
 	for (unsigned int i = 0; i < Monster_Vector->size(); i++)
@@ -82,7 +82,7 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 
 	//first attempt to create the monster
 	Monster_Template* myMonster = new Monster_Template(x, y, Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
-													Characters_Tile, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
+													Characters_Current_Tileset, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
 	//if something don't allow the monster to be here, loop
 	while ( (! (myMonster->Check_Cutting_Allow_Monster(BattleField_Cutting_Vector)) ) || (! myMonster->Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, false) ) )
@@ -118,7 +118,7 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 		//delete myMonster, myMonster = NULL;
 		//ReCreate Monster
 		//myMonster = new Monster_Template(x, y, Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
-									//	Characters_Tile, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
+									//	Characters_Current_Tileset, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
 
 	}
 	

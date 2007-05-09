@@ -4,7 +4,7 @@
 Character_Base::Character_Base()
 {
 	X = 0, Y =0;
-	Ch_Vel = CH_VEL;
+	Ch_Vel = CH_VEL; //default velocity
 	xVel = 0, yVel = 0;
 
 	Sprite_Width = 0, Sprite_Height = 0;
@@ -15,7 +15,25 @@ Character_Base::Character_Base()
 	BASE_INFLICTED_DAMAGE = 0, Real_Inflicted_Damage = BASE_INFLICTED_DAMAGE;
 	BASE_RANGE = 0, Real_Range = BASE_RANGE;
 
-	//Default Area: the whole level
+		//Attack Styles
+	Melee_Style_Available = false, Distant_Style_Available = false, Throwing_Style_Available = false, Magic_Style_Available = false;
+
+
+		//Tilesets
+	Characters_Current_Tileset = NULL;
+	Characters_Current_Unarmed_Tileset = NULL;
+	Characters_Current_Melee_Tileset = NULL;
+	Characters_Current_Distant_Tileset = NULL;
+
+	//Characters_Tile = NULL;
+
+		//Animations
+	Attack_Animation = NULL, Death_Animation = NULL, Run_Animation = NULL, Walk_Animation = NULL, Hit_Animation = NULL, Stop_Animation = NULL, Pause_Animation = NULL;
+
+
+	CB_X_Modifier = 0, CB_Y_Modifier = 0, CB_Width = 0, CB_Height = 0;
+
+		//Default Area: the whole level
 	Allowed_Area.setx(0);
 	Allowed_Area.sety(0);
 	Allowed_Area.setw(LEVEL_WIDTH);
@@ -23,12 +41,94 @@ Character_Base::Character_Base()
 
 	Alive_Status = true;
 
-	move_status = CH_RIGHT;
+	Move_Status = CH_RIGHT;
 }
 
 //Destructor
 Character_Base::~Character_Base()
 {	
+}
+
+void Character_Base::Parse_Description_File(const string &Description_Filename)
+{
+try {
+	//
+	//TODO Managed the 0 or 1 value for options !!!!
+	//
+	XML_Manager::Validate_File(Description_Filename);
+
+	string Data_Root_Directory = XML_Manager::Get_Option_String(Description_Filename, "Data_Root_Directory");
+	
+	Sprite_Width = XML_Manager::Get_Option_Value(Description_Filename, "Default_Sprite_Width");
+	Sprite_Height = XML_Manager::Get_Option_Value(Description_Filename, "Default_Sprite_Height");
+	
+	X = XML_Manager::Get_Option_Value(Description_Filename, "Initial_Position_X");
+	Y = XML_Manager::Get_Option_Value(Description_Filename, "Initial_Position_Y");
+
+	//Managed the allowed area if defined, else take the default
+	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Allowed_Area") )
+	{
+		Allowed_Area.setx( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_X") );
+		Allowed_Area.sety( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_Y") );
+		Allowed_Area.setw( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_W") );
+		Allowed_Area.seth( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_H") );
+	}
+	
+	CB_X_Modifier = XML_Manager::Get_Option_Value(Description_Filename, "X_Modifier");
+	Collision_Box.setx(X+CB_X_Modifier);
+	CB_Y_Modifier = XML_Manager::Get_Option_Value(Description_Filename, "Y_Modifier");
+	Collision_Box.sety(Y+CB_Y_Modifier);
+	CB_Width = XML_Manager::Get_Option_Value(Description_Filename, "CB_Width");
+	Collision_Box.setw(CB_Width);
+	CB_Height = XML_Manager::Get_Option_Value(Description_Filename, "CB_Height");
+    Collision_Box.seth(CB_Height);
+
+	Ch_Vel = XML_Manager::Get_Option_Value(Description_Filename, "Velocity"); //in px/s coz its the player
+	BASE_LIFE = XML_Manager::Get_Option_Value(Description_Filename, "Life");
+	Real_Life = BASE_LIFE;
+	BASE_ARMOR = XML_Manager::Get_Option_Value(Description_Filename, "Armor");
+	Real_Armor = BASE_ARMOR;
+	BASE_INFLICTED_DAMAGE = XML_Manager::Get_Option_Value(Description_Filename, "Damage");
+	Real_Inflicted_Damage = BASE_INFLICTED_DAMAGE;
+	
+	string Default_Attack_Style = XML_Manager::Get_Option_String(Description_Filename, "Style");
+	string Default_Attack_Type = XML_Manager::Get_Option_String(Description_Filename, "Type");
+
+	//Animations
+	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Attack_Animation_Filename") ) //if animation defined
+		Attack_Animation = new Character_Animation("Attack_Animation_Filename", Data_Root_Directory, Description_Filename);
+
+	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Stop_Animation_Filename") ) //if animation defined
+		Stop_Animation = new Character_Animation("Stop_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
+
+	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Walk_Animation_Filename") ) //if animation defined
+		Walk_Animation = new Character_Animation("Walk_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
+
+	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Run_Animation_Filename") ) //if animation defined
+		Run_Animation = new Character_Animation("Run_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
+
+	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Pause_Animation_Filename") ) //if animation defined
+		Pause_Animation = new Character_Animation("Pause_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
+
+	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Hit_Animation_Filename") ) //if animation defined
+		Hit_Animation = new Character_Animation("Hit_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
+
+	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Death_Animation_Filename") ) //if animation defined
+		Death_Animation = new Character_Animation("Death_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
+
+	//if ( XML_Manager::Check_Node_Exists(Description_Filename, "Talk_Animation_Filename") ) //if animation defined
+	//	Talk_Animation = new Character_Animation("Talk_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
+
+
+
+} catch (std::exception &exc)
+{
+	throw std::logic_error(exc.what());
+}
+catch (...)
+{
+	throw std::logic_error("Unhandled Exception When Parsing XML Description File" + Description_Filename);
+}
 }
 
 //move the character_base's collision box to a place its allowed to be when moving
@@ -329,7 +429,7 @@ try {
 	if ( ( (Camera.getx()-PC_WIDTH) <= X) && (X < (signed)(Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-PC_HEIGHT) <= Y) && (Y < (signed)(Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
 	{
 		//It's present than draw it
-		Screen.blit(*Characters_Tile, Point::Point(X - Camera.getx(), Y - Camera.gety()), Characters_SpriteRect);
+		Screen.blit(*Characters_Current_Tileset, Point::Point(X - Camera.getx(), Y - Camera.gety()), Current_Tile_Rect);
 	}
 	return true; //no error
 } catch (...) {

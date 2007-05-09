@@ -43,7 +43,7 @@
 				AdditionalOptions=" /wd4100 /wd4290 /wd4512 /D&quot;VLD&quot;"
 				Optimization="0"
 				FavorSizeOrSpeed="0"
-				AdditionalIncludeDirectories="..\SDLut\include;include;..\Core\include;..\Math\include;Depends\libxml2-2.6.27.win32\include\;Depends\iconv-1.9.2.win32\include\"
+				AdditionalIncludeDirectories="..\SDLut\include;include;..\Core\include;..\Math\include;Depends\libxml2-2.6.27.win32\include\;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;"
 				MinimalRebuild="true"
 				ExceptionHandling="1"
@@ -131,7 +131,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				AdditionalIncludeDirectories="..\SDLut\include;include;..\Core\include;..\Math\include"
+				AdditionalIncludeDirectories="..\SDLut\include;include;..\Core\include;..\Math\include;Depends\libxml2-2.6.27.win32\include\;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="2"
@@ -151,7 +151,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="..\SDLut\depend\SDL-1.2.11\lib\SDL.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDLmain.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDl_image.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDL_ttf.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\sdl_net.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\sdl_mixer.lib&#x0D;&#x0A;opengl32.lib&#x0D;&#x0A;..\SDLut\build\lib\release\SDLut.lib"
+				AdditionalOptions="..\SDLut\depend\SDL-1.2.11\lib\SDL.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDLmain.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDl_image.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\SDL_ttf.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\sdl_net.lib&#x0D;&#x0A;..\SDLut\depend\SDL-1.2.11\lib\sdl_mixer.lib&#x0D;&#x0A;opengl32.lib&#x0D;&#x0A;..\SDLut\build\lib\release\SDLut.lib&#x0D;&#x0A;Depends\libxml2-2.6.27.win32\lib\libxml2.lib"
 				LinkIncremental="1"
 				GenerateManifest="true"
 				IgnoreAllDefaultLibraries="false"
@@ -198,6 +198,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\src\Animations.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Base.cpp"
 				>
 			</File>
@@ -207,6 +211,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Character_Base.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Config.cpp"
 				>
 			</File>
 			<File
@@ -276,6 +284,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\include\Animations.hh"
+				>
+			</File>
+			<File
 				RelativePath=".\include\Base.hh"
 				>
 			</File>
@@ -285,6 +297,10 @@
 			</File>
 			<File
 				RelativePath=".\include\Character_Base.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Config.hh"
 				>
 			</File>
 			<File

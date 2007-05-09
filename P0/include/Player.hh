@@ -17,6 +17,9 @@ class Player : public Player_Base
 		//The Camera that follow the character
 		Rect Camera;
 
+		//Everything needed to fully clean the player in case of exception or at destruction
+		void Clean_Player();
+
 	public:
 		/***Accessor***/
 		inline void Set_Camera(Rect new_Camera)

@@ -1,7 +1,7 @@
 #ifndef Messages_HH
 #define Messages_HH
 
-#include "Base.hh"
+#include "Config.hh"
 
 class Messages
 {

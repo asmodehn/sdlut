@@ -1,7 +1,7 @@
 #ifndef Menus_HH
 #define Menus_HH
 
-#include "Base.hh"
+#include "Config.hh"
 
 //Escape Menu Class that is used when the user push the escape key while ingame
 class Escape_Menu
