@@ -59,17 +59,15 @@ namespace RAGE
 
 		}
 		
-		Mixer::Mixer(int frequency,unsigned short channels,unsigned short samples)
+		Mixer::Mixer(int frequency,unsigned short channels,unsigned short samples)  throw (std::logic_error)
+		try : _hwspec(frequency, static_cast<Uint8>(channels), samples, Mixer::callback )
 		{
 #ifdef DEBUG
 		Log << nl << "Mixer::Mixer(" << frequency << ", " << channels << ", " << samples << ") called";
 #endif
 
-			_hwspec = new AudioInfo(frequency, static_cast<Uint8>(channels), samples, Mixer::callback );
 			//TODO : if possible use the userdata field to optimize output with mixer... problem : qualitative measure by hearing the sound...
 			//ID : time measure and compare with frequency and samples number ?
-
-			Log << nl << _hwspec;
 			
 			Log << nl << "Using Audio Driver : " << getDriverName();
 
@@ -79,8 +77,13 @@ namespace RAGE
 		Log << nl << "Mixer::Mixer(" << frequency << ", " << channels << ", " << samples << ") done";
 #endif
 		}
+		catch (std::exception& e)
+		{
+			Log << nl << "Exception caught in Mixer::Mixer() : " << e.what();
+		}
+
 		
-		Mixer::Mixer(const Mixer& m)
+		Mixer::Mixer(const Mixer& m) : _hwspec ( m._hwspec )
 {
 			
 #ifdef DEBUG
@@ -105,7 +108,6 @@ namespace RAGE
 				freeChannel(i);
 			}
 			SDL_CloseAudio();
-			delete _hwspec, _hwspec = NULL;
 #ifdef DEBUG
 			Log << nl << "Mixer::~Mixer() done";
 #endif
@@ -136,7 +138,7 @@ namespace RAGE
 	Sound* cvtsound = new Sound(sound);
 	
 	//is the test the other way around ?
-	if (!cvtsound->Convert(_hwspec->format(), _hwspec->channels(), _hwspec->frequency()))
+	if (!cvtsound->Convert(_hwspec.format(), _hwspec.channels(), _hwspec.frequency()))
 	    {
 		    Log << nl << "Erreur lors de la conversion du fichier audio:" << GetError();
 		    delete cvtsound;

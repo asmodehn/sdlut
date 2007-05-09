@@ -6,7 +6,7 @@ namespace RAGE
     namespace SDL
     {
 
-        const VideoInfo * BaseSurface::_vinfo = NULL;
+        const VideoInfo * BaseSurface::_vinfo = 0;
 
         bool BaseSurface::lock(void)
         {

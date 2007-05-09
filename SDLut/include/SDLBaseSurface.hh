@@ -25,6 +25,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <memory>
 
 //declaring SDL_type for late binding
 struct SDL_Surface;
@@ -44,7 +45,7 @@ namespace RAGE
 
 
         private:
-            static const VideoInfo * _vinfo; ///a usefull static pointer, set to the current VideoInfo by AppWindow
+            static const VideoInfo * _vinfo; ///a usefull static pointer, set to the current VideoInfo by AppWindow and reset to 0 on Window destruction
 
         protected:
 

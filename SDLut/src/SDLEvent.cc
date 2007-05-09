@@ -55,21 +55,24 @@ return result;
 	return EventTypestr2rage[strt];
 }
 
-Event::Event(Event::Type type) : _event()
+Event::Event(Event::Type type) : _event( new SDL_Event() )
 {
     //syntax to put in the constructor call to get rid of the warning ?
 	_event->type=(Uint8)type;
 }
 
 
+Event::Event(SDL_Event * const event) : _event(event)
+{
+}
+		    
 Event::~Event()
 {
-	if (_event != NULL) delete _event;
 }
 
 bool Event::push()
 {
-	return SDL_PushEvent(_event) == 0;
+	return SDL_PushEvent(_event.get()) == 0;
 }
 
 int Event::push(int number)
@@ -186,6 +189,12 @@ bool Event::callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse*  mhnd
 				break;
 		}
         return ev_handled;
+}
+
+
+SDL_Event Event::get_SDL()
+{
+	return *_event;
 }
 
 Logger & operator << (Logger & log, const  Event::Type & type)

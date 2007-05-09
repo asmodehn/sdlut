@@ -58,22 +58,21 @@ namespace RAGE
 
     Event EventManager::wait () throw(std::logic_error)
     {
-        SDL_Event * res = new SDL_Event();
-        if (SDL_WaitEvent(res)  == 0 )
+        Event res;
+        if (SDL_WaitEvent(res.get_pSDL())  == 0 )
             throw std::logic_error("Error while waiting for events!");
-        return Event(res);
+        return res;
     }
 
     //handle the next critical event of this type
     bool EventManager::handleNext(Event::Type type)
     {
-        SDL_Event* event=new SDL_Event();
+        Event event;
 
         bool ev_handled = false;
         //to improve
-	if (SDL_PeepEvents(event,1,SDL_GETEVENT,Event::Type2sdl(type)) != -1 )
+	if (SDL_PeepEvents(event.get_pSDL(),1,SDL_GETEVENT,Event::Type2sdl(type)) != -1 )
         {
-            Event event(event);
 #ifdef DEBUG
             assert(ghndlr);
             assert(khndlr);
@@ -89,10 +88,10 @@ namespace RAGE
     //handle all the events in the queue in a loop
     void EventManager::handleAll()
     {
-	Event event(new SDL_Event());
+	Event event;
 
 	//TODO : replace with a get_SDL here...
-        while( SDL_PollEvent(event._event))
+        while( SDL_PollEvent(event.get_pSDL()))
         {
 #ifdef DEBUG
             assert(ghndlr);
@@ -109,10 +108,10 @@ namespace RAGE
     bool EventManager::handleNext()
     {
 
-	Event event(new SDL_Event());
+	Event event;
         bool ev_handled = false;
 
-        if( SDL_PollEvent(event._event)!= 0)
+        if( SDL_PollEvent(event.get_pSDL())!= 0)
         {
             
 #ifdef DEBUG

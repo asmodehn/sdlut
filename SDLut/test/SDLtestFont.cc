@@ -213,7 +213,7 @@ int main(int argc, char** argv)
    //UI Creation
     MyUserInput ui;
 	ui.setConsole(&cons);
-    App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
+    App::getInstance().getWindow()->getEventManager().setKeyboard(&ui);
 
 
 	//without this line the default engine is used

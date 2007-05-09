@@ -22,7 +22,7 @@ namespace RAGE
 
     class Event
     {
-        friend class EventManager;
+        //friend class EventManager;
 
 	    public :
 		    
@@ -47,10 +47,9 @@ namespace RAGE
 	} Type;
 
 	    protected :
-		    SDL_Event * const _event;
+		    std::auto_ptr<SDL_Event> const _event;
 
-		    explicit Event(SDL_Event *const event) : _event(event)
-		    {}
+		    explicit Event(SDL_Event * const event);
 	    
 		    static std::vector<short> EventTyperage2sdl;
 		    static std::map<short,Event::Type> EventTypesdl2rage;
@@ -91,6 +90,9 @@ namespace RAGE
 
             //calls the handler coresponding to the event
 	bool callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse *  mhndlr);
+
+	SDL_Event get_SDL();
+	SDL_Event* get_pSDL() { return _event.get(); }
 
 	
 	friend Logger & operator << (Logger & log, const Type & type);

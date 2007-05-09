@@ -28,7 +28,7 @@ namespace RAGE
 class Mixer
 {
 	//To store the Hardware audio format
-	AudioInfo * _hwspec;
+	AudioInfo _hwspec;
 
 	//here we store a converted version of the Sound depending on Audio Specs
 	//these are the sound currently being played and their order is not the same as the previous vectors.
@@ -52,7 +52,7 @@ class Mixer
 		//SDLemulated : runtime dynamic conversion from asked format to obtained format.
 		//false to preconvert all sounds.
 		//true to preconvert only to asked format. SDL will do runtime conversion if needed for obtained format.
-		Mixer(int frequency = 44100,unsigned short channels = 2,unsigned short samples = 512);
+		Mixer(int frequency = 44100,unsigned short channels = 2,unsigned short samples = 512) throw (std::logic_error);
 		Mixer(const Mixer& m);
 		~Mixer();
 

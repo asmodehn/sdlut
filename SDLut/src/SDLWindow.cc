@@ -199,7 +199,7 @@ namespace RAGE
 	}
 	
         Window::Window(std::string title)
-                : _title(title),_background(Color(0,0,0))
+	: _title(title),_background(Color(0,0,0))
         {
 #ifdef DEBUG
             Log << nl << "Window::Window(" << title << ") called ..." ;
@@ -207,7 +207,7 @@ namespace RAGE
 
             try
             {
-                _eventmanager = new EventManager();
+                
                 _videoinfo = new VideoInfo();
 #ifdef HAVE_OPENGL
 
@@ -239,6 +239,7 @@ namespace RAGE
 
         }
 
+
         Window::~Window()
         {
 #ifdef DEBUG
@@ -248,7 +249,6 @@ namespace RAGE
 
             delete _glmanager, _glmanager = NULL;
 #endif
-			delete _eventmanager, _eventmanager = NULL;
             if (!_userengine) //if the user set his own engine , he is responsible for deleting it
                 delete _engine, _engine = NULL;
             delete _videoinfo, _videoinfo = NULL;
@@ -370,13 +370,6 @@ namespace RAGE
         {
 			assert(framerate>0&&"framerate must be superior to 0 !");
             bool res = false;
-#ifdef DEBUG
-
-            assert(_eventmanager);
-#endif
-
-            if (_eventmanager != NULL)
-            {
 
 #ifdef DEBUG
                 assert (_screen);
@@ -388,7 +381,7 @@ namespace RAGE
 			unsigned long lastframe = SDL_GetTicks();
 			unsigned long newlastrender= SDL_GetTicks();
 			unsigned long lastrender= newlastrender;
-	                    while (!(_eventmanager->quitRequested()))
+	                    while (!(pvm_eventmanager.quitRequested()))
 						{ 
 							//handling all the events
 
@@ -396,7 +389,7 @@ namespace RAGE
 							//semble leak la qd touche souris utilisée jamé del de la ram et aussi qd la souris passe la 1ere fois sur lecran ram utilisée jamé del: leak ds la prise en charge par de fo de la souris ?
 							//le clavier étant implementé ds le test directement ya pa de perte avec lui apparement ^^
 							//
-							_eventmanager->handleAll();
+							pvm_eventmanager.handleAll();
 							
 							//applying the background
 
@@ -442,11 +435,7 @@ namespace RAGE
                 //Loop finished, the EventManager should be reinitialized
                 //delete _eventmanager;
                 //_eventmanager = new EventManager();
-            }
-            else
-            {
-                Log << nl << "ERROR : EventManager @ " << _eventmanager;
-            }
+
             if (!res)
             {
                 Log  << nl << "An error occured when trying to launch the main loop, make sure you have initialized everything." << std::endl;

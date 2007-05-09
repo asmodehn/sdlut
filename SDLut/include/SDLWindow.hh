@@ -19,12 +19,14 @@
 
 #include "SDLEngine.hh"
 #include "SDLVideoInfo.hh"
- #include "SDLVideoSurface.hh"
+#include "SDLVideoSurface.hh"
 #include "SDLColor.hh"
- #ifdef HAVE_OPENGL
+#ifdef HAVE_OPENGL
  #include "SDLGLManager.hh"
- #endif //HAVE_OPENGL
+#endif //HAVE_OPENGL
+#include "SDLEventManager.hh"
 
+#include <memory>
 
 //Default Setup
 #define DEFAULT_DISPLAY_WIDTH 640
@@ -52,7 +54,8 @@ namespace RAGE
             Color _background;
 
             //here because Event are initialised along with video...
-            EventManager * _eventmanager;
+            EventManager pvm_eventmanager;
+	    
             VideoInfo * _videoinfo;
 
             bool _userengine;
@@ -68,6 +71,7 @@ namespace RAGE
             Window(std::string title); // TODO :: add the icon here
 
         public:
+
             ~Window();
 
             //create the screen or reset it if needed because some parameters changed
@@ -93,9 +97,10 @@ namespace RAGE
             {
                 return _videoinfo;
             }
-            EventManager* getEventManager()
+
+	    EventManager & getEventManager()
             {
-                return _eventmanager;
+                return pvm_eventmanager;
             }
 
 

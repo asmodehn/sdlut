@@ -101,7 +101,7 @@ namespace RAGE
         {
 #ifdef DEBUG
             Log << nl << "VideoSurface::getSuggestedBPP(" << width << ", " << height << ") called...";
-            assert( getVideoInfo());
+            assert( getVideoInfo()); //to make sure the auto_ptr is not 0
             assert( getVideoInfo()->getPixelFormat());
 #endif
 

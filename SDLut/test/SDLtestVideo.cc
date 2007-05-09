@@ -95,7 +95,7 @@ int main(int argc, char** argv)
     testlog << nl << " Creating the User Interface... " << std::endl;
     //UI Creation
     MyUserInput ui;
-    App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
+    App::getInstance().getWindow()->getEventManager().setKeyboard(&ui);
 
     App::getInstance().getWindow()->setBGColor(Color (128,0,0));
 	

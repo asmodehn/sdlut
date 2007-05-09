@@ -234,7 +234,7 @@ int main(int argc, char** argv)
 
     //UI Creation
     MyUserInput ui;
-    App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
+    App::getInstance().getWindow()->getEventManager().setKeyboard(&ui);
     
 	App::getInstance().getWindow()->setBGColor(Color (64,0,0));
 

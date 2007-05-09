@@ -96,7 +96,10 @@ namespace RAGE
             {
 		    
 	    }
-            ~EventManager()
+
+        public :
+
+		            ~EventManager()
             {
 				if (!usergeneral)
 					delete ghndlr, ghndlr = NULL;
@@ -106,10 +109,7 @@ namespace RAGE
 					delete khndlr, khndlr = NULL;
 			}
 
-
-
-        public :
-
+			
             void setKeyboard(Keyboard * newkhndlr)
             {
 				delete khndlr,khndlr=NULL;
