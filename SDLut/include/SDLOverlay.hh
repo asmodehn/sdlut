@@ -42,7 +42,7 @@ class Overlay
 public :
 	//Constructor
 	//maybe the current display size must be used ?
-	Overlay(Format f, int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, VideoSurface* dsurf = App::getInstance().getWindow()->getDisplay());
+	Overlay(Format f, int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, VideoSurface * dsurf = &App::getInstance().getWindow()->getDisplay());
 	//Destructor
 	~Overlay();
 

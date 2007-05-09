@@ -230,7 +230,7 @@ int main(int argc, char** argv)
 	
 
     //Getting video informations
-    testlog << nl << *App::getInstance().getWindow()->getVideoInfo() << std::endl;
+    testlog << nl << App::getInstance().getWindow()->getVideoInfo() << std::endl;
 
     //UI Creation
     MyUserInput ui;
@@ -242,13 +242,13 @@ int main(int argc, char** argv)
     //App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 
     //GLManager test
-    GLManager * glman=App::getInstance().getWindow()->getGLManager();
+    App::getInstance().getWindow()->getGLManager();
     testlog << nl<<std::boolalpha <<
-    "setRsize(5) " << glman->setRSize(5) << nl <<
-    "setGSize(5) " << glman->setGSize(5) << nl <<
-    "setBSize(5) " << glman->setBSize(5) << nl <<
-    "setASize(5) " << glman->setASize(5) << nl <<
-    "setBufferSize(5) " << glman->setBufferSize(12) << nl <<
+    "setRsize(5) " << App::getInstance().getWindow()->getGLManager().setRSize(5) << nl <<
+    "setGSize(5) " << App::getInstance().getWindow()->getGLManager().setGSize(5) << nl <<
+    "setBSize(5) " << App::getInstance().getWindow()->getGLManager().setBSize(5) << nl <<
+    "setASize(5) " << App::getInstance().getWindow()->getGLManager().setASize(5) << nl <<
+    "setBufferSize(5) " << App::getInstance().getWindow()->getGLManager().setBufferSize(12) << nl <<
     std::endl;
 
 

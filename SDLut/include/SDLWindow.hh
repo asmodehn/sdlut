@@ -56,16 +56,16 @@ namespace RAGE
             //here because Event are initialised along with video...
             EventManager pvm_eventmanager;
 	    
-            VideoInfo * _videoinfo;
+            VideoInfo pvm_videoinfo;
 
             bool _userengine;
             Engine* _engine;
 #ifdef HAVE_OPENGL
 
-            GLManager * _glmanager;
+            GLManager pvm_glmanager;
 #endif
 
-            VideoSurface * _screen;
+            std::auto_ptr<VideoSurface> pvm_screen;
 		RGBSurface _icon;
 
             Window(std::string title); // TODO :: add the icon here
@@ -77,28 +77,28 @@ namespace RAGE
             //create the screen or reset it if needed because some parameters changed
 			//returns NULL if no screen available
 			// calls Engine->init();
-            VideoSurface * resetDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT);
+            bool resetDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT);
             //just resize the screen (without changing flags, or bpp)
 			//returns NULL if no screen available
 			// calls Engine->resize();
-            VideoSurface * resizeDisplay (int width, int height) const;
+            bool resizeDisplay (int width, int height) const;
 
-            VideoSurface * getDisplay( void )
+            VideoSurface & getDisplay( void )
             {
-		    //if (_screen == NULL) _screen = resetDisplay();
-                return _screen;
+		    //if (!pvm_screen.get()) resetDisplay();
+                return *pvm_screen;
             }
 //            void setDisplay( VideoSurface * display)
 //            {
 //                _screen=display;
 //            }
 
-            VideoInfo * getVideoInfo( void )
+            inline VideoInfo & getVideoInfo( void )
             {
-                return _videoinfo;
+                return pvm_videoinfo;
             }
 
-	    EventManager & getEventManager()
+	    inline EventManager & getEventManager()
             {
                 return pvm_eventmanager;
             }
@@ -109,9 +109,9 @@ namespace RAGE
             bool setFullscreen(bool val);
 #ifdef HAVE_OPENGL
 
-            GLManager * getGLManager()
+            inline GLManager & getGLManager()
             {
-                return _glmanager;
+                return pvm_glmanager;
             }
             bool setOpenGL(bool val);
 #endif
