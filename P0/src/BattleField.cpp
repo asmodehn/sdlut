@@ -55,10 +55,10 @@ std::vector<BattleField_Zone*>* BattleField_Zone::Fill_Vector()
 	std::vector<BattleField_Zone*>* BattleField_Zone_Vector = new std::vector<BattleField_Zone*>;
 	
 	//Areas
-	BattleField_Zone_Vector->push_back( new BattleField_Zone(0, 0, 640, 640, 1, Humanoid) );
+	BattleField_Zone_Vector->push_back( new BattleField_Zone(0, 0, 640, 640, 1, Undead) );
 	BattleField_Zone_Vector->push_back( new BattleField_Zone(640, 0, 640, 640, 0) );
-	BattleField_Zone_Vector->push_back( new BattleField_Zone(0, 640, 640, 640, 2, Humanoid, Worm) );
-	BattleField_Zone_Vector->push_back( new BattleField_Zone(640, 640, 640, 640, 1, Worm) );
+	BattleField_Zone_Vector->push_back( new BattleField_Zone(0, 640, 640, 640, 2, Undead, Crawler) );
+	BattleField_Zone_Vector->push_back( new BattleField_Zone(640, 640, 640, 640, 1, Crawler) );
 
 	return BattleField_Zone_Vector;
 }

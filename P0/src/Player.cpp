@@ -5,6 +5,8 @@ Player::Player()
 {
 try {
 /****initial initialization to be able to free everything at any time****/
+	attack_unarmed_msg_hit = NULL;
+	attack_unarmed_msg_miss = NULL;
 	attack_melee_msg_hit = NULL;
 	attack_distant_msg_hit = NULL;
 	attack_melee_msg_miss = NULL;
@@ -13,15 +15,18 @@ try {
 /****characteristics parsing (xml parsing)****/
 	Parse_Description_File("Data/Characters/Player.xml"); //attack_style ????!!!!!!!!!!!
 
-/****Initials default****/
+/****Default Animation****/
 	Characters_Current_Unarmed_Tileset = Stop_Animation->Get_Animation_Tileset();
 	Characters_Current_Tileset = Characters_Current_Unarmed_Tileset;
 	//attack_style ????!!!!!!!!!!
 	Current_Tile_Rect = Stop_Animation->Get_Animation_Tile_Rect()->at(CH_RIGHT); //right direction by default
 
-/****CAMERA****/
+/****Camera****/
 	Camera.setw(CURRENT_SCREEN_WIDTH);
 	Camera.seth(CURRENT_SCREEN_HEIGHT);
+
+	//Default time between frame
+	DeltaTicks = 1000/FRAMES_PER_SECOND;
 
 
 //	string Save_File = "Saves/player.sav";
@@ -96,8 +101,8 @@ try {
 	//Tileset loading
 
 	//Characters Surfaces
-	Players_Tile_Melee = NULL; //designed to disapear
-	Players_Tile_Distant = NULL; //designed to disapear
+	//Players_Tile_Melee = NULL; //designed to disapear
+	//Players_Tile_Distant = NULL; //designed to disapear
 	//Players_Tile_Melee = new RGBSurface("Data/Characters/Character_Fighter.png", Color(0xFF, 0xFF, 0xFF));
 	//Players_Tile_Distant = new RGBSurface("Data/Characters/Character_Archer.png", Color(0xFF, 0xFF, 0xFF));
 
@@ -107,9 +112,11 @@ try {
 
 		/****MSGs****/
 	//Msgs displayed in the status bar
+	attack_unarmed_msg_hit = AttackMsg_Font->render("Unarmed Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_unarmed_msg_miss = AttackMsg_Font->render("Unarmed Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 	attack_melee_msg_hit = AttackMsg_Font->render("Melee Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-	attack_distant_msg_hit = AttackMsg_Font->render("Distant Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 	attack_melee_msg_miss = AttackMsg_Font->render("Melee Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+	attack_distant_msg_hit = AttackMsg_Font->render("Distant Hit", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 	attack_distant_msg_miss = AttackMsg_Font->render("Distant Miss", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 
 	delete AttackMsg_Font, AttackMsg_Font = NULL;
@@ -139,13 +146,12 @@ Player::~Player()
 //Everything needed to fully clean the player in case of exception or at destruction
 void Player::Clean_Player()
 {
+	delete attack_unarmed_msg_hit, attack_unarmed_msg_hit = NULL;
+	delete attack_unarmed_msg_miss, attack_unarmed_msg_miss = NULL;
 	delete attack_melee_msg_hit, attack_melee_msg_hit = NULL;
 	delete attack_distant_msg_hit, attack_distant_msg_hit = NULL;
 	delete attack_melee_msg_miss, attack_melee_msg_miss = NULL;
 	delete attack_distant_msg_miss, attack_distant_msg_miss = NULL;
-
-	delete Players_Tile_Distant, Players_Tile_Distant = NULL; //designed to disapear
-	delete Players_Tile_Melee, Players_Tile_Melee = NULL; //designed to disapear
 
 	delete Attack_Animation, Attack_Animation = NULL;
 	delete Death_Animation, Death_Animation = NULL;
@@ -161,6 +167,25 @@ bool Player::Set_Attack_Msg()
 {
 try
 {
+	// Unarmed Style
+	if (attack_style == 0)
+	{
+		//If a monster has been hit displayed the hit msg, if no display miss msg
+		if (attack_successfull != 0)
+		{
+			Messages::Status_Msg = attack_unarmed_msg_hit;
+
+			if (attack_successfull == 1)
+				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
+			if (attack_successfull == 2)
+				P0_Logger << nl << ">>> Worm Hit <<< " << std::endl;
+		}
+		else
+		{
+			Messages::Status_Msg = attack_unarmed_msg_miss;
+			P0_Logger << nl << ">>> Monster Miss <<< " << std::endl;
+		}
+	}
 	// Melee Style
 	if (attack_style == 1)
 	{
@@ -246,7 +271,7 @@ bool Player::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_V
 {
 try {
 		//Move collision box to the futute position
-	if ( (Move_Status == CH_RIGHT ) || (Move_Status == CH_LEFT) || (Move_Status == CH_DOWN) || (Move_Status == CH_UP) )
+	if ( (Move_Direction == CH_RIGHT ) || (Move_Direction == CH_LEFT) || (Move_Direction == CH_DOWN) || (Move_Direction == CH_UP) )
 	{
 		Collision_Box.setx(X + CB_X_Modifier + ( (xVel*Ch_Vel*DeltaTicks)/1000) );
 		Collision_Box.sety(Y + CB_Y_Modifier + ( (yVel*Ch_Vel*DeltaTicks)/1000) );

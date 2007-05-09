@@ -57,7 +57,7 @@ Monster_Base::Monster_Base()
 Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 {
 	//
-	//TODO: complete list
+	//TODO: complete list !!
 	//
 	X = ToCopy.X;
 	Y = ToCopy.Y;
@@ -66,7 +66,7 @@ Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 	Characters_Current_Tileset = ToCopy.Characters_Current_Tileset;
 	_monster_clip = ToCopy._monster_clip;
 	Current_Tile_Rect = ToCopy.Current_Tile_Rect;
-	Monster_ID = ToCopy.Monster_ID;
+	Characters_ID = ToCopy.Characters_ID;
 	xVel = ToCopy.xVel;
 	yVel = ToCopy.yVel;
 	Collision_Box = ToCopy.Collision_Box;
@@ -165,7 +165,7 @@ bool Monster_Base::Check_Cutting_Allow_Monster(std::vector<BattleField_Zone*>* &
 			for(unsigned int j=0; j < Allowed_Monsters_Vector->size(); j++)
 			{
 				//the monster id must be listed inside the Allowed_Monsters_Vector in order to allow monster generation on the area
-				if ( Monster_ID == Allowed_Monsters_Vector->at(j))
+				if ( Characters_ID == Allowed_Monsters_Vector->at(j))
 				{
 					return true; //good area, monster id present => the cutting allow monster presence
 				}
@@ -176,23 +176,6 @@ bool Monster_Base::Check_Cutting_Allow_Monster(std::vector<BattleField_Zone*>* &
 
 	//not design to happen: obviously the monster must be inside one of the area
 	return false;
-}
-
-//Calculate the current life of the monster depending on damage, malus, etc
-bool Monster_Base::Calculate_Real_Life(int received_damage)
-{
-	int real_received_damage = (received_damage - Get_Real_Armor()); //TODO(future): Set the real damage formula base on mo's condition
-
-	if ( (real_received_damage) < 0) //in case damage dont exceed armor value then set it to 0: no damage
-		real_received_damage = 0;
-
-	Set_Real_Life( Get_Real_Life() - real_received_damage) ;
-	
-	//Monster as no life => dead
-	if ( Get_Real_Life() <= 0 )
-		Set_Alive_Status(false);
-
-	return true; //everything went fine
 }
 
 //Shows the life bar of the monster depending of it's current life

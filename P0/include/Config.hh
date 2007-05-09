@@ -115,8 +115,8 @@ extern string WALL_ENV_Filename;
 extern int HOUSE_ENV;
 extern string HOUSE_ENV_Filename;
 
-//Monsters ID which defined type of monsters (used in coordination with battlefield cutting)
-enum Monsters_Type {Humanoid = 1, Worm = 2};
+//Character's ID which defined type of character (used in coordination with battlefield cutting for monsters for example)
+enum Character_Types {Humanoid = 1, Crawler = 2, Undead = 3};
 
 //This variable defined the global game state 1: Initial Menu (future dev), 2: Character Creation/Selection (future dev), 3: Ingame, 4: On Escape menu, 5: Victory
 extern int GLOBAL_GAME_STATE;

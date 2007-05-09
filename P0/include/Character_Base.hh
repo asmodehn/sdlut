@@ -11,6 +11,9 @@ class Character_Base
 private:
 	
 protected:
+
+/****Characteristics****/
+
 	//The X and Y offsets of the character
 	int X, Y;
 	
@@ -27,9 +30,41 @@ protected:
 	int BASE_INFLICTED_DAMAGE, Real_Inflicted_Damage;
 	int BASE_RANGE, Real_Range;
 
-	//Attack Styles
-	bool Melee_Style_Available, Distant_Style_Available, Throwing_Style_Available, Magic_Style_Available;
+	//Characters type
+	Character_Types Characters_ID;
 
+	//Bool that will indicate if the character is alive or dead
+	bool Alive_Status;
+
+/****Movements****/
+
+	//Moving status define if the player is moving or just changing direction or staying at the same place
+	bool Moving_Status;
+	//moving direction
+	int Move_Direction;
+	//The zone where the character is alloew to go (default: whole level)
+	Rect Allowed_Area;
+	//The collision boxes of the character
+	Rect Collision_Box;
+
+/****Attack****/
+
+	//The attack collision box of the player
+	Rect attack_CB;
+
+	//Attack Styles
+	bool Unarmed_Style_Available, Melee_Style_Available, Distant_Style_Available, Throwing_Style_Available, Magic_Style_Available;
+
+	//Attack variables
+	bool attack_status; //Attack key pressed yes or no 
+	int attack_style; //Manage the style of attack (0: unarmed, 1: melee attack, 2: distant attack, 3&+: TODO(future) )
+	int attack_successfull; //get the monster ID that has been hitted to print the good attack msg
+		//initial info of the attack (-1 means no attack)
+	int attack_initial_x;
+	int attack_initial_y;
+	int attack_direction;
+
+/****Animations****/
 	//Clip (never deleted coz are only there to link with the real animation tile rect)
 	Rect Current_Tile_Rect;
 	
@@ -42,22 +77,17 @@ protected:
 	//Animations (designed to be deleted where it's used not in character_base's destructor)
 	Character_Animation *Attack_Animation, *Death_Animation, *Run_Animation, *Walk_Animation, *Hit_Animation, *Stop_Animation, *Pause_Animation;
 
-	//The collision boxes of the character
-	Rect Collision_Box;
+	//current animation current frame
+	int frame;
+
+	//Collision Box Modifier between sprite dims & "real" dims
 	int CB_X_Modifier;
 	int CB_Y_Modifier;
 	int CB_Width;
 	int CB_Height;
 
-	//Bool that will indicate if the character is alive or dead
-	bool Alive_Status;
 
-	//The zone where the character is alloed to go (default: whole level)
-	Rect Allowed_Area;
-
-	//moving direction
-	int Move_Status;
-
+/****Methods***/
 	//Parse the xml file (called by the constructor)
 	void Parse_Description_File(const string &Description_Filename);
 
@@ -178,18 +208,114 @@ public:
 	{
 		return Allowed_Area;
 	}
+	//Define if the player has push the attack Key
+	inline void Set_Attack_Status(bool new_attack_status)
+    {
+        attack_status=new_attack_status;
+    }
+	inline bool Get_Attack_Status() const
+    {
+        return attack_status;
+    }
+	inline void Set_Attack_Style(int new_attack_style)
+    {
+        attack_style = new_attack_style;
+    }
+    inline int Get_Attack_Style() const
+    {
+        return attack_style;
+    }
+	inline void Set_Attack_CB(Rect new_Attack_CB)
+	{
+		attack_CB = new_Attack_CB;
+	}
+	inline Rect Get_Attack_CB() const
+	{
+		return attack_CB;
+	}
 
+	inline void Set_Attack_Successfull(int new_Attack_Successfull)
+    {
+        attack_successfull = new_Attack_Successfull;
+    }
+    inline int Get_Attack_Successfull() const
+    {
+        return attack_successfull;
+    }
+
+	inline void Set_Attack_Initial_X(int new_attack_initial_x)
+    {
+        attack_initial_x = new_attack_initial_x;
+    }
+    inline int Get_Attack_Initial_X() const
+    {
+        return attack_initial_x;
+    }
+	inline void Set_Attack_Initial_Y(int new_attack_initial_y)
+    {
+        attack_initial_y = new_attack_initial_y;
+    }
+    inline int Get_Attack_Initial_Y() const
+    {
+        return attack_initial_y;
+    }
+	inline void Set_Attack_Direction(int new_attack_direction)
+    {
+        attack_direction = new_attack_direction;
+    }
+    inline int Get_Attack_Direction() const
+    {
+        return attack_direction;
+    }
+	
+	inline void Set_Moving_Status(bool new_moving_status)
+    {
+        Moving_Status = new_moving_status;
+    }
+    inline bool Get_Moving_Status() const
+    {
+        return Moving_Status;
+    }
+	inline void Set_Characters_ID(Character_Types new_Characters_ID)
+    {
+        Characters_ID = new_Characters_ID;
+    }
+	inline Character_Types Get_Characters_ID() const
+    {
+        return Characters_ID;
+	}
 
 	//Init
 	Character_Base();
 	virtual ~Character_Base();
 
-	//move the character_base's collision box to a place its allowed to be when moving
-	bool Manage_Collisions( std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector, bool Handle_Collisions = 0);
-	
+	/****Methods****/
+//Movement
 	//Move character (pure virtual)
 	virtual bool Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector) = 0;
-
+	//move the character_base's collision box to a place its allowed to be when moving
+	bool Manage_Collisions( std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector, bool Handle_Collisions = 0);
+	//check the direction where the character is turn to
+	bool Assign_Direction_Sprite();
+	//define character sprite which appear on the screen during walk
+	bool Set_Walk_Animation_Sprite();
+	//define character sprite which appear on the screen during run
+	bool Set_Run_Animation_Sprite();
+//Attack
+	//Manage the character attack
+	bool Attack();
+	//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing and character infos
+	int Attack_Check_Status(int attack_distance, int inflicted_damage, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
+	//Set Character Sprite Which change when attack occured(callback)
+	bool Set_Attack_Animation_Sprite(std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
+	//Manage attack characteristics regarding the attack style
+	bool Manage_Attack_Style_Characteristics();
+	//Manage the attack style's graphic regarding the attack style
+	bool Manage_Attack_Style_Graphic();
+//Characteristics
+	//Calculate the current life depending on damage, malus, etc and damage made by the opponent
+	bool Calculate_Real_Life(int received_damage = 0);
+//Render
 	//Show Character on the screen
 	bool Show(const Rect& Camera, VideoSurface& Screen);
 

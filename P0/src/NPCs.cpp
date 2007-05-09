@@ -71,8 +71,8 @@ try{
 
 		/****Surfaces****/
 	//Characters Surfaces
-	Players_Tile_Melee = NULL; //designed to disapear
-	Players_Tile_Distant = NULL; //designed to disapear
+	//Players_Tile_Melee = NULL; //designed to disapear
+	//Players_Tile_Distant = NULL; //designed to disapear
 	//Players_Tile_Melee = new RGBSurface("Data/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
 	//Players_Tile_Distant = new RGBSurface("Data/Characters/NPC.bmp", Color(0xFF, 0xFF, 0xFF));
 	//attack_style = 0; //designed to disapear
@@ -98,10 +98,7 @@ NPC_Merchant::~NPC_Merchant()
 }
 
 void NPC_Merchant::Clean_NPC_Merchant()
-{
-	delete Players_Tile_Distant, Players_Tile_Distant = NULL; //designed to disapear
-	delete Players_Tile_Melee, Players_Tile_Melee = NULL; //designed to disapear
-
+{	
 	delete Attack_Animation, Attack_Animation = NULL;
 	delete Death_Animation, Death_Animation = NULL;
 	delete Walk_Animation, Walk_Animation = NULL;

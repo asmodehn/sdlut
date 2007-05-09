@@ -32,7 +32,7 @@ Monster_Skeleton::Monster_Skeleton(int x, int y,
 	Current_Tile_Rect = _monster_clip;
 
 	//Monster type
-	Monster_ID = Humanoid;
+	Characters_ID = Undead; //move that to xml !!!!
 
 	//Collision Box Definition : The collision box has the size of the monster
 	Collision_Box.setx(X);
@@ -163,7 +163,7 @@ Monster_Worm::Monster_Worm(int x, int y,
 	Current_Tile_Rect = _monster_clip;
 
 	//Monster type
-	Monster_ID = Worm;
+	Characters_ID = Crawler; //move that to xml
 
 	//Collision Box Definition : The collision box has the size of the monster
 	Collision_Box.setx(X);

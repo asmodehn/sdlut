@@ -9,10 +9,15 @@ class Player : public Player_Base
 {
     private:
 		//Attack msgs
+		RGBSurface *attack_unarmed_msg_hit;
+		RGBSurface *attack_unarmed_msg_miss;
 		RGBSurface *attack_melee_msg_hit;
 		RGBSurface *attack_melee_msg_miss;
 		RGBSurface *attack_distant_msg_hit;
 		RGBSurface *attack_distant_msg_miss;
+
+		//for movement based on time not on framerate
+		long DeltaTicks;
 
 		//The Camera that follow the character
 		Rect Camera;
@@ -29,6 +34,14 @@ class Player : public Player_Base
         inline Rect Get_Camera() const
         {
             return Camera;
+        }
+		inline void Set_DeltaTicks(long new_DeltaTicks)
+        {
+            DeltaTicks = new_DeltaTicks;
+        }
+        inline long Get_DeltaTicks() const
+        {
+            return DeltaTicks;
         }
 
 		//Definition

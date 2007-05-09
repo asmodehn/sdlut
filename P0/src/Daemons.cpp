@@ -99,7 +99,7 @@ unsigned int Daemons::Player_Move_Animation(unsigned int interval, void* args)
 {
 try {
 	
-	if ( myPlayer->Set_Move_Animation_Sprite() )
+	if ( myPlayer->Set_Walk_Animation_Sprite() )
 	{ return interval; } //move anim is still ocuring than loop
 	return 0; //end of timer
 	
