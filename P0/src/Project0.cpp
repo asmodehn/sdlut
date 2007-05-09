@@ -43,7 +43,7 @@ bool InitEverything()
 	P0_Logger << nl << "TTF Init : OK " << std::endl;
 
 	//Create the video surface aka the display
-	if (App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT) == NULL  )
+	if (! App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT)  )
 	{
 		P0_Logger << nl << "Create Surface Failed : " << GetError() << std::endl;
         return false;
