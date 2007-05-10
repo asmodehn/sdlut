@@ -9,7 +9,7 @@ namespace RAGE
 		//class Sound
 		
 		Sound::Sound(std::string filename, bool loop_status) throw ( std::logic_error)
-		try : _aInfo( new SDL_AudioSpec() ), pvm_OriginalData(new RWOps(filename.c_str(), "rb"))
+		try : _aInfo( new SDL_AudioSpec() ), pvm_OriginalData(new RWOps(filename.c_str(), "rb")), converted (false)
 		{
 #ifdef DEBUG
 			Log << nl << "Sound::Sound(" << filename << ") called";
@@ -38,7 +38,7 @@ namespace RAGE
 
 		//copy original sound data ( should be shared for optimisation later on maybe... )
 		Sound::Sound( const Sound & s) throw (std::logic_error)
-		try : _aInfo ( s._aInfo ),  pvm_OriginalData(s.pvm_OriginalData.get() !=0 ? new RWOps(*s.pvm_OriginalData) : 0)
+		try : _aInfo ( s._aInfo ),  pvm_OriginalData(s.pvm_OriginalData.get() !=0 ? new RWOps(*s.pvm_OriginalData) : 0), converted(s.converted)
 		{
 			 //m_info( page.m_info.get( ) != 0 ? new CInfo( *page.m_info ) : 0 ),
 			
@@ -85,9 +85,9 @@ namespace RAGE
 		throw std::logic_error("Error constructing the Audio Convertor !");
 	}
 		
-	//cvt.fillBuffer(_length, _buf);
 	_convertTable->len = _length;
 	_convertTable->buf = new Uint8[_convertTable->len*_convertTable->len_mult];
+	
 	for (unsigned int i=0; i< _length; i++)
 	{
 		_convertTable->buf[i] = _buf[i];
@@ -96,12 +96,20 @@ namespace RAGE
 	//return cvt.convert();
 	int res = SDL_ConvertAudio(_convertTable.get());
 
-	if (res !=-1)
+	if (res == 0) //convert successful
 	{
-		_length = _convertTable->len_cvt;
+		converted = true;
+		SDL_LockAudio();
 		SDL_FreeWAV(_buf);
+
+		_aInfo.get_pSDL()->freq = DestinationFrequency;
+		_aInfo.get_pSDL()->channels = DestinationChannels;
+		_aInfo.get_pSDL()->format = DestinationFormat;
+				
+		_length = _convertTable->len_cvt;
 		_buf = _convertTable->buf;
-		frommem = true;
+
+		SDL_UnlockAudio();
 	}
 	else
 	{
@@ -129,7 +137,14 @@ namespace RAGE
 #ifdef DEBUG
 			Log << nl << "Sound::~Sound() called";
 #endif
-			SDL_FreeWAV(_buf);
+			if ( converted )
+			{
+				delete[] _buf;
+			}
+			else
+			{
+				SDL_FreeWAV(_buf);
+			}
 #ifdef DEBUG
 			Log << nl << "Sound::~Sound() done";
 #endif

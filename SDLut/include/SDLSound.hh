@@ -54,8 +54,9 @@ namespace RAGE
 
 	//should be shared to decrease memory usage.
 	std::auto_ptr<RWOps> pvm_OriginalData;
-	
-	bool frommem;
+
+	//true if this sound has already been converted.
+	bool converted;
 	//Length and data of the Sound
 	unsigned long _length;
 	unsigned char *_buf;
