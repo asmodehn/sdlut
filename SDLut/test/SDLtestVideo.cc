@@ -28,12 +28,12 @@ public:
                 break;
                 case KF5:
                 if (pressed==true)
-                    App::getInstance().getWindow()->iconify();
+                    App::getInstance().getWindow().iconify();
                 res = true;
                 break;
 				case KF6:
                 if (pressed==true)
-                    App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen());
+                    App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
                 res = true;
                 break;
                 default:
@@ -95,9 +95,9 @@ int main(int argc, char** argv)
     testlog << nl << " Creating the User Interface... " << std::endl;
     //UI Creation
     MyUserInput ui;
-    App::getInstance().getWindow()->getEventManager().setKeyboard(&ui);
+    App::getInstance().getWindow().getEventManager().setKeyboard(&ui);
 
-    App::getInstance().getWindow()->setBGColor(Color (128,0,0));
+    App::getInstance().getWindow().setBGColor(Color (128,0,0));
 	
 	//if argument we load the image in the test engine 
 	MyEngine * engine = NULL;
@@ -105,18 +105,18 @@ int main(int argc, char** argv)
 	{
 		engine = new MyEngine( static_cast<std::string>(argv[1]));
 
-		App::getInstance().getWindow()->setEngine(engine);
+		App::getInstance().getWindow().setEngine(engine);
 	//otherwise we use the default engine only.
 	}
 
-    if (! (App::getInstance().getWindow()->resetDisplay()))
+    if (! (App::getInstance().getWindow().resetDisplay()))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);
     }
     else
     {
-        App::getInstance().getWindow()->mainLoop(2);
+        App::getInstance().getWindow().mainLoop(2);
 	//think about automatic exit after timeout...
     }
 	delete engine;

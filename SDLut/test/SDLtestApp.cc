@@ -15,20 +15,14 @@ int main(int argc, char *argv[])
 	//Minimum Init
 	testlog << nl << " Minimum init... " << std::endl;
 	testlog << ( (SDL::App::getInstance().init())? "OK" : "FAILED" );
-	testlog << nl << " Retrieving Manager... " << std::endl;
-	testlog << ( (SDL::App::getInstance().getManager() != NULL)? "OK" : "FAILED" );
 	
 	//Video Init
 	testlog << nl << " Enabling Video... " << std::endl;
 	testlog << ( (SDL::App::getInstance().initVideo(false,false,false,false))? "OK" : "FAILED" );
-	testlog << nl << " Retrieving Window... " << std::endl;
-	testlog << ( (SDL::App::getInstance().getWindow() != NULL)? "OK" : "FAILED" );
 	
 	//Audio Init
 	testlog << nl << " Enabling Audio... " << std::endl;
 	testlog << ( (SDL::App::getInstance().initAudio())? "OK" : "FAILED" );
-	testlog << nl << " Retrieving Mixer... " << std::endl;
-	testlog << ( (SDL::App::getInstance().getMixer() != NULL)? "OK" : "FAILED" );
 
 	//Timer Init
 	testlog << nl << " Enabling Timer... " << std::endl;

@@ -35,12 +35,12 @@ public:
                 break;
                 case KF5:
                 if (pressed==true)
-                    App::getInstance().getWindow()->iconify();
+                    App::getInstance().getWindow().iconify();
                 res = true;
                 break;
 				case KF6:
                 if (pressed==true)
-                    App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen());
+                    App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
                 res = true;
                 break;
                 default:
@@ -230,25 +230,25 @@ int main(int argc, char** argv)
 	
 
     //Getting video informations
-    testlog << nl << App::getInstance().getWindow()->getVideoInfo() << std::endl;
+    testlog << nl << App::getInstance().getWindow().getVideoInfo() << std::endl;
 
     //UI Creation
     MyUserInput ui;
-    App::getInstance().getWindow()->getEventManager().setKeyboard(&ui);
+    App::getInstance().getWindow().getEventManager().setKeyboard(&ui);
     
-	App::getInstance().getWindow()->setBGColor(Color (64,0,0));
+	App::getInstance().getWindow().setBGColor(Color (64,0,0));
 
     //MyUserInput ui;
     //App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 
     //GLManager test
-    App::getInstance().getWindow()->getGLManager();
+    App::getInstance().getWindow().getGLManager();
     testlog << nl<<std::boolalpha <<
-    "setRsize(5) " << App::getInstance().getWindow()->getGLManager().setRSize(5) << nl <<
-    "setGSize(5) " << App::getInstance().getWindow()->getGLManager().setGSize(5) << nl <<
-    "setBSize(5) " << App::getInstance().getWindow()->getGLManager().setBSize(5) << nl <<
-    "setASize(5) " << App::getInstance().getWindow()->getGLManager().setASize(5) << nl <<
-    "setBufferSize(5) " << App::getInstance().getWindow()->getGLManager().setBufferSize(12) << nl <<
+    "setRsize(5) " << App::getInstance().getWindow().getGLManager().setRSize(5) << nl <<
+    "setGSize(5) " << App::getInstance().getWindow().getGLManager().setGSize(5) << nl <<
+    "setBSize(5) " << App::getInstance().getWindow().getGLManager().setBSize(5) << nl <<
+    "setASize(5) " << App::getInstance().getWindow().getGLManager().setASize(5) << nl <<
+    "setBufferSize(5) " << App::getInstance().getWindow().getGLManager().setBufferSize(12) << nl <<
     std::endl;
 
 
@@ -257,11 +257,11 @@ int main(int argc, char** argv)
 	
 	//Comment this line to use the default engine
 	MyEngine engine;
-	App::getInstance().getWindow()->setEngine(&engine);
+	App::getInstance().getWindow().setEngine(&engine);
 
-    if(App::getInstance().getWindow()->resetDisplay())
+    if(App::getInstance().getWindow().resetDisplay())
     {
-       App::getInstance().getWindow()->mainLoop();
+       App::getInstance().getWindow().mainLoop();
     }
 
     return 0;

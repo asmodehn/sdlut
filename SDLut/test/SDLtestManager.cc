@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
 	testlog << nl << " Init minimal... " ;
 	testlog << ( (SDL::App::getInstance().init()) ? "OK": "FAILED" ) << std::endl;
 
-	SDL::Manager *manager= SDL::App::getInstance().getManager();
-	testlog << nl << *manager;
+	SDL::Manager manager= SDL::App::getInstance().getManager();
+	testlog << nl << manager;
 
 	return 0;
 }

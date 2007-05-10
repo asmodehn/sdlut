@@ -106,12 +106,12 @@ public:
                 break;
                 case KF5:
                 if (pressed==true)
-                    App::getInstance().getWindow()->iconify();
+                    App::getInstance().getWindow().iconify();
                 res = true;
                 break;
 				case KF6:
                 if (pressed==true)
-                    App::getInstance().getWindow()->setFullscreen(!App::getInstance().getWindow()->isFullscreen());
+                    App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
                 res = true;
                 break;
 				default: if (pressed == true) cons->add(s.getChar());
@@ -196,7 +196,7 @@ int main(int argc, char** argv)
 
     testlog << nl << " Creating the User Interface... " << std::endl;
  
-    App::getInstance().getWindow()->setBGColor(Color (64,0,0));
+    App::getInstance().getWindow().setBGColor(Color (64,0,0));
 
     Font font;
     
@@ -213,21 +213,21 @@ int main(int argc, char** argv)
    //UI Creation
     MyUserInput ui;
 	ui.setConsole(&cons);
-    App::getInstance().getWindow()->getEventManager().setKeyboard(&ui);
+    App::getInstance().getWindow().getEventManager().setKeyboard(&ui);
 
 
 	//without this line the default engine is used
-    App::getInstance().getWindow()->setEngine(&engine);
+    App::getInstance().getWindow().setEngine(&engine);
 
 
-    if (! (App::getInstance().getWindow()->resetDisplay()))
+    if (! (App::getInstance().getWindow().resetDisplay()))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);
     }
     else
     {
-        App::getInstance().getWindow()->mainLoop();
+        App::getInstance().getWindow().mainLoop();
     }
     
     return 0;

@@ -23,6 +23,9 @@
 #include "SDLJoystick.hh"
 #include "SDLMixer.hh"
 
+#include <memory>
+#include <cassert>
+
 #ifndef LOGFILENAME
 #define LOGFILENAME "RAGE_SDLut.log"
 #endif //LOGFILENAME
@@ -37,16 +40,16 @@ namespace RAGE
         class App
         {
 	    ///Managing the underlying SDL library
-            Manager * pvm_manager;
+            std::auto_ptr<Manager> pvm_manager;
 
 	    ///Handling Video Ouput related behaviour
-            Window* pvm_window; // for video
+            std::auto_ptr<Window> pvm_window; // for video
 
 	    ///Handling Jostick Pool for input
-            JoystickPool* pvm_jpool; //for joystick
+            std::auto_ptr<JoystickPool> pvm_jpool; //for joystick
 
 	    ///Handling Audio Ouput related behaviour
-            Mixer* pvm_mixer; // for audio framework
+            std::auto_ptr<Mixer> pvm_mixer; // for audio framework
 
 	    ///Storing name and icon for this application
             std::string pvm_name,pvm_icon;
@@ -116,40 +119,33 @@ namespace RAGE
             bool initNet();
 
             ///Accessor to the Window
-            Window * getWindow()
+            Window & getWindow()
             {
-		assert (pvm_window);
-                return pvm_window;
+		assert (pvm_window.get() && "The Window has not been created yet.To do that, use the initVideo() function before calling getWindow()." );
+                return *pvm_window;
             }
 	    
 	    
 	    ///Accessor to the Mixer
-	    Mixer * getMixer()
+	    Mixer & getMixer()
 	    {
-		    assert (pvm_mixer);
-		    return pvm_mixer;
+		    assert (pvm_mixer.get() && "The Mixer has not been created yet.To do that, use the initAudio() function before calling getMixer()." );
+		    return *pvm_mixer;
 	    }
 	    
 	    ///Accessor to the Manager
-            Manager* getManager()
+            Manager & getManager()
             {
-		assert (pvm_manager);
-                return pvm_manager;
+		assert (pvm_manager.get() && "The Manager has not been created yet.To do that, use one of the initXXXXX() functions before calling getManager().");
+                return *pvm_manager;
             }
 
 	    ///Accessor to the JoystickPool
-            JoystickPool * getJoystickPool()
+            JoystickPool & getJoystickPool()
             {
-		assert (pvm_jpool);
-                return pvm_jpool;
+		assert (pvm_jpool.get() && "The JoystickPool has not been created yet.To do that, use the initJoystick() function before calling getJoystickPool()." );
+                return *pvm_jpool;
             }
-
-	    ///to change the joystick pool
-            void setJoystickPool( JoystickPool * jpool)
-            {
-                pvm_jpool=jpool;
-            }
-
 
         };
     }

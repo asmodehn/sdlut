@@ -14,11 +14,7 @@ namespace RAGE
 
     bool GeneralHandler::handleResizeEvent(int w, int h)
     {
-#ifdef DEBUG
-        assert(App::getInstance().getWindow());
-#endif
-
-        App::getInstance().getWindow()->resizeDisplay(w,h);
+        App::getInstance().getWindow().resizeDisplay(w,h);
         return true;
     }
 

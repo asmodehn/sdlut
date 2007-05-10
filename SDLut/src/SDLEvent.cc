@@ -177,24 +177,19 @@ bool Event::callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse*  mhnd
 				ev_handled = mhndlr->handleMouseButtonReleaseEvent(Mouse::sdl2Button(_event->button.button), _event->button.x, _event->button.y);
 				break;
 			case SDL_JOYAXISMOTION:
-                assert(App::getInstance().getJoystickPool()); //just to make sure but if we get an event, that means joystick has been initialized and therefore we should be able to get the pool
-				ev_handled = App::getInstance().getJoystickPool()->handleJoyAxisEvent(_event->jaxis.which, _event->jaxis.axis, _event->jaxis.value);
+				ev_handled = App::getInstance().getJoystickPool().handleJoyAxisEvent(_event->jaxis.which, _event->jaxis.axis, _event->jaxis.value);
 				break;
 			case SDL_JOYBALLMOTION:
-			assert(App::getInstance().getJoystickPool()); //just to make sure but if we get an event, that means joystick has been initialized and therefore we should be able to get the jpool
-				ev_handled = App::getInstance().getJoystickPool()->handleJoyBallEvent(_event->jball.which, _event->jball.ball, _event->jball.xrel, _event->jball.yrel);
+				ev_handled = App::getInstance().getJoystickPool().handleJoyBallEvent(_event->jball.which, _event->jball.ball, _event->jball.xrel, _event->jball.yrel);
 				break;
 			case SDL_JOYHATMOTION:
-			assert(App::getInstance().getJoystickPool()); //just to make sure but if we get an event, that means joystick has been initialized and therefore we should be able to get the jpool
-			ev_handled = App::getInstance().getJoystickPool()->handleJoyHatEvent(_event->jhat.which, Joystick::sdl2JoyHat(_event->jhat.hat), _event->jhat.value);
+				ev_handled = App::getInstance().getJoystickPool().handleJoyHatEvent(_event->jhat.which, Joystick::sdl2JoyHat(_event->jhat.hat), _event->jhat.value);
 				break;
 			case SDL_JOYBUTTONDOWN:
-			assert(App::getInstance().getJoystickPool()); //just to make sure but if we get an event, that means joystick has been initialized and therefore we should be able to get the jpool
-				ev_handled = App::getInstance().getJoystickPool()->handleJoyButtonPressEvent(_event->jbutton.which, _event->jbutton.button);
+				ev_handled = App::getInstance().getJoystickPool().handleJoyButtonPressEvent(_event->jbutton.which, _event->jbutton.button);
 				break;
 			case SDL_JOYBUTTONUP:
-			assert(App::getInstance().getJoystickPool()); //just to make sure but if we get an event, that means joystick has been initialized and therefore we should be able to get the jpool
-				ev_handled = App::getInstance().getJoystickPool()->handleJoyButtonReleaseEvent(_event->jbutton.which, _event->jbutton.button);
+				ev_handled = App::getInstance().getJoystickPool().handleJoyButtonReleaseEvent(_event->jbutton.which, _event->jbutton.button);
 				break;
 
             case SDL_USEREVENT:

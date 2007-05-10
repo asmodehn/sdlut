@@ -36,9 +36,11 @@ namespace RAGE
 
     protected:
         Manager(bool video = false, bool audio = false, bool timer = false, bool cdrom = false, bool joystick = false, bool noparachute = false, bool eventthread = false) throw (std::logic_error);
-        ~Manager();
 
     public:
+
+	~Manager();
+
     //Enablers
         bool enableTimer(void);
         bool enableAudio(void);
