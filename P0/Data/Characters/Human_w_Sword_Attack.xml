@@ -3,7 +3,7 @@
 <!DOCTYPE Animation SYSTEM "../DTDs/Animation.dtd">
 
 <Animation>
-	<Animation_TS_Filename>Human_w_Sword_Attack.png</Animation_TS_Filename>
+	<Animation_TS_Filename>Human w Sword Attack.png</Animation_TS_Filename>
 	
 	<TS_ColorKey_RGB>
 		<ColorKey_R>106</ColorKey_R>
@@ -17,7 +17,7 @@
 	</Sprite_Dimensions>
 
 	<Animation_Characteristics>
-		<Frames>13</Frames>
+		<Frames>12</Frames>
 		<Frames_Interval>130</Frames_Interval>
 	</Animation_Characteristics>
 </Animation>

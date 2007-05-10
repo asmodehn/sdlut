@@ -533,7 +533,7 @@ try
 	if (attack_style == 1) //melee
 	{
 		//play sword Fx	
-		App::getInstance().getMixer()->playChannel(SwordFx_Chan);
+		App::getInstance().getMixer().playChannel(SwordFx_Chan);
 
 		//Move the attack box at border of the character sprite in the good direction
 		if( attack_direction == CH_RIGHT )
@@ -601,7 +601,7 @@ try
 	else if (attack_style == 2) //distant
 	{
 		//play bow Fx	
-		App::getInstance().getMixer()->playChannel(BowFx_Chan);
+		App::getInstance().getMixer().playChannel(BowFx_Chan);
 
 		//Move the attack box at the middle of the character sprite in the good direction
 		if( attack_direction == CH_RIGHT )

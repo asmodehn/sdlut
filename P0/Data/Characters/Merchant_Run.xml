@@ -18,6 +18,7 @@
 
 	<Animation_Characteristics>
 		<Frames>8</Frames>
+		<KeyFrame>4</KeyFrame>
 		<Frames_Interval>130</Frames_Interval>
 	</Animation_Characteristics>
 </Animation>

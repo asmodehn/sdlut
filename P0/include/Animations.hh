@@ -9,6 +9,7 @@ private:
 	std::vector<Rect> *Animation_Tile_Rect;
 	long Animation_Frames_Interval;
 	int Animation_Frame_Number;
+	int Animation_KeyFrame;
 	int Animation_Sprite_Width;
 	int Animation_Sprite_Height;
 	RGBSurface* Animation_Tileset;

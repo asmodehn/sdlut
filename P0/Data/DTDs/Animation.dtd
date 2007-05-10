@@ -7,8 +7,9 @@
 <!ELEMENT Sprite_Dimensions (Width, Height)>
 <!ELEMENT Width (#PCDATA)>
 <!ELEMENT Height (#PCDATA)>
-<!ELEMENT Animation_Characteristics (Frames, Frames_Interval?)>
+<!ELEMENT Animation_Characteristics (Frames, KeyFrame?, Frames_Interval?)>
 <!ELEMENT Frames (#PCDATA)>
+<!ELEMENT KeyFrame (#PCDATA)><!-- Warning frame number begin at 0-->
 <!ELEMENT Frames_Interval (#PCDATA)>
 <!ELEMENT Collision_Box_Modifier (X_Modifier, Y_Modifier, W_Modifier, H_Modifier)>
 <!ELEMENT X_Modifier (#PCDATA)>

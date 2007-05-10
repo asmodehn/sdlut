@@ -3,7 +3,7 @@
 <!DOCTYPE Animation SYSTEM "../DTDs/Animation.dtd">
 
 <Animation>
-	<Animation_TS_Filename>Human_w_Bow_Hit.png</Animation_TS_Filename>
+	<Animation_TS_Filename>Human w Bow Hit.png</Animation_TS_Filename>
 	
 	<TS_ColorKey_RGB>
 		<ColorKey_R>106</ColorKey_R>

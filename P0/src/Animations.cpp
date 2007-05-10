@@ -13,24 +13,26 @@ try {
 	Animation_Tile_Rect = NULL;
 
 	//
-	//TODO Managed the 0 or 1 value for options !!!!
+	//TODO Managed the 0 or 1 value for options !!!!: initialize & Check Node Exists
 	//
 
-	string Attack_Animation_Filename = Data_Root_Directory + XML_Manager::Get_Option_String(Description_File, Animation_Name);
-	XML_Manager::Validate_File(Attack_Animation_Filename);
+	string Animation_Filename = Data_Root_Directory + XML_Manager::Get_Option_String(Description_File, Animation_Name);
+	XML_Manager::Validate_File(Animation_Filename);
 
-	string Attack_Animation_TS_Filename = XML_Manager::Get_Option_String(Attack_Animation_Filename, "Animation_TS_Filename");
-	int ColorKey_R = XML_Manager::Get_Option_Value(Attack_Animation_Filename, "ColorKey_R");
-	int ColorKey_G = XML_Manager::Get_Option_Value(Attack_Animation_Filename, "ColorKey_G");
-	int ColorKey_B = XML_Manager::Get_Option_Value(Attack_Animation_Filename, "ColorKey_B");
-	Animation_Tileset = new RGBSurface(Data_Root_Directory+Attack_Animation_TS_Filename, Color((unsigned char)ColorKey_R, (unsigned char)ColorKey_G, (unsigned char)ColorKey_B) );
-	Animation_Frame_Number = XML_Manager::Get_Option_Value(Attack_Animation_Filename, "Frames");
+	string Animation_TS_Filename = XML_Manager::Get_Option_String(Animation_Filename, "Animation_TS_Filename");
+	int ColorKey_R = XML_Manager::Get_Option_Value(Animation_Filename, "ColorKey_R");
+	int ColorKey_G = XML_Manager::Get_Option_Value(Animation_Filename, "ColorKey_G");
+	int ColorKey_B = XML_Manager::Get_Option_Value(Animation_Filename, "ColorKey_B");
+	Animation_Tileset = new RGBSurface(Data_Root_Directory+Animation_TS_Filename, Color((unsigned char)ColorKey_R, (unsigned char)ColorKey_G, (unsigned char)ColorKey_B) );
+	Animation_Frame_Number = XML_Manager::Get_Option_Value(Animation_Filename, "Frames");
+	if ( XML_Manager::Check_Node_Exists(Animation_Filename, "KeyFrame") )
+		Animation_KeyFrame = XML_Manager::Get_Option_Value(Animation_Filename, "KeyFrame");
 	Animation_Frames_Interval = 1; //coz 0 make timer loop
 	if (Animation_Frame_Number > 1) //when there is a real animation, not a single frame
-		Animation_Frames_Interval = XML_Manager::Get_Option_Value_Long(Attack_Animation_Filename, "Frames_Interval");
+		Animation_Frames_Interval = XML_Manager::Get_Option_Value_Long(Animation_Filename, "Frames_Interval");
 
-	Animation_Sprite_Width = XML_Manager::Get_Option_Value(Attack_Animation_Filename, "Width");
-	Animation_Sprite_Height = XML_Manager::Get_Option_Value(Attack_Animation_Filename, "Height");
+	Animation_Sprite_Width = XML_Manager::Get_Option_Value(Animation_Filename, "Width");
+	Animation_Sprite_Height = XML_Manager::Get_Option_Value(Animation_Filename, "Height");
 
 	//Clip def
 	Animation_Tile_Rect = new std::vector<Rect>;

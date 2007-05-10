@@ -83,9 +83,9 @@ try {
 	Screen.blit( *Victory_Tile, Point::Point(CURRENT_SCREEN_WIDTH/2 - 100, CURRENT_SCREEN_HEIGHT/2 - 50) );
 	
 	//Show Time
-	RGBSurface *time_stat_msg = Time_Font->render(Time_Style(FiNiSH_TiME), Color(0, 0, 0), Font::Shaded, Color(0xFF, 0xFF, 0xFF));
+	std::auto_ptr<RGBSurface> time_stat_msg = Time_Font->render(Time_Style(FiNiSH_TiME), Color(0, 0, 0), Font::Shaded, Color(0xFF, 0xFF, 0xFF));
 	Screen.blit(*time_stat_msg, Point::Point(CURRENT_SCREEN_WIDTH/2 - 10 , CURRENT_SCREEN_HEIGHT/2 + 7 ) );
-	delete time_stat_msg, time_stat_msg = NULL;
+	//delete time_stat_msg, time_stat_msg = NULL; //not needed coz auto_ptr
 
 	return true;
 } catch (...) {
@@ -118,9 +118,9 @@ bool Victory_Screen::Show_Monsters_Stats(VideoSurface& Screen)
 {
 try {
 	//Show Numbers
-	RGBSurface *monsters_stats_msg = Monsters_Stats_Font->render("Monsters ALiVED: " + Int_To_String(ALiVE_MONSTERS) + "; Monsters KiLLED: " + Int_To_String(KiLLED_MONSTERS) , Color(0xFF, 0xFF, 0xFF), Font::Shaded);
+	std::auto_ptr<RGBSurface> monsters_stats_msg = Monsters_Stats_Font->render("Monsters ALiVED: " + Int_To_String(ALiVE_MONSTERS) + "; Monsters KiLLED: " + Int_To_String(KiLLED_MONSTERS) , Color(0xFF, 0xFF, 0xFF), Font::Shaded);
 	Screen.blit( *monsters_stats_msg, Point::Point(CURRENT_SCREEN_WIDTH - 200, CURRENT_SCREEN_HEIGHT - 20) );
-	delete monsters_stats_msg, monsters_stats_msg = NULL;
+	//delete monsters_stats_msg, monsters_stats_msg = NULL;//not needed coz auto_ptr
 
 	return true;
 } catch (...) {

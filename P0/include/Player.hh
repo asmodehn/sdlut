@@ -9,12 +9,12 @@ class Player : public Player_Base
 {
     private:
 		//Attack msgs
-		RGBSurface *attack_unarmed_msg_hit;
-		RGBSurface *attack_unarmed_msg_miss;
-		RGBSurface *attack_melee_msg_hit;
-		RGBSurface *attack_melee_msg_miss;
-		RGBSurface *attack_distant_msg_hit;
-		RGBSurface *attack_distant_msg_miss;
+		std::auto_ptr<RGBSurface> attack_unarmed_msg_hit;
+		std::auto_ptr<RGBSurface> attack_unarmed_msg_miss;
+		std::auto_ptr<RGBSurface> attack_melee_msg_hit;
+		std::auto_ptr<RGBSurface> attack_melee_msg_miss;
+		std::auto_ptr<RGBSurface> attack_distant_msg_hit;
+		std::auto_ptr<RGBSurface> attack_distant_msg_miss;
 
 		//for movement based on time not on framerate
 		long DeltaTicks;

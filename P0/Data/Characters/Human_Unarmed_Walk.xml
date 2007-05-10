@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 
 <!DOCTYPE Animation SYSTEM "../DTDs/Animation.dtd">
 
@@ -17,7 +17,8 @@
 	</Sprite_Dimensions>
 
 	<Animation_Characteristics>
-		<Frames>9</Frames>
+		<Frames>8</Frames>
+		<KeyFrame>4</KeyFrame>
 		<Frames_Interval>130</Frames_Interval>
 	</Animation_Characteristics>
 </Animation>

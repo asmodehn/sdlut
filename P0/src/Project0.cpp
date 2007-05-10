@@ -43,7 +43,7 @@ bool InitEverything()
 	P0_Logger << nl << "TTF Init : OK " << std::endl;
 
 	//Create the video surface aka the display
-	if (! App::getInstance().getWindow()->resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT)  )
+	if (! App::getInstance().getWindow().resetDisplay(SCREEN_WIDTH, SCREEN_HEIGHT)  )
 	{
 		P0_Logger << nl << "Create Surface Failed : " << GetError() << std::endl;
         return false;
@@ -206,10 +206,10 @@ try {
 
 
 	//Affect the keyboard instance to the windows
-    App::getInstance().getWindow()->getEventManager().setKeyboard(myKeyboardInput);
+    App::getInstance().getWindow().getEventManager().setKeyboard(myKeyboardInput);
 
 	//Affect the game render engine to the windows
-	App::getInstance().getWindow()->setEngine(myRender_Engine);
+	App::getInstance().getWindow().setEngine(myRender_Engine);
 
 	return true; //no error
 
@@ -225,7 +225,7 @@ try {
 
 	/********Start music********/
 	if (ENABLE_MUSIC)
-		App::getInstance().getMixer()->playChannel(GlobalMusic_Chan);
+		App::getInstance().getMixer().playChannel(GlobalMusic_Chan);
 
 	/*******Score Management********/
 	FiNiSH_TiME = (unsigned)time( NULL );
@@ -238,7 +238,7 @@ try {
 
 
 	/********Launch the mainloop that will use the render method of the Engine and so will render the screen and will manage all events********/
-	App::getInstance().getWindow()->mainLoop(FRAMES_PER_SECOND);
+	App::getInstance().getWindow().mainLoop(FRAMES_PER_SECOND);
 
 	return true; //no error
 

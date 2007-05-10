@@ -3,7 +3,7 @@
 <!DOCTYPE Animation SYSTEM "../DTDs/Animation.dtd">
 
 <Animation>
-	<Animation_TS_Filename>Human_w_Bow_Walk.png</Animation_TS_Filename>
+	<Animation_TS_Filename>Human w Bow Walk.png</Animation_TS_Filename>
 	
 	<TS_ColorKey_RGB>
 		<ColorKey_R>106</ColorKey_R>
@@ -17,7 +17,8 @@
 	</Sprite_Dimensions>
 
 	<Animation_Characteristics>
-		<Frames>9</Frames>
+		<Frames>8</Frames>
+		<KeyFrame>4</KeyFrame>
 		<Frames_Interval>130</Frames_Interval>
 	</Animation_Characteristics>
 </Animation>

@@ -5,12 +5,6 @@ Player::Player()
 {
 try {
 /****initial initialization to be able to free everything at any time****/
-	attack_unarmed_msg_hit = NULL;
-	attack_unarmed_msg_miss = NULL;
-	attack_melee_msg_hit = NULL;
-	attack_distant_msg_hit = NULL;
-	attack_melee_msg_miss = NULL;
-	attack_distant_msg_miss = NULL;
 
 /****characteristics parsing (xml parsing)****/
 	Parse_Description_File("Data/Characters/Player.xml"); //attack_style ????!!!!!!!!!!!
@@ -146,13 +140,6 @@ Player::~Player()
 //Everything needed to fully clean the player in case of exception or at destruction
 void Player::Clean_Player()
 {
-	delete attack_unarmed_msg_hit, attack_unarmed_msg_hit = NULL;
-	delete attack_unarmed_msg_miss, attack_unarmed_msg_miss = NULL;
-	delete attack_melee_msg_hit, attack_melee_msg_hit = NULL;
-	delete attack_distant_msg_hit, attack_distant_msg_hit = NULL;
-	delete attack_melee_msg_miss, attack_melee_msg_miss = NULL;
-	delete attack_distant_msg_miss, attack_distant_msg_miss = NULL;
-
 	delete Attack_Animation, Attack_Animation = NULL;
 	delete Death_Animation, Death_Animation = NULL;
 	delete Walk_Animation, Walk_Animation = NULL;
@@ -173,7 +160,7 @@ try
 		//If a monster has been hit displayed the hit msg, if no display miss msg
 		if (attack_successfull != 0)
 		{
-			Messages::Status_Msg = attack_unarmed_msg_hit;
+			Messages::Status_Msg = attack_unarmed_msg_hit.get();
 
 			if (attack_successfull == 1)
 				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
@@ -182,7 +169,7 @@ try
 		}
 		else
 		{
-			Messages::Status_Msg = attack_unarmed_msg_miss;
+			Messages::Status_Msg = attack_unarmed_msg_miss.get();
 			P0_Logger << nl << ">>> Monster Miss <<< " << std::endl;
 		}
 	}
@@ -192,7 +179,7 @@ try
 		//If a monster has been hit displayed the hit msg, if no display miss msg
 		if (attack_successfull != 0)
 		{
-			Messages::Status_Msg = attack_melee_msg_hit;
+			Messages::Status_Msg = attack_melee_msg_hit.get();
 
 			if (attack_successfull == 1)
 				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
@@ -201,7 +188,7 @@ try
 		}
 		else
 		{
-			Messages::Status_Msg = attack_melee_msg_miss;
+			Messages::Status_Msg = attack_melee_msg_miss.get();
 			P0_Logger << nl << ">>> Monster Miss <<< " << std::endl;
 		}
 	}
@@ -211,7 +198,7 @@ try
 		//If a monster has been hit displayed the hit msg, if no display miss msg
 		if (attack_successfull != 0)
 		{
-			Messages::Status_Msg = attack_distant_msg_hit;
+			Messages::Status_Msg = attack_distant_msg_hit.get();
 
 			if (attack_successfull == 1)
 				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
@@ -220,7 +207,7 @@ try
 		}
 		else
 		{
-			Messages::Status_Msg = attack_distant_msg_miss;
+			Messages::Status_Msg = attack_distant_msg_miss.get();
 			P0_Logger << nl << ">>> Monster Miss <<< " << std::endl;
 		}
 	}
