@@ -68,7 +68,7 @@ namespace RAGE {
 		}
 		catch (std::exception & e)
 		{
-			Log << "Exception cought in RWOps Constructor : " << e.what();
+			Log << nl <<"Exception cought in RWOps Constructor : " << e.what();
 		}
 
 		SDL_RWops RWOps::get_SDL() const
@@ -79,11 +79,15 @@ namespace RAGE {
 		RWOps::RWOps(const RWOps & rwops) throw (std::logic_error)
 		try : pvm_rwops(SDL_AllocRW()) 
 		{
-			*pvm_rwops = *rwops.pvm_rwops;
+			if(!pvm_rwops.get())
+			{
+				throw std::logic_error("Initialising empty RWOps failed");
+			}
+			*pvm_rwops = *(rwops.pvm_rwops);
 		}
 		catch (std::exception & e)
 		{
-			Log << "Exception cought in RWOps Copy Constructor : " << e.what();
+			Log << nl <<"Exception cought in RWOps Copy Constructor : " << e.what();
 		}
 		
 		RWOps::~RWOps()

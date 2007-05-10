@@ -32,7 +32,7 @@ namespace RAGE
 
         Overlay::Format Overlay::getFormat(void) const
         {
-            Format res;
+            Format res; //TOOD : find a sensible default value
             if ( _overlay->format & SDL_YV12_OVERLAY )
                 res = YV12;
             else if ( _overlay->format & SDL_IYUV_OVERLAY )

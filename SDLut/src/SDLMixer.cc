@@ -138,7 +138,7 @@ namespace RAGE
 	Sound* cvtsound = new Sound(sound);
 	
 	//is the test the other way around ?
-	if (!cvtsound->Convert(_hwspec.format(), _hwspec.channels(), _hwspec.frequency()))
+	if (!cvtsound->Convert(static_cast<unsigned short>(_hwspec.format()),static_cast<unsigned short>( _hwspec.channels()), _hwspec.frequency()))
 	    {
 		    Log << nl << "Erreur lors de la conversion du fichier audio:" << GetError();
 		    delete cvtsound;

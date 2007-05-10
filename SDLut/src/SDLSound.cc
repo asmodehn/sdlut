@@ -36,14 +36,16 @@ namespace RAGE
 				Log<< GetError();
 			}
 
+		//copy original sound data ( should be shared for optimisation later on maybe... )
 		Sound::Sound( const Sound & s) throw (std::logic_error)
-		try : _aInfo ( s._aInfo ),  pvm_OriginalData(new RWOps())
+		try : _aInfo ( s._aInfo ),  pvm_OriginalData(s.pvm_OriginalData.get() !=0 ? new RWOps(*s.pvm_OriginalData) : 0)
 		{
+			 //m_info( page.m_info.get( ) != 0 ? new CInfo( *page.m_info ) : 0 ),
 			
 #ifdef DEBUG
 			Log << nl << "Sound::Sound(" << &s << ") called";
 #endif
-			*pvm_OriginalData = *s.pvm_OriginalData; //copy original sound data ( should be shared for optimisation later on... )
+			//*pvm_OriginalData = *(s.pvm_OriginalData);
 
 			Uint32 len;
 			//DOING :use of SDL_LoadWAV_RW (RWops) if possible to have only one way to free the memory allocated for a sound...

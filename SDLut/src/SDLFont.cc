@@ -18,7 +18,7 @@ namespace SDL
 	{
 
 		//this version keeps the right value for render
-		const RGBSurface _fontsurf;
+		RGBSurface _fontsurf;
 
 		//all the rectangles become {0,0,0,0} on render for some reason
 		std::vector<Rect> alphalookup;
@@ -282,19 +282,13 @@ namespace SDL
 	// INTERFACE FONT IMPLEMENTATION //
 	///////////////////////////////////
 
-	
-	std::vector<FontImpl *> Font::references;
-	std::vector<unsigned int> Font::refcount;
-
 Font::Font() throw (std::logic_error)
 try : _font( new FontImpl())
 {
-	if(_font==NULL)
+	if(!_font.get())
 	{
 		throw std::logic_error("Font Support not available");
 	}
-	references.push_back(_font);
-	refcount.push_back(1);
 }
 catch (std::exception& e)
 {
@@ -304,10 +298,10 @@ catch (std::exception& e)
 }
 
 Font::Font(std::string filename , int ptsize )
-try : _font()
+try : _font(0)
 {
-	setTTF( filename, ptsize);
-	if(_font==NULL)
+	bool ttfavailable = setTTF( filename, ptsize);
+	if(!ttfavailable || !_font.get())
 	{
 		throw std::logic_error("Font Support not available");
 	}
@@ -323,37 +317,15 @@ catch (std::exception& e)
 
 //Copy Constructor
 Font::Font(const Font &font)
-	: _font(font._font)
+	: _font(0)
 {
-	for(unsigned int i=0; i< references.size(); i++)
-	{
-		if ( references[i] == _font)
-		{
-			refcount[i]++;
-			break;
-		}
-	}
-	
+	//duplicated
+	*_font=*(font._font);
 }
 
 
 Font::~Font()
 {
-	for(unsigned int i=0; i< references.size(); i++)
-	{
-		if ( references[i] == _font)
-		{
-			if (--refcount[i] == 0)
-			{
-				delete _font, _font=NULL;
-				references.erase(references.begin()+i,references.begin()+i+1);
-				refcount.erase(refcount.begin()+i,refcount.begin()+i+1);
-			}
-			break;
-		}
-	}
-
-
 }
 
 
@@ -368,22 +340,7 @@ std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mod
 #ifdef HAVE_SDLTTF
 		try
 		{
-			for(unsigned int i=0; i< references.size(); i++)
-			{
-				if ( references[i] == _font)
-				{
-					if (--refcount[i] == 0)
-					{
-						delete _font, _font=NULL;
-						references.erase(references.begin()+i,references.begin()+i+1);
-						refcount.erase(refcount.begin()+i,refcount.begin()+i+1);
-					}
-				break;
-				}
-			}
-			_font = new FontExtend(filename,ptsize);
-			references.push_back(_font);
-			refcount.push_back(1);
+			_font.reset( new FontExtend(filename,ptsize) );
 		}
 		catch (std::exception& e)
 		{
@@ -391,7 +348,7 @@ std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mod
 					e.what() << std::endl;
 		};
 
-		changed = (_font != NULL );
+		changed = (_font.get() != 0);
 #else
 		Log << nl << "Feature not enabled. TTF loading is disabled.";
 #endif

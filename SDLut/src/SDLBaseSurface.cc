@@ -37,9 +37,7 @@ namespace RAGE
 	}
 
         BaseSurface::BaseSurface(const BaseSurface & s) throw (std::logic_error)
-        try
-        :
-            locks(0)
+        try : _surf(0), locks(0)
         {
 #ifdef DEBUG
             Log << nl << "BaseSurface::BaseSurface(" << &s << ") called...";
@@ -179,10 +177,11 @@ BaseSurface::~BaseSurface()
                 pixel=*(Uint16 *)p;
 
                 case 3:
-                if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
                     pixel= p[0] << 16 | p[1] << 8 | p[2];
-                else
+#else
                     pixel= p[0] | p[1] << 8 | p[2] << 16;
+#endif
                 case 4:
                 pixel= *(Uint32 *)p;
 
