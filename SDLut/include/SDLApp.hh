@@ -45,11 +45,11 @@ namespace RAGE
 	    ///Handling Video Ouput related behaviour
             std::auto_ptr<Window> pvm_window; // for video
 
-	    ///Handling Jostick Pool for input
-            std::auto_ptr<JoystickPool> pvm_jpool; //for joystick
-
 	    ///Handling Audio Ouput related behaviour
             std::auto_ptr<Mixer> pvm_mixer; // for audio framework
+
+	    ///Handling Jostick Pool for input
+            std::auto_ptr<JoystickPool> pvm_jpool; //for joystick
 
 	    ///Storing name and icon for this application
             std::string pvm_name,pvm_icon;

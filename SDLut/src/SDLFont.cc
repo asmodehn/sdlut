@@ -37,7 +37,7 @@ namespace SDL
 			
 			//Rendering
 			//bgc is used only if mode == shaded. Otherwise it s transparent
-			virtual SDL_Surface * render(const std::string & text,Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid ) const;
+			virtual std::auto_ptr<SDL_Surface> render(const std::string & text,Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid ) const;
 		
 	};
 
@@ -77,15 +77,15 @@ namespace SDL
 				alphalookup.clear();
 			}
 
-			SDL_Surface * FontImpl::render(const std::string & text,Color c, Color bgc, Font::RenderMode mode) const
+			std::auto_ptr<SDL_Surface> FontImpl::render(const std::string & text,Color c, Color bgc, Font::RenderMode mode) const
 			{
 
-				SDL_Surface * result = SDL_CreateRGBSurface(SDL_SWSURFACE, getSize(text).getw(), getSize(text).geth(), 16, BaseSurface::r_default_mask, BaseSurface::g_default_mask, BaseSurface::b_default_mask, BaseSurface::a_default_mask);
+				std::auto_ptr<SDL_Surface> result(SDL_CreateRGBSurface(SDL_SWSURFACE, getSize(text).getw(), getSize(text).geth(), 16, BaseSurface::r_default_mask, BaseSurface::g_default_mask, BaseSurface::b_default_mask, BaseSurface::a_default_mask));
 				for (unsigned int i= 0; i< text.size(); i++)
 				{
-					SDL_BlitSurface(const_cast<SDL_Surface*>(_fontsurf.get_pSDL()),const_cast<SDL_Rect*>(alphalookup[text[i]].get_pSDL()),result,const_cast<SDL_Rect*>(Rect(0,i*14,14,16).get_pSDL()));
+					SDL_BlitSurface(const_cast<SDL_Surface*>(_fontsurf.get_pSDL()),const_cast<SDL_Rect*>(alphalookup[text[i]].get_pSDL()),result.get(),const_cast<SDL_Rect*>(Rect(0,i*14,14,16).get_pSDL()));
 				}
-				return result;
+				return result;//beware : ownership transferred for auto_ptr
 			}
 
 
@@ -100,15 +100,14 @@ namespace SDL
 
 	class FontExtend : public FontImpl
 	{
-		//shared between copies of the same instance
+		int ptsize;
+		long index;
+		std::auto_ptr<RWOps> pvm_OriginalData;
 		TTF_Font * _ttfstruct;
-	
-		static std::vector<TTF_Font *> references;
-		static std::vector<unsigned int> refcount;
-
+		
 		public:
 			//Constructor
-			FontExtend(std::string filename, int ptsize) throw (std::logic_error);
+			FontExtend(std::string filename, int ptsize = 16, long index = 0) throw (std::logic_error);
 			
 			//Copy Constructor
 			//copy completely the content of *_ttfstruct
@@ -138,22 +137,17 @@ namespace SDL
 			Rect getSize(const std::string& text) const;
 
 			//The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-			SDL_Surface * render(const std::string& text, Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid) const;
+			std::auto_ptr<SDL_Surface> render(const std::string& text, Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid) const;
 	};
 
-
-		std::vector<TTF_Font *> FontExtend::references;
-		std::vector<unsigned int> FontExtend::refcount;
-
 //Implementation of class Font
-	FontExtend::FontExtend(std::string filename, int ptsize) throw (std::logic_error)
-			try : FontImpl(),_ttfstruct(TTF_OpenFont(filename.c_str(),ptsize))
+	FontExtend::FontExtend(std::string filename, int ptsize, long index) throw (std::logic_error)
+		try : FontImpl(), ptsize(ptsize), index(index),pvm_OriginalData(new RWOps(filename.c_str(), "rb")),_ttfstruct(TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index))
 		{
-			if(_ttfstruct==NULL) {
+			if(_ttfstruct == NULL) {
 				throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
 			}
-			references.push_back(_ttfstruct);
-			refcount.push_back(1);
+			pvm_OriginalData->seek(0,RWOps::Set);
 		}
 		catch (std::exception& e)
 		{
@@ -163,46 +157,38 @@ namespace SDL
 		}
 
 		FontExtend::FontExtend(const FontExtend & font)
-	:_ttfstruct(font._ttfstruct)
+		try : FontImpl(font), ptsize(font.ptsize), index(font.index), pvm_OriginalData(0),_ttfstruct(0)
 		{
-			for(unsigned int i=0; i< references.size(); i++)
-			{
-				if ( references[i] == _ttfstruct)
-				{
-					refcount[i]++;
-					break;
-				}
+			*pvm_OriginalData = *(font.pvm_OriginalData); //duplicated
+			_ttfstruct = TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index);
+			if(_ttfstruct == 0) {
+				throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
 			}
+			pvm_OriginalData->seek(0,RWOps::Set);
+		}
+		catch (std::exception& e)
+		{
+			Log << nl << "Exception catched in internal FontExtent Copy Constructor :"  << nl <<
+					e.what() << std::endl;
+		            //TODO : much more explicit error message...
 		}
 
 		FontExtend::~FontExtend()
 		{
-			for(unsigned int i=0; i< references.size(); i++)
-			{
-				if ( references[i] == _ttfstruct)
-				{
-					if (--refcount[i] == 0)
-					{
-						TTF_CloseFont(_ttfstruct), _ttfstruct=NULL;
-						references.erase(references.begin()+i,references.begin()+i+1);
-						refcount.erase(refcount.begin()+i,refcount.begin()+i+1);
-					}
-					break;
-				}
-			}
+			TTF_CloseFont(_ttfstruct);
 		}
 
-		SDL_Surface * FontExtend::render(const std::string& text, Color c, Color bgc, Font::RenderMode mode) const
+		std::auto_ptr<SDL_Surface> FontExtend::render(const std::string& text, Color c, Color bgc, Font::RenderMode mode) const
 		{
-			SDL_Surface * surf;
+			std::auto_ptr<SDL_Surface> surf;
 			switch ( mode )
 			{
-				case Font::Blended : surf=TTF_RenderText_Blended(_ttfstruct,text.c_str(), c.get_SDL()); break;
-				case Font::Shaded : surf=TTF_RenderText_Shaded(_ttfstruct,text.c_str(),c.get_SDL(), bgc.get_SDL()); break;
+				case Font::Blended : surf.reset(TTF_RenderText_Blended(_ttfstruct,text.c_str(), c.get_SDL())); break;
+				case Font::Shaded : surf.reset(TTF_RenderText_Shaded(_ttfstruct,text.c_str(),c.get_SDL(), bgc.get_SDL())); break;
 				case Font::Solid :
-				default: surf=TTF_RenderText_Solid(_ttfstruct,text.c_str(), c.get_SDL()); break;
+				default: surf.reset(TTF_RenderText_Solid(_ttfstruct,text.c_str(), c.get_SDL())); break;
 			}
-			return surf;
+			return surf;//beware : auto_ptr ownership transferred ;)
 		}
 
 		//Attributes Access
@@ -371,9 +357,9 @@ Font::~Font()
 }
 
 
-RGBSurface * Font::render(std::string text, Color c, RenderMode mode, Color bgc) const
+std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mode, Color bgc) const
 {
-	return new RGBSurface(_font->render(text,c,bgc,mode));
+	return std::auto_ptr<RGBSurface>(new RGBSurface(_font->render(text,c,bgc,mode)));
 }
 
 	bool Font::setTTF(std::string filename, int ptsize)

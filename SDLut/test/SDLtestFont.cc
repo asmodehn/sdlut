@@ -58,11 +58,10 @@ public :
 
 	void draw()
 	{
-		RGBSurface * textsurf = _font.render(text,Color(255,255,255),Font::Solid);
-		assert(textsurf);
+		std::auto_ptr<RGBSurface> textsurf = _font.render(text,Color(255,255,255),Font::Solid);
+		assert(textsurf.get());
 		surf->fill(_bgColor);
 		surf->blit(*textsurf);
-		delete textsurf;
 	}
 
 	~Console()
@@ -128,17 +127,15 @@ public:
 
 	Point consolePos;
 	Console * console;
-	RGBSurface *HelpMsg;
+	std::auto_ptr<RGBSurface> HelpMsg;
 		
-	MyEngine() : consolePos(0,0), console (NULL)
-	{ HelpMsg = NULL; }
+	MyEngine() : consolePos(0,0), console (NULL), HelpMsg(0)
+	{}
 
 	void setConsole( Console * cons ) { console = cons;}
 
     virtual ~MyEngine()
 	{
-		if (HelpMsg != NULL)
-			delete HelpMsg, HelpMsg = NULL;
 	}
 
 	bool init(int width, int height)
@@ -167,7 +164,7 @@ public:
     {
 		DefaultEngine::render(screen);
 
-		if (HelpMsg != NULL) 
+		if (HelpMsg.get()) 
 			screen.blit( *HelpMsg, Point::Point(5, 5) );
 
 		if (console !=NULL)

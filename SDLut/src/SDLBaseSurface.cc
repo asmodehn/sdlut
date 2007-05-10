@@ -30,6 +30,11 @@ namespace RAGE
             return true;
         }
 
+	//Conversion Constructor with explicit ownership transfer as it s using an auto_ptr
+	BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) : _surf(s.get()),locks(0)
+	{
+		s.release(); //to use the usual C-like pointer ownership
+	}
 
         BaseSurface::BaseSurface(const BaseSurface & s) throw (std::logic_error)
         try

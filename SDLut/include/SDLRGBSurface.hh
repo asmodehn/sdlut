@@ -25,6 +25,9 @@ class RGBSurface : public BaseSurface
     	explicit RGBSurface(SDL_Surface * s) : BaseSurface(s)
     	{} ///< This one should be called only by friends
 
+	///Conversion Constructor with explicit ownership transfert
+    	explicit RGBSurface(std::auto_ptr<SDL_Surface> s);
+
 
 protected : //the client should not access to flags...
 

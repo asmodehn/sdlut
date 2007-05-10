@@ -12,6 +12,11 @@ namespace RAGE
 	   RWOps RGBSurface::defaultContent(_defaultImage,sizeof(_defaultImage));
 	   int RGBSurface::offset = defaultContent.tell();
 
+	//Conversion Constructor
+    	RGBSurface::RGBSurface(std::auto_ptr<SDL_Surface> s) : BaseSurface(s)
+    	{
+	}
+	
         RGBSurface::RGBSurface(int width, int height, int bpp) throw (std::logic_error)
         try
 :

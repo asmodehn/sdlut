@@ -6,6 +6,7 @@
 #include "SDLRGBSurface.hh"
 
 #include <vector>
+#include <memory>
 
 namespace RAGE
 {
@@ -32,8 +33,7 @@ namespace RAGE
  *
  */
 
-	    //TODO : only one is actually needed here
-
+//using Pimpl idiom to hide use of optional dependencies or fallback behaviour
 class FontImpl;
 	    
 class Font {
@@ -88,7 +88,7 @@ public:
 
 	//Rendering
 	//The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-	RGBSurface * render(std::string text, Color c, RenderMode mode, Color bgc = Color()) const;
+	std::auto_ptr<RGBSurface> render(std::string text, Color c, RenderMode mode, Color bgc = Color()) const;
 
 };
 

@@ -9,16 +9,19 @@ namespace RAGE
 		//class Sound
 		
 		Sound::Sound(std::string filename, bool loop_status) throw ( std::logic_error)
-		try : _aInfo( new SDL_AudioSpec() ), frommem(false)
+		try : _aInfo( new SDL_AudioSpec() ), pvm_OriginalData(new RWOps(filename.c_str(), "rb"))
 		{
 #ifdef DEBUG
 			Log << nl << "Sound::Sound(" << filename << ") called";
 #endif
 			Uint32 len;
-			if ( SDL_LoadWAV(filename.c_str(),_aInfo.get_pSDL(),&_buf,&len) == NULL)
+					
+			//SDL_LoadWAV_RW(,1, _aInfo.get_pSDL(),&_buf,&len);
+			if ( SDL_LoadWAV_RW(pvm_OriginalData->get_pSDL(),0,_aInfo.get_pSDL(),&_buf,&len) == NULL)
 			{
 				throw std::logic_error(" Unable to open the sound file !");
 			}
+			pvm_OriginalData->seek(0,RWOps::Set);
 
 			_length = static_cast<unsigned long>(len);
 
@@ -33,27 +36,36 @@ namespace RAGE
 				Log<< GetError();
 			}
 
-		Sound::Sound( const Sound & s) : _aInfo ( s._aInfo )
-{
+		Sound::Sound( const Sound & s) throw (std::logic_error)
+		try : _aInfo ( s._aInfo ),  pvm_OriginalData(new RWOps())
+		{
 			
 #ifdef DEBUG
 			Log << nl << "Sound::Sound(" << &s << ") called";
 #endif
-			//TODO :use of SDL_LoadWAV_RW (RWops) if possible to have only one way to free the memory allocated for a sound...
-				
-			_length=s._length;
-			_buf= new Uint8[s._length];
-			for (unsigned int i=0; i<s._length; i++)
+			*pvm_OriginalData = *s.pvm_OriginalData; //copy original sound data ( should be shared for optimisation later on... )
+
+			Uint32 len;
+			//DOING :use of SDL_LoadWAV_RW (RWops) if possible to have only one way to free the memory allocated for a sound...
+			if ( SDL_LoadWAV_RW(pvm_OriginalData->get_pSDL(),0,_aInfo.get_pSDL(),&_buf,&len) == NULL)
 			{
-				_buf[i] = s._buf[i];
+				throw std::logic_error(" Unable to read the sound in memory !");
 			}
+			pvm_OriginalData->seek(0,RWOps::Set);
+			
+			_length = static_cast<unsigned long>(len);
+			
 			_loop_status=s._loop_status;
 
-			frommem=true;
 #ifdef DEBUG
 			Log << nl << "Sound::Sound(" << &s << ") done";
 #endif
-}
+		}
+		catch (std::exception &e)
+			{
+				Log << e.what();
+				Log<< GetError();
+			}
 		
  bool Sound::Convert (unsigned short DestinationFormat,unsigned short DestinationChannels,int DestinationFrequency)
 {
@@ -85,14 +97,7 @@ namespace RAGE
 	if (res !=-1)
 	{
 		_length = _convertTable->len_cvt;
-		if ( frommem )
-		{
-			delete[] _buf;
-		}
-		else
-		{
-			SDL_FreeWAV(_buf);
-		}
+		SDL_FreeWAV(_buf);
 		_buf = _convertTable->buf;
 		frommem = true;
 	}
@@ -117,23 +122,15 @@ namespace RAGE
 }
 
 		Sound::~Sound()
-{
+		{
 			
 #ifdef DEBUG
 			Log << nl << "Sound::~Sound() called";
 #endif
-			if ( frommem )
-			{
-				delete[] _buf;
-			}
-			else
-			{
-				SDL_FreeWAV(_buf);
-			}
-			
+			SDL_FreeWAV(_buf);
 #ifdef DEBUG
 			Log << nl << "Sound::~Sound() done";
 #endif
-}
+		}
 	}
 }

@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <string>
+#include <memory>
 #include <stdexcept>
 
 //forward declaration for late time binding...
@@ -30,8 +31,10 @@ namespace RAGE
 
         class RWOps
         {
+		std::auto_ptr<SDL_RWops> pvm_rwops;
 
-			SDL_RWops * _rwops;
+		friend class Sound;
+		
 		protected:
 			RWOps() throw (std::logic_error);
 		public:
@@ -43,11 +46,14 @@ namespace RAGE
 			
 			RWOps(void *mem, int size) throw (std::logic_error);
 			RWOps(const void *mem, int size) throw (std::logic_error);
+			RWOps(const RWOps & rwops) throw (std::logic_error);
 			~RWOps();
 
 			SDL_RWops get_SDL() const;
-
-			const SDL_RWops * get_pSDL() const;
+			inline SDL_RWops * get_pSDL() const
+			{
+				return pvm_rwops.get();
+			}
 
 			typedef enum {Set, Cur, End}Seek;
 

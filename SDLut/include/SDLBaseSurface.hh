@@ -110,8 +110,13 @@ namespace RAGE
 
             ///Conversion Constructor
             explicit BaseSurface(SDL_Surface * s) : _surf(s),locks(0)
-            {} ///< This one should be called only by subclasses
-
+            {}
+	     ///< This one should be called only by subclasses
+	    
+	    ///Conversion Constructor with explicit ownership transfer as it s using an auto_ptr
+	    explicit BaseSurface(std::auto_ptr<SDL_Surface> s);
+	     ///< This one should be called only by subclasses as well
+			    
             /** \brief Copy constructor overload.
               */
             BaseSurface(const BaseSurface & s) throw (std::logic_error);

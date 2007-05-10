@@ -5,10 +5,12 @@ namespace RAGE {
 	namespace SDL{
 
 		RWOps::RWOps() throw (std::logic_error)
-		try : _rwops(NULL)
+		try : pvm_rwops(SDL_AllocRW())
 		{
-			if(NULL==(_rwops=SDL_AllocRW()))
+			if(!pvm_rwops.get())
+			{
 				throw std::logic_error("Initialising empty RWOps failed");
+			}
 
 		}
 		catch (std::exception & e)
@@ -18,10 +20,12 @@ namespace RAGE {
 
 
 		RWOps::RWOps(const std::string & file, const char *mode) throw (std::logic_error)
-				try : _rwops(NULL)
+		try : pvm_rwops(SDL_RWFromFile(file.c_str(),mode))
 		{
-			if(NULL==(_rwops=SDL_RWFromFile(file.c_str(),mode)))
+			if(!pvm_rwops.get())
+			{
 				throw std::logic_error("Initialising RWOps from " + file +" failed" + GetError());
+			}
 
 		}
 		catch (std::exception & e)
@@ -42,11 +46,12 @@ namespace RAGE {
 		//};
 
 		RWOps::RWOps(void *mem, int size) throw (std::logic_error)
-			try : _rwops(NULL)
+		try : pvm_rwops(SDL_RWFromMem(mem,size))
 		{
-			if(NULL==(_rwops=SDL_RWFromMem(mem,size)))
+			if(!pvm_rwops.get())
+			{
 				throw std::logic_error("Initialising RWOps from mem failed");
-
+			}
 		}
 		catch (std::exception & e)
 		{
@@ -54,11 +59,12 @@ namespace RAGE {
 		}
 		
 		RWOps::RWOps(const void *mem, int size) throw (std::logic_error)
-			try : _rwops(NULL)
+			try : pvm_rwops(SDL_RWFromConstMem(mem,size))
 		{
-			if(NULL==(_rwops=SDL_RWFromConstMem(mem,size)))
+			if(!pvm_rwops.get())
+			{
 				throw std::logic_error("Initialising RWOps from const mem failed");
-
+			}
 		}
 		catch (std::exception & e)
 		{
@@ -67,23 +73,29 @@ namespace RAGE {
 
 		SDL_RWops RWOps::get_SDL() const
 		{
-			return *_rwops;
+			return *pvm_rwops;
 		}
 
-		const SDL_RWops * RWOps::get_pSDL() const
+		RWOps::RWOps(const RWOps & rwops) throw (std::logic_error)
+		try : pvm_rwops(SDL_AllocRW()) 
 		{
-			return _rwops;
+			*pvm_rwops = *rwops.pvm_rwops;
+		}
+		catch (std::exception & e)
+		{
+			Log << "Exception cought in RWOps Copy Constructor : " << e.what();
 		}
 		
 		RWOps::~RWOps()
 		{
-			SDL_FreeRW(_rwops);
+			SDL_RWops * todel = pvm_rwops.release();
+			SDL_FreeRW(todel);
 		}
 
 
 		int RWOps::tell() const
 		{
-			return SDL_RWtell(_rwops);
+			return SDL_RWtell(pvm_rwops.get());
 		}
 		
 		int RWOps::seek(int offset,Seek start)
@@ -92,13 +104,13 @@ namespace RAGE {
 			switch(start)
 			{
 			case Set:
-				newoffset = SDL_RWseek(_rwops,offset,SEEK_SET);
+				newoffset = SDL_RWseek(pvm_rwops.get(),offset,SEEK_SET);
 				break;
 			case Cur:
-				newoffset = SDL_RWseek(_rwops,offset,SEEK_CUR);
+				newoffset = SDL_RWseek(pvm_rwops.get(),offset,SEEK_CUR);
 				break;
 			case End:
-				newoffset = SDL_RWseek(_rwops,offset,SEEK_END);
+				newoffset = SDL_RWseek(pvm_rwops.get(),offset,SEEK_END);
 				break;
 			}
 			return newoffset;
@@ -106,7 +118,7 @@ namespace RAGE {
 
 		bool RWOps::close()
 		{
-			return SDL_RWtell(_rwops) == 0;
+			return SDL_RWtell(pvm_rwops.get()) == 0;
 		}
 
 		bool RWOps::dumpCode(const std::string & filename, const std::string & id)
@@ -120,12 +132,12 @@ namespace RAGE {
 			
 			
 			//getting length of the RWOps in memory
-			unsigned int length=SDL_RWseek(_rwops,0,SEEK_END);
-			SDL_RWseek(_rwops,0,SEEK_SET);
+			unsigned int length=SDL_RWseek(pvm_rwops.get(),0,SEEK_END);
+			SDL_RWseek(pvm_rwops.get(),0,SEEK_SET);
 			
 			unsigned char* ch = new unsigned char[length];
 			//reading 16-bytes blocks (arbitrary choice...)
-			int blocks = SDL_RWread( _rwops, ch ,16,length/16) ;
+			int blocks = SDL_RWread( pvm_rwops.get(), ch ,16,length/16) ;
 
 #ifdef DEBUG
 			Log << nl << blocks << " 16-bytes blocks read";

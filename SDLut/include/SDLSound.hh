@@ -17,6 +17,7 @@
  */
 
 #include "SDLAudioInfo.hh"
+#include "SDLRWOps.hh"
 #include <string>
 #include <stdexcept>
 #include <map>
@@ -51,6 +52,9 @@ namespace RAGE
 
 	AudioInfo _aInfo;
 
+	//should be shared to decrease memory usage.
+	std::auto_ptr<RWOps> pvm_OriginalData;
+	
 	bool frommem;
 	//Length and data of the Sound
 	unsigned long _length;
@@ -64,7 +68,7 @@ namespace RAGE
 		//Sound Loader
 		Sound(std::string filename, bool loop_status = false) throw (std::logic_error);
 		//Sound Copy ( careful with conversion )
-		Sound( const Sound & s);
+		Sound( const Sound & s)  throw (std::logic_error);
 		//Sound destructor
 		~Sound();
 
