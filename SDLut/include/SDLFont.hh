@@ -70,7 +70,8 @@ public:
 	~Font();
 
 	bool setTTF(std::string filename , int ptsize = 16);
-
+	bool isTTFAvailable() const;
+	
 	Style getStyle();
 	void setStyle(Style s);
 	

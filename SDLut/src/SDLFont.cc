@@ -34,7 +34,8 @@ namespace SDL
 
 			virtual Font::Style getStyle() { return Font::Default;}
 			virtual void setStyle(Font::Style s) { } //does nothing only one style available in default mode.
-			
+
+			virtual bool isTTFImpl() const { return false; }
 			//Rendering
 			//bgc is used only if mode == shaded. Otherwise it s transparent
 			virtual std::auto_ptr<SDL_Surface> render(const std::string & text,Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid ) const;
@@ -124,6 +125,8 @@ namespace SDL
 
 			Font::Style getStyle();
 			void setStyle(Font::Style s);
+
+			bool isTTFImpl() const { return true; }
 			
 			int height();
 			int ascent();
@@ -157,9 +160,8 @@ namespace SDL
 		}
 
 		FontExtend::FontExtend(const FontExtend & font)
-		try : FontImpl(font), ptsize(font.ptsize), index(font.index), pvm_OriginalData(0),_ttfstruct(0)
+		try : FontImpl(font), ptsize(font.ptsize), index(font.index), pvm_OriginalData(font.pvm_OriginalData.get() !=0 ? new RWOps(*font.pvm_OriginalData) : 0),_ttfstruct(0)
 		{
-			*pvm_OriginalData = *(font.pvm_OriginalData); //duplicated
 			_ttfstruct = TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index);
 			if(_ttfstruct == 0) {
 				throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
@@ -306,7 +308,6 @@ try : _font(0)
 		throw std::logic_error("Font Support not available");
 	}
 }
-
 catch (std::exception& e)
 {
 	Log << nl << "Exception catched in Font Constructor :"  << nl <<
@@ -319,8 +320,20 @@ catch (std::exception& e)
 Font::Font(const Font &font)
 	: _font(0)
 {
-	//duplicated
-	*_font=*(font._font);
+	if (font._font.get() != 0 ) // should always be the case, just need to make sure with default and other constructors
+	{
+		if ( font.isTTFAvailable() )
+		{
+			//duplicated
+			_font.reset(new FontExtend(static_cast<const FontExtend&>(*font._font)));
+		}
+		else
+		{
+			//duplicated
+			_font.reset(new FontImpl(*font._font));
+		}
+	}
+	
 }
 
 
@@ -354,7 +367,12 @@ std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mod
 #endif
 		return changed;
 	}
-			
+
+	bool Font::isTTFAvailable() const
+	{
+		return _font->isTTFImpl();
+	}
+	
 	Font::Style Font::getStyle()
 	{
 		return _font->getStyle();
