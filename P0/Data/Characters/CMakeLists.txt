@@ -12,6 +12,7 @@ CONFIGURE_FILE(	"NPC.ini" "${Project_0_BINARY_DIR}/Data/Characters/NPC.ini" COPY
 	#player
 		#xml
 CONFIGURE_FILE(	Player.xml ${Project_0_BINARY_DIR}/Data/Characters/Player.xml COPYONLY)
+CONFIGURE_FILE(	Human_Unarmed_Animations.xml ${Project_0_BINARY_DIR}/Data/Characters/Human_Unarmed_Animations.xml COPYONLY)
 CONFIGURE_FILE(	Human_Unarmed_Attack.xml ${Project_0_BINARY_DIR}/Data/Characters/Human_Unarmed_Attack.xml COPYONLY)
 CONFIGURE_FILE(	Human_Unarmed_Death.xml ${Project_0_BINARY_DIR}/Data/Characters/Human_Unarmed_Death.xml COPYONLY)
 CONFIGURE_FILE(	Human_Unarmed_Hit.xml ${Project_0_BINARY_DIR}/Data/Characters/Human_Unarmed_Hit.xml COPYONLY)
@@ -43,6 +44,7 @@ CONFIGURE_FILE(	"Human Unarmed Walk.png" "${Project_0_BINARY_DIR}/Data/Character
 	#npc_merchant
 		#xml
 CONFIGURE_FILE(	NPC_Merchant.xml ${Project_0_BINARY_DIR}/Data/Characters/NPC_Merchant.xml COPYONLY)
+CONFIGURE_FILE(	Merchant_Animations.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Animations.xml COPYONLY)
 CONFIGURE_FILE(	Merchant_Run.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Run.xml COPYONLY)
 CONFIGURE_FILE(	Merchant_Stop.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Stop.xml COPYONLY)
 CONFIGURE_FILE(	Merchant_Talk.xml ${Project_0_BINARY_DIR}/Data/Characters/Merchant_Talk.xml COPYONLY)

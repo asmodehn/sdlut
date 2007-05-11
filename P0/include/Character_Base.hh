@@ -3,7 +3,7 @@
 
 //#include "Base.hh"
 #include "BattleField.hh"
-#include "Animations.hh"
+#include "Animations_Center.hh"
 
 //Character Class
 class Character_Base
@@ -70,12 +70,14 @@ protected:
 	
 	//Tileset (never deleted coz are only there to link with the real animation tileset)
 	RGBSurface* Characters_Current_Tileset;
+
 	RGBSurface* Characters_Current_Unarmed_Tileset;
 	RGBSurface* Characters_Current_Melee_Tileset;
 	RGBSurface* Characters_Current_Distant_Tileset;
+	//change that^
 
-	//Animations (designed to be deleted where it's used not in character_base's destructor)
-	Character_Animation *Attack_Animation, *Death_Animation, *Run_Animation, *Walk_Animation, *Hit_Animation, *Stop_Animation, *Pause_Animation;
+	//The center of animations
+	Character_Animations_Center *Default_Animations_Center;
 
 	//current animation current frame
 	int frame;
@@ -284,35 +286,10 @@ public:
     {
         return Characters_ID;
 	}
-
-	inline Character_Animation* Get_Attack_Animation() const
-	{
-		return Attack_Animation;
-	}
-	inline Character_Animation* Get_Death_Animation() const
-	{
-		return Death_Animation;
-	}
-	inline Character_Animation* Get_Run_Animation() const
-	{
-		return Run_Animation;
-	}
-	inline Character_Animation* Get_Walk_Animation() const
-	{
-		return Walk_Animation;
-	}
-	inline Character_Animation* Get_Hit_Animation() const
-	{
-		return Hit_Animation;
-	}
-	inline Character_Animation* Get_Stop_Animation() const
-	{
-		return Stop_Animation;
-	}
-	inline Character_Animation* Get_Pause_Animation() const
-	{
-		return Pause_Animation;
-	}
+	inline Character_Animations_Center *Get_Default_Animations_Center() const
+    {
+        return Default_Animations_Center;
+	}	
 
 	//Init
 	Character_Base();

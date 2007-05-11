@@ -19,12 +19,13 @@ try {
 	string Animation_Filename = Data_Root_Directory + XML_Manager::Get_Option_String(Description_File, Animation_Name);
 	XML_Manager::Validate_File(Animation_Filename);
 
-	string Animation_TS_Filename = XML_Manager::Get_Option_String(Animation_Filename, "Animation_TS_Filename");
+	string Animation_TS_Filename = Data_Root_Directory + XML_Manager::Get_Option_String(Animation_Filename, "Animation_TS_Filename");
 	int ColorKey_R = XML_Manager::Get_Option_Value(Animation_Filename, "ColorKey_R");
 	int ColorKey_G = XML_Manager::Get_Option_Value(Animation_Filename, "ColorKey_G");
 	int ColorKey_B = XML_Manager::Get_Option_Value(Animation_Filename, "ColorKey_B");
-	Animation_Tileset = new RGBSurface(Data_Root_Directory+Animation_TS_Filename, Color((unsigned char)ColorKey_R, (unsigned char)ColorKey_G, (unsigned char)ColorKey_B) );
+	Animation_Tileset = new RGBSurface(Animation_TS_Filename, Color((unsigned char)ColorKey_R, (unsigned char)ColorKey_G, (unsigned char)ColorKey_B) );
 	Animation_Frame_Number = XML_Manager::Get_Option_Value(Animation_Filename, "Frames");
+	Animation_KeyFrame = 0;
 	if ( XML_Manager::Check_Node_Exists(Animation_Filename, "KeyFrame") )
 		Animation_KeyFrame = XML_Manager::Get_Option_Value(Animation_Filename, "KeyFrame");
 	Animation_Frames_Interval = 1; //coz 0 make timer loop

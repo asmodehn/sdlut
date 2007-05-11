@@ -4,16 +4,14 @@
 Player::Player()
 {
 try {
-/****initial initialization to be able to free everything at any time****/
-
 /****characteristics parsing (xml parsing)****/
 	Parse_Description_File("Data/Characters/Player.xml"); //attack_style ????!!!!!!!!!!!
 
 /****Default Animation****/
-	Characters_Current_Unarmed_Tileset = Stop_Animation->Get_Animation_Tileset();
-	Characters_Current_Tileset = Stop_Animation->Get_Animation_Tileset();
+	Characters_Current_Unarmed_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();
+	Characters_Current_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();
 	//attack_style ????!!!!!!!!!!
-	Current_Tile_Rect = Stop_Animation->Get_Animation_Tile_Rect()->at(CH_RIGHT); //right direction by default
+	Current_Tile_Rect = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tile_Rect()->at(CH_RIGHT); //right direction by default
 
 /****Camera****/
 	Camera.setw(CURRENT_SCREEN_WIDTH);
@@ -139,14 +137,8 @@ Player::~Player()
 
 //Everything needed to fully clean the player in case of exception or at destruction
 void Player::Clean_Player()
-{
-	delete Attack_Animation, Attack_Animation = NULL;
-	delete Death_Animation, Death_Animation = NULL;
-	delete Walk_Animation, Walk_Animation = NULL;
-	delete Hit_Animation, Hit_Animation = NULL;
-	delete Run_Animation, Run_Animation = NULL;
-	delete Stop_Animation, Stop_Animation = NULL;
-	delete Pause_Animation, Pause_Animation = NULL;
+{		
+	delete Default_Animations_Center, Default_Animations_Center = NULL;
 }
 
 //Manage Attack Msg regarding the attack style

@@ -71,7 +71,7 @@ bool InitEverything()
 }
 
 //Implementation
-bool ImplementEverything()
+void ImplementEverything()
 {
 try {
 /*********Interface Stuff************/
@@ -125,9 +125,7 @@ try {
 	myPlayer = new Player();
 	if( myPlayer->Following_Camera() == false ) //center camera
 	{ 
-        P0_Logger << nl << "Failed to center camera over Player" << std::endl;
-    	Delay(2000);
-    	return 1;
+		throw std::logic_error( "Failed to center camera over Player" );
     }
     P0_Logger << nl << "Player Creation: OK " << std::endl;
 
@@ -199,15 +197,18 @@ try {
 	//Affect the game render engine to the windows
 	App::getInstance().getWindow().setEngine(myRender_Engine);
 
-	return true; //no error
-
-} catch (...) {
-	return false; //error occured
+} catch (std::exception &exc)
+{
+	throw std::logic_error(exc.what());
+}
+catch (...)
+{
+	throw std::logic_error( "Unhandled Exception Occured In ImplementEverything()" );
 }
 }
 
 //Run
-bool RunGame()
+void RunGame()
 {
 try {
 
@@ -228,10 +229,14 @@ try {
 	/********Launch the mainloop that will use the render method of the Engine and so will render the screen and will manage all events********/
 	App::getInstance().getWindow().mainLoop(FRAMES_PER_SECOND);
 
-	return true; //no error
 
-} catch (...) {
-	return false; //error occured
+} catch (std::exception &exc)
+{
+	throw std::logic_error(exc.what());
+}
+catch (...)
+{
+	throw std::logic_error( "Unhandled Exception Occured In RunGame()" );
 }
 }
 
@@ -338,19 +343,11 @@ try { //global error management
 
 
 	//implement everything needed by the game
-	if( ImplementEverything() == false )
-	{ 
-		throw std::logic_error("Implementation failed... ");
-	}
+	ImplementEverything();
 	P0_Logger << nl << "-> Everything Was Implemented Successfully <-" << std::endl;
 
 	//Start everything needed during play time
-	if( RunGame() == false )
-	{ 
-		throw std::logic_error("Run Game failed... ");
-	}
-
-
+	RunGame();
 
 	P0_Logger << nl << "-> Game Stopped Running Succesffully <-" << std::endl;
 

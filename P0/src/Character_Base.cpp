@@ -49,10 +49,9 @@ Character_Base::Character_Base()
 	Characters_Current_Unarmed_Tileset = NULL;
 	Characters_Current_Melee_Tileset = NULL;
 	Characters_Current_Distant_Tileset = NULL;
-	//TODO: the 3 tileset below must be the link to the different animations not the style
+	//TODO: the 3 tileset below must be the link to the different animations center not a tileset
 
-	//Animations
-	Attack_Animation = NULL, Death_Animation = NULL, Run_Animation = NULL, Walk_Animation = NULL, Hit_Animation = NULL, Stop_Animation = NULL, Pause_Animation = NULL;
+	Default_Animations_Center = NULL;
 
 	//initial frame
     frame = 0;
@@ -63,7 +62,7 @@ Character_Base::Character_Base()
 
 //Destructor
 Character_Base::~Character_Base()
-{	
+{
 }
 
 void Character_Base::Parse_Description_File(const string &Description_Filename)
@@ -108,34 +107,10 @@ try {
 	BASE_INFLICTED_DAMAGE = XML_Manager::Get_Option_Value(Description_Filename, "Damage");
 	Real_Inflicted_Damage = BASE_INFLICTED_DAMAGE;
 	
-	string Default_Attack_Style = XML_Manager::Get_Option_String(Description_Filename, "Style");
-	string Default_Attack_Type = XML_Manager::Get_Option_String(Description_Filename, "Type");
+	string Default_Animations_Center_Filename = Data_Root_Directory + XML_Manager::Get_Option_String(Description_Filename, "Animation_Center_Filename");
 
-	//Animations
-	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Attack_Animation_Filename") ) //if animation defined
-		Attack_Animation = new Character_Animation("Attack_Animation_Filename", Data_Root_Directory, Description_Filename);
-
-	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Stop_Animation_Filename") ) //if animation defined
-		Stop_Animation = new Character_Animation("Stop_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
-
-	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Walk_Animation_Filename") ) //if animation defined
-		Walk_Animation = new Character_Animation("Walk_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
-
-	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Run_Animation_Filename") ) //if animation defined
-		Run_Animation = new Character_Animation("Run_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
-
-	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Pause_Animation_Filename") ) //if animation defined
-		Pause_Animation = new Character_Animation("Pause_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
-
-	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Hit_Animation_Filename") ) //if animation defined
-		Hit_Animation = new Character_Animation("Hit_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
-
-	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Death_Animation_Filename") ) //if animation defined
-		Death_Animation = new Character_Animation("Death_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
-
-	//if ( XML_Manager::Check_Node_Exists(Description_Filename, "Talk_Animation_Filename") ) //if animation defined
-	//	Talk_Animation = new Character_Animation("Talk_Animation_Filename", Data_Root_Directory, Description_Filename);  //if animation defined
-
+	//Default Animations Center
+	Default_Animations_Center = new Character_Animations_Center( Data_Root_Directory, Default_Animations_Center_Filename );
 
 
 } catch (std::exception &exc)
@@ -481,7 +456,7 @@ try {
 		
 		//Good sprite for the direction
 		//Current_Tile_Rect = Attack_Tile_Rect->at(Move_Direction*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + 0);
-		Current_Tile_Rect = Stop_Animation->Get_Animation_Tile_Rect()->at(Move_Direction);
+		Current_Tile_Rect = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tile_Rect()->at(Move_Direction);
 
 		//Check if we are changing direction
 		if ( old_Move_Status != Move_Direction )
@@ -754,12 +729,12 @@ bool Character_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Charac
 	//reset the frame status at end of animation depending of the attack style
 	if ( Get_Attack_Style() == 0 ) // Unarmed Style
 	{
-		if (frame >= Attack_Animation->Get_Animation_Frame_Number() )
+		if (frame >= Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Frame_Number() )
 			frame =0; //reset frame anim
 		//assign the good sprite rect to the character sprite rect depending on the frame and the direction
-		Current_Tile_Rect = Attack_Animation->Get_Animation_Tile_Rect()->at(attack_direction * Attack_Animation->Get_Animation_Frame_Number() + frame );
+		Current_Tile_Rect = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tile_Rect()->at(attack_direction * Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Frame_Number() + frame );
 		
-		if ( frame == Attack_Animation->Get_Animation_KeyFrame() )
+		if ( frame == Default_Animations_Center->Get_Attack_Animation()->Get_Animation_KeyFrame() )
 		{
 			attack_successfull = Attack_Check_Status(Real_Range, Real_Inflicted_Damage, Global_Monster_Vector) ;
 		}
@@ -772,8 +747,8 @@ bool Character_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Charac
 
 		//assign the good sprite rect to the character sprite rect depending on the frame and the direction
 		
-		Current_Tile_Rect = Stop_Animation->Get_Animation_Tile_Rect()->at(attack_direction * Attack_Animation->Get_Animation_Frame_Number() + frame );
-		//to change ^
+		Current_Tile_Rect = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tile_Rect()->at(attack_direction * Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Frame_Number() + frame );
+		//to change  for the melee animation center ^
 		//Current_Tile_Rect = Attack_Tile_Rect->at(attack_direction*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + frame);
 		
 		//at the second frame of the anim we check if attack hit a monster
@@ -839,7 +814,7 @@ try
 	//Unarmed Style
 	if (attack_style == 0)
 	{
-		Characters_Current_Tileset = Attack_Animation->Get_Animation_Tileset();
+		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
 
 		//range: Only hit at contact (TODO future: find a more realistic hit with the sword)
 		BASE_RANGE = 1;
@@ -852,7 +827,7 @@ try
 	// Melee Style
 	else if (attack_style == 1)
 	{
-		Characters_Current_Tileset = Attack_Animation->Get_Animation_Tileset();
+		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
 		//Characters_Current_Tileset = Players_Tile_Melee;
 		
 		//range: Only hit at contact (TODO future: find a more realistic hit with the sword)
@@ -864,7 +839,7 @@ try
 	// Distant Style
 	else if (attack_style == 2)
 	{
-		Characters_Current_Tileset = Attack_Animation->Get_Animation_Tileset();
+		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
 		//Characters_Current_Tileset = Players_Tile_Distant;
 			
 		//range: 6 square

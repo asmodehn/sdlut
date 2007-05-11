@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE Animations_Center SYSTEM "../DTDs/Animations_Center.dtd">
+<Animations_Center>
+		<Style>Unarmed</Style><!-- Unarmed|Melee|Distant  ONLY !!-->
+		<Type>Unarmed</Type><!-- Unarmed|Sword|Bow  ONLY !!-->
+		<Run_Animation_Filename>Merchant_Run.xml</Run_Animation_Filename>
+		<Stop_Animation_Filename>Merchant_Stop.xml</Stop_Animation_Filename>
+		<Walk_Animation_Filename>Merchant_Walk.xml</Walk_Animation_Filename>
+		<Talk_Animation_Filename>Merchant_Talk.xml</Talk_Animation_Filename>
+</Animations_Center>

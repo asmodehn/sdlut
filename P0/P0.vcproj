@@ -202,6 +202,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\Animations_Center.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Base.cpp"
 				>
 			</File>
@@ -285,6 +289,10 @@
 			>
 			<File
 				RelativePath=".\include\Animations.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Animations_Center.hh"
 				>
 			</File>
 			<File

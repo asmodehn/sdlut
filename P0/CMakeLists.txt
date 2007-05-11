@@ -179,6 +179,7 @@ ADD_EXECUTABLE(
 		${Project_0_SOURCE_DIR}/src/XML_Manager.cpp ${Project_0_SOURCE_DIR}/include/XML_Manager.hh
 		${Project_0_SOURCE_DIR}/src/Config.cpp ${Project_0_SOURCE_DIR}/include/Config.hh
 		${Project_0_SOURCE_DIR}/src/Animations.cpp ${Project_0_SOURCE_DIR}/include/Animations.hh
+		${Project_0_SOURCE_DIR}/src/Animations_Center.cpp ${Project_0_SOURCE_DIR}/include/Animations_Center.hh
 
 #adding spec to have it in generated projects
 		"${Project_0_SOURCE_DIR}/Specifs/2D/2D Design v0.04.odt"

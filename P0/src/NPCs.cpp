@@ -9,9 +9,9 @@ try{
 	Parse_Description_File("Data/Characters/NPC_Merchant.xml");
 
 //Initials default
-	Characters_Current_Unarmed_Tileset = Stop_Animation->Get_Animation_Tileset();
-	Characters_Current_Tileset = Characters_Current_Unarmed_Tileset;
-	Current_Tile_Rect = Stop_Animation->Get_Animation_Tile_Rect()->at(CH_RIGHT); //right direction by default
+	Characters_Current_Unarmed_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();
+	Characters_Current_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();
+	Current_Tile_Rect = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tile_Rect()->at(CH_RIGHT); //right direction by default
 
 
 //	string NPC_Ini = "Data/Characters/NPC.ini";
@@ -98,12 +98,6 @@ NPC_Merchant::~NPC_Merchant()
 }
 
 void NPC_Merchant::Clean_NPC_Merchant()
-{	
-	delete Attack_Animation, Attack_Animation = NULL;
-	delete Death_Animation, Death_Animation = NULL;
-	delete Walk_Animation, Walk_Animation = NULL;
-	delete Hit_Animation, Hit_Animation = NULL;
-	delete Run_Animation, Run_Animation = NULL;
-	delete Stop_Animation, Stop_Animation = NULL;
-	delete Pause_Animation, Pause_Animation = NULL;
+{		
+	delete Default_Animations_Center, Default_Animations_Center = NULL;
 }

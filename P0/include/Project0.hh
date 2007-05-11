@@ -45,9 +45,9 @@ Render_Engine* myRender_Engine;
 	//Initialization
 bool InitEverything();
 	//Implementation
-bool ImplementEverything();
+void ImplementEverything();
 	//Run
-bool RunGame();
+void RunGame();
 	//Clean Up
 bool CleanEverything();
 

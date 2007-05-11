@@ -105,7 +105,7 @@ void KeyboardInput::Player_Attack_Consequences()
 	//different animations between attack styles
 	if ( myPlayer->Get_Attack_Style() == 0 ) 
 	{
-		myPlayer_Attack_Animation_Timer->launch(myPlayer->Get_Attack_Animation()->Get_Animation_Frames_Interval() );
+		myPlayer_Attack_Animation_Timer->launch(myPlayer->Get_Default_Animations_Center()->Get_Attack_Animation()->Get_Animation_Frames_Interval() );
 	}
 	if ( myPlayer->Get_Attack_Style() == 1 ) 
 	{
