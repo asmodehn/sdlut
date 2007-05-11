@@ -111,12 +111,6 @@ try {
 
 	//Create npc & initialized it
 	myNPC = new NPC_Merchant();
-	if( myNPC->Manage_Attack_Style_Graphic() == false ) //intialize Character's graphic aspect
-	{ 
-        P0_Logger << nl << "Failed to set NPC Graphic " << std::endl;
-    	Delay(2000);
-    	return 1;
-    }
     P0_Logger << nl << "NPC Creation: OK " << std::endl;
 
 	NPCs_Vector->push_back(myNPC);
@@ -132,12 +126,6 @@ try {
 	if( myPlayer->Following_Camera() == false ) //center camera
 	{ 
         P0_Logger << nl << "Failed to center camera over Player" << std::endl;
-    	Delay(2000);
-    	return 1;
-    }
-	if( myPlayer->Manage_Attack_Style_Graphic() == false ) //intialize Character's graphic aspect
-	{ 
-        P0_Logger << nl << "Failed to set Player Graphic " << std::endl;
     	Delay(2000);
     	return 1;
     }

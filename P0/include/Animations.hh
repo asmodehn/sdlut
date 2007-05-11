@@ -28,6 +28,10 @@ public:
 	{
 		return Animation_Frames_Interval;
 	}
+	inline int Get_Animation_KeyFrame() const
+	{
+		return Animation_KeyFrame;
+	}
 	inline int Get_Animation_Frame_Number() const
 	{
 		return Animation_Frame_Number;

@@ -119,8 +119,39 @@ try {
 		return interval;
 	} 
 	
-	//for melee attack we can check if it was successfull and reset attack
-	if ( myPlayer->Get_Attack_Style() == 1 )
+	//
+	//todo: for unarmed attack: play good sound
+	//
+//for unarmed attack we can check if it was successfull and reset attack
+	if ( myPlayer->Get_Attack_Style() == 0 )
+	{
+		//if the attack was successfull
+		if (myPlayer->Get_Attack_Successfull() != 0 )
+		{
+			//play hit Fx	
+			//App::getInstance().getMixer().playChannel(HitFx_Chan);
+
+			//Remove dead Monsters
+			Monster_Factory_Skeleton->Remove_Dead_Monsters();
+			Monster_Factory_Worm->Remove_Dead_Monsters();
+		}
+		else 
+		{
+			//play miss Fx	
+			//App::getInstance().getMixer().playChannel(MissFx_Chan);
+		} 
+			//Set the good msg
+		if (! myPlayer->Set_Attack_Msg() )
+		{
+			P0_Logger << nl << "Player Set Attack Message Failed " << std::endl;
+		}
+			//reset attack
+		myPlayer->Set_Attack_Initial_X(-1);
+		myPlayer->Set_Attack_Initial_Y(-1);
+		myPlayer->Set_Attack_Direction(-1);
+	}
+//for melee attack we can check if it was successfull and reset attack
+	else if ( myPlayer->Get_Attack_Style() == 1 )
 	{
 		//if the attack was successfull
 		if (myPlayer->Get_Attack_Successfull() != 0 )
@@ -147,7 +178,9 @@ try {
 		myPlayer->Set_Attack_Initial_Y(-1);
 		myPlayer->Set_Attack_Direction(-1);
 	}
+
 	myPlayer->Set_Attack_Status(false); //end of attack for the character (arrow is independent)
+
 	return 0; //end of timer
 
 } catch (...) {

@@ -49,6 +49,7 @@ Character_Base::Character_Base()
 	Characters_Current_Unarmed_Tileset = NULL;
 	Characters_Current_Melee_Tileset = NULL;
 	Characters_Current_Distant_Tileset = NULL;
+	//TODO: the 3 tileset below must be the link to the different animations not the style
 
 	//Animations
 	Attack_Animation = NULL, Death_Animation = NULL, Run_Animation = NULL, Walk_Animation = NULL, Hit_Animation = NULL, Stop_Animation = NULL, Pause_Animation = NULL;
@@ -521,14 +522,18 @@ bool Character_Base::Attack()
 {
 try
 {
+	//attack is occuring
 	attack_status = true;
+	//get the attack direction
 	attack_direction = Move_Direction;
-
 	//By default consider that no attack was successfull
 	attack_successfull = 0;
 
 	if (attack_style == 0) //unarmed
 	{
+	//
+	//todo: for unarmed: sound + move attack_cb & attack initials
+	//
 	}
 	if (attack_style == 1) //melee
 	{
@@ -746,14 +751,29 @@ bool Character_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Charac
 	//increase frame each time the timer is run (from 0 to the number of frame for the animation)
 	frame++;
 
-	//reset the frame status at end of animation depending of the attack style 
+	//reset the frame status at end of animation depending of the attack style
+	if ( Get_Attack_Style() == 0 ) // Unarmed Style
+	{
+		if (frame >= Attack_Animation->Get_Animation_Frame_Number() )
+			frame =0; //reset frame anim
+		//assign the good sprite rect to the character sprite rect depending on the frame and the direction
+		Current_Tile_Rect = Attack_Animation->Get_Animation_Tile_Rect()->at(attack_direction * Attack_Animation->Get_Animation_Frame_Number() + frame );
+		
+		if ( frame == Attack_Animation->Get_Animation_KeyFrame() )
+		{
+			attack_successfull = Attack_Check_Status(Real_Range, Real_Inflicted_Damage, Global_Monster_Vector) ;
+		}
+
+	}
 	if ( Get_Attack_Style() == 1 ) // Melee Style
 	{
 		if (frame >= PLAYER_SWORD_ATTACK_ANIMATION_FRAME )
 			frame = 0; //reset frame anim
 
 		//assign the good sprite rect to the character sprite rect depending on the frame and the direction
-		Current_Tile_Rect = Stop_Animation->Get_Animation_Tile_Rect()->at(attack_direction * Stop_Animation->Get_Animation_Frame_Number() + frame );
+		
+		Current_Tile_Rect = Stop_Animation->Get_Animation_Tile_Rect()->at(attack_direction * Attack_Animation->Get_Animation_Frame_Number() + frame );
+		//to change ^
 		//Current_Tile_Rect = Attack_Tile_Rect->at(attack_direction*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + frame);
 		
 		//at the second frame of the anim we check if attack hit a monster
@@ -785,7 +805,7 @@ bool Character_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Charac
 }
 
 //Manage attack between distant & melee style if these style are or non present
-bool Character_Base::Manage_Attack_Style_Characteristics()
+bool Character_Base::Change_Attack_Style()
 {
 	//
 	//only unarmed for now !!!
@@ -801,7 +821,7 @@ bool Character_Base::Manage_Attack_Style_Characteristics()
 }
 
 //Character Graphic Style Initialiation regarding the attack style
-bool Character_Base::Manage_Attack_Style_Graphic()
+bool Character_Base::Manage_Attack_Style()
 {
 try
 {
@@ -819,13 +839,20 @@ try
 	//Unarmed Style
 	if (attack_style == 0)
 	{
-		Characters_Current_Tileset = Characters_Current_Unarmed_Tileset;
+		Characters_Current_Tileset = Attack_Animation->Get_Animation_Tileset();
+
+		//range: Only hit at contact (TODO future: find a more realistic hit with the sword)
+		BASE_RANGE = 1;
+		Real_Range = BASE_RANGE;
+		//
+		//TODO move that to xml
+		//
 		//P0_Logger << nl << "Graphic Style Updated To Unarmed Style : OK " << std::endl;
 	}
 	// Melee Style
 	else if (attack_style == 1)
 	{
-		Characters_Current_Tileset = Characters_Current_Melee_Tileset;
+		Characters_Current_Tileset = Attack_Animation->Get_Animation_Tileset();
 		//Characters_Current_Tileset = Players_Tile_Melee;
 		
 		//range: Only hit at contact (TODO future: find a more realistic hit with the sword)
@@ -837,7 +864,7 @@ try
 	// Distant Style
 	else if (attack_style == 2)
 	{
-		Characters_Current_Tileset = Characters_Current_Distant_Tileset;
+		Characters_Current_Tileset = Attack_Animation->Get_Animation_Tileset();
 		//Characters_Current_Tileset = Players_Tile_Distant;
 			
 		//range: 6 square

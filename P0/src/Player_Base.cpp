@@ -151,7 +151,7 @@ Player_Base::Player_Base()
 //	Current_Arrow_SpriteRect = Arrow_SpriteRect->at(CH_RIGHT*PLAYER_ARROW_ATTACK_ANIMATION_FRAME);
 //
 //	//initialize
-//	Manage_Attack_Style_Graphic();
+//	Manage_Attack_Style();
 //}
 
 //Destructor

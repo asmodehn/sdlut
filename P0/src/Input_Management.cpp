@@ -84,20 +84,29 @@ void KeyboardInput::Player_Moves_Consequences()
 //Private method which will call all the method used when there is an attack by the character
 void KeyboardInput::Player_Attack_Consequences()
 {
-	//attack is occuring
-	myPlayer->Set_Attack_Status(true);
 	//stop old timer if necessary
 	myPlayer_Arrow_Animation_Timer->abort();
 	
+	//Manage_Attack_Style
+	myPlayer->Manage_Attack_Style();
 	//Handle attacks & set the distance of the attack
 	myPlayer->Attack();
-	
+	//TOdo merge the 2 methods above^
+
+
+	//
+	//todo change that: this should be in the animation or in character constructor
+	//
 	//Set the callback method which will define the character appearance on the screen and start attack animation
 	myPlayer_Attack_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Attack_Animation, (void*)NULL);
 	//arrow management callback
 	myPlayer_Arrow_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Arrow_Movement, (void*)NULL);
 		
 	//different animations between attack styles
+	if ( myPlayer->Get_Attack_Style() == 0 ) 
+	{
+		myPlayer_Attack_Animation_Timer->launch(myPlayer->Get_Attack_Animation()->Get_Animation_Frames_Interval() );
+	}
 	if ( myPlayer->Get_Attack_Style() == 1 ) 
 	{
 		myPlayer_Attack_Animation_Timer->launch(PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL);
@@ -105,7 +114,7 @@ void KeyboardInput::Player_Attack_Consequences()
 	if ( myPlayer->Get_Attack_Style() == 2 )
 	{
 		myPlayer_Attack_Animation_Timer->launch(PLAYER_BOW_ATTACK_ANIMATION_INTERVAL);
-		myPlayer_Arrow_Animation_Timer->launch(PLAYER_ARROW_MOVE_ANIMATION_INTERVAL);
+		myPlayer_Arrow_Animation_Timer->launch(PLAYER_ARROW_MOVE_ANIMATION_INTERVAL); //find a way to synchronize launch with the keyframe (perhaps use the arg as the 2nd interval after the ori interval = to the keyframe time)
 	}
 
 	//P0_Logger << nl << "Attack " << std::endl;
@@ -174,12 +183,12 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				if ((s.getKey() == CHANGE_ATTACK_MODE_1) || (s.getKey() == CHANGE_ATTACK_MODE_2))
 				{
 					//Update the attack style of the character
-					if( myPlayer->Manage_Attack_Style_Characteristics() == false )
+					if( myPlayer->Change_Attack_Style() == false )
                     { 
 						P0_Logger << nl << "Update Attack Style Characteristics FAILED " << std::endl;
                     }
 					//Update the attack style's graphiks of the character
-					if( myPlayer->Manage_Attack_Style_Graphic() == false )
+					if( myPlayer->Manage_Attack_Style() == false )
                     { 
 						P0_Logger << nl << "Update Attack's Graphic Style FAILED " << std::endl;
                     }

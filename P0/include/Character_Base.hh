@@ -285,6 +285,35 @@ public:
         return Characters_ID;
 	}
 
+	inline Character_Animation* Get_Attack_Animation() const
+	{
+		return Attack_Animation;
+	}
+	inline Character_Animation* Get_Death_Animation() const
+	{
+		return Death_Animation;
+	}
+	inline Character_Animation* Get_Run_Animation() const
+	{
+		return Run_Animation;
+	}
+	inline Character_Animation* Get_Walk_Animation() const
+	{
+		return Walk_Animation;
+	}
+	inline Character_Animation* Get_Hit_Animation() const
+	{
+		return Hit_Animation;
+	}
+	inline Character_Animation* Get_Stop_Animation() const
+	{
+		return Stop_Animation;
+	}
+	inline Character_Animation* Get_Pause_Animation() const
+	{
+		return Pause_Animation;
+	}
+
 	//Init
 	Character_Base();
 	virtual ~Character_Base();
@@ -309,9 +338,9 @@ public:
 	//Set Character Sprite Which change when attack occured(callback)
 	bool Set_Attack_Animation_Sprite(std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 	//Manage attack characteristics regarding the attack style
-	bool Manage_Attack_Style_Characteristics();
+	bool Change_Attack_Style();
 	//Manage the attack style's graphic regarding the attack style
-	bool Manage_Attack_Style_Graphic();
+	bool Manage_Attack_Style();
 //Characteristics
 	//Calculate the current life depending on damage, malus, etc and damage made by the opponent
 	bool Calculate_Real_Life(int received_damage = 0);

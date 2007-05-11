@@ -11,7 +11,7 @@ try {
 
 /****Default Animation****/
 	Characters_Current_Unarmed_Tileset = Stop_Animation->Get_Animation_Tileset();
-	Characters_Current_Tileset = Characters_Current_Unarmed_Tileset;
+	Characters_Current_Tileset = Stop_Animation->Get_Animation_Tileset();
 	//attack_style ????!!!!!!!!!!
 	Current_Tile_Rect = Stop_Animation->Get_Animation_Tile_Rect()->at(CH_RIGHT); //right direction by default
 
