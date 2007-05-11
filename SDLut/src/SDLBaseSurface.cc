@@ -114,12 +114,6 @@ BaseSurface::~BaseSurface()
 	{
 		return *_surf;
 	}
-
-			//usefull to get the SDL structure
-	const SDL_Surface * BaseSurface::get_pSDL() const
-	{
-		return _surf;
-	}
 	
 	int BaseSurface::getHeight(void) const
 	{

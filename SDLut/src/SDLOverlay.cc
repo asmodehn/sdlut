@@ -24,7 +24,7 @@ namespace RAGE
 	    //Constructor
 	//maybe the current display size must be used ?
 	    Overlay::Overlay(Format f, int width, int height, VideoSurface* dsurf)
-		    : _overlay(SDL_CreateYUVOverlay(width,height,formatConvert(f),dsurf->_surf))
+		    : _overlay( SDL_CreateYUVOverlay( width, height, formatConvert(f), const_cast<SDL_Surface*>(&dsurf->get_rSDL()) ) )
 	    {}
 	//Destructor
 	    Overlay::~Overlay() { SDL_FreeYUVOverlay(_overlay);}

@@ -141,7 +141,16 @@ namespace RAGE
 		SDL_Surface get_SDL() const;
 		
 			//usefull to get the SDL structure
-		const SDL_Surface * get_pSDL() const;
+			//DEPRECATED : use get_rSDL instead to avoid accidental deletion
+		/*const SDL_Surface * get_pSDL() const
+		{
+			return _surf;
+		}*/
+
+		const SDL_Surface & get_rSDL() const
+		{
+			return *_surf;
+		}
 
 			int getHeight(void) const;
 			int getWidth(void) const;

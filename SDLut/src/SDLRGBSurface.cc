@@ -484,30 +484,30 @@ namespace RAGE
             return SDL_SetColorKey(_surf, flags, getPixelFormat().getValueFromRGB(key) ) == 0;
         }
 
-		bool RGBSurface::resize(int width, int height, bool keepcontent)
+	bool RGBSurface::resize(int width, int height, bool keepcontent)
+	{
+		bool res;
+		
+		std::auto_ptr<SDL_Surface> newSurf( SDL_CreateRGBSurface(_surf->flags,width,height,_surf->format->BitsPerPixel, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
+
+		if (!newSurf.get()) //SetVideoMode has failed
 		{
-			
-			SDL_Surface * newSurf = SDL_CreateRGBSurface(_surf->flags,width,height,_surf->format->BitsPerPixel, r_default_mask, g_default_mask, b_default_mask, a_default_mask);
-
-            if (newSurf==NULL) //SetVideoMode has failed
-            {
-                Log << "Unable to resize to " << width << " x " << height << " 2D RGB surface " << nl << GetError();
-				
-               return false;
-            }
-
+			Log << "Unable to resize to " << width << " x " << height << " 2D RGB surface " << nl << GetError();
+			res = false;
+		}
+		else
+		{
 			if (keepcontent)
 			{
-				SDL_BlitSurface(_surf, NULL , newSurf, NULL);
+				SDL_BlitSurface(_surf, NULL , newSurf.get(), NULL);
 			}
 
-			assert(newSurf); // should be always OK
 			SDL_FreeSurface(_surf);
-            _surf=newSurf;
-
-			return true;
+			_surf=newSurf.release();
+			res = true;
 		}
-
+		return (res && _surf != 0 ) ;
+	}
 
 		
 	//Accesseurs - are they all really usefull ?
@@ -524,22 +524,22 @@ namespace RAGE
         {
             assert(_surf);
             bool res;
-            SDL_Surface * optsurf;
+            std::auto_ptr<SDL_Surface> optsurf(0);
             if ( alpha )
             {
-                optsurf=SDL_DisplayFormatAlpha(_surf);
+                optsurf.reset( SDL_DisplayFormatAlpha(_surf) );
             }
             else
             {
-                optsurf=SDL_DisplayFormat(_surf);
+                optsurf.reset( SDL_DisplayFormat(_surf) );
             }
 
-            if (optsurf == NULL )
+            if (!optsurf.get())
                 res = false;
             else
             {
                 SDL_FreeSurface(_surf);
-                _surf=optsurf;
+                _surf=optsurf.release();
                 res = true;
             }
 

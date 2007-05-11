@@ -21,7 +21,7 @@ namespace RAGE
             Log << nl << "VideoSurface::VideoSurface() called ...";
 #endif
 
-             if (_surf == NULL)
+             if (!initialized())
             {
                 Log << nl <<"Unable to set " << width << " x " << height << " display surface : ";
                 throw std::logic_error("SDL_SetVideoMode() return NULL");
@@ -136,48 +136,46 @@ namespace RAGE
             Log << nl << "VideoSurface::resize(" << width << ", " << height << ") called...";
 #endif
 
-			SDL_Surface * oldSurf = NULL;
-			if ( keepcontent && !isOpenGLset())
-			{
-				oldSurf = SDL_CreateRGBSurface(SDL_SWSURFACE,getWidth(),getHeight(),getBPP(),r_default_mask,g_default_mask, b_default_mask, a_default_mask);
-				SDL_DisplayFormat(oldSurf);
-				SDL_BlitSurface(_surf,NULL,oldSurf,NULL);
-			}
+	    bool res;
+		std::auto_ptr<SDL_Surface> oldSurf(0);
+		if ( keepcontent && !isOpenGLset())
+		{
+			oldSurf.reset( SDL_CreateRGBSurface(SDL_SWSURFACE,getWidth(),getHeight(),getBPP(),r_default_mask,g_default_mask, b_default_mask, a_default_mask) );
+			SDL_DisplayFormat(oldSurf.get());
+			SDL_BlitSurface(_surf,NULL,oldSurf.get(),NULL);
+		}
 
             //BEWARE : should match DisplaySurface Constructor code
-            SDL_Surface * newSurf = SDL_SetVideoMode(width,height,getBPP(),getFlags());
+            std::auto_ptr<SDL_Surface> newSurf( SDL_SetVideoMode(width,height,getBPP(),getFlags()) );
 
-            if (newSurf==NULL) //SetVideoMode has failed
+            if (!newSurf.get()) //SetVideoMode has failed
             {
                 Log << "Unable to resize to " << width << " x " << height << " 2D display surface " << nl << GetError();
 				
 #ifdef DEBUG
         Log << nl << "VideoSurface::resize(" << width << ", " << height << ") failed.";
 #endif
-		
+		res = false;
             }
 	    else
 	    {
 
-			if (keepcontent  && !isOpenGLset() && oldSurf != NULL)
-			{
-				assert(oldSurf);
-				SDL_BlitSurface(oldSurf, NULL , newSurf, NULL);
-				SDL_FreeSurface(oldSurf);
-			}
-
-            assert(newSurf); // should be always OK (NB : _surf has already been freed by setvideoMode)
-            _surf=newSurf;
+		if (keepcontent  && !isOpenGLset() && oldSurf.get() != 0)
+		{
+			SDL_BlitSurface(oldSurf.get(), NULL , newSurf.get(), NULL);
+			SDL_FreeSurface(oldSurf.get());
+		}
+		_surf=newSurf.release();
 
 #ifdef DEBUG
         Log << nl << "VideoSurface::resize(" << width << ", " << height << ") succeeded.";
 #endif
-	
+		res = true;
 	    }
 
-	    if (oldSurf != NULL) delete oldSurf;
+	    SDL_FreeSurface(oldSurf.release());
 
-	return (newSurf != NULL);
+	    return (res && _surf != 0);
     }
 
 
@@ -284,36 +282,36 @@ namespace RAGE
             //Accessors
     bool VideoSurface::isOpenGLset(void) const
     {
-	    return ( SDL_OPENGL & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+	    return ( SDL_OPENGL & (initialized()?_surf->flags:_defaultflags )) != 0;
     }
     bool VideoSurface::isFullScreenset(void) const
     {
-	    return ( SDL_FULLSCREEN & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+	    return ( SDL_FULLSCREEN & (initialized()?_surf->flags:_defaultflags )) != 0;
     }
     bool VideoSurface::isResizableset(void) const
     {
-	    return ( SDL_RESIZABLE & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+	    return ( SDL_RESIZABLE & (initialized()?_surf->flags:_defaultflags )) != 0;
     }
     bool VideoSurface::isNoFrameset(void) const
     {
-	    return ( SDL_NOFRAME & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+	    return ( SDL_NOFRAME & (initialized()?_surf->flags:_defaultflags )) != 0;
     }
     bool VideoSurface::isAnyFormatset(void) const
     {
-	    return ( SDL_ANYFORMAT & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+	    return ( SDL_ANYFORMAT & (initialized()?_surf->flags:_defaultflags )) != 0;
     }
     bool VideoSurface::isDoubleBufset(void) const
     {
-	    return ( SDL_DOUBLEBUF & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+	    return ( SDL_DOUBLEBUF & (initialized()?_surf->flags:_defaultflags )) != 0;
     }
             //unused
     bool VideoSurface::isASyncBlitset(void) const
     {
-	    return ( SDL_ASYNCBLIT & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+	    return ( SDL_ASYNCBLIT & (initialized()?_surf->flags:_defaultflags )) != 0;
     }
     bool VideoSurface::isHWPaletteset(void) const
     {
-	    return ( SDL_HWPALETTE & ((_surf!=NULL)?_surf->flags:_defaultflags )) != 0;
+	    return ( SDL_HWPALETTE & (initialized()?_surf->flags:_defaultflags )) != 0;
     }
 
 

@@ -40,7 +40,7 @@ namespace RAGE
         void Window::setIcon(const RGBSurface & icon)
         {
 			_icon = icon;
-            SDL_WM_SetIcon( const_cast<SDL_Surface*>(_icon.get_pSDL()) , NULL);
+            SDL_WM_SetIcon( const_cast<SDL_Surface*>(&_icon.get_rSDL()) , NULL);
         }
 
         //old version
@@ -364,8 +364,8 @@ namespace RAGE
 
         bool Window::mainLoop(unsigned int framerate)
         {
-			assert(framerate>0&&"framerate must be superior to 0 !");
-            bool res = false;
+		assert(framerate > 0 && "framerate must be greater than 0 !");
+		bool res = false;
 
 #ifdef DEBUG
                 assert (pvm_screen.get());
