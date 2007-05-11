@@ -290,26 +290,32 @@ namespace RAGE
 
         }
 
-        bool Window::resetDisplay( int width, int height)
+        bool Window::resetDisplay( int width, int height, int bpp)
         {
 #ifdef DEBUG
             Log << nl << "Window::resetDisplay(" << width << "," << height << ") called ..." << std::endl;
 #endif
 	bool res = false;
-            int _bpp=VideoSurface::getSuggestedBPP(width, height);
+	    if ( bpp == 0 ) //here 0 means autodetection
+	    {
+		    bpp=VideoSurface::getSuggestedBPP(width, height);
+	    }
+	    else
+	    {
+		    //TODO : check that the value of bpp asked for is supported...
+	    }
             //but beware about bpp == 0...
-            if (_bpp == 0 )
+            if (bpp == 0 )
             {//0 as return code mean the current format is not supported
                 Log << nl << "The requested video mode is not supported under any bit depth. Display reset cancelled !";
             }
             else
             {
-                Log << nl << "SDL will use " << width << "x" << height << "@" <<_bpp;
+                Log << nl << "SDL will use " << width << "x" << height << "@" <<bpp;
                 //create a new screen
                 try
                 {
-                    //REMINDER : SDL_SetVideoMode, takes care of freeing the old surfaces (according to the doc)
-                        pvm_screen.reset(new VideoSurface(width, height, _bpp));
+                        pvm_screen.reset(new VideoSurface(width, height, bpp));
 			_engine->init(width, height);
                         applyBGColor();
 			res=true;

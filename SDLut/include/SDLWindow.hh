@@ -77,7 +77,8 @@ namespace RAGE
             //create the screen or reset it if needed because some parameters changed
 			//returns NULL if no screen available
 			// calls Engine->init();
-            bool resetDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT);
+			// bpp = 0 means autodetect best bpp
+            bool resetDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, int bpp = 0 );
             //just resize the screen (without changing flags, or bpp)
 			//returns NULL if no screen available
 			// calls Engine->resize();

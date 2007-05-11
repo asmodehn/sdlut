@@ -116,13 +116,6 @@ namespace RAGE
 		delete[] _convertTable->buf;
 	}
 
-// 	_aInfo->_spec->format = DestinationFormat;
-// 	_aInfo->_spec->channels = DestinationChannels;
-// 	_aInfo->_spec->freq = DestinationFrequency;
-//
-
-	//TODO : find a way to have an accurate AudioInfo after convert
-	
 #ifdef DEBUG
 	Log << nl << "Sound::Convert(" << DestinationFormat << " , " << DestinationChannels<< " , " << DestinationFrequency << ") done";
 #endif
