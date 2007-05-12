@@ -3,6 +3,7 @@
 //Constructor
 Character_Base::Character_Base()
 {
+try {
 /****Characteristics****/
 	X = 0, Y =0;
 	Ch_Vel = CH_VEL; //default velocity
@@ -58,6 +59,12 @@ Character_Base::Character_Base()
 
 	//CB modifier between sprite dimensions and "real" dimensions
 	CB_X_Modifier = 0, CB_Y_Modifier = 0, CB_Width = 0, CB_Height = 0;
+
+} catch (std::exception &exc) {
+	throw std::logic_error(exc.what());
+} catch (...) {
+	throw std::logic_error("Unhandled Error In Character Base Constructor");
+}
 }
 
 //Destructor
@@ -435,10 +442,22 @@ bool Character_Base::Set_Run_Animation_Sprite()
 }
 
 //Set values defining attack for all attack styles
-bool Character_Base::Attack()
+void Character_Base::Attack()
 {
 try
 {
+	//
+	//TODO(future): Set weapons max hit range & damage and calculate character range and damage from them
+	//TODO(future): put these value's definitions inside the constructor (when monster/npc will be allowed to attack)
+	//TODO(future): use formula for character_real_damage depending on character condition (disease, etc)
+	//
+	//int character_max_damage = Real_Inflicted_Damage;
+	//int character_real_damage = character_max_damage;
+	//int character_current_damage = character_real_damage;
+
+	//int character_max_range = 0;
+
+
 	//attack is occuring
 	attack_status = true;
 	//get the attack direction
@@ -446,16 +465,97 @@ try
 	//By default consider that no attack was successfull
 	attack_successfull = 0;
 
-	if (attack_style == 0) //unarmed
+	//temp stuff to make code below more readable
+	int _x = Collision_Box.getx(), _y = Collision_Box.gety(), _w = Collision_Box.getw(), _h = Collision_Box.geth();
+
+	//Unarmed Style
+	if (attack_style == 0)
 	{
-	//
-	//todo: for unarmed: sound + move attack_cb & attack initials
-	//
+		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
+
+		//range: Only hit at contact (TODO future: find a more realistic hit with the sword)
+		BASE_RANGE = 1;
+		Real_Range = BASE_RANGE;
+		//
+		//TODO move that^ to xml
+		//
+
+		//Move the attack box at border of the character sprite in the good direction
+		if( attack_direction == CH_RIGHT )
+		{
+			attack_initial_x = _x + _w;
+			attack_initial_y = _y;
+			attack_CB.setw( _w/8 );
+			attack_CB.seth( _h );
+		}
+		else if( attack_direction == CH_RIGHT_DOWN )
+		{
+			attack_initial_x = _x+(5*_w/8);
+			attack_initial_y = _y+(5*_h/8);
+			attack_CB.setw( 5*_w/8 );
+			attack_CB.seth( 5*_h/8 );
+		}
+		else if( attack_direction == CH_DOWN )
+		{
+			attack_initial_x = _x;
+			attack_initial_y = _y+_h;
+			attack_CB.setw( _w );
+			attack_CB.seth( _h/8 );
+		}
+		else if( attack_direction == CH_LEFT_DOWN )
+		{
+			attack_initial_x = _x-PC_WIDTH/8;
+			attack_initial_y = _y+(5*_h/8);
+			attack_CB.setw( 5*_w/8 );
+			attack_CB.seth( 5*_h/8 );
+		}
+		else if( attack_direction == CH_LEFT )
+		{
+			attack_initial_x = _x-_w/8;
+			attack_initial_y = _y;
+			attack_CB.setw( _w/8 );
+			attack_CB.seth( _h );
+		}
+		else if( attack_direction == CH_LEFT_UP )
+		{			
+			attack_initial_x = _x-_w/8;
+			attack_initial_y = _y-_h/8;
+			attack_CB.setw( 5*_w/8 );
+			attack_CB.seth( 5*_h/8 );
+		}
+		else if( attack_direction == CH_UP )
+		{
+			attack_initial_x = _x;
+			attack_initial_y = _y-_h/8;
+			attack_CB.setw( _w );
+			attack_CB.seth( _h/8 );
+		}
+		else if( attack_direction == CH_RIGHT_UP )
+		{
+			attack_initial_x = _x+(5*_w/8);
+			attack_initial_y = _y-_h/8;
+			attack_CB.setw( 5*_w/8 );
+			attack_CB.seth( 5*_h/8 );
+		}
+		
+		//Set Attack BOX
+		attack_CB.setx( attack_initial_x );
+		attack_CB.sety( attack_initial_y );
 	}
-	if (attack_style == 1) //melee
+	// Melee Style
+	else if (attack_style == 1)
 	{
-		//play sword Fx	
-		App::getInstance().getMixer().playChannel(SwordFx_Chan);
+		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
+		//
+		//TODO used the Current_Melee_ANimation_Center when it'll be definied
+		//
+		
+		//range: Only hit at contact (TODO future: find a more realistic hit with the sword)
+		BASE_RANGE = 1;
+		Real_Range = BASE_RANGE;
+		//
+		//TODO move that^ to xml
+		//
 
 		//Move the attack box at border of the character sprite in the good direction
 		if( attack_direction == CH_RIGHT )
@@ -520,10 +620,20 @@ try
 		attack_CB.sety( attack_initial_y );
 
 	}
-	else if (attack_style == 2) //distant
+	// Distant Style
+	else if (attack_style == 2)
 	{
-		//play bow Fx	
-		App::getInstance().getMixer().playChannel(BowFx_Chan);
+		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
+		//
+		//TODO used the Current_Melee_ANimation_Center when it'll be definied
+		//
+			
+		//range: 6 square (until new map format -> 12 !!)
+		BASE_RANGE = BATF_SPRITE_W*6;
+		Real_Range = BASE_RANGE;
+		//
+		//TODO move that^ to xml
+		//
 
 		//Move the attack box at the middle of the character sprite in the good direction
 		if( attack_direction == CH_RIGHT )
@@ -586,53 +696,56 @@ try
 		//	Set_Arrow_Sprite_Coordinate();
 	}
 
-	//no error
-	return true;
-}
-catch (...) {
-  return false; //error occured
+	
+} catch (std::exception &exc) {
+	attack_status = false;
+	throw std::logic_error("Error In Character_Base::Attack() : " + (string)exc.what() );
+} catch (...) {
+	attack_status = false;
+	throw std::logic_error("Unhandled Error In Character_Base::Attack()");
 }
 }
 
 //Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing (callback method)
-int Character_Base::Attack_Check_Status(int attack_distance, int inflicted_damage, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
+int Character_Base::Attack_Check_Status(int ch2attack_distance, int inflicted_damage, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
+try {
 	//Check attack direction
 	if( attack_direction == CH_RIGHT )
 	{
-		attack_CB.setx ( attack_CB.getx() + attack_distance );
+		attack_CB.setx ( attack_CB.getx() + ch2attack_distance );
 	}
 	else if( attack_direction == CH_RIGHT_DOWN )
 	{
-		attack_CB.setx ( (int)(attack_CB.getx() + ceil(attack_distance/sqrt(2.f))) );
-		attack_CB.sety ( (int)(attack_CB.gety() + ceil(attack_distance/sqrt(2.f))) );
+		attack_CB.setx ( (int)(attack_CB.getx() + ceil(ch2attack_distance/sqrt(2.f))) );
+		attack_CB.sety ( (int)(attack_CB.gety() + ceil(ch2attack_distance/sqrt(2.f))) );
 	}
 	else if( attack_direction == CH_DOWN )
 	{
-		attack_CB.sety( attack_CB.gety() + attack_distance );
+		attack_CB.sety( attack_CB.gety() + ch2attack_distance );
 	}
 	else if( attack_direction == CH_LEFT_DOWN )
 	{
-		attack_CB.setx( (int)(attack_CB.getx() - ceil(attack_distance/sqrt(2.f))) );
-		attack_CB.sety( (int)(attack_CB.gety() + ceil(attack_distance/sqrt(2.f))) );
+		attack_CB.setx( (int)(attack_CB.getx() - ceil(ch2attack_distance/sqrt(2.f))) );
+		attack_CB.sety( (int)(attack_CB.gety() + ceil(ch2attack_distance/sqrt(2.f))) );
 	}
 	else if( attack_direction == CH_LEFT )
 	{
-		attack_CB.setx( attack_CB.getx() - attack_distance );
+		attack_CB.setx( attack_CB.getx() - ch2attack_distance );
 	}
 	else if( attack_direction == CH_LEFT_UP )
 	{
-		attack_CB.setx( (int)(attack_CB.getx() - ceil(attack_distance/sqrt(2.f))) );
-		attack_CB.sety( (int)(attack_CB.gety() - ceil(attack_distance/sqrt(2.f))) );
+		attack_CB.setx( (int)(attack_CB.getx() - ceil(ch2attack_distance/sqrt(2.f))) );
+		attack_CB.sety( (int)(attack_CB.gety() - ceil(ch2attack_distance/sqrt(2.f))) );
 	}
 	else if( attack_direction == CH_UP )
 	{
-		attack_CB.sety( attack_CB.gety() - attack_distance );
+		attack_CB.sety( attack_CB.gety() - ch2attack_distance );
 	}
 	else if( attack_direction == CH_RIGHT_UP )
 	{
-		attack_CB.setx( (int)(attack_CB.getx() + ceil(attack_distance/sqrt(2.f))) );
-		attack_CB.sety( (int)(attack_CB.gety() - ceil(attack_distance/sqrt(2.f))) );
+		attack_CB.setx( (int)(attack_CB.getx() + ceil(ch2attack_distance/sqrt(2.f))) );
+		attack_CB.sety( (int)(attack_CB.gety() - ceil(ch2attack_distance/sqrt(2.f))) );
 	}
 	
 	//Collision with Monsters
@@ -660,17 +773,30 @@ int Character_Base::Attack_Check_Status(int attack_distance, int inflicted_damag
 	}
 	//miss
 	return 0;
+
+} catch (std::exception &exc) {
+	throw std::logic_error("From Character_Base::Attack_Check_Status(), " + (string)exc.what() );
+} catch (...) {
+	throw std::logic_error("Unhandled Error In Character_Base::Attack_Check_Status()");
+}
 }
 
 //Set Character Sprite Which change when attack occured (callback)
 bool Character_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
+try {
 	//increase frame each time the timer is run (from 0 to the number of frame for the animation)
 	frame++;
 
 	//reset the frame status at end of animation depending of the attack style
 	if ( Get_Attack_Style() == 0 ) // Unarmed Style
 	{
+		//
+		//todo: for unarmed: play good sound
+		//
+		//play foot Fx	
+		//App::getInstance().getMixer().playChannel(SwordFx_Chan);
+
 		if (frame >= Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Frame_Number() )
 			frame =0; //reset frame anim
 		//assign the good sprite rect to the character sprite rect depending on the frame and the direction
@@ -684,6 +810,9 @@ bool Character_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Charac
 	}
 	if ( Get_Attack_Style() == 1 ) // Melee Style
 	{
+		//play sword Fx	
+		App::getInstance().getMixer().playChannel(SwordFx_Chan);
+
 		if (frame >= PLAYER_SWORD_ATTACK_ANIMATION_FRAME )
 			frame = 0; //reset frame anim
 
@@ -701,6 +830,9 @@ bool Character_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Charac
 	}
 	else if ( Get_Attack_Style() == 2 ) // Distant Style
 	{
+		//play bow Fx	
+		App::getInstance().getMixer().playChannel(BowFx_Chan);
+
 		if (frame >= PLAYER_BOW_ATTACK_ANIMATION_FRAME )
 			frame = 0; //reset frame anim
 		
@@ -719,9 +851,16 @@ bool Character_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Charac
 	//anim is still looping
 	return true;
 
+} catch (std::exception &exc) {
+	frame = 0;
+	throw std::logic_error("From Character_Base::Set_Attack_Animation_Sprite(), " + (string)exc.what() );
+} catch (...) {
+	frame = 0;
+	throw std::logic_error("Unhandled Error In Character_Base::Set_Attack_Animation_Sprite()");
+}
 }
 
-//Manage attack between distant & melee style if these style are or non present
+//Manage when a character decided to change his attack style: check if style present, update characteristics, etc
 bool Character_Base::Change_Attack_Style()
 {
 	//
@@ -735,66 +874,6 @@ bool Character_Base::Change_Attack_Style()
 	//if (Get_Attack_Style() > 2) { Set_Attack_Style(1); } //loop between style
 
 	//return true;
-}
-
-//Character Graphic Style Initialiation regarding the attack style
-bool Character_Base::Manage_Attack_Style()
-{
-try
-{
-	//
-	//TODO(future): Set weapons max hit range & damage and calculate character range and damage from them
-	//TODO(future): put these value's definitions inside the constructor (when monster/npc will be allowed to attack)
-	//TODO(future): use formula for character_real_damage depending on character condition (disease, etc)
-	//
-	//int character_max_damage = Real_Inflicted_Damage;
-	//int character_real_damage = character_max_damage;
-	//int character_current_damage = character_real_damage;
-
-	//int character_max_range = 0;
-
-	//Unarmed Style
-	if (attack_style == 0)
-	{
-		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
-
-		//range: Only hit at contact (TODO future: find a more realistic hit with the sword)
-		BASE_RANGE = 1;
-		Real_Range = BASE_RANGE;
-		//
-		//TODO move that to xml
-		//
-		//P0_Logger << nl << "Graphic Style Updated To Unarmed Style : OK " << std::endl;
-	}
-	// Melee Style
-	else if (attack_style == 1)
-	{
-		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
-		//Characters_Current_Tileset = Players_Tile_Melee;
-		
-		//range: Only hit at contact (TODO future: find a more realistic hit with the sword)
-		BASE_RANGE = 1;
-		Real_Range = BASE_RANGE;
-
-		//P0_Logger << nl << "Graphic Style Updated To Melee Style : OK " << std::endl;
-	}
-	// Distant Style
-	else if (attack_style == 2)
-	{
-		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
-		//Characters_Current_Tileset = Players_Tile_Distant;
-			
-		//range: 6 square
-		BASE_RANGE = BATF_SPRITE_W*6;
-		Real_Range = BASE_RANGE;
-
-		//P0_Logger << nl << "Graphic Style Updated To Distant Style : OK " << std::endl;
-	}
-	return true;
-}
-catch (...) {
-  return false; //error occured
-}
 }
 
 //Calculate the current life of the monster depending on damage, malus, etc

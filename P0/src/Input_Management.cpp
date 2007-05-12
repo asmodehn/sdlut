@@ -84,12 +84,11 @@ void KeyboardInput::Player_Moves_Consequences()
 //Private method which will call all the method used when there is an attack by the character
 void KeyboardInput::Player_Attack_Consequences()
 {
+try {
 	//stop old timer if necessary
 	myPlayer_Arrow_Animation_Timer->abort();
 	
-	//Manage_Attack_Style
-	myPlayer->Manage_Attack_Style();
-	//Handle attacks & set the distance of the attack
+	//Set attack stuffs
 	myPlayer->Attack();
 	//TOdo merge the 2 methods above^
 
@@ -118,6 +117,16 @@ void KeyboardInput::Player_Attack_Consequences()
 	}
 
 	//P0_Logger << nl << "Attack " << std::endl;
+
+} catch (std::exception &exc) {
+	myPlayer_Attack_Animation_Timer->abort();
+	myPlayer_Arrow_Animation_Timer->abort();
+	P0_Logger << nl << exc.what() << std::endl;  
+} catch (...) {
+	myPlayer_Attack_Animation_Timer->abort();
+	myPlayer_Arrow_Animation_Timer->abort();
+	P0_Logger << nl << "Unhandled Error In Player Attack" << std::endl;  
+}
 }
 
 //Managed actions associated to key in function of the player interface context (defined by GLOBAL_GAME_STATE)
@@ -186,11 +195,6 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 					if( myPlayer->Change_Attack_Style() == false )
                     { 
 						P0_Logger << nl << "Update Attack Style Characteristics FAILED " << std::endl;
-                    }
-					//Update the attack style's graphiks of the character
-					if( myPlayer->Manage_Attack_Style() == false )
-                    { 
-						P0_Logger << nl << "Update Attack's Graphic Style FAILED " << std::endl;
                     }
 				}
 				if ((s.getKey() == KKEnter) || (s.getKey() == KKEnter))

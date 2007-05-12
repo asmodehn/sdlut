@@ -128,6 +128,9 @@ try {
 		//if the attack was successfull
 		if (myPlayer->Get_Attack_Successfull() != 0 )
 		{
+			//
+			//todo: play good fx
+			//
 			//play hit Fx	
 			//App::getInstance().getMixer().playChannel(HitFx_Chan);
 
@@ -137,6 +140,9 @@ try {
 		}
 		else 
 		{
+			//
+			//todo play good fx
+			//
 			//play miss Fx	
 			//App::getInstance().getMixer().playChannel(MissFx_Chan);
 		} 
@@ -183,9 +189,28 @@ try {
 
 	return 0; //end of timer
 
+
+} catch (std::exception &exc) {
+	if ( ( myPlayer->Get_Attack_Style() == 0 ) || ( myPlayer->Get_Attack_Style() == 1 ) )
+	{
+		//reset attack
+		myPlayer->Set_Attack_Initial_X(-1);
+		myPlayer->Set_Attack_Initial_Y(-1);
+		myPlayer->Set_Attack_Direction(-1);
+	}
+	myPlayer->Set_Attack_Status(false); //end of attack
+	P0_Logger << nl << " From Player_Attack_Animation Callback, " << exc.what() << std::endl;
+	return 0;//end of timer
 } catch (...) {
-	P0_Logger << nl << "Player Attack Animation Timer Failed " << std::endl;
-	return 0; //end of timer
+	if ( ( myPlayer->Get_Attack_Style() == 0 ) || ( myPlayer->Get_Attack_Style() == 1 ) )
+	{
+		//reset attack
+		myPlayer->Set_Attack_Initial_X(-1);
+		myPlayer->Set_Attack_Initial_Y(-1);
+		myPlayer->Set_Attack_Direction(-1);
+	}
+	myPlayer->Set_Attack_Status(false);
+	P0_Logger << nl << "Unhandled Error In Player_Attack_Animation Callback" << std::endl;  
 }
 }
 

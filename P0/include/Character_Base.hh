@@ -305,16 +305,14 @@ public:
 	//define character sprite which appear on the screen during run
 	bool Set_Run_Animation_Sprite();
 //Attack
-	//Manage the character attack
-	bool Attack();
+	//Manage the character attack stuffs
+	void Attack();
 	//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing and character infos
-	int Attack_Check_Status(int attack_distance, int inflicted_damage, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
+	int Attack_Check_Status(int ch2attack_distance, int inflicted_damage, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 	//Set Character Sprite Which change when attack occured(callback)
 	bool Set_Attack_Animation_Sprite(std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
-	//Manage attack characteristics regarding the attack style
+	//Manage when a character decided to change his attack style: check if style present, update characteristics, etc
 	bool Change_Attack_Style();
-	//Manage the attack style's graphic regarding the attack style
-	bool Manage_Attack_Style();
 //Characteristics
 	//Calculate the current life depending on damage, malus, etc and damage made by the opponent
 	bool Calculate_Real_Life(int received_damage = 0);

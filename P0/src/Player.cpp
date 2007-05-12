@@ -155,9 +155,11 @@ try
 			Messages::Status_Msg = attack_unarmed_msg_hit.get();
 
 			if (attack_successfull == 1)
-				P0_Logger << nl << ">>> Skeleton Hit <<< " << std::endl;
-			if (attack_successfull == 2)
-				P0_Logger << nl << ">>> Worm Hit <<< " << std::endl;
+				P0_Logger << nl << ">>> Humanoid Hit <<< " << std::endl;
+			else if (attack_successfull == 2)
+				P0_Logger << nl << ">>> Crawler Hit <<< " << std::endl;
+			else if (attack_successfull == 3)
+				P0_Logger << nl << ">>> Undead Hit <<< " << std::endl;
 		}
 		else
 		{
