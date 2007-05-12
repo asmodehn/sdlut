@@ -65,64 +65,6 @@ Character_Base::~Character_Base()
 {
 }
 
-void Character_Base::Parse_Description_File(const string &Description_Filename)
-{
-try {
-	//
-	//TODO Managed the 0 or 1 value for options !!!!
-	//
-	XML_Manager::Validate_File(Description_Filename);
-
-	string Data_Root_Directory = XML_Manager::Get_Option_String(Description_Filename, "Data_Root_Directory");
-	
-	Sprite_Width = XML_Manager::Get_Option_Value(Description_Filename, "Default_Sprite_Width");
-	Sprite_Height = XML_Manager::Get_Option_Value(Description_Filename, "Default_Sprite_Height");
-	
-	X = XML_Manager::Get_Option_Value(Description_Filename, "Initial_Position_X");
-	Y = XML_Manager::Get_Option_Value(Description_Filename, "Initial_Position_Y");
-
-	//Managed the allowed area if defined, else take the default
-	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Allowed_Area") )
-	{
-		Allowed_Area.setx( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_X") );
-		Allowed_Area.sety( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_Y") );
-		Allowed_Area.setw( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_W") );
-		Allowed_Area.seth( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_H") );
-	}
-	
-	CB_X_Modifier = XML_Manager::Get_Option_Value(Description_Filename, "X_Modifier");
-	Collision_Box.setx(X+CB_X_Modifier);
-	CB_Y_Modifier = XML_Manager::Get_Option_Value(Description_Filename, "Y_Modifier");
-	Collision_Box.sety(Y+CB_Y_Modifier);
-	CB_Width = XML_Manager::Get_Option_Value(Description_Filename, "CB_Width");
-	Collision_Box.setw(CB_Width);
-	CB_Height = XML_Manager::Get_Option_Value(Description_Filename, "CB_Height");
-    Collision_Box.seth(CB_Height);
-
-	Ch_Vel = XML_Manager::Get_Option_Value(Description_Filename, "Velocity"); //in px/s coz its the player
-	BASE_LIFE = XML_Manager::Get_Option_Value(Description_Filename, "Life");
-	Real_Life = BASE_LIFE;
-	BASE_ARMOR = XML_Manager::Get_Option_Value(Description_Filename, "Armor");
-	Real_Armor = BASE_ARMOR;
-	BASE_INFLICTED_DAMAGE = XML_Manager::Get_Option_Value(Description_Filename, "Damage");
-	Real_Inflicted_Damage = BASE_INFLICTED_DAMAGE;
-	
-	string Default_Animations_Center_Filename = Data_Root_Directory + XML_Manager::Get_Option_String(Description_Filename, "Animation_Center_Filename");
-
-	//Default Animations Center
-	Default_Animations_Center = new Character_Animations_Center( Data_Root_Directory, Default_Animations_Center_Filename );
-
-
-} catch (std::exception &exc)
-{
-	throw std::logic_error(exc.what());
-}
-catch (...)
-{
-	throw std::logic_error("Unhandled Exception When Parsing XML Description File" + Description_Filename);
-}
-}
-
 //move the character_base's collision box to a place its allowed to be when moving
 bool Character_Base::Manage_Collisions(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector, bool Handle_Collisions )
 {

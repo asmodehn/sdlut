@@ -23,6 +23,10 @@ class Player_Base : public Character_Base
 		//Battlefield rules
 		/* virtual */ int Get_BG_vs_CH_Rules(const int& bgType);
 		/* virtual */ int Get_Env_vs_CH_Rules(const int& envType);
+
+		//Parse the xml file (called by the constructor)
+		void Parse_Description_File(const string &Description_Filename);
+
 	public:
 
 		/****Definition****/

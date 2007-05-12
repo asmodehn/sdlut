@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE Animations_Center SYSTEM "../DTDs/Animations_Center.dtd">
+<Animations_Center>
+		<Style>Unarmed</Style><!-- Unarmed|Melee|Distant  ONLY !!-->
+		<Type>Unarmed</Type><!-- Unarmed|Sword|Bow  ONLY !!-->
+		<Stop_Animation_Filename>Worm_Stop.xml</Stop_Animation_Filename>
+		<Walk_Animation_Filename>Worm_Move.xml</Walk_Animation_Filename>		
+		<Death_Animation_Filename>Worm_Death.xml</Death_Animation_Filename>
+</Animations_Center>

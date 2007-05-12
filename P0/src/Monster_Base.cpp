@@ -92,16 +92,23 @@ try {
 		xVel = (rand()%3-1)*Ch_Vel;
 		yVel = (rand()%3-1)*Ch_Vel;
 
-		//Move collision box to the futute position
-		Collision_Box.setx(X + xVel);
-		Collision_Box.sety(Y + yVel);
-
-		//handle collisions
-		if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
+		if( Assign_Direction_Sprite() == false )
+		{ 
+			P0_Logger << nl << "Check character direction Failed " << std::endl;    
+		}
+		if ( Get_Moving_Status() ) //we're really moving but not simply changing the direction
 		{
-			//No Error => Update position 
-			X = Collision_Box.getx();
-			Y = Collision_Box.gety();
+			//Move collision box to the futute position
+			Collision_Box.setx(X + xVel);
+			Collision_Box.sety(Y + yVel);
+
+			//handle collisions
+			if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
+			{
+				//No Error => Update position 
+				X = Collision_Box.getx();
+				Y = Collision_Box.gety();
+			}
 		}
 	}
 	return true; //no error

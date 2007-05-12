@@ -10,14 +10,22 @@ class Monster_Skeleton : public Monster_Base
 
 	public:
 		Monster_Skeleton(int x, int y,
-						int &Ch_Vel, int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height,
-						RGBSurface* &Characters_Current_Tileset, RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
+						int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
+						Rect &Allowed_Area,
+						int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
+						Character_Animations_Center* &Default_Animations_Center,
+						RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
 						);
 		~Monster_Skeleton();
 
 		//Intialize Monster
-		static void Initialize(int &Ch_Vel, int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface* &Characters_Current_Tileset,
-						RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect);
+		static void Initialize(
+						int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
+						Rect &Allowed_Area,
+						int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
+						Character_Animations_Center* &Default_Animations_Center,
+						RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
+						);
 
 		//Battlefield rules
 		int Get_BG_vs_CH_Rules(const int& bgType);
@@ -30,14 +38,22 @@ class Monster_Worm : public Monster_Base
 		
 	public:
 		Monster_Worm(int x, int y,
-					int &Ch_Vel, int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height,
-					RGBSurface* &Characters_Current_Tileset, RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
+					int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
+					Rect &Allowed_Area,
+					int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
+					Character_Animations_Center* &Default_Animations_Center,
+					RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
 					);
 		~Monster_Worm();
 
 		//Intialize Monster
-		static void Initialize(int &Ch_Vel, int &BASE_LIFE, int &Real_Life, int &BASE_ARMOR, int &Real_Armor, int &Sprite_Width, int &Sprite_Height, RGBSurface* &Characters_Current_Tileset,
-						RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect);
+		static void Initialize(
+						int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
+						Rect &Allowed_Area,
+						int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
+						Character_Animations_Center* &Default_Animations_Center,
+						RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
+						);
 
 		//Battlefield rules
 		int Get_BG_vs_CH_Rules(const int& bgType);

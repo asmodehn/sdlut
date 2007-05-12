@@ -2,6 +2,7 @@
 <!DOCTYPE Character_Description SYSTEM "../DTDs/Character_Description.dtd">
 <Character_Description>
 	<Character_Type>Player</Character_Type>
+	<Characters_ID>Humanoid</Characters_ID>
 	<Data_Root_Directory>Data/Characters/</Data_Root_Directory>
 	<Coords>
 		<Initial_Position_X>192</Initial_Position_X>

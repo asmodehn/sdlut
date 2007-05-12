@@ -8,30 +8,47 @@ Monster_Factory<Monster_Template>::Monster_Factory()
 	Monster_Vector = new std::vector<Character_Base*>;
 	BattleField_Cutting_Vector = new std::vector<BattleField_Zone*>;
 
-	Monster_Template::Initialize(Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Current_Tileset,
-								Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
+	Monster_Template::Initialize(
+		Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
+		Allowed_Area,
+		CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height,
+		Default_Animations_Center,
+		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect
+		);
 }
 
 //Constructor
 template <typename Monster_Template>
 Monster_Factory<Monster_Template>::Monster_Factory(int number_of_monsters, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
+try {
 	Initial_Number_Of_Monsters = number_of_monsters;
 	Monster_Vector = new std::vector<Character_Base*>;
 	Global_Monster_Vector->push_back(Monster_Vector);
 	BattleField_Cutting_Vector = BattleField_Zone::Fill_Vector();
 
-	Monster_Template::Initialize(Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height, Characters_Current_Tileset,
-								Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
+	Monster_Template::Initialize(
+		Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
+		Allowed_Area,
+		CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height,
+		Default_Animations_Center,
+		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect
+		);
 
-	P0_Logger << nl << "Factory CONSTRUCTED Successfully " << std::endl;
+	//P0_Logger << nl << "Factory CONSTRUCTED Successfully " << std::endl;
+} catch (std::exception &exc) {
+	throw std::logic_error( exc.what() );
+} catch (...) {
+	//unkown error occured
+	throw std::logic_error( "Unhandled Error in Monster_Factory Constructor" );
+}
 }
 
 //Destructor
 template <typename Monster_Template>
 Monster_Factory<Monster_Template>::~Monster_Factory()
 {
-	delete Characters_Current_Tileset, Characters_Current_Tileset = NULL;
+	delete Default_Animations_Center, Default_Animations_Center = NULL;
 	delete Life_Bar_Tile, Life_Bar_Tile = NULL;
 
 	for (unsigned int i = 0; i < Monster_Vector->size(); i++)
@@ -55,8 +72,8 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 	//TODO(future) cge that when necessary
 	//
 	/******TEMPORARY: we only have one player for now******/
-	int Character_X = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().getx();
-	int Character_Y = Global_Player_Vector->at(1)->at(0)->Get_Collision_Box().gety();
+	int Character_X = Global_Player_Vector->at(1)->at(0)->Get_X();
+	int Character_Y = Global_Player_Vector->at(1)->at(0)->Get_Y();
 
 	//Determine monster creation position
 	int x = random(0,LEVEL_WIDTH-1), y = random(0,LEVEL_HEIGHT-1);
@@ -81,8 +98,13 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 	}
 
 	//first attempt to create the monster
-	Monster_Template* myMonster = new Monster_Template(x, y, Ch_Vel, BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height,
-													Characters_Current_Tileset, Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect);
+	Monster_Template* myMonster = new Monster_Template(
+		x, y, Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
+		Allowed_Area,
+		CB_X_Modifier, CB_X_Modifier, CB_Width, CB_Height,
+		Default_Animations_Center,
+		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect
+		);
 
 	//if something don't allow the monster to be here, loop
 	while ( (! (myMonster->Check_Cutting_Allow_Monster(BattleField_Cutting_Vector)) ) || (! myMonster->Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, false) ) )

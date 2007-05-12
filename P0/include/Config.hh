@@ -149,4 +149,6 @@ extern int FiNiSH_TiME;
 //Define configuration from files or set the default config
 bool Set_Config();
 
+Character_Types String_To_Character_Types(const string &str_Character_Types);
+
 #endif

@@ -1,6 +1,7 @@
 <!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by XfX (FWC) -->
-<!ELEMENT Character_Description (Character_Type, Data_Root_Directory, Coords?, Allowed_Area?, Default_Sprite, Default_Collision_Box, Characteristics, Default_Animations)>
+<!ELEMENT Character_Description (Character_Type, Characters_ID, Data_Root_Directory, Coords?, Allowed_Area?, Default_Sprite, Default_Collision_Box, Characteristics, Default_Animations)>
 <!ELEMENT Character_Type (#PCDATA)>
+<!ELEMENT Characters_ID (#PCDATA)> <!-- Humanoid | Crawler | Undead -->
 <!ELEMENT Data_Root_Directory (#PCDATA)>
 <!ELEMENT Coords (Initial_Position_X, Initial_Position_Y)>
 <!ELEMENT Initial_Position_X (#PCDATA)>

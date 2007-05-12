@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Character_Description SYSTEM "../DTDs/Character_Description.dtd">
+<Character_Description>
+	<Character_Type>Monster</Character_Type>
+	<Characters_ID>Crawler</Characters_ID>
+	<Data_Root_Directory>Data/Characters/</Data_Root_Directory>
+	<Default_Sprite>
+		<Default_Sprite_Width>64</Default_Sprite_Width>
+		<Default_Sprite_Height>64</Default_Sprite_Height>
+	</Default_Sprite>
+	<Default_Collision_Box>
+		<X_Modifier>0</X_Modifier>
+		<Y_Modifier>0</Y_Modifier>
+		<CB_Width>64</CB_Width>
+		<CB_Height>64</CB_Height>
+	</Default_Collision_Box>
+
+	<Characteristics>
+		<Velocity>2</Velocity>
+		<Life>100</Life>
+		<Armor>0</Armor>
+		<Damage>100</Damage>
+	</Characteristics>
+	<Default_Animations>
+		<Animation_Center_Filename>Worm_Animations.xml</Animation_Center_Filename>
+	</Default_Animations>
+</Character_Description>

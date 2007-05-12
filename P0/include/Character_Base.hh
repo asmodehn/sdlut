@@ -90,9 +90,6 @@ protected:
 
 
 /****Methods***/
-	//Parse the xml file (called by the constructor)
-	void Parse_Description_File(const string &Description_Filename);
-
 	//Battlefield rules (pure virtuals)
 	virtual int Get_BG_vs_CH_Rules(const int& bgType) = 0;
 	virtual int Get_Env_vs_CH_Rules(const int& envType) = 0;

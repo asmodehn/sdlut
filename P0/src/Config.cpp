@@ -220,3 +220,15 @@ try { //error management
     return false; //eror occured
 }
 }
+
+Character_Types String_To_Character_Types(const string &str_Character_Types)
+{
+	if ( str_Character_Types == "Humanoid" )
+		return Humanoid;
+	else if (str_Character_Types == "Crawler" )
+		return Crawler;
+	else if (str_Character_Types == "Undead" )
+		return Undead;
+	else 
+		throw std::logic_error("Trying to convert string to Character_Types with an unknown str_Character_Types");
+}

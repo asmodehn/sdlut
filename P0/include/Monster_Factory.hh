@@ -13,9 +13,13 @@ class Monster_Factory
 
 		//Monsters variables
 		int Ch_Vel;
-		int BASE_LIFE, Real_Life, BASE_ARMOR, Real_Armor, Sprite_Width, Sprite_Height;
-		RGBSurface *Characters_Current_Tileset, *Life_Bar_Tile;
+		int BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height;
+		Character_Types Characters_ID;
+		Rect Allowed_Area;
+		int CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height;
+		RGBSurface *Life_Bar_Tile;
 		Rect empty_life_bar_rect, real_life_bar_rect;
+		Character_Animations_Center *Default_Animations_Center;
 
 		//How many monster must be generated
 		int Initial_Number_Of_Monsters;
@@ -26,14 +30,13 @@ class Monster_Factory
 		//Area vector which contain the battlefield cutting design
 		std::vector<BattleField_Zone*>* BattleField_Cutting_Vector;
 
+		//Default Constructor
+		Monster_Factory();
+
 		//Create Monster Method which create ONE SINGLE MONSTER ONLY and check if not to near from the character
 		Monster_Template* Create_One_Monster(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 
 	public:
-
-		//Default Constructor
-		Monster_Factory();
-
 		//Constructor
 		Monster_Factory(int number_of_monsters, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 		
