@@ -75,7 +75,7 @@ namespace RAGE
             else if (pvm_screen->isResizableset() !=val ) //if called inside mainLoop while screen is active
             {
 				VideoSurface::setResizable(val);
-                if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight()))
+                if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight(),pvm_screen->getBPP()))
                     res=false;
             }
             return res;
@@ -89,7 +89,9 @@ namespace RAGE
 
             bool res = true;
             if (!pvm_screen.get())
+	    {
                 VideoSurface::setFullscreen(val);
+	    }
             else
             {
 #ifdef DEBUG
@@ -99,8 +101,10 @@ namespace RAGE
                 if (pvm_screen->isFullScreenset() != val ) //if called inside mainLoop while screen is active
                 {
 			VideoSurface::setFullscreen(val);
-                    if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight()))
-                        res=false;
+			if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight(),pvm_screen->getBPP()))
+			{
+				res=false;
+			}
                 }
             }
 	    
@@ -118,7 +122,7 @@ namespace RAGE
             else if (pvm_screen->isNoFrameset() !=val )  //if called inside mainLoop while screen is active
             {
 				VideoSurface::setNoFrame(val);
-                if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight()))
+                if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight(),pvm_screen->getBPP()))
                     res=false;
             }
             return res;
@@ -146,7 +150,7 @@ namespace RAGE
             else if ( pvm_screen->isOpenGLset() !=val ) //if called inside mainLoop while screen is active
             {
                 VideoSurface::setOpenGL(val);
-                if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight()))
+                if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight(),pvm_screen->getBPP()))
                     res=false;
             }
             return res;
@@ -293,7 +297,7 @@ namespace RAGE
         bool Window::resetDisplay( int width, int height, int bpp)
         {
 #ifdef DEBUG
-            Log << nl << "Window::resetDisplay(" << width << "," << height << ") called ..." << std::endl;
+            Log << nl << "Window::resetDisplay( " << width << ", " << height << ", " << bpp << ") called ..." << std::endl;
 #endif
 	bool res = false;
 	    if ( bpp == 0 ) //here 0 means autodetection
@@ -327,7 +331,7 @@ namespace RAGE
                 }
             }
 #ifdef DEBUG
-            Log << nl << "Window::resetDisplay(" << width << "," << height << ") done." << std::endl;
+            Log << nl << "Window::resetDisplay(" << width << "," << height << ", " << bpp << ") done." << std::endl;
 #endif
 
             return res;
