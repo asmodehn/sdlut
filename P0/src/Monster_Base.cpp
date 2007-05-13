@@ -81,6 +81,81 @@ Monster_Base::~Monster_Base()
 {
 }
 
+//Intialize Monster: get all data from external files, assign surface, boxs, ...
+void Monster_Base::Initialize( const string &Description_Filename,
+		int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
+		Rect &Allowed_Area,
+		int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
+		Character_Animations_Center* &Default_Animations_Center,
+		RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
+		)
+{
+try {
+	//
+	//TODO Managed the 0 or 1 value for options !!!!
+	//
+	XML_Manager::Validate_File(Description_Filename);
+
+	Characters_ID = String_To_Character_Types( XML_Manager::Get_Option_String(Description_Filename, "Characters_ID") );
+
+	string Data_Root_Directory = XML_Manager::Get_Option_String(Description_Filename, "Data_Root_Directory");
+	
+	Sprite_Width = XML_Manager::Get_Option_Value(Description_Filename, "Default_Sprite_Width");
+	Sprite_Height = XML_Manager::Get_Option_Value(Description_Filename, "Default_Sprite_Height");
+
+	//Default Area: the whole level
+	Allowed_Area.setx(0);
+	Allowed_Area.sety(0);
+	Allowed_Area.setw(LEVEL_WIDTH);
+	Allowed_Area.seth(LEVEL_HEIGHT);
+
+	//Managed the allowed area if defined, else keep the default
+	if ( XML_Manager::Check_Node_Exists(Description_Filename, "Allowed_Area") )
+	{
+		Allowed_Area.setx( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_X") );
+		Allowed_Area.sety( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_Y") );
+		Allowed_Area.setw( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_W") );
+		Allowed_Area.seth( XML_Manager::Get_Option_Value(Description_Filename, "Allowed_Area_H") );
+	}
+	
+	CB_X_Modifier = XML_Manager::Get_Option_Value(Description_Filename, "X_Modifier");
+	CB_Y_Modifier = XML_Manager::Get_Option_Value(Description_Filename, "Y_Modifier");
+	CB_Width = XML_Manager::Get_Option_Value(Description_Filename, "CB_Width");
+	CB_Height = XML_Manager::Get_Option_Value(Description_Filename, "CB_Height");
+
+	Ch_Vel = XML_Manager::Get_Option_Value(Description_Filename, "Velocity"); //in px/s coz its the player
+	BASE_LIFE = XML_Manager::Get_Option_Value(Description_Filename, "Life");
+	BASE_ARMOR = XML_Manager::Get_Option_Value(Description_Filename, "Armor");
+	BASE_INFLICTED_DAMAGE = XML_Manager::Get_Option_Value(Description_Filename, "Damage");
+	
+	
+	string Default_Animations_Center_Filename = Data_Root_Directory + XML_Manager::Get_Option_String(Description_Filename, "Animation_Center_Filename");
+
+	//Default Animations Center
+	Default_Animations_Center = new Character_Animations_Center( Data_Root_Directory, Default_Animations_Center_Filename );
+
+
+	//Life bar infos
+	Life_Bar_Tile = new RGBSurface("Data/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	
+	empty_life_bar_rect.setx(0);
+	empty_life_bar_rect.sety(0);
+	empty_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	empty_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+
+	real_life_bar_rect.setx(0);
+	real_life_bar_rect.sety(LIFE_BAR_HEIGHT);
+	real_life_bar_rect.setw(LIFE_BAR_WIDTH);
+	real_life_bar_rect.seth(LIFE_BAR_HEIGHT);
+
+} catch (std::exception &exc) {
+	throw std::logic_error( "From Monster_Base::Initialize(), " + (string)exc.what() );
+} catch (...) {
+	//unkown error occured
+	throw std::logic_error( "Unhandled Error in Monster_Base::Initialize" );
+}
+}
+
 //Move monster randomly
 bool Monster_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {

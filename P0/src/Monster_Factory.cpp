@@ -8,7 +8,7 @@ Monster_Factory<Monster_Template>::Monster_Factory()
 	Monster_Vector = new std::vector<Character_Base*>;
 	BattleField_Cutting_Vector = new std::vector<BattleField_Zone*>;
 
-	Monster_Template::Initialize(
+	Monster_Template::Initialize(Monster_Template::Description_Filename,
 		Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
 		Allowed_Area,
 		CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height,
@@ -27,7 +27,7 @@ try {
 	Global_Monster_Vector->push_back(Monster_Vector);
 	BattleField_Cutting_Vector = BattleField_Zone::Fill_Vector();
 
-	Monster_Template::Initialize(
+	Monster_Template::Initialize(Monster_Template::Description_Filename,
 		Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
 		Allowed_Area,
 		CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height,
