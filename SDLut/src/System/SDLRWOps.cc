@@ -83,7 +83,10 @@ namespace RAGE {
 			{
 				throw std::logic_error("Initialising empty RWOps failed");
 			}
-			*pvm_rwops = *(rwops.pvm_rwops);
+			if ( rwops.pvm_rwops.get() != 0 )
+			{
+				*pvm_rwops = *(rwops.pvm_rwops);
+			}
 		}
 		catch (std::exception & e)
 		{

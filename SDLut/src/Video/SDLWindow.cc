@@ -39,7 +39,7 @@ namespace RAGE
 
         void Window::setIcon(const RGBSurface & icon)
         {
-			_icon = icon;
+	    _icon = icon;
             SDL_WM_SetIcon( const_cast<SDL_Surface*>(&_icon.get_rSDL()) , NULL);
         }
 

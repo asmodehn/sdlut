@@ -35,10 +35,8 @@ namespace RAGE
 	{}
 	    
 	//Conversion Constructor with explicit ownership transfer as it s using an auto_ptr
-	BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) : _surf(s.get()),locks(0)
-	{
-		s.release(); //to use the usual C-like pointer ownership
-	}
+	BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) : _surf(s),locks(0)
+	{}
 
         BaseSurface::BaseSurface(const BaseSurface & s) throw (std::logic_error)
         try : _surf(0), locks(0)
@@ -48,7 +46,7 @@ namespace RAGE
 #endif
 
             _surf.reset(SDL_ConvertSurface(s._surf.get(),s._surf->format,s._surf->flags));
-const std::string errstr = "SDL_ConvertSurface";
+	    const std::string errstr = "SDL_ConvertSurface";
             if(_surf.get() == 0)
             {
                 Log << nl << "Unable to copy the RGBsurface" ;
@@ -67,7 +65,9 @@ const std::string errstr = "SDL_ConvertSurface";
 
 BaseSurface& BaseSurface::operator=(const BaseSurface& s)
 {
-    if (this != &s) {  // make sure not same object
+    if (this != &s) // make sure not same object
+    {
+	    SDL_FreeSurface(_surf.release());
             _surf.reset(SDL_ConvertSurface(s._surf.get(),s._surf->format,s._surf->flags)); //deep copy...
             if (_surf.get() == 0)
 	    {
@@ -207,18 +207,15 @@ BaseSurface::~BaseSurface()
                 break;
 
                 case 3:
-                if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-                {
-                    p[0] = (Uint8) (pixel >> 16) & 0xff;
+#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+		    p[0] = (Uint8) (pixel >> 16) & 0xff;
                     p[1] = (Uint8) (pixel >> 8) & 0xff;
                     p[2] = (Uint8) pixel & 0xff;
-                }
-                else
-                {
+#else
                     p[0] = (Uint8) pixel & 0xff;
                     p[1] = (Uint8) (pixel >> 8) & 0xff;
                     p[2] = (Uint8) (pixel >> 16) & 0xff;
-                }
+#endif
                 break;
 
                 case 4:

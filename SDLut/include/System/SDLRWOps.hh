@@ -50,6 +50,10 @@ namespace RAGE
 			~RWOps();
 
 			SDL_RWops get_SDL() const;
+			inline SDL_RWops & get_rSDL() const
+			{
+				return *pvm_rwops;
+			}
 			inline SDL_RWops * get_pSDL() const
 			{
 				return pvm_rwops.get();

@@ -18,9 +18,7 @@ namespace RAGE
 	}
 	
         RGBSurface::RGBSurface(int width, int height, int bpp) throw (std::logic_error)
-        try
-:
-            BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
+        try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
         {
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << width << ", " << height << ", " << bpp << ") called...";
@@ -49,9 +47,7 @@ namespace RAGE
         }
 
         RGBSurface::RGBSurface(void* pixeldata, int depth, int pitch, int width, int height) throw (std::logic_error)
-        try
-:
-            BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitch, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
+        try : BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitch, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
         {
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width << ", " <<height << ") called...";
@@ -75,9 +71,7 @@ namespace RAGE
         }
 
         RGBSurface::RGBSurface(const Color & color, int width, int height, int bpp )throw (std::logic_error)
-        try
-:
-            BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
+        try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
         {
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << color << ", " << width << ", " <<height << ", " << bpp << ") called...";
@@ -106,7 +100,7 @@ namespace RAGE
         }
 
         RGBSurface::RGBSurface( std::string filename )throw (std::logic_error)
-			try :
+	try :
 #ifdef HAVE_SDLIMAGE
 			BaseSurface(IMG_Load(filename.c_str()))
 #else
@@ -144,8 +138,7 @@ namespace RAGE
         }
 
         RGBSurface::RGBSurface( std::string filename, const Color & colorKey )throw (std::logic_error)
-        try
-:
+        try :
 #ifdef HAVE_SDLIMAGE
 			BaseSurface(IMG_Load(filename.c_str()))
 #else
@@ -183,9 +176,8 @@ namespace RAGE
         }
 
 
-		RGBSurface::RGBSurface (const RWOps & rwops) throw (std::logic_error)
-        try
-:
+	RGBSurface::RGBSurface (const RWOps & rwops) throw (std::logic_error)
+        try :
 #ifdef HAVE_SDLIMAGE
 			BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0))
 #else
@@ -225,10 +217,9 @@ namespace RAGE
             //TODO : much more explicit error message...
         }
 
-		//default constructor
-		RGBSurface::RGBSurface () throw (std::logic_error)
-        try
-:
+	//default constructor
+	RGBSurface::RGBSurface () throw (std::logic_error)
+        try :
 #ifdef HAVE_SDLIMAGE
 			//BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(RWOps(_defaultImage,sizeof(_defaultImage)).get_pSDL()),0))
 		BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(defaultContent.get_pSDL()),0))
@@ -371,9 +362,7 @@ namespace RAGE
         //};
 
         RGBSurface::RGBSurface(const RGBSurface & s ) throw (std::logic_error)
-        try
-:
-            BaseSurface(s)
+        try : BaseSurface(s)
         {
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << &s << ") called.";
@@ -401,9 +390,7 @@ namespace RAGE
         }
 
         RGBSurface::RGBSurface(const BaseSurface & s ) throw (std::logic_error)
-        try
-:
-            BaseSurface(s)
+        try : BaseSurface(s)
         {
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << &s << ") called.";

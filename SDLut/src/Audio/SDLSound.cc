@@ -80,7 +80,7 @@ namespace RAGE
 	std::auto_ptr<SDL_AudioCVT> _convertTable( new SDL_AudioCVT() );
 
 	if (SDL_BuildAudioCVT(_convertTable.get(), static_cast<Uint16>(_aInfo.format()), static_cast<Uint8>(_aInfo.channels()), _aInfo.frequency(),
-	    (Uint16) DestinationFormat, (Uint8) DestinationChannels, DestinationFrequency) < 0)
+	    static_cast<Uint16>(DestinationFormat), static_cast<Uint8>(DestinationChannels), DestinationFrequency) < 0)
 	{
 		throw std::logic_error("Error constructing the Audio Convertor !");
 	}
@@ -102,8 +102,8 @@ namespace RAGE
 		SDL_LockAudio();
 		SDL_FreeWAV(_buf);
 
-		_aInfo.get_pSDL()->freq = DestinationFrequency;
-		_aInfo.get_pSDL()->channels = DestinationChannels;
+		_aInfo.get_pSDL()->freq = static_cast<Uint16>(DestinationFrequency);
+		_aInfo.get_pSDL()->channels = static_cast<Uint8>(DestinationChannels);
 		_aInfo.get_pSDL()->format = DestinationFormat;
 				
 		_length = _convertTable->len_cvt;
