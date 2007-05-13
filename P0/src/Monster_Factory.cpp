@@ -78,8 +78,8 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 	//Determine monster creation position
 	int x = random(0,LEVEL_WIDTH-1), y = random(0,LEVEL_HEIGHT-1);
 
-	//mini distance (3 square radius from the character border)²
-	int distance_mini_carre = int( 3.5*sqrt( float((PC_WIDTH*PC_WIDTH) + (PC_HEIGHT*PC_HEIGHT)) ) );
+	//mini distance (3.5 bf square radius from the character border)²
+	int distance_mini_carre = int( 3.5*sqrt( float((BATF_SPRITE_W*BATF_SPRITE_W) + (BATF_SPRITE_H*BATF_SPRITE_H)) ) );
 	
 	//(distance from the center - distance center to border of the character)²
 	int distance_carre = (int)( sqrt( float( ((x - (Character_X+PC_WIDTH/2))*(x - (Character_X+PC_WIDTH/2))) + ((y - (Character_Y+PC_HEIGHT/2))*(y - (Character_Y+PC_HEIGHT/2))) ) )
@@ -101,7 +101,7 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 	Monster_Template* myMonster = new Monster_Template(
 		x, y, Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
 		Allowed_Area,
-		CB_X_Modifier, CB_X_Modifier, CB_Width, CB_Height,
+		CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height,
 		Default_Animations_Center,
 		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect
 		);
@@ -130,11 +130,12 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 		//update the monster to the new coordinate with his CB
 		myMonster->Set_X(x);
 		myMonster->Set_Y(y);
+
 		Rect NewCB;
-		NewCB.setx(x);
-		NewCB.sety(y);
-		NewCB.setw(Sprite_Width);
-		NewCB.seth(Sprite_Height);
+		NewCB.setx(x + CB_X_Modifier );
+		NewCB.sety(y + CB_Y_Modifier);
+		NewCB.setw(CB_Width);
+		NewCB.seth(CB_Height);
 		myMonster->Set_Collision_Box(NewCB);
 		
 		//delete myMonster, myMonster = NULL;

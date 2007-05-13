@@ -6,6 +6,9 @@ Player::Player()
 try {
 /****characteristics parsing (xml parsing)****/
 	Parse_Description_File("Data/Characters/Player.xml"); //attack_style ????!!!!!!!!!!!
+	
+	//necessary to render optimization
+	PC_WIDTH = Sprite_Width; PC_HEIGHT = Sprite_Height; 
 
 /****Default Animation****/
 	Characters_Current_Unarmed_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();

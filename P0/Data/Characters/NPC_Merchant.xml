@@ -19,10 +19,10 @@
 		<Default_Sprite_Height>96</Default_Sprite_Height>
 	</Default_Sprite>
 	<Default_Collision_Box>
-		<X_Modifier>0</X_Modifier>
-		<Y_Modifier>0</Y_Modifier>
-		<CB_Width>96</CB_Width>
-		<CB_Height>96</CB_Height>
+		<X_Modifier>32</X_Modifier>
+		<Y_Modifier>17</Y_Modifier>
+		<CB_Width>32</CB_Width>
+		<CB_Height>65</CB_Height>
 	</Default_Collision_Box>
 
 	<Characteristics>

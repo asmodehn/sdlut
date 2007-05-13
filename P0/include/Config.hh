@@ -53,15 +53,9 @@ extern int FRAMES_PER_SECOND;
 //Windows
 extern string Window_Name;
 
-//The dimensions of the Character
+//The dimensions of the Player (needed to render stuff more efficiently)
 extern int PC_WIDTH;
 extern int PC_HEIGHT;
-extern int MO_WIDTH;
-extern int MO_HEIGHT;
-
-//Initial Chracter position
-extern int CH_INITIAL_X;
-extern int CH_INITIAL_Y;
 
 //Character velocity
 extern int CH_VEL;

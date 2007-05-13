@@ -61,19 +61,43 @@ Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 	//
 	X = ToCopy.X;
 	Y = ToCopy.Y;
-	Sprite_Width = ToCopy.Sprite_Width;
-	Sprite_Height = ToCopy.Sprite_Height;
-	Characters_Current_Tileset = ToCopy.Characters_Current_Tileset;
-	_monster_clip = ToCopy._monster_clip;
-	Current_Tile_Rect = ToCopy.Current_Tile_Rect;
-	Characters_ID = ToCopy.Characters_ID;
 	xVel = ToCopy.xVel;
 	yVel = ToCopy.yVel;
-	Collision_Box = ToCopy.Collision_Box;
+	Ch_Vel = ToCopy.Ch_Vel;
+	BASE_LIFE = ToCopy.BASE_LIFE;
+	Real_Life = ToCopy.Real_Life;
+	BASE_ARMOR = ToCopy.BASE_ARMOR;
+	Real_Armor = ToCopy.Real_Armor;
+	BASE_INFLICTED_DAMAGE = ToCopy.BASE_INFLICTED_DAMAGE;
+	Real_Inflicted_Damage = ToCopy.Real_Inflicted_Damage;
+	Sprite_Width = ToCopy.Sprite_Width;
+	Sprite_Height = ToCopy.Sprite_Height;
+	Characters_ID = ToCopy.Characters_ID;
+
 	Alive_Status = ToCopy.Alive_Status;
+	attack_status = ToCopy.attack_status;
+	attack_style = ToCopy.attack_style;
+	attack_successfull = ToCopy.attack_successfull;
+	attack_direction = ToCopy.attack_direction;
+	attack_initial_x = ToCopy.attack_initial_x;
+	attack_initial_y = ToCopy.attack_initial_y;
+
+	Allowed_Area = ToCopy.Allowed_Area;
+
+	CB_X_Modifier = ToCopy.CB_X_Modifier;
+	CB_Y_Modifier = ToCopy.CB_Y_Modifier;
+	CB_Width = ToCopy.CB_Width;
+	CB_Height = ToCopy.CB_Height;
+	Collision_Box = ToCopy.Collision_Box;
+
+	Default_Animations_Center = ToCopy.Default_Animations_Center;
+
 	Life_Bar_Tile = ToCopy.Life_Bar_Tile;
 	empty_life_bar_rect = ToCopy.empty_life_bar_rect;
 	real_life_bar_rect = ToCopy.real_life_bar_rect;
+
+	Characters_Current_Tileset = ToCopy.Characters_Current_Tileset;
+	Current_Tile_Rect = ToCopy.Current_Tile_Rect;
 }
 
 //Destructor
@@ -174,15 +198,15 @@ try {
 		if ( Get_Moving_Status() ) //we're really moving but not simply changing the direction
 		{
 			//Move collision box to the futute position
-			Collision_Box.setx(X + xVel);
-			Collision_Box.sety(Y + yVel);
+			Collision_Box.setx(X + CB_X_Modifier + xVel);
+			Collision_Box.sety(Y + CB_Y_Modifier + yVel);
 
 			//handle collisions
 			if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
 			{
 				//No Error => Update position 
-				X = Collision_Box.getx();
-				Y = Collision_Box.gety();
+				X = Collision_Box.getx() - CB_X_Modifier;
+				Y = Collision_Box.gety() - CB_Y_Modifier;
 			}
 		}
 	}
@@ -273,8 +297,8 @@ bool Monster_Base::Show_Life_Bar(const Rect& Camera, VideoSurface& Screen)
 
 	//we blit the empty rect than the current life rect 8px on top of the monster
 	//positions are def by monster pos
-	Screen.blit(*Life_Bar_Tile, Point::Point(X + (Sprite_Width-LIFE_BAR_WIDTH)/2 - Camera.getx(), Y - 4 - Camera.gety()), empty_life_bar_rect);
-	Screen.blit(*Life_Bar_Tile, Point::Point(X + (Sprite_Width-LIFE_BAR_WIDTH)/2 - Camera.getx(), Y - 4 - Camera.gety()), real_life_bar_rect);
+	Screen.blit(*Life_Bar_Tile, Point::Point(X + (Sprite_Width-LIFE_BAR_WIDTH)/2 - Camera.getx(), Collision_Box.gety() - 10 - Camera.gety()), empty_life_bar_rect);
+	Screen.blit(*Life_Bar_Tile, Point::Point(X + (Sprite_Width-LIFE_BAR_WIDTH)/2 - Camera.getx(), Collision_Box.gety() - 10 - Camera.gety()), real_life_bar_rect);
 
 	return true;  //everything went fine
 }

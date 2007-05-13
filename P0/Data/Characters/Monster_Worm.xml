@@ -10,9 +10,9 @@
 	</Default_Sprite>
 	<Default_Collision_Box>
 		<X_Modifier>0</X_Modifier>
-		<Y_Modifier>0</Y_Modifier>
+		<Y_Modifier>15</Y_Modifier>
 		<CB_Width>64</CB_Width>
-		<CB_Height>64</CB_Height>
+		<CB_Height>47</CB_Height>
 	</Default_Collision_Box>
 
 	<Characteristics>

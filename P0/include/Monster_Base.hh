@@ -7,9 +7,6 @@
 class Monster_Base : public Character_Base
 {
     protected:
-		//Monster Tile Clip
-		Rect _monster_clip;
-
 		//Life bar infos
 		RGBSurface *Life_Bar_Tile;
 		Rect empty_life_bar_rect;

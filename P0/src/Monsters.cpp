@@ -40,18 +40,6 @@ try {
 	this->empty_life_bar_rect = empty_life_bar_rect;
 	this->real_life_bar_rect = real_life_bar_rect;
 								   
-	////Monster Clip definition range for the top left (Random monster from the 1th line)
-    //_monster_clip.setx( Sprite_Width * (rand()%7) );
-	//_monster_clip.sety( 0 );
-    //_monster_clip.setw( Sprite_Width );
-    //_monster_clip.seth( Sprite_Height );
-
-	//Assign the sprite
-	Current_Tile_Rect = _monster_clip;
-
-	//Monster type
-	//Characters_ID = Undead; 
-
 	//Collision Box Definition
 	Collision_Box.setx(X+CB_X_Modifier);
 	Collision_Box.sety(Y+CB_Y_Modifier);
@@ -154,18 +142,6 @@ try {
 	this->empty_life_bar_rect = empty_life_bar_rect;
 	this->real_life_bar_rect = real_life_bar_rect;
 
-	////Monster Clip definition range for the top left (Random monster from the 7th line)
-    //_monster_clip.setx( Sprite_Width * (rand()%7) );
-	//_monster_clip.sety( Sprite_Height*6 );
-    //_monster_clip.setw( Sprite_Width );
-    //_monster_clip.seth( Sprite_Height );
-
-	////Assign the sprite
-	//Current_Tile_Rect = _monster_clip;
-
-	//Monster type
-	//Characters_ID = Crawler;
-
 	//Collision Box Definition
 	Collision_Box.setx(X+CB_X_Modifier);
 	Collision_Box.sety(Y+CB_Y_Modifier);
@@ -177,10 +153,6 @@ try {
     //Collision_Box.setw(Sprite_Width);
     //Collision_Box.seth(Sprite_Height);
 
-	//
-	//TODO
-	//warning walk animation below coz thre is no stop animation: manage that inside the animation center
-	//
 	Characters_Current_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();
 	Current_Tile_Rect = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tile_Rect()->at(CH_RIGHT); //right direction by default
 

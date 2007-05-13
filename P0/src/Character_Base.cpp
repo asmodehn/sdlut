@@ -81,12 +81,12 @@ try {
 	{
 		if ( Collision_Box.getx() < Allowed_Area.getx() )
 			Collision_Box.setx( Allowed_Area.getx() );
-		if ( (signed)(Collision_Box.getx() + Sprite_Width) > (signed)(Allowed_Area.getx() + Allowed_Area.getw()) )
-			Collision_Box.setx( Allowed_Area.getx() + Allowed_Area.getw() - Sprite_Width );
+		if ( (signed)(Collision_Box.getx() + Collision_Box.getw()) > (signed)(Allowed_Area.getx() + Allowed_Area.getw()) )
+			Collision_Box.setx( Allowed_Area.getx() + Allowed_Area.getw() - CB_Width );
 		if ( Collision_Box.gety() < Allowed_Area.gety() ) 
 			Collision_Box.sety( Allowed_Area.gety() ); 
-		if ( (signed)(Collision_Box.gety() + Sprite_Height) > (signed)(Allowed_Area.gety() + Allowed_Area.geth()) )
-			Collision_Box.sety( Allowed_Area.gety() + Allowed_Area.geth() - Sprite_Height );
+		if ( (signed)(Collision_Box.gety() + Collision_Box.geth()) > (signed)(Allowed_Area.gety() + Allowed_Area.geth()) )
+			Collision_Box.sety( Allowed_Area.gety() + Allowed_Area.geth() - CB_Height );
 	} else { //Handle Mode OFF
 		//outside the allowed area
 		if ( ( Collision_Box.getx() < Allowed_Area.getx() ) || ( (signed)(Collision_Box.getx() + Sprite_Width) > (signed)(Allowed_Area.getx() + Allowed_Area.getw()) ) || ( Collision_Box.gety() < Allowed_Area.gety() ) || ( (signed)(Collision_Box.gety() + Sprite_Height) > (signed)(Allowed_Area.gety() + Allowed_Area.geth()) ) )
@@ -148,7 +148,7 @@ Rect inf_rect;
 							{
 								if ( inf_rect.getx() <= ( BackGround_Sprite_Vector->at(it)->Get_X() + BATF_SPRITE_W/2 ) )
 								{
-									Collision_Box.setx( BackGround_Sprite_Vector->at(it)->Get_X() - Sprite_Width );
+									Collision_Box.setx( BackGround_Sprite_Vector->at(it)->Get_X() - CB_Width );
 								} 
 								else 
 								{
@@ -160,7 +160,7 @@ Rect inf_rect;
 							{
 								if ( inf_rect.gety() <= ( BackGround_Sprite_Vector->at(it)->Get_Y() + BATF_SPRITE_H/2 ) ) 
 								{
-									Collision_Box.sety( BackGround_Sprite_Vector->at(it)->Get_Y() - Sprite_Height );
+									Collision_Box.sety( BackGround_Sprite_Vector->at(it)->Get_Y() - CB_Height );
 								} 
 								else 
 								{
@@ -194,7 +194,7 @@ Rect inf_rect;
 					{
 						if ( inf_rect.getx() <= ( Environment_Sprite_Vector->at(i)->Get_X() + BATF_SPRITE_W/2 ) )
 						{
-							Collision_Box.setx( Environment_Sprite_Vector->at(i)->Get_X() - Sprite_Width );
+							Collision_Box.setx( Environment_Sprite_Vector->at(i)->Get_X() - CB_Width );
 						} 
 						else 
 						{
@@ -206,7 +206,7 @@ Rect inf_rect;
 					{
 						if ( inf_rect.gety() <= ( Environment_Sprite_Vector->at(i)->Get_Y() + BATF_SPRITE_H/2) )
 						{
-							Collision_Box.sety( Environment_Sprite_Vector->at(i)->Get_Y() - Sprite_Height );
+							Collision_Box.sety( Environment_Sprite_Vector->at(i)->Get_Y() - CB_Height );
 						} 
 						else 
 						{
@@ -240,7 +240,7 @@ Rect inf_rect;
 						{
 							if ( inf_rect.getx() <= (Global_Player_Vector->at(j)->at(i)->Get_X() + (Global_Player_Vector->at(j)->at(i)->Get_Sprite_Width()/2) ) )
 							{
-								Collision_Box.setx( Global_Player_Vector->at(j)->at(i)->Get_X() - Sprite_Width );
+								Collision_Box.setx( Global_Player_Vector->at(j)->at(i)->Get_X() - CB_Width );
 							} 
 							else 
 							{
@@ -252,7 +252,7 @@ Rect inf_rect;
 						{
 							if ( inf_rect.gety() <= (Global_Player_Vector->at(j)->at(i)->Get_Y() + (Global_Player_Vector->at(j)->at(i)->Get_Sprite_Height()/2) ) )
 							{
-								Collision_Box.sety( Global_Player_Vector->at(j)->at(i)->Get_Y() - Sprite_Height );
+								Collision_Box.sety( Global_Player_Vector->at(j)->at(i)->Get_Y() - CB_Height );
 							} 
 							else 
 							{
@@ -284,25 +284,25 @@ Rect inf_rect;
 					{
 						if ( inf_rect.getw() <= inf_rect.geth() )
 						{
-							if ( inf_rect.getx() <= (Global_Monster_Vector->at(j)->at(i)->Get_X() + (Global_Monster_Vector->at(j)->at(i)->Get_Sprite_Width()/2) ) )
+							if ( inf_rect.getx() <= (signed)(Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().getx() + (Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().getw()/2) ) )
 							{
-								Collision_Box.setx( Global_Monster_Vector->at(j)->at(i)->Get_X() - Sprite_Width );
+								Collision_Box.setx( Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().getx() - CB_Width );
 							} 
 							else 
 							{
-								Collision_Box.setx( Global_Monster_Vector->at(j)->at(i)->Get_X() + Global_Monster_Vector->at(j)->at(i)->Get_Sprite_Width() );
+								Collision_Box.setx( Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().getx() + Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().getw() );
 							}
 							
 						} 
 						else
 						{
-							if ( inf_rect.gety() <= (Global_Monster_Vector->at(j)->at(i)->Get_Y() + (Global_Monster_Vector->at(j)->at(i)->Get_Sprite_Height()/2) ) )
+							if ( inf_rect.gety() <= (signed)(Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().gety() + (Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().geth()/2) ) )
 							{
-								Collision_Box.sety( Global_Monster_Vector->at(j)->at(i)->Get_Y() - Sprite_Height );
+								Collision_Box.sety( Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().gety() - CB_Height );
 							} 
 							else 
 							{
-								Collision_Box.sety( Global_Monster_Vector->at(j)->at(i)->Get_Y() + Global_Monster_Vector->at(j)->at(i)->Get_Sprite_Height() );
+								Collision_Box.sety( Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().gety() + Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().geth() );
 							}
 						}
 						/*if ( inf_rect.getw() <= inf_rect.geth() )

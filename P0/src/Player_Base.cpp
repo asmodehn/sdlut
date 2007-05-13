@@ -3,10 +3,6 @@
 //Default construtor
 Player_Base::Player_Base()
 {
-	//Initial positions
-	X = CH_INITIAL_X;
-	Y = CH_INITIAL_Y;
-
 /****Arrow***/
 	//Initial arrow position
 	arrow_x = X;
@@ -239,15 +235,15 @@ try {
 	{
 
 		//Move collision box to the futute position
-		Collision_Box.setx(X + xVel);
-		Collision_Box.sety(Y + yVel);
+		Collision_Box.setx(X + CB_X_Modifier + xVel);
+		Collision_Box.sety(Y + CB_Y_Modifier + yVel);
 
 		//handle collisions
 		if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
 		{
 			//No Error => Update position 
-			X = Collision_Box.getx();
-			Y = Collision_Box.gety();
+			X = Collision_Box.getx() - CB_X_Modifier;
+			Y = Collision_Box.gety() - CB_Y_Modifier;
 		}
 	}
 

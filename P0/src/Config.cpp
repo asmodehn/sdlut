@@ -15,8 +15,7 @@ int UP_2 = 0, DOWN_2 = 0, LEFT_2 = 0, RIGHT_2 = 0, ATTACK_2 = 0, CHANGE_ATTACK_M
 	//Default dev cfg
 int LEVEL_WIDTH = 0, LEVEL_HEIGHT = 0;
 int FRAMES_PER_SECOND = 0;
-int PC_WIDTH = 0, PC_HEIGHT = 0, MO_WIDTH = 0, MO_HEIGHT = 0;
-int CH_INITIAL_X = 0, CH_INITIAL_Y = 0;
+int PC_WIDTH = 0, PC_HEIGHT = 0;
 int CH_VEL = 0;
 int CH_RIGHT = 0, CH_LEFT = 0, CH_DOWN = 0, CH_UP = 0, CH_RIGHT_DOWN = 0, CH_LEFT_DOWN = 0, CH_RIGHT_UP = 0, CH_LEFT_UP = 0;
 int INITIAL_MONSTERS = 0, MAX_MONSTERS_SIMULTANEOUSLY = 0;
@@ -95,15 +94,7 @@ try { //error management
 
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LEVEL_WIDTH") ) >> LEVEL_WIDTH;
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "LEVEL_HEIGHT") ) >> LEVEL_HEIGHT;
-		
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "PC_WIDTH") ) >> PC_WIDTH;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "PC_HEIGHT") ) >> PC_HEIGHT;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "MO_WIDTH") ) >> MO_WIDTH;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "MO_HEIGHT") ) >> MO_HEIGHT;
-		
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_INITIAL_X") ) >> CH_INITIAL_X;
-		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_INITIAL_Y") ) >> CH_INITIAL_Y;
-		
+
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_VEL") ) >> CH_VEL;
 
 		std::stringstream( Ini_Manager::Get_Option_String("Config/Dev_Config.ini", "CH_RIGHT") ) >> CH_RIGHT;
