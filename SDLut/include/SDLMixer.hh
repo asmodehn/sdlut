@@ -36,7 +36,7 @@ class Mixer
 	static std::vector<unsigned long>_channelscursor;
 	static std::vector<bool> _activechannels;
 	static std::vector<bool> _loopchannels;
-
+	static std::vector<int> _channelsvolume;
 		
 	public:
 		//this function is the callback called by the SDL audio framework.
@@ -70,6 +70,10 @@ class Mixer
 		void playChannel(int index);
 		void pauseChannel(int index);
 		int setChannelsNumber(int);
+
+		//set volume in percent for a channel. NB channel default to max volume
+		//returns the old volume
+		int setvolumeChannel(int vol, int index);
 	
 }; //class Mixer
 

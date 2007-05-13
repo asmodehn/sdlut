@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
 		
 		testlog << nl<<  "playing channel 1";
 		SDL::App::getInstance().getMixer().playChannel(wav_channel_1);
+		SDL::App::getInstance().getMixer().setvolumeChannel(20,wav_channel_1);
 		SDL::Delay(1000);
 
 		//testlog << nl<<  "playing channel 2";

@@ -14,6 +14,7 @@ namespace RAGE
 		std::vector<unsigned long> Mixer::_channelscursor;
 		std::vector<bool> Mixer::_activechannels;
 		std::vector<bool> Mixer::_loopchannels;
+		std::vector<int> Mixer::_channelsvolume;
 		
 		// This function is called when the audio device needs more data
 		void Mixer::callback(void *userdata, Uint8 *stream, int len)
@@ -32,7 +33,7 @@ namespace RAGE
 				waveptr = _channels[i]->_buf + _channelscursor[i] ;
 				waveleft = min(_channels[i]->_length - _channelscursor[i],static_cast<unsigned int>(len));//test end of sound buffer
 
-				SDL_MixAudio(stream, waveptr, waveleft, SDL_MIX_MAXVOLUME);
+				SDL_MixAudio(stream, waveptr, waveleft, _channelsvolume[i]);
 				_channelscursor[i] += waveleft;
 				if (_channelscursor[i] >= _channels[i]->_length)
 				{
@@ -44,7 +45,7 @@ namespace RAGE
 						stream += waveleft;
 						len -= waveleft;
 						waveleft = min(static_cast<unsigned int>(len),_channels[i]->_length);
-						SDL_MixAudio(stream, _channels[i]->_buf, waveleft, SDL_MIX_MAXVOLUME);
+						SDL_MixAudio(stream, _channels[i]->_buf, waveleft, _channelsvolume[i]);
 						_channelscursor[i] += waveleft;
 					}
 					else
@@ -149,6 +150,7 @@ namespace RAGE
 		    _activechannels.push_back(autoplay);
 		    _channelscursor.push_back(0);
 		    _loopchannels.push_back(loop);
+		    _channelsvolume.push_back(SDL_MIX_MAXVOLUME);
 		    SDL_UnlockAudio();
 	    }
 
@@ -200,7 +202,12 @@ int Mixer::freeChannel(int index)
 {
 	_activechannels[index] = false;
 }
-		
+		int Mixer::setvolumeChannel(int vol, int index)
+{
+	int res = _channelsvolume[index];
+	_channelsvolume[index] = vol * SDL_MIX_MAXVOLUME / 100;
+	return res;
+}
 
 		int Mixer::setChannelsNumber(int n)
 {
@@ -209,6 +216,7 @@ int Mixer::freeChannel(int index)
 	_activechannels.resize(n); //TODO : turn off the new channels
 	_channelscursor.resize(n); //TODO : turn off the new channels
 	_loopchannels.resize(n);
+	_channelsvolume.resize(n);
 	SDL_UnlockAudio();
 	return n; //TODO : return the actuall allocated number of channels
 }
