@@ -29,7 +29,7 @@ namespace RAGE
             //std::cerr << "RGBSurface Constructor Called" << std::endl;
             if (bpp == 0)
                 throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");
-            if(_surf == NULL)
+            if(!initialized())
             {
                 std::stringstream ss;
                 ss << "Unable to set " <<  width<<  " x " <<  height <<  " rgb surface : ";
@@ -57,7 +57,7 @@ namespace RAGE
             Log << nl << "RGBSurface::RGBSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width << ", " <<height << ") called...";
 #endif
             //std::cerr << "RGBSurface Constructor Called" << std::endl;
-            if(_surf == NULL)
+            if(!initialized())
             {
                 Log << "Unable to set " << width<< " x " << height<< " rgb surface : ";
                 throw std::logic_error("SDL_CreateRGBSurface returns NULL");
@@ -85,7 +85,7 @@ namespace RAGE
             //std::cerr << "RGBSurface Constructor Called" << std::endl;
             if (bpp == 0)
                 throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");
-            if(_surf == NULL)
+            if(!initialized())
             {
                 Log << "Unable to set " <<  width<<  " x " <<  height <<  " rgb surface : " ;
                 throw std::logic_error("SDL_CreateRGBSurface returns NULL");
@@ -120,7 +120,7 @@ namespace RAGE
 
             //std::cerr << "RGBSurface Constructor Called" << std::endl;
             //TODO : support for other format than BMP with SDL_image
-            if(_surf == NULL)
+            if(!initialized())
             {
                 Log << nl << "Unable to set rgb surface from " << filename << std::endl;
                 throw std::logic_error(
@@ -157,7 +157,7 @@ namespace RAGE
 #endif
             //std::cerr << "RGBSurface Constructor Called" << std::endl;
             //TODO : support for other format than BMP with SDL_image
-            if(_surf == NULL)
+            if(!initialized())
             {
                 Log << nl << "Unable to set rgb surface from " << filename << std::endl;
 		throw std::logic_error(
@@ -197,7 +197,7 @@ namespace RAGE
 #endif
             //std::cerr << "RGBSurface Constructor Called" << std::endl;
             //TODO : support for other format than BMP with SDL_image
-            if(_surf == NULL)
+            if(!initialized())
             {
 				Log << nl << "Error : Unable to set rgb surface from RWOps ";
 				
@@ -241,7 +241,7 @@ namespace RAGE
 #endif
             //std::cerr << "RGBSurface Constructor Called" << std::endl;
             //TODO : support for other format than BMP with SDL_image
-            if(_surf == NULL)
+            if(!initialized())
             {
 				Log << nl << "Error : Unable to set rgb surface from RWOps ";
 				
@@ -381,7 +381,7 @@ namespace RAGE
 
 #ifdef DEBUG
 
-            Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << _surf << " created.";
+            Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << _surf.get() << " created.";
 #endif
 
         }
@@ -411,7 +411,7 @@ namespace RAGE
 
 #ifdef DEBUG
 
-            Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << _surf << " created.";
+            Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << _surf.get() << " created.";
 #endif
 
         }
@@ -481,7 +481,7 @@ namespace RAGE
             else
                 flags=SDL_SRCCOLORKEY;
 
-            return SDL_SetColorKey(_surf, flags, getPixelFormat().getValueFromRGB(key) ) == 0;
+            return SDL_SetColorKey(_surf.get(), flags, getPixelFormat().getValueFromRGB(key) ) == 0;
         }
 
 	bool RGBSurface::resize(int width, int height, bool keepcontent)
@@ -499,14 +499,14 @@ namespace RAGE
 		{
 			if (keepcontent)
 			{
-				SDL_BlitSurface(_surf, NULL , newSurf.get(), NULL);
+				SDL_BlitSurface(_surf.get(), NULL , newSurf.get(), NULL);
 			}
 
-			SDL_FreeSurface(_surf);
-			_surf=newSurf.release();
+			SDL_FreeSurface(_surf.release());
+			_surf=newSurf;
 			res = true;
 		}
-		return (res && _surf != 0 ) ;
+		return (res && _surf.get() != 0 ) ;
 	}
 
 		
@@ -522,24 +522,24 @@ namespace RAGE
 		
         bool RGBSurface::optimise(bool alpha)
         {
-            assert(_surf);
+            assert(_surf.get());
             bool res;
             std::auto_ptr<SDL_Surface> optsurf(0);
             if ( alpha )
             {
-                optsurf.reset( SDL_DisplayFormatAlpha(_surf) );
+                optsurf.reset( SDL_DisplayFormatAlpha(_surf.get()) );
             }
             else
             {
-                optsurf.reset( SDL_DisplayFormat(_surf) );
+                optsurf.reset( SDL_DisplayFormat(_surf.get()) );
             }
 
             if (!optsurf.get())
                 res = false;
             else
             {
-                SDL_FreeSurface(_surf);
-                _surf=optsurf.release();
+                SDL_FreeSurface(_surf.release());
+                _surf=optsurf;
                 res = true;
             }
 

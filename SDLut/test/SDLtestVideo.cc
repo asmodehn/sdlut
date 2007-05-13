@@ -31,7 +31,7 @@ public:
                     App::getInstance().getWindow().iconify();
                 res = true;
                 break;
-				case KF6:
+		case KF6:
                 if (pressed==true)
                     App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
                 res = true;

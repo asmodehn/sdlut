@@ -70,7 +70,7 @@ namespace RAGE
             //the adress of SDL_Surface struct should never change
             //SDL_Surface * const _surf;
             //except for resize...
-            SDL_Surface * _surf; ///< the actual allocated surface
+            std::auto_ptr<SDL_Surface> _surf; ///< the actual allocated surface
             static const VideoInfo * getVideoInfo()
             {
                 return _vinfo;
@@ -79,7 +79,7 @@ namespace RAGE
             /// This method return true if the surface is initialized, false otherwise.
             bool initialized() const
             {
-                return _surf != NULL;
+                return _surf.get() != 0;
             }
             //could be useless if exception handle is well coded in the heriting tree
 
@@ -109,8 +109,7 @@ namespace RAGE
             void setpixel(int x, int y, PixelColor pixel);
 
             ///Conversion Constructor
-            explicit BaseSurface(SDL_Surface * s) : _surf(s),locks(0)
-            {}
+            explicit BaseSurface(SDL_Surface * s);
 	     ///< This one should be called only by subclasses
 	    
 	    ///Conversion Constructor with explicit ownership transfer as it s using an auto_ptr

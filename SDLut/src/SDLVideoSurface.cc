@@ -125,7 +125,7 @@ namespace RAGE
 			}
 			else
 #endif //HAVE_OPENGL
-				return SDL_Flip(_surf) == 0;
+				return SDL_Flip(_surf.get()) == 0;
         }
 
 //TODO : rethink about that again...( recopy the content if 2D or not at all ??? )
@@ -142,7 +142,7 @@ namespace RAGE
 		{
 			oldSurf.reset( SDL_CreateRGBSurface(SDL_SWSURFACE,getWidth(),getHeight(),getBPP(),r_default_mask,g_default_mask, b_default_mask, a_default_mask) );
 			SDL_DisplayFormat(oldSurf.get());
-			SDL_BlitSurface(_surf,NULL,oldSurf.get(),NULL);
+			SDL_BlitSurface(_surf.get(),NULL,oldSurf.get(),NULL);
 		}
 
             //BEWARE : should match DisplaySurface Constructor code
@@ -165,7 +165,7 @@ namespace RAGE
 			SDL_BlitSurface(oldSurf.get(), NULL , newSurf.get(), NULL);
 			SDL_FreeSurface(oldSurf.get());
 		}
-		_surf=newSurf.release();
+		_surf=newSurf;
 
 #ifdef DEBUG
         Log << nl << "VideoSurface::resize(" << width << ", " << height << ") succeeded.";
@@ -175,7 +175,7 @@ namespace RAGE
 
 	    SDL_FreeSurface(oldSurf.release());
 
-	    return (res && _surf != 0);
+	    return (res && initialized());
     }
 
 
@@ -185,7 +185,7 @@ namespace RAGE
         if (locked())
             return false;//to prevent calling while locked
         else
-            SDL_UpdateRect(_surf, r.getx(), r.gety(), r.getw(), r.geth());
+            SDL_UpdateRect(_surf.get(), r.getx(), r.gety(), r.getw(), r.geth());
         return true;
     }
 
@@ -199,7 +199,7 @@ namespace RAGE
             SDL_Rect* list = new SDL_Rect[rlist.size()];
             for (unsigned int i=0; i<rlist.size() ; i++)
                 list[i]=*(rlist[i]._rect);
-            SDL_UpdateRects(_surf, rlist.size(), list);
+            SDL_UpdateRects(_surf.get(), rlist.size(), list);
         }
         return true;
     }

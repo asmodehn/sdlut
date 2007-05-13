@@ -13,7 +13,7 @@ namespace RAGE
             if (SDL_MUSTLOCK(_surf))
             {
                 locks++;
-                return SDL_LockSurface(_surf) == 0;
+                return SDL_LockSurface(_surf.get()) == 0;
             }
             else
                 return true;
@@ -25,11 +25,15 @@ namespace RAGE
             {
                 if ( locks > 0 )
                     locks--;
-                SDL_UnlockSurface(_surf);
+                SDL_UnlockSurface(_surf.get());
             }
             return true;
         }
 
+	///Conversion Constructor
+	BaseSurface::BaseSurface(SDL_Surface * s) : _surf(s),locks(0)
+	{}
+	    
 	//Conversion Constructor with explicit ownership transfer as it s using an auto_ptr
 	BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) : _surf(s.get()),locks(0)
 	{
@@ -43,9 +47,9 @@ namespace RAGE
             Log << nl << "BaseSurface::BaseSurface(" << &s << ") called...";
 #endif
 
-            _surf=SDL_ConvertSurface(s._surf,s._surf->format,s._surf->flags);
+            _surf.reset(SDL_ConvertSurface(s._surf.get(),s._surf->format,s._surf->flags));
 const std::string errstr = "SDL_ConvertSurface";
-            if(_surf == NULL)
+            if(_surf.get() == 0)
             {
                 Log << nl << "Unable to copy the RGBsurface" ;
                 throw std::logic_error(errstr + " returns NULL");
@@ -64,9 +68,11 @@ const std::string errstr = "SDL_ConvertSurface";
 BaseSurface& BaseSurface::operator=(const BaseSurface& s)
 {
     if (this != &s) {  // make sure not same object
-            _surf=SDL_ConvertSurface(s._surf,s._surf->format,s._surf->flags); //deep copy...
-            if (_surf ==NULL)
+            _surf.reset(SDL_ConvertSurface(s._surf.get(),s._surf->format,s._surf->flags)); //deep copy...
+            if (_surf.get() == 0)
+	    {
                 Log << nl << "Unable to copy the BaseSurface : error in SDL_ConvertSurface -> " << GetError() ;
+	    }
     }
     return *this;
 }
@@ -78,22 +84,20 @@ BaseSurface& BaseSurface::operator=(const BaseSurface& s)
 
 BaseSurface::~BaseSurface()
 {
-	if (_surf!=NULL)
-		SDL_FreeSurface(_surf);
+	SDL_FreeSurface(_surf.release());
 }
+
         BaseSurface::BaseSurface(const BaseSurface & s ,unsigned long flags, PixelFormat pfmt) throw (std::logic_error)
-        try
-        :
-            locks(0)
+        try : _surf(0), locks(0)
         {
 #ifdef DEBUG
             Log << nl << "BaseSurface::BaseSurface(const BaseSurface & s,unsigned long flags, PixelFormat pfmt) called...";
 #endif
 
-            _surf=SDL_ConvertSurface(s._surf,const_cast<SDL_PixelFormat *>(pfmt._pformat),flags); //SDL shouldnt modify the pixel format at all
+            _surf.reset(SDL_ConvertSurface(s._surf.get(),const_cast<SDL_PixelFormat *>(pfmt._pformat),flags)); //SDL shouldnt modify the pixel format at all
 
             const std::string errstr = "SDL_ConvertSurface";
-            if(_surf == NULL)
+            if(_surf.get() == 0)
             {
                 Log << nl << "Unable to copy the RGBsurface" ;
                 throw std::logic_error(errstr + " returns NULL");
@@ -228,9 +232,9 @@ BaseSurface::~BaseSurface()
 
         bool BaseSurface::saveBMP(std::string filename) const
         {
-            if (_surf!=NULL)
+            if (initialized())
             {
-                return SDL_SaveBMP(_surf,filename.c_str()) == 0;
+                return SDL_SaveBMP(_surf.get(),filename.c_str()) == 0;
             }
             return false;
         }
@@ -240,7 +244,7 @@ BaseSurface::~BaseSurface()
 #if (DEBUG == 2)
 Log << nl << "BaseSurface::fill (const PixelColor& color," << dest_rect << ") called...";
 #endif
-            int res=SDL_FillRect(_surf, dest_rect._rect, color);
+            int res=SDL_FillRect(_surf.get(), dest_rect._rect, color);
             //std::cerr << "SDLBaseSurface::Fill(" << _surf << ", " << dest_rect << ", " << color << ")" << std::endl;
             //std::cerr << "returned " << res << std::endl;
 
@@ -262,7 +266,7 @@ Log << nl << "BaseSurface::blit (const BaseSurface& src," << dest_rect << ", " <
             assert(src._surf->format);
 #endif
 
-            switch (SDL_BlitSurface(src._surf, src_rect._rect , _surf, dest_rect._rect))
+            switch (SDL_BlitSurface(src._surf.get(), src_rect._rect , _surf.get(), dest_rect._rect))
             {
                 case 0 :
                 res=true;
@@ -283,14 +287,14 @@ Log << nl << "BaseSurface::blit (const BaseSurface& src," << dest_rect << ", " <
         //Set the clip rect
         void BaseSurface::setClipRect(const Rect& rect)
         {
-            SDL_SetClipRect(_surf,rect._rect);
+            SDL_SetClipRect(_surf.get(),rect._rect);
         }
 
         //get the clip rect
         Rect BaseSurface::getClipRect(void) const
         {
             Rect r;
-            SDL_GetClipRect(_surf, r._rect);
+            SDL_GetClipRect(_surf.get(), r._rect);
             return r;
         }
 
