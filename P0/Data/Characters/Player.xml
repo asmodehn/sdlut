@@ -23,7 +23,7 @@
 		<Velocity>120</Velocity><!-- Eceptionnaly it's in px/s coz its the player-->
 		<Life>100</Life>
 		<Armor>0</Armor>
-		<Damage>100</Damage>
+		<Damage>20</Damage>
 	</Characteristics>
 	<Default_Animations>
 		<Animation_Center_Filename>Human_Unarmed_Animations.xml</Animation_Center_Filename>

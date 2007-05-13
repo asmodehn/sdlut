@@ -136,7 +136,7 @@ try {
 
 
 	//Life bar infos
-	Life_Bar_Tile = new RGBSurface("Data/Characters/Life Bar Tile.bmp", Color(0xFF, 0xFF, 0xFF));
+	Life_Bar_Tile = new RGBSurface("Data/Characters/Life Bar Tile.png", Color(0xFF, 0xFF, 0xFF));
 	
 	empty_life_bar_rect.setx(0);
 	empty_life_bar_rect.sety(0);
@@ -273,8 +273,8 @@ bool Monster_Base::Show_Life_Bar(const Rect& Camera, VideoSurface& Screen)
 
 	//we blit the empty rect than the current life rect 8px on top of the monster
 	//positions are def by monster pos
-	Screen.blit(*Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), empty_life_bar_rect);
-	Screen.blit(*Life_Bar_Tile, Point::Point(X - Camera.getx(), Y-8 - Camera.gety()), real_life_bar_rect);
+	Screen.blit(*Life_Bar_Tile, Point::Point(X + (Sprite_Width-LIFE_BAR_WIDTH)/2 - Camera.getx(), Y - 4 - Camera.gety()), empty_life_bar_rect);
+	Screen.blit(*Life_Bar_Tile, Point::Point(X + (Sprite_Width-LIFE_BAR_WIDTH)/2 - Camera.getx(), Y - 4 - Camera.gety()), real_life_bar_rect);
 
 	return true;  //everything went fine
 }

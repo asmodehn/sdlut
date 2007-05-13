@@ -1,5 +1,5 @@
-	#Old Styff 4 Characters
-CONFIGURE_FILE(	"Life Bar Tile.bmp" "${Project_0_BINARY_DIR}/Data/Characters/Life Bar Tile.bmp" COPYONLY)
+	#Various Stuff 4 Characters
+CONFIGURE_FILE(	"Life Bar Tile.png" "${Project_0_BINARY_DIR}/Data/Characters/Life Bar Tile.png" COPYONLY)
 
 
 #player
