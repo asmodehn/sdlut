@@ -33,7 +33,10 @@ public:
                 break;
 		case KF6:
                 if (pressed==true)
+				{
+					App::getInstance().getWindow().resizeDisplay(800, 600);
                     App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
+				}
                 res = true;
                 break;
                 default:
@@ -109,7 +112,7 @@ int main(int argc, char** argv)
 	//otherwise we use the default engine only.
 	}
 
-    if (! (App::getInstance().getWindow().resetDisplay()))
+    if (! (App::getInstance().getWindow().resetDisplay(800,600,16)))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);

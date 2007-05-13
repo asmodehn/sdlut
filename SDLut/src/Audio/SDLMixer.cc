@@ -129,7 +129,7 @@ namespace RAGE
 }
 
 		
-	int Mixer::mixSound(const Sound& sound,bool loop, bool autoplay )
+	int Mixer::mixSound(const Sound& sound, bool loop /*= true*/, bool autoplay /*= true*/, int volume /*= 100*/ )
 {
 #ifdef DEBUG
 			Log << nl << "Mixer::mixSound("<<&sound<< ", " << autoplay <<") called";
@@ -150,7 +150,7 @@ namespace RAGE
 		    _activechannels.push_back(autoplay);
 		    _channelscursor.push_back(0);
 		    _loopchannels.push_back(loop);
-		    _channelsvolume.push_back(SDL_MIX_MAXVOLUME);
+		    _channelsvolume.push_back(volume * SDL_MIX_MAXVOLUME / 100);
 		    SDL_UnlockAudio();
 	    }
 

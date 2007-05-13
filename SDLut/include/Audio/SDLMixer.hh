@@ -64,7 +64,7 @@ class Mixer
 		void PlayAll(void);
 		
 		//To convert a Sound and store it internally.
-		int mixSound(const Sound& sound, bool loop = true, bool autoplay = true);
+		int mixSound(const Sound& sound, bool loop = true, bool autoplay = true, int volume = 100);
 		int freeChannel(int index);
 		void stopChannel(int index);
 		void playChannel(int index);
