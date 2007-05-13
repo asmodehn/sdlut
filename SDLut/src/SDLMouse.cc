@@ -1,4 +1,4 @@
-#include "SDLMouse.hh"
+#include "Input/SDLMouse.hh"
 #include "SDLConfig.hh"
 #include <cassert>
 

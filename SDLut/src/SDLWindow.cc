@@ -1,5 +1,5 @@
-#include "SDLWindow.hh"
-#include "SDLEventManager.hh"
+#include "Video/SDLWindow.hh"
+#include "System/SDLEventManager.hh"
 #include "SDLConfig.hh"
 #include "SDLResources.inc"
 

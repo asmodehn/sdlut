@@ -16,8 +16,8 @@
  *
  */
 
-#include "SDLAudioInfo.hh"
-#include "SDLRWOps.hh"
+#include "Audio/SDLAudioInfo.hh"
+#include "System/SDLRWOps.hh"
 #include <string>
 #include <stdexcept>
 #include <map>

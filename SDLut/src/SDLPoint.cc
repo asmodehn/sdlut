@@ -1,4 +1,4 @@
-#include "SDLPoint.hh"
+#include "Math/SDLPoint.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE

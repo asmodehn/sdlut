@@ -1,6 +1,8 @@
-#include "SDLEventManager.hh"
-#include "SDLConfig.hh"
+#include "System/SDLEventManager.hh"
 #include "SDLApp.hh" //for default resize
+
+#include "SDLConfig.hh"
+
 
 namespace RAGE
 {

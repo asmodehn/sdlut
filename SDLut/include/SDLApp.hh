@@ -19,9 +19,9 @@
  */
 
 #include "SDLManager.hh"
-#include "SDLWindow.hh"
-#include "SDLJoystick.hh"
-#include "SDLMixer.hh"
+#include "Video/SDLWindow.hh"
+#include "Input/SDLJoystick.hh"
+#include "Audio/SDLMixer.hh"
 
 #include <memory>
 #include <cassert>

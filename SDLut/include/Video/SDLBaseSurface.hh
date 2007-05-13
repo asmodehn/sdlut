@@ -20,8 +20,8 @@
  */
 
 #include "Logger.hh"
-#include "SDLRect.hh"
-#include "SDLVideoInfo.hh"
+#include "Math/SDLRect.hh"
+#include "Video/SDLVideoInfo.hh"
 
 #include <iostream>
 #include <cassert>

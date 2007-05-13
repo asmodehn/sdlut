@@ -1,4 +1,4 @@
-#include "SDLVideoSurface.hh"
+#include "Video/SDLVideoSurface.hh"
 #include "SDLConfig.hh"
 //#include <sstream>
 

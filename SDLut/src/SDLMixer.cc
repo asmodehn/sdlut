@@ -1,4 +1,4 @@
-#include "SDLMixer.hh"
+#include "Audio/SDLMixer.hh"
 #include "SDLConfig.hh"
 
 #ifndef min

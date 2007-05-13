@@ -5,9 +5,9 @@
  * Handle a Graphical Surface
  ******************************************************************************/
 
-#include "SDLBaseSurface.hh"
-#include "SDLColor.hh"
-#include "SDLRWOps.hh"
+#include "Video/SDLBaseSurface.hh"
+#include "Video/SDLColor.hh"
+#include "System/SDLRWOps.hh"
 
 namespace RAGE
 {

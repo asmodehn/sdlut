@@ -1,4 +1,4 @@
-#include "SDLPixelFormat.hh"
+#include "Video/SDLPixelFormat.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE

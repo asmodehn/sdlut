@@ -1,4 +1,4 @@
-#include "SDLJoystick.hh"
+#include "Input/SDLJoystick.hh"
 #include "SDLConfig.hh"
 #include <cassert>
 

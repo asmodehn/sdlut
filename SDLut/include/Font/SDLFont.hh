@@ -1,9 +1,9 @@
 #ifndef SDLFONT_HH
 #define SDLFONT_HH
 
-#include "SDLColor.hh"
-#include "SDLRect.hh"
-#include "SDLRGBSurface.hh"
+#include "Video/SDLColor.hh"
+#include "Math/SDLRect.hh"
+#include "Video/SDLRGBSurface.hh"
 
 #include <vector>
 #include <memory>

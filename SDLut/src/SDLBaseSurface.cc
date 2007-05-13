@@ -1,4 +1,4 @@
-#include "SDLBaseSurface.hh"
+#include "Video/SDLBaseSurface.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE

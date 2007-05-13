@@ -1,4 +1,4 @@
-#include "SDLCDRom.hh"
+#include "System/SDLCDRom.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE

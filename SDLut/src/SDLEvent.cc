@@ -1,8 +1,9 @@
-#include "SDLEvent.hh"
-#include "SDLEventManager.hh" //to access the general handler
-#include "SDLKeyboard.hh" //to access the keyboard handler
-#include "SDLMouse.hh"//to access the mouse handler
+#include "System/SDLEvent.hh"
+#include "System/SDLEventManager.hh" //to access the general handler
+#include "Input/SDLKeyboard.hh" //to access the keyboard handler
+#include "Input/SDLMouse.hh"//to access the mouse handler
 #include "SDLApp.hh"//to access the joystick handler
+
 #include "SDLConfig.hh"
 
 

@@ -61,13 +61,13 @@ MACRO (RAGE_BUILD project_name project_type)
 		SET(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose build commands enabled for Non Release build" FORCE)
 	ENDIF (CMAKE_BUILD_TYPE STREQUAL Release)
 
-	FILE(GLOB HEADERS ${CMAKE_SOURCE_DIR}/include/*.hh)
+	FILE(GLOB_RECURSE HEADERS ${CMAKE_SOURCE_DIR}/include/*.hh)
 
 	#Including configured headers (binary for the configured header, source for the unmodified ones, and in source/src for internal ones)
 	INCLUDE_DIRECTORIES( ${CMAKE_BINARY_DIR}/include ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/src)
 
 	#Defining target
-	FILE(GLOB SOURCES ${CMAKE_SOURCE_DIR}/src/*.cc)
+	FILE(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.cc)
 	MERGE("${HEADERS}" "${SOURCES}" SOURCES)
 
 	IF(${project_type} STREQUAL "LIBRARY")

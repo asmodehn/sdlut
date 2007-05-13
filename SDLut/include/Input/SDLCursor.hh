@@ -1,7 +1,7 @@
 #ifndef SDL_CURSOR_HH
 #define SDL_CURSOR_HH
 
-#include "SDLPoint.hh"
+#include "Math/SDLPoint.hh"
 
 #include <stdexcept>
 

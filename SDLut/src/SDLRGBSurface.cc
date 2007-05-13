@@ -1,4 +1,4 @@
-#include "SDLRGBSurface.hh"
+#include "Video/SDLRGBSurface.hh"
 #include "SDLConfig.hh"
 
 #include "SDLResources.inc"

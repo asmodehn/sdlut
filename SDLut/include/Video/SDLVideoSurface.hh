@@ -19,8 +19,8 @@
  *
  */
 
-#include "SDLBaseSurface.hh"
-#include "SDLRGBSurface.hh" //to help with backup of screen surface
+#include "Video/SDLBaseSurface.hh"
+#include "Video/SDLRGBSurface.hh" //to help with backup of screen surface
 
 #include <vector>
 

@@ -43,51 +43,48 @@
 /**
   * \defgroup Video
   *
-  * \defgroup WindowManager
   */
-#include "SDLWindow.hh"
-#include "SDLVideoInfo.hh"
-#include "SDLVideoSurface.hh"
-#include "SDLGLManager.hh"
-#include "SDLEngine.hh"
-#include "SDLColor.hh"
-#include "SDLCursor.hh"
-#include "SDLOverlay.hh"
-#include "SDLPoint.hh"
-#include "SDLRect.hh"
+#include "Video/SDLWindow.hh"
+#include "Video/SDLVideoInfo.hh"
+#include "Video/SDLVideoSurface.hh"
+#include "Video/SDLGLManager.hh"
+#include "Video/SDLEngine.hh"
+#include "Video/SDLColor.hh"
+#include "Video/SDLOverlay.hh"
 
 /**
-  * \defgroup EventHandling
+  * \defgroup System
   */
-#include "SDLEventManager.hh"
-#include "SDLMouse.hh"
-#include "SDLKeyboard.hh"
-#include "SDLJoystick.hh"
+#include "System/SDLEvent.hh"
+#include "System/SDLEventManager.hh"
+#include "System/SDLTimer.hh"
+#include "System/SDLRWOps.hh"
+
+/**
+  * \defgroup Input
+  */
+#include "Input/SDLMouse.hh"
+#include "Input/SDLCursor.hh"
+#include "Input/SDLKeyboard.hh"
+#include "Input/SDLJoystick.hh"
 
 /**
   * \defgroup Audio
  */
-#include "SDLMixer.hh"
-#include "SDLAudioInfo.hh"
-#include "SDLSound.hh"
+#include "Audio/SDLMixer.hh"
+#include "Audio/SDLAudioInfo.hh"
+#include "Audio/SDLSound.hh"
 
 /**
-  * \defgroup CDROM
-  * \defgroup Threads
+  * \defgroup Font
   */
-/**
-  * \defgroup Timers
-  */
-#include "SDLTimer.hh"
-/**
-  * \defgroup RWOps
-  */
-#include "SDLRWOps.hh"
-/**
-  * \defgroup Text
-  */
-#include "SDLFont.hh"
+#include "Font/SDLFont.hh"
 
+/**
+  * \defgroup Math
+  */
+#include "Math/SDLPoint.hh"
+#include "Math/SDLRect.hh"
 
 //just a little usefull tip for mingw
 #ifdef __MINGW32__

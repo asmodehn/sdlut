@@ -1,7 +1,7 @@
 #ifndef SDL_JOYSTICK_HH
 #define SDL_JOYSTICK_HH
 
-#include "SDLPoint.hh"
+#include "Math/SDLPoint.hh"
 #include <vector>
 #include <map>
 

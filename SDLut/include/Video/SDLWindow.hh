@@ -17,14 +17,14 @@
  *
  */
 
-#include "SDLEngine.hh"
-#include "SDLVideoInfo.hh"
-#include "SDLVideoSurface.hh"
-#include "SDLColor.hh"
+#include "Video/SDLEngine.hh"
+#include "Video/SDLVideoInfo.hh"
+#include "Video/SDLVideoSurface.hh"
+#include "Video/SDLColor.hh"
 #ifdef HAVE_OPENGL
- #include "SDLGLManager.hh"
+ #include "Video/SDLGLManager.hh"
 #endif //HAVE_OPENGL
-#include "SDLEventManager.hh"
+#include "System/SDLEventManager.hh"
 
 #include <memory>
 

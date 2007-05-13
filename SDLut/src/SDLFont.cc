@@ -1,4 +1,4 @@
-#include "SDLFont.hh"
+#include "Font/SDLFont.hh"
 
 #include "SDLConfig.hh"
 #include "SDLResources.inc"

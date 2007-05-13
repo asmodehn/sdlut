@@ -1,4 +1,4 @@
-#include "SDLCursor.hh"
+#include "Input/SDLCursor.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE{

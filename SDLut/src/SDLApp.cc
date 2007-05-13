@@ -1,4 +1,5 @@
 #include "SDLApp.hh"
+
 #include "SDLConfig.hh"
 
 namespace RAGE

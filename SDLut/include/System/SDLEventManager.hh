@@ -1,12 +1,11 @@
 #ifndef SDL_EVENTMANAGER_HH
 #define SDL_EVENTMANAGER_HH
 
-#include "SDLEvent.hh"
-//#include "SDLCriticalEvent.hh"
+#include "System/SDLEvent.hh"
 
-#include "SDLMouse.hh"
-#include "SDLKeyboard.hh"
-#include "SDLJoystick.hh"
+#include "Input/SDLMouse.hh"
+#include "Input/SDLKeyboard.hh"
+#include "Input/SDLJoystick.hh"
 
 #include <stdexcept>
 

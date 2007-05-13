@@ -1,5 +1,5 @@
-#include "SDLKeyboard.hh"
-#include "SDLEventManager.hh"
+#include "Input/SDLKeyboard.hh"
+#include "System/SDLEventManager.hh"
 #include "SDLConfig.hh"
 #include <cassert>
 
