@@ -15,6 +15,7 @@
  */
 
 #include "SDLSound.hh"
+#include "SDLChannel.hh"
 #include "SDLAudioInfo.hh"
 
 #include <vector>
@@ -32,12 +33,8 @@ class Mixer
 
 	//here we store a converted version of the Sound depending on Audio Specs
 	//these are the sound currently being played and their order is not the same as the previous vectors.
-	static std::vector<const Sound*> _channels;
-	static std::vector<unsigned long>_channelscursor;
-	static std::vector<bool> _activechannels;
-	static std::vector<bool> _loopchannels;
-	static std::vector<int> _channelsvolume;
-		
+	static std::vector<Channel*> pvm_channels;
+	
 	public:
 		//this function is the callback called by the SDL audio framework.
 		static void callback(void *userdata, unsigned char *stream, int len);
@@ -64,17 +61,12 @@ class Mixer
 		void PlayAll(void);
 		
 		//To convert a Sound and store it internally.
-		int mixSound(const Sound& sound, bool loop = true, bool autoplay = true, int volume = 100);
+		int mixSound(const Sound& sound, bool loop = true, bool autoplay = true, unsigned short volumepct = 100);
+		Channel & getChannel(int index);
 		int freeChannel(int index);
-		void stopChannel(int index);
-		void playChannel(int index);
-		void pauseChannel(int index);
+		
 		int setChannelsNumber(int);
 
-		//set volume in percent for a channel. NB channel default to max volume
-		//returns the old volume
-		int setvolumeChannel(int vol, int index);
-	
 }; //class Mixer
 
 	}

@@ -16,7 +16,7 @@
  *
  */
 
-#include "Audio/SDLAudioInfo.hh"
+#include "SDLAudioInfo.hh"
 #include "System/SDLRWOps.hh"
 #include <string>
 #include <stdexcept>

@@ -811,7 +811,7 @@ try {
 	if ( Get_Attack_Style() == 1 ) // Melee Style
 	{
 		//play sword Fx	
-		App::getInstance().getMixer().playChannel(SwordFx_Chan);
+		App::getInstance().getMixer().getChannel(SwordFx_Chan).play();
 
 		if (frame >= PLAYER_SWORD_ATTACK_ANIMATION_FRAME )
 			frame = 0; //reset frame anim
@@ -831,7 +831,7 @@ try {
 	else if ( Get_Attack_Style() == 2 ) // Distant Style
 	{
 		//play bow Fx	
-		App::getInstance().getMixer().playChannel(BowFx_Chan);
+		App::getInstance().getMixer().getChannel(BowFx_Chan).play();
 
 		if (frame >= PLAYER_BOW_ATTACK_ANIMATION_FRAME )
 			frame = 0; //reset frame anim

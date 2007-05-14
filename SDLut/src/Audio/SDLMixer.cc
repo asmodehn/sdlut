@@ -10,11 +10,7 @@ namespace RAGE
 	namespace SDL
 	{
 
-		std::vector<const Sound*> Mixer::_channels;
-		std::vector<unsigned long> Mixer::_channelscursor;
-		std::vector<bool> Mixer::_activechannels;
-		std::vector<bool> Mixer::_loopchannels;
-		std::vector<int> Mixer::_channelsvolume;
+		std::vector<Channel*> Mixer::pvm_channels;
 		
 		// This function is called when the audio device needs more data
 		void Mixer::callback(void *userdata, Uint8 *stream, int len)
@@ -24,38 +20,38 @@ namespace RAGE
 
 			unsigned int i;
 			//Going throw channels list to find out the active ones
-			for (i = 0; i < _activechannels.size(); i++)
+			for (i = 0; i < pvm_channels.size(); i++)
 			{
-			if (_activechannels[i])
+			if (pvm_channels[i]->isPlaying())
 			{
 				//TODO : replace mixaudio with my own mix function, in case there is no SDL_mixer
 				//hint : from http://www.libsdl.org/cgi/docwiki.cgi/Audio_20Examples
-				waveptr = _channels[i]->_buf + _channelscursor[i] ;
-				waveleft = min(_channels[i]->_length - _channelscursor[i],static_cast<unsigned int>(len));//test end of sound buffer
+				waveptr = pvm_channels[i]->pvm_sound->_buf + pvm_channels[i]->pvm_cursor ;
+				waveleft = min(pvm_channels[i]->pvm_sound->_length - pvm_channels[i]->pvm_cursor,static_cast<unsigned int>(len));//test end of sound buffer
 
-				SDL_MixAudio(stream, waveptr, waveleft, _channelsvolume[i]);
-				_channelscursor[i] += waveleft;
-				if (_channelscursor[i] >= _channels[i]->_length)
+				SDL_MixAudio(stream, waveptr, waveleft, pvm_channels[i]->pvm_volume);
+				pvm_channels[i]->pvm_cursor += waveleft;
+				if (pvm_channels[i]->pvm_cursor >= pvm_channels[i]->pvm_sound->_length)
 				{
-					_channelscursor[i]=0;
+					pvm_channels[i]->pvm_cursor=0;
 							
 					//in case of loop
-					if (_loopchannels[i])
+					if (pvm_channels[i]->pvm_loop)
 					{
 						stream += waveleft;
 						len -= waveleft;
-						waveleft = min(static_cast<unsigned int>(len),_channels[i]->_length);
-						SDL_MixAudio(stream, _channels[i]->_buf, waveleft, _channelsvolume[i]);
-						_channelscursor[i] += waveleft;
+						waveleft = min(static_cast<unsigned int>(len),pvm_channels[i]->pvm_sound->_length);
+						SDL_MixAudio(stream, pvm_channels[i]->pvm_sound->_buf, waveleft, pvm_channels[i]->pvm_volume);
+						pvm_channels[i]->pvm_cursor += waveleft;
 					}
 					else
 					{
-						_activechannels[i] = false;
+						pvm_channels[i]->pause();
 					}
 					
 				}
 			}
-			//	Log << nl <<" Channel "<< i<<" after callback at " << _channelscursor[i] << " in [0 .. "<< _channels[i]->_length << "]";
+			//	Log << nl <<" Channel "<< i<<" after callback at " << pvm_channels[i]->cursor << " in [0 .. "<< pvm_channels[i]->sound->_length << "]";
 			}
 
 		}
@@ -104,7 +100,7 @@ namespace RAGE
 			Log << nl << "Mixer::~Mixer() called";
 #endif
 			//delete all remaining channels
-			for (unsigned int i= 0 ; i< _activechannels.size();i++)
+			for (unsigned int i= 0 ; i< pvm_channels.size();i++)
 			{
 				freeChannel(i);
 			}
@@ -129,7 +125,7 @@ namespace RAGE
 }
 
 		
-	int Mixer::mixSound(const Sound& sound, bool loop /*= true*/, bool autoplay /*= true*/, int volume /*= 100*/ )
+	int Mixer::mixSound(const Sound& sound, bool loop /*= true*/, bool autoplay /*= true*/, unsigned short volume /*= 100*/ )
 {
 #ifdef DEBUG
 			Log << nl << "Mixer::mixSound("<<&sound<< ", " << autoplay <<") called";
@@ -143,27 +139,31 @@ namespace RAGE
 	    {
 		    Log << nl << "Erreur lors de la conversion du fichier audio:" << GetError();
 		    delete cvtsound;
-	    } else
+	    }
+	    else
 	    {
+		    Channel * c = new Channel(cvtsound, loop, autoplay, volume);
 		    SDL_LockAudio();
-		    _channels.push_back(cvtsound);
-		    _activechannels.push_back(autoplay);
-		    _channelscursor.push_back(0);
-		    _loopchannels.push_back(loop);
-		    _channelsvolume.push_back(volume * SDL_MIX_MAXVOLUME / 100);
+		    pvm_channels.push_back(c);
 		    SDL_UnlockAudio();
 	    }
 
 #ifdef DEBUG
 			Log << nl << "Mixer::mixSound("<<&sound<< ", " << autoplay <<") done";
 #endif
-	return _activechannels.size()-1;
+	return pvm_channels.size()-1;
+}
+
+
+Channel & Mixer::getChannel(int index)
+{
+	return *pvm_channels.at(index);
 }
 
 int Mixer::freeChannel(int index)
 {
-	if ( _channels.at(index) != NULL)
-		delete _channels.at(index), _channels.at(index) = NULL;
+	if ( pvm_channels.at(index) != NULL)
+		delete pvm_channels.at(index), pvm_channels.at(index) = NULL;
 
 	//dont erase channel from vector, else the vector size will disminuish from 1
 	//and so all channels numbers currently in use will be false !!
@@ -189,36 +189,12 @@ int Mixer::freeChannel(int index)
 	void Mixer::PauseAll(void) { SDL_PauseAudio(1); }
 	void Mixer::PlayAll(void) { SDL_PauseAudio(0); }
 		
-		void Mixer::stopChannel(int index)
-{
-	_activechannels[index] = false;
-	_channelscursor[index] = 0;
-}
-		void Mixer::playChannel(int index)
-{
-	_activechannels[index] = true;
-}
-		void Mixer::pauseChannel(int index)
-{
-	_activechannels[index] = false;
-}
-		int Mixer::setvolumeChannel(int vol, int index)
-{
-	int res = _channelsvolume[index];
-	_channelsvolume[index] = vol * SDL_MIX_MAXVOLUME / 100;
-	return res;
-}
-
 		int Mixer::setChannelsNumber(int n)
 {
 	SDL_LockAudio();
-	_channels.resize(n);//TODO : if needed, fill the new channels with default sound (silence?)
-	_activechannels.resize(n); //TODO : turn off the new channels
-	_channelscursor.resize(n); //TODO : turn off the new channels
-	_loopchannels.resize(n);
-	_channelsvolume.resize(n);
+	pvm_channels.resize(n);
 	SDL_UnlockAudio();
-	return n; //TODO : return the actuall allocated number of channels
+	return pvm_channels.size();
 }
 }
 }

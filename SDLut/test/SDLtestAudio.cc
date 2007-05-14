@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
 		//int wav_channel_2 = SDL::App::getInstance().getMixer()->mixSound(wavefile,false, false);
 		
 		testlog << nl<<  "playing channel 1";
-		SDL::App::getInstance().getMixer().playChannel(wav_channel_1);
-		SDL::App::getInstance().getMixer().setvolumeChannel(20,wav_channel_1);
+		SDL::App::getInstance().getMixer().getChannel(wav_channel_1).play();
+		SDL::App::getInstance().getMixer().getChannel(wav_channel_1).setVolume(20);
 		SDL::Delay(1000);
 
 		//testlog << nl<<  "playing channel 2";

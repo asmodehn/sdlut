@@ -252,7 +252,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				//Decrement esc menu's selected item id until it reach the top than go back to the bottom
 				case KUp:
 					//play menu Fx	
-					App::getInstance().getMixer().playChannel(EscMenuButtonFx_Chan);
+					App::getInstance().getMixer().getChannel(EscMenuButtonFx_Chan).play();
 					//loop between Y/N 
 					if ( myEsc_Menu->Get_SelectedItemId() > 1 )
 					{
@@ -267,7 +267,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				//Increment esc menu's selected item id until it reach the bottom than go back to the top
 				case KDown:
 					//play menu Fx
-					App::getInstance().getMixer().playChannel(EscMenuButtonFx_Chan);
+					App::getInstance().getMixer().getChannel(EscMenuButtonFx_Chan).play();
 					//loop between Y/N 
 					if ( myEsc_Menu->Get_SelectedItemId() < 2 )
 					{

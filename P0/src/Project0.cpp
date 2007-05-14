@@ -214,7 +214,7 @@ try {
 
 	/********Start music********/
 	if (ENABLE_MUSIC)
-		App::getInstance().getMixer().playChannel(GlobalMusic_Chan);
+		App::getInstance().getMixer().getChannel(GlobalMusic_Chan).play();
 
 	/*******Score Management********/
 	FiNiSH_TiME = (unsigned)time( NULL );

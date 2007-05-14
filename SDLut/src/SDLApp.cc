@@ -89,7 +89,7 @@ namespace RAGE
 				pvm_manager.reset(new Manager(false,false,false,true,false,false,false));
 				return true;
 			}
-			return pvm_manager->enableCdrom();          
+			return pvm_manager->enableCdrom();
 			
 		}
 
