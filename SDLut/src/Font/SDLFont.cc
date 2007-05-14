@@ -3,7 +3,7 @@
 #include "SDLConfig.hh"
 
 #include "SDLFontImpl.hh"
-#include "SDLFontExtend.hh"
+#include "TTF/SDLFontExtend.hh"
 
 namespace RAGE
 {

@@ -1,7 +1,7 @@
 #ifndef SDLFONTEXTEND_HH
 #define SDLFONTEXTEND_HH
 
-#include "SDLFontImpl.hh"
+#include "Font/SDLFontImpl.hh"
 
 typedef struct _TTF_Font TTF_Font;
 
