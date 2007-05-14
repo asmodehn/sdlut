@@ -205,7 +205,7 @@ namespace RAGE
 	}
 	
         Window::Window(std::string title)
-	: _title(title),_background(Color(0,0,0)), pvm_screen(0)
+	: _title(title),_background(Color(0,0,0)), pvm_screen(0), _icon ( RWOps( _defaultIcon, sizeof(_defaultIcon)))
         {
 #ifdef DEBUG
             Log << nl << "Window::Window(" << title << ") called ..." ;
@@ -224,11 +224,9 @@ namespace RAGE
             //setting the static videoInfo to be used by all surfaces...
             BaseSurface::_vinfo = &pvm_videoinfo;
 
-	    RWOps iconrwops( _defaultIcon, sizeof(_defaultIcon));
-
-            setIcon(RGBSurface(iconrwops));
-            setTitle(_title);
-
+            setCaption(_title,"DefaultIcon");
+	    SDL_WM_SetIcon( const_cast<SDL_Surface*>(&_icon.get_rSDL()) , NULL);
+	    
 #ifdef DEBUG
 
             Log << nl << "Window::Window(" << title << ") done @ "<< this ;

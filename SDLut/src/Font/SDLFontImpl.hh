@@ -1,0 +1,41 @@
+#ifndef SDLFONTIMPL_HH
+#define SDLFONTIMPL_HH
+
+
+#include "Font/SDLFont.hh"
+
+namespace RAGE
+{
+namespace SDL
+{
+//Class implementing the default font character render (with alpha masks)
+	class FontImpl
+	{
+
+		//this version keeps the right value for render
+		RGBSurface _fontsurf;
+
+		//all the rectangles become {0,0,0,0} on render for some reason
+		std::vector<Rect> alphalookup;
+		
+		public :
+			
+		 //image 16x14 character, 225x225 pixels (all start at 0, not 1)
+			FontImpl()  throw (std::logic_error);
+			FontImpl(const FontImpl & font);
+			virtual ~FontImpl();
+		
+			virtual Rect getSize(const std::string & text) const;
+
+			virtual Font::Style getStyle() { return Font::Default;}
+			virtual void setStyle(Font::Style s) { } //does nothing only one style available in default mode.
+
+			virtual bool isTTFImpl() const { return false; }
+			//Rendering
+			//bgc is used only if mode == shaded. Otherwise it s transparent
+			virtual std::auto_ptr<SDL_Surface> render(const std::string & text,Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid ) const;
+		
+	};
+}
+}
+#endif //SDLFONTIMPL_HH
