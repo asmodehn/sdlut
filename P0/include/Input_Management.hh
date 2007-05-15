@@ -13,7 +13,6 @@ class KeyboardInput : public Keyboard
 {
 	private:
 		//Character attack animation timer
-		Timer<Daemons>* myPlayer_Attack_Animation_Timer;
 		Timer<Daemons>* myPlayer_Move_Animation_Timer;
 		Timer<Daemons>* myPlayer_Arrow_Animation_Timer;
 

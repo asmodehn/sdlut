@@ -90,14 +90,11 @@ Monster_Base::Monster_Base(const Monster_Base& ToCopy)
 	CB_Height = ToCopy.CB_Height;
 	Collision_Box = ToCopy.Collision_Box;
 
-	Default_Animations_Center = ToCopy.Default_Animations_Center;
+	Current_Animations_Center = ToCopy.Current_Animations_Center;
 
 	Life_Bar_Tile = ToCopy.Life_Bar_Tile;
 	empty_life_bar_rect = ToCopy.empty_life_bar_rect;
 	real_life_bar_rect = ToCopy.real_life_bar_rect;
-
-	Characters_Current_Tileset = ToCopy.Characters_Current_Tileset;
-	Current_Tile_Rect = ToCopy.Current_Tile_Rect;
 }
 
 //Destructor
@@ -110,7 +107,7 @@ void Monster_Base::Initialize( const string &Description_Filename,
 		int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
 		Rect &Allowed_Area,
 		int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
-		Character_Animations_Center* &Default_Animations_Center,
+		Character_Animations_Center* &Current_Animations_Center,
 		RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
 		)
 {
@@ -156,7 +153,11 @@ try {
 	string Default_Animations_Center_Filename = Data_Root_Directory + XML_Manager::Get_Option_String(Description_Filename, "Animation_Center_Filename");
 
 	//Default Animations Center
-	Default_Animations_Center = new Character_Animations_Center( Data_Root_Directory, Default_Animations_Center_Filename );
+	//
+	//todo: below define the 3 Animations centers
+	//
+	Character_Animations_Center* Unarmed_Animations_Center = new Character_Animations_Center( Data_Root_Directory, Default_Animations_Center_Filename );
+	Current_Animations_Center = Unarmed_Animations_Center;
 
 
 	//Life bar infos
@@ -184,29 +185,32 @@ try {
 bool Monster_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
-	//move only if a random number between 0 and 133 is below 49: 2 chances of 3 (This speed down monster movement)
-	if (rand()%200 <= 133) 
+	if (Alive_Status == 1) //monster alive, he can move
 	{
-		//Random mvt
-		xVel = (rand()%3-1)*Ch_Vel;
-		yVel = (rand()%3-1)*Ch_Vel;
-
-		if( Assign_Direction_Sprite() == false )
-		{ 
-			P0_Logger << nl << "Check character direction Failed " << std::endl;    
-		}
-		if ( Get_Moving_Status() ) //we're really moving but not simply changing the direction
+		//move only if a random number between 0 and 133 is below 49: 2 chances of 3 (This speed down monster movement)
+		if (rand()%200 <= 133) 
 		{
-			//Move collision box to the futute position
-			Collision_Box.setx(X + CB_X_Modifier + xVel);
-			Collision_Box.sety(Y + CB_Y_Modifier + yVel);
+			//Random mvt
+			xVel = (rand()%3-1)*Ch_Vel;
+			yVel = (rand()%3-1)*Ch_Vel;
 
-			//handle collisions
-			if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
+			if( Assign_Direction_Sprite() == false )
+			{ 
+				P0_Logger << nl << "Check character direction Failed " << std::endl;    
+			}
+			if ( Get_Moving_Status() ) //we're really moving but not simply changing the direction
 			{
-				//No Error => Update position 
-				X = Collision_Box.getx() - CB_X_Modifier;
-				Y = Collision_Box.gety() - CB_Y_Modifier;
+				//Move collision box to the futute position
+				Collision_Box.setx(X + CB_X_Modifier + xVel);
+				Collision_Box.sety(Y + CB_Y_Modifier + yVel);
+
+				//handle collisions
+				if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
+				{
+					//No Error => Update position 
+					X = Collision_Box.getx() - CB_X_Modifier;
+					Y = Collision_Box.gety() - CB_Y_Modifier;
+				}
 			}
 		}
 	}
@@ -288,17 +292,17 @@ bool Monster_Base::Check_Cutting_Allow_Monster(std::vector<BattleField_Zone*>* &
 bool Monster_Base::Show_Life_Bar(const Rect& Camera, VideoSurface& Screen)
 {
 	int _Real_Life = Get_Real_Life();
-	//to avoid draw pb when life is < 0
-	if (_Real_Life < 0)
-		_Real_Life = 0;
+	//only draw the life bar when monster alive
+	if (_Real_Life > 0)
+	{
+		assert(BASE_LIFE>0 && "BASE_LIFE MUST BE SUPERIOR TO 0 TO DRAW The real_life_bar_rect !");
+		real_life_bar_rect.setw( LIFE_BAR_WIDTH * _Real_Life / BASE_LIFE );
 
-	assert(BASE_LIFE>0 && "BASE_LIFE MUST BE SUPERIOR TO 0 TO DRAW The real_life_bar_rect !");
-	real_life_bar_rect.setw( LIFE_BAR_WIDTH * _Real_Life / BASE_LIFE );
-
-	//we blit the empty rect than the current life rect 8px on top of the monster
-	//positions are def by monster pos
-	Screen.blit(*Life_Bar_Tile, Point::Point(X + (Sprite_Width-LIFE_BAR_WIDTH)/2 - Camera.getx(), Collision_Box.gety() - 10 - Camera.gety()), empty_life_bar_rect);
-	Screen.blit(*Life_Bar_Tile, Point::Point(X + (Sprite_Width-LIFE_BAR_WIDTH)/2 - Camera.getx(), Collision_Box.gety() - 10 - Camera.gety()), real_life_bar_rect);
+		//we blit the empty rect than the current life rect 8px on top of the monster
+		//positions are def by monster pos
+		Screen.blit(*Life_Bar_Tile, Point::Point(X + (Sprite_Width-LIFE_BAR_WIDTH)/2 - Camera.getx(), Collision_Box.gety() - 10 - Camera.gety()), empty_life_bar_rect);
+		Screen.blit(*Life_Bar_Tile, Point::Point(X + (Sprite_Width-LIFE_BAR_WIDTH)/2 - Camera.getx(), Collision_Box.gety() - 10 - Camera.gety()), real_life_bar_rect);
+	}
 
 	return true;  //everything went fine
 }

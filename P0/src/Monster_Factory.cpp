@@ -12,7 +12,7 @@ Monster_Factory<Monster_Template>::Monster_Factory()
 		Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
 		Allowed_Area,
 		CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height,
-		Default_Animations_Center,
+		Current_Animations_Center,
 		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect
 		);
 }
@@ -31,7 +31,7 @@ try {
 		Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
 		Allowed_Area,
 		CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height,
-		Default_Animations_Center,
+		Current_Animations_Center,
 		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect
 		);
 
@@ -48,7 +48,7 @@ try {
 template <typename Monster_Template>
 Monster_Factory<Monster_Template>::~Monster_Factory()
 {
-	delete Default_Animations_Center, Default_Animations_Center = NULL;
+	delete Current_Animations_Center, Current_Animations_Center = NULL;
 	delete Life_Bar_Tile, Life_Bar_Tile = NULL;
 
 	for (unsigned int i = 0; i < Monster_Vector->size(); i++)
@@ -102,7 +102,7 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 		x, y, Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
 		Allowed_Area,
 		CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height,
-		Default_Animations_Center,
+		Current_Animations_Center,
 		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect
 		);
 
@@ -171,7 +171,7 @@ try {
 	//Move Monsters
 	for(unsigned int i=0; i < Monster_Vector->size(); i++)
 	{
-		if( Monster_Vector->at(i)->Move( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
+		if( ((Monster_Base*)Monster_Vector->at(i))->Move( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
 		{ 
 			P0_Logger << nl << "Failed to move monster N°" << i << std::endl;
 			return false; //error occured 
@@ -189,28 +189,48 @@ bool Monster_Factory<Monster_Template>::Show_Monsters(const Rect& Camera, VideoS
 try {
 	for(unsigned int i=0; i < Monster_Vector->size(); i++)
 	{
-	 	if( Monster_Vector->at(i)->Show(Camera, Screen) == false )
-		{ 
-	    	P0_Logger << nl << "Failed to render monster movement on monster N°" << i << std::endl;  
-			#ifdef _DEBUG //debug mode
-	    	  return false; //error occured
-			#endif
+		//Check if Alive_Status indicate the monster is dead
+		if (Monster_Vector->at(i)->Get_Alive_Status() == -2)
+		{
+			//clean the dead monster
+			delete Monster_Vector->at(i), Monster_Vector->at(i) == NULL;
 
-   		}
-		if( ((Monster_Base*)Monster_Vector->at(i))->Show_Life_Bar(Camera, Screen) == false )
-		{ 
-			P0_Logger << nl << "Failed to render monster life bar on monster N°" << i << std::endl;   
-			#ifdef _DEBUG //debug mode
-	    		return false; //error occured
-			#endif
-   		}
+			//remove the monster from the scope (only the ième monster at a time)
+			Monster_Vector->erase(Monster_Vector->begin()+i, Monster_Vector->begin()+i+1);
+
+			//remove 1 to the number of monsters present
+			ALiVE_MONSTERS--;
+			//Add 1 to killed numbers
+			KiLLED_MONSTERS++;
+
+			//Then go back of one in the loop because elements has been shifted
+			i--;
+		}
+		else
+		{
+	 		if( Monster_Vector->at(i)->Show(Camera, Screen) == false )
+			{ 
+	    		P0_Logger << nl << "Failed to render monster movement on monster N°" << i << std::endl;  
+				#ifdef _DEBUG //debug mode
+	    		  return false; //error occured
+				#endif
+
+   			}
+			if( ((Monster_Base*)Monster_Vector->at(i))->Show_Life_Bar(Camera, Screen) == false )
+			{ 
+				P0_Logger << nl << "Failed to render monster life bar on monster N°" << i << std::endl;   
+				#ifdef _DEBUG //debug mode
+	    			return false; //error occured
+				#endif
+   			}
+		}
 	}
 	return true; //no error occured
 } catch (...) {
     return false; //error occured
 }
 }
-//Method that will remove all monster with Alive_Status status to false (aka dead monsters) from the monster vector container
+/*//Method that will remove all monster with Alive_Status status to false (aka dead monsters) from the monster vector container
 template <typename Monster_Template>
 std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Remove_Dead_Monsters()
 {
@@ -237,7 +257,7 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Remove_Dead_Mon
 	}
 	//Finally return the new Vector with only alive monsters
 	return Monster_Vector;
-}
+}*/
 
 //Generate new monsters until max monster has been reached
 template <typename Monster_Template>

@@ -19,7 +19,7 @@ class Monster_Factory
 		int CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height;
 		RGBSurface *Life_Bar_Tile;
 		Rect empty_life_bar_rect, real_life_bar_rect;
-		Character_Animations_Center *Default_Animations_Center;
+		Character_Animations_Center *Current_Animations_Center;
 
 		//How many monster must be generated
 		int Initial_Number_Of_Monsters;
@@ -49,11 +49,11 @@ class Monster_Factory
 		//Invoke all monsters movements
 		bool Move_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector );
 
-		//Render all monsters on the screen
+		//Render all monsters on the screen and managed monster's death
 		bool Show_Monsters(const Rect& Camera, VideoSurface& Screen);
 
 		//Remove all monster with dead status from the monster vector container
-		std::vector<Character_Base*>* Remove_Dead_Monsters();
+		//std::vector<Character_Base*>* Remove_Dead_Monsters();
 		
 		//Generate new monsters until max monster has been reached
 		std::vector<Character_Base*>* Generate_New_Monster(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);

@@ -40,8 +40,6 @@ public:
 	unsigned int Move_NPCs(unsigned int interval, void* args);
 	//Callback method that will launch the character's move animation
 	unsigned int Player_Move_Animation(unsigned int interval, void* args);
-	//Callback method that will launch the character's attack animation
-	unsigned int Player_Attack_Animation(unsigned int interval, void* args);
 	//Callback method that will launch the arrow attack animation
 	unsigned int Player_Arrow_Movement(unsigned int interval, void* args);
 	//Callback method that will manage score

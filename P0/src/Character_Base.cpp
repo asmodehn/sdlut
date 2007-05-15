@@ -10,7 +10,6 @@ try {
 	xVel = 0, yVel = 0;
 
 	Sprite_Width = 0, Sprite_Height = 0;
-	Sprite_Filename = "";
 
 	BASE_LIFE = 0, Real_Life = BASE_LIFE;
 	BASE_ARMOR = 0, Real_Armor = BASE_ARMOR;
@@ -19,7 +18,7 @@ try {
 
 	Characters_ID = Humanoid; //default
 
-	Alive_Status = true;
+	Alive_Status = 1; //alive
 
 /****Movements****/
 	//Initial moving status
@@ -45,17 +44,13 @@ try {
 	Unarmed_Style_Available = true, Melee_Style_Available = false, Distant_Style_Available = false, Throwing_Style_Available = false, Magic_Style_Available = false;
 
 /****Animations****/
-	//Tilesets
-	Characters_Current_Tileset = NULL;
-	Characters_Current_Unarmed_Tileset = NULL;
-	Characters_Current_Melee_Tileset = NULL;
-	Characters_Current_Distant_Tileset = NULL;
-	//TODO: the 3 tileset below must be the link to the different animations center not a tileset
-
-	Default_Animations_Center = NULL;
-
-	//initial frame
-    frame = 0;
+	Current_Tileset = NULL;
+	//Animations Centers
+	Current_Animations_Center = NULL;
+	//TODO: the 3 animations center below must be the link to the different animations center
+	Unarmed_Animations_Center = NULL;
+	Melee_Animations_Center = NULL;
+	Distant_Animations_Center = NULL;	
 
 	//CB modifier between sprite dimensions and "real" dimensions
 	CB_X_Modifier = 0, CB_Y_Modifier = 0, CB_Width = 0, CB_Height = 0;
@@ -238,25 +233,24 @@ Rect inf_rect;
 					{
 						if ( inf_rect.getw() <= inf_rect.geth() )
 						{
-							if ( inf_rect.getx() <= (Global_Player_Vector->at(j)->at(i)->Get_X() + (Global_Player_Vector->at(j)->at(i)->Get_Sprite_Width()/2) ) )
+							if ( inf_rect.getx() <= (signed)(Global_Player_Vector->at(j)->at(i)->Get_Collision_Box().getx() + (Global_Player_Vector->at(j)->at(i)->Get_Collision_Box().getw()/2) ) )
 							{
-								Collision_Box.setx( Global_Player_Vector->at(j)->at(i)->Get_X() - CB_Width );
+								Collision_Box.setx( Global_Player_Vector->at(j)->at(i)->Get_Collision_Box().getx() - CB_Width );
 							} 
 							else 
 							{
-								Collision_Box.setx( Global_Player_Vector->at(j)->at(i)->Get_X() + Global_Player_Vector->at(j)->at(i)->Get_Sprite_Width() );
+								Collision_Box.setx( Global_Player_Vector->at(j)->at(i)->Get_Collision_Box().getx() + Global_Player_Vector->at(j)->at(i)->Get_Collision_Box().getw() );
 							}
-							
 						} 
 						else
 						{
-							if ( inf_rect.gety() <= (Global_Player_Vector->at(j)->at(i)->Get_Y() + (Global_Player_Vector->at(j)->at(i)->Get_Sprite_Height()/2) ) )
+							if ( inf_rect.gety() <= (signed)(Global_Player_Vector->at(j)->at(i)->Get_Collision_Box().gety() + (Global_Player_Vector->at(j)->at(i)->Get_Collision_Box().geth()/2) ) )
 							{
-								Collision_Box.sety( Global_Player_Vector->at(j)->at(i)->Get_Y() - CB_Height );
+								Collision_Box.sety( Global_Player_Vector->at(j)->at(i)->Get_Collision_Box().gety() - CB_Height );
 							} 
 							else 
 							{
-								Collision_Box.sety( Global_Player_Vector->at(j)->at(i)->Get_Y() + Global_Player_Vector->at(j)->at(i)->Get_Sprite_Height() );
+								Collision_Box.sety( Global_Player_Vector->at(j)->at(i)->Get_Collision_Box().gety() + Global_Player_Vector->at(j)->at(i)->Get_Collision_Box().geth() );
 							}
 						}
 					} else { //Handle Mode OFF
@@ -292,7 +286,6 @@ Rect inf_rect;
 							{
 								Collision_Box.setx( Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().getx() + Global_Monster_Vector->at(j)->at(i)->Get_Collision_Box().getw() );
 							}
-							
 						} 
 						else
 						{
@@ -405,7 +398,7 @@ try {
 		
 		//Good sprite for the direction
 		//Current_Tile_Rect = Attack_Tile_Rect->at(Move_Direction*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + 0);
-		Current_Tile_Rect = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tile_Rect()->at(Move_Direction);
+		Current_Animations_Center->Stop_Animation_Play(this);		
 
 		//Check if we are changing direction
 		if ( old_Move_Status != Move_Direction )
@@ -471,7 +464,7 @@ try
 	//Unarmed Style
 	if (attack_style == 0)
 	{
-		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
+		//Characters_Current_Tileset = Current_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
 
 		//range: Only hit at contact (TODO future: find a more realistic hit with the sword)
 		BASE_RANGE = 1;
@@ -545,10 +538,7 @@ try
 	// Melee Style
 	else if (attack_style == 1)
 	{
-		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
-		//
-		//TODO used the Current_Melee_ANimation_Center when it'll be definied
-		//
+		//Characters_Current_Tileset = Current_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
 		
 		//range: Only hit at contact (TODO future: find a more realistic hit with the sword)
 		BASE_RANGE = 1;
@@ -623,10 +613,8 @@ try
 	// Distant Style
 	else if (attack_style == 2)
 	{
-		Characters_Current_Tileset = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
-		//
-		//TODO used the Current_Melee_ANimation_Center when it'll be definied
-		//
+		//Characters_Current_Tileset = Current_Animations_Center->Get_Attack_Animation()->Get_Animation_Tileset();
+
 			
 		//range: 6 square (until new map format -> 12 !!)
 		BASE_RANGE = BATF_SPRITE_W*6;
@@ -782,12 +770,9 @@ try {
 }
 
 //Set Character Sprite Which change when attack occured (callback)
-bool Character_Base::Set_Attack_Animation_Sprite(std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
+void Character_Base::Attack_Set_Animation_Sprite(std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
-	//increase frame each time the timer is run (from 0 to the number of frame for the animation)
-	frame++;
-
 	//reset the frame status at end of animation depending of the attack style
 	if ( Get_Attack_Style() == 0 ) // Unarmed Style
 	{
@@ -797,66 +782,104 @@ try {
 		//play foot Fx	
 		//App::getInstance().getMixer().playChannel(SwordFx_Chan);
 
-		if (frame >= Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Frame_Number() )
-			frame =0; //reset frame anim
-		//assign the good sprite rect to the character sprite rect depending on the frame and the direction
-		Current_Tile_Rect = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tile_Rect()->at(attack_direction * Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Frame_Number() + frame );
-		
-		if ( frame == Default_Animations_Center->Get_Attack_Animation()->Get_Animation_KeyFrame() )
-		{
-			attack_successfull = Attack_Check_Status(Real_Range, Real_Inflicted_Damage, Global_Monster_Vector) ;
-		}
-
+		Current_Animations_Center->Attack_Animation_Play(this, Global_Monster_Vector);
 	}
 	if ( Get_Attack_Style() == 1 ) // Melee Style
 	{
 		//play sword Fx	
 		App::getInstance().getMixer().getChannel(SwordFx_Chan).play();
 
-		if (frame >= PLAYER_SWORD_ATTACK_ANIMATION_FRAME )
-			frame = 0; //reset frame anim
-
-		//assign the good sprite rect to the character sprite rect depending on the frame and the direction
+		Current_Animations_Center->Attack_Animation_Play(this, Global_Monster_Vector);
 		
-		Current_Tile_Rect = Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Tile_Rect()->at(attack_direction * Default_Animations_Center->Get_Attack_Animation()->Get_Animation_Frame_Number() + frame );
-		//to change  for the melee animation center ^
-		//Current_Tile_Rect = Attack_Tile_Rect->at(attack_direction*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + frame);
-		
-		//at the second frame of the anim we check if attack hit a monster
-		if ( frame == 1 )
-		{
-			attack_successfull = Attack_Check_Status(Real_Range, Real_Inflicted_Damage, Global_Monster_Vector) ;
-		}
 	}
 	else if ( Get_Attack_Style() == 2 ) // Distant Style
 	{
 		//play bow Fx	
 		App::getInstance().getMixer().getChannel(BowFx_Chan).play();
 
-		if (frame >= PLAYER_BOW_ATTACK_ANIMATION_FRAME )
-			frame = 0; //reset frame anim
-		
-		//
-		//TODO(future): define the good character sprite (future devs: depending of the frame and the direction)
-		//
-		//frame = 0;
+		Current_Animations_Center->Attack_Animation_Play(this, Global_Monster_Vector);
+
 	}
 
-
-	//P0_Logger << nl << "Set_Attack_Animation_Sprite called FRAME:" << frame << std::endl;
-
-	if ( frame == 0 )
-		return false; //end of anim
-
-	//anim is still looping
-	return true;
+	//P0_Logger << nl << "Attack_Set_Animation_Sprite called FRAME:" << frame << std::endl;
 
 } catch (std::exception &exc) {
-	frame = 0;
-	throw std::logic_error("From Character_Base::Set_Attack_Animation_Sprite(), " + (string)exc.what() );
+	throw std::logic_error("From Character_Base::Attack_Set_Animation_Sprite(), " + (string)exc.what() );
 } catch (...) {
-	frame = 0;
-	throw std::logic_error("Unhandled Error In Character_Base::Set_Attack_Animation_Sprite()");
+	throw std::logic_error("Unhandled Error In Character_Base::Attack_Set_Animation_Sprite()");
+}
+}
+
+//Reset everything to normal mode when the attack is finished
+void Character_Base::Attack_Reset()
+{
+try {
+	//unarmed
+	if ( attack_style == 0 )
+	{
+		//if the attack was successfull
+		if (attack_successfull != 0 )
+		{
+			//
+			//todo: play good fx
+			//
+			//play hit Fx	
+			//App::getInstance().getMixer().playChannel(HitFx_Chan);
+		}
+		else 
+		{
+			//
+			//todo play good fx
+			//
+			//play miss Fx	
+			//App::getInstance().getMixer().playChannel(MissFx_Chan);
+		} 
+			//Set the good msg
+		/*if (! Set_Attack_Msg() )
+		{
+			P0_Logger << nl << "Player Set Attack Message Failed " << std::endl;
+		}*/
+			//reset attack
+		Set_Attack_Initial_X(-1);
+		Set_Attack_Initial_Y(-1);
+		Set_Attack_Direction(-1);
+	}
+	//melee attack 
+	else if ( attack_style == 1 )
+	{
+		//if the attack was successfull
+		if (attack_successfull != 0 )
+		{
+			//play hit Fx	
+			App::getInstance().getMixer().getChannel(HitFx_Chan).play();
+		}
+		else 
+		{
+			//play miss Fx	
+			App::getInstance().getMixer().getChannel(MissFx_Chan).play();
+		} 
+			//Set the good msg
+		/*if (! Set_Attack_Msg() )
+		{
+			P0_Logger << nl << "Player Set Attack Message Failed " << std::endl;
+		}*/
+			//reset attack
+		Set_Attack_Initial_X(-1);
+		Set_Attack_Initial_Y(-1);
+		Set_Attack_Direction(-1);
+	}
+	//distant attack 
+	else if ( attack_style == 2 )
+	{
+		//nothing to do for now
+	}
+
+	Set_Attack_Status(false); //end of attack for the character (arrow is independent)
+
+} catch (std::exception &exc) {
+	throw std::logic_error( "Error In Character_Base::Attack_Reset() : " + (string)exc.what() );
+} catch (...) {
+	throw std::logic_error("Unhandled Error In Character_Base::Attack_Reset()");  
 }
 }
 
@@ -881,14 +904,13 @@ bool Character_Base::Calculate_Real_Life(int received_damage)
 {
 	int real_received_damage = (received_damage - Get_Real_Armor()); //TODO(future): Set the real damage formula base on mo's condition
 
-	if ( (real_received_damage) < 0) //in case damage dont exceed armor value then set it to 0: no damage
-		real_received_damage = 0;
+	real_received_damage = max(0, real_received_damage); //in case damage dont exceed armor value then set it to 0: no damage
 
 	Set_Real_Life( Get_Real_Life() - real_received_damage) ;
 	
-	//Monster as no life => dead
+	//Monster as no life => dying animation should start
 	if ( Get_Real_Life() <= 0 )
-		Set_Alive_Status(false);
+		Set_Alive_Status(0);
 
 	return true; //everything went fine
 }
@@ -897,13 +919,30 @@ bool Character_Base::Calculate_Real_Life(int received_damage)
 bool Character_Base::Show(const Rect& Camera, VideoSurface& Screen)
 {
 try {
-	//Check if the character sprite is present on the screen minus the status bar
-	//NOTE : PC_WIDTH/PC_HEIGHT are present because the camera is centered on the middle of the player and so we need to draw the screen a little more than the camera dim
-	if ( ( (Camera.getx()-PC_WIDTH) <= X) && (X < (signed)(Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-PC_HEIGHT) <= Y) && (Y < (signed)(Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
+
+	if (Alive_Status == 0 ) //dying: launch the animation
 	{
-		//It's present than draw it
-		Screen.blit(*Characters_Current_Tileset, Point::Point(X - Camera.getx(), Y - Camera.gety()), Current_Tile_Rect);
+		Current_Animations_Center->Death_Animation_Play(this);
 	}
+
+	if (  !(Alive_Status == -2) ) //every case except when character is "fully" dead: -2
+	{
+		//Defaults
+		if (Current_Tileset == NULL)
+		{
+			Current_Animations_Center->Stop_Animation_Play(this);
+		}
+
+
+		//Check if the character sprite is present on the screen minus the status bar
+		//NOTE : PC_WIDTH/PC_HEIGHT are present because the camera is centered on the middle of the player and so we need to draw the screen a little more than the camera dim
+		if ( ( (Camera.getx()-PC_WIDTH) <= X) && (X < (signed)(Camera.getx() + Camera.getw()) ) && ( (Camera.gety()-PC_HEIGHT) <= Y) && (Y < (signed)(Camera.gety() + Camera.geth() - STATUS_BAR_H) ) )
+		{
+			//It's present than draw it
+			Screen.blit(*Current_Tileset, Point::Point(X - Camera.getx(), Y - Camera.gety()), Current_Tile_Rect);
+		}
+	}
+
 	return true; //no error
 } catch (...) {
   		return false; //error occured

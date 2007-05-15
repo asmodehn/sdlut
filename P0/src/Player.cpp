@@ -10,12 +10,6 @@ try {
 	//necessary to render optimization
 	PC_WIDTH = Sprite_Width; PC_HEIGHT = Sprite_Height; 
 
-/****Default Animation****/
-	Characters_Current_Unarmed_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();
-	Characters_Current_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();
-	//attack_style ????!!!!!!!!!!
-	Current_Tile_Rect = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tile_Rect()->at(CH_RIGHT); //right direction by default
-
 /****Camera****/
 	Camera.setw(CURRENT_SCREEN_WIDTH);
 	Camera.seth(CURRENT_SCREEN_HEIGHT);
@@ -140,8 +134,7 @@ Player::~Player()
 
 //Everything needed to fully clean the player in case of exception or at destruction
 void Player::Clean_Player()
-{		
-	delete Default_Animations_Center, Default_Animations_Center = NULL;
+{
 }
 
 //Manage Attack Msg regarding the attack style
@@ -254,23 +247,26 @@ try {
 bool Player::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
-		//Move collision box to the futute position
-	if ( (Move_Direction == CH_RIGHT ) || (Move_Direction == CH_LEFT) || (Move_Direction == CH_DOWN) || (Move_Direction == CH_UP) )
+	if (Alive_Status == 1) //player alive, he can move
 	{
-		Collision_Box.setx(X + CB_X_Modifier + ( (xVel*Ch_Vel*DeltaTicks)/1000) );
-		Collision_Box.sety(Y + CB_Y_Modifier + ( (yVel*Ch_Vel*DeltaTicks)/1000) );
-	} else //diagonals
-	{
-		Collision_Box.setx( X + CB_X_Modifier + (int)ceil( ((xVel*Ch_Vel*DeltaTicks)/1000)/sqrt(2.f)) );
-		Collision_Box.sety( Y + CB_Y_Modifier + (int)ceil( ((yVel*Ch_Vel*DeltaTicks)/1000)/sqrt(2.f)) );
-	}
+			//Move collision box to the futute position
+		if ( (Move_Direction == CH_RIGHT ) || (Move_Direction == CH_LEFT) || (Move_Direction == CH_DOWN) || (Move_Direction == CH_UP) )
+		{
+			Collision_Box.setx(X + CB_X_Modifier + ( (xVel*Ch_Vel*DeltaTicks)/1000) );
+			Collision_Box.sety(Y + CB_Y_Modifier + ( (yVel*Ch_Vel*DeltaTicks)/1000) );
+		} else //diagonals
+		{
+			Collision_Box.setx( X + CB_X_Modifier + (int)ceil( ((xVel*Ch_Vel*DeltaTicks)/1000)/sqrt(2.f)) );
+			Collision_Box.sety( Y + CB_Y_Modifier + (int)ceil( ((yVel*Ch_Vel*DeltaTicks)/1000)/sqrt(2.f)) );
+		}
 
-	//Handle collisions
-	if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
-	{
-		//No Error => Update position 
-		X = Collision_Box.getx() - CB_X_Modifier;
-		Y = Collision_Box.gety() - CB_Y_Modifier;
+		//Handle collisions
+		if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
+		{
+			//No Error => Update position 
+			X = Collision_Box.getx() - CB_X_Modifier;
+			Y = Collision_Box.gety() - CB_Y_Modifier;
+		}
 	}
 
 	return true; //no error

@@ -8,12 +8,6 @@ try{
 //characteristics parsing (xml parsing)
 	Parse_Description_File("Data/Characters/NPC_Merchant.xml");
 
-//Initials default
-	Characters_Current_Unarmed_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();
-	Characters_Current_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();
-	Current_Tile_Rect = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tile_Rect()->at(CH_RIGHT); //right direction by default
-
-
 //	string NPC_Ini = "Data/Characters/NPC.ini";
 //	std::ifstream fi_npc( NPC_Ini.c_str() ) ;
 //	if (! fi_npc.fail()) //Check file present
@@ -98,6 +92,5 @@ NPC_Merchant::~NPC_Merchant()
 }
 
 void NPC_Merchant::Clean_NPC_Merchant()
-{		
-	delete Default_Animations_Center, Default_Animations_Center = NULL;
+{
 }

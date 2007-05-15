@@ -19,7 +19,6 @@ KeyboardInput::KeyboardInput(Player* &myPlayer, NPC_Merchant* &myNPC, std::vecto
 	this->myVictory_Screen = myVictory_Screen;
 	this->myDaemons = myDaemons;
 
-	myPlayer_Attack_Animation_Timer = new Timer<Daemons>;
 	myPlayer_Move_Animation_Timer = new Timer<Daemons>;
 	myPlayer_Arrow_Animation_Timer = new Timer<Daemons>;
 
@@ -29,8 +28,6 @@ KeyboardInput::KeyboardInput(Player* &myPlayer, NPC_Merchant* &myNPC, std::vecto
 //Destructor
 KeyboardInput::~KeyboardInput()
 {
-	myPlayer_Attack_Animation_Timer->abort();
-	delete myPlayer_Attack_Animation_Timer, myPlayer_Attack_Animation_Timer = NULL;
 	myPlayer_Move_Animation_Timer->abort();
 	delete myPlayer_Move_Animation_Timer, myPlayer_Move_Animation_Timer = NULL;
 	myPlayer_Arrow_Animation_Timer->abort();
@@ -70,13 +67,17 @@ void KeyboardInput::Player_Moves_Consequences()
 			{ 
 				P0_Logger << nl << "Failed to set the camera" << std::endl;    
 			}
-
+/*
+//
+//todo
+//
 			//stop in case it is currently runing (usefull for now coz there is no animation and it *seems* to make timers crash when they're empty)
 			myPlayer_Move_Animation_Timer->abort();
 			//Set the callback method which will define the character appearance on the screen and start animation
 			myPlayer_Move_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
 			//Start the animation every PLAYER_MOVE_ANIMATION_INTERVAL
 			myPlayer_Move_Animation_Timer->launch(PLAYER_MOVE_ANIMATION_INTERVAL);
+*/
 		}
 	//P0_Logger << nl << "Move " << std::endl;
 	}
@@ -90,40 +91,28 @@ try {
 	
 	//Set attack stuffs
 	myPlayer->Attack();
-	//TOdo merge the 2 methods above^
 
+	//The animation
+	myPlayer->Attack_Set_Animation_Sprite(Global_Monster_Vector);
 
 	//
-	//todo change that: this should be in the animation or in character constructor
+	//todo change that: this should be in the animation or in character constructor or in this arrow animation center....
 	//
-	//Set the callback method which will define the character appearance on the screen and start attack animation
-	myPlayer_Attack_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Attack_Animation, (void*)NULL);
 	//arrow management callback
 	myPlayer_Arrow_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Arrow_Movement, (void*)NULL);
 		
-	//different animations between attack styles
-	if ( myPlayer->Get_Attack_Style() == 0 ) 
-	{
-		myPlayer_Attack_Animation_Timer->launch(myPlayer->Get_Default_Animations_Center()->Get_Attack_Animation()->Get_Animation_Frames_Interval() );
-	}
-	if ( myPlayer->Get_Attack_Style() == 1 ) 
-	{
-		myPlayer_Attack_Animation_Timer->launch(PLAYER_SWORD_ATTACK_ANIMATION_INTERVAL);
-	}
+	//distant attack
 	if ( myPlayer->Get_Attack_Style() == 2 )
 	{
-		myPlayer_Attack_Animation_Timer->launch(PLAYER_BOW_ATTACK_ANIMATION_INTERVAL);
 		myPlayer_Arrow_Animation_Timer->launch(PLAYER_ARROW_MOVE_ANIMATION_INTERVAL); //find a way to synchronize launch with the keyframe (perhaps use the arg as the 2nd interval after the ori interval = to the keyframe time)
 	}
 
 	//P0_Logger << nl << "Attack " << std::endl;
 
 } catch (std::exception &exc) {
-	myPlayer_Attack_Animation_Timer->abort();
 	myPlayer_Arrow_Animation_Timer->abort();
 	P0_Logger << nl << exc.what() << std::endl;  
 } catch (...) {
-	myPlayer_Attack_Animation_Timer->abort();
 	myPlayer_Arrow_Animation_Timer->abort();
 	P0_Logger << nl << "Unhandled Error In Player Attack" << std::endl;  
 }

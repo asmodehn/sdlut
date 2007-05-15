@@ -155,6 +155,10 @@ Player_Base::~Player_Base()
 {
 	delete Arrow_SpriteRect, Arrow_SpriteRect = NULL;
 	delete Arrow_Tile, Arrow_Tile = NULL;
+
+	delete Unarmed_Animations_Center, Unarmed_Animations_Center = NULL;
+	delete Melee_Animations_Center, Melee_Animations_Center = NULL;
+	delete Distant_Animations_Center, Distant_Animations_Center = NULL;
 }
 
 //parse the xml description file
@@ -205,7 +209,8 @@ try {
 	string Default_Animations_Center_Filename = Data_Root_Directory + XML_Manager::Get_Option_String(Description_Filename, "Animation_Center_Filename");
 
 	//Default Animations Center
-	Default_Animations_Center = new Character_Animations_Center( Data_Root_Directory, Default_Animations_Center_Filename );
+	Unarmed_Animations_Center = new Character_Animations_Center( Data_Root_Directory, Default_Animations_Center_Filename );
+	Current_Animations_Center = Unarmed_Animations_Center;
 
 
 } catch (std::exception &exc)
@@ -223,27 +228,30 @@ catch (...)
 bool Player_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
-	//Random mvt
-	xVel = (rand()%3-1)*Ch_Vel;
-	yVel = (rand()%3-1)*Ch_Vel;
-
-	if( Assign_Direction_Sprite() == false )
-	{ 
-		P0_Logger << nl << "Check character direction Failed " << std::endl;    
-	}
-	if ( Get_Moving_Status() ) //we're really moving but not simply changing the direction
+	if (Alive_Status == 1) //player_base alive, he can move
 	{
+		//Random mvt
+		xVel = (rand()%3-1)*Ch_Vel;
+		yVel = (rand()%3-1)*Ch_Vel;
 
-		//Move collision box to the futute position
-		Collision_Box.setx(X + CB_X_Modifier + xVel);
-		Collision_Box.sety(Y + CB_Y_Modifier + yVel);
-
-		//handle collisions
-		if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
+		if( Assign_Direction_Sprite() == false )
+		{ 
+			P0_Logger << nl << "Check character direction Failed " << std::endl;    
+		}
+		if ( Get_Moving_Status() ) //we're really moving but not simply changing the direction
 		{
-			//No Error => Update position 
-			X = Collision_Box.getx() - CB_X_Modifier;
-			Y = Collision_Box.gety() - CB_Y_Modifier;
+
+			//Move collision box to the futute position
+			Collision_Box.setx(X + CB_X_Modifier + xVel);
+			Collision_Box.sety(Y + CB_Y_Modifier + yVel);
+
+			//handle collisions
+			if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
+			{
+				//No Error => Update position 
+				X = Collision_Box.getx() - CB_X_Modifier;
+				Y = Collision_Box.gety() - CB_Y_Modifier;
+			}
 		}
 	}
 

@@ -7,7 +7,7 @@ Monster_Skeleton::Monster_Skeleton(int x, int y,
 		int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
 		Rect &Allowed_Area,
 		int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
-		Character_Animations_Center* &Default_Animations_Center,
+		Character_Animations_Center* &Current_Animations_Center,
 		RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
 		)
 {
@@ -34,7 +34,7 @@ try {
 	this->CB_Width = CB_Width;
 	this->CB_Height = CB_Height;
 
-	this->Default_Animations_Center = Default_Animations_Center;
+	this->Current_Animations_Center = Current_Animations_Center;
 
 	this->Life_Bar_Tile = Life_Bar_Tile;
 	this->empty_life_bar_rect = empty_life_bar_rect;
@@ -50,9 +50,6 @@ try {
     //Collision_Box.sety(Y);
     //Collision_Box.setw(Sprite_Width);
     //Collision_Box.seth(Sprite_Height);
-
-	Characters_Current_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();
-	Current_Tile_Rect = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tile_Rect()->at(CH_RIGHT); //right direction by default
 
 } catch (std::exception &exc) {
 	throw std::logic_error( "Error in Monster_Skeleton Constructor: " + (string)exc.what() );
@@ -108,7 +105,7 @@ Monster_Worm::Monster_Worm(int x, int y,
 		int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
 		Rect &Allowed_Area,
 		int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
-		Character_Animations_Center* &Default_Animations_Center,
+		Character_Animations_Center* &Current_Animations_Center,
 		RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
 		)
 {
@@ -135,8 +132,7 @@ try {
 	this->CB_Width = CB_Width;
 	this->CB_Height = CB_Height;
 
-	this->Characters_Current_Tileset = Characters_Current_Tileset;
-	this->Default_Animations_Center = Default_Animations_Center;
+	this->Current_Animations_Center = Current_Animations_Center;
 
 	this->Life_Bar_Tile = Life_Bar_Tile;
 	this->empty_life_bar_rect = empty_life_bar_rect;
@@ -152,9 +148,6 @@ try {
     //Collision_Box.sety(Y);
     //Collision_Box.setw(Sprite_Width);
     //Collision_Box.seth(Sprite_Height);
-
-	Characters_Current_Tileset = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tileset();
-	Current_Tile_Rect = Default_Animations_Center->Get_Stop_Animation()->Get_Animation_Tile_Rect()->at(CH_RIGHT); //right direction by default
 
 } catch (std::exception &exc) {
 	throw std::logic_error( "Error in Monster_Worm Constructor: " + (string)exc.what() );

@@ -8,7 +8,11 @@
 //Character Class
 class Character_Base
 {
+	friend class Character_Animations_Center;
+
 private:
+	//Reset everything to normal mode when the attack is finished
+	void Attack_Reset();
 	
 protected:
 
@@ -22,7 +26,6 @@ protected:
 
 	//Sprite Characteristics
 	int Sprite_Width, Sprite_Height;
-	string Sprite_Filename; //designed to disapear
 
 	//Characteristics of the character
 	int BASE_LIFE, Real_Life;
@@ -33,8 +36,8 @@ protected:
 	//Characters type
 	Character_Types Characters_ID;
 
-	//Bool that will indicate if the character is alive or dead
-	bool Alive_Status;
+	//indicate if the character is 1:alive, 0:dying, -1: dying animation playing, -2:dead
+	int Alive_Status;
 
 /****Movements****/
 
@@ -65,22 +68,16 @@ protected:
 	int attack_direction;
 
 /****Animations****/
-	//Clip (never deleted coz are only there to link with the real animation tile rect)
+	//Clip
 	Rect Current_Tile_Rect;
+	//Tileset (never deleted coz only a link)
+	RGBSurface* Current_Tileset;
 	
-	//Tileset (never deleted coz are only there to link with the real animation tileset)
-	RGBSurface* Characters_Current_Tileset;
-
-	RGBSurface* Characters_Current_Unarmed_Tileset;
-	RGBSurface* Characters_Current_Melee_Tileset;
-	RGBSurface* Characters_Current_Distant_Tileset;
-	//change that^
-
 	//The center of animations
-	Character_Animations_Center *Default_Animations_Center;
-
-	//current animation current frame
-	int frame;
+	Character_Animations_Center *Current_Animations_Center;
+	Character_Animations_Center *Unarmed_Animations_Center;
+	Character_Animations_Center *Melee_Animations_Center;
+	Character_Animations_Center *Distant_Animations_Center;
 
 	//Collision Box Modifier between sprite dims & "real" dims
 	int CB_X_Modifier;
@@ -93,6 +90,12 @@ protected:
 	//Battlefield rules (pure virtuals)
 	virtual int Get_BG_vs_CH_Rules(const int& bgType) = 0;
 	virtual int Get_Env_vs_CH_Rules(const int& envType) = 0;
+
+	//Move character (pure virtual)
+	virtual bool Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector) = 0;
+
+	//Calculate the current life depending on damage, malus, etc and damage made by the opponent
+	bool Calculate_Real_Life(int received_damage = 0);
 	
 public:
 	/****Accessor****/
@@ -159,11 +162,11 @@ public:
         return Collision_Box;
     }
 
-	inline void Set_Alive_Status(bool new_Alive_Status)
+	inline void Set_Alive_Status(int new_Alive_Status)
     {
         Alive_Status = new_Alive_Status;
     }
-	inline bool Get_Alive_Status() const
+	inline int Get_Alive_Status() const
     {
         return Alive_Status;
 	}
@@ -266,7 +269,11 @@ public:
     {
         return attack_direction;
     }
-	
+
+	inline int Get_Move_Direction() const
+    {
+        return Move_Direction;
+    }	
 	inline void Set_Moving_Status(bool new_moving_status)
     {
         Moving_Status = new_moving_status;
@@ -283,10 +290,27 @@ public:
     {
         return Characters_ID;
 	}
-	inline Character_Animations_Center *Get_Default_Animations_Center() const
+
+	inline Character_Animations_Center* Get_Current_Animations_Center() const
     {
-        return Default_Animations_Center;
-	}	
+        return Current_Animations_Center;
+	}
+	inline RGBSurface* Get_Current_Tileset() const
+	{
+		return Current_Tileset;
+	}
+	inline void Set_Current_Tileset(RGBSurface* newTileset)
+	{
+		Current_Tileset = newTileset;
+	}
+	inline Rect Get_Set_Current_Tile_Rect() const
+	{
+		return Current_Tile_Rect;
+	}
+	inline void Set_Current_Tile_Rect(Rect newTile_Rect)
+	{
+		Current_Tile_Rect = newTile_Rect;
+	}
 
 	//Init
 	Character_Base();
@@ -294,8 +318,6 @@ public:
 
 	/****Methods****/
 //Movement
-	//Move character (pure virtual)
-	virtual bool Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector) = 0;
 	//move the character_base's collision box to a place its allowed to be when moving
 	bool Manage_Collisions( std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector, bool Handle_Collisions = 0);
 	//check the direction where the character is turn to
@@ -307,15 +329,19 @@ public:
 //Attack
 	//Manage the character attack stuffs
 	void Attack();
-	//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing and character infos
-	int Attack_Check_Status(int ch2attack_distance, int inflicted_damage, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 	//Set Character Sprite Which change when attack occured(callback)
-	bool Set_Attack_Animation_Sprite(std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
+	//
+	//todo: perhaps move this method in private & called it directly from the attack() method
+	//
+	void Attack_Set_Animation_Sprite(std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
+	//Check if collision between the attack and one of the monsters on the battlefield regarding the number of movements that the attack collision is currently doing and character infos
+	//
+	//TODO change below to private whe the arrow management wont be managed by daemon else, stay public
+	//
+	int Attack_Check_Status(int ch2attack_distance, int inflicted_damage, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 	//Manage when a character decided to change his attack style: check if style present, update characteristics, etc
 	bool Change_Attack_Style();
-//Characteristics
-	//Calculate the current life depending on damage, malus, etc and damage made by the opponent
-	bool Calculate_Real_Life(int received_damage = 0);
+
 //Render
 	//Show Character on the screen
 	bool Show(const Rect& Camera, VideoSurface& Screen);

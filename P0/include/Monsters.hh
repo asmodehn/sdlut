@@ -19,7 +19,7 @@ class Monster_Skeleton : public Monster_Base
 						int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
 						Rect &Allowed_Area,
 						int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
-						Character_Animations_Center* &Default_Animations_Center,
+						Character_Animations_Center* &Current_Animations_Center,
 						RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
 						);
 		~Monster_Skeleton();
@@ -43,7 +43,7 @@ class Monster_Worm : public Monster_Base
 					int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
 					Rect &Allowed_Area,
 					int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
-					Character_Animations_Center* &Default_Animations_Center,
+					Character_Animations_Center* &Current_Animations_Center,
 					RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
 					);
 		~Monster_Worm();

@@ -109,111 +109,6 @@ try {
 }
 }
 
-//Callback method that will launch the character's attack animation
-unsigned int Daemons::Player_Attack_Animation(unsigned int interval, void* args)
-{
-try {
-	
-	if ( myPlayer->Set_Attack_Animation_Sprite(Global_Monster_Vector) ) //attack anim is still occuring than loop
-	{ 
-		return interval;
-	} 
-	
-	//
-	//todo: for unarmed attack: play good sound
-	//
-//for unarmed attack we can check if it was successfull and reset attack
-	if ( myPlayer->Get_Attack_Style() == 0 )
-	{
-		//if the attack was successfull
-		if (myPlayer->Get_Attack_Successfull() != 0 )
-		{
-			//
-			//todo: play good fx
-			//
-			//play hit Fx	
-			//App::getInstance().getMixer().playChannel(HitFx_Chan);
-
-			//Remove dead Monsters
-			Monster_Factory_Skeleton->Remove_Dead_Monsters();
-			Monster_Factory_Worm->Remove_Dead_Monsters();
-		}
-		else 
-		{
-			//
-			//todo play good fx
-			//
-			//play miss Fx	
-			//App::getInstance().getMixer().playChannel(MissFx_Chan);
-		} 
-			//Set the good msg
-		if (! myPlayer->Set_Attack_Msg() )
-		{
-			P0_Logger << nl << "Player Set Attack Message Failed " << std::endl;
-		}
-			//reset attack
-		myPlayer->Set_Attack_Initial_X(-1);
-		myPlayer->Set_Attack_Initial_Y(-1);
-		myPlayer->Set_Attack_Direction(-1);
-	}
-//for melee attack we can check if it was successfull and reset attack
-	else if ( myPlayer->Get_Attack_Style() == 1 )
-	{
-		//if the attack was successfull
-		if (myPlayer->Get_Attack_Successfull() != 0 )
-		{
-			//play hit Fx	
-			App::getInstance().getMixer().getChannel(HitFx_Chan).play();
-
-			//Remove dead Monsters
-			Monster_Factory_Skeleton->Remove_Dead_Monsters();
-			Monster_Factory_Worm->Remove_Dead_Monsters();
-		}
-		else 
-		{
-			//play miss Fx	
-			App::getInstance().getMixer().getChannel(MissFx_Chan).play();
-		} 
-			//Set the good msg
-		if (! myPlayer->Set_Attack_Msg() )
-		{
-			P0_Logger << nl << "Player Set Attack Message Failed " << std::endl;
-		}
-			//reset attack
-		myPlayer->Set_Attack_Initial_X(-1);
-		myPlayer->Set_Attack_Initial_Y(-1);
-		myPlayer->Set_Attack_Direction(-1);
-	}
-
-	myPlayer->Set_Attack_Status(false); //end of attack for the character (arrow is independent)
-
-	return 0; //end of timer
-
-
-} catch (std::exception &exc) {
-	if ( ( myPlayer->Get_Attack_Style() == 0 ) || ( myPlayer->Get_Attack_Style() == 1 ) )
-	{
-		//reset attack
-		myPlayer->Set_Attack_Initial_X(-1);
-		myPlayer->Set_Attack_Initial_Y(-1);
-		myPlayer->Set_Attack_Direction(-1);
-	}
-	myPlayer->Set_Attack_Status(false); //end of attack
-	P0_Logger << nl << " From Player_Attack_Animation Callback, " << exc.what() << std::endl;
-	return 0;//end of timer
-} catch (...) {
-	if ( ( myPlayer->Get_Attack_Style() == 0 ) || ( myPlayer->Get_Attack_Style() == 1 ) )
-	{
-		//reset attack
-		myPlayer->Set_Attack_Initial_X(-1);
-		myPlayer->Set_Attack_Initial_Y(-1);
-		myPlayer->Set_Attack_Direction(-1);
-	}
-	myPlayer->Set_Attack_Status(false);
-	P0_Logger << nl << "Unhandled Error In Player_Attack_Animation Callback" << std::endl;  
-}
-}
-
 //Callback method that will launch the arrow attack animation
 unsigned int Daemons::Player_Arrow_Movement(unsigned int interval, void* args)
 {
@@ -241,9 +136,9 @@ try {
 		//play hit Fx	
 		App::getInstance().getMixer().getChannel(HitFx_Chan).play();
 
-		//Remove Dead Monsters
-		Monster_Factory_Skeleton->Remove_Dead_Monsters();
-		Monster_Factory_Worm->Remove_Dead_Monsters();
+		////Remove Dead Monsters
+		//Monster_Factory_Skeleton->Remove_Dead_Monsters();
+		//Monster_Factory_Worm->Remove_Dead_Monsters();
 	} 
 	else
 	{ 
