@@ -27,8 +27,8 @@ class Player_Base : public Character_Base
 		//Parse the xml file (called by the constructor)
 		void Parse_Description_File(const string &Description_Filename);
 
-		//only to allow player to reimplement it
-		virtual void Attack_Reset() = 0;
+		//only to allow player to reimplement it else do the same thing as the character base method
+		virtual void Attack_Reset();
 
 	public:
 

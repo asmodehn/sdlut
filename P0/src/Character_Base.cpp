@@ -18,8 +18,6 @@ try {
 
 	Characters_ID = Humanoid; //default
 
-	Alive_Status = 1; //alive
-
 /****Movements****/
 	//Initial moving status
 	Moving_Status = false;
@@ -33,8 +31,6 @@ try {
 
 /****Attack****/
 	//Attack variable
-	attack_status = false; //false = 0
-	attack_style = 0; //default: unarmed
 	attack_successfull = 0; //Tells if a monster has been hit, by default no
 	attack_initial_x = -1;
 	attack_initial_y = -1;
@@ -54,6 +50,12 @@ try {
 
 	//CB modifier between sprite dimensions and "real" dimensions
 	CB_X_Modifier = 0, CB_Y_Modifier = 0, CB_Width = 0, CB_Height = 0;
+
+/****Default Flags****/
+	Alive_Status = 1; //alive
+	attack_status = false; //no attack, false = 0
+	attack_style = 0; //unarmed
+	Hitted_Status = 0; //not hitted
 
 } catch (std::exception &exc) {
 	throw std::logic_error(exc.what());
@@ -452,7 +454,7 @@ try
 
 
 	//attack is occuring
-	attack_status = true;
+	Set_Attack_Status(true);
 	//get the attack direction
 	attack_direction = Move_Direction;
 	//By default consider that no attack was successfull
@@ -686,10 +688,10 @@ try
 
 	
 } catch (std::exception &exc) {
-	attack_status = false;
+	Set_Attack_Status(false);
 	throw std::logic_error("Error In Character_Base::Attack() : " + (string)exc.what() );
 } catch (...) {
-	attack_status = false;
+	Set_Attack_Status(false);
 	throw std::logic_error("Unhandled Error In Character_Base::Attack()");
 }
 }
@@ -736,6 +738,10 @@ try {
 		attack_CB.sety( (int)(attack_CB.gety() - ceil(ch2attack_distance/sqrt(2.f))) );
 	}
 	
+	//
+	//todo: make this work for monsters
+	//
+
 	//Collision with Monsters
 	//Loop for all monster's vector
 	for (unsigned int j=0; j < Global_Monster_Vector->size(); j++)
@@ -753,7 +759,9 @@ try {
 				{
 					//One monster has been hit so send damage value to the monster
 					Current_Monster->Calculate_Real_Life( inflicted_damage );
-					//Than leave the check returning the ID (which will be saved inside the attack_sucessful) in order to hit only one monster at a time.
+					//Set the Hitted_Status to 2 for the character
+					Current_Monster->Set_Hitted_Status( 2 );
+					//Leave the check returning the ID (which will be saved inside the attack_sucessful) in order to hit only one monster at a time.
 					return Current_Monster->Get_Characters_ID();
 				}
 			}
@@ -912,12 +920,17 @@ bool Character_Base::Show(const Rect& Camera, VideoSurface& Screen)
 {
 try {
 
-	if (Alive_Status == 0 ) //dying: launch the animation
+	if (Get_Alive_Status() == 0 ) //dying: launch the animation
 	{
 		Current_Animations_Center->Death_Animation_Play(this);
 	}
 
-	if (  !(Alive_Status == -2) ) //every case except when character is "fully" dead: -2
+	if ( (Get_Hitted_Status() == 2 ) && Get_Alive_Status() == 1 )//hitted & alive: launch the animation
+	{
+		Current_Animations_Center->Hit_Animation_Play(this);
+	}
+
+	if (  !(Get_Alive_Status() == -2) ) //every case except when character is "fully" dead: -2
 	{
 		//Defaults
 		if (Current_Tileset == NULL)

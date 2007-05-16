@@ -7,6 +7,7 @@ Character_Animations_Center::Character_Animations_Center()
 
 	Death_Animation_Timer = NULL;
 	Attack_Animation_Timer = NULL;
+	Hit_Animation_Timer = NULL;
 
 	Attack_Animation = NULL;
 	Death_Animation = NULL;
@@ -26,6 +27,7 @@ try {
 
 	Death_Animation_Timer = NULL;
 	Attack_Animation_Timer = NULL;
+	Hit_Animation_Timer = NULL;
 
 	Attack_Animation = NULL;
 	Death_Animation = NULL;
@@ -41,6 +43,7 @@ try {
 	//Timers
 	Death_Animation_Timer = new Timer<Character_Animations_Center>();
 	Attack_Animation_Timer = new Timer<Character_Animations_Center>();
+	Hit_Animation_Timer = new Timer<Character_Animations_Center>();
 
 	//1st validate !
 	XML_Manager::Validate_File(Animation_Center_Filename);
@@ -114,6 +117,8 @@ try{
 	delete Death_Animation_Timer, Death_Animation_Timer = NULL;
 	Attack_Animation_Timer->abort();
 	delete Attack_Animation_Timer, Attack_Animation_Timer = NULL;
+	Hit_Animation_Timer->abort();
+	delete Hit_Animation_Timer, Hit_Animation_Timer = NULL;
 
 //Not always independent animations
 	if (Walk_Animation != Stop_Animation)
@@ -144,6 +149,7 @@ void Character_Animations_Center::Stop_Animation_Play( Character_Base* Character
 	if ( Character_Instance->Get_Current_Tileset() != Stop_Animation->Get_Animation_Tileset() )
 		Character_Instance->Set_Current_Tileset( Stop_Animation->Get_Animation_Tileset() );
 
+	//reset tile rect
 	Character_Instance->Set_Current_Tile_Rect( Stop_Animation->Get_Animation_Tile_Rect()->at(Character_Instance->Get_Move_Direction()) );
 }
 
@@ -227,7 +233,10 @@ unsigned int Character_Animations_Center::Attack_Animation_Callback(unsigned int
 try {
 	//This is here to allow the last frame to play as long as the previous frames
 	if (!Character_Instance->Get_Attack_Status()) //attack already been finished
+	{
+		Stop_Animation_Play( Character_Instance ); //reset tileset + tile_rect
 		return 0; //end of timer
+	}
 
 	//
 	//todo: use the arg which must contain the character instance and the global monster_vector ?!!
@@ -236,9 +245,8 @@ try {
 	if (Frame >= Attack_Animation->Get_Animation_Frame_Number() )
 	{
 		Frame = 0; //reset frame anim
-		Character_Instance->Attack_Reset();//Reset Attack
-		Stop_Animation_Play( Character_Instance ); //reset tileset + tile_rect
-		return Attack_Animation->Get_Animation_Frames_Interval();
+		Character_Instance->Attack_Reset();//Reset Attack		
+		return Attack_Animation->Get_Animation_Frames_Interval() - 10; //-10ms else it less realist
 	}
 
 	//assign the good sprite rect to the character sprite rect depending on the frame and the direction
@@ -281,6 +289,74 @@ try {
 	Stop_Animation_Play( Character_Instance );
 	Frame = 0;
 	P0_Logger << nl << "Unhandled Error In Character_Animations_Center::Attack_Animation_Callback()" << std::endl;
+	return 0;//end of timer
+}
+}
+
+//Hit Animation for characters
+void Character_Animations_Center::Hit_Animation_Play(Character_Base* Character_Instance)
+{
+	//Reset frame
+	Frame = 0;
+	//store the instance
+	this->Character_Instance = Character_Instance;
+	//set the tileset
+	Character_Instance->Set_Current_Tileset( Hit_Animation->Get_Animation_Tileset() );
+	
+	//
+	//todo: stop move timer; launch attitude vs player_base or monster_base timer
+	//
+	Character_Instance->Set_Hitted_Status( 1 ); //anim occuring
+
+	//set & launch the animation with the direction in argument
+	Hit_Animation_Timer->setCallback(this,&Character_Animations_Center::Hit_Animation_Callback, (void*)Character_Instance);
+	//
+	//todo: use the arg which must contain the character instance and the global monster_vector ?!!
+	//		coz when monster will be able to attack they need to know which instance is attacking
+	//
+	Hit_Animation_Timer->launch( 1 );
+}
+
+//Hit Animation for characters (callback method)
+unsigned int Character_Animations_Center::Hit_Animation_Callback(unsigned int interval, void* args)
+{
+try {
+	//This is here to allow the last frame to play as long as the previous frames
+	if ( ((Character_Base*)args)->Get_Hitted_Status() == 0 ) //anim already been finished
+	{
+		Stop_Animation_Play( ((Character_Base*)args) ); //reset tileset + tile_rect
+		return 0; //end of timer
+	}
+
+	if (Frame >= Hit_Animation->Get_Animation_Frame_Number() )
+	{
+		Frame = 0; //reset frame anim
+		((Character_Base*)args)->Set_Hitted_Status( 0 );		
+		return Hit_Animation->Get_Animation_Frames_Interval() - 10; //-10ms else it less realist
+	}
+
+	//assign the good sprite rect to the character sprite rect depending on the frame and the direction
+	((Character_Base*)args)->Set_Current_Tile_Rect( Hit_Animation->Get_Animation_Tile_Rect()->at( ((Character_Base*)args)->Get_Move_Direction() * Hit_Animation->Get_Animation_Frame_Number() + Frame ) );
+	
+
+	//loop
+	Frame++;
+	return Hit_Animation->Get_Animation_Frames_Interval();
+
+
+} catch (std::exception &exc) {
+	//reset
+	((Character_Base*)args)->Set_Hitted_Status( 0 );
+	Stop_Animation_Play( ((Character_Base*)args) );
+	Frame = 0;
+	P0_Logger << nl << " From Character_Animations_Center::Hit_Animation_Callback(), " << exc.what() << std::endl;
+	return 0;//end of timer
+} catch (...) {
+	//reset
+	((Character_Base*)args)->Set_Hitted_Status( 0 );
+	Stop_Animation_Play( ((Character_Base*)args) );
+	Frame = 0;
+	P0_Logger << nl << "Unhandled Error In Character_Animations_Center::Hit_Animation_Callback()" << std::endl;
 	return 0;//end of timer
 }
 }

@@ -185,7 +185,8 @@ try {
 bool Monster_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
-	if (Alive_Status == 1) //monster alive, he can move
+	//character can move if: he is alived && he has not been hitted
+	if ( (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) )
 	{
 		//move only if a random number between 0 and 133 is below 49: 2 chances of 3 (This speed down monster movement)
 		if (rand()%200 <= 133) 

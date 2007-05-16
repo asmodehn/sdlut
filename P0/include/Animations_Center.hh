@@ -34,10 +34,12 @@ private:
 	//Animation's Timers
 	Timer<Character_Animations_Center>* Death_Animation_Timer;
 	Timer<Character_Animations_Center>* Attack_Animation_Timer;
+	Timer<Character_Animations_Center>* Hit_Animation_Timer;
 
 	//Animation's Callbacks
 	unsigned int Death_Animation_Callback(unsigned int interval, void* args);
 	unsigned int Attack_Animation_Callback(unsigned int interval, void* args);
+	unsigned int Hit_Animation_Callback(unsigned int interval, void* args);
 	
 protected:
 
@@ -88,7 +90,8 @@ public:
 	void Death_Animation_Play(Character_Base* Character_Instance);
 		//Attack Animation 
 	void Attack_Animation_Play(Character_Base* Character_Instance, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
-
+		//Hit Animation for characters
+	void Hit_Animation_Play(Character_Base* Character_Instance);
 };
 
 class Building_Permanent_Animation_Center

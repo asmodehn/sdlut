@@ -63,57 +63,7 @@ void Player::Clean_Player()
 void Player::Attack_Reset()
 {
 try {
-	//unarmed
-	if ( attack_style == 0 )
-	{
-		//if the attack was successfull
-		if (attack_successfull != 0 )
-		{
-			//
-			//todo: play good fx
-			//
-			//play hit Fx	
-			//App::getInstance().getMixer().playChannel(HitFx_Chan);
-		}
-		else 
-		{
-			//
-			//todo play good fx
-			//
-			//play miss Fx	
-			//App::getInstance().getMixer().playChannel(MissFx_Chan);
-		} 
-		
-		//reset attack
-		Set_Attack_Initial_X(-1);
-		Set_Attack_Initial_Y(-1);
-		Set_Attack_Direction(-1);
-	}
-	//melee attack 
-	else if ( attack_style == 1 )
-	{
-		//if the attack was successfull
-		if (attack_successfull != 0 )
-		{
-			//play hit Fx	
-			App::getInstance().getMixer().getChannel(HitFx_Chan).play();
-		}
-		else 
-		{
-			//play miss Fx	
-			App::getInstance().getMixer().getChannel(MissFx_Chan).play();
-		} 
-
-		//reset attack
-		Set_Attack_Initial_X(-1);
-		Set_Attack_Initial_Y(-1);
-		Set_Attack_Direction(-1);
-	}
-	//distant attack 
-	else if ( attack_style == 2 )
-	{
-		//nothing to do for now
-	}
+	Character_Base::Attack_Reset();
 
 	//Set the good msg
 	if (! Set_Attack_Msg() )
@@ -240,7 +190,8 @@ try {
 bool Player::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
-	if (Alive_Status == 1) //player alive, he can move
+	//character can move if: he is alived && he has not been hitted
+	if ( (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) )
 	{
 			//Move collision box to the futute position
 		if ( (Move_Direction == CH_RIGHT ) || (Move_Direction == CH_LEFT) || (Move_Direction == CH_DOWN) || (Move_Direction == CH_UP) )

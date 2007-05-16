@@ -34,9 +34,6 @@ protected:
 	//Characters type
 	Character_Types Characters_ID;
 
-	//indicate if the character is 1:alive, 0:dying, -1: dying animation playing, -2:dead
-	int Alive_Status;
-
 /****Movements****/
 
 	//Moving status define if the player is moving or just changing direction or staying at the same place
@@ -57,8 +54,6 @@ protected:
 	bool Unarmed_Style_Available, Melee_Style_Available, Distant_Style_Available, Throwing_Style_Available, Magic_Style_Available;
 
 	//Attack variables
-	bool attack_status; //Attack key pressed yes or no 
-	int attack_style; //Manage the style of attack (0: unarmed, 1: melee attack, 2: distant attack, 3&+: TODO(future) )
 	int attack_successfull; //get the monster ID that has been hitted to print the good attack msg
 		//initial info of the attack (-1 means no attack)
 	int attack_initial_x;
@@ -83,6 +78,15 @@ protected:
 	int CB_Width;
 	int CB_Height;
 
+/****Flags****/
+	//indicate if the character is 1:alive, 0:dying, -1:dying animation playing, -2:dead
+	int Alive_Status;
+	//Attack key pressed yes or no 
+	bool attack_status;
+	//Manage the style of attack (0: unarmed, 1: melee attack, 2: distant attack, 3&+: TODO(future) )
+	int attack_style;
+	//indicate if the character has been 2:hitted; 1:hitted animation playing; 0:not hitted
+	int Hitted_Status;
 
 /****Methods***/
 	//Battlefield rules (pure virtuals)
@@ -214,6 +218,7 @@ public:
 	//Define if the player has push the attack Key
 	inline void Set_Attack_Status(bool new_attack_status)
     {
+		cout << "Attack status set to: " << new_attack_status << endl;
         attack_status=new_attack_status;
     }
 	inline bool Get_Attack_Status() const
@@ -291,6 +296,14 @@ public:
     {
         return Characters_ID;
 	}
+	inline void Set_Hitted_Status(int newHitted_Status)
+    {
+        Hitted_Status = newHitted_Status;
+    }
+    inline int Get_Hitted_Status() const
+    {
+        return Hitted_Status;
+    }
 
 	inline Character_Animations_Center* Get_Current_Animations_Center() const
     {

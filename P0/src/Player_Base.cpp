@@ -223,12 +223,18 @@ catch (...)
 }
 }
 
+//call the Character_Base::Attack_Reset()
+void Player_Base::Attack_Reset()
+{
+	Character_Base::Attack_Reset();
+}
 
 //Move the Player
 bool Player_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
-	if (Alive_Status == 1) //player_base alive, he can move
+	//character can move if: he is alived && he has not been hitted
+	if ( (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) )
 	{
 		//Random mvt
 		xVel = (rand()%3-1)*Ch_Vel;
