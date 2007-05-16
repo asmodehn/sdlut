@@ -218,7 +218,7 @@ public:
 	//Define if the player has push the attack Key
 	inline void Set_Attack_Status(bool new_attack_status)
     {
-		cout << "Attack status set to: " << new_attack_status << endl;
+		//cout << "Attack status set to: " << new_attack_status << endl;
         attack_status=new_attack_status;
     }
 	inline bool Get_Attack_Status() const

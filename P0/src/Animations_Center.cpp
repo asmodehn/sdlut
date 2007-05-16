@@ -184,7 +184,7 @@ try {
 	((Character_Base*)args)->Set_Current_Tile_Rect( Death_Animation->Get_Animation_Tile_Rect()->at( ((Character_Base*)args)->Get_Move_Direction() * Death_Animation->Get_Animation_Frame_Number() + Frame ) );
 	
 	Frame++;
-	return Death_Animation->Get_Animation_Frames_Interval();
+	return max<long>(Death_Animation->Get_Animation_Frames_Interval(), 1);//must be > 1!
 
 } catch (std::exception &exc) {
 	Frame = 0;
@@ -246,7 +246,7 @@ try {
 	{
 		Frame = 0; //reset frame anim
 		Character_Instance->Attack_Reset();//Reset Attack		
-		return Attack_Animation->Get_Animation_Frames_Interval() - 10; //-10ms else it less realist
+		return max<long>(Attack_Animation->Get_Animation_Frames_Interval() - 10, 1); //interval-10ms else it less realist (but always > to 1 !)
 	}
 
 	//assign the good sprite rect to the character sprite rect depending on the frame and the direction
@@ -259,7 +259,7 @@ try {
 
 	//loop
 	Frame++;
-	return Attack_Animation->Get_Animation_Frames_Interval();
+	return max<long>(Attack_Animation->Get_Animation_Frames_Interval(), 1);//must be > 1!
 
 
 } catch (std::exception &exc) {
@@ -332,7 +332,7 @@ try {
 	{
 		Frame = 0; //reset frame anim
 		((Character_Base*)args)->Set_Hitted_Status( 0 );		
-		return Hit_Animation->Get_Animation_Frames_Interval() - 10; //-10ms else it less realist
+		return max<long>(Hit_Animation->Get_Animation_Frames_Interval() - 10, 1); //interval-10ms else it less realist (but always > to 1 !)
 	}
 
 	//assign the good sprite rect to the character sprite rect depending on the frame and the direction
@@ -341,7 +341,7 @@ try {
 
 	//loop
 	Frame++;
-	return Hit_Animation->Get_Animation_Frames_Interval();
+	return max<long>(Hit_Animation->Get_Animation_Frames_Interval(), 1);//must be > 1!
 
 
 } catch (std::exception &exc) {
