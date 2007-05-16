@@ -1,9 +1,33 @@
 CMAKE_MINIMUM_REQUIRED ( VERSION 2.4)
 
+
+# This macro merges elements in sorted lists ALIST and BLIST and stored the result in OUTPUT
+MACRO(MERGE ALIST BLIST OUTPUT)
+   SET(BTEMP ${BLIST})
+   FOREACH(A ${ALIST})
+       SET(SORTED)
+       SET(UNINSERTED 1)
+       FOREACH(B ${BTEMP})
+           IF(${UNINSERTED})
+               IF(${A} STRLESS ${B})
+                   SET(SORTED ${SORTED} ${A})
+                   SET(UNINSERTED 0)
+               ENDIF(${A} STRLESS ${B})
+           ENDIF(${UNINSERTED})
+           SET(SORTED ${SORTED} ${B})
+       ENDFOREACH(B ${BLIST})
+       IF(${UNINSERTED})
+           SET(SORTED ${SORTED} ${A})
+       ENDIF(${UNINSERTED})
+       SET(BTEMP ${SORTED})
+   ENDFOREACH(A ${ALIST})
+   SET(${OUTPUT} ${BTEMP})
+ENDMACRO(MERGE ALIST BLIST OUTPUT)
+
+
+
 #Project Definition
 PROJECT(Project_0)
-
-
 
 #Set Mode rules
 IF(NOT CMAKE_BUILD_TYPE)
@@ -139,53 +163,27 @@ ELSE(LIBXML2_FOUND)
 ENDIF(LIBXML2_FOUND)
 
 
-#Include Core
+#Include headers
 INCLUDE_DIRECTORIES(${Project_0_SOURCE_DIR}/../Core/include )
-
-
-#include headers
 INCLUDE_DIRECTORIES(${Project_0_SOURCE_DIR}/include )
 
-#copy Config
+
+#copy useful directories
 ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Config/ )
-
-#copy Data
 ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Data/ )
-
-#copy Save dir
 ADD_SUBDIRECTORY( ${Project_0_SOURCE_DIR}/Saves/ )
 
 
-#adding with headers to have them in generated projects
-ADD_EXECUTABLE(
-		Project_0
-		${Project_0_SOURCE_DIR}/src/Project0.cpp ${Project_0_SOURCE_DIR}/include/Project0.hh 
-		${Project_0_SOURCE_DIR}/src/Base.cpp ${Project_0_SOURCE_DIR}/include/Base.hh 
-		${Project_0_SOURCE_DIR}/src/BattleField.cpp ${Project_0_SOURCE_DIR}/include/BattleField.hh
-		${Project_0_SOURCE_DIR}/src/Player_Base.cpp ${Project_0_SOURCE_DIR}/include/Player_Base.hh
-		${Project_0_SOURCE_DIR}/src/Daemons.cpp ${Project_0_SOURCE_DIR}/include/Daemons.hh
-		${Project_0_SOURCE_DIR}/src/Input_Management.cpp ${Project_0_SOURCE_DIR}/include/Input_Management.hh
-		${Project_0_SOURCE_DIR}/src/Menus.cpp ${Project_0_SOURCE_DIR}/include/Menus.hh
-		${Project_0_SOURCE_DIR}/src/Monster_Base.cpp ${Project_0_SOURCE_DIR}/include/Monster_Base.hh
-		${Project_0_SOURCE_DIR}/src/Monster_Factory.cpp ${Project_0_SOURCE_DIR}/include/Monster_Factory.hh
-		${Project_0_SOURCE_DIR}/src/Monsters.cpp ${Project_0_SOURCE_DIR}/include/Monsters.hh
-		${Project_0_SOURCE_DIR}/src/Render_Engine.cpp ${Project_0_SOURCE_DIR}/include/Render_Engine.hh
-		${Project_0_SOURCE_DIR}/src/Sounds.cpp ${Project_0_SOURCE_DIR}/include/Sounds.hh
-		${Project_0_SOURCE_DIR}/src/Character_Base.cpp ${Project_0_SOURCE_DIR}/include/Character_Base.hh
-		${Project_0_SOURCE_DIR}/src/Ini_Manager.cpp ${Project_0_SOURCE_DIR}/include/Ini_Manager.hh
-		${Project_0_SOURCE_DIR}/src/Player.cpp ${Project_0_SOURCE_DIR}/include/Player.hh
-		${Project_0_SOURCE_DIR}/src/NPCs.cpp ${Project_0_SOURCE_DIR}/include/NPCs.hh
-		${Project_0_SOURCE_DIR}/src/Messages.cpp ${Project_0_SOURCE_DIR}/include/Messages.hh
-		${Project_0_SOURCE_DIR}/src/XML_Manager.cpp ${Project_0_SOURCE_DIR}/include/XML_Manager.hh
-		${Project_0_SOURCE_DIR}/src/Config.cpp ${Project_0_SOURCE_DIR}/include/Config.hh
-		${Project_0_SOURCE_DIR}/src/Animations.cpp ${Project_0_SOURCE_DIR}/include/Animations.hh
-		${Project_0_SOURCE_DIR}/src/Animations_Center.cpp ${Project_0_SOURCE_DIR}/include/Animations_Center.hh
 
-#adding spec to have it in generated projects
+#Get headers+sources
+FILE(GLOB HEADERS ${CMAKE_SOURCE_DIR}/include/*.hh)
+FILE(GLOB SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
+
+#merge them
+MERGE("${HEADERS}" "${SOURCES}" CODE_SRC)
+
+#Generate executable project with the CODE_SRC & the specs
+ADD_EXECUTABLE(Project_0
+		${CODE_SRC}
 		"${Project_0_SOURCE_DIR}/Specifs/2D/2D Design v0.04.odt"
-	)
-
-
-#adding definitions for Logs and debug
-#ADD_DEFINITIONS(-DLOGINDENTLVL=1)
-#ADD_DEFINITIONS(-DLOGPREFIX=\"RAGE_SDL\")
+		)
