@@ -225,6 +225,10 @@ void Character_Animations_Center::Attack_Animation_Play(Character_Base* Characte
 unsigned int Character_Animations_Center::Attack_Animation_Callback(unsigned int interval, void* args)
 {
 try {
+	//This is here to allow the last frame to play as long as the previous frames
+	if (!Character_Instance->Get_Attack_Status()) //attack already been finished
+		return 0; //end of timer
+
 	//
 	//todo: use the arg which must contain the character instance and the global monster_vector ?!!
 	//		coz when monster will be able to attack they need to know which instance is attacking
@@ -234,7 +238,7 @@ try {
 		Frame = 0; //reset frame anim
 		Character_Instance->Attack_Reset();//Reset Attack
 		Stop_Animation_Play( Character_Instance ); //reset tileset + tile_rect
-		return 0; //end timer
+		return Attack_Animation->Get_Animation_Frames_Interval();
 	}
 
 	//assign the good sprite rect to the character sprite rect depending on the frame and the direction

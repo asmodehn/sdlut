@@ -834,11 +834,7 @@ try {
 			//play miss Fx	
 			//App::getInstance().getMixer().playChannel(MissFx_Chan);
 		} 
-			//Set the good msg
-		/*if (! Set_Attack_Msg() )
-		{
-			P0_Logger << nl << "Player Set Attack Message Failed " << std::endl;
-		}*/
+		
 			//reset attack
 		Set_Attack_Initial_X(-1);
 		Set_Attack_Initial_Y(-1);
@@ -858,11 +854,7 @@ try {
 			//play miss Fx	
 			App::getInstance().getMixer().getChannel(MissFx_Chan).play();
 		} 
-			//Set the good msg
-		/*if (! Set_Attack_Msg() )
-		{
-			P0_Logger << nl << "Player Set Attack Message Failed " << std::endl;
-		}*/
+		
 			//reset attack
 		Set_Attack_Initial_X(-1);
 		Set_Attack_Initial_Y(-1);

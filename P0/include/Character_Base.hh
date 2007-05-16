@@ -11,8 +11,6 @@ class Character_Base
 	friend class Character_Animations_Center;
 
 private:
-	//Reset everything to normal mode when the attack is finished
-	void Attack_Reset();
 	
 protected:
 
@@ -93,6 +91,9 @@ protected:
 
 	//Move character (pure virtual)
 	virtual bool Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector) = 0;
+
+	//Reset everything to normal mode when the attack is finished
+	virtual void Attack_Reset();
 
 	//Calculate the current life depending on damage, malus, etc and damage made by the opponent
 	bool Calculate_Real_Life(int received_damage = 0);
