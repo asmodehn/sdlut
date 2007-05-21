@@ -69,6 +69,129 @@ Character_Base::~Character_Base()
 {
 }
 
+//Move character using the AI or a predefined movement
+void Character_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
+{
+try {
+	//character can move if: he is alived && he has not been hitted && he is not currently moving somewhere
+	if ( (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) && !Get_Moving_Status() )
+	{
+		//move only if a random number between 0 and 200 is below 100: 1 chances on 2
+		if (rand()%200 < 100) 
+		{
+			//
+			//todo get the sight range from character's xml desc file
+			//
+			int Sight_Range = 6*BATF_SPRITE_W;
+
+			//the destination
+			Point Destination;
+			bool Dest_Founded = false;
+			//we check for a destination only 5 times max
+			for (unsigned int i = 0; i<5; i++)
+			{
+				//we get a possible destination then store it to the collision box in order to check w Manage_Collisions() if the destination is reachable at this time
+				Destination = AI::Choose_Destination( Point(Get_X(), Get_Y()), Sight_Range, Point(Sprite_Width, Sprite_Height) );
+				Collision_Box.setx(Destination.getx() + CB_X_Modifier );
+				Collision_Box.sety(Destination.gety() + CB_Y_Modifier );
+
+				if( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, false) )
+				{//Destination ok: indicate the dest has been founded than leave loop
+					
+					Dest_Founded = true;
+					break;
+				}
+				//Dest not found loop
+			}
+
+			//reset CB
+			Collision_Box.setx(Get_X() + CB_X_Modifier);
+			Collision_Box.sety(Get_Y() + CB_Y_Modifier);
+
+			if (!Dest_Founded)
+				return; //we have not found a destination in time, we leave
+
+			//we have found a dest, it's time to found a path to it. NB: we used the sprite dims as the grid size (todo: perhaps use a static method or implement the pathfinder in the constructor to gain time ?)
+			PathFinder myPathFinder = PathFinder( Point(Sprite_Width, Sprite_Height) );
+			Path = myPathFinder.Get_Path( Point(Get_X(), Get_Y()), Destination );
+
+			//now that we have the path we must inform that we want to move
+			Set_Moving_Status(true);
+		}
+	}
+	//we'r moving or want to move
+	else if ( Get_Moving_Status() )
+	{		
+		list<Point>::iterator i = Path.begin();
+
+		//We follow the path until we reach the destination
+		if ( i != Path.end() )
+		{
+			//update the CB to the future position
+			Collision_Box.setx( i->getx() + CB_X_Modifier );
+			Collision_Box.sety( i->gety() + CB_Y_Modifier );
+			//check if position is available
+			if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, false) )
+			{
+				//
+				//todo use the define movement animation
+				//
+
+				//Update velocity
+				xVel = Collision_Box.getx() - Get_X();
+				if ( xVel < 0 )
+					xVel = -1 * Ch_Vel;
+				else if ( xVel > 0 )
+					xVel = Ch_Vel;
+				else //=
+					xVel = 0;
+
+				yVel = Collision_Box.gety() - Get_Y();
+				if ( yVel < 0 )
+					yVel = -1 * Ch_Vel;
+				else if ( yVel > 0 )
+					yVel = Ch_Vel;
+				else //=
+					yVel = 0;
+
+				//Update sprite
+				if( Assign_Direction_Sprite() == false )
+				{ 
+					P0_Logger << nl << "Check character direction Failed " << std::endl;    
+				}
+
+				//Update position
+				Set_X( Collision_Box.getx() - CB_X_Modifier );
+				Set_Y( Collision_Box.gety() - CB_Y_Modifier );
+
+				//Erase the place we've just reached
+				Path.pop_front(); 
+
+			}
+			else  //position unavailable: reset CB & stay in place? (todo: find a way to resolve this situation in case 2 characters are blocking each other)
+			{
+				Collision_Box.setx( Get_X() + CB_X_Modifier );
+				Collision_Box.sety( Get_Y() + CB_Y_Modifier );
+			}			
+		} else {
+			//We've reach destination (todo: launch a timer to disable move during 3s (usefull?))
+			Set_Moving_Status(false); //we're not moving anymore
+		}
+	}
+
+} catch (std::exception &exc) {
+	//reset CB
+	Collision_Box.setx( Get_X() + CB_X_Modifier );
+	Collision_Box.sety( Get_Y() + CB_Y_Modifier );
+	throw std::logic_error( "From Character_Base::Move(), " + (string)exc.what() );
+} catch (...) {
+	//reset CB
+	Collision_Box.setx( Get_X() + CB_X_Modifier );
+	Collision_Box.sety( Get_Y() + CB_Y_Modifier );
+	throw std::logic_error("Unhandled Error In Character_Base::Move()");  
+}
+}
+
 //move the character_base's collision box to a place its allowed to be when moving
 bool Character_Base::Manage_Collisions(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector, bool Handle_Collisions )
 {
@@ -76,17 +199,22 @@ try {
 //Handle collisions with Allowed area
 	if (Handle_Collisions) //Handle Mode ON
 	{
-		if ( Collision_Box.getx() < Allowed_Area.getx() )
+		Collision_Box.setx( max<int>( Collision_Box.getx(), Allowed_Area.getx() ) );
+		Collision_Box.setx( min<int>( Collision_Box.getx(), Allowed_Area.getx() + Allowed_Area.getw() - Collision_Box.getw() ) );
+		Collision_Box.sety( max<int>( Collision_Box.gety(), Allowed_Area.gety() ) );
+		Collision_Box.sety( min<int>( Collision_Box.gety(), Allowed_Area.gety() + Allowed_Area.geth() - Collision_Box.geth() ) );
+
+		/*if ( Collision_Box.getx() < Allowed_Area.getx() )
 			Collision_Box.setx( Allowed_Area.getx() );
 		if ( (signed)(Collision_Box.getx() + Collision_Box.getw()) > (signed)(Allowed_Area.getx() + Allowed_Area.getw()) )
 			Collision_Box.setx( Allowed_Area.getx() + Allowed_Area.getw() - CB_Width );
 		if ( Collision_Box.gety() < Allowed_Area.gety() ) 
 			Collision_Box.sety( Allowed_Area.gety() ); 
 		if ( (signed)(Collision_Box.gety() + Collision_Box.geth()) > (signed)(Allowed_Area.gety() + Allowed_Area.geth()) )
-			Collision_Box.sety( Allowed_Area.gety() + Allowed_Area.geth() - CB_Height );
+			Collision_Box.sety( Allowed_Area.gety() + Allowed_Area.geth() - CB_Height );*/
 	} else { //Handle Mode OFF
 		//outside the allowed area
-		if ( ( Collision_Box.getx() < Allowed_Area.getx() ) || ( (signed)(Collision_Box.getx() + Sprite_Width) > (signed)(Allowed_Area.getx() + Allowed_Area.getw()) ) || ( Collision_Box.gety() < Allowed_Area.gety() ) || ( (signed)(Collision_Box.gety() + Sprite_Height) > (signed)(Allowed_Area.gety() + Allowed_Area.geth()) ) )
+		if ( ( Collision_Box.getx() < Allowed_Area.getx() ) || ( (signed)(Collision_Box.getx() + Collision_Box.getw()) > (signed)(Allowed_Area.getx() + Allowed_Area.getw()) ) || ( Collision_Box.gety() < Allowed_Area.gety() ) || ( (signed)(Collision_Box.gety() + Collision_Box.geth()) > (signed)(Allowed_Area.gety() + Allowed_Area.geth()) ) )
 			return false; //presence not allowed no need to work more
 	}
 
@@ -362,8 +490,6 @@ bool Character_Base::Assign_Direction_Sprite()
 try {
 	if (!Get_Attack_Status()) //no attack is occuring
 	{
-		int old_Move_Status = Move_Direction;
-
 		//check velocities
 		if ( (Get_xVel() > 0) && (Get_yVel() == 0) ) //CH is moving right
 		{
@@ -399,18 +525,7 @@ try {
 		}
 		
 		//Good sprite for the direction
-		//Current_Tile_Rect = Attack_Tile_Rect->at(Move_Direction*PLAYER_SWORD_ATTACK_ANIMATION_FRAME + 0);
 		Current_Animations_Center->Stop_Animation_Play(this);		
-
-		//Check if we are changing direction
-		if ( old_Move_Status != Move_Direction )
-		{ //change but dont move
-			//xVel = 0;
-			//yVel = 0;
-			Moving_Status = false;
-		} else {
-			Moving_Status = true; //we're moving
-		}
 	}
 	return true; //no error
 } catch (...) {
@@ -877,7 +992,7 @@ try {
 	Set_Attack_Status(false); //end of attack for the character (arrow is independent)
 
 } catch (std::exception &exc) {
-	throw std::logic_error( "Error In Character_Base::Attack_Reset() : " + (string)exc.what() );
+	throw std::logic_error( "From Character_Base::Attack_Reset(), " + (string)exc.what() );
 } catch (...) {
 	throw std::logic_error("Unhandled Error In Character_Base::Attack_Reset()");  
 }

@@ -4,6 +4,8 @@
 //#include "Base.hh"
 #include "BattleField.hh"
 #include "Animations_Center.hh"
+#include "AI.hh"
+#include "PathFinder.hh"
 
 //Character Class
 class Character_Base
@@ -44,6 +46,8 @@ protected:
 	Rect Allowed_Area;
 	//The collision boxes of the character
 	Rect Collision_Box;
+	//the path the character is following
+	list<Point> Path;
 
 /****Attack****/
 
@@ -92,10 +96,7 @@ protected:
 	//Battlefield rules (pure virtuals)
 	virtual int Get_BG_vs_CH_Rules(const int& bgType) = 0;
 	virtual int Get_Env_vs_CH_Rules(const int& envType) = 0;
-
-	//Move character (pure virtual)
-	virtual bool Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector) = 0;
-
+	
 	//Reset everything to normal mode when the attack is finished
 	virtual void Attack_Reset();
 
@@ -332,6 +333,8 @@ public:
 
 	/****Methods****/
 //Movement
+	//Move character (should be reimplemented by the player in order to not use AI)
+	virtual void Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
 	//move the character_base's collision box to a place its allowed to be when moving
 	bool Manage_Collisions( std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector, bool Handle_Collisions = 0);
 	//check the direction where the character is turn to

@@ -182,7 +182,7 @@ try {
 }
 
 //Move monster randomly
-bool Monster_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
+/*void Monster_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
 	//character can move if: he is alived && he has not been hitted
@@ -215,11 +215,13 @@ try {
 			}
 		}
 	}
-	return true; //no error
+
+} catch (std::exception &exc) {
+	throw std::logic_error( "From Monster_Base::Move(), " + (string)exc.what() );
 } catch (...) {
-	return false; //error occured
+	throw std::logic_error("Unhandled Error In Monster_Base::Move()");  
 }
-}
+}*/
 
 //By default the ground allow the undefined monster presence
 int Monster_Base::Get_BG_vs_CH_Rules(const int& bgType)

@@ -198,6 +198,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\src\AI.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Animations.cpp"
 				>
 			</File>
@@ -258,6 +262,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\PathFinder.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\Player.cpp"
 				>
 			</File>
@@ -287,6 +295,10 @@
 			Filter="h;hh;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\include\AI.hh"
+				>
+			</File>
 			<File
 				RelativePath=".\include\Animations.hh"
 				>
@@ -345,6 +357,10 @@
 			</File>
 			<File
 				RelativePath=".\include\NPCs.hh"
+				>
+			</File>
+			<File
+				RelativePath=".\include\PathFinder.hh"
 				>
 			</File>
 			<File

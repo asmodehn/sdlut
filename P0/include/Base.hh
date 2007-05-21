@@ -3,6 +3,8 @@
 
 #include <ctime>
 #include <vector>
+#include <map>
+#include <list>
 #include <algorithm>
 #include <math.h>
 #include <stdarg.h> //for methods with an unllimited number of parameters

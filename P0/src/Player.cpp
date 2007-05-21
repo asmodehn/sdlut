@@ -187,11 +187,11 @@ try {
 }
 
 //Move the Player (based on input)
-bool Player::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
+void Player::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
-	//character can move if: he is alived && he has not been hitted
-	if ( (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) )
+	//character can move if: he is alived && he has not been hitted && he is moving
+	if ( (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) && Get_Moving_Status() )
 	{
 			//Move collision box to the futute position
 		if ( (Move_Direction == CH_RIGHT ) || (Move_Direction == CH_LEFT) || (Move_Direction == CH_DOWN) || (Move_Direction == CH_UP) )
@@ -213,8 +213,9 @@ try {
 		}
 	}
 
-	return true; //no error
-} catch (...) {  //error occured
-	return false;
+} catch (std::exception &exc) {
+	throw std::logic_error( "From Player::Move(), " + (string)exc.what() );
+} catch (...) {
+	throw std::logic_error("Unhandled Error In Player::Move()");  
 }
 }

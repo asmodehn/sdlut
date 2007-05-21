@@ -230,41 +230,9 @@ void Player_Base::Attack_Reset()
 }
 
 //Move the Player
-bool Player_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
+void Player_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
-try {
-	//character can move if: he is alived && he has not been hitted
-	if ( (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) )
-	{
-		//Random mvt
-		xVel = (rand()%3-1)*Ch_Vel;
-		yVel = (rand()%3-1)*Ch_Vel;
-
-		if( Assign_Direction_Sprite() == false )
-		{ 
-			P0_Logger << nl << "Check character direction Failed " << std::endl;    
-		}
-		if ( Get_Moving_Status() ) //we're really moving but not simply changing the direction
-		{
-
-			//Move collision box to the futute position
-			Collision_Box.setx(X + CB_X_Modifier + xVel);
-			Collision_Box.sety(Y + CB_Y_Modifier + yVel);
-
-			//handle collisions
-			if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, true) )
-			{
-				//No Error => Update position 
-				X = Collision_Box.getx() - CB_X_Modifier;
-				Y = Collision_Box.gety() - CB_Y_Modifier;
-			}
-		}
-	}
-
-	return true; //no error
-} catch (...) {  //error occured
-	return false;
-}
+	Character_Base::Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
 }
 
 //Set ground vs player rules

@@ -45,9 +45,13 @@ try {
 	} else { //Victory: end of timer
 		return 0;
 	}
+
+} catch (std::exception &exc) {
+	P0_Logger << nl << "From Monster_Factory::Move_Monsters(), " << (string)exc.what() << std::endl;
+	return interval; //loop
 } catch (...) {
-	P0_Logger << nl << "Move Monsters Daemon Failed " << std::endl;
-	return interval; // loop
+	P0_Logger << nl << "Unhandled Error In Monster_Factory::Move_Monsters()" << std::endl;
+	return interval; //loop
 }
 }
 
@@ -79,15 +83,15 @@ unsigned int Daemons::Move_NPCs(unsigned int interval, void* args)
 try {
 	if (GLOBAL_GAME_STATE != 5 )//victory 
 	{
-		if( myNPC->Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
-		{ 
-			P0_Logger << nl << "Move NPC_Merchant Failed " << std::endl;    
-		}
+		myNPC->Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
 		P0_Logger << nl << "Move NPC_Merchant " << std::endl;
 		return interval; // loop
 	} else { //Victory: end of timer
 		return 0;
 	}
+} catch (std::exception &exc) {
+	P0_Logger << nl << "Move NPC_Merchant Daemon Failed " << (string)exc.what() << std::endl;
+	return interval; // loop
 } catch (...) {
 	P0_Logger << nl << "Move NPC_Merchant Daemon Failed " << std::endl;
 	return interval; // loop

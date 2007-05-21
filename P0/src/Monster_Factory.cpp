@@ -165,24 +165,24 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Create_Monsters
 }
 //Invoke all monsters movements
 template <typename Monster_Template>
-bool Monster_Factory<Monster_Template>::Move_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector) //int nb_vector, ... )//, std::vector<Character_Base*> Monster_Vector_Skeleton, std::vector<Character_Base*> Monster_Vector_Worm)
+void Monster_Factory<Monster_Template>::Move_Monsters(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector) //int nb_vector, ... )//, std::vector<Character_Base*> Monster_Vector_Skeleton, std::vector<Character_Base*> Monster_Vector_Worm)
 {
 try {
+
 	//Move Monsters
 	for(unsigned int i=0; i < Monster_Vector->size(); i++)
 	{
-		if( ((Monster_Base*)Monster_Vector->at(i))->Move( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) == false )
-		{ 
-			P0_Logger << nl << "Failed to move monster N°" << i << std::endl;
-			return false; //error occured 
-   		}	
+		Monster_Vector->at(i)->Move( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
 	}
-	return true; //no error
+
+} catch (std::exception &exc) {
+	throw std::logic_error( "From Monster_Factory::Move_Monsters(), " + (string)exc.what() );
 } catch (...) {
-	return false; //error occured
+	throw std::logic_error("Unhandled Error In Monster_Factory::Move_Monsters()");  
 }
 }
-//Invoke all monsters movements animation on the screen
+
+//Invoke all monsters sprites on the screen
 template <typename Monster_Template>
 bool Monster_Factory<Monster_Template>::Show_Monsters(const Rect& Camera, VideoSurface& Screen)
 {
