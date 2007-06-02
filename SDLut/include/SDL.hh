@@ -61,6 +61,11 @@
 #include "System/SDLRWOps.hh"
 
 /**
+  * \defgroup Network
+  */
+#include "Network/SDLSocketTCP.hh"
+
+/**
   * \defgroup Input
   */
 #include "Input/SDLMouse.hh"
@@ -72,7 +77,6 @@
   * \defgroup Audio
  */
 #include "Audio/SDLMixer.hh"
-#include "Audio/SDLAudioInfo.hh"
 #include "Audio/SDLSound.hh"
 
 /**

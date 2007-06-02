@@ -1,5 +1,5 @@
-#ifndef SDL_SOUND_HH
-#define SDL_SOUND_HH
+#ifndef SDL_SOUNDIMPL_HH
+#define SDL_SOUNDIMPL_HH
 
 /**
  * \class Sound
@@ -16,11 +16,11 @@
  *
  */
 
+#include "Audio/SDLSound.hh"
+
 #include "SDLAudioInfo.hh"
-#include "System/SDLRWOps.hh"
 #include <string>
 #include <stdexcept>
-#include <map>
 
 namespace RAGE
 {
@@ -41,19 +41,18 @@ namespace RAGE
 		
 
 	//This class stores a Sound (original - not converted to Audio format yet )
-	class Sound
+	class SoundImpl : public SoundIf
 {/*
 		//total number of sound (internal SDL)
 	static int resourcecount;
 		//index of the current Sound (internal SDL reference)
 	int resourceindex;*/
 
-	friend class Mixer;
+	friend class MixerImpl;
 
 	AudioInfo _aInfo;
 
-	//should be shared to decrease memory usage.
-	std::auto_ptr<RWOps> pvm_OriginalData;
+	
 
 	//true if this sound has already been converted.
 	bool converted;
@@ -67,12 +66,18 @@ namespace RAGE
 	public:
 
 		//Sound Loader
-		Sound(std::string filename, bool loop_status = false) throw (std::logic_error);
+		SoundImpl(std::string filename, bool loop_status = false) throw (std::logic_error);
 		//Sound Copy ( careful with conversion )
-		Sound( const Sound & s)  throw (std::logic_error);
+		SoundImpl( const SoundImpl & s)  throw (std::logic_error);
 		//Sound destructor
-		~Sound();
+		~SoundImpl();
 
+		
+		bool isMIXImpl() { return false;}
+
+		//TODO : Convert should be done at load time.
+		//This must be done to match the SDL_mixer behaviour
+		//be carefull about the consequences :o/
 		bool Convert (unsigned short DestinationFormat,unsigned short DestinationChannels,int DestinationFrequency);
 		
 	

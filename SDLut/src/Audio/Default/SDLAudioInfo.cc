@@ -1,4 +1,4 @@
-#include "Audio/SDLAudioInfo.hh"
+#include "SDLAudioInfo.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE

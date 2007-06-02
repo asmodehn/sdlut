@@ -16,38 +16,40 @@
  *
  */
 
-#include "SDLSound.hh"
+#include "SDLSoundImpl.hh"
 
 namespace RAGE
 {
 	namespace SDL
 	{
 
-class Channel
+class ChannelImpl
 {
 	
-	const Sound * pvm_sound;
+	const SoundImpl * pvm_sound;
 	unsigned long pvm_cursor;
 	int pvm_volume;
 	bool pvm_playing;
 	bool pvm_loop;
 
-	friend class Mixer;
+	friend class MixerImpl;
 	
 	protected :
-	Channel(const Sound * s, bool loop, bool autoplay, unsigned short volpct);
+	ChannelImpl(const SoundImpl * s, bool loop, bool autoplay, unsigned short volpct);
 
 	public :
 		
-	~Channel();
+	virtual ~ChannelImpl();
 
-	void play();
-	void pause();
-	void stop();
+	virtual bool isMIXImpl() { return false;}
+	
+	virtual void play();
+	virtual void pause();
+	virtual void stop();
 	//returns old volume absolute value
-	int setVolume(unsigned short volpct);
+	virtual int setVolume(unsigned short volpct);
 
-	bool isPlaying() { return pvm_playing; }
+	virtual bool isPlaying() { return pvm_playing; }
 		
 
 	

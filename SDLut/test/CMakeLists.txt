@@ -12,6 +12,12 @@ CONFIGURE_FILE(data/SDLsample.jpg ${SDLut_BINARY_DIR}/test/data/SDLsample.jpg CO
 CONFIGURE_FILE(data/SDLsample.png ${SDLut_BINARY_DIR}/test/data/SDLsample.png COPYONLY)
 CONFIGURE_FILE(data/SDLsample.tif ${SDLut_BINARY_DIR}/test/data/SDLsample.tif COPYONLY)
 CONFIGURE_FILE(data/sample.wav ${SDLut_BINARY_DIR}/test/data/sample.wav COPYONLY)
+CONFIGURE_FILE(data/null.wav ${SDLut_BINARY_DIR}/test/data/null.wav COPYONLY)
+CONFIGURE_FILE(data/soundSample.wav ${SDLut_BINARY_DIR}/test/data/soundSample.wav COPYONLY)
+CONFIGURE_FILE(data/soundSample.ogg ${SDLut_BINARY_DIR}/test/data/soundSample.ogg COPYONLY)
+CONFIGURE_FILE(data/musicSample.wav ${SDLut_BINARY_DIR}/test/data/musicSample.wav COPYONLY)
+CONFIGURE_FILE(data/musicSample.ogg ${SDLut_BINARY_DIR}/test/data/musicSample.ogg COPYONLY)
+CONFIGURE_FILE(data/musicSample.mp3 ${SDLut_BINARY_DIR}/test/data/musicSample.mp3 COPYONLY)
 CONFIGURE_FILE(data/ECHELON.TTF ${SDLut_BINARY_DIR}/test/data/ECHELON.TTF COPYONLY)
 
 #linking Rage_SDL to all other following executables
@@ -49,9 +55,16 @@ ADD_TEST(PNG_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.png"
 ADD_TEST(TIF_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.tif")
 ADD_TEST(JPG_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.jpg")
 
-ADD_EXECUTABLE(SDLtestAudio SDLtestAudio.cc)
-ADD_DEPENDENCIES(SDLtestAudio SDLut)
-ADD_TEST(WAV_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestAudio "data/sample.wav")
+ADD_EXECUTABLE(SDLtestAudioChannel SDLtestAudioChannel.cc)
+ADD_DEPENDENCIES(SDLtestAudioChannel SDLut)
+ADD_TEST(WAV_Sound ${EXECUTABLE_OUTPUT_PATH}/SDLtestAudioChannel "data/soundSample.wav")
+ADD_TEST(OGG_Sound ${EXECUTABLE_OUTPUT_PATH}/SDLtestAudioChannel "data/soundSample.ogg")
+
+ADD_EXECUTABLE(SDLtestAudioMusic SDLtestAudioMusic.cc)
+ADD_DEPENDENCIES(SDLtestAudioMusic SDLut)
+ADD_TEST(WAV_Music ${EXECUTABLE_OUTPUT_PATH}/SDLtestAudioMusic "data/musicSample.wav")
+ADD_TEST(OGG_Music ${EXECUTABLE_OUTPUT_PATH}/SDLtestAudioMusic "data/musicSample.ogg")
+ADD_TEST(MP3_Music ${EXECUTABLE_OUTPUT_PATH}/SDLtestAudioMusic "data/musicSample.mp3")
 
 ADD_EXECUTABLE(SDLtestGL SDLtestGL.cc)
 ADD_DEPENDENCIES(SDLtestGL SDLut)
@@ -77,7 +90,8 @@ TARGETS
 	SDLtestFont
 	SDLtestNet
 	SDLtestRWCodeDump
-	SDLtestAudio
+	SDLtestAudioChannel
+	SDLtestAudioMusic
 DESTINATION
 	${VERSION}/test
 )

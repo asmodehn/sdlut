@@ -47,7 +47,8 @@ namespace RAGE
 	//Only one instance of this class should be used.
 	class AudioInfo
 	{
-		friend class Sound;
+		friend class SoundImpl;
+		friend class MusicImpl;
 		
 		protected :
 
