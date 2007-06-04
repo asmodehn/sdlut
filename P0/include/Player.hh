@@ -31,7 +31,7 @@ class Player : public Player_Base
         {
             Camera = new_Camera;
         }
-        inline Rect Get_Camera() const
+        inline Rect& Get_Camera()
         {
             return Camera;
         }

@@ -75,6 +75,8 @@ Character_Animation::~Character_Animation()
 
 void Character_Animation::Clean_Animation()
 {
-	delete Animation_Tileset, Animation_Tileset = NULL;
-	delete Animation_Tile_Rect, Animation_Tile_Rect = NULL;
+	if (Animation_Tileset != NULL)
+		delete Animation_Tileset, Animation_Tileset = NULL;
+	if (Animation_Tile_Rect != NULL)
+		delete Animation_Tile_Rect, Animation_Tile_Rect = NULL;
 }

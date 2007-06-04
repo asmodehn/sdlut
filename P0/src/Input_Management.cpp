@@ -50,7 +50,7 @@ void KeyboardInput::Player_Moves_Consequences()
 		int old_Move_Status = myPlayer->Get_Move_Direction();
 
 		//set character sprite in function of the direction
-		if( myPlayer->Assign_Direction_Sprite() == false )
+		if( myPlayer->Find_Direction_From_Velocities() == false )
 		{ 
 			P0_Logger << nl << "Check character direction Failed " << std::endl;    
 		}
@@ -60,34 +60,33 @@ void KeyboardInput::Player_Moves_Consequences()
 		{ //change but dont move
 			//xVel = 0;
 			//yVel = 0;
-			myPlayer->Set_Moving_Status(false);
+			//Stop animation
+			myPlayer->Get_Current_Animations_Center()->Stop_Animation_Play(myPlayer);
 		}
 		else //we're really moving
 		{
-			myPlayer->Set_Moving_Status(true); 
-
-			if ( myPlayer->Get_Moving_Status() ) //we're really moving but not simply changing the direction
-			{
-				//Move the character if possible
-				myPlayer->Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
-				
-				//Set the camera
-				if( myPlayer->Following_Camera() == false )
-				{ 
-					P0_Logger << nl << "Failed to set the camera" << std::endl;    
-				}
-	/*
-	//
-	//todo
-	//
-				//stop in case it is currently runing (usefull for now coz there is no animation and it *seems* to make timers crash when they're empty)
-				myPlayer_Move_Animation_Timer->abort();
-				//Set the callback method which will define the character appearance on the screen and start animation
-				myPlayer_Move_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
-				//Start the animation every PLAYER_MOVE_ANIMATION_INTERVAL
-				myPlayer_Move_Animation_Timer->launch(PLAYER_MOVE_ANIMATION_INTERVAL);
-	*/
+			myPlayer->Set_Moving_Status(2); //moving
+		
+			//Move the character if possible
+			myPlayer->Move(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
+			
+			//Set the camera
+			if( myPlayer->Following_Camera() == false )
+			{ 
+				P0_Logger << nl << "Failed to set the camera" << std::endl;    
 			}
+/*
+//
+//todo
+//
+			//stop in case it is currently runing (usefull for now coz there is no animation and it *seems* to make timers crash when they're empty)
+			myPlayer_Move_Animation_Timer->abort();
+			//Set the callback method which will define the character appearance on the screen and start animation
+			myPlayer_Move_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
+			//Start the animation every PLAYER_MOVE_ANIMATION_INTERVAL
+			myPlayer_Move_Animation_Timer->launch(PLAYER_MOVE_ANIMATION_INTERVAL);
+*/
+
 		//P0_Logger << nl << "Move " << std::endl;
 		}
 	}
@@ -148,34 +147,37 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 			{
 				//bool move_key_pressed = false;
 
-				//Moves Keys
-				if ((s.getKey() == RIGHT_1) || (s.getKey() == RIGHT_2))
+				//Moves Keys only when paused, stopped or anim finished
+				if (myPlayer->Get_Moving_Status() <= 0)
 				{
-					//myCharacter->Set_xVel( myCharacter->Get_xVel() + PC_WIDTH);
-					//myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
-					if (myPlayer->Get_xVel() != 1 )
-						myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
-				} 
-				if ((s.getKey() == DOWN_1) || (s.getKey() == DOWN_2))
-				{
-					//myCharacter->Set_yVel( myCharacter->Get_yVel() + PC_HEIGHT);
-					//myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
-					if (myPlayer->Get_yVel() != 1 )
-						myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
-				}
-				if ((s.getKey() == LEFT_1) || (s.getKey() == LEFT_2))
-				{
-					//myCharacter->Set_xVel( myCharacter->Get_xVel() - PC_WIDTH);
-					//myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
-					if (myPlayer->Get_xVel() != -1)
-						myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
-				}
-				if ((s.getKey() == UP_1) || (s.getKey() == UP_2))
-				{
-					//myCharacter->Set_yVel( myCharacter->Get_yVel() - PC_HEIGHT);
-					//myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
-					if (myPlayer->Get_yVel() != -1 )
-						myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
+					if ((s.getKey() == RIGHT_1) || (s.getKey() == RIGHT_2))
+					{
+						//myCharacter->Set_xVel( myCharacter->Get_xVel() + PC_WIDTH);
+						//myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
+						if (myPlayer->Get_xVel() != 1 )
+							myPlayer->Set_xVel( myPlayer->Get_xVel() + 1);
+					} 
+					if ((s.getKey() == DOWN_1) || (s.getKey() == DOWN_2))
+					{
+						//myCharacter->Set_yVel( myCharacter->Get_yVel() + PC_HEIGHT);
+						//myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
+						if (myPlayer->Get_yVel() != 1 )
+							myPlayer->Set_yVel( myPlayer->Get_yVel() + 1);
+					}
+					if ((s.getKey() == LEFT_1) || (s.getKey() == LEFT_2))
+					{
+						//myCharacter->Set_xVel( myCharacter->Get_xVel() - PC_WIDTH);
+						//myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
+						if (myPlayer->Get_xVel() != -1)
+							myPlayer->Set_xVel( myPlayer->Get_xVel() - 1);
+					}
+					if ((s.getKey() == UP_1) || (s.getKey() == UP_2))
+					{
+						//myCharacter->Set_yVel( myCharacter->Get_yVel() - PC_HEIGHT);
+						//myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
+						if (myPlayer->Get_yVel() != -1 )
+							myPlayer->Set_yVel( myPlayer->Get_yVel() - 1);
+					}
 				}
 
 				//Attack Keys

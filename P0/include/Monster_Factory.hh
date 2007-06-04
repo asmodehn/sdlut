@@ -19,7 +19,7 @@ class Monster_Factory
 		int CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height;
 		RGBSurface *Life_Bar_Tile;
 		Rect empty_life_bar_rect, real_life_bar_rect;
-		Character_Animations_Center *Current_Animations_Center;
+		Character_Animation *Attack_Animation, *Death_Animation, *Run_Animation, *Walk_Animation, *Hit_Animation, *Stop_Animation, *Pause_Animation; //*Talk _Animation;
 
 		//How many monster must be generated
 		int Initial_Number_Of_Monsters;

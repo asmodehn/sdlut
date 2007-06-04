@@ -7,8 +7,9 @@ Monster_Skeleton::Monster_Skeleton(int x, int y,
 		int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
 		Rect &Allowed_Area,
 		int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
-		Character_Animations_Center* &Current_Animations_Center,
-		RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
+		RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect,
+		Character_Animation* &Attack_Animation, Character_Animation* &Death_Animation, Character_Animation* &Run_Animation, Character_Animation* &Walk_Animation,
+		Character_Animation* &Hit_Animation, Character_Animation* &Stop_Animation, Character_Animation* &Pause_Animation
 		)
 {
 try {
@@ -34,8 +35,6 @@ try {
 	this->CB_Width = CB_Width;
 	this->CB_Height = CB_Height;
 
-	this->Current_Animations_Center = Current_Animations_Center;
-
 	this->Life_Bar_Tile = Life_Bar_Tile;
 	this->empty_life_bar_rect = empty_life_bar_rect;
 	this->real_life_bar_rect = real_life_bar_rect;
@@ -45,12 +44,15 @@ try {
 	Collision_Box.sety(Y+CB_Y_Modifier);
 	Collision_Box.setw(CB_Width);
 	Collision_Box.seth(CB_Height);
-	////Collision Box Definition : The collision box has the size of the monster
-	//Collision_Box.setx(X);
-    //Collision_Box.sety(Y);
-    //Collision_Box.setw(Sprite_Width);
-    //Collision_Box.seth(Sprite_Height);
 
+	//Default Animations Center
+	//
+	//todo: below define the 3 Animations centers
+	//
+	//Generate Animation Center using the Animations
+	Current_Animations_Center = new Character_Animations_Center(
+						Stop_Animation, Walk_Animation, Run_Animation, Attack_Animation, Hit_Animation, Pause_Animation, Death_Animation, false);
+	
 } catch (std::exception &exc) {
 	throw std::logic_error( "Error in Monster_Skeleton Constructor: " + (string)exc.what() );
 } catch (...) {
@@ -62,6 +64,8 @@ try {
 //Destructor
 Monster_Skeleton::~Monster_Skeleton()
 {
+	if (Current_Animations_Center != NULL)
+		delete Current_Animations_Center, Current_Animations_Center = NULL;
 }
 
 //Set ground vs skeleton rules
@@ -105,8 +109,9 @@ Monster_Worm::Monster_Worm(int x, int y,
 		int &Ch_Vel, int &BASE_LIFE, int &BASE_ARMOR, int &BASE_INFLICTED_DAMAGE, int &Sprite_Width, int &Sprite_Height, Character_Types &Characters_ID,
 		Rect &Allowed_Area,
 		int &CB_X_Modifier, int &CB_Y_Modifier, int &CB_Width, int &CB_Height,
-		Character_Animations_Center* &Current_Animations_Center,
-		RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect
+		RGBSurface* &Life_Bar_Tile, Rect &empty_life_bar_rect, Rect &real_life_bar_rect,
+		Character_Animation* &Attack_Animation, Character_Animation* &Death_Animation, Character_Animation* &Run_Animation, Character_Animation* &Walk_Animation,
+		Character_Animation* &Hit_Animation, Character_Animation* &Stop_Animation, Character_Animation* &Pause_Animation
 		)
 {
 try {
@@ -132,8 +137,6 @@ try {
 	this->CB_Width = CB_Width;
 	this->CB_Height = CB_Height;
 
-	this->Current_Animations_Center = Current_Animations_Center;
-
 	this->Life_Bar_Tile = Life_Bar_Tile;
 	this->empty_life_bar_rect = empty_life_bar_rect;
 	this->real_life_bar_rect = real_life_bar_rect;
@@ -143,11 +146,15 @@ try {
 	Collision_Box.sety(Y+CB_Y_Modifier);
 	Collision_Box.setw(CB_Width);
 	Collision_Box.seth(CB_Height);
-	////Collision Box Definition : The collision box has the size of the monster
-	//Collision_Box.setx(X);
-    //Collision_Box.sety(Y);
-    //Collision_Box.setw(Sprite_Width);
-    //Collision_Box.seth(Sprite_Height);
+
+	//Default Animations Center
+	//
+	//todo: below define the 3 Animations centers
+	//
+	//Generate Animation Center using the Animations
+	Current_Animations_Center = new Character_Animations_Center(
+						Stop_Animation, Walk_Animation, Run_Animation, Attack_Animation, Hit_Animation, Pause_Animation, Death_Animation, false);
+	
 
 } catch (std::exception &exc) {
 	throw std::logic_error( "Error in Monster_Worm Constructor: " + (string)exc.what() );
@@ -160,6 +167,8 @@ try {
 //Destructor
 Monster_Worm::~Monster_Worm()
 {
+	if (Current_Animations_Center != NULL)
+		delete Current_Animations_Center, Current_Animations_Center = NULL;
 }
 
 //Set ground vs worm rules

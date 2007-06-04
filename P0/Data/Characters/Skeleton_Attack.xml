@@ -19,6 +19,6 @@
 	<Animation_Characteristics>
 		<Frames>10</Frames>
 		<KeyFrame>8</KeyFrame>
-		<Frames_Interval>130</Frames_Interval>
+		<Frames_Interval>90</Frames_Interval>
 	</Animation_Characteristics>
 </Animation>

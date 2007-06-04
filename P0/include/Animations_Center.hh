@@ -1,11 +1,9 @@
-#include "Character_Base.hh" //to be ale to use the character_base class
-
 #ifndef Animation_Center_HH
 #define Animation_Center_HH
 
 #include "Animations.hh"
 
-
+#include "Character_Base.hh" //to be able to use the character_base class
 class Character_Base; //false def: to be able to instantiate
 
 //Where all animation for the character are defined
@@ -17,6 +15,9 @@ private:
 	//Character Instance (never deleted coz only a link)
 	Character_Base* Character_Instance;
 
+	//Indicate if the animation manager is the owner of the animations and so if he must delete it when he is destructed
+	bool Animations_Owner;
+
 	//Animations
 	Character_Animation* Attack_Animation;
 	Character_Animation* Death_Animation;
@@ -26,17 +27,30 @@ private:
 	Character_Animation* Stop_Animation;
 	Character_Animation* Pause_Animation;
 
+	//Structure to pass infos to the timer
+	struct Timer_Arg{
+		Character_Base* Ch_Instance;
+		Point Destination;
+		std::vector<BattleField_Sprite*>* Environment_Sprite_Vector;
+		std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector;
+		std::vector< std::vector<Character_Base*> *>* Global_Player_Vector;
+		std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector;
+	};
+	Timer_Arg sTimer_Arg;
+
 	//Default constructor
 	Character_Animations_Center();
 	//clean up
 	void Clean_Character_Animations_Center();
 
 	//Animation's Timers
+	Timer<Character_Animations_Center>* Walk_Animation_Timer;
 	Timer<Character_Animations_Center>* Death_Animation_Timer;
 	Timer<Character_Animations_Center>* Attack_Animation_Timer;
 	Timer<Character_Animations_Center>* Hit_Animation_Timer;
 
 	//Animation's Callbacks
+	unsigned int Walk_Animation_Callback(unsigned int interval, void* args);
 	unsigned int Death_Animation_Callback(unsigned int interval, void* args);
 	unsigned int Attack_Animation_Callback(unsigned int interval, void* args);
 	unsigned int Hit_Animation_Callback(unsigned int interval, void* args);
@@ -80,12 +94,24 @@ public:
 	}
 
 	//Definition
-	Character_Animations_Center(const string &Data_Root_Directory, const string &Animation_Center_Filename);
+	Character_Animations_Center(
+		Character_Animation* &Stop_Animation,
+		Character_Animation* &Walk_Animation,
+		Character_Animation* &Run_Animation,
+		Character_Animation* &Attack_Animation,		
+		Character_Animation* &Hit_Animation,
+		Character_Animation* &Pause_Animation,
+		Character_Animation* &Death_Animation,
+		//,Character_Animation* &Talk_Animation,
+		bool Animations_Owner = false
+		);
 	~Character_Animations_Center();
 
 	//Animations for characters
 		//Stop Animation
 	void Stop_Animation_Play( Character_Base* Character_Instance );
+		//Walk Animation
+	void Walk_Animation_Play( Character_Base* Character_Instance, const Point& Destination, std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector );
 		//Death Animation
 	void Death_Animation_Play(Character_Base* Character_Instance);
 		//Attack Animation 

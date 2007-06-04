@@ -11,6 +11,7 @@
 class Character_Base
 {
 	friend class Character_Animations_Center;
+	friend class PathFinder;
 
 private:
 	
@@ -38,8 +39,6 @@ protected:
 
 /****Movements****/
 
-	//Moving status define if the player is moving or just changing direction or staying at the same place
-	bool Moving_Status;
 	//moving direction
 	int Move_Direction;
 	//The zone where the character is alloew to go (default: whole level)
@@ -83,13 +82,15 @@ protected:
 	int CB_Height;
 
 /****Flags****/
-	//indicate if the character is 1:alive, 0:dying, -1:dying animation playing, -2:dead
+	//Moving status define if the player is 2:moving, 1:moving animation in progress, 0:animation finished, -1: stopped, -2: paused
+	int Moving_Status;
+	//indicate if the character is 1:alive, 0:dying, -1:dying animation in progress, -2:dead
 	int Alive_Status;
 	//Attack key pressed yes or no 
 	bool attack_status;
 	//Manage the style of attack (0: unarmed, 1: melee attack, 2: distant attack, 3&+: TODO(future) )
 	int attack_style;
-	//indicate if the character has been 2:hitted; 1:hitted animation playing; 0:not hitted
+	//indicate if the character has been 2:hitted; 1:hitted animation in progress; 0:not hitted
 	int Hitted_Status;
 
 /****Methods***/
@@ -109,7 +110,7 @@ public:
     {
         X = new_X;
     }
-	inline int Get_X() const
+	inline int& Get_X()
     {
         return X;
     }
@@ -118,7 +119,7 @@ public:
     {
         Y = new_Y;
     }
-	inline int Get_Y() const
+	inline int& Get_Y()
     {
         return Y;
     }
@@ -127,7 +128,7 @@ public:
     {
         xVel = new_xVel;
     }
-	inline int Get_xVel() const
+	inline int& Get_xVel()
     {
         return xVel;
     }
@@ -136,7 +137,7 @@ public:
     {
         yVel = new_yVel;
     }
-    inline int Get_yVel() const
+    inline int& Get_yVel()
     {
         return yVel;
     }
@@ -145,7 +146,7 @@ public:
     {
         Sprite_Width = new_Sprite_Width;
     }
-    inline int Get_Sprite_Width() const
+    inline int& Get_Sprite_Width()
     {
         return Sprite_Width;
     }
@@ -153,7 +154,7 @@ public:
     {
         Sprite_Height = new_Sprite_Height;
     }
-    inline int Get_Sprite_Height() const
+    inline int& Get_Sprite_Height() 
     {
         return Sprite_Height;
     }
@@ -163,7 +164,7 @@ public:
     {
         Collision_Box = new_Collision_Box;
     }
-	inline Rect Get_Collision_Box() const
+	inline Rect& Get_Collision_Box()
     {
         return Collision_Box;
     }
@@ -172,7 +173,7 @@ public:
     {
         Alive_Status = new_Alive_Status;
     }
-	inline int Get_Alive_Status() const
+	inline int& Get_Alive_Status()
     {
         return Alive_Status;
 	}
@@ -180,7 +181,7 @@ public:
 	{
 		Real_Life = new_Real_Life;
 	}
-	inline int Get_Real_Life()
+	inline int& Get_Real_Life()
 	{
 		return Real_Life;
 	}
@@ -188,7 +189,7 @@ public:
 	{
 		Real_Armor = new_Real_Armor;
 	}
-	inline int Get_Real_Armor()
+	inline int& Get_Real_Armor()
 	{
 		return Real_Armor;
 	}
@@ -196,7 +197,7 @@ public:
 	{
 		Real_Inflicted_Damage = new_Real_Inflicted_Damage;
 	}
-	inline int Get_Real_Inflicted_Damage()
+	inline int& Get_Real_Inflicted_Damage()
 	{
 		return Real_Inflicted_Damage;
 	}
@@ -204,7 +205,7 @@ public:
 	{
 		Real_Range = new_Real_Range;
 	}
-	inline int Get_Real_Range()
+	inline int& Get_Real_Range()
 	{
 		return Real_Range;
 	}
@@ -212,7 +213,7 @@ public:
 	{
 		Allowed_Area = new_Allowed_Area;
 	}
-	inline Rect Get_Allowed_Area()
+	inline Rect& Get_Allowed_Area()
 	{
 		return Allowed_Area;
 	}
@@ -222,7 +223,7 @@ public:
 		//cout << "Attack status set to: " << new_attack_status << endl;
         attack_status=new_attack_status;
     }
-	inline bool Get_Attack_Status() const
+	inline bool& Get_Attack_Status()
     {
         return attack_status;
     }
@@ -230,7 +231,7 @@ public:
     {
         attack_style = new_attack_style;
     }
-    inline int Get_Attack_Style() const
+    inline int& Get_Attack_Style()
     {
         return attack_style;
     }
@@ -238,7 +239,7 @@ public:
 	{
 		attack_CB = new_Attack_CB;
 	}
-	inline Rect Get_Attack_CB() const
+	inline Rect& Get_Attack_CB()
 	{
 		return attack_CB;
 	}
@@ -247,7 +248,7 @@ public:
     {
         attack_successfull = new_Attack_Successfull;
     }
-    inline int Get_Attack_Successfull() const
+    inline int& Get_Attack_Successfull()
     {
         return attack_successfull;
     }
@@ -256,7 +257,7 @@ public:
     {
         attack_initial_x = new_attack_initial_x;
     }
-    inline int Get_Attack_Initial_X() const
+    inline int& Get_Attack_Initial_X()
     {
         return attack_initial_x;
     }
@@ -264,7 +265,7 @@ public:
     {
         attack_initial_y = new_attack_initial_y;
     }
-    inline int Get_Attack_Initial_Y() const
+    inline int& Get_Attack_Initial_Y()
     {
         return attack_initial_y;
     }
@@ -272,20 +273,20 @@ public:
     {
         attack_direction = new_attack_direction;
     }
-    inline int Get_Attack_Direction() const
+    inline int& Get_Attack_Direction()
     {
         return attack_direction;
     }
 
-	inline int Get_Move_Direction() const
+	inline int& Get_Move_Direction()
     {
         return Move_Direction;
     }	
-	inline void Set_Moving_Status(bool new_moving_status)
+	inline void Set_Moving_Status(int new_moving_status)
     {
         Moving_Status = new_moving_status;
     }
-    inline bool Get_Moving_Status() const
+    inline int& Get_Moving_Status()
     {
         return Moving_Status;
     }
@@ -293,7 +294,7 @@ public:
     {
         Characters_ID = new_Characters_ID;
     }
-	inline Character_Types Get_Characters_ID() const
+	inline Character_Types& Get_Characters_ID()
     {
         return Characters_ID;
 	}
@@ -301,16 +302,17 @@ public:
     {
         Hitted_Status = newHitted_Status;
     }
-    inline int Get_Hitted_Status() const
+    inline int& Get_Hitted_Status()
     {
         return Hitted_Status;
     }
 
-	inline Character_Animations_Center* Get_Current_Animations_Center() const
+	inline Character_Animations_Center*& Get_Current_Animations_Center()
     {
         return Current_Animations_Center;
 	}
-	inline RGBSurface* Get_Current_Tileset() const
+
+	inline RGBSurface*& Get_Current_Tileset()
 	{
 		return Current_Tileset;
 	}
@@ -318,13 +320,27 @@ public:
 	{
 		Current_Tileset = newTileset;
 	}
-	inline Rect Get_Set_Current_Tile_Rect() const
+
+	inline Rect& Get_Current_Tile_Rect()
 	{
 		return Current_Tile_Rect;
 	}
 	inline void Set_Current_Tile_Rect(Rect newTile_Rect)
 	{
 		Current_Tile_Rect = newTile_Rect;
+	}
+
+	inline list<Point>& Get_Path()
+	{
+		return Path;
+	}
+	inline void Set_Path(list<Point> newPath)
+	{
+		Path = newPath;
+	}
+	inline void Clear_Path()
+	{
+		Path.clear();
 	}
 
 	//Init
@@ -335,10 +351,12 @@ public:
 //Movement
 	//Move character (should be reimplemented by the player in order to not use AI)
 	virtual void Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector);
-	//move the character_base's collision box to a place its allowed to be when moving
+	//Handle collisions between the ch's collision box & the battlefield & other characters
+	//Handle_Collisions Mode OFF: tell if the CB is allowed to be here
+	//Handle_Collisions Mode ON: Check if CB is allowed to be here, if not moved it to the best place near it's current position regarding of interactions rules
 	bool Manage_Collisions( std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector, bool Handle_Collisions = 0);
 	//check the direction where the character is turn to
-	bool Assign_Direction_Sprite();
+	bool Find_Direction_From_Velocities();
 	//define character sprite which appear on the screen during walk
 	bool Set_Walk_Animation_Sprite();
 	//define character sprite which appear on the screen during run

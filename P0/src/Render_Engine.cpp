@@ -3,8 +3,9 @@
 //Constructor
 Render_Engine::Render_Engine(Player* &myPlayer, NPC_Merchant* &myNPC, BackGround* &myBackGround, Environment* &myEnvironment,
 							 Monster_Factory<Monster_Skeleton>* &Monster_Factory_Skeleton, Monster_Factory<Monster_Worm>* &Monster_Factory_Worm,
-							 Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, KeyboardInput* &myKeyboardInput, Messages* &myMessages
-							 )
+							 Escape_Menu* &myEsc_Menu, Victory_Screen* &myVictory_Screen, KeyboardInput* &myKeyboardInput, Messages* &myMessages,
+							 std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector
+							)
 {
 	//Allocations
 	this->myPlayer = myPlayer;
@@ -17,6 +18,8 @@ Render_Engine::Render_Engine(Player* &myPlayer, NPC_Merchant* &myNPC, BackGround
 	this->myVictory_Screen = myVictory_Screen;
 	this->myKeyboardInput = myKeyboardInput;
 	this->myMessages = myMessages;
+	this->Global_Player_Vector = Global_Player_Vector;
+	this->Global_Monster_Vector = Global_Monster_Vector;
 
 	P0_Logger << nl << "Engine CONSTRUCTED Successfully " << std::endl;
 }
@@ -39,10 +42,12 @@ bool Render_Engine::resize(int width, int height)
 	CURRENT_SCREEN_WIDTH = width;
 	CURRENT_SCREEN_HEIGHT = height;
 	//reset camera
-	Rect NewCamera;
-	NewCamera.setw(CURRENT_SCREEN_WIDTH);
-	NewCamera.seth(CURRENT_SCREEN_HEIGHT);
-	myPlayer->Set_Camera(NewCamera);
+	//Rect NewCamera;
+	//NewCamera.setw(CURRENT_SCREEN_WIDTH);
+	//NewCamera.seth(CURRENT_SCREEN_HEIGHT);
+	//myPlayer->Set_Camera(NewCamera);
+	myPlayer->Get_Camera().setw(CURRENT_SCREEN_WIDTH);
+	myPlayer->Get_Camera().seth(CURRENT_SCREEN_HEIGHT);
 	myPlayer->Following_Camera();
 
 	P0_Logger << nl << "Resize : OK " << std::endl;
@@ -52,11 +57,27 @@ bool Render_Engine::resize(int width, int height)
 //Everything that must be calculated before the display of the screen must be defined in this method and then will be called by the mainloop each cycle
 void Render_Engine::prerender(unsigned long deltaticks)
 {
+try {
+
+//Player Movement
 	//To handle movement based on time instead of frame
 	myPlayer->Set_DeltaTicks(deltaticks);
 	//Handle movement
 	myKeyboardInput->Player_Moves_Consequences();
+
+} catch (std::exception &exc) {
+	P0_Logger << nl << " Render_Engine::prerender(), " << exc.what() << std::endl;
+#ifdef _DEBUG
+	throw std::logic_error("DEBUG_MODE -> Stop In Render_Engine::prerender()");
+#endif
+} catch (...) {
+	P0_Logger << nl << "Unhandled Error In Render_Engine::prerender()" << std::endl; 
+#ifdef _DEBUG
+	throw std::logic_error("DEBUG_MODE -> Stop In Render_Engine::prerender()");
+#endif
 }
+}
+
 //Inside this, we must put everything designed to draw the display. It will be called after the prerender by the mainloop and at the end of this method the screen will be flipped automatically to show everything
 void Render_Engine::render(VideoSurface & screen) const
 {
@@ -149,4 +170,32 @@ void Render_Engine::render(VideoSurface & screen) const
 //Finally the post render method will be used by each cycle of mainloop after the draw of the screen. It designed to contain evrytinhg that will be updated after the render of the screen surface
 void Render_Engine::postrender(void)
 {
+try {
+
+//NPCs
+/*	if (GLOBAL_GAME_STATE != 5 )//victory 
+	{
+		myNPC->Move(Global_Player_Vector, myEnvironment->Get_Environment_Sprite_Vector(), myBackGround->Get_BackGround_Sprite_Vector(), Global_Monster_Vector);
+		//P0_Logger << nl << "Move NPC_Merchant " << std::endl;
+	}
+*/
+//Monsters
+	if (GLOBAL_GAME_STATE != 5 )//victory 
+	{
+		Monster_Factory_Skeleton->Move_Monsters( Global_Player_Vector, myEnvironment->Get_Environment_Sprite_Vector(), myBackGround->Get_BackGround_Sprite_Vector(), Global_Monster_Vector );
+		//Monster_Factory_Worm->Move_Monsters( Global_Player_Vector, myEnvironment->Get_Environment_Sprite_Vector(), myBackGround->Get_BackGround_Sprite_Vector(), Global_Monster_Vector );
+		//P0_Logger << nl << "Move Monsters " << std::endl;
+	}
+
+} catch (std::exception &exc) {
+	P0_Logger << nl << " Render_Engine::postrender(), " << exc.what() << std::endl;
+#ifdef _DEBUG
+	throw std::logic_error("DEBUG_MODE -> Stop In Render_Engine::postrender()");
+#endif
+} catch (...) {
+	P0_Logger << nl << "Unhandled Error In Render_Engine::postrender()" << std::endl; 
+#ifdef _DEBUG
+	throw std::logic_error("DEBUG_MODE -> Stop In Render_Engine::postrender()");
+#endif
+}
 }

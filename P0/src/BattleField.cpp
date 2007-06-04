@@ -95,7 +95,7 @@ BackGround::~BackGround()
 }
 
 //BackGround interpretation from the file
-std::vector<BattleField_Sprite*>* BackGround::BackGround_Vector()
+std::vector<BattleField_Sprite*>*& BackGround::Fill_BackGround_Vector()
 {
 
 #ifndef _DEBUG //on debug mode we only have an empty vector
@@ -300,7 +300,7 @@ try {
 						if (! Screen.blit( *BackGround_Tileset_Bridges, Point::Point( BackGround_Sprite_Vector->at(it)->Get_X() - Camera.getx(), BackGround_Sprite_Vector->at(it)->Get_Y() - Camera.gety() ), BackGround_Sprite_Vector->at(it)->Get_BattleField_Clip() ) )
 							P0_Logger << nl << "Bridge Sprite Generation Failed " << GetError() << std::endl;
 					}
-					else // not listed type(!!??) : impossible because the vector was created with Background::Background_Vector()
+					else // not listed type(!!??) : impossible because the vector was created with Background::Fill_BackGround_Vector()
 					{
 						P0_Logger << nl << "Ground type present inside BackGround_Sprite_Vector not recognized !!?? X: " << BackGround_Sprite_Vector->at(it)->Get_X() << " Y: " << BackGround_Sprite_Vector->at(it)->Get_Y() << std::endl;
 						//Don't draw anything
@@ -350,7 +350,7 @@ Environment::~Environment()
 }
 
 //Environment interpretation from the file
-std::vector<BattleField_Sprite*>* Environment::Environment_Vector()
+std::vector<BattleField_Sprite*>*& Environment::Fill_Environment_Vector()
 {
 
 #ifndef _DEBUG //on debug mode we only have an empty vector
@@ -515,7 +515,7 @@ try {
 				if (! Screen.blit( *Environment_Tileset_Houses, Point::Point( Environment_Sprite_Vector->at(i)->Get_X() - Camera.getx(), Environment_Sprite_Vector->at(i)->Get_Y() - Camera.gety() ), Environment_Sprite_Vector->at(i)->Get_BattleField_Clip() ) )
 					P0_Logger << nl << "Wall Sprite Generation Failed " << GetError() << std::endl;
 			}
-			else // not listed type(!!??) : impossible because the vector was created with Environment::Environment_Vector()
+			else // not listed type(!!??) : impossible because the vector was created with Environment::Fill_Environment_Vector()
 			{
 				P0_Logger << nl << "Environnement item type present inside Environment_Sprite_Vector not recognized !!?? X: " << Environment_Sprite_Vector->at(i)->Get_X() << " Y: " << Environment_Sprite_Vector->at(i)->Get_Y() << std::endl;
 				//Don't draw anything

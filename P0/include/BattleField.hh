@@ -107,13 +107,18 @@ class BackGround // : public BattleField_Sprite
 		std::vector<BattleField_Sprite*>* BackGround_Sprite_Vector;
 
 	public:
+		inline std::vector<BattleField_Sprite*>*& Get_BackGround_Sprite_Vector()
+		{
+			return BackGround_Sprite_Vector;
+		}
+
 		BackGround();
 		~BackGround();
 
 		/****Methods****/
 
 		//Construct the BackGround vector
-		std::vector<BattleField_Sprite*>* BackGround_Vector();
+		std::vector<BattleField_Sprite*>*& Fill_BackGround_Vector();
 
 		//Generate the background of the screen
 		bool Render(const Rect& Camera, VideoSurface& Screen);
@@ -132,13 +137,18 @@ class Environment // : public BattleField_Sprite
 		std::vector<BattleField_Sprite*>* Environment_Sprite_Vector;
 
 	public:
+		inline std::vector<BattleField_Sprite*>*& Get_Environment_Sprite_Vector()
+		{
+			return Environment_Sprite_Vector;
+		}
+
 		Environment();
 		~Environment();
 
 		/****Methods****/
 
 		//Construct the BackGround vector
-		std::vector<BattleField_Sprite*>* Environment_Vector();
+		std::vector<BattleField_Sprite*>*& Fill_Environment_Vector();
 
 		//Generate the background of the screen
 		bool Render(const Rect& Camera, VideoSurface& Screen);

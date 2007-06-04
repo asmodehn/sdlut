@@ -12,8 +12,8 @@ Monster_Factory<Monster_Template>::Monster_Factory()
 		Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
 		Allowed_Area,
 		CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height,
-		Current_Animations_Center,
-		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect
+		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect,
+		Attack_Animation, Death_Animation, Run_Animation, Walk_Animation, Hit_Animation, Stop_Animation, Pause_Animation //Talk _Animation
 		);
 }
 
@@ -31,8 +31,8 @@ try {
 		Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
 		Allowed_Area,
 		CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height,
-		Current_Animations_Center,
-		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect
+		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect,
+		Attack_Animation, Death_Animation, Run_Animation, Walk_Animation, Hit_Animation, Stop_Animation, Pause_Animation //Talk _Animation
 		);
 
 	//P0_Logger << nl << "Factory CONSTRUCTED Successfully " << std::endl;
@@ -48,7 +48,6 @@ try {
 template <typename Monster_Template>
 Monster_Factory<Monster_Template>::~Monster_Factory()
 {
-	delete Current_Animations_Center, Current_Animations_Center = NULL;
 	delete Life_Bar_Tile, Life_Bar_Tile = NULL;
 
 	for (unsigned int i = 0; i < Monster_Vector->size(); i++)
@@ -62,6 +61,26 @@ Monster_Factory<Monster_Template>::~Monster_Factory()
 		delete BattleField_Cutting_Vector->at(i), BattleField_Cutting_Vector->at(i) = NULL;
 	}
 	delete BattleField_Cutting_Vector, BattleField_Cutting_Vector = NULL;
+
+//Not always independent animations
+	if ( (Walk_Animation != Stop_Animation) && (Walk_Animation != NULL) )
+		delete Walk_Animation, Walk_Animation = NULL;
+	if ( (Run_Animation != Stop_Animation) && (Run_Animation != NULL) )
+		delete Run_Animation, Run_Animation = NULL;
+	if ( (Attack_Animation != Stop_Animation) && (Attack_Animation != NULL) )
+		delete Attack_Animation, Attack_Animation = NULL;
+	if ( (Hit_Animation != Stop_Animation) && (Hit_Animation != NULL) )
+		delete Hit_Animation, Hit_Animation = NULL;
+//Independent animation
+	if (Stop_Animation != NULL)
+		delete Stop_Animation, Stop_Animation = NULL;
+//Independent animations that can be NULL
+	if (Death_Animation != NULL)
+		delete Death_Animation, Death_Animation = NULL;
+	if (Pause_Animation != NULL)
+		delete Pause_Animation, Pause_Animation = NULL;
+	//if (Talk_Animation != NULL) 
+	//	delete Talk_Animation, Talk_Animation= NULL;
 }
 
 //Create Monster Method which create ONE SINGLE MONSTER ONLY and designed to by used by other method and not alone
@@ -102,12 +121,12 @@ Monster_Template* Monster_Factory<Monster_Template>::Create_One_Monster(std::vec
 		x, y, Ch_Vel, BASE_LIFE, BASE_ARMOR, BASE_INFLICTED_DAMAGE, Sprite_Width, Sprite_Height, Characters_ID,
 		Allowed_Area,
 		CB_X_Modifier, CB_Y_Modifier, CB_Width, CB_Height,
-		Current_Animations_Center,
-		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect
+		Life_Bar_Tile, empty_life_bar_rect, real_life_bar_rect,
+		Attack_Animation, Death_Animation, Run_Animation, Walk_Animation, Hit_Animation, Stop_Animation, Pause_Animation //Talk _Animation
 		);
 
 	//if something don't allow the monster to be here, loop
-	while ( (! (myMonster->Check_Cutting_Allow_Monster(BattleField_Cutting_Vector)) ) || (! myMonster->Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, false) ) )
+	while ( (! (myMonster->Check_Cutting_Allow_Monster(BattleField_Cutting_Vector)) ) || (! myMonster->Manage_Collisions( Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, false) ) )
 	{
 		//retry coordinate
 		x = random(0,LEVEL_WIDTH-1);
@@ -263,17 +282,20 @@ std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Remove_Dead_Mon
 template <typename Monster_Template>
 std::vector<Character_Base*>* Monster_Factory<Monster_Template>::Generate_New_Monster(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
-	unsigned int temp = 0;
-
-	// Rebirth probabilities: 1/3 probability at MAX_MONSTERS_SIMULTANEOUSLY & 2/3 at 0 monsters with the number of monsters <= MAX_MONSTERS_SIMULTANEOUSLY
-	temp = random(0, 100);
-	if ( ( temp > (unsigned int)( 100 * ( (Monster_Vector->size() + (float)MAX_MONSTERS_SIMULTANEOUSLY) / (3*(float)MAX_MONSTERS_SIMULTANEOUSLY) ) ) ) && ( Monster_Vector->size() <= (unsigned)MAX_MONSTERS_SIMULTANEOUSLY ) )
+	if ( Monster_Vector->size() < (unsigned)MAX_MONSTERS_SIMULTANEOUSLY )
 	{
-		//Store the new monster at the end of the vector
-		Monster_Vector->push_back( Create_One_Monster(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) );
+		unsigned int temp = 0;
 
-		//Add 1 to the number of monsters present
-		ALiVE_MONSTERS++;
+		// Rebirth probabilities: 1/3 probability at MAX_MONSTERS_SIMULTANEOUSLY & 2/3 at 0 monsters
+		temp = random(0, 100);
+		if ( temp > (unsigned int)( 100 * ( (Monster_Vector->size() + (float)MAX_MONSTERS_SIMULTANEOUSLY) / (3*(float)MAX_MONSTERS_SIMULTANEOUSLY) ) ) )
+		{
+			//Store the new monster at the end of the vector
+			Monster_Vector->push_back( Create_One_Monster(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector) );
+
+			//Add 1 to the number of monsters present
+			ALiVE_MONSTERS++;
+		}
 	}
 	
 	//Finally return the new Vector wth eventual new monsters

@@ -19,9 +19,7 @@ try {
 	Characters_ID = Humanoid; //default
 
 /****Movements****/
-	//Initial moving status
-	Moving_Status = false;
-	Move_Direction = CH_RIGHT;
+	Move_Direction = CH_RIGHT; //initial direction: right
 
 	//Default Area: the whole level
 	Allowed_Area.setx(0);
@@ -52,6 +50,7 @@ try {
 	CB_X_Modifier = 0, CB_Y_Modifier = 0, CB_Width = 0, CB_Height = 0;
 
 /****Default Flags****/
+	Moving_Status = -1; //stopped
 	Alive_Status = 1; //alive
 	attack_status = false; //no attack, false = 0
 	attack_style = 0; //unarmed
@@ -73,12 +72,15 @@ Character_Base::~Character_Base()
 void Character_Base::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
-	//character can move if: he is alived && he has not been hitted && he is not currently moving somewhere
-	if ( (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) && !Get_Moving_Status() )
+	//character can move if: he is alived && he has not been hitted && he is stopped or paused
+	if ( (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) && (Get_Moving_Status() <= -1) )
 	{
-		//move only if a random number between 0 and 200 is below 100: 1 chances on 2
-		if (rand()%200 < 100) 
+		//move: 10 chances over 1200 (that should correspond to 1 chance over 2 every 1s @ 60fps)
+		if (rand()%1200 < 10) 
+		//if (rand()%10 < 10)
 		{
+P0_Logger << nl << "Character " << this << " Finding Path" << std::endl; 
+
 			//
 			//todo get the sight range from character's xml desc file
 			//
@@ -94,6 +96,10 @@ try {
 				Destination = AI::Choose_Destination( Point(Get_X(), Get_Y()), Sight_Range, Point(Sprite_Width, Sprite_Height) );
 				Collision_Box.setx(Destination.getx() + CB_X_Modifier );
 				Collision_Box.sety(Destination.gety() + CB_Y_Modifier );
+
+				//destination same as current position
+				if ( Destination == Point(Get_X(), Get_Y()) )
+					continue;
 
 				if( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, false) )
 				{//Destination ok: indicate the dest has been founded than leave loop
@@ -111,88 +117,103 @@ try {
 			if (!Dest_Founded)
 				return; //we have not found a destination in time, we leave
 
+			if ( ( abs( Destination.getx() - Get_X()) > Sprite_Width ) || ( abs( Destination.gety() - Get_Y()) > Sprite_Height ) )
+			{
+				P0_Logger << nl << "Path Must have at leat 2 steps" << std::endl; 
+			}
+
 			//we have found a dest, it's time to found a path to it. NB: we used the sprite dims as the grid size (todo: perhaps use a static method or implement the pathfinder in the constructor to gain time ?)
 			PathFinder myPathFinder = PathFinder( Point(Sprite_Width, Sprite_Height) );
-			Path = myPathFinder.Get_Path( Point(Get_X(), Get_Y()), Destination );
+			Path = myPathFinder.Get_Path( Point(Get_X(), Get_Y()), Destination, this, Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector );
 
 			//now that we have the path we must inform that we want to move
-			Set_Moving_Status(true);
+			Set_Moving_Status(2);
+
+P0_Logger << nl << "Character Path Found: " << &Path << " w Size: " << Path.size() << std::endl; 
+P0_Logger << nl << "Origin: (" << Get_X() << ", " << Get_Y() << "); Final Destination: (" << Destination.getx() << ", " << Destination.gety() << ")" << std::endl; 
+
 		}
 	}
-	//we'r moving or want to move
-	else if ( Get_Moving_Status() )
-	{		
+	//character: want to move or his animation have just finished or have an non empty path (-> has not finished his movement) ) and he is alived and he has not been hitted
+	else if  ( ( ( Get_Moving_Status() == 2 ) || ( Get_Moving_Status() == 0 ) ) && (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) )
+	{
+
+P0_Logger << nl << "Character Moving Animation For Path: " << &Path << " @ Step " << Path.size() << std::endl;  
+
 		list<Point>::iterator i = Path.begin();
 
 		//We follow the path until we reach the destination
 		if ( i != Path.end() )
 		{
-			//update the CB to the future position
-			Collision_Box.setx( i->getx() + CB_X_Modifier );
-			Collision_Box.sety( i->gety() + CB_Y_Modifier );
-			//check if position is available
-			if ( Manage_Collisions(Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector, false) )
-			{
-				//
-				//todo use the define movement animation
-				//
+			assert( Path.size() > 0 && "Path size <= 0 !!!" );	
 
-				//Update velocity
-				xVel = Collision_Box.getx() - Get_X();
-				if ( xVel < 0 )
-					xVel = -1 * Ch_Vel;
-				else if ( xVel > 0 )
-					xVel = Ch_Vel;
-				else //=
-					xVel = 0;
+			//Update velocity
+			xVel = i->getx() - Get_X();
+			if ( xVel < 0 )
+				xVel = -1;// * Ch_Vel;
+			else if ( xVel > 0 )
+				xVel = 1;//Ch_Vel;
+			else //=
+				xVel = 0;
 
-				yVel = Collision_Box.gety() - Get_Y();
-				if ( yVel < 0 )
-					yVel = -1 * Ch_Vel;
-				else if ( yVel > 0 )
-					yVel = Ch_Vel;
-				else //=
-					yVel = 0;
+			yVel = i->gety() - Get_Y();
+			if ( yVel < 0 )
+				yVel = -1;// * Ch_Vel;
+			else if ( yVel > 0 )
+				yVel = 1;//Ch_Vel;
+			else //=
+				yVel = 0;
 
-				//Update sprite
-				if( Assign_Direction_Sprite() == false )
-				{ 
-					P0_Logger << nl << "Check character direction Failed " << std::endl;    
-				}
+			//Find Direction
+			if( Find_Direction_From_Velocities() == false )
+			{ 
+				P0_Logger << nl << "Check character direction Failed " << std::endl;    
+			}				
 
-				//Update position
-				Set_X( Collision_Box.getx() - CB_X_Modifier );
-				Set_Y( Collision_Box.gety() - CB_Y_Modifier );
+P0_Logger << nl << "Going From (" << Get_X() << ", " << Get_Y() << ") To (" << i->getx() << ", " << i->gety() << ") using the direction: " << Get_Move_Direction() <<std::endl;  
 
-				//Erase the place we've just reached
+			//Launch Move Animation (todo: manage walk/run !)
+			assert( this != NULL && "The Character Instance is NULL ???!!!");
+			Current_Animations_Center->Walk_Animation_Play(this, Point(i->getx(), i->gety()), Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
+
+P0_Logger << nl << "Character Moving Animation Launched For Path: " << &Path << " @ Step " << Path.size() << std::endl;  
+
+			//Erase the place we've just reached
+			if ( Get_Moving_Status() >= 0 ) //coz the Walk_Animation_Play() could have stopped the character & erase the Path in case he is blocked
 				Path.pop_front(); 
-
-			}
-			else  //position unavailable: reset CB & stay in place? (todo: find a way to resolve this situation in case 2 characters are blocking each other)
-			{
-				Collision_Box.setx( Get_X() + CB_X_Modifier );
-				Collision_Box.sety( Get_Y() + CB_Y_Modifier );
-			}			
+	
 		} else {
+
+P0_Logger << nl << "Character Moving Animation For Path: " << &Path << " Finished @ (" << Get_X() << ", " << Get_Y() << ")\n" << std::endl;  
+
 			//We've reach destination (todo: launch a timer to disable move during 3s (usefull?))
-			Set_Moving_Status(false); //we're not moving anymore
+			Current_Animations_Center->Stop_Animation_Play(this);
 		}
+	}
+	//character: want to move and he his alived but he has been hitted
+	else if  ( ( Get_Moving_Status() >= 0 ) && (Get_Alive_Status() == 1) && (Get_Hitted_Status() > 0) )
+	{
+		Current_Animations_Center->Stop_Animation_Play(this);
 	}
 
 } catch (std::exception &exc) {
 	//reset CB
 	Collision_Box.setx( Get_X() + CB_X_Modifier );
 	Collision_Box.sety( Get_Y() + CB_Y_Modifier );
+	Set_Moving_Status(-1); //stop the ch
 	throw std::logic_error( "From Character_Base::Move(), " + (string)exc.what() );
 } catch (...) {
 	//reset CB
 	Collision_Box.setx( Get_X() + CB_X_Modifier );
 	Collision_Box.sety( Get_Y() + CB_Y_Modifier );
+	Set_Moving_Status(-1); //stop the ch
 	throw std::logic_error("Unhandled Error In Character_Base::Move()");  
 }
 }
 
-//move the character_base's collision box to a place its allowed to be when moving
+//Handle collisions between the ch's collision box & the battlefield & other characters
+//Handle_Collisions Mode OFF: return true if the CB is allowed to be here
+//Handle_Collisions Mode ON: Check if CB is allowed to be here, if no, moved it to the best place near it's current position regarding of interactions rules. return false in case of error.
 bool Character_Base::Manage_Collisions(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector, bool Handle_Collisions )
 {
 try {
@@ -203,15 +224,6 @@ try {
 		Collision_Box.setx( min<int>( Collision_Box.getx(), Allowed_Area.getx() + Allowed_Area.getw() - Collision_Box.getw() ) );
 		Collision_Box.sety( max<int>( Collision_Box.gety(), Allowed_Area.gety() ) );
 		Collision_Box.sety( min<int>( Collision_Box.gety(), Allowed_Area.gety() + Allowed_Area.geth() - Collision_Box.geth() ) );
-
-		/*if ( Collision_Box.getx() < Allowed_Area.getx() )
-			Collision_Box.setx( Allowed_Area.getx() );
-		if ( (signed)(Collision_Box.getx() + Collision_Box.getw()) > (signed)(Allowed_Area.getx() + Allowed_Area.getw()) )
-			Collision_Box.setx( Allowed_Area.getx() + Allowed_Area.getw() - CB_Width );
-		if ( Collision_Box.gety() < Allowed_Area.gety() ) 
-			Collision_Box.sety( Allowed_Area.gety() ); 
-		if ( (signed)(Collision_Box.gety() + Collision_Box.geth()) > (signed)(Allowed_Area.gety() + Allowed_Area.geth()) )
-			Collision_Box.sety( Allowed_Area.gety() + Allowed_Area.geth() - CB_Height );*/
 	} else { //Handle Mode OFF
 		//outside the allowed area
 		if ( ( Collision_Box.getx() < Allowed_Area.getx() ) || ( (signed)(Collision_Box.getx() + Collision_Box.getw()) > (signed)(Allowed_Area.getx() + Allowed_Area.getw()) ) || ( Collision_Box.gety() < Allowed_Area.gety() ) || ( (signed)(Collision_Box.gety() + Collision_Box.geth()) > (signed)(Allowed_Area.gety() + Allowed_Area.geth()) ) )
@@ -485,10 +497,10 @@ Rect inf_rect;
 }
 
 //check the move direction and assign the good sprite
-bool Character_Base::Assign_Direction_Sprite()
+bool Character_Base::Find_Direction_From_Velocities()
 {
 try {
-	if (!Get_Attack_Status()) //no attack is occuring
+	if (!Get_Attack_Status()) //no attack is occuring (todo: find if this test is usefull & necessary^^)
 	{
 		//check velocities
 		if ( (Get_xVel() > 0) && (Get_yVel() == 0) ) //CH is moving right
@@ -523,9 +535,6 @@ try {
 		{
 			Move_Direction = CH_RIGHT_UP;
 		}
-		
-		//Good sprite for the direction
-		Current_Animations_Center->Stop_Animation_Play(this);		
 	}
 	return true; //no error
 } catch (...) {
@@ -874,6 +883,8 @@ try {
 				{
 					//One monster has been hit so send damage value to the monster
 					Current_Monster->Calculate_Real_Life( inflicted_damage );
+					//Stop the monster
+					Current_Monster->Get_Current_Animations_Center()->Stop_Animation_Play(Current_Monster);
 					//Set the Hitted_Status to 2 for the character
 					Current_Monster->Set_Hitted_Status( 2 );
 					//Leave the check returning the ID (which will be saved inside the attack_sucessful) in order to hit only one monster at a time.

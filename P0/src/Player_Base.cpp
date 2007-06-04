@@ -208,18 +208,94 @@ try {
 	
 	string Default_Animations_Center_Filename = Data_Root_Directory + XML_Manager::Get_Option_String(Description_Filename, "Animation_Center_Filename");
 
+
 	//Default Animations Center
-	Unarmed_Animations_Center = new Character_Animations_Center( Data_Root_Directory, Default_Animations_Center_Filename );
+	Unarmed_Animations_Center = Generate_Animation_Center( Data_Root_Directory, Default_Animations_Center_Filename );
 	Current_Animations_Center = Unarmed_Animations_Center;
 
 
 } catch (std::exception &exc)
 {
-	throw std::logic_error(exc.what());
+	throw std::logic_error("From Player_Base::Parse_Description_File(), " + (string)exc.what());
 }
 catch (...)
 {
-	throw std::logic_error("Unhandled Exception When Parsing XML Description File" + Description_Filename);
+	throw std::logic_error("Unhandled Exception in Player_Base::Parse_Description_File( " + Description_Filename + " )" );
+}
+}
+
+//Create an animation Center from the animation center filename
+Character_Animations_Center * Player_Base::Generate_Animation_Center(const string &Data_Root_Directory, const string &Animation_Center_Filename)
+{
+try {
+
+	//1st validate file!
+	XML_Manager::Validate_File(Animation_Center_Filename);
+
+	string Default_Attack_Style = XML_Manager::Get_Option_String(Animation_Center_Filename, "Style");
+	string Default_Attack_Type = XML_Manager::Get_Option_String(Animation_Center_Filename, "Type");
+
+//Animation Always present !
+	Character_Animation* Stop_Animation = new Character_Animation("Stop_Animation_Filename", Data_Root_Directory, Animation_Center_Filename);
+
+//Animations that must be defined but can be the stop animation
+	Character_Animation* Walk_Animation = NULL;
+	if ( XML_Manager::Check_Node_Exists(Animation_Center_Filename, "Walk_Animation_Filename") ) //if animation defined
+	{
+		Walk_Animation = new Character_Animation("Walk_Animation_Filename", Data_Root_Directory, Animation_Center_Filename);
+	} else {
+		*&Walk_Animation = *&Stop_Animation;
+	}
+
+	Character_Animation* Run_Animation = NULL;
+	if ( XML_Manager::Check_Node_Exists(Animation_Center_Filename, "Run_Animation_Filename") ) //if animation defined
+	{
+		Run_Animation = new Character_Animation("Run_Animation_Filename", Data_Root_Directory, Animation_Center_Filename);
+	} else {
+		*&Run_Animation = *&Stop_Animation;
+	}
+
+	Character_Animation* Attack_Animation = NULL;
+	if ( XML_Manager::Check_Node_Exists(Animation_Center_Filename, "Attack_Animation_Filename") ) //if animation defined
+	{
+		Attack_Animation = new Character_Animation("Attack_Animation_Filename", Data_Root_Directory, Animation_Center_Filename);
+	} else {
+		*&Attack_Animation = *&Stop_Animation;
+	}
+
+	Character_Animation* Hit_Animation = NULL;
+	if ( XML_Manager::Check_Node_Exists(Animation_Center_Filename, "Hit_Animation_Filename") ) //if animation defined
+	{
+		Hit_Animation = new Character_Animation("Hit_Animation_Filename", Data_Root_Directory, Animation_Center_Filename);
+	} else {
+		*&Hit_Animation = *&Stop_Animation;
+	}
+
+//animations that can be null
+	Character_Animation* Pause_Animation = NULL;
+	if ( XML_Manager::Check_Node_Exists(Animation_Center_Filename, "Pause_Animation_Filename") ) //if animation defined
+		Pause_Animation = new Character_Animation("Pause_Animation_Filename", Data_Root_Directory, Animation_Center_Filename);
+
+	Character_Animation* Death_Animation = NULL;
+	if ( XML_Manager::Check_Node_Exists(Animation_Center_Filename, "Death_Animation_Filename") ) //if animation defined
+		Death_Animation = new Character_Animation("Death_Animation_Filename", Data_Root_Directory, Animation_Center_Filename);
+
+	//Character_Animation* Talk_Animation = NULL;
+	//if ( XML_Manager::Check_Node_Exists(Animation_Center_Filename, "Talk_Animation_Filename") ) //if animation defined
+	//	Talk_Animation = Character_Animation("Talk_Animation_Filename", Data_Root_Directory, Animation_Center_Filename);
+
+	//Generate Animation Center using the Animations
+	Character_Animations_Center *A_C = new Character_Animations_Center(
+						Stop_Animation, Walk_Animation, Run_Animation, Attack_Animation, Hit_Animation, Pause_Animation, Death_Animation, true);
+	return A_C;
+
+} catch (std::exception &exc)
+{
+	throw std::logic_error( "From Player_Base::Generate_Animation_Center(), " + (string)exc.what());
+}
+catch (...)
+{
+	throw std::logic_error("Unhandled Exception in Player_Base::Generate_Animation_Center( " + Animation_Center_Filename + " )" );
 }
 }
 

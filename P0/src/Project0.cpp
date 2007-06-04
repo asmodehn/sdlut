@@ -50,6 +50,9 @@ bool InitEverything()
     }
 	P0_Logger << nl << "Video Surface Creation : OK " << std::endl;
 
+	//set the game exe icon
+	//App::getInstance().getWindow().setIcon( RGBSurface("P0.ico") );
+
 	//Initialize Audio Mixer
 	if (!App::getInstance().initAudio())
     {
@@ -90,7 +93,7 @@ try {
 	P0_Logger << nl << "BackGround Init: OK " << std::endl;
 	
 	//Fill the BackGround vector with all BackGround sprite corresponding to the map file
-	BackGround_Sprite_Vector = myBackGround->BackGround_Vector(); //Vector which will contains all BackGround type and clip
+	*&BackGround_Sprite_Vector = *&myBackGround->Fill_BackGround_Vector(); //Vector which will contains all BackGround type and clip
 	P0_Logger << nl << "BackGround_Sprite Vector Fill: OK " << std::endl;
 	
 	//Initialize the Environment
@@ -98,7 +101,7 @@ try {
 	P0_Logger << nl << "Environment Init: OK " << std::endl;
 
 	//Fill the Environment vector with all Environment sprite corresponding to the map file
-	Environment_Sprite_Vector = myEnvironment->Environment_Vector(); //Vector which will contains all Environment items type and clip
+	*&Environment_Sprite_Vector = *&myEnvironment->Fill_Environment_Vector(); //Vector which will contains all Environment items type and clip
 	P0_Logger << nl << "Environment_Sprite Vector Fill: OK " << std::endl;
 	
 /****PlayerS****/
@@ -188,7 +191,7 @@ try {
 
 	//Engine instanciation
 	myRender_Engine = new Render_Engine(myPlayer, myNPC, myBackGround, myEnvironment, Monster_Factory_Skeleton,
-														Monster_Factory_Worm, myEsc_Menu, myVictory_Screen, myKeyboardInput, myMessages );
+														Monster_Factory_Worm, myEsc_Menu, myVictory_Screen, myKeyboardInput, myMessages, Global_Player_Vector, Global_Monster_Vector );
 
 
 	//Affect the keyboard instance to the windows
@@ -220,9 +223,9 @@ try {
 	FiNiSH_TiME = (unsigned)time( NULL );
 
 	/********Start Daemons Process********/
-	myMonster_Factory_Monsters_Moves_Timer->launch(MONSTERS_MOVEMENT_INTERVAL); //monsters movements
+	//myMonster_Factory_Monsters_Moves_Timer->launch(MONSTERS_MOVEMENT_INTERVAL); //monsters movements
 	myMonster_Factory_Monsters_Generation_Timer->launch(MONSTERS_GENERATION_INTERVAL); //monsters generation
-	myNPCs_Moves_Timer->launch(NPCS_MOVEMENT_INTERVAL); //npcs movements
+	//myNPCs_Moves_Timer->launch(NPCS_MOVEMENT_INTERVAL); //npcs movements
 	myScore->launch(1000 / FRAMES_PER_SECOND); //Score
 
 

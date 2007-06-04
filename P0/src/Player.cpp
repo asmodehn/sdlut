@@ -190,9 +190,14 @@ try {
 void Player::Move(std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector)
 {
 try {
-	//character can move if: he is alived && he has not been hitted && he is moving
-	if ( (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) && Get_Moving_Status() )
+	//character can move if: he is alived && he has not been hitted && he wants to move
+	if ( (Get_Alive_Status() == 1) && (Get_Hitted_Status() == 0) && (Get_Moving_Status() == 2) )
 	{
+/*
+		//Launch Move Animation (todo: manage walk/run !)
+		Current_Animations_Center->Walk_Animation_Play(this, Point(X + Sprite_Width*xVel, Y + Sprite_Height*yVel), Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
+*/
+
 			//Move collision box to the futute position
 		if ( (Move_Direction == CH_RIGHT ) || (Move_Direction == CH_LEFT) || (Move_Direction == CH_DOWN) || (Move_Direction == CH_UP) )
 		{
@@ -211,11 +216,16 @@ try {
 			X = Collision_Box.getx() - CB_X_Modifier;
 			Y = Collision_Box.gety() - CB_Y_Modifier;
 		}
+
+		//Stop the player
+		Current_Animations_Center->Stop_Animation_Play(this);
 	}
 
 } catch (std::exception &exc) {
+	Set_Moving_Status(-1); //stopped
 	throw std::logic_error( "From Player::Move(), " + (string)exc.what() );
 } catch (...) {
+	Set_Moving_Status(-1); //stopped
 	throw std::logic_error("Unhandled Error In Player::Move()");  
 }
 }
