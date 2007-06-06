@@ -63,7 +63,7 @@ namespace RAGE
 			Log<< nl << e.what();
 		}
 		
-		SocketTCPExtend::SocketTCPExtend(const SocketTCPExtend::SocketTCPExtend &) throw (std::logic_error)
+		SocketTCPExtend::SocketTCPExtend(const SocketTCPExtend &) throw (std::logic_error)
 		{
 			//behaviour on copy ??
 		}

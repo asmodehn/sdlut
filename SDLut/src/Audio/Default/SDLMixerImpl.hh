@@ -60,12 +60,12 @@ class MixerImpl : public MixerIf
 		//TO REMOVE END
 
 		//TO IMPLEMENT
-		bool isPlaying(int index) {}
+		bool isPlaying(int index) {return true;}
 		//TO IMPLEMENT
-		bool isPaused(int index) {}
+		bool isPaused(int index) {return true;}
 
 		//TO IMPLEMENT
-		int playChannel(const SoundIf& sound, int volumepct = 100, int loops = 0, int fadeintime = 0, int index = -1) {}
+		int playChannel(const SoundIf& sound, int volumepct = 100, int loops = 0, int fadeintime = 0, int index = -1) {return 0;}
 		
 		//To convert a Sound and store it internally.
 		int mixSound(const SoundIf& sound, bool loop = true, bool autoplay = true, unsigned short volumepct = 100);
@@ -75,7 +75,7 @@ class MixerImpl : public MixerIf
 
 		void pauseChannel(int index) {}
 		void resumeChannel(int index) {}
-		int stopChannel(int index, int fadeouttime = 0) {}
+		int stopChannel(int index, int fadeouttime = 0) {return 0;}
 
 		//TO REMOVE
 		int freeChannel(int index);
@@ -83,14 +83,14 @@ class MixerImpl : public MixerIf
 		int setChannelsNumber(int);
 
 		
-		bool playMusic(const MusicIf& music, int volumepct = 100, int loops = 1, int fadeintime = 0, int index = -1) {}
+		bool playMusic(const MusicIf& music, int volumepct = 100, int loops = 1, int fadeintime = 0, int index = -1) {return true;}
 
 		void pauseMusic() {}
 		void resumeMusic() {}
 		void rewindMusic() {}
-		bool setMusicPosition(double pos) {}
+		bool setMusicPosition(double pos) {return true;}
 	
-		bool stopMusic( int fadeouttime = 0) {}
+		bool stopMusic( int fadeouttime = 0) {return true;}
 	
 }; //class Mixer
 
