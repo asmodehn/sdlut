@@ -920,16 +920,18 @@ try {
 	}
 	if ( Get_Attack_Style() == 1 ) // Melee Style
 	{
-		//play sword Fx	
-		App::getInstance().getMixer().getChannel(SwordFx_Chan).play();
+		//play sword Fx
+		if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
+			App::getInstance().getMixer().playChannel(SwordFx, SFXS_VOLUME);
 
 		Current_Animations_Center->Attack_Animation_Play(this, Global_Monster_Vector);
 		
 	}
 	else if ( Get_Attack_Style() == 2 ) // Distant Style
 	{
-		//play bow Fx	
-		App::getInstance().getMixer().getChannel(BowFx_Chan).play();
+		//play bow Fx
+		if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
+			App::getInstance().getMixer().playChannel(BowFx, SFXS_VOLUME);
 
 		Current_Animations_Center->Attack_Animation_Play(this, Global_Monster_Vector);
 
@@ -981,12 +983,14 @@ try {
 		if (attack_successfull != 0 )
 		{
 			//play hit Fx	
-			App::getInstance().getMixer().getChannel(HitFx_Chan).play();
+			if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
+				App::getInstance().getMixer().playChannel(HitFx, SFXS_VOLUME);
 		}
 		else 
 		{
 			//play miss Fx	
-			App::getInstance().getMixer().getChannel(MissFx_Chan).play();
+			if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
+				App::getInstance().getMixer().playChannel(MissFx, SFXS_VOLUME);
 		} 
 		
 			//reset attack

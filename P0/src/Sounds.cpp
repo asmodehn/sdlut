@@ -1,34 +1,25 @@
 #include "Sounds.hh"
 
-//init each chan to the default chan
-	//sfxs
-int EscMenuButtonFx_Chan = NullSound_Chan;
-int MissFx_Chan = NullSound_Chan;
-int HitFx_Chan = NullSound_Chan;
-int BowFx_Chan = NullSound_Chan;
-int SwordFx_Chan = NullSound_Chan;
+//SFXs
+Sound EscMenuButtonFx = Sound("Data/SFXs/esc_menu_sound.wav");
+Sound MissFx = Sound("Data/SFXs/Miss.wav");
+Sound HitFx = Sound("Data/SFXs/Hit.wav");
+Sound BowFx = Sound("Data/SFXs/Bow.wav");
+Sound SwordFx = Sound("Data/SFXs/Sword.wav");
 
-	//musics
-int GlobalMusic_Chan = NullSound_Chan;
+//Musics
+Music GlobalMusic = Music("Data/Musics/Temple.wav");
 
-bool Set_Sounds_Channels()
+//Initial Sounds infos
+int ALL_SOUNDS_VOLUME = 100, SFXS_VOLUME = 100, MUSIC_VOLUME = 100, VOICE_VOLUME = 100, VIDEO_VOLUME = 100, INTERFACE_VOLUME = 100;
+bool ENABLE_ALL_SOUNDS = 1, ENABLE_SFXS_SOUNDS = 1, ENABLE_MUSIC_SOUNDS = 1, ENABLE_VOICE_SOUNDS = 1, ENABLE_VIDEO_SOUNDS = 1, ENABLE_INTERFACE_SOUNDS = 1;
+
+//called by the interface to change sounds infos
+bool Change_Sounds_Infos()
 {
 try {
-	//Set the null sound to the channel 0 (the 1st one)
-	if (App::getInstance().getMixer().mixSound(Sound("Data/SFXs/null.wav"), false, false) != 0)
-	{
-		return false; //Error: NULL Sound was not mix to the channel 0, impossible !?!
-	}
-
-	//Set Fxs Channels
-	EscMenuButtonFx_Chan = App::getInstance().getMixer().mixSound(Sound("Data/SFXs/esc_menu_sound.wav"), false, false);
-	MissFx_Chan = App::getInstance().getMixer().mixSound(Sound("Data/SFXs/Miss.wav"), false, false);
-	HitFx_Chan = App::getInstance().getMixer().mixSound(Sound("Data/SFXs/Hit.wav"), false, false);
-	BowFx_Chan = App::getInstance().getMixer().mixSound(Sound("Data/SFXs/Bow.wav"), false, false);
-	SwordFx_Chan = App::getInstance().getMixer().mixSound(Sound("Data/SFXs/Sword.wav"), false, false);
-
-	//Set Musics Channels
-	GlobalMusic_Chan = App::getInstance().getMixer().mixSound(Sound("Data/Musics/Temple.wav"), true, false);
+	App::getInstance().getMixer().setMusicVolume(MUSIC_VOLUME);
+	SFXS_VOLUME = SFXS_VOLUME;
 
 	return true; //no error
 

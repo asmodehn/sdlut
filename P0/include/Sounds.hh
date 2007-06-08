@@ -3,20 +3,32 @@
 
 #include "Base.hh"
 
-//Channel of the null sound (the default chan)
-const int NullSound_Chan = 0;
+//FX Sounds
+extern Sound EscMenuButtonFx;
+extern Sound MissFx;
+extern Sound HitFx;
+extern Sound BowFx;
+extern Sound SwordFx;
 
-//Fx Channels
-extern int EscMenuButtonFx_Chan;
-extern int MissFx_Chan;
-extern int HitFx_Chan;
-extern int BowFx_Chan;
-extern int SwordFx_Chan;
+//Music Sounds
+extern Music GlobalMusic;
 
-//Music Channels
-extern int GlobalMusic_Chan;
+//Sounds infos
+extern int ALL_SOUNDS_VOLUME;
+extern int SFXS_VOLUME;
+extern int MUSIC_VOLUME;
+extern int VOICE_VOLUME;
+extern int VIDEO_VOLUME;
+extern int INTERFACE_VOLUME;
+
+extern bool ENABLE_ALL_SOUNDS;
+extern bool ENABLE_SFXS_SOUNDS;
+extern bool ENABLE_MUSIC_SOUNDS;
+extern bool ENABLE_VOICE_SOUNDS;
+extern bool ENABLE_VIDEO_SOUNDS;
+extern bool ENABLE_INTERFACE_SOUNDS;
 
 //Methods
-bool Set_Sounds_Channels();
+bool Change_Sounds_Infos();
 
 #endif

@@ -17,9 +17,6 @@ extern int CURRENT_SCREEN_WIDTH;
 extern int CURRENT_SCREEN_HEIGHT;
 extern int CURRENT_SCREEN_BPP;
 
-//Audio
-extern bool ENABLE_MUSIC;
-
 //KEYS 1
 extern int UP_1;
 extern int DOWN_1;
@@ -39,7 +36,6 @@ extern int ATTACK_2;
 extern int CHANGE_ATTACK_MODE_2;
 extern int MENU_CALL_2;
 extern int WINDOW_MODE_2;
-
 
 ///*******DeV config*******///
 	///***Globals***/

@@ -137,8 +137,9 @@ try {
 	//if the attack was succesfull
 	if (myPlayer->Get_Attack_Successfull() != 0 ) //&& ( myPlayer->Get_Attack_Style() == 2 ) )
 	{
-		//play hit Fx	
-		App::getInstance().getMixer().getChannel(HitFx_Chan).play();
+		//play hit Fx
+		if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
+			App::getInstance().getMixer().playChannel(HitFx, SFXS_VOLUME);
 
 		////Remove Dead Monsters
 		//Monster_Factory_Skeleton->Remove_Dead_Monsters();
@@ -150,7 +151,8 @@ try {
 			return interval;
 
 		//play miss Fx	
-		App::getInstance().getMixer().getChannel(MissFx_Chan).play();
+		if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
+			App::getInstance().getMixer().playChannel(MissFx, SFXS_VOLUME);
 	} 
 	
 	//set attack msg, reset & end timer

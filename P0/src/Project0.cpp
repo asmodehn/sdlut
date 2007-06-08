@@ -51,7 +51,7 @@ bool InitEverything()
 	P0_Logger << nl << "Video Surface Creation : OK " << std::endl;
 
 	//set the game exe icon
-	//App::getInstance().getWindow().setIcon( RGBSurface("P0.ico") );
+	App::getInstance().getWindow().setIcon( RGBSurface("P0_ico.png") );
 
 	//Initialize Audio Mixer
 	if (!App::getInstance().initAudio())
@@ -61,13 +61,13 @@ bool InitEverything()
     }
 	P0_Logger << nl << "Audio Init : OK " << std::endl;
 
-	//Load Fxs & Musics Sounds Files to the mixer and set there respective channels
+	/*//Load Fxs & Musics Sounds Files to the mixer and set there respective channels
 	if (!Set_Sounds_Channels())
 	{
 		P0_Logger << nl << "Mixing Sound Error : " << GetError() << std::endl;
         return false;
     }
-	P0_Logger << nl << "Mixing Sound : OK " << std::endl;
+	P0_Logger << nl << "Mixing Sound : OK " << std::endl;*/
 
 	//If eveything loads fine
     return true;    
@@ -216,8 +216,8 @@ void RunGame()
 try {
 
 	/********Start music********/
-	if (ENABLE_MUSIC)
-		App::getInstance().getMixer().getChannel(GlobalMusic_Chan).play();
+	if ( (ENABLE_MUSIC_SOUNDS) && (ENABLE_ALL_SOUNDS) )
+		App::getInstance().getMixer().playMusic(GlobalMusic);		
 
 	/*******Score Management********/
 	FiNiSH_TiME = (unsigned)time( NULL );
