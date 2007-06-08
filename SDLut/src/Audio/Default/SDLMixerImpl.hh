@@ -89,7 +89,8 @@ class MixerImpl : public MixerIf
 		void resumeMusic() {}
 		void rewindMusic() {}
 		bool setMusicPosition(double pos) {return true;}
-	
+		int setMusicVolume( int volumepct ) { return 0; }
+		
 		bool stopMusic( int fadeouttime = 0) {return true;}
 	
 }; //class Mixer

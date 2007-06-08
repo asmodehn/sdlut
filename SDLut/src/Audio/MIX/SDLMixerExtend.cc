@@ -187,6 +187,11 @@ bool MixerExtend::setMusicPosition(double pos)
 	return Mix_SetMusicPosition(pos) == 0;
 }
 
+int MixerExtend::setMusicVolume( int volumepct )
+{
+	return Mix_VolumeMusic(volumepct * MIX_MAX_VOLUME / 100);
+}
+
 /*
 void MixerExtend::setMusicCMD()
 {

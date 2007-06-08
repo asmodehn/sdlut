@@ -67,6 +67,9 @@ namespace SDL
 		void resumeMusic();
 		void rewindMusic();
 		bool setMusicPosition(double pos);
+
+		int setMusicVolume( int volumepct );
+		
 		//TODO
 		//void setMusicCMD();
 

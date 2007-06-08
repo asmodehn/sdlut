@@ -113,6 +113,10 @@ namespace RAGE
 	{
 		return pvm_mixerimpl->setMusicPosition(pos);
 	}
+	int Mixer::setMusicVolume( int volumepct )
+	{
+		return pvm_mixerimpl->setMusicVolume(volumepct);
+	}
 	
 	bool Mixer::stopMusic(int fadeouttime)
 	{

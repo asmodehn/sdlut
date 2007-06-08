@@ -58,7 +58,7 @@ class MixerIf
 	virtual void resumeMusic()=0;
 	virtual void rewindMusic()=0;
 	virtual bool setMusicPosition(double pos)=0;
-	
+	virtual int setMusicVolume( int volumepct )=0;
 	virtual bool stopMusic(int fadeouttime = 0) =0;
 	
 };
@@ -116,7 +116,8 @@ public:
 	void resumeMusic();
 	void rewindMusic();
 	bool setMusicPosition(double pos);
-	
+	int setMusicVolume( int volumepct );
+			
 	bool stopMusic(int fadeouttime = 0);
 
 };
