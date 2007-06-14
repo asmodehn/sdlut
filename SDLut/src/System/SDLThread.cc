@@ -12,27 +12,27 @@ namespace RAGE
 			return static_cast<unsigned long>(SDL_ThreadID());
 		}
 
-		unsigned long getThreadID(Thread<class TClass> * t)
+		unsigned long getThreadID(SDL_Thread * sdlt)
 		{
-			return static_cast<unsigned long>(SDL_GetThreadID(&t->get_rSDL()));
+			return static_cast<unsigned long>(SDL_GetThreadID(sdlt));
 		}
 		
-		unsigned long runThread(Thread<class TClass> * t,int threadcall (void *), void *data)
+		unsigned long runThread(SDL_Thread * sdlt,int threadcall (void *), void *data)
 		{
 			
-			t->pvm_thread = SDL_CreateThread(threadcall, data);
+			sdlt = SDL_CreateThread(threadcall, data);
 		}
 		
-		int waitThread(Thread<class TClass> * t)
+		int waitThread(SDL_Thread * sdlt)
 		{
 			int status;
-			SDL_WaitThread(&t->get_rSDL(),&status);
+			SDL_WaitThread(sdlt,&status);
 			return status;
 		}
 		
-		void killThread(Thread<class TClass> * t)
+		void killThread(SDL_Thread * sdlt)
 		{
-			SDL_KillThread(&t->get_rSDL());
+			SDL_KillThread(sdlt);
 		}
 
 		

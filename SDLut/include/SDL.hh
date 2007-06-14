@@ -59,6 +59,10 @@
 #include "System/SDLEventManager.hh"
 #include "System/SDLTimer.hh"
 #include "System/SDLRWOps.hh"
+#include "System/SDLThread.hh"
+#include "System/SDLMutex.hh"
+#include "System/SDLSemaphore.hh"
+#include "System/SDLCondition.hh"
 
 /**
   * \defgroup Network

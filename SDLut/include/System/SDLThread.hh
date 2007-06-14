@@ -34,16 +34,14 @@ namespace RAGE
 
 	unsigned long getCurrentThreadID();
 	
-	template < class TClass > class Thread;
-
-	
 	// these function are here to keep SDL function calls in implementation
 	// the client should not use them, and instead rely on the Thread class
-	unsigned long getThreadID(Thread<class TClass> *);
-	unsigned long runThread(Thread<class TClass> *,int threadcall (void *), void *data);
-	int waitThread(Thread<class TClass> *);
-	void killThread(Thread<class TClass> *);
-	
+	unsigned long getThreadID(SDL_Thread *);
+	unsigned long runThread(SDL_Thread *,int threadcall (void *), void *data);
+	int waitThread(SDL_Thread *);
+	void killThread(SDL_Thread *);
+
+	//TODO : make a nicer Functor por delegate so I dont have to use a class template here just to store the called class instance...
 	template < class TClass >
         class Thread
         {
@@ -53,14 +51,13 @@ namespace RAGE
 	    		//and the arguments should be void* to be able to pass anything...
 			
 			
-			class ThreadCall : public TSpecificFunctor<TClass,int>
+			class ThreadCall : public TSpecificFunctor1<TClass,int>
 			{
 				public:
 					ThreadCall(TClass* ptobj, int (TClass::*ptfunc) (void * args))
-					: TSpecificFunctor2<TClass,int>(ptobj,ptfunc)
+					: TSpecificFunctor1<TClass,int>(ptobj,ptfunc)
 					{
 					}
-
 			};
 
 			//structure for arguments
@@ -90,9 +87,9 @@ namespace RAGE
 			Thread(const Thread & thread) throw (std::logic_error);
 			~Thread();
 
-			void setThreadCall(TClass* instance,int (TClass::*func) ( void*), void* args);
+			void setThreadCall(TClass* instance,int (TClass::*func) ( void*), void* data);
 					
-			unsigned long run();
+			void run();
 			
 			int wait();
 			void kill();
@@ -119,13 +116,13 @@ namespace RAGE
 			if ( itcd == pvm_tctable.end() ) return -1; // dont start the thread, the function to call doesnt exists
 
 			//Do the actual client callback
-			int res = itcd->second->call(calldata->args);
+			int res = itcd->second->call(calldata->data);
 
 			return res;
 		}
 		
 		template<class TClass>
-				void Thread<TClass>::setThreadCall(TClass* instance,int (TClass::*func) ( void*), void* args)
+				void Thread<TClass>::setThreadCall(TClass* instance,int (TClass::*func) ( void*), void* data)
 		{
 			typename std::map<unsigned int, ThreadCall*>::iterator it=pvm_tctable.find(pvm_index);
 			if ( it != pvm_tctable.end() )
@@ -141,11 +138,11 @@ namespace RAGE
 			//}
 			pvm_tcdata.reset( new tcdata() );
 			pvm_tcdata->lookupindex = pvm_index;
-			pvm_tcdata->args = args;
+			pvm_tcdata->data = data;
 		}
 
 		template<class TClass>
-		Thread<TClass>::Thread() : pvm_tcdata(0)//, _thread()
+		Thread<TClass>::Thread() : pvm_tcdata(0), pvm_thread(0)
 		{
 			
 			//setting the index for the current instance
@@ -160,7 +157,7 @@ namespace RAGE
 		template<class TClass>
 		Thread<TClass>::~Thread()
 		{
-			abort();// destructor abort a running timer if needed
+			kill();// destructor abort a running timer if needed
 			//if (_cbargs != NULL)
 			//	delete _cbargs, _cbargs = NULL;
 			typename std::map<unsigned int, ThreadCall*>::iterator it=pvm_tctable.find(pvm_index);
@@ -175,21 +172,38 @@ namespace RAGE
 		//returns false if the timer could not be launched.
 		//NB : a timer cannot be launched from another timer's callback. Timer may behave strangely in multithreaded applications
 		template<class TClass>
-		unsigned long Thread<TClass>::run()
+		void Thread<TClass>::run()
 		{
-			return runThread(this,threadcall, pvm_tcdata);
+			runThread(pvm_thread,threadcall,pvm_tcdata.get());
+		}
+		
+		template<class TClass>
+		unsigned long Thread<TClass>::getID()
+		{
+			if  (pvm_thread != 0 )
+			{
+				return getThreadID(pvm_thread);
+			}
+			return 0;
 		}
 
 		template<class TClass>
 		int Thread<TClass>::wait()
 		{
-			return waitThread(this);
+			if (pvm_thread != 0 )
+			{
+				return waitThread(pvm_thread);
+			}
+			else return 0;
 		}
 		
 		template<class TClass>
 		void Thread<TClass>::kill()
 		{
-			return killThread(this);
+			if ( pvm_thread != 0 )
+			{
+				killThread(pvm_thread);
+			}
 		}
 
 		
