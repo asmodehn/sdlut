@@ -1,4 +1,5 @@
 #include "Animations_Center.hh"
+#include "Character_Base.hh" //to be able to use the character_base class
 
 Character_Animations_Center::Character_Animations_Center()
 {
@@ -80,14 +81,26 @@ void Character_Animations_Center::Clean_Character_Animations_Center()
 {
 try{
 //Timers
-	Walk_Animation_Timer->abort();
-	delete Walk_Animation_Timer, Walk_Animation_Timer = NULL;
-	Death_Animation_Timer->abort();
-	delete Death_Animation_Timer, Death_Animation_Timer = NULL;
-	Attack_Animation_Timer->abort();
-	delete Attack_Animation_Timer, Attack_Animation_Timer = NULL;
-	Hit_Animation_Timer->abort();
-	delete Hit_Animation_Timer, Hit_Animation_Timer = NULL;
+	if ( Walk_Animation_Timer != NULL )
+	{
+		Walk_Animation_Timer->abort();
+		delete Walk_Animation_Timer, Walk_Animation_Timer = NULL;
+	}
+	if ( Death_Animation_Timer != NULL )
+	{
+		Death_Animation_Timer->abort();
+		delete Death_Animation_Timer, Death_Animation_Timer = NULL;
+	}
+	if ( Attack_Animation_Timer != NULL )
+	{
+		Attack_Animation_Timer->abort();
+		delete Attack_Animation_Timer, Attack_Animation_Timer = NULL;
+	}
+	if ( Hit_Animation_Timer != NULL )
+	{
+		Hit_Animation_Timer->abort();
+		delete Hit_Animation_Timer, Hit_Animation_Timer = NULL;
+	}
 
 	if (Animations_Owner) //if he is the owner, he must clean the animations
 	{

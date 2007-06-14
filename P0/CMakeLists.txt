@@ -162,6 +162,8 @@ ELSE(LIBXML2_FOUND)
 	MESSAGE (STATUS "LibXml2 not found." )
 ENDIF(LIBXML2_FOUND)
 
+#copy the icon
+CONFIGURE_FILE( P0_ico.png ${Project_0_BINARY_DIR}/P0_ico.png COPYONLY )
 
 #Include headers
 INCLUDE_DIRECTORIES(${Project_0_SOURCE_DIR}/../Core/include )

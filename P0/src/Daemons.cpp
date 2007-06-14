@@ -98,21 +98,6 @@ try {
 }
 }
 
-//Callback method that will launch the character's move animation
-unsigned int Daemons::Player_Move_Animation(unsigned int interval, void* args)
-{
-try {
-	
-	if ( myPlayer->Set_Walk_Animation_Sprite() )
-	{ return interval; } //move anim is still ocuring than loop
-	return 0; //end of timer
-	
-} catch (...) {
-	P0_Logger << nl << "Player Move Animation Timer Failed " << std::endl;
-	return 0; //end of timer
-}
-}
-
 //Callback method that will launch the arrow attack animation
 unsigned int Daemons::Player_Arrow_Movement(unsigned int interval, void* args)
 {
@@ -139,7 +124,7 @@ try {
 	{
 		//play hit Fx
 		if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
-			App::getInstance().getMixer().playChannel(HitFx, SFXS_VOLUME);
+			App::getInstance().getMixer().playChannel(*HitFx.get(), SFXS_VOLUME);
 
 		////Remove Dead Monsters
 		//Monster_Factory_Skeleton->Remove_Dead_Monsters();
@@ -152,7 +137,7 @@ try {
 
 		//play miss Fx	
 		if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
-			App::getInstance().getMixer().playChannel(MissFx, SFXS_VOLUME);
+			App::getInstance().getMixer().playChannel(*MissFx.get(), SFXS_VOLUME);
 	} 
 	
 	//set attack msg, reset & end timer

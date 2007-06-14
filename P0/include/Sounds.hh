@@ -4,14 +4,14 @@
 #include "Base.hh"
 
 //FX Sounds
-extern Sound EscMenuButtonFx;
-extern Sound MissFx;
-extern Sound HitFx;
-extern Sound BowFx;
-extern Sound SwordFx;
+extern auto_ptr<Sound> EscMenuButtonFx;
+extern auto_ptr<Sound>  MissFx;
+extern auto_ptr<Sound>  HitFx;
+extern auto_ptr<Sound>  BowFx;
+extern auto_ptr<Sound> SwordFx;
 
 //Music Sounds
-extern Music GlobalMusic;
+extern auto_ptr<Music> GlobalMusic;
 
 //Sounds infos
 extern int ALL_SOUNDS_VOLUME;
@@ -29,6 +29,7 @@ extern bool ENABLE_VIDEO_SOUNDS;
 extern bool ENABLE_INTERFACE_SOUNDS;
 
 //Methods
-bool Change_Sounds_Infos();
+void Init_Sounds_And_Musics();	
+void Change_Sounds_Infos();
 
 #endif

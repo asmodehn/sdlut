@@ -32,9 +32,7 @@ Victory_Screen* myVictory_Screen;
 Messages* myMessages;
 
 Daemons* myDaemons;
-Timer<Daemons>* myMonster_Factory_Monsters_Moves_Timer;
 Timer<Daemons>* myMonster_Factory_Monsters_Generation_Timer;
-Timer<Daemons>* myNPCs_Moves_Timer;
 Timer<Daemons>* myScore;
 
 KeyboardInput* myKeyboardInput;

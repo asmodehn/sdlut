@@ -1,4 +1,5 @@
 #include "PathFinder.hh"
+#include "Character_Base.hh" //to be able to use the character_base class
 
 PathFinder::PathFinder()
 {

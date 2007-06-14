@@ -2,9 +2,9 @@
 #define Animation_Center_HH
 
 #include "Animations.hh"
+#include "BattleField.hh"
 
-#include "Character_Base.hh" //to be able to use the character_base class
-class Character_Base; //false def: to be able to instantiate
+class Character_Base; //fwd def: to be able to instantiate
 
 //Where all animation for the character are defined
 class Character_Animations_Center

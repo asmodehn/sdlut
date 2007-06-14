@@ -357,10 +357,7 @@ public:
 	bool Manage_Collisions( std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector, bool Handle_Collisions = 0);
 	//check the direction where the character is turn to
 	bool Find_Direction_From_Velocities();
-	//define character sprite which appear on the screen during walk
-	bool Set_Walk_Animation_Sprite();
-	//define character sprite which appear on the screen during run
-	bool Set_Run_Animation_Sprite();
+
 //Attack
 	//Manage the character attack stuffs
 	void Attack();

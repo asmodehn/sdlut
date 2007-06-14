@@ -542,24 +542,6 @@ try {
 }
 }
 
-//define character sprite which appear on the screen during moves
-bool Character_Base::Set_Walk_Animation_Sprite()
-{
-	//P0_Logger << nl << "Set_Walk_Animation_Sprite called" << std::endl;
-
-	//end of the timer for the moment (until walk animation developped (future dev))
-	return false; //no animation
-}
-
-//define character sprite which appear on the screen during run
-bool Character_Base::Set_Run_Animation_Sprite()
-{
-	//P0_Logger << nl << "Set_Run_Animation_Sprite called" << std::endl;
-
-	//end of the timer for the moment (until run animation developped (future dev))
-	return false; //no animation
-}
-
 //Set values defining attack for all attack styles
 void Character_Base::Attack()
 {
@@ -922,7 +904,7 @@ try {
 	{
 		//play sword Fx
 		if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
-			App::getInstance().getMixer().playChannel(SwordFx, SFXS_VOLUME);
+			App::getInstance().getMixer().playChannel(*SwordFx.get(), SFXS_VOLUME);
 
 		Current_Animations_Center->Attack_Animation_Play(this, Global_Monster_Vector);
 		
@@ -931,7 +913,7 @@ try {
 	{
 		//play bow Fx
 		if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
-			App::getInstance().getMixer().playChannel(BowFx, SFXS_VOLUME);
+			App::getInstance().getMixer().playChannel(*BowFx.get(), SFXS_VOLUME);
 
 		Current_Animations_Center->Attack_Animation_Play(this, Global_Monster_Vector);
 
@@ -984,13 +966,13 @@ try {
 		{
 			//play hit Fx	
 			if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
-				App::getInstance().getMixer().playChannel(HitFx, SFXS_VOLUME);
+				App::getInstance().getMixer().playChannel(*HitFx.get(), SFXS_VOLUME);
 		}
 		else 
 		{
 			//play miss Fx	
 			if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
-				App::getInstance().getMixer().playChannel(MissFx, SFXS_VOLUME);
+				App::getInstance().getMixer().playChannel(*MissFx.get(), SFXS_VOLUME);
 		} 
 		
 			//reset attack

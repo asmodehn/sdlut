@@ -2,9 +2,9 @@
 #define PathFinder_HH
 
 #include "Config.hh"
+#include "BattleField.hh"
 
-#include "Character_Base.hh" //to be able to use the character_base class
-class Character_Base; //false def: to be able to instantiate
+class Character_Base; //fwd def: to be able to instantiate
 
 //PathFinder Class
 class PathFinder

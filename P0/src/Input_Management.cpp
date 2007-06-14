@@ -19,8 +19,7 @@ KeyboardInput::KeyboardInput(Player* &myPlayer, NPC_Merchant* &myNPC, std::vecto
 	this->myVictory_Screen = myVictory_Screen;
 	this->myDaemons = myDaemons;
 
-	myPlayer_Move_Animation_Timer = new Timer<Daemons>;
-	myPlayer_Arrow_Animation_Timer = new Timer<Daemons>;
+	//myPlayer_Arrow_Animation_Timer = new Timer<Daemons>;
 
 	//GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
 	P0_Logger << nl << "Input mgt CONSTRUCTED Successfully " << std::endl;
@@ -28,10 +27,9 @@ KeyboardInput::KeyboardInput(Player* &myPlayer, NPC_Merchant* &myNPC, std::vecto
 //Destructor
 KeyboardInput::~KeyboardInput()
 {
-	myPlayer_Move_Animation_Timer->abort();
-	delete myPlayer_Move_Animation_Timer, myPlayer_Move_Animation_Timer = NULL;
-	myPlayer_Arrow_Animation_Timer->abort();
-	delete myPlayer_Arrow_Animation_Timer, myPlayer_Arrow_Animation_Timer = NULL;
+	/*if ( myPlayer_Arrow_Animation_Timer != NULL )
+		myPlayer_Arrow_Animation_Timer->abort();
+	delete myPlayer_Arrow_Animation_Timer, myPlayer_Arrow_Animation_Timer = NULL;*/
 
 	//GLOBAL_GAME_STATE = 3; //Set the game_state to 3, ingame, by default
 	P0_Logger << nl << "Input mgt DESTRUCTED Successfully " << std::endl;
@@ -75,19 +73,8 @@ void KeyboardInput::Player_Moves_Consequences()
 			{ 
 				P0_Logger << nl << "Failed to set the camera" << std::endl;    
 			}
-/*
-//
-//todo
-//
-			//stop in case it is currently runing (usefull for now coz there is no animation and it *seems* to make timers crash when they're empty)
-			myPlayer_Move_Animation_Timer->abort();
-			//Set the callback method which will define the character appearance on the screen and start animation
-			myPlayer_Move_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Move_Animation, (void*)NULL);
-			//Start the animation every PLAYER_MOVE_ANIMATION_INTERVAL
-			myPlayer_Move_Animation_Timer->launch(PLAYER_MOVE_ANIMATION_INTERVAL);
-*/
 
-		//P0_Logger << nl << "Move " << std::endl;
+			//P0_Logger << nl << "Move " << std::endl;
 		}
 	}
 }
@@ -96,7 +83,7 @@ void KeyboardInput::Player_Attack_Consequences()
 {
 try {
 	//stop old timer if necessary
-	myPlayer_Arrow_Animation_Timer->abort();
+	//myPlayer_Arrow_Animation_Timer->abort();
 	
 	//Set attack stuffs
 	myPlayer->Attack();
@@ -108,21 +95,21 @@ try {
 	//todo change that: this should be in the animation or in character constructor or in this arrow animation center....
 	//
 	//arrow management callback
-	myPlayer_Arrow_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Arrow_Movement, (void*)NULL);
+	//myPlayer_Arrow_Animation_Timer->setCallback(myDaemons,&Daemons::Player_Arrow_Movement, (void*)NULL);
 		
 	//distant attack
 	if ( myPlayer->Get_Attack_Style() == 2 )
 	{
-		myPlayer_Arrow_Animation_Timer->launch(PLAYER_ARROW_MOVE_ANIMATION_INTERVAL); //find a way to synchronize launch with the keyframe (perhaps use the arg as the 2nd interval after the ori interval = to the keyframe time)
+		//myPlayer_Arrow_Animation_Timer->launch(PLAYER_ARROW_MOVE_ANIMATION_INTERVAL); //find a way to synchronize launch with the keyframe (perhaps use the arg as the 2nd interval after the ori interval = to the keyframe time)
 	}
 
 	//P0_Logger << nl << "Attack " << std::endl;
 
 } catch (std::exception &exc) {
-	myPlayer_Arrow_Animation_Timer->abort();
+	//myPlayer_Arrow_Animation_Timer->abort();
 	P0_Logger << nl << exc.what() << std::endl;  
 } catch (...) {
-	myPlayer_Arrow_Animation_Timer->abort();
+	//myPlayer_Arrow_Animation_Timer->abort();
 	P0_Logger << nl << "Unhandled Error In Player Attack" << std::endl;  
 }
 }
@@ -254,7 +241,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				case KUp:
 					//play menu Fx	
 					if ( (ENABLE_INTERFACE_SOUNDS) && (ENABLE_ALL_SOUNDS) )
-						App::getInstance().getMixer().playChannel(EscMenuButtonFx, INTERFACE_VOLUME);
+						App::getInstance().getMixer().playChannel(*EscMenuButtonFx.get(), INTERFACE_VOLUME);
 					//loop between Y/N 
 					if ( myEsc_Menu->Get_SelectedItemId() > 1 )
 					{
@@ -270,7 +257,7 @@ bool KeyboardInput::handleKeyEvent (const Sym &s, bool pressed)
 				case KDown:
 					//play menu Fx
 					if ( (ENABLE_INTERFACE_SOUNDS) && (ENABLE_ALL_SOUNDS) )
-						App::getInstance().getMixer().playChannel(EscMenuButtonFx, INTERFACE_VOLUME);
+						App::getInstance().getMixer().playChannel(*EscMenuButtonFx.get(), INTERFACE_VOLUME);
 					//loop between Y/N 
 					if ( myEsc_Menu->Get_SelectedItemId() < 2 )
 					{

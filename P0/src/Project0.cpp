@@ -3,6 +3,7 @@
 //Initialization of the windows, SDL, SDL_TTF, the surface
 bool InitEverything()
 {
+try {
 	//Load configuration from ini files
 	if (!Set_Config())
 	{
@@ -61,8 +62,9 @@ bool InitEverything()
     }
 	P0_Logger << nl << "Audio Init : OK " << std::endl;
 
-	/*//Load Fxs & Musics Sounds Files to the mixer and set there respective channels
-	if (!Set_Sounds_Channels())
+	//Create SFXs Sounds & Musics
+	Init_Sounds_And_Musics();
+	/*if (!Set_Sounds_Channels())
 	{
 		P0_Logger << nl << "Mixing Sound Error : " << GetError() << std::endl;
         return false;
@@ -70,7 +72,13 @@ bool InitEverything()
 	P0_Logger << nl << "Mixing Sound : OK " << std::endl;*/
 
 	//If eveything loads fine
-    return true;    
+    return true;  
+
+} catch (std::exception &exc) {
+	throw std::logic_error( "From InitEverything(), " + (string)exc.what() );
+} catch (...) {
+	throw std::logic_error("Unhandled Error In InitEverything()");  
+}
 }
 
 //Implementation
@@ -165,17 +173,9 @@ try {
 	myDaemons = new Daemons(myPlayer, myNPC, BackGround_Sprite_Vector, Environment_Sprite_Vector, Monster_Factory_Skeleton,
 									Monster_Factory_Worm, Global_Player_Vector, Global_Monster_Vector );
 
-	//Create monster's movement daemons
-	myMonster_Factory_Monsters_Moves_Timer = new Timer<Daemons>(); //set definition
-	myMonster_Factory_Monsters_Moves_Timer->setCallback(myDaemons,&Daemons::Move_Monsters, (void*)NULL); //set callback
-
-	//Create monster's generation daemons
+	//Monster's generation daemon
 	myMonster_Factory_Monsters_Generation_Timer = new Timer<Daemons>; //set definition
 	myMonster_Factory_Monsters_Generation_Timer->setCallback(myDaemons,&Daemons::Generate_Monsters, (void*)NULL); //set callback
-
-	//Create npcs's movement daemons
-	myNPCs_Moves_Timer = new Timer<Daemons>(); //set definition
-	myNPCs_Moves_Timer->setCallback(myDaemons,&Daemons::Move_NPCs, (void*)NULL); //set callback
 
 	//Manage score
 	myScore = new Timer<Daemons>; //set definition
@@ -217,15 +217,13 @@ try {
 
 	/********Start music********/
 	if ( (ENABLE_MUSIC_SOUNDS) && (ENABLE_ALL_SOUNDS) )
-		App::getInstance().getMixer().playMusic(GlobalMusic);		
+		App::getInstance().getMixer().playMusic(*GlobalMusic.get());		
 
 	/*******Score Management********/
 	FiNiSH_TiME = (unsigned)time( NULL );
 
 	/********Start Daemons Process********/
-	//myMonster_Factory_Monsters_Moves_Timer->launch(MONSTERS_MOVEMENT_INTERVAL); //monsters movements
 	myMonster_Factory_Monsters_Generation_Timer->launch(MONSTERS_GENERATION_INTERVAL); //monsters generation
-	//myNPCs_Moves_Timer->launch(NPCS_MOVEMENT_INTERVAL); //npcs movements
 	myScore->launch(1000 / FRAMES_PER_SECOND); //Score
 
 
@@ -249,19 +247,13 @@ bool CleanEverything()
 try {
 
 /********Stop Daemons Process********/
-	if ( myMonster_Factory_Monsters_Moves_Timer != NULL )
-		myMonster_Factory_Monsters_Moves_Timer->abort(); //monsters movements
 	if ( myMonster_Factory_Monsters_Generation_Timer != NULL )
 		myMonster_Factory_Monsters_Generation_Timer->abort(); //monsters generation
-	if ( myNPCs_Moves_Timer != NULL )
-		myNPCs_Moves_Timer->abort(); //npcs movements
 	if ( myScore != NULL )
 		myScore->abort(); //Score
 
 /********Clean UP********/
-	delete myMonster_Factory_Monsters_Moves_Timer, myMonster_Factory_Monsters_Moves_Timer = NULL;
 	delete myMonster_Factory_Monsters_Generation_Timer, myMonster_Factory_Monsters_Generation_Timer = NULL;
-	delete myNPCs_Moves_Timer, myNPCs_Moves_Timer = NULL;
 	delete myScore, myScore = NULL;
 
 	delete myVictory_Screen, myVictory_Screen = NULL;
