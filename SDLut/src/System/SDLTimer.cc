@@ -16,7 +16,7 @@ namespace RAGE
 		    return static_cast<long>(SDL_GetTicks());
 	    }
 
-	    
+
 	    SDL_TimerID AddGlobalTimer(unsigned int interval, unsigned int callback(unsigned int,void*) , void *param)
 	    {
 		    SDL_TimerID res = SDL_AddTimer(interval,static_cast<SDL_NewTimerCallback>(callback),param);

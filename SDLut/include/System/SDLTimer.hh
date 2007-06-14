@@ -17,13 +17,13 @@ namespace RAGE
 	    void Delay(long millisec);
 	    long GetTicks();
 
-	    //these should be used through the timer class, not directly
-	    //NB : AddGlobalTimer should not be called from an other thread thant the main one. Timers will behave strangely in multithreaded applications...
-	    SDL_TimerID AddGlobalTimer(unsigned int interval, unsigned int callback (unsigned int, void*) , void *param);
-	    bool RemoveGlobalTimer(SDL_TimerID t);
-
 	    
+		//these should be used through the timer class, not directly
+		//NB : AddGlobalTimer should not be called from an other thread thant the main one. Timers will behave strangely in multithreaded applications...
+		SDL_TimerID AddGlobalTimer(unsigned int interval, unsigned int callback (unsigned int, void*) , void *param);
+		bool RemoveGlobalTimer(SDL_TimerID t);
 
+			
     		template <class TClass>
 		class Timer
 		{

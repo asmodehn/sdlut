@@ -1,9 +1,6 @@
 #ifndef SDL_CONFIG_HH
 #define SDL_CONFIG_HH
 
-//Forced Config
-#undef THREAD
-
 //use "conventional debug define"
 #ifdef _DEBUG
 #define DEBUG 1
@@ -16,6 +13,9 @@
 #include <SDL.h>
 //Mandatory because we use RWOps in the wrapper, and we even wrap it
 #include <SDL_rwops.h>
+//same for threads
+#include <SDL_thread.h>
+
 
 //utils
 #include "Logger.hh"
@@ -47,10 +47,6 @@
 
 #ifdef HAVE_SDLTTF
 #include "SDL_ttf.h"
-#endif
-
-#ifdef THREAD
-#include <SDL_thread.h>
 #endif
 
 //Global default declarations

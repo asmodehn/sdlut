@@ -69,10 +69,7 @@ int main(int argc, char *argv[])
 
 	testlog << nl << "Aborting instance timer1";
 	timer1.abort();
-	
-	testlog << nl <<"Starting static SDL timer ( 4 sec )";
-	SDL::AddGlobalTimer(4000,callback,NULL);
-
+		
 	SDL::Delay(10000); //TODO Display time running
 
 	return 0;
