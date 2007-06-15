@@ -32,9 +32,9 @@ private:
 	Node nOrigin;
 
 //Methods
-	float Diagonal_Distance(const Point& _A, const Point& _B);
+	float Diagonal_Distance(const Point& A, const Point& B);
 	//Return the Euclidian distance between 2 Point (Warning does not take care of the diagonal movement cost !!)
-	float Euclidian_Distance(const Point& _A, const Point& _B);
+	float Euclidian_Distance(const Point& A, const Point& B);
 	//Add All Available Adjacents To Node n To the Open_List
 	void Add_Available_Adjacents_To_Open_List( pair <int,int>& n, Character_Base* Character_Instance, std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector );
 	void Add_To_Closed_List( pair<int,int>& p );

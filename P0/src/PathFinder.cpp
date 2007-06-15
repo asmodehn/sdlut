@@ -18,17 +18,17 @@ PathFinder::~PathFinder()
 };
 
 //Return the diagonal distance between two Point using a diagonal cost to go at the same speed in diagonals than in horizontals/verticals
-float PathFinder::Diagonal_Distance(const Point& _A, const Point& _B)
+float PathFinder::Diagonal_Distance(const Point& A, const Point& B)
 {
-    int diagonal_cost = min( abs(_A.getx() - _B.getx()), abs(_A.gety() - _B.gety()) );
-	int straight_cost = abs(_A.getx() - _B.getx()) + abs(_A.gety() - _B.gety());
+    int diagonal_cost = min( abs(A.getx() - B.getx()), abs(A.gety() - B.gety()) );
+	int straight_cost = abs(A.getx() - B.getx()) + abs(A.gety() - B.gety());
 	return (sqrt((float)2) * diagonal_cost) + straight_cost - (2*diagonal_cost);
 }
 
 //Return the Euclidian distance between 2 Point (Warning does not take care of the diagonal movement cost !!)
-float PathFinder::Euclidian_Distance(const Point& _A, const Point& _B)
+float PathFinder::Euclidian_Distance(const Point& A, const Point& B)
 {
-	return sqrt( (float)( (_A.getx() - _B.getx())*(_A.getx() - _B.getx()) + (_A.gety() - _B.gety())*(_A.gety() - _B.gety()) ) );
+	return sqrt( (float)( (A.getx() - B.getx())*(A.getx() - B.getx()) + (A.gety() - B.gety())*(A.gety() - B.gety()) ) );
 }
 
 //Add All Available Adjacents To Node n To the Open_List
