@@ -129,7 +129,7 @@ try{
 }
 
 //Set the direction sprite regarding of the direction
-void Character_Animations_Center::Stop_Animation_Play( Character_Base* Character_Instance )
+void Character_Animations_Center::Stop_Animation_Play( Character_Base*& Character_Instance )
 {
 P0_Logger << nl << "Character: " << Character_Instance << " Stopped @ (" << Character_Instance->Get_X() << ", " << Character_Instance->Get_Y() << ")" << std::endl;  	
 
@@ -149,7 +149,7 @@ P0_Logger << nl << "Character: " << Character_Instance << " Stopped @ (" << Char
 }
 
 //Walk Animation for characters
-void Character_Animations_Center::Walk_Animation_Play( Character_Base* Character_Instance, const Point& Destination, std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector )
+void Character_Animations_Center::Walk_Animation_Play( Character_Base* &Character_Instance, const Point& Destination, std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector )
 {
 	//abort timer if existant
 	Walk_Animation_Timer->abort();
@@ -189,6 +189,10 @@ try {
 	assert( args != NULL && "The Structure pointer is NULL ???!!!");
 	Timer_Arg* myTimer_Arg = static_cast<Timer_Arg*>(args);
 	assert( myTimer_Arg->Ch_Instance != NULL && "The Character Instance inside the structure is NULL ???!!!");
+
+	//to disallow the timer to loop more than he must
+	if ( myTimer_Arg->Ch_Instance->Get_Moving_Status() <= 0 ) 
+		return 0;
 
 	if (Frame >= Walk_Animation->Get_Animation_Frame_Number() )
 	{
@@ -261,7 +265,7 @@ P0_Logger << nl << "Character Stopped bcz blocked" << std::endl;
 }
 
 //Death Animation for characters
-void Character_Animations_Center::Death_Animation_Play( Character_Base* Character_Instance )
+void Character_Animations_Center::Death_Animation_Play( Character_Base*& Character_Instance )
 {
 	//abort timer if existant
 	Death_Animation_Timer->abort();
@@ -284,6 +288,10 @@ void Character_Animations_Center::Death_Animation_Play( Character_Base* Characte
 unsigned int Character_Animations_Center::Death_Animation_Callback(unsigned int interval, void* args)
 {
 try {
+	//to disallow the timer to loop more than he must
+	if ( ((Character_Base*)args)->Get_Alive_Status() != -1 ) 
+		return 0;
+
 	if (Frame >= Death_Animation->Get_Animation_Frame_Number() )
 	{
 		Frame = 0; //reset frame anim
@@ -321,7 +329,7 @@ try {
 }
 
 //Attack Animation for characters
-void Character_Animations_Center::Attack_Animation_Play(Character_Base* Character_Instance, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+void Character_Animations_Center::Attack_Animation_Play(Character_Base*& Character_Instance, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 	//abort timer if existant
 	Attack_Animation_Timer->abort();
@@ -347,6 +355,10 @@ void Character_Animations_Center::Attack_Animation_Play(Character_Base* Characte
 unsigned int Character_Animations_Center::Attack_Animation_Callback(unsigned int interval, void* args)
 {
 try {
+	 //to disallow the timer to loop more than he must
+	if (Character_Instance->Get_Attack_Direction() == -1)
+		return 0;
+
 	//
 	//todo: use the arg which must contain the character instance and the global monster_vector ?!!
 	//		coz when monster will be able to attack they need to know which instance is attacking
@@ -404,7 +416,7 @@ try {
 }
 
 //Hit Animation for characters
-void Character_Animations_Center::Hit_Animation_Play(Character_Base* Character_Instance)
+void Character_Animations_Center::Hit_Animation_Play(Character_Base*& Character_Instance)
 {
 	//abort timer if existant
 	Hit_Animation_Timer->abort();
@@ -433,16 +445,20 @@ void Character_Animations_Center::Hit_Animation_Play(Character_Base* Character_I
 unsigned int Character_Animations_Center::Hit_Animation_Callback(unsigned int interval, void* args)
 {
 try {
+	//to disallow the timer to loop more than he must
+	if ( ((Character_Base*&)args)->Get_Hitted_Status() == 0 ) 
+		return 0;
+
 	if (Frame >= Hit_Animation->Get_Animation_Frame_Number() )
 	{
 		Frame = 0; //reset frame anim
-		((Character_Base*)args)->Set_Hitted_Status( 0 );
-		Stop_Animation_Play( ((Character_Base*)args) ); //reset tileset + tile_rect
+		((Character_Base*&)args)->Set_Hitted_Status( 0 );
+		Stop_Animation_Play( ((Character_Base*&)args) ); //reset tileset + tile_rect
 		return 0; //end of timer
 	}
 
 	//assign the good sprite rect to the character sprite rect depending on the frame and the direction
-	((Character_Base*)args)->Set_Current_Tile_Rect( Hit_Animation->Get_Animation_Tile_Rect()->at( ((Character_Base*)args)->Get_Move_Direction() * Hit_Animation->Get_Animation_Frame_Number() + Frame ) );
+	((Character_Base*&)args)->Set_Current_Tile_Rect( Hit_Animation->Get_Animation_Tile_Rect()->at( ((Character_Base*&)args)->Get_Move_Direction() * Hit_Animation->Get_Animation_Frame_Number() + Frame ) );
 	
 	//loop
 	Frame++;
@@ -452,14 +468,14 @@ try {
 } catch (std::exception &exc) {
 	//reset
 	((Character_Base*)args)->Set_Hitted_Status( 0 );
-	Stop_Animation_Play( ((Character_Base*)args) );
+	Stop_Animation_Play( ((Character_Base*&)args) );
 	Frame = 0;
 	P0_Logger << nl << " From Character_Animations_Center::Hit_Animation_Callback(), " << exc.what() << std::endl;
 	return 0;//end of timer
 } catch (...) {
 	//reset
 	((Character_Base*)args)->Set_Hitted_Status( 0 );
-	Stop_Animation_Play( ((Character_Base*)args) );
+	Stop_Animation_Play( ((Character_Base*&)args) );
 	Frame = 0;
 	P0_Logger << nl << "Unhandled Error In Character_Animations_Center::Hit_Animation_Callback()" << std::endl;
 	return 0;//end of timer

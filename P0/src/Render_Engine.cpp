@@ -173,17 +173,17 @@ void Render_Engine::postrender(void)
 try {
 
 //NPCs
-/*	if (GLOBAL_GAME_STATE != 5 )//victory 
+	if (GLOBAL_GAME_STATE != 5 )//victory 
 	{
 		myNPC->Move(Global_Player_Vector, myEnvironment->Get_Environment_Sprite_Vector(), myBackGround->Get_BackGround_Sprite_Vector(), Global_Monster_Vector);
 		//P0_Logger << nl << "Move NPC_Merchant " << std::endl;
 	}
-*/
+
 //Monsters
 	if (GLOBAL_GAME_STATE != 5 )//victory 
 	{
 		Monster_Factory_Skeleton->Move_Monsters( Global_Player_Vector, myEnvironment->Get_Environment_Sprite_Vector(), myBackGround->Get_BackGround_Sprite_Vector(), Global_Monster_Vector );
-		//Monster_Factory_Worm->Move_Monsters( Global_Player_Vector, myEnvironment->Get_Environment_Sprite_Vector(), myBackGround->Get_BackGround_Sprite_Vector(), Global_Monster_Vector );
+		Monster_Factory_Worm->Move_Monsters( Global_Player_Vector, myEnvironment->Get_Environment_Sprite_Vector(), myBackGround->Get_BackGround_Sprite_Vector(), Global_Monster_Vector );
 		//P0_Logger << nl << "Move Monsters " << std::endl;
 	}
 

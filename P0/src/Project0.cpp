@@ -64,12 +64,7 @@ try {
 
 	//Create SFXs Sounds & Musics
 	Init_Sounds_And_Musics();
-	/*if (!Set_Sounds_Channels())
-	{
-		P0_Logger << nl << "Mixing Sound Error : " << GetError() << std::endl;
-        return false;
-    }
-	P0_Logger << nl << "Mixing Sound : OK " << std::endl;*/
+	P0_Logger << nl << "SFXs Sounds & Musics Creation : OK " << std::endl;
 
 	//If eveything loads fine
     return true;  

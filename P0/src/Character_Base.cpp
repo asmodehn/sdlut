@@ -143,7 +143,7 @@ P0_Logger << nl << "Character Moving Animation For Path: " << &Path << " @ Step 
 		list<Point>::iterator i = Path.begin();
 
 		//We follow the path until we reach the destination
-		if ( i != Path.end() )
+		if ( ( i != Path.end() ) && ( Path.size() > 0) )
 		{
 			assert( Path.size() > 0 && "Path size <= 0 !!!" );	
 
@@ -174,7 +174,7 @@ P0_Logger << nl << "Going From (" << Get_X() << ", " << Get_Y() << ") To (" << i
 
 			//Launch Move Animation (todo: manage walk/run !)
 			assert( this != NULL && "The Character Instance is NULL ???!!!");
-			Current_Animations_Center->Walk_Animation_Play(this, Point(i->getx(), i->gety()), Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
+			Current_Animations_Center->Walk_Animation_Play(const_cast<Character_Base*>(this), Point(i->getx(), i->gety()), Global_Player_Vector, Environment_Sprite_Vector, BackGround_Sprite_Vector, Global_Monster_Vector);
 
 P0_Logger << nl << "Character Moving Animation Launched For Path: " << &Path << " @ Step " << Path.size() << std::endl;  
 
@@ -187,13 +187,13 @@ P0_Logger << nl << "Character Moving Animation Launched For Path: " << &Path << 
 P0_Logger << nl << "Character Moving Animation For Path: " << &Path << " Finished @ (" << Get_X() << ", " << Get_Y() << ")\n" << std::endl;  
 
 			//We've reach destination (todo: launch a timer to disable move during 3s (usefull?))
-			Current_Animations_Center->Stop_Animation_Play(this);
+			Current_Animations_Center->Stop_Animation_Play(const_cast<Character_Base*>(this));
 		}
 	}
 	//character: want to move and he his alived but he has been hitted
 	else if  ( ( Get_Moving_Status() >= 0 ) && (Get_Alive_Status() == 1) && (Get_Hitted_Status() > 0) )
 	{
-		Current_Animations_Center->Stop_Animation_Play(this);
+		Current_Animations_Center->Stop_Animation_Play(const_cast<Character_Base*>(this));
 	}
 
 } catch (std::exception &exc) {
@@ -898,7 +898,7 @@ try {
 		//play foot Fx	
 		//App::getInstance().getMixer().playChannel(SwordFx_Chan);
 
-		Current_Animations_Center->Attack_Animation_Play(this, Global_Monster_Vector);
+		Current_Animations_Center->Attack_Animation_Play(const_cast<Character_Base*>(this), Global_Monster_Vector);
 	}
 	if ( Get_Attack_Style() == 1 ) // Melee Style
 	{
@@ -906,7 +906,7 @@ try {
 		if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
 			App::getInstance().getMixer().playChannel(*SwordFx.get(), SFXS_VOLUME);
 
-		Current_Animations_Center->Attack_Animation_Play(this, Global_Monster_Vector);
+		Current_Animations_Center->Attack_Animation_Play(const_cast<Character_Base*>(this), Global_Monster_Vector);
 		
 	}
 	else if ( Get_Attack_Style() == 2 ) // Distant Style
@@ -915,7 +915,7 @@ try {
 		if ( (ENABLE_SFXS_SOUNDS) && (ENABLE_ALL_SOUNDS) )
 			App::getInstance().getMixer().playChannel(*BowFx.get(), SFXS_VOLUME);
 
-		Current_Animations_Center->Attack_Animation_Play(this, Global_Monster_Vector);
+		Current_Animations_Center->Attack_Animation_Play(const_cast<Character_Base*>(this), Global_Monster_Vector);
 
 	}
 
@@ -1034,12 +1034,12 @@ try {
 
 	if (Get_Alive_Status() == 0 ) //dying: launch the animation
 	{
-		Current_Animations_Center->Death_Animation_Play(this);
+		Current_Animations_Center->Death_Animation_Play(const_cast<Character_Base*>(this));
 	}
 
 	if ( (Get_Hitted_Status() == 2 ) && Get_Alive_Status() == 1 )//hitted & alive: launch the animation
 	{
-		Current_Animations_Center->Hit_Animation_Play(this);
+		Current_Animations_Center->Hit_Animation_Play(const_cast<Character_Base*>(this));
 	}
 
 	if (  !(Get_Alive_Status() == -2) ) //every case except when character is "fully" dead: -2
@@ -1047,7 +1047,7 @@ try {
 		//Defaults
 		if (Current_Tileset == NULL)
 		{
-			Current_Animations_Center->Stop_Animation_Play(this);
+			Current_Animations_Center->Stop_Animation_Play(const_cast<Character_Base*>(this));
 		}
 
 

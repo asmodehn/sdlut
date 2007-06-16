@@ -39,7 +39,7 @@ class Player : public Player_Base
         {
             DeltaTicks = new_DeltaTicks;
         }
-        inline long Get_DeltaTicks() const
+        inline long& Get_DeltaTicks()
         {
             return DeltaTicks;
         }

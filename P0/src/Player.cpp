@@ -218,7 +218,7 @@ try {
 		}
 
 		//Stop the player
-		Current_Animations_Center->Stop_Animation_Play(this);
+		Current_Animations_Center->Stop_Animation_Play(( Character_Base*&)const_cast<Player*>(this) );
 	}
 
 } catch (std::exception &exc) {

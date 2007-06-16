@@ -26,7 +26,7 @@ try {
 	SwordFx.reset(new Sound("Data/SFXs/Sword.wav"));
 
 	//Musics
-	GlobalMusic.reset(new Music("Data/Musics/Temple.wav"));
+	GlobalMusic.reset(new Music("Data/Musics/Temple.wav", true ));
 
 } catch (std::exception &exc) {
 	throw std::logic_error( "From Init_Sounds_And_Musics(), " + (string)exc.what() );
