@@ -23,13 +23,13 @@ Character_Animations_Center::Character_Animations_Center()
 
 //Constructor
 Character_Animations_Center::Character_Animations_Center(
-		Character_Animation* &Stop_Animation,
-		Character_Animation* &Walk_Animation,
-		Character_Animation* &Run_Animation,
-		Character_Animation* &Attack_Animation,		
-		Character_Animation* &Hit_Animation,
-		Character_Animation* &Pause_Animation,
-		Character_Animation* &Death_Animation,
+		Character_Animation* Stop_Animation,
+		Character_Animation* Walk_Animation,
+		Character_Animation* Run_Animation,
+		Character_Animation* Attack_Animation,
+		Character_Animation* Hit_Animation,
+		Character_Animation* Pause_Animation,
+		Character_Animation* Death_Animation,
 		//,Character_Animation* &Talk_Animation,
 		bool Animations_Owner /*= false*/)
 {
@@ -129,7 +129,7 @@ try{
 }
 
 //Set the direction sprite regarding of the direction
-void Character_Animations_Center::Stop_Animation_Play( Character_Base* &Character_Instance )
+void Character_Animations_Center::Stop_Animation_Play( Character_Base* Character_Instance )
 {
 P0_Logger << nl << "Character: " << Character_Instance << " Stopped @ (" << Character_Instance->Get_X() << ", " << Character_Instance->Get_Y() << ")" << std::endl;  	
 
@@ -149,7 +149,7 @@ P0_Logger << nl << "Character: " << Character_Instance << " Stopped @ (" << Char
 }
 
 //Walk Animation for characters
-void Character_Animations_Center::Walk_Animation_Play( Character_Base* &Character_Instance, const Point& Destination, std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector )
+void Character_Animations_Center::Walk_Animation_Play( Character_Base* Character_Instance, const Point& Destination, std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector )
 {
 	//abort timer if existant
 	Walk_Animation_Timer->abort();
@@ -265,7 +265,7 @@ P0_Logger << nl << "Character Stopped bcz blocked" << std::endl;
 }
 
 //Death Animation for characters
-void Character_Animations_Center::Death_Animation_Play( Character_Base*& Character_Instance )
+void Character_Animations_Center::Death_Animation_Play( Character_Base* Character_Instance )
 {
 	//abort timer if existant
 	Death_Animation_Timer->abort();
@@ -329,7 +329,7 @@ try {
 }
 
 //Attack Animation for characters
-void Character_Animations_Center::Attack_Animation_Play(Character_Base*& Character_Instance, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
+void Character_Animations_Center::Attack_Animation_Play(Character_Base* Character_Instance, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector)
 {
 	//abort timer if existant
 	Attack_Animation_Timer->abort();
@@ -416,7 +416,7 @@ try {
 }
 
 //Hit Animation for characters
-void Character_Animations_Center::Hit_Animation_Play(Character_Base*& Character_Instance)
+void Character_Animations_Center::Hit_Animation_Play(Character_Base* Character_Instance)
 {
 	//abort timer if existant
 	Hit_Animation_Timer->abort();

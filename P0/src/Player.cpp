@@ -224,7 +224,7 @@ try {
 		}
 
 		//Stop the player
-		Current_Animations_Center->Stop_Animation_Play( reinterpret_cast<Character_Base*&>(const_cast<Player*>(this)) );
+		Current_Animations_Center->Stop_Animation_Play( const_cast<Player*>(this) );
 	}
 
 } catch (std::exception &exc) {
