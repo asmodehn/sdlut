@@ -20,7 +20,7 @@ namespace SDL
 		Mix_Music * pvm_music;
 
 		public:
-		MusicExtend(std::string filename, bool loop_status = false) throw (std::logic_error);
+		MusicExtend(std::string filename) throw (std::logic_error);
 		MusicExtend(const MusicExtend &) throw (std::logic_error);
 		~MusicExtend();
 

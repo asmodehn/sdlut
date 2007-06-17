@@ -17,7 +17,7 @@ namespace RAGE
 			return static_cast<unsigned long>(SDL_GetThreadID(sdlt));
 		}
 		
-		unsigned long runThread(SDL_Thread * sdlt,int threadcall (void *), void *data)
+		void runThread(SDL_Thread * sdlt,int threadcall (void *), void *data)
 		{
 			
 			sdlt = SDL_CreateThread(threadcall, data);

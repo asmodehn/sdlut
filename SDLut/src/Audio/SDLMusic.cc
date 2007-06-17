@@ -11,7 +11,7 @@ namespace RAGE
 	{
 
 
-MusicIf::MusicIf(std::string filename, bool loop_status) throw (std::logic_error)
+MusicIf::MusicIf(std::string filename) throw (std::logic_error)
 //try : pvm_OriginalData(new RWOps(filename.c_str(), "rb"))
 try : pvm_OriginalFilename(filename)
 {
@@ -45,13 +45,13 @@ catch (std::exception &e )
 
 		
 		
-	Music::Music(std::string filename, bool loop_status /* = false */) throw (std::logic_error)
+	Music::Music(std::string filename) throw (std::logic_error)
 	try : pvm_musicimpl(0)
 	{
 #ifdef HAVE_SDLMIXER
-		pvm_musicimpl.reset( new MusicExtend(filename, loop_status) );
+		pvm_musicimpl.reset( new MusicExtend(filename) );
 #else
-		pvm_musicimpl.reset( new MusicImpl(filename, loop_status) );
+		pvm_musicimpl.reset( new MusicImpl(filename) );
 #endif
 
 	}

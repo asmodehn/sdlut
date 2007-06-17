@@ -41,7 +41,7 @@ class MusicIf
 	
 	public:
 	//Sound Loader
-	MusicIf(std::string filename, bool loop_status = false) throw (std::logic_error);
+	MusicIf(std::string filename) throw (std::logic_error);
 	//Sound Copy ( careful with conversion )
 	MusicIf( const MusicIf & s)  throw (std::logic_error);
 		
@@ -79,7 +79,7 @@ private :
 	std::auto_ptr<MusicIf> pvm_musicimpl;
 	
 	public:
-	Music(std::string filename, bool loop_status = false) throw (std::logic_error);
+	Music(std::string filename) throw (std::logic_error);
 	Music(const Music &) throw (std::logic_error);
 	~Music();
 

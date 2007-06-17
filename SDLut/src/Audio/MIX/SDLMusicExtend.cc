@@ -7,8 +7,8 @@ namespace RAGE
 	{
 #ifdef HAVE_SDLMIXER
 
-MusicExtend::MusicExtend(std::string filename, bool loop_status) throw (std::logic_error)
-try : MusicIf(filename, loop_status), pvm_music(Mix_LoadMUS(pvm_OriginalFilename.c_str()))
+MusicExtend::MusicExtend(std::string filename) throw (std::logic_error)
+try : MusicIf(filename), pvm_music(Mix_LoadMUS(pvm_OriginalFilename.c_str()))
 {
 	if ( pvm_music == NULL )
 	{

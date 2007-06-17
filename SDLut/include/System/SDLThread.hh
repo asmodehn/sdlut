@@ -37,7 +37,7 @@ namespace RAGE
 	// these function are here to keep SDL function calls in implementation
 	// the client should not use them, and instead rely on the Thread class
 	unsigned long getThreadID(SDL_Thread *);
-	unsigned long runThread(SDL_Thread *,int threadcall (void *), void *data);
+	void runThread(SDL_Thread *,int threadcall (void *), void *data);
 	int waitThread(SDL_Thread *);
 	void killThread(SDL_Thread *);
 

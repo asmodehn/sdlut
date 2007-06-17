@@ -61,12 +61,14 @@ namespace RAGE
 	unsigned char *_buf;
 
 	//manage if the sound is looping after it end
+	//not managed here anymore.
+	//TODO : update this to work with teh new interface
 	bool _loop_status;
 
 	public:
 
 		//Sound Loader
-		MusicImpl(std::string filename, bool loop_status = false) throw (std::logic_error);
+		MusicImpl(std::string filename) throw (std::logic_error);
 		//Sound Copy ( careful with conversion )
 		MusicImpl( const MusicImpl & s)  throw (std::logic_error);
 		//Sound destructor

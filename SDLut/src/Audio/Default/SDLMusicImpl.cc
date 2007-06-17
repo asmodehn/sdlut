@@ -8,8 +8,8 @@ namespace RAGE
 
 		//class MusicImpl
 		
-		MusicImpl::MusicImpl(std::string filename, bool loop_status) throw ( std::logic_error)
-		try : MusicIf(filename, loop_status), _aInfo( new SDL_AudioSpec() ), converted (false)
+		MusicImpl::MusicImpl(std::string filename) throw ( std::logic_error)
+		try : MusicIf(filename), _aInfo( new SDL_AudioSpec() ), converted (false)
 		{
 #ifdef DEBUG
 			Log << nl << "MusicImpl::MusicImpl(" << filename << ") called";
@@ -25,7 +25,6 @@ namespace RAGE
 
 			_length = static_cast<unsigned long>(len);
 
-			_loop_status = loop_status;
 #ifdef DEBUG
 			Log << nl << "MusicImpl::MusicImpl(" << filename << ") done";
 #endif
