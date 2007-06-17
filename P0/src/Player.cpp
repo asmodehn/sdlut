@@ -57,6 +57,12 @@ Player::~Player()
 //Everything needed to fully clean the player in case of exception or at destruction
 void Player::Clean_Player()
 {
+	if (Unarmed_Animations_Center != NULL)
+		delete Unarmed_Animations_Center, Unarmed_Animations_Center = NULL;
+	if (Melee_Animations_Center != NULL)
+		delete Melee_Animations_Center, Melee_Animations_Center = NULL;
+	if (Distant_Animations_Center != NULL)
+		delete Distant_Animations_Center, Distant_Animations_Center = NULL;
 }
 
 //Reset everything to normal mode when the attack is finished
@@ -218,7 +224,7 @@ try {
 		}
 
 		//Stop the player
-		Current_Animations_Center->Stop_Animation_Play(( Character_Base*&)const_cast<Player*>(this) );
+		Current_Animations_Center->Stop_Animation_Play( reinterpret_cast<Character_Base*&>(const_cast<Player*>(this)) );
 	}
 
 } catch (std::exception &exc) {

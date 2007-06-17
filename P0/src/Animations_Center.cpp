@@ -129,7 +129,7 @@ try{
 }
 
 //Set the direction sprite regarding of the direction
-void Character_Animations_Center::Stop_Animation_Play( Character_Base*& Character_Instance )
+void Character_Animations_Center::Stop_Animation_Play( Character_Base* &Character_Instance )
 {
 P0_Logger << nl << "Character: " << Character_Instance << " Stopped @ (" << Character_Instance->Get_X() << ", " << Character_Instance->Get_Y() << ")" << std::endl;  	
 

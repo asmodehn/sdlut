@@ -59,7 +59,7 @@ void KeyboardInput::Player_Moves_Consequences()
 			//xVel = 0;
 			//yVel = 0;
 			//Stop animation
-			myPlayer->Get_Current_Animations_Center()->Stop_Animation_Play( (Character_Base*&)myPlayer );
+			myPlayer->Get_Current_Animations_Center()->Stop_Animation_Play( reinterpret_cast<Character_Base*&>(myPlayer) );
 		}
 		else //we're really moving
 		{

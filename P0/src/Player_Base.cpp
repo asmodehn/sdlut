@@ -3,6 +3,11 @@
 //Default construtor
 Player_Base::Player_Base()
 {
+try{
+//To be able to delete at any time
+	Arrow_Tile = NULL;
+	Arrow_SpriteRect = NULL;
+
 /****Arrow***/
 	//Initial arrow position
 	arrow_x = X;
@@ -42,6 +47,19 @@ Player_Base::Player_Base()
 
 	//default arrow sprite rect
 	Current_Arrow_SpriteRect = Arrow_SpriteRect->at(CH_RIGHT*PLAYER_ARROW_ATTACK_ANIMATION_FRAME);
+
+
+} catch (std::exception &exc)
+{
+	Clean_Player_Base(); //clean
+	throw std::logic_error( "From Player_Base Construcor, " + (string)exc.what());
+}
+catch (...)
+{
+	P0_Logger << nl << "Error In Player_Base Constructor " << std::endl;
+	Clean_Player_Base(); //clean
+	throw std::logic_error("Unhandled Exception");
+}
 }
 
 //Initialization construtor
@@ -153,12 +171,14 @@ Player_Base::Player_Base()
 //Destructor
 Player_Base::~Player_Base()
 {
+	Clean_Player_Base();
+}
+
+//Clean Up
+void Player_Base::Clean_Player_Base()
+{
 	delete Arrow_SpriteRect, Arrow_SpriteRect = NULL;
 	delete Arrow_Tile, Arrow_Tile = NULL;
-
-	delete Unarmed_Animations_Center, Unarmed_Animations_Center = NULL;
-	delete Melee_Animations_Center, Melee_Animations_Center = NULL;
-	delete Distant_Animations_Center, Distant_Animations_Center = NULL;
 }
 
 //parse the xml description file

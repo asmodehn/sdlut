@@ -41,6 +41,7 @@ class Player_Base : public Character_Base
 		Player_Base();
 		//Player_Base(int X, int Y);
 		virtual ~Player_Base();
+		void Clean_Player_Base();
 
 		/****Accessor****/
 

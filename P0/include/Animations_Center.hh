@@ -109,15 +109,15 @@ public:
 
 	//Animations for characters
 		//Stop Animation
-	void Stop_Animation_Play( Character_Base*& Character_Instance );
+	void Stop_Animation_Play( Character_Base* &Character_Instance );
 		//Walk Animation
 	void Walk_Animation_Play( Character_Base* &Character_Instance, const Point& Destination, std::vector< std::vector<Character_Base*> *>* &Global_Player_Vector, std::vector<BattleField_Sprite*>* &Environment_Sprite_Vector, std::vector<BattleField_Sprite*>* &BackGround_Sprite_Vector, std::vector< std::vector<Character_Base*> *>* &Global_Monster_Vector );
 		//Death Animation
-	void Death_Animation_Play(Character_Base*& Character_Instance);
+	void Death_Animation_Play(Character_Base* &Character_Instance);
 		//Attack Animation 
-	void Attack_Animation_Play(Character_Base*& Character_Instance, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
+	void Attack_Animation_Play(Character_Base* &Character_Instance, std::vector< std::vector<Character_Base*> *>* Global_Monster_Vector);
 		//Hit Animation for characters
-	void Hit_Animation_Play(Character_Base*& Character_Instance);
+	void Hit_Animation_Play(Character_Base* &Character_Instance);
 };
 
 class Building_Permanent_Animation_Center

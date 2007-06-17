@@ -29,4 +29,10 @@ NPC_Merchant::~NPC_Merchant()
 
 void NPC_Merchant::Clean_NPC_Merchant()
 {
+	if (Unarmed_Animations_Center != NULL)
+		delete Unarmed_Animations_Center, Unarmed_Animations_Center = NULL;
+	if (Melee_Animations_Center != NULL)
+		delete Melee_Animations_Center, Melee_Animations_Center = NULL;
+	if (Distant_Animations_Center != NULL)
+		delete Distant_Animations_Center, Distant_Animations_Center = NULL;
 }
