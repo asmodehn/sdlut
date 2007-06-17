@@ -212,7 +212,7 @@ try {
 
 	/********Start music********/
 	if ( (ENABLE_MUSIC_SOUNDS) && (ENABLE_ALL_SOUNDS) )
-		App::getInstance().getMixer().playMusic(*GlobalMusic.get());		
+		App::getInstance().getMixer().playMusic(*GlobalMusic.get(), MUSIC_VOLUME, -1);		
 
 	/*******Score Management********/
 	FiNiSH_TiME = (unsigned)time( NULL );
