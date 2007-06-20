@@ -64,31 +64,31 @@ public:
 		return Frame;
 	}
 
-	inline Character_Animation* Get_Attack_Animation() const
+	inline Character_Animation* &Get_Attack_Animation()
 	{
 		return Attack_Animation;
 	}
-	inline Character_Animation* Get_Death_Animation() const
+	inline Character_Animation* &Get_Death_Animation()
 	{
 		return Death_Animation;
 	}
-	inline Character_Animation* Get_Run_Animation() const
+	inline Character_Animation* &Get_Run_Animation()
 	{
 		return Run_Animation;
 	}
-	inline Character_Animation* Get_Walk_Animation() const
+	inline Character_Animation* &Get_Walk_Animation()
 	{
 		return Walk_Animation;
 	}
-	inline Character_Animation* Get_Hit_Animation() const
+	inline Character_Animation* &Get_Hit_Animation()
 	{
 		return Hit_Animation;
 	}
-	inline Character_Animation* Get_Stop_Animation() const
+	inline Character_Animation* &Get_Stop_Animation()
 	{
 		return Stop_Animation;
 	}
-	inline Character_Animation* Get_Pause_Animation() const
+	inline Character_Animation* &Get_Pause_Animation()
 	{
 		return Pause_Animation;
 	}
