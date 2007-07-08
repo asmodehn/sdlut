@@ -78,7 +78,7 @@ namespace RAGE
 
             inline friend std::ostream& operator << (std::ostream& os, const RGBColor& c)
             {
-                return os << "RGBColor : R=" << c.getR() << " G=" << c.getG() << " B=" << c.getB() << " ";
+                return os << "RGBColor : R=" << (int)c.getR() << " G=" << (int)c.getG() << " B=" << (int)c.getB() << " ";
             }
 
 
@@ -115,7 +115,7 @@ namespace RAGE
 
             inline friend std::ostream& operator << (std::ostream& os, const RGBAColor& c)
             {
-                return os << "RGBColor : R=" << c.getR() << " G=" << c.getG() << " B=" << c.getB() << " A=" << c.getA() << " " ;
+                return os << "RGBColor : R=" << (int)c.getR() << " G=" << (int)c.getG() << " B=" << (int)c.getB() << " A=" << (int)c.getA() << " " ;
             } //not sure how to derivate that properly... TODO
         };
 
