@@ -27,8 +27,13 @@ namespace RAGE
                 flags |= SDL_INIT_JOYSTICK;
             if (noparachute)
                 flags |= SDL_INIT_NOPARACHUTE;
+//To Disable EventThread under Windows
+//just a little usefull tip for mingw
+#ifndef WIN32
             if (eventthread)
                 flags |= SDL_INIT_EVENTTHREAD;
+//not sure what to do with mingw32...
+#endif
 
             if (SDL_Init(flags)<0)
             {
