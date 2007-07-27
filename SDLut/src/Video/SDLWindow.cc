@@ -7,7 +7,7 @@ namespace RAGE
 {
     namespace SDL
     {
-   
+
 
         bool Window::iconify(void)
         {
@@ -107,7 +107,7 @@ namespace RAGE
 			}
                 }
             }
-	    
+
 #ifdef DEBUG
             Log << nl << "Window::setFullscreen(" << val << ") done" << std::endl;
 #endif
@@ -131,7 +131,7 @@ namespace RAGE
         bool Window::setOpenGL(bool val)
         {
             bool res = true;
-			
+
 			if (val)
 			{
 				setEngine(new DefaultGLEngine());
@@ -142,7 +142,7 @@ namespace RAGE
 				setEngine(new DefaultEngine());
 				_userengine=false;
 			}
-			
+
             if (!pvm_screen.get())
 			{
 				VideoSurface::setOpenGL(val);
@@ -193,7 +193,7 @@ namespace RAGE
 	}
 	bool Window::isNoFrame()
 	{
-		
+
 		if (pvm_screen.get())
 		{
 			return pvm_screen->isNoFrameset();
@@ -203,7 +203,7 @@ namespace RAGE
 			return ( SDL_NOFRAME & VideoSurface::_defaultflags ) != 0;
 		}
 	}
-	
+
         Window::Window(std::string title)
 	: _title(title),_background(Color(0,0,0)), pvm_screen(0), _icon ( RWOps( _defaultIcon, sizeof(_defaultIcon)))
         {
@@ -220,13 +220,13 @@ namespace RAGE
             {
                 Log << nl << e.what() << std::endl;
             }
-            
+
             //setting the static videoInfo to be used by all surfaces...
             BaseSurface::_vinfo = &pvm_videoinfo;
 
             setCaption(_title,"DefaultIcon");
 	    SDL_WM_SetIcon( const_cast<SDL_Surface*>(&_icon.get_rSDL()) , NULL);
-	    
+
 #ifdef DEBUG
 
             Log << nl << "Window::Window(" << title << ") done @ "<< this ;
@@ -242,7 +242,7 @@ namespace RAGE
 #endif
             if (!_userengine) //if the user set his own engine , he is responsible for deleting it
                 delete _engine, _engine = NULL;
-	    
+
             BaseSurface::_vinfo = NULL;
 #ifdef DEBUG
 
@@ -344,7 +344,7 @@ namespace RAGE
 #endif
 
 	    bool res = true;
-	    
+
             if (pvm_screen.get())
             {
                 res = res && pvm_screen->resize(width,height);//doesnt keep content
@@ -357,14 +357,14 @@ namespace RAGE
 #ifdef DEBUG
             Log << nl << "Window::resize() done.";
 #endif
-			
+
 		//Forcing the refresh (display the backcolor)
 		pvm_screen->refresh();
 
             return res;
         }
 
-        bool Window::mainLoop(unsigned int framerate)
+        bool Window::mainLoop(unsigned int framerate, unsigned int eventrate)
         {
 		assert(framerate > 0 && "framerate must be greater than 0 !");
 		bool res = false;
@@ -377,33 +377,38 @@ namespace RAGE
                 if (pvm_screen.get())
                 {
 			unsigned long lastframe = SDL_GetTicks();
+			unsigned long lastevent = SDL_GetTicks();
 			unsigned long newlastrender= SDL_GetTicks();
 			unsigned long lastrender= newlastrender;
 			while (!(pvm_eventmanager.quitRequested()))
 			{
 				//handling all the events
 				//
-				pvm_eventmanager.handleAll();
-					
+				if ( SDL_GetTicks() - lastevent >= 1000/eventrate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
+				{
+				    pvm_eventmanager.handleAll();
+				    lastevent = SDL_GetTicks();
+				}
+
 				//applying the background
 				applyBGColor();
-	
+
 				//calling engine for prerender and render events
 				newlastrender = SDL_GetTicks();
 				_engine->prerender( newlastrender - lastrender);
 				lastrender = newlastrender;
 				_engine->render(*pvm_screen);
-							
+
 				//refresh screen
 				//Log << nl << "before :" << SDL_GetTicks() - lastframe ;
 				if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
-				SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
-					
+                    SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
+
 				pvm_screen->refresh();
 				//Log << nl << "after :" << SDL_GetTicks() - lastframe ;
-				
+
 				lastframe=SDL_GetTicks();
-	
+
 				//calling engine for postrender events
 				_engine ->postrender();
 

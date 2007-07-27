@@ -46,7 +46,7 @@ namespace RAGE
         {
             friend class App; //to access the constructor
 
-			
+
 
         protected:
 
@@ -55,7 +55,7 @@ namespace RAGE
 
             //here because Event are initialised along with video...
             EventManager pvm_eventmanager;
-	    
+
             VideoInfo pvm_videoinfo;
 
             bool _userengine;
@@ -130,7 +130,7 @@ namespace RAGE
 			{
 				_background = color;
 			}
-			
+
 			//fill the VideoSurface with the BGColor
 			void applyBGColor() const;
 
@@ -162,7 +162,7 @@ namespace RAGE
             std::string getIconName();
 
 			//Handles the event, and Call engine->prerender, engie ->render() and engine->postrender()
-            bool mainLoop(unsigned int framerate = 60);
+            bool mainLoop(unsigned int framerate = 60,unsigned int eventrate = 60);
 
         };
     }
