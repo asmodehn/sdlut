@@ -36,9 +36,10 @@ protected:
 	//The user should never be able to free the original pixelformat
 	//nor to use SDL directly.
 
+public: //necessary if we want to use getPixelFormat() accessor from the BaseSurface class when we're not in a PixelFormat's friend class
 	~PixelFormat(void);
 
-public:
+
 
 	//default Constructor
 	//PixelFormat(void) { _pformat= new SDL_PixelFormat; }

@@ -1,7 +1,6 @@
 #include "System/SDLEvent.hh"
 #include "System/SDLEventManager.hh" //to access the general handler
-#include "Input/SDLKeyboard.hh" //to access the keyboard handler
-#include "Input/SDLMouse.hh"//to access the mouse handler
+
 #include "SDLApp.hh"//to access the joystick handler
 
 #include "SDLConfig.hh"
@@ -152,6 +151,33 @@ int Event::push(int number)
 Event::Type Event::getType()
 {
 	return sdl2Type(_event->type);
+}
+
+void Event::Set_KeyboardInfosFromEvent(Keyboard::Sym& s, short& state)
+{
+	s = static_cast<Keyboard::Sym>(_event->key.keysym);
+	state = static_cast<short>(_event->key.state);
+}
+
+void Event::Set_MouseButtonInfosFromEvent(Mouse::Button& button, Point& position, short& state)
+{
+	button = Mouse::sdl2Button(_event->button.button);
+	position = Point(_event->button.x, _event->button.y);
+	state = static_cast<short>(_event->button.state);
+}
+
+void Event::Set_MouseMotionInfosFromEvent(Point& position, short& state)
+{
+	position = Point(_event->motion.x, _event->motion.y);
+	state = static_cast<short>(_event->motion.state);
+}
+
+void Event::Set_ActiveInfosFromEvent(bool& isActive, bool& hasInputFocus, bool& hasMouseFocus, bool& gain)
+{
+	isActive = (_event->active.state & SDL_APPACTIVE) == SDL_APPACTIVE;
+	hasInputFocus = (_event->active.state & SDL_APPINPUTFOCUS) == SDL_APPINPUTFOCUS;
+	hasMouseFocus = (_event->active.state & SDL_APPMOUSEFOCUS) == SDL_APPMOUSEFOCUS;
+	gain = (_event->active.gain == 1);
 }
 
 bool Event::callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse*  mhndlr )

@@ -96,18 +96,20 @@ namespace RAGE
             {
                 return !locked();
             }
-            //
+
+
+        public: //useful else we can't access those functions outside of friend class (for example in GuiChan)
 
             ///This method return true if all is OK,or if it doesn't need being locked/unlocked.
             ///it return false only if this cannot be locked...
-            bool lock(void)
-            ;
+            bool lock(void);
             bool unlock(void);
 
-
+		
             PixelColor getpixel(int x, int y);
             void setpixel(int x, int y, PixelColor pixel);
 
+		protected:
             ///Conversion Constructor
             explicit BaseSurface(SDL_Surface * s);
 	     ///< This one should be called only by subclasses

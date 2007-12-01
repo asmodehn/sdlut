@@ -177,7 +177,7 @@ namespace RAGE
                return res;
            }
 
-	
+
 	Keyboard::Sym::Sym(const SDL_keysym & ksym) : _key(sdl2Key((short int)ksym.sym)), _mod(sdl2Modifier((short int)ksym.mod)), _unicode(ksym.unicode)
 	{
 	}

@@ -91,9 +91,9 @@ namespace RAGE
                 K6,
                 K7,
                 K8,
-		K9, //31
+				K9, //31
                 KColon, KSemicolon, KLess, KEquals, KGreater, KQuestion, KAt, KLeftbracket, KBackslash, KRightbracket, KCaret, KUnderscore, KBackquote, KA, KB, KC, KD, KE, KF, KG, KH, KI, KJ, KK, KL, KM, KN, KO, KP , KQ, KR, KS, KT, KU, KV, KW, KX, KY, KZ, KDelete,
-		KWorld0,KWorld1,KWorld2,KWorld3, KWorld4, KWorld5, KWorld6, KWorld7, KWorld8, KWorld9, //81
+				KWorld0,KWorld1,KWorld2,KWorld3, KWorld4, KWorld5, KWorld6, KWorld7, KWorld8, KWorld9, //81
                 KWorld10,KWorld11,KWorld12,KWorld13, KWorld14, KWorld15, KWorld16, KWorld17, KWorld18, KWorld19,
                 KWorld20,KWorld21,KWorld22,KWorld23, KWorld24, KWorld25, KWorld26, KWorld27, KWorld28, KWorld29,
                 KWorld30,KWorld31,KWorld32,KWorld33, KWorld34, KWorld35, KWorld36, KWorld37, KWorld38, KWorld39,
@@ -102,7 +102,7 @@ namespace RAGE
                 KWorld60,KWorld61,KWorld62,KWorld63, KWorld64, KWorld65, KWorld66, KWorld67, KWorld68, KWorld69,
                 KWorld70,KWorld71,KWorld72,KWorld73, KWorld74, KWorld75, KWorld76, KWorld77, KWorld78, KWorld79,
                 KWorld80,KWorld81,KWorld82,KWorld83, KWorld84, KWorld85, KWorld86, KWorld87, KWorld88, KWorld89,
-		KWorld90,KWorld91,KWorld92,KWorld93, KWorld94, KWorld95, //167
+				KWorld90,KWorld91,KWorld92,KWorld93, KWorld94, KWorld95, //167
                 KKp0,
 				KKp1,
 				KKp2,
@@ -113,9 +113,13 @@ namespace RAGE
 				KKp7,
 				KKp8,
 				KKp9,
+				KKPeriod,
                 KKDivide,
 				KKMultiply,
+				KKMinus,
+				KKPlus,
 				KKEnter,
+				KKEquals,
                 KUp,
                 KDown,
                 KRight,
@@ -169,34 +173,34 @@ namespace RAGE
                 friend class CriticalEvent;
                 friend class Event;
 
-		Sym(const SDL_keysym & ksym);
+				Sym(const SDL_keysym & ksym);
 
-            public :
+				public :
 
-                inline Key getKey() const
-                {
-                    return _key;
-                }
-                inline Modifier getMod() const
-                {
-                    return _mod;
-                }
+				inline Key getKey() const
+				{
+					return _key;
+				}
+				inline Modifier getMod() const
+				{
+					return _mod;
+				}
 				//WARNING Will return 0 if unicode not enabled
-                inline long unsigned int getUnicode() const
-                {
-                    return _unicode;
-                }
+				inline long unsigned int getUnicode() const
+				{
+					return _unicode;
+				}
 				//just to convert the unicode value
 				inline char getChar() const
 				{
 					return(static_cast<char>(_unicode & 0x7F));
 				}
 
-                inline bool isUnicode() const
-                {
-                    return (_unicode & 0xff80) == 0 ;
-                }
-            };
+				inline bool isUnicode() const
+				{
+					return (_unicode & 0xff80) == 0 ;
+				}
+			};
 
 
 

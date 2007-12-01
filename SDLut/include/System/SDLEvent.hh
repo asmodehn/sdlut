@@ -3,11 +3,13 @@
 
 #include "Logger.hh"
 
+#include "Input/SDLKeyboard.hh" //to access the keyboard handler
+#include "Input/SDLMouse.hh"//to access the mouse handler
+
 #include <vector>
 #include <map>
 
 union SDL_Event;
-
 
 namespace RAGE
 {
@@ -16,9 +18,8 @@ namespace RAGE
 
         //further reference
 	class GeneralHandler;
-	class Keyboard;
-	class Mouse;
-
+	/*class Keyboard;
+	class Mouse;*/
 
     class Event
     {
@@ -94,6 +95,11 @@ namespace RAGE
 	SDL_Event get_SDL();
 	SDL_Event* get_pSDL() { return _event.get(); }
 
+
+	void Set_KeyboardInfosFromEvent(Keyboard::Sym& s, short& state);
+	void Set_MouseButtonInfosFromEvent(Mouse::Button& button, Point& position, short& state);
+	void Set_MouseMotionInfosFromEvent(Point& position, short& state);
+	void Set_ActiveInfosFromEvent(bool& isActive, bool& hasInputFocus, bool& hasMouseFocus, bool& gain);
 	
 	friend Logger & operator << (Logger & log, const Type & type);
 	
