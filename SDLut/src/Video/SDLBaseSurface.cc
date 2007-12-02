@@ -170,9 +170,11 @@ BaseSurface::~BaseSurface()
             {
                 case 1:
                 pixel=*p;
+				break;
 
                 case 2:
                 pixel=*(Uint16 *)p;
+				break;
 
                 case 3:
 #if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
@@ -180,11 +182,14 @@ BaseSurface::~BaseSurface()
 #else
                     pixel= p[0] | p[1] << 8 | p[2] << 16;
 #endif
+					break;
                 case 4:
                 pixel= *(Uint32 *)p;
+				break;
 
                 default:
                 pixel= 0;       /* shouldn't happen, but avoids warnings */
+				break;
             }
             unlock();
             return pixel;
