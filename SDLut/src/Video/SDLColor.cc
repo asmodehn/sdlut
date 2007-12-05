@@ -12,6 +12,7 @@ namespace RAGE
 			_color->r=r;
 			_color->g=g;
 			_color->b=b;
+			_color->unused = 255;
 			pointerCopy = false;
 		}
 		RGBColor::RGBColor(const RGBColor & rgbcolor)
@@ -22,6 +23,7 @@ namespace RAGE
 			;
 			_color->b=rgbcolor.getB();
 			;
+			_color->unused=255;
 			pointerCopy = false;
 		}
 		RGBColor& RGBColor::operator=( const RGBColor & rgbcolor)
@@ -102,6 +104,16 @@ namespace RAGE
 		unsigned char RGBAColor::getA(void) const
 		{
 			return _color->unused;
+		}
+
+		bool RGBAColor::operator==(const RGBAColor& color) const
+		{
+			return _color->r == color.getR() && _color->g == color.getG() && _color->b == color.getB() && _color->unused == color.getA();
+		}
+
+		bool RGBAColor::operator!=(const RGBAColor& color) const
+		{
+			return !(_color->r == color.getR() && _color->g == color.getG() && _color->b == color.getB() && _color->unused == color.getA());
 		}
 
 		Palette::Palette(const SDL_Palette* palette) : _palette(palette)

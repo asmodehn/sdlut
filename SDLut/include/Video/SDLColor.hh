@@ -104,7 +104,7 @@ namespace RAGE
             //	explicit SDLRGBAColor(SDL_Color * color) : SDLRGBColor(color) {}
 
         public:
-		RGBAColor(unsigned char r=0, unsigned char g=0, unsigned char b=0, unsigned char a=0);
+		RGBAColor(unsigned char r=0, unsigned char g=0, unsigned char b=0, unsigned char a=255);
 		RGBAColor(const RGBAColor & rgbacolor);
 		RGBAColor& operator=( const RGBAColor & rgbacolor );
 	    virtual ~RGBAColor();
@@ -117,7 +117,11 @@ namespace RAGE
             {
                 return os << "RGBColor : R=" << (int)c.getR() << " G=" << (int)c.getG() << " B=" << (int)c.getB() << " A=" << (int)c.getA() << " " ;
             } //not sure how to derivate that properly... TODO
-        };
+        
+		bool operator==(const RGBAColor& color) const;
+        bool operator!=(const RGBAColor& color) const;
+
+		};
 
         //defining an alias. Could be usefull.
 #define Color RGBColor

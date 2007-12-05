@@ -134,7 +134,7 @@ namespace RAGE
         {
             Uint8 r, g, b;
             //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
-            SDL_GetRGB(color, const_cast<SDL_PixelFormat*>(_pformat), &r, &b, &g);
+            SDL_GetRGB(color, const_cast<SDL_PixelFormat*>(_pformat), &r, &g, &b);
             return RGBColor(r, g, b);
         }
 
@@ -143,7 +143,7 @@ namespace RAGE
 
             Uint8 r, g, b, a;
             //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
-            SDL_GetRGBA(color, const_cast<SDL_PixelFormat*>(_pformat), &r, &b, &g, &a);
+            SDL_GetRGBA(color, const_cast<SDL_PixelFormat*>(_pformat), &r, &g, &b, &a);
             return RGBAColor(r, g, b, a);
         }
     }
