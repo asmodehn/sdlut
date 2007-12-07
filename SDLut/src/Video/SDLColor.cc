@@ -33,6 +33,7 @@ namespace RAGE
 			;
 			_color->b=rgbcolor.getB();
 			;
+			_color->unused=255;
 			pointerCopy = false;
 			return *this;
 		}
@@ -77,6 +78,13 @@ namespace RAGE
 			: RGBColor(r, g, b)
 		{
 			_color->unused=a;
+		}
+		RGBAColor::RGBAColor(RGBColor& color, unsigned char a)
+		{
+			_color->r = color.getR();
+			_color->g = color.getG();
+			_color->b = color.getB();
+			_color->unused = a;
 		}
 		RGBAColor::RGBAColor(const RGBAColor & rgbacolor)
 			: RGBColor(rgbacolor.getR(), rgbacolor.getG(), rgbacolor.getB())

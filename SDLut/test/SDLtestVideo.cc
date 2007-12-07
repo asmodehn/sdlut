@@ -54,7 +54,7 @@ public:
 	RGBSurface loadedimage;
 	Point imagepos;
 
-	MyEngine( const std::string & imagefilename) : loadedimage(imagefilename,Color(0,0,0)),imagepos()
+	MyEngine( const std::string & imagefilename) : loadedimage(imagefilename,RGBAColor(0,0,0,200)),imagepos()
 	{}
 
     virtual ~MyEngine(){}

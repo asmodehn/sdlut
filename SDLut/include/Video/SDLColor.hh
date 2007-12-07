@@ -105,6 +105,7 @@ namespace RAGE
 
         public:
 		RGBAColor(unsigned char r=0, unsigned char g=0, unsigned char b=0, unsigned char a=255);
+		RGBAColor(RGBColor& color, unsigned char a=255);
 		RGBAColor(const RGBAColor & rgbacolor);
 		RGBAColor& operator=( const RGBAColor & rgbacolor );
 	    virtual ~RGBAColor();
@@ -115,7 +116,7 @@ namespace RAGE
 
             inline friend std::ostream& operator << (std::ostream& os, const RGBAColor& c)
             {
-                return os << "RGBColor : R=" << (int)c.getR() << " G=" << (int)c.getG() << " B=" << (int)c.getB() << " A=" << (int)c.getA() << " " ;
+                return os << "RGBAColor : R=" << (int)c.getR() << " G=" << (int)c.getG() << " B=" << (int)c.getB() << " A=" << (int)c.getA() << " " ;
             } //not sure how to derivate that properly... TODO
         
 		bool operator==(const RGBAColor& color) const;

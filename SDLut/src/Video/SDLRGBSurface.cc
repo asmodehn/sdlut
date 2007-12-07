@@ -70,7 +70,7 @@ namespace RAGE
             //TODO : much more explicit error message...
         }
 
-        RGBSurface::RGBSurface(const Color & color, int width, int height, int bpp )throw (std::logic_error)
+        RGBSurface::RGBSurface(const RGBAColor & color, int width, int height, int bpp )throw (std::logic_error)
         try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
         {
 #ifdef DEBUG
@@ -98,6 +98,35 @@ namespace RAGE
             e.what() << nl << GetError() << std::endl ;
             //TODO : much more explicit error message...
         }
+
+		/*RGBSurface::RGBSurface( const RGBColor & color, int width , int height, int bpp )throw (std::logic_error)
+		try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
+        {
+#ifdef DEBUG
+            Log << nl << "RGBSurface::RGBSurface(" << color << ", " << width << ", " <<height << ", " << bpp << ") called...";
+#endif
+            //std::cerr << "RGBSurface Constructor Called" << std::endl;
+            if (bpp == 0)
+                throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");
+            if(!initialized())
+            {
+                Log << "Unable to set " <<  width<<  " x " <<  height <<  " rgb surface : " ;
+                throw std::logic_error("SDL_CreateRGBSurface returns NULL");
+            }
+            else
+                fill(color);
+#ifdef DEBUG
+
+            Log << nl << "RGBSurface::RGBSurface(" << color << ", " << width << ", " <<height << ", " << bpp << ") done.";
+#endif
+
+        }
+        catch (std::exception &e)
+        {
+            Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
+            e.what() << nl << GetError() << std::endl ;
+            //TODO : much more explicit error message...
+        }*/
 
         RGBSurface::RGBSurface( std::string filename )throw (std::logic_error)
 	try :
@@ -137,7 +166,7 @@ namespace RAGE
             //TODO : much more explicit error message...
         }
 
-        RGBSurface::RGBSurface( std::string filename, const Color & colorKey )throw (std::logic_error)
+        RGBSurface::RGBSurface( std::string filename, const RGBAColor & colorKey )throw (std::logic_error)
         try :
 #ifdef HAVE_SDLIMAGE
 			BaseSurface(IMG_Load(filename.c_str()))
@@ -161,7 +190,7 @@ namespace RAGE
 #endif
             }
             else
-                setColorKey(colorKey);
+                setColorKeyAndAlpha(colorKey);
 #ifdef DEBUG
 
             Log << nl << "RGBSurface::RGBSurface(" << filename << ", " << colorKey << ") done.";
@@ -416,29 +445,6 @@ namespace RAGE
             }
             return *this;
         }
-        /*
-        RGBSurface::RGBSurface(const RGBSurface & s , bool cloning, bool toDisplay, bool alpha) throw (std::logic_error)
-        try : SDLBaseSurface(s,cloning,toDisplay,alpha)
-        {
-          std::cerr << "RGBSurface Copy Called" << std::endl;
-         std::cerr << "SDL_Surface created @ "<< _surf<< std::endl;
-        }
-        catch (std::exception &e)
-        {
-         LIB_ERROR( "Exception catched in RGBSurface Copy Constructor !!!" );
-         LIB_ERROR(e.what());
-         SDLERROR;
-        }
-        */
-
-        /*
-        void RGBSurface::setUpdateRect(int x, int y, int w, int h)
-        {
-         SDL_Rect rect;
-         rect.x=x;rect.y=y;rect.w=w;rect.h=h;
-         _UpdateRectList.push_back(rect);
-        }
-        */
 
         void RGBSurface::setFlags(bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
         {
@@ -460,15 +466,29 @@ namespace RAGE
                 RGBFlags&= (~SDL_SRCALPHA);
         }
 
-        bool RGBSurface::setColorKey(const RGBColor & key, bool rleAccel)
+		bool RGBSurface::setColorKeyAndAlpha(const RGBAColor & key, bool rleAccel)
         {
             Uint32 flags;
-            if (rleAccel)
-                flags=SDL_SRCCOLORKEY | SDL_RLEACCEL;
-            else
-                flags=SDL_SRCCOLORKEY;
+            			
+			//Check if we have alpha transparency
+			if ( key.getA() < 255 )
+			{
+				if (rleAccel)
+					flags=SDL_SRCCOLORKEY | SDL_SRCALPHA | SDL_RLEACCEL;
+				else
+					flags=SDL_SRCCOLORKEY | SDL_SRCALPHA;
 
-            return SDL_SetColorKey(_surf.get(), flags, getPixelFormat().getValueFromRGB(key) ) == 0;
+				SDL_SetAlpha(_surf.get(), flags, key.getA());
+			}
+			else 
+			{
+				if (rleAccel)
+					flags=SDL_SRCCOLORKEY | SDL_RLEACCEL;
+				else
+					flags=SDL_SRCCOLORKEY;
+			}
+
+            return SDL_SetColorKey(_surf.get(), flags, getPixelFormat().getValueFromRGBA(key) ) == 0;
         }
 
 	bool RGBSurface::resize(int width, int height, bool keepcontent)
