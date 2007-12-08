@@ -107,7 +107,7 @@ namespace RAGE
 
 		
             PixelColor getpixel(int x, int y);
-            void setpixel(int x, int y, PixelColor pixel);
+            void setpixel(int x, int y, PixelColor pixel, unsigned char alpha = 255);
 
 		protected:
             ///Conversion Constructor
