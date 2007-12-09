@@ -79,7 +79,7 @@ namespace RAGE
 		{
 			_color->unused=a;
 		}
-		RGBAColor::RGBAColor(RGBColor& color, unsigned char a)
+		RGBAColor::RGBAColor(const RGBColor& color, unsigned char a)
 		{
 			_color->r = color.getR();
 			_color->g = color.getG();

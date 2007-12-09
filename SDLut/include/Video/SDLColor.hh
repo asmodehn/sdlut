@@ -91,7 +91,7 @@ namespace RAGE
          *
          * \brief This class wraps SDL_Color with alpha
          *
-         * \author Alex
+         * \author Alex, XorfacX
          *
          * \date 2005/10/02
          *
@@ -105,7 +105,7 @@ namespace RAGE
 
         public:
 		RGBAColor(unsigned char r=0, unsigned char g=0, unsigned char b=0, unsigned char a=255);
-		RGBAColor(RGBColor& color, unsigned char a=255);
+		RGBAColor(const RGBColor& color, unsigned char a=255);
 		RGBAColor(const RGBAColor & rgbacolor);
 		RGBAColor& operator=( const RGBAColor & rgbacolor );
 	    virtual ~RGBAColor();
