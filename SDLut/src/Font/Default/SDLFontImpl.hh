@@ -26,6 +26,7 @@ namespace SDL
 			virtual ~FontImpl();
 		
 			virtual Rect getSize(const std::string & text) const;
+			virtual int height();
 
 			virtual Font::Style getStyle() { return Font::Default;}
 			virtual void setStyle(Font::Style s) { } //does nothing only one style available in default mode.

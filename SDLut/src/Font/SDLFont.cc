@@ -108,6 +108,18 @@ std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mod
 	{
 		_font->setStyle(s);
 	}
+
+	Rect Font::getSize(const std::string& text)
+	{
+		//return (static_cast<FontExtend*>(_font.get()))->getSize(text);
+		return _font.get()->getSize(text);
+	}
+
+	int Font::getHeight()
+	{
+		//return (static_cast<FontExtend*>(_font.get()))->height();
+		return _font.get()->height();
+	}
 	
 
 

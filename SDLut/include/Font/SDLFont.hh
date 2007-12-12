@@ -74,8 +74,12 @@ public:
 	
 	Style getStyle();
 	void setStyle(Style s);
-	
+
 	Rect size(std::string text);
+
+	Rect getSize(const std::string& text);
+	int getHeight();
+	
 
 	//Rendering
 	//The Background color is used only if RenderMode = Shaded otherwise the background is transparent.

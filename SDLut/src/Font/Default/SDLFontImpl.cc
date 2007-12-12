@@ -33,6 +33,11 @@ namespace SDL
 				return r;
 			}
 
+			int FontImpl::height()
+			{ 
+				return 0;
+			}
+
 			FontImpl::FontImpl(const FontImpl & font) : _fontsurf(font._fontsurf)
 			{
 				alphalookup.assign(font.alphalookup.begin(),font.alphalookup.end());
