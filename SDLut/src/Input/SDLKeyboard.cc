@@ -9,6 +9,7 @@ namespace RAGE
     {
 	    std::map<short,Keyboard::Key> Keyboard::Keysdl2rage;
 	    std::map<std::string,Keyboard::Key> Keyboard::Keystr2rage;
+		std::map<Keyboard::Key,std::string> Keyboard::Keyrage2str;
 
 	    std::map<short,Keyboard::Modifier> Keyboard::Modsdl2rage;
 	    std::map<std::string,Keyboard::Modifier> Keyboard::Modstr2rage;
@@ -21,6 +22,10 @@ namespace RAGE
 	    Keyboard::Key Keyboard::sdl2Key(short sdlk)
 	    {
 		    return Keysdl2rage[sdlk];
+	    }
+		std::string Keyboard::Key2str(Keyboard::Key k)
+	    {
+			return (k == 0) ? ("") : (Keyrage2str[k]); 
 	    }
 	    Keyboard::Key Keyboard::str2Key(std::string strk)
 	    {
@@ -50,7 +55,7 @@ namespace RAGE
 		//using a max here to support partial mapping list...
 		int maxvecindex =0;
 		
-		#define ASSOCIATE( key, sdlkey, strkey ) Keyrage2sdlmap[key] = sdlkey; Keysdl2rage[sdlkey] = key; Keystr2rage[strkey] = key; maxvecindex = (maxvecindex>key)? maxvecindex : key;
+		#define ASSOCIATE( key, sdlkey, strkey ) Keyrage2sdlmap[key] = sdlkey; Keysdl2rage[sdlkey] = key; Keystr2rage[strkey] = key; Keyrage2str[key] = strkey; maxvecindex = (maxvecindex>key)? maxvecindex : key;
 		#include "SDLKeyMapping.inl"
 		#undef ASSOCIATE
 

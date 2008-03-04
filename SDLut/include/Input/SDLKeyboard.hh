@@ -155,12 +155,14 @@ namespace RAGE
 	    static std::vector<short> Keyrage2sdl;
 	    static std::map<short,Key> Keysdl2rage;
 	    static std::map<std::string,Key> Keystr2rage;
+		static std::map<Key,std::string> Keyrage2str;
 
 	    static std::vector<short> InitKeyMapping();
 
 		public :
 	    static short Key2sdl(Key k);
 	    static Key sdl2Key(short sdlk);
+		static std::string Key2str(Keyboard::Key k);
 	    static Key str2Key(std::string strk);
 
             class  Sym
