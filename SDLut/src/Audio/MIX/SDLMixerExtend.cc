@@ -10,10 +10,10 @@ namespace RAGE
 MixerExtend::MixerExtend(int frequency = MIX_DEFAULT_FREQUENCY,unsigned short channels = 2 ,unsigned short samples = 512) throw (std::logic_error)
 try
 {
-	if ( Mix_OpenAudio(frequency,MIX_DEFAULT_FORMAT,channels, samples) != 0 )
+	if ( Mix_OpenAudio(frequency,/*AUDIO_S16SYS*/MIX_DEFAULT_FORMAT,channels, samples) != 0 )
 	{
 		//TODO : use Mix_GetError() to fetch the actual error
-		throw std::logic_error("Mix_OpenAudio returned Error");
+		throw std::logic_error( "Mix_OpenAudio returned Error: " + (std::string)Mix_GetError() );
 	}
 	QuerySpec();
 }
