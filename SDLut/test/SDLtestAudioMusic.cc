@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 	Logger testlog("testAudio");
 
 	testlog << nl << "initAudio()";
-	testlog << SDL::App::getInstance().initAudio();
+	testlog << SDL::App::getInstance().initAudio(16000, 1, 1024); //tested w test\data\musicSample.*
 
 	//if argument we load the sound
 	if ( argc > 1)
@@ -21,9 +21,9 @@ int main(int argc, char *argv[])
 		SDL::Music sndfile(argv[1]);
 
 		SDL::App::getInstance().getMixer().playMusic(sndfile);
-		testlog << nl<<  "playing music ";
+		testlog << nl<<  "Playing music ";
 
-		SDL::Delay(3000);
+		SDL::Delay(10000);
 
 		SDL::App::getInstance().getMixer().stopMusic();
 

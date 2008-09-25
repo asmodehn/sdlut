@@ -109,8 +109,15 @@ namespace RAGE
 	    ///Initializing Timers
             bool initTimer();
 
-	    ///Initializing Audio
-	    bool initAudio();
+	    /*
+		 * Initializing Audio
+		 * warning: the init audio parameters must be linked files that will be played else it cause pbs (speed too fast, cracks, ...)
+		 *
+		 * @frequency, default files frequency
+		 * @channels, default files nb of channels
+		 * @buffer_size, default files buffer size
+		 */ 
+	    bool initAudio(int frequency = 44100,unsigned short channels = 2,unsigned short buffer_size = 2048);
 
 	    ///Initializing Text
 	    bool initText();

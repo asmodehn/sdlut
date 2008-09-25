@@ -184,7 +184,7 @@ namespace RAGE
             return res;
         }
 
-	bool App::initAudio()
+	bool App::initAudio(int frequency /*= 44100*/,unsigned short channels /*= 2*/,unsigned short buffer_size /*= 2048*/)
 	{
 		bool res = false;
 		try
@@ -202,7 +202,7 @@ namespace RAGE
 		
 			if ( res == true )
 			{
-				pvm_mixer.reset(new Mixer());
+				pvm_mixer.reset(new Mixer(frequency, channels, buffer_size));
 			}
 		
 		}
