@@ -61,7 +61,7 @@ namespace RAGE
             //TO BE CONTINUED
             typedef enum
             {
-                KBackspace = 0,
+                KBackspace = 1,
                 KTab,
                 KClear,
                 KReturn,
