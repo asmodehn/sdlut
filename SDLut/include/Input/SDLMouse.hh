@@ -37,7 +37,7 @@ namespace RAGE
 
         typedef enum
         {
-            Left, Middle, Right, WheelUp, WheelDown
+            Left = 1, Middle, Right, WheelUp, WheelDown
         }
         Button;
 	
