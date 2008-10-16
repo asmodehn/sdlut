@@ -66,16 +66,18 @@ namespace RAGE
 
 // 	    protected :
 		    
-	static short Button2sdl(Button b); //protect this ??
-		    static Button sdl2Button(short sdlb);
-		    static Button str2Button(std::string strb);
-	
-	    private :
-		    
-		    static std::vector<short> Buttonrage2sdl;
-		    static std::map<short,Button> Buttonsdl2rage;
-		    static std::map<std::string,Button> Buttonstr2rage;
-		    static std::vector<short> InitButtonMapping();
+		static short Button2sdl(Button b); //protect this ??
+	    static Button sdl2Button(short sdlb);
+		static std::string Button2str(Mouse::Button b);
+	    static Button str2Button(std::string strb);
+
+    private :
+	    
+	    static std::vector<short> Buttonrage2sdl;
+	    static std::map<short,Button> Buttonsdl2rage;
+	    static std::map<std::string,Button> Buttonstr2rage;
+		static std::map<Mouse::Button,std::string> Buttonrage2str;
+	    static std::vector<short> InitButtonMapping();
 
     };
 

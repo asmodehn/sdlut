@@ -8,6 +8,7 @@ namespace RAGE
 {
 	std::map<short,Mouse::Button> Mouse::Buttonsdl2rage;
 	std::map<std::string,Mouse::Button> Mouse::Buttonstr2rage;
+	std::map<Mouse::Button,std::string> Mouse::Buttonrage2str;
 
 	//based on the fact that Rage's enum map to in [0..number-1]. This way the vector is easily built
 	std::vector<short> Mouse::InitButtonMapping()
@@ -19,42 +20,44 @@ namespace RAGE
 		//using a max here to support partial mapping list...
 		int maxvecindex =0;
 		
-#define ASSOCIATE( button, sdlbutton, strbutton ) Buttonrage2sdlmap[button] = sdlbutton; Buttonsdl2rage[sdlbutton] = button; Buttonstr2rage[strbutton] = button; maxvecindex = (maxvecindex>button)? maxvecindex : button;
+#define ASSOCIATE( button, sdlbutton, strbutton ) Buttonrage2sdlmap[button] = sdlbutton; Buttonsdl2rage[sdlbutton] = button; Buttonstr2rage[strbutton] = button;  Buttonrage2str[button] = strbutton; maxvecindex = (maxvecindex>button)? maxvecindex : button;
 #include "SDLButtonMapping.inl"
 #undef ASSOCIATE
 
-{
-	result.resize(maxvecindex+1, 0);
+		{
+			result.resize(maxvecindex+1, 0);
 
-	std::map<Mouse::Button,short>::iterator it = Buttonrage2sdlmap.begin();
-	std::map<Mouse::Button, short>::iterator itEnd = Buttonrage2sdlmap.end();
-	for (; it != itEnd; ++it)
-	{
-		assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
-		result[(*it).first] = (*it).second;
-	}
-}
+			std::map<Mouse::Button,short>::iterator it = Buttonrage2sdlmap.begin();
+			std::map<Mouse::Button, short>::iterator itEnd = Buttonrage2sdlmap.end();
+			for (; it != itEnd; ++it)
+			{
+				assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
+				result[(*it).first] = (*it).second;
+			}
+		}
 return result;
 	}
 	
 	std::vector<short> Mouse::Buttonrage2sdl = InitButtonMapping();
 	
-
-
-
 	
 	short Mouse::Button2sdl(Mouse::Button b)
-{
-	return Buttonrage2sdl[b];
-}
+	{
+		return Buttonrage2sdl[b];
+	}
 	Mouse::Button Mouse::sdl2Button(short sdlb)
-{
-	return Buttonsdl2rage[sdlb];
-}
+	{
+		return Buttonsdl2rage[sdlb];
+	}
+	std::string  Mouse::Button2str(Mouse::Button b)
+    {
+		return Buttonrage2str[b]; 
+    }
+
 	Mouse::Button Mouse::str2Button(std::string strb)
-{
-	return Buttonstr2rage[strb];
-}
+	{
+		return Buttonstr2rage[strb];
+	}
 
 	
     Point Mouse::getPos()
