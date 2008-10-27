@@ -14,7 +14,7 @@ class ObjectWithThreadCall
 	
 	int threadcall(void* args)
 	{
-		testlog << nl << "Thread " << SDL::getCurrentThreadID() << "called " << std::endl;
+		testlog << nl << " --- Thread " << SDL::getCurrentThreadID() << "called --- " << std::endl;
 		return 0;
 	}
 	
@@ -23,6 +23,7 @@ class ObjectWithThreadCall
 
 int main(int argc, char *argv[])
 {
+	testlog.enableFileLog("testThread.log");
 	testlog << nl<<"SDL init...";
 
 	SDL::App::getInstance();
@@ -37,7 +38,7 @@ int main(int argc, char *argv[])
 
 	thread.run();
 
-	testlog << nl<<"Waiting for thread to finish";
+	testlog << nl<<"Waiting for thread to finish" << std::endl;
 	thread.wait();
 	
 	return 0;
