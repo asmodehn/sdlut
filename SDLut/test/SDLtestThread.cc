@@ -11,10 +11,15 @@ Logger testlog("testThread");
 class ObjectWithThreadCall
 {
 	public:
+	ObjectWithThreadCall() {}
 	
 	int threadcall(void* args)
 	{
-		testlog << nl << " --- Thread " << SDL::getCurrentThreadID() << "called --- " << std::endl;
+		testlog << nl << " --- Thread " << SDL::getCurrentThreadID() << "called. Counting from 0 to 20000 --- " << std::endl;
+		for (int i = 0; i < 20000; i++)
+		{
+			testlog << nl << "Iteration N°" << i << std::endl;
+		}
 		return 0;
 	}
 	
@@ -29,17 +34,20 @@ int main(int argc, char *argv[])
 	SDL::App::getInstance();
 			
 	testlog << nl<<"Creating instance";
-	ObjectWithThreadCall obj;
+	ObjectWithThreadCall * obj = new ObjectWithThreadCall();
 
 	testlog << nl<<"Creating instance timer";
-	SDL::Thread<ObjectWithThreadCall> thread;
+	SDL::Thread<ObjectWithThreadCall>* thread = new SDL::Thread<ObjectWithThreadCall>();
 
-	thread.setThreadCall(&obj,&ObjectWithThreadCall::threadcall,(void*)NULL);
+	thread->setThreadCall(obj,&ObjectWithThreadCall::threadcall,(void*)NULL);
 
-	thread.run();
+	thread->run();
 
-	testlog << nl<<"Waiting for thread to finish" << std::endl;
-	thread.wait();
-	
+	testlog << nl<<"Waiting for thread" << std::endl;
+	thread->wait();
+	SDL::Delay(3000);
+	testlog << nl <<"Killing thread: After That No Iteration Should Be Present" << std::endl;
+	thread->kill();
+	SDL::Delay(3000);
 	return 0;
 }
