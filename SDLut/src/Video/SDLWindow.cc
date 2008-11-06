@@ -205,7 +205,7 @@ namespace RAGE
 	}
 
         Window::Window(std::string title)
-	: _title(title),_background(Color(0,0,0)), pvm_screen(0), _icon ( RWOps( _defaultIcon, sizeof(_defaultIcon)))
+	: _title(title),_background(Color(0,0,0)), pvm_screen(0), _icon ( RWOps( _defaultIcon, sizeof(_defaultIcon))), myLoadingScreen(NULL), ShowingLoadingScreen(false)
         {
 #ifdef DEBUG
             Log << nl << "Window::Window(" << title << ") called ..." ;
@@ -239,9 +239,12 @@ namespace RAGE
         {
 #ifdef DEBUG
             Log << nl << "Window::~Window() called ..." << std::endl;
-#endif
+#endif			
             if (!_userengine) //if the user set his own engine , he is responsible for deleting it
                 delete _engine, _engine = NULL;
+
+			if (myLoadingScreen != NULL)
+				delete myLoadingScreen, myLoadingScreen = NULL;
 
             BaseSurface::_vinfo = NULL;
 #ifdef DEBUG
@@ -364,56 +367,153 @@ namespace RAGE
             return res;
         }
 
+		void Window::ShowLoadingScreen( const std::string& Loading_BG_Filename, const std::string& Loading_Global_Msg, std::auto_ptr<Font> Loading_Global_Msg_Font, const std::string& Loading_Specific_Msg, std::auto_ptr<Font>& Loading_Specific_Msg_Font, const Rect& Progress_Bar_Infos /*=Rect()*/ )
+        {
+		try
+        {
+		#ifdef DEBUG
+            Log << nl << "Window::ShowLoadingScreen() called ..." << std::endl;
+		#endif
+			ShowingLoadingScreen = true;
+
+			//Screen->getVideoInfo()->getPixelFormat()->getBitsPerPixel();
+
+			applyBGColor();
+
+			if (myLoadingScreen != NULL)
+				delete myLoadingScreen, myLoadingScreen = NULL;
+
+			myLoadingScreen = new LoadingScreen(std::auto_ptr<RGBSurface>(new RGBSurface(Loading_BG_Filename)), Loading_Global_Msg, Loading_Global_Msg_Font, Loading_Specific_Msg, Loading_Specific_Msg_Font, Progress_Bar_Infos );
+
+			myLoadingScreen->render(pvm_screen);
+
+		#ifdef DEBUG
+            Log << nl << "Window::ShowLoadingScreen() done." << std::endl;
+		#endif
+
+		}
+		catch(std::exception & e)
+        {
+			Log << nl << "Exception caught in Window::ShowLoadingScreen() : " << e.what();
+			throw std::logic_error( "Exception caught in Window::ShowLoadingScreen() : " + (std::string)e.what() );
+		} catch (...) {
+			Log << nl << "Unhandled Exception in Window::ShowLoadingScreen()";
+			throw std::logic_error( "Unhandled Exception in Window::ShowLoadingScreen()" );
+		}
+		}
+
+		void Window::UpdateLoadingScreen( const unsigned short& Progress_Percent, const std::string& Loading_Specific_Msg )
+		{
+		try
+        {
+			if (ShowingLoadingScreen && myLoadingScreen != NULL )
+			{			
+				myLoadingScreen->Progress_Percent = std::min(100, std::max(0, (int)Progress_Percent)); //force the progression to be between 0 and 100
+				myLoadingScreen->Loading_Specific_Msg = Loading_Specific_Msg;
+				myLoadingScreen->render(pvm_screen);
+			}
+			else
+			{
+			#ifdef DEBUG
+				throw std::logic_error( "Trying to update a loading screen that doesn't exists." );
+			#endif
+			}
+			
+		}
+		catch(std::exception & e)
+        {
+			Log << nl << "Exception caught in Window::UpdateLoadingScreen() : " << e.what();
+			throw std::logic_error( "Exception caught in Window::UpdateLoadingScreen() : " + (std::string)e.what() );
+		} catch (...) {
+			Log << nl << "Unhandled Exception in Window::UpdateLoadingScreen()";
+			throw std::logic_error( "Unhandled Exception in Window::UpdateLoadingScreen()" );
+		}
+		}
+
+		void Window::HideLoadingScreen()
+		{
+		try
+        {
+		#ifdef DEBUG
+            Log << nl << "Window::HideLoadingScreen() called ..." << std::endl;
+		#endif
+
+			ShowingLoadingScreen = false;
+
+			if (myLoadingScreen != NULL)
+				delete myLoadingScreen, myLoadingScreen = NULL;
+
+		#ifdef DEBUG
+            Log << nl << "Window::HideLoadingScreen() done." << std::endl;
+		#endif
+
+		}
+		catch(std::exception & e)
+        {
+			Log << nl << "Exception caught in Window::HideLoadingScreen() : " << e.what();
+			throw std::logic_error( "Exception caught in Window::HideLoadingScreen() : " + (std::string)e.what() );
+		} catch (...) {
+			Log << nl << "Unhandled Exception in Window::HideLoadingScreen()";
+			throw std::logic_error( "Unhandled Exception in Window::HideLoadingScreen()" );
+		}
+		}
+
         bool Window::mainLoop(unsigned int framerate, unsigned int eventrate)
         {
-		assert(framerate > 0 && "framerate must be greater than 0 !");
-		bool res = false;
+			if (ShowingLoadingScreen)
+			{
+				 framerate = 1, eventrate = 1;
+			}
+			assert(framerate > 0 && "framerate must be greater than 0 !");
+			bool res = false;
 
 #ifdef DEBUG
-                assert (pvm_screen.get());
-		assert (_engine);
+            assert (pvm_screen.get());
+			assert (_engine);
 #endif
 
-                if (pvm_screen.get())
-                {
-			unsigned long lastframe = SDL_GetTicks();
-			unsigned long lastevent = SDL_GetTicks();
-			unsigned long newlastrender= SDL_GetTicks();
-			unsigned long lastrender= newlastrender;
-			while (!(pvm_eventmanager.quitRequested()))
-			{
-				//handling all the events
-				//
-				if ( SDL_GetTicks() - lastevent >= 1000/eventrate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
+            if (pvm_screen.get())
+            {
+				unsigned long lastframe = SDL_GetTicks();
+				unsigned long lastevent = SDL_GetTicks();
+				unsigned long newlastrender= SDL_GetTicks();
+				unsigned long lastrender= newlastrender;
+				while (!(pvm_eventmanager.quitRequested()))
 				{
-				    pvm_eventmanager.handleAll();
-				    lastevent = SDL_GetTicks();
+					//handling all the events
+					//
+					if ( SDL_GetTicks() - lastevent >= 1000/eventrate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
+					{
+						pvm_eventmanager.handleAll();
+						lastevent = SDL_GetTicks();
+					}
+
+					//applying the background
+					if (!ShowingLoadingScreen)
+						applyBGColor();
+
+					//calling engine for prerender and render events
+					newlastrender = SDL_GetTicks();
+					_engine->prerender( newlastrender - lastrender);
+					lastrender = newlastrender;
+					if (!ShowingLoadingScreen)
+						_engine->render(*pvm_screen);
+	
+					//refresh screen
+					//Log << nl << "before :" << SDL_GetTicks() - lastframe ;
+					if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
+						SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
+
+					pvm_screen->refresh();
+					//Log << nl << "after :" << SDL_GetTicks() - lastframe ;
+
+					lastframe=SDL_GetTicks();
+
+					//calling engine for postrender events
+					_engine ->postrender();
+
 				}
-
-				//applying the background
-				applyBGColor();
-
-				//calling engine for prerender and render events
-				newlastrender = SDL_GetTicks();
-				_engine->prerender( newlastrender - lastrender);
-				lastrender = newlastrender;
-				_engine->render(*pvm_screen);
-
-				//refresh screen
-				//Log << nl << "before :" << SDL_GetTicks() - lastframe ;
-				if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
-                    SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
-
-				pvm_screen->refresh();
-				//Log << nl << "after :" << SDL_GetTicks() - lastframe ;
-
-				lastframe=SDL_GetTicks();
-
-				//calling engine for postrender events
-				_engine ->postrender();
-
-			}
-			res = true;
+				res = true;
                 }
                 else
                 {

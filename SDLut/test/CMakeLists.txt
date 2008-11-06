@@ -85,10 +85,15 @@ ADD_DEPENDENCIES(SDLtestNet SDLut)
 ADD_EXECUTABLE(SDLtestRWCodeDump SDLtestRWCodeDump.cc)
 ADD_DEPENDENCIES(SDLtestRWCodeDump SDLut)
 
+ADD_EXECUTABLE(SDLtestLoadingScreen SDLtestLoadingScreen.cc)
+ADD_DEPENDENCIES(SDLtestLoadingScreen SDLut)
+ADD_TEST(Test_LoadingScreen ${EXECUTABLE_OUTPUT_PATH}/SDLtestLoadingScreen "data/SDLsample.bmp")
+
 INSTALL(
 TARGETS 
 	SDLtestver
 	SDLtestTimer
+	SDLtestLoadingScreen
 	SDLtestVideo
 	SDLtestGL
 	SDLtestFont
