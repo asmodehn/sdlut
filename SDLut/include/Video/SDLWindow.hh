@@ -182,7 +182,7 @@ namespace RAGE
 				short Progress_Percent;
 				Rect Progress_Bar_Infos;
 
-				LoadingScreen(std::auto_ptr<RGBSurface>& _Loading_BG, const std::string& _Loading_Global_Msg, std::auto_ptr<Font>& _Loading_Global_Msg_Font, const std::string& _Loading_Specific_Msg, std::auto_ptr<Font>&  _Loading_Specific_Msg_Font, const Rect& Progress_Bar_Infos) :
+				LoadingScreen(std::auto_ptr<RGBSurface> _Loading_BG, const std::string& _Loading_Global_Msg, std::auto_ptr<Font> _Loading_Global_Msg_Font, const std::string& _Loading_Specific_Msg, std::auto_ptr<Font>  _Loading_Specific_Msg_Font, const Rect& Progress_Bar_Infos) :
 					Loading_BG(_Loading_BG), Loading_Global_Msg(_Loading_Global_Msg), Loading_Global_Msg_Font(_Loading_Global_Msg_Font), Loading_Specific_Msg(_Loading_Specific_Msg), Loading_Specific_Msg_Font(_Loading_Specific_Msg_Font), Progress_Bar_Infos(Progress_Bar_Infos)
 				{
 					Progress_Percent = 0;
@@ -241,7 +241,7 @@ namespace RAGE
 			 * @Loading_Specific_Msg_Font, a Font auto pointer used to display Loading_Specific_Msg_Font
 			 * @Progress_Bar_Infos, a Rect containing first the progress bar origin coordinates (also used for specific msg position) and then the width/height of the bar. Default an empty Rect. 
 			 **/
-			void ShowLoadingScreen( const std::string& Loading_BG_Filename, const std::string& Loading_Global_Msg, std::auto_ptr<Font> Loading_Global_Msg_Font, const std::string& Loading_Specific_Msg, std::auto_ptr<Font>& Loading_Specific_Msg_Font, const Rect& Progress_Bar_Infos = Rect() );
+			void ShowLoadingScreen( const std::string& Loading_BG_Filename, const std::string& Loading_Global_Msg, std::auto_ptr<Font> Loading_Global_Msg_Font, const std::string& Loading_Specific_Msg, std::auto_ptr<Font> Loading_Specific_Msg_Font, const Rect& Progress_Bar_Infos = Rect() );
 			
 			/**
 			 * Show a loading Screen: a static bg with a global msg and a specific msg.
