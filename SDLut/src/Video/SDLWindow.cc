@@ -295,12 +295,26 @@ namespace RAGE
 
         }
 
-        bool Window::resetDisplay( int width, int height, int bpp)
+        bool Window::resetDisplay( unsigned int width, unsigned int height, unsigned int bpp)
         {
 #ifdef DEBUG
             Log << nl << "Window::resetDisplay( " << width << ", " << height << ", " << bpp << ") called ..." << std::endl;
 #endif
 	bool res = false;
+
+		//force usage of DEFAULT_DISPLAY_WIDTH & DEFAULT_DISPLAY_HEIGHT when only one param is equal to 0. 
+		if ((width == 0 && height != 0) || (width != 0 && height == 0))
+		{
+			width = DEFAULT_DISPLAY_WIDTH;
+			height = DEFAULT_DISPLAY_HEIGHT;
+		}
+		//Both equal to 0 means use dekstop/current mode.
+		if (width == 0 && height == 0)
+		{
+			width = VideoSurface::getVideoInfo()->get_current_width();
+			height = VideoSurface::getVideoInfo()->get_current_height();
+		}
+
 	    if ( bpp == 0 ) //here 0 means autodetection
 	    {
 		    bpp=VideoSurface::getSuggestedBPP(width, height);

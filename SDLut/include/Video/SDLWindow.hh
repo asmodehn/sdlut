@@ -80,8 +80,9 @@ namespace RAGE
             //create the screen or reset it if needed because some parameters changed
 			//returns NULL if no screen available
 			// calls Engine->init();
+			//since sdl 1.2.10 if width and height are both 0, SDL_SetVideoMode will use the width and height of the desktop mode
 			// bpp = 0 means autodetect best bpp
-            bool resetDisplay( int width = DEFAULT_DISPLAY_WIDTH, int height = DEFAULT_DISPLAY_HEIGHT, int bpp = 0 );
+            bool resetDisplay( unsigned int width = 0, unsigned int height = 0, unsigned int bpp = 0 );
             //just resize the screen (without changing flags, or bpp)
 			//returns NULL if no screen available
 			// calls Engine->resize();

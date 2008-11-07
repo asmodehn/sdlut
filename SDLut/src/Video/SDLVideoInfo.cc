@@ -122,6 +122,17 @@ namespace RAGE
 		return _info->video_mem;
 	}
 
+		//return current width of video mode, or of the desktop mode if called before SDL_SetVideoMode
+	unsigned int VideoInfo::get_current_width() const
+	{
+		return SDL_GetVideoInfo()->current_w;
+	}
+		//return current height of video mode, or of the desktop mode if called before SDL_SetVideoMode
+	unsigned int VideoInfo::get_current_height() const
+	{
+		return SDL_GetVideoInfo()->current_h;
+	}
+
 	
         //return the SDLPixelFormat for the current video device
         PixelFormat * VideoInfo::getPixelFormat() const

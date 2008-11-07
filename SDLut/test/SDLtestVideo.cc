@@ -34,7 +34,7 @@ public:
 		case KF6:
                 if (pressed==true)
 				{
-					App::getInstance().getWindow().resizeDisplay(800, 600);
+					//App::getInstance().getWindow().resizeDisplay(800, 600);
                     App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
 				}
                 res = true;
@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     //Setup example
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
-    App::getInstance().initVideo(false,false,true,false);
+    App::getInstance().initVideo(true,false,true,false);
     
 	App::getInstance().setName ("RAGE::SDL test - Video");
     
@@ -112,7 +112,7 @@ int main(int argc, char** argv)
 	//otherwise we use the default engine only.
 	}
 
-    if (! (App::getInstance().getWindow().resetDisplay(800,600,16)))
+    if (! (App::getInstance().getWindow().resetDisplay(0,0,16)))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);

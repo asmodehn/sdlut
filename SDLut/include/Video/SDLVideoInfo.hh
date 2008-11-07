@@ -72,6 +72,11 @@ namespace RAGE
 	    bool isBlitFillAccelAvailable() const;
             //return the total amount of video memory in kilobytes
 	    unsigned long videoMemSize() const;
+			//return current width of video mode, or of the desktop mode if called before SDL_SetVideoMode
+		unsigned int get_current_width() const;
+			//return current height of video mode, or of the desktop mode if called before SDL_SetVideoMode
+		unsigned int get_current_height() const;
+	
 
             std::string getDriverName(void) const;
 
