@@ -213,7 +213,7 @@ namespace RAGE
 				#ifdef HAVE_SDLTTF
 					//Blit Global Msg
 					if (Loading_Global_Msg != "")
-						Screen->blit(*Loading_Global_Msg_Font->render(Loading_Global_Msg,RGBColor(0,0,0), Font::Blended), Point(ls_x + 10, ls_y + 10) );
+						Screen->blit(*Loading_Global_Msg_Font->render(Loading_Global_Msg,RGBColor(0,0,0), Font::Blended), Point( ls_x + Progress_Bar_Infos.getx(), std::max(ls_y, ls_y + Progress_Bar_Infos.gety() - 40) ) );
 
 					//Blit Specific Msg
 					if (Loading_Specific_Msg != "")

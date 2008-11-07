@@ -19,6 +19,7 @@ CONFIGURE_FILE(data/musicSample.wav ${SDLut_BINARY_DIR}/test/data/musicSample.wa
 CONFIGURE_FILE(data/musicSample.ogg ${SDLut_BINARY_DIR}/test/data/musicSample.ogg COPYONLY)
 CONFIGURE_FILE(data/musicSample.mp3 ${SDLut_BINARY_DIR}/test/data/musicSample.mp3 COPYONLY)
 CONFIGURE_FILE(data/ECHELON.TTF ${SDLut_BINARY_DIR}/test/data/ECHELON.TTF COPYONLY)
+CONFIGURE_FILE(data/LS_Initial.png ${SDLut_BINARY_DIR}/test/data/LS_Initial.png COPYONLY)
 
 #linking Rage_SDL to all other following executables
 LINK_LIBRARIES(SDLut)
@@ -87,7 +88,7 @@ ADD_DEPENDENCIES(SDLtestRWCodeDump SDLut)
 
 ADD_EXECUTABLE(SDLtestLoadingScreen SDLtestLoadingScreen.cc)
 ADD_DEPENDENCIES(SDLtestLoadingScreen SDLut)
-ADD_TEST(Test_LoadingScreen ${EXECUTABLE_OUTPUT_PATH}/SDLtestLoadingScreen "data/SDLsample.bmp")
+ADD_TEST(Test_LoadingScreen ${EXECUTABLE_OUTPUT_PATH}/SDLtestLoadingScreen "data/LS_Initial.png")
 
 INSTALL(
 TARGETS 

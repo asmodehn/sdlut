@@ -100,7 +100,7 @@ public:
 			DefaultEngine::render(screen);
 		else if (GLOBAL_STATE == 2)
 		{
-			App::getInstance().getWindow().ShowLoadingScreen( LSBGFn, "YOU ARE INSIDE THE MAAAATRIX", std::auto_ptr<Font>(new Font("data/ECHELON.TTF", 25)), "", std::auto_ptr<Font>( new Font("data/ECHELON.TTF", 14)), Rect(35, 150, 200, 15) );
+			App::getInstance().getWindow().ShowLoadingScreen( LSBGFn, "YOU ARE INSIDE THE MAAAATRIX", std::auto_ptr<Font>(new Font("data/ECHELON.TTF", 25)), "", std::auto_ptr<Font>( new Font("data/ECHELON.TTF", 14)), Rect(100, 400, 600, 25) );
 			App::getInstance().getWindow().UpdateLoadingScreen(100, "Washing Your Brain, Press Esc Key Twice To Flee ...");
 		}
     }
@@ -121,22 +121,21 @@ try {
 	testlog << ( (SDL::App::getInstance().initText())? "OK" : "FAILED" );
 #endif
 
-	if (argv[1] == NULL)
-		testlog << nl << " Enabling Text... " << std::endl;
-		
+	std::string loading_screen = "data/LS_Initial.png";
+
 	//Show Loading Screen
-	App::getInstance().getWindow().resetDisplay();
-	App::getInstance().getWindow().ShowLoadingScreen( argv[1], "GLOBAL BLABLA", std::auto_ptr<Font>(new Font("data/ECHELON.TTF", 25)), "Setting User Input", std::auto_ptr<Font>( new Font("data/ECHELON.TTF", 12)), Rect(35, 150, 200, 15) );
+	App::getInstance().getWindow().resetDisplay(800,600);
+	App::getInstance().getWindow().ShowLoadingScreen( loading_screen, "GLOBAL BLABLA", std::auto_ptr<Font>(new Font("data/ECHELON.TTF", 25)), "Setting User Input", std::auto_ptr<Font>( new Font("data/ECHELON.TTF", 12)), Rect(100, 400, 600, 25) );
 
 	//Setting User Input
-	KeyboardInput myKeyboardInput(argv[1]);
+	KeyboardInput myKeyboardInput(loading_screen);
 	App::getInstance().getWindow().getEventManager().setKeyboard(&myKeyboardInput);
 	MouseInput *myMouseInput = new MouseInput();
 	App::getInstance().getWindow().getEventManager().setMouse(myMouseInput);	
 
 	//Setting Render Engine
 	App::getInstance().getWindow().UpdateLoadingScreen(10, "Setting Render Engine");
-	RenderEngine myRenderEngine(argv[1]);
+	RenderEngine myRenderEngine(loading_screen);
 	App::getInstance().getWindow().setEngine(&myRenderEngine);
 
 	//Do something while loading screen displayed
