@@ -51,8 +51,13 @@ namespace RAGE
                     errormsg+= "JOYSTICK " ;
                 if ( (flags & SDL_INIT_NOPARACHUTE) != 0)
                     errormsg+= "NOPARACHUTE " ;
+//To Disable EventThread under Windows
+//just a little usefull tip for mingw
+#ifndef WIN32
                 if ( (flags & SDL_INIT_EVENTTHREAD) != 0)
                     errormsg+= "EVENTTHREAD " ;
+				//not sure what to do with mingw32...
+#endif
                 Log << errormsg << ": " << GetError() ;
                 throw std::logic_error("SDL_Init failed!");
             }
