@@ -14,7 +14,7 @@ namespace RAGE
 #ifdef DEBUG
 			Log << nl << "MusicImpl::MusicImpl(" << filename << ") called";
 #endif
-			Uint32 len;
+			Uint32 len = 0;
 					
 			//SDL_LoadWAV_RW(,1, _aInfo.get_pSDL(),&_buf,&len);
 // 			if ( SDL_LoadWAV_RW(pvm_OriginalData->get_pSDL(),0,_aInfo.get_pSDL(),&_buf,&len) == NULL)
@@ -46,7 +46,7 @@ namespace RAGE
 #endif
 			//*pvm_OriginalData = *(s.pvm_OriginalData);
 
-			Uint32 len;
+			Uint32 len = 0;
 			//DOING :use of SDL_LoadWAV_RW (RWops) if possible to have only one way to free the memory allocated for a sound...
 // 			if ( SDL_LoadWAV_RW(pvm_OriginalData->get_pSDL(),0,_aInfo.get_pSDL(),&_buf,&len) == NULL)
 // 			{

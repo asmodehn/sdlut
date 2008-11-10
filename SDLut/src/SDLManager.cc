@@ -13,7 +13,7 @@ namespace RAGE
             Log << nl << "Manager::Manager() called ...";
 #endif
 
-            Uint32 flags;
+            Uint32 flags = 0;
 
             if (video)
                 flags |= SDL_INIT_VIDEO;
@@ -27,12 +27,11 @@ namespace RAGE
                 flags |= SDL_INIT_JOYSTICK;
             if (noparachute)
                 flags |= SDL_INIT_NOPARACHUTE;
-//To Disable EventThread under Windows
-//just a little usefull tip for mingw
+// Win32 doesn't allow a separate event threadw
 #ifndef WIN32
             if (eventthread)
                 flags |= SDL_INIT_EVENTTHREAD;
-//not sure what to do with mingw32...
+//not sure what to do with mingw but probably nothing...
 #endif
 
             if (SDL_Init(flags)<0)
@@ -51,13 +50,9 @@ namespace RAGE
                     errormsg+= "JOYSTICK " ;
                 if ( (flags & SDL_INIT_NOPARACHUTE) != 0)
                     errormsg+= "NOPARACHUTE " ;
-//To Disable EventThread under Windows
-//just a little usefull tip for mingw
-#ifndef WIN32
                 if ( (flags & SDL_INIT_EVENTTHREAD) != 0)
                     errormsg+= "EVENTTHREAD " ;
-				//not sure what to do with mingw32...
-#endif
+
                 Log << errormsg << ": " << GetError() ;
                 throw std::logic_error("SDL_Init failed!");
             }
