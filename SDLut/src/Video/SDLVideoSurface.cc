@@ -115,6 +115,56 @@ namespace RAGE
             return res;
         }
 
+		std::auto_ptr<std::list<std::pair<int, int>>> VideoSurface::Get_Resolution_List()
+		{
+			//NB:  we could use SDL_ListModes (http://www.libsdl.org/cgi/docwiki.cgi/SDL_ListModes) to do the same job as this function but it doesn't work well 
+
+			std::auto_ptr<std::list<std::pair<int, int>>> res (new std::list<std::pair<int, int>> );
+
+			//Add standard PC resolutions to the list (http://en.wikipedia.org/wiki/List_of_common_resolutions). This should be updated when new screen using others resolution will appear or if there r missing resolutions.
+			res->push_back(std::pair<int,int>(800,600));
+			res->push_back(std::pair<int,int>(856,480));
+			res->push_back(std::pair<int,int>(960,540));
+			res->push_back(std::pair<int,int>(960,720));
+			res->push_back(std::pair<int,int>(1024,576));
+			res->push_back(std::pair<int,int>(1024,768));
+			res->push_back(std::pair<int,int>(1152,720));
+			res->push_back(std::pair<int,int>(1152,864));
+			res->push_back(std::pair<int,int>(1280,720));
+			res->push_back(std::pair<int,int>(1280,768));
+			res->push_back(std::pair<int,int>(1280,800));
+			res->push_back(std::pair<int,int>(1280,960));
+			res->push_back(std::pair<int,int>(1280,1024));
+			res->push_back(std::pair<int,int>(1366,768));
+			res->push_back(std::pair<int,int>(1400,1050));
+			res->push_back(std::pair<int,int>(1440,900));
+			res->push_back(std::pair<int,int>(1440,1080));
+			res->push_back(std::pair<int,int>(1600,900));
+			res->push_back(std::pair<int,int>(1600,1200));
+			res->push_back(std::pair<int,int>(1680,1050));
+			res->push_back(std::pair<int,int>(1920,1080));
+			res->push_back(std::pair<int,int>(1920,1200));
+			res->push_back(std::pair<int,int>(1920,1440));
+			res->push_back(std::pair<int,int>(2048,1600));
+			res->push_back(std::pair<int,int>(2560,1600));
+			res->push_back(std::pair<int,int>(2560,2048));
+			res->push_back(std::pair<int,int>(4096,2560));
+
+			res->sort();
+			res->unique();
+
+			short bpp = 32; //we test for 32bit coz we only want resolutions available in all mode (8/16/24/32)
+			for (std::list<std::pair<int, int>>::iterator it = res->begin(); it != res->end(); )
+			{	
+				if ( SDL_VideoModeOK(it->first, it->second, bpp, SDL_FULLSCREEN) == 0 )
+					it = res->erase(it); //mode not available
+				else
+					++it;
+			}
+
+			return res;
+		}
+
 
         bool VideoSurface::refresh(void)
         {

@@ -22,7 +22,9 @@
 #include "Video/SDLBaseSurface.hh"
 #include "Video/SDLRGBSurface.hh" //to help with backup of screen surface
 
+#include <iostream>
 #include <vector>
+#include <list>
 
 namespace RAGE
 {
@@ -113,6 +115,13 @@ namespace RAGE
             static bool checkAvailableSize( const PixelFormat * fmt );
             static bool checkAvailableSize( void);
             static int getSuggestedBPP(int width, int height);
+
+			/**
+			 * Use a list of "standard" PC resolutions (width * height), test if they fit with the user computer and return the list of available ones.
+			 *
+			 * Return, the list of available resolutions sorted by width than height.
+			 **/
+			static std::auto_ptr<std::list<std::pair<int, int>>> Get_Resolution_List();
 
             friend Logger & operator << (Logger & log, const VideoSurface & surf);
         };
