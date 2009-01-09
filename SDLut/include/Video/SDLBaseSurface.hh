@@ -167,6 +167,9 @@ namespace RAGE
 			bool isHWAccelset(void) const;
 			bool isRLEAccelset(void) const;
 			bool isPreAllocset(void) const;
+
+			//if not NULL, contains the raw pixel data for the surface
+			void * getpixels(void) const;
 			
             ///Accessor to pixelFormat
 			PixelFormat getPixelFormat(void) const;

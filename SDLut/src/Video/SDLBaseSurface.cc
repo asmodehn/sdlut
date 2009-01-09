@@ -154,6 +154,11 @@ BaseSurface::~BaseSurface()
 		return ( SDL_PREALLOC & _surf->flags ) != 0;
 	}
 
+	void * BaseSurface::getpixels(void) const
+	{
+		return _surf->pixels;
+	}
+
             ///Accessor to pixelFormat
 	PixelFormat BaseSurface::getPixelFormat(void) const
 	{
