@@ -98,10 +98,16 @@ namespace RAGE
             return *this;
         }
 
-	bool Rect::operator==(const Rect & r)
-	{
-		return _rect->w == r.getw() && _rect->h == r.geth();
-	}
+		bool Rect::operator==(const Rect & r)
+		{
+			return (Point::operator==(r)) && _rect->w == r.getw() && _rect->h == r.geth();
+		}
+
+
+		bool Rect::operator!=(const Rect& r)
+        {
+            return (Point::operator!=(r)) || (_rect->w != (Uint16)r.getw()) || (_rect->h != (Uint16)r.geth());
+        }
 	
         //this computes the intersection of 2 rects, that if the greatest rect contained in both of them
         Rect Rect::inf(const Rect & r)

@@ -88,11 +88,15 @@ namespace RAGE
 	}
 	
 	//TODO : tests operators == , X< X> Y< Y> ( cf old vector operator overloading for example...)
-	bool Point::operator==(const Point & p)
+	bool Point::operator==(const Point &p)
 	{
 		return _rect->x == p.getx() && _rect->y == p.gety();
 	}
 
+	bool Point::operator!=(const Point &p)
+	{
+		return (_rect->x != p.getx()) || (_rect->y != p.gety());
+	}
 
 	
     Point& Point::operator=(const Point& p)

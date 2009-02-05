@@ -36,44 +36,46 @@ namespace RAGE
         class Point
         {
         protected:
-            //the address of the SDL_Rect struct should never change...
-		SDL_Rect * const _rect;
+				//the address of the SDL_Rect struct should never change...
+			SDL_Rect * const _rect;
 
-        public:
+		public:
 
-            //2 parameters define only a point.
-		Point(int nx=0, int ny=0);
+				//2 parameters define only a point.
+			Point(int nx=0, int ny=0);
 
-		Point( const Point& p );
+			Point( const Point& p );
 
-		virtual ~Point();
+			virtual ~Point();
 
-            //Accessors
+				//Accessors
 
-		void setx(int nx );
-		void sety(int ny );
-		int getx() const;
-		int gety() const;
+			void setx(int nx );
+			void sety(int ny );
+			int getx() const;
+			int gety() const;
 
-		//usefull to get the SDL rect without any risk of modification
-		SDL_Rect get_SDL() const;
-		//usefull to get the SDL rect
-		const SDL_Rect * get_pSDL() const;
+			//usefull to get the SDL rect without any risk of modification
+			SDL_Rect get_SDL() const;
+			//usefull to get the SDL rect
+			const SDL_Rect * get_pSDL() const;
 
-            //Methods
+				//Methods
 
-		void translate(int x ,int y);
+			void translate(int x ,int y);
 
-            Point& operator=(const Point&);
+				Point& operator=(const Point&);
 
-            //and others like + - etc...
-	    Point operator+(const Point &p) const;
-	    Point operator-(const Point &p) const;
-	    Point& operator+=(const Point &p);
-	    Point& operator-=(const Point &p);
-	    
-	//TODO : tests operators == , X< X> Y< Y> ( cf old vector operator overloading for example...)
-	    bool operator==(const Point & p);
+				//and others like + - etc...
+			Point operator+(const Point &p) const;
+			Point operator-(const Point &p) const;
+			Point& operator+=(const Point &p);
+			Point& operator-=(const Point &p);
+		    
+		//TODO : tests operators == , X< X> Y< Y> ( cf old vector operator overloading for example...)
+			bool operator==(const Point & p);
+
+			bool operator!=(const Point & p);
 
             inline friend std::ostream& operator << (std::ostream& os, const Point& p)
             {
