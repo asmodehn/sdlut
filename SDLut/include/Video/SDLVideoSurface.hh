@@ -121,7 +121,7 @@ namespace RAGE
 			 *
 			 * Return, the list of available resolutions sorted by width than height.
 			 **/
-			static std::auto_ptr<std::list<std::pair<int, int>>> Get_Resolution_List();
+			static std::auto_ptr<std::list<std::pair<int, int> > > Get_Resolution_List();
 
             friend Logger & operator << (Logger & log, const VideoSurface & surf);
         };
