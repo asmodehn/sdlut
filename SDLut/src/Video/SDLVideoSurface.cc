@@ -115,11 +115,11 @@ namespace RAGE
             return res;
         }
 
-		std::auto_ptr<std::list<std::pair<int, int>>> VideoSurface::Get_Resolution_List()
+		std::auto_ptr <std::list <std::pair <int, int> > > VideoSurface::Get_Resolution_List()
 		{
 			//NB:  we could use SDL_ListModes (http://www.libsdl.org/cgi/docwiki.cgi/SDL_ListModes) to do the same job as this function but it doesn't work well 
 
-			std::auto_ptr<std::list<std::pair<int, int>>> res (new std::list<std::pair<int, int>> );
+			std::auto_ptr <std::list <std::pair <int, int> > > res (new std::list <std::pair <int, int> > );
 
 			//Add standard PC resolutions to the list (http://en.wikipedia.org/wiki/List_of_common_resolutions). This should be updated when new screen using others resolution will appear or if there r missing resolutions.
 			res->push_back(std::pair<int,int>(800,600));
@@ -154,7 +154,7 @@ namespace RAGE
 			res->unique();
 
 			short bpp = 32; //we test for 32bit coz we only want resolutions available in all mode (8/16/24/32)
-			for (std::list<std::pair<int, int>>::iterator it = res->begin(); it != res->end(); )
+			for (std::list< std::pair<int, int> >::iterator it = res->begin(); it != res->end(); )
 			{	
 				if ( SDL_VideoModeOK(it->first, it->second, bpp, SDL_FULLSCREEN) == 0 )
 					it = res->erase(it); //mode not available
