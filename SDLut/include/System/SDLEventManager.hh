@@ -19,7 +19,7 @@ namespace RAGE
          *
          * \ingroup EventHandling
          *
-         * \brief This class handles general event sin SDLwrap
+         * \brief This class handles general events in SDLut
          *
          * \author Alex
          *
