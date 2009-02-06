@@ -81,12 +81,7 @@ class MyGeneralHandler : public GeneralHandler
 
         public:
 
-            GeneralHandler() : _quitRequested(false)
-            {}
-            virtual ~GeneralHandler()
-            {}
-
-            //Callbacks on Window / Display events
+			//Callbacks on Window / Display events
             virtual bool handleActiveEvent(bool gain, bool active, bool inputfocus, bool mousefocus)
 		{
 			return false;
