@@ -150,7 +150,7 @@ namespace RAGE
 
 		const SDL_Surface & get_rSDL() const
 		{
-			return *_surf;
+			return *_surf; // Indirection of auto_ptr ???? -> TO INVESTIGATE....
 		}
 
 			int getHeight(void) const;

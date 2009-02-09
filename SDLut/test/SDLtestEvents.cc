@@ -79,41 +79,94 @@ class MyGeneralHandler : public GeneralHandler
 	friend class EventManager;
         bool _quitRequested;
 
+		Console * cons;
+
         public:
+
+			MyGeneralHandler(): GeneralHandler(), cons(NULL) {};
+			virtual ~MyGeneralHandler() {};
+
+		void setConsole(Console* csl)
+		{
+			cons = csl;
+		}
 
 			//Callbacks on Window / Display events
             virtual bool handleActiveEvent(bool gain, bool active, bool inputfocus, bool mousefocus)
 		{
-			return false;
+			if ( cons == NULL )	return false;
+			else
+			{
+				cons->print("Active");
+			}
+			return true;
 		}
 
             virtual bool handleResizeEvent(int w, int h)
 		{
-			App::getInstance().getWindow().resizeDisplay(w,h);
-        		return true;
+
+				App::getInstance().getWindow().resizeDisplay(w,h);
+        		
+				
+			if ( cons == NULL )	return false;
+			else
+			{
+				cons->print("Resize");
+			}
+			
+
+				return true;
 		}
             virtual bool handleExposeEvent()
 		{
-			 return false;
+			 	if ( cons == NULL )	return false;
+			else
+			{
+				cons->print("Expose");
+			}
+			
+
+				return true;
 		}
             //callback on platform-dependent windows manager event
             virtual bool handleSysWMEvent(void)
     {
-        return false;
+        			 			if ( cons == NULL )	return false;
+			else
+			{
+				cons->print("System WM");
+			}
+			
+
+				return true;
     }
 
             //Callback on other Events
 	    virtual bool handleUserEvent(Event::Type type, int code, void* data1, void* data2)
     {
-        return false;
+        			 			if ( cons == NULL )	return false;
+			else
+			{
+				cons->print("User Event");
+			}
+			
+
+				return true;
     }
 
 
             //Callback on Quit Event
             virtual bool handleQuitEvent(void)
 		{
-        		_quitRequested=true;
-        		return true;
+        
+        		if ( cons == NULL )	return false;
+				else
+				{
+					cons->print("Quit");
+				}
+			
+				_quitRequested=true;
+				return true;
 		}
             //Catch-all callback
             virtual bool handleEvent(Event &event)
@@ -129,6 +182,7 @@ class MyGeneralHandler : public GeneralHandler
 		}
 
 };
+
 
 //Defining UserInput
 class MyUserInput : public TextInput

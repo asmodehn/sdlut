@@ -20,6 +20,7 @@ class RGBSurface : public BaseSurface
 	//To be able to construct RGBSurface from Font :
 	friend class Font;
 	friend class FontImpl;
+	friend class FontExtend;
 	
 	///Conversion Constructor
     	explicit RGBSurface(SDL_Surface * s) : BaseSurface(s)

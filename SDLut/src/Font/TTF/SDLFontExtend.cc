@@ -48,7 +48,7 @@ namespace SDL
 			TTF_CloseFont(_ttfstruct);
 		}
 
-		std::auto_ptr<SDL_Surface> FontExtend::render(const std::string& text, Color c, Color bgc, Font::RenderMode mode) const
+		std::auto_ptr<RGBSurface> FontExtend::render(const std::string& text, Color c, Color bgc, Font::RenderMode mode) const
 		{
 			std::auto_ptr<SDL_Surface> surf;
 			switch ( mode )
@@ -58,7 +58,8 @@ namespace SDL
 				case Font::Solid :
 				default: surf.reset(TTF_RenderText_Solid(_ttfstruct,text.c_str(), c.get_SDL())); break;
 			}
-			return surf;//beware : auto_ptr ownership transferred ;)
+			//return surf;//beware : auto_ptr ownership transferred ;)
+			return std::auto_ptr<RGBSurface>(new RGBSurface(surf));
 		}
 
 		//Attributes Access

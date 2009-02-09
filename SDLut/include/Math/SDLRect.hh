@@ -80,7 +80,7 @@ public:
 	//TODO tests operators :  != == <= < >= > (about size of the area only)
 		bool operator==(const Rect & r);
 
-		bool Rect::operator!=(const Rect& r);
+		bool operator!=(const Rect& r);
 
 
 	inline friend std::ostream& operator << (std::ostream& os, const Rect& r)

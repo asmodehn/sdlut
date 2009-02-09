@@ -48,14 +48,17 @@ namespace SDL
 				alphalookup.clear();
 			}
 
-			std::auto_ptr<SDL_Surface> FontImpl::render(const std::string & text,Color c, Color bgc, Font::RenderMode mode) const
+			std::auto_ptr<RGBSurface> FontImpl::render(const std::string & text,Color c, Color bgc, Font::RenderMode mode) const
 			{
-
-				std::auto_ptr<SDL_Surface> result(SDL_CreateRGBSurface(SDL_SWSURFACE, getSize(text).getw(), getSize(text).geth(), 16, BaseSurface::r_default_mask, BaseSurface::g_default_mask, BaseSurface::b_default_mask, BaseSurface::a_default_mask));
+				//TODO : redo using SDLut wrapper for surfaces...
+				std::auto_ptr<RGBSurface> result( new RGBSurface( getSize(text).getw(), getSize(text).geth(), 16) );
+				//std::auto_ptr<SDL_Surface> result(SDL_CreateRGBSurface(SDL_SWSURFACE, getSize(text).getw(), getSize(text).geth(), 16, BaseSurface::r_default_mask, BaseSurface::g_default_mask, BaseSurface::b_default_mask, BaseSurface::a_default_mask));
 				//Log << getSize(text);
 				for (unsigned int i= 0; i< text.size(); i++)
 				{
-					SDL_BlitSurface(const_cast<SDL_Surface*>(&_fontsurf.get_rSDL()),const_cast<SDL_Rect*>(alphalookup[text[i]].get_pSDL()),result.get(),const_cast<SDL_Rect*>(Rect(0,i*14,14,16).get_pSDL()));
+					//TODO : fix the lookup
+					result->blit(_fontsurf, Rect(i*14,0,14,16),alphalookup[text[i]]);
+					//SDL_BlitSurface(const_cast<SDL_Surface*>(&_fontsurf.get_rSDL()),const_cast<SDL_Rect*>(alphalookup[text[i]].get_pSDL()),result.get(),const_cast<SDL_Rect*>(Rect(0,i*14,14,16).get_pSDL()));
 				}
 				return result;//beware : ownership transferred for auto_ptr
 			}
