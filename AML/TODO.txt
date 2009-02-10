@@ -1,0 +1,5 @@
+List of features To HAVE here ( and not in SDLut )
+
+- default key bindings ( customizable )
+- embedded console
+- 
