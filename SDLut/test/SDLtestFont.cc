@@ -143,7 +143,7 @@ public:
 		DefaultEngine::init(width,height);
 		console->init(width,height - 2 * DefaultEngine::_logo.getHeight());
 		consolePos.sety(DefaultEngine::_logo.getHeight());
-		HelpMsg = console->_font.render("A Plz 0@A Use A Keyboard To Write Text Down", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+		HelpMsg = console->_font.render("Plz Use Keyboard To Write Text Down", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
 		return true;
 	}
 
