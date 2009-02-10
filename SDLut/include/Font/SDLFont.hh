@@ -5,7 +5,6 @@
 #include "Math/SDLRect.hh"
 #include "Video/SDLRGBSurface.hh"
 
-#include <vector>
 #include <memory>
 
 namespace RAGE

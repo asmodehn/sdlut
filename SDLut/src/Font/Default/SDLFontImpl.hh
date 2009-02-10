@@ -1,8 +1,9 @@
 #ifndef SDLFONTIMPL_HH
 #define SDLFONTIMPL_HH
 
-
 #include "Font/SDLFont.hh"
+
+#include <map>
 
 namespace RAGE
 {
@@ -15,9 +16,9 @@ namespace SDL
 		//this version keeps the right value for render
 		RGBSurface _fontsurf;
 
-		//all the rectangles become {0,0,0,0} on render for some reason
-		std::vector<Rect> alphalookup;
-		
+		static std::map<char,Rect> alphalookup;
+		static std::map<char,Rect> InitAlphaLookup();
+
 		public :
 			
 		 //image 16x14 character, 225x225 pixels (all start at 0, not 1)

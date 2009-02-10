@@ -8,21 +8,36 @@ namespace RAGE
 namespace SDL
 {
 	FontImpl::FontImpl()  throw (std::logic_error)
-			try: _fontsurf(RWOps(_defaultFont,sizeof(_defaultFont))), alphalookup()
+			try: _fontsurf(RWOps(_defaultFont,sizeof(_defaultFont)))//, alphalookup()
 			{
 			//building alphalookup
-				for (int line = 0; line < 14; line++)
+			/*	for (int line = 0; line < 14; line++)
 				{
 					for (int col = 0; col < 16; col++)
 					{
 						alphalookup.push_back(Rect(col * 14, line*16, 14,16));
 					}
 				}
+			*/
 			}
+			
 			catch (std::exception& e)
 			{
 				Log << nl << "Exception caught in internal FontImpl constructor : " << e.what();
 			}
+			
+			std::map<char, Rect> FontImpl::InitAlphaLookup()
+			{
+				std::map<char, Rect> result;
+
+			#define ASSOCIATE( key, x, y ) result[key] = Rect( 14 * x, 16 * y, 14, 16 );
+			#include "SDLFontLookup.inl"
+			#undef ASSOCIATE
+			
+				return result;
+			}
+
+			std::map<char, Rect> FontImpl::alphalookup = FontImpl::InitAlphaLookup();
 
 			Rect FontImpl::getSize(const std::string & text) const
 			{
@@ -40,7 +55,7 @@ namespace SDL
 
 			FontImpl::FontImpl(const FontImpl & font) : _fontsurf(font._fontsurf)
 			{
-				alphalookup.assign(font.alphalookup.begin(),font.alphalookup.end());
+				
 			}
 
 			FontImpl::~FontImpl()
@@ -57,6 +72,7 @@ namespace SDL
 				for (unsigned int i= 0; i< text.size(); i++)
 				{
 					//TODO : fix the lookup
+								
 					result->blit(_fontsurf, Rect(i*14,0,14,16),alphalookup[text[i]]);
 					//SDL_BlitSurface(const_cast<SDL_Surface*>(&_fontsurf.get_rSDL()),const_cast<SDL_Rect*>(alphalookup[text[i]].get_pSDL()),result.get(),const_cast<SDL_Rect*>(Rect(0,i*14,14,16).get_pSDL()));
 				}

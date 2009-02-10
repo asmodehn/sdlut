@@ -1,0 +1,8 @@
+//
+
+ASSOCIATE ('0', 0, 1)
+ASSOCIATE ('1', 1, 1)
+ASSOCIATE ('@', 0, 2)
+ASSOCIATE ('A', 1, 2)
+ASSOCIATE ('B', 2, 2)
+ASSOCIATE ('C', 3, 2)
