@@ -3,6 +3,8 @@
 using namespace RAGE;
 using namespace RAGE::SDL;
 
+#include <sstream>
+
 Logger Log("Test Events");
 
 class Console
@@ -13,6 +15,7 @@ class Console
 	//if member embedded (object not reference), error when destructing Font...
 	//to debug -> copy / deletion problem
 	const Font _font;
+	short linesize;
 
 	Color _bgColor;
 
@@ -25,6 +28,7 @@ public :
 	{
 		//init();
 		//draw();
+		linesize = _font.getHeight();
 	}
 
 	bool init(int width, int height)
@@ -45,7 +49,7 @@ public :
 
 	void print(const std::string & newtext)
 	{
-		text += newtext;
+		text += newtext + "\n";
 		draw();
 	}
 
@@ -58,10 +62,18 @@ public :
 
 	void draw()
 	{
-		std::auto_ptr<RGBSurface> textsurf = _font.render(text,Color(255,255,255),Font::Solid);
-		assert(textsurf.get());
-		surf->fill(_bgColor);
-		surf->blit(*textsurf);
+    		std::stringstream ss(text); // Insert the text into a stream
+			surf->fill(_bgColor);
+			int i=0;
+			char line[256];
+			while ( ss.getline(line,255) && ss.good() )
+			{
+				std::auto_ptr<RGBSurface> textsurf = _font.render(line,Color(255,255,255),Font::Solid);
+				assert(textsurf.get());
+				surf->blit(*textsurf,Point (0,i * linesize));
+				++i;
+				//ss.ignore();//ignoring end of line
+			}
 	}
 
 	~Console()
@@ -183,7 +195,101 @@ class MyGeneralHandler : public GeneralHandler
 
 };
 
+class MyKeyboard: public Keyboard
+{public:
 
+	Console *cons;
+
+	MyKeyboard() : Keyboard(), cons(NULL) {}
+
+	void setConsole (Console * newcons)
+	{
+		cons = newcons;
+	}
+
+	virtual bool handleKeyEvent (const Sym &s, bool pressed)
+	{
+		         bool res = false;
+        #ifdef DEBUG
+                   Log << nl << " Key Name : " << getKeyName(s.getKey()) <<  " pressed : " << pressed << std::endl;
+                   res=true;
+        #endif
+
+	//default keyboard behaviour : ESC quits
+            switch( s.getKey() )
+            {
+                case KEscape:
+                if (pressed==false)
+                {
+#ifdef DEBUG
+                    Log << nl << "Quit requested !" << std::endl;
+#endif
+                    _quitRequested=true;
+                    res=true;
+                }
+                break;
+                default:
+                res = false;
+            }
+               return res;
+	}
+};
+
+class MyMouse: public Mouse
+{public:
+
+	Console *cons;
+
+	MyMouse() : Mouse(), cons(NULL) {}
+
+	void setConsole (Console * newcons)
+	{
+		cons = newcons;
+	}
+
+	//Callbacks on Mouse Events
+        virtual bool handleMouseMotionEvent (bool button_pressed, unsigned int x, unsigned int y,
+                                             signed int xrel, signed int yrel)
+		{
+			if ( cons != NULL )
+			{
+				std::stringstream str;
+				if ( button_pressed ) str<<"Mouse Drag : X=" << x << " Y=" << y << " Xrel=" << xrel << " Yrel=" << yrel ;
+				else str<<"Mouse Moved : X=" << x << " Y=" << y << " Xrel=" << xrel << " Yrel=" << yrel ;
+				cons->print( str.str() );
+			}
+			
+			return true;
+		}
+
+        virtual bool handleMouseButtonEvent (Button button, unsigned int x, unsigned int y,
+                                             bool pressed)
+		{
+			if ( cons != NULL )
+			{
+				std::string but=" Button";
+				switch (button)
+				{
+				case Left: but="Left Button";
+				case Middle: but="Middle Button";
+				case Right: but="Right Button";
+				case WheelUp: but="WheelUp Button";
+				case WheelDown: but="WheelDown Button";
+				default: but="Unknown Button";
+				}
+
+				std::stringstream str;
+				str<< but << " X=" << x << "Y=" << y << " pressed? " << pressed;
+
+				cons->print( str.str() );
+			}
+			return true;
+		}
+
+};
+
+
+/*
 //Defining UserInput
 class MyUserInput : public TextInput
 {
@@ -230,7 +336,7 @@ public:
         return res;
     }
 };
-
+*/
 class MyEngine : public DefaultEngine
 {
 
@@ -318,11 +424,14 @@ int main(int argc, char** argv)
 	MyEngine engine;
 	engine.setConsole(&cons);
 	
-   //UI Creation
-    MyUserInput ui;
-	ui.setConsole(&cons);
     MyGeneralHandler gh;
-    App::getInstance().getWindow().getEventManager().setKeyboard(&ui);
+		gh.setConsole(&cons);
+	MyKeyboard kb;
+		kb.setConsole(&cons);
+	MyMouse mouse;
+		mouse.setConsole(&cons);
+    App::getInstance().getWindow().getEventManager().setKeyboard(&kb);
+	App::getInstance().getWindow().getEventManager().setMouse(&mouse);
    App::getInstance().getWindow().getEventManager().setGeneralHandler(&gh);
 
 

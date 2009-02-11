@@ -100,7 +100,7 @@ std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mod
 		return _font->isTTFImpl();
 	}
 	
-	Font::Style Font::getStyle()
+	Font::Style Font::getStyle() const
 	{
 		return _font->getStyle();
 	}
@@ -116,7 +116,7 @@ std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mod
 		return _font.get()->getSize(text);
 	}
 
-	int Font::getHeight()
+	int Font::getHeight() const
 	{
 		//return (static_cast<FontExtend*>(_font.get()))->height();
 		return _font.get()->height();

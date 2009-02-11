@@ -96,19 +96,21 @@ return result;
     bool Mouse::handleMouseMotionEvent (bool button_pressed, unsigned int x, unsigned int y,signed int xrel, signed int yrel)
 	{
 	    bool res = false;
-#ifdef DEBUG
+/*#ifdef DEBUG
         Log << nl << " Button pressed ? " << button_pressed << ", x : " << x << ", y : " << y << ", xrel : " << xrel << ", yrel : " << yrel << std::endl;
         res = true;
 #endif
+		*/
         return res;
 	}
 	bool Mouse::handleMouseButtonEvent (Button button, unsigned int x, unsigned int y, bool pressed)
 	{
 	    bool res = false;
-#ifdef DEBUG
+/*#ifdef DEBUG
         Log << nl << " Button : " << button << ", x : " << x << ", y : " << y << "pressed : " << pressed << std::endl;
         res = true;
 #endif
+		*/
         return res;
 	}
 }

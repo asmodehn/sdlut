@@ -71,13 +71,13 @@ public:
 	bool setTTF(std::string filename , int ptsize = 16);
 	bool isTTFAvailable() const;
 	
-	Style getStyle();
+	Style getStyle() const;
 	void setStyle(Style s);
 
 	Rect size(std::string text);
 
 	Rect getSize(const std::string& text);
-	int getHeight();
+	int getHeight() const;
 	
 
 	//Rendering

@@ -55,11 +55,11 @@ namespace RAGE
                                              signed int xrel, signed int yrel);
         virtual bool handleMouseButtonEvent (Button button, unsigned int x, unsigned int y,
                                              bool pressed);
-        virtual inline bool handleMouseButtonPressEvent (Button button, unsigned int x, unsigned int y)
+        inline bool handleMouseButtonPressEvent (Button button, unsigned int x, unsigned int y)
         {
             return handleMouseButtonEvent(button, x, y, true);
         }
-        virtual inline bool handleMouseButtonReleaseEvent (Button button, unsigned int x, unsigned int y)
+        inline bool handleMouseButtonReleaseEvent (Button button, unsigned int x, unsigned int y)
         {
             return handleMouseButtonEvent(button, x, y, false);
         }

@@ -50,7 +50,7 @@ namespace SDL
 
 			int FontImpl::height()
 			{ 
-				return 0;
+				return 16;
 			}
 
 			FontImpl::FontImpl(const FontImpl & font) : _fontsurf(font._fontsurf)
