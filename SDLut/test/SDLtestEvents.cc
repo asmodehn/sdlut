@@ -4,6 +4,10 @@ using namespace RAGE;
 using namespace RAGE::SDL;
 
 #include <sstream>
+#include <string>
+#include <algorithm>
+
+using namespace std;
 
 Logger Log("Test Events");
 
@@ -62,18 +66,25 @@ public :
 
 	void draw()
 	{
-    		std::stringstream ss(text); // Insert the text into a stream
-			surf->fill(_bgColor);
-			int i=0;
-			char line[256];
-			while ( ss.getline(line,255) && ss.good() )
+		std::stringstream ss(text); // Insert the text into a stream
+		surf->fill(_bgColor);
+		int i=0;
+		int nb_line = count(text.begin(), text.end(), '\n');
+		int current_line = 0;
+		int nb_line_toshow = (int)(850/linesize); //850 = screen_height - logo_height
+		char line[256];
+
+		while ( ss.getline(line,255) && ss.good() )
+		{
+			++current_line;
+			if (current_line >= (nb_line-nb_line_toshow))
 			{
 				std::auto_ptr<RGBSurface> textsurf = _font.render(line,Color(255,255,255),Font::Solid);
 				assert(textsurf.get());
 				surf->blit(*textsurf,Point (0,i * linesize));
 				++i;
-				//ss.ignore();//ignoring end of line
 			}
+		}
 	}
 
 	~Console()
@@ -196,7 +207,8 @@ class MyGeneralHandler : public GeneralHandler
 };
 
 class MyKeyboard: public Keyboard
-{public:
+{
+public:
 
 	Console *cons;
 
@@ -236,7 +248,8 @@ class MyKeyboard: public Keyboard
 };
 
 class MyMouse: public Mouse
-{public:
+{
+public:
 
 	Console *cons;
 
@@ -454,7 +467,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        App::getInstance().getWindow().mainLoop(60,10);
+        App::getInstance().getWindow().mainLoop();
     }
     
     return 0;
