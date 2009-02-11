@@ -271,11 +271,17 @@ class MyMouse: public Mouse
 				switch (button)
 				{
 				case Left: but="Left Button";
+					break;
 				case Middle: but="Middle Button";
+					break;
 				case Right: but="Right Button";
+					break;
 				case WheelUp: but="WheelUp Button";
+					break;
 				case WheelDown: but="WheelDown Button";
+					break;
 				default: but="Unknown Button";
+					break;
 				}
 
 				std::stringstream str;
@@ -384,8 +390,10 @@ public:
 		if (HelpMsg.get()) 
 			screen.blit( *HelpMsg, Point::Point(5, 5) );
 
-		if (console !=NULL)
+		if (console !=NULL)			
+		{			
 			screen.blit(*(console->surf),consolePos);
+		}
     }
 
 	void postrender()
@@ -439,14 +447,14 @@ int main(int argc, char** argv)
     App::getInstance().getWindow().setEngine(&engine);
 
 
-    if (! (App::getInstance().getWindow().resetDisplay()))
+    if (! (App::getInstance().getWindow().resetDisplay(800,1000)))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);
     }
     else
     {
-        App::getInstance().getWindow().mainLoop();
+        App::getInstance().getWindow().mainLoop(60,10);
     }
     
     return 0;
