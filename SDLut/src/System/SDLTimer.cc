@@ -20,7 +20,7 @@ namespace RAGE
 
 	    SDL_TimerID AddGlobalTimer(unsigned int interval, unsigned int callback(unsigned int,void*) , void *param)
 	    {
-		    SDL_TimerID res = SDL_AddTimer(interval,static_cast<SDL_NewTimerCallback>(callback),param);
+		    SDL_TimerID res = SDL_AddTimer(max(interval,1),static_cast<SDL_NewTimerCallback>(callback),param);
 		    
 #ifdef DEBUG
 			if ( res != 0) { Log << nl << "SDL_Timer " << res << " launched." ; }

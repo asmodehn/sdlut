@@ -22,6 +22,7 @@ namespace RAGE
 	    
 		//these should be used through the timer class, not directly
 		//NB : AddGlobalTimer should not be called from an other thread thant the main one. Timers will behave strangely in multithreaded applications...
+		//NB2: if interval <=0, it's replaced by 1
 		SDL_TimerID AddGlobalTimer(unsigned int interval, unsigned int callback (unsigned int, void*) , void *param);
 		bool RemoveGlobalTimer(SDL_TimerID t);
 
