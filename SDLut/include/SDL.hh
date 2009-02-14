@@ -58,6 +58,7 @@
 #include "System/SDLEvent.hh"
 #include "System/SDLEventManager.hh"
 #include "System/SDLTimer.hh"
+#include "System/SDLNewTimer.hh"
 #include "System/SDLRWOps.hh"
 #include "System/SDLThread.hh"
 #include "System/SDLMutex.hh"

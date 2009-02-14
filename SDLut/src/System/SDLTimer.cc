@@ -1,4 +1,5 @@
 #include "System/SDLTimer.hh"
+#include "System/SDLNewTimer.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE
@@ -23,6 +24,7 @@ namespace RAGE
 		    
 #ifdef DEBUG
 			if ( res != 0) { Log << nl << "SDL_Timer " << res << " launched." ; }
+			else { Log << nl << "SDL_Timer " << res << " launch FAILED !"; }
 #endif
 		    
 		    return res;

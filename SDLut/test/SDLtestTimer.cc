@@ -35,16 +35,14 @@ protected:
 class ObjectWithCallback
 {
 private:
-	SDL::Timer<ObjectWithCallback> *Play_Timer_1;
-	SDL::Timer<ObjectWithCallback> *Play_Timer_2;
+	SDL::NewTimer<ObjectWithCallback> *Play_Timer_1;
+	SDL::NewTimer<ObjectWithCallback> *Play_Timer_2;
 	SimpleObject *sobj;
 	
 
 public:
 	ObjectWithCallback(const int& callback_interval) : sobj(NULL), Play_Timer_1(NULL), Play_Timer_2(NULL)
 	{
-		Play_Timer_1 = new SDL::Timer<ObjectWithCallback>();
-		Play_Timer_2 = new SDL::Timer<ObjectWithCallback>();
 		sobj = new SimpleObject(callback_interval);
 		
 	}
@@ -58,16 +56,22 @@ public:
 
 	void play1_1()
 	{
-		Play_Timer_1->setCallback(this,&ObjectWithCallback::callback1_1, NULL);
-		if (! Play_Timer_1->launch( 1 ) )
+		try
+		{
+			Play_Timer_1 = new SDL::NewTimer<ObjectWithCallback>(this,&ObjectWithCallback::callback1_1, NULL);
+		}
+		catch (std::exception &)
 		{
 			throw std::logic_error("Unable to launch the callback on Play_Timer_1");
 		}
 	}
 	void play1_2()
 	{
-		Play_Timer_2->setCallback(this,&ObjectWithCallback::callback1_2, NULL);
-		if (! Play_Timer_2->launch( 1 ) )
+		try
+		{
+			Play_Timer_2 = new SDL::NewTimer<ObjectWithCallback>(this,&ObjectWithCallback::callback1_2, NULL);
+		}
+		catch (std::exception &)
 		{
 			throw std::logic_error("Unable to launch the callback on Play_Timer_2");
 		}
