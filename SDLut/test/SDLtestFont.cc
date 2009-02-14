@@ -5,6 +5,10 @@ using namespace RAGE::SDL;
 
 Logger Log("Test Font");
 
+#include <sstream>
+#include <string>
+#include <algorithm>
+
 class Console
 {
 
@@ -13,6 +17,7 @@ class Console
 	//if member embedded (object not reference), error when destructing Font...
 	//to debug -> copy / deletion problem
 	const Font _font;
+	short linesize;
 
 	Color _bgColor;
 
@@ -21,10 +26,11 @@ class Console
 	std::string text;
 
 public :
-	Console(const Font & fnt = Font(),Color c = Color(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text(">")
+	Console(const Font & fnt = Font(),Color c = Color(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text("")
 	{
 		//init();
 		//draw();
+		linesize = _font.getHeight();
 	}
 
 	bool init(int width, int height)
@@ -45,7 +51,7 @@ public :
 
 	void print(const std::string & newtext)
 	{
-		text += newtext;
+		text += newtext + "\n";
 		draw();
 	}
 
@@ -58,10 +64,26 @@ public :
 
 	void draw()
 	{
-		std::auto_ptr<RGBSurface> textsurf = _font.render(text,Color(255,255,255),Font::Solid);
-		assert(textsurf.get());
+		std::stringstream ss(text); // Insert the text into a stream
 		surf->fill(_bgColor);
-		surf->blit(*textsurf);
+		int i=0;
+		int nb_line = std::count(text.begin(), text.end(), '\n');
+		int current_line = 0;
+		int nb_line_toshow = (int)(surf->getHeight()/linesize);
+		char line[256];
+
+		while ( ss.good() )
+		{
+			ss.getline(line,255);
+			++current_line;
+			if (current_line >= (nb_line-nb_line_toshow))
+			{
+				std::auto_ptr<RGBSurface> textsurf = _font.render(line,Color(255,255,255),Font::Solid);
+				assert(textsurf.get());
+				surf->blit(*textsurf,Point (0,i * linesize));
+				++i;
+			}
+		}
 	}
 
 	~Console()
@@ -199,8 +221,8 @@ int main(int argc, char** argv)
     
     if (argc > 1)
     {
-	//specific font
-	font.setTTF(argv[1],24);
+		//specific font
+		font.setTTF(argv[1],24);
     }
 
 	Console cons(font);
@@ -217,7 +239,7 @@ int main(int argc, char** argv)
     App::getInstance().getWindow().setEngine(&engine);
 
 
-    if (! (App::getInstance().getWindow().resetDisplay()))
+    if (! (App::getInstance().getWindow().resetDisplay(800,600)))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);

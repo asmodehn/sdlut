@@ -195,6 +195,10 @@ namespace RAGE
 				//just to convert the unicode value
 				inline char getChar() const
 				{
+					//special cases
+					if ( _key == KReturn )
+						return('\n');
+					
 					return(static_cast<char>(_unicode & 0x7F));
 				}
 
