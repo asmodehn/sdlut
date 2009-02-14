@@ -24,6 +24,8 @@ namespace RAGE
         *
         */
 
+//TODO : check, maybe it s possible to inline everything ( lighter SDL interface ? )
+
 	class Mutex
 	{
 		SDL_mutex* pvm_mutex;

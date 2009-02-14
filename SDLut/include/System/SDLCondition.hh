@@ -42,7 +42,7 @@ namespace RAGE
 				return *pvm_cond;
 			}
 			
-			bool wait (Mutex & mtx);
+			bool wait (Mutex& mtx);
 			//returns true if cond signalled, false otherwise (timeout or error)
 			bool wait (Mutex & mtx, unsigned long timeout);
 			bool signal ();

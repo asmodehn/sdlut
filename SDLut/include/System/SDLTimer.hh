@@ -2,6 +2,8 @@
 #define SDL_TIMER_HH
 
 #include "Functor.hh"
+#include "System/SDLScopedLock.hh"
+
 #include <utility>
 #include <map>
 #include <memory>
@@ -47,7 +49,7 @@ namespace RAGE
 			//structure for arguments
 	    		typedef struct { int lookupindex; void* args;} cbargs;
 		    
-		    	//index of this functor instance in the static lookuptable
+		    //index of this functor instance in the static lookuptable
 			unsigned int _index;
 			
 			std::auto_ptr<cbargs> _cbargs;
@@ -55,7 +57,8 @@ namespace RAGE
 			//static table lookup that stores pointer to callback
 			static std::map<unsigned int, Callback* > _cbtable;
 			static std::map<unsigned int, SDL_TimerID* > _timertable;
-			
+			static Mutex mtx;// to protect the process of timer creation / deletion
+
 			public:
 
 		    	//static callback function who calls the right functor from the table
@@ -78,7 +81,10 @@ namespace RAGE
 				std::map<unsigned int,typename Timer<TClass>::Callback* > Timer<TClass>::_cbtable;
 		template <class TClass>
 				std::map<unsigned int,SDL_TimerID* > Timer<TClass>::_timertable;
-		
+		template <class TClass>
+				Mutex Timer<TClass>::mtx;
+
+
 		template <class TClass>
 				unsigned int Timer<TClass>::callback(unsigned int interval, void* args)
 		{
@@ -88,6 +94,9 @@ namespace RAGE
 
 			//Do the actual client callback
 			int res = itcb->second->call(interval,callargs->args);
+
+			//critical section
+			ScopedLock lock(mtx);
 
 			if ( res == 0 ) // to set timer to 0 and erase it from the list, to flag termination of timer, so it can be launched again.
 			{
@@ -130,6 +139,9 @@ namespace RAGE
 		template<class TClass>
 				void Timer<TClass>::setCallback(TClass* instance,unsigned int (TClass::*func) (unsigned int, void*), void* args)
 		{
+			//critical section
+			ScopedLock lock(mtx);
+
 			typename std::map<unsigned int, Callback*>::iterator it=_cbtable.find(_index);
 			if ( it != _cbtable.end() )
 			{
@@ -166,6 +178,10 @@ namespace RAGE
 			abort();// destructor abort a running timer if needed
 			//if (_cbargs != NULL)
 			//	delete _cbargs, _cbargs = NULL;
+
+			//critical section
+			ScopedLock lock(mtx);
+
 			typename std::map<unsigned int, Callback*>::iterator it=_cbtable.find(_index);
 			if (it != _cbtable.end())
 			{
@@ -180,6 +196,9 @@ namespace RAGE
 		template<class TClass>
 		bool Timer<TClass>::launch(unsigned int interval)
 		{
+			//critical section
+			ScopedLock lock(mtx);
+
 			if ( interval > 0 && _timerid == 0 && _timertable.count(_index) == 0)
 			{
 				_timerid = AddGlobalTimer(interval,callback,_cbargs.get());
@@ -193,6 +212,9 @@ namespace RAGE
 		template<class TClass>
 		bool Timer<TClass>::abort()
 		{
+			//critical section
+			ScopedLock lock(mtx);
+
 			if (_timerid != 0 && _timertable.count(_index) != 0 && RemoveGlobalTimer(_timerid) )
 			{
 				_timerid = 0;

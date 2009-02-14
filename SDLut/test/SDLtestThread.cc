@@ -42,12 +42,24 @@ int main(int argc, char *argv[])
 	thread->setThreadCall(obj,&ObjectWithThreadCall::threadcall,(void*)NULL);
 
 	thread->run();
+	SDL::Delay(3000);
 
-	testlog << nl<<"Waiting for thread" << std::endl;
-	thread->wait();
-	SDL::Delay(3000);
-	testlog << nl <<"Killing thread: After That No Iteration Should Be Present" << std::endl;
-	thread->kill();
-	SDL::Delay(3000);
+	if ( argc > 1 && std::string(argv[1]) == "wait" )
+	{
+		testlog << nl<< "Waiting for thread" << std::endl;
+		thread->wait();
+	}
+	else if ( argc > 1 && std::string(argv[1]) == "kill" )
+	{
+		testlog << nl <<"Killing thread: After That No Iteration Should Be Present" << std::endl;
+		thread->kill();
+		//BUG on windows in this case... TOFIX if we can...
+	}
+
+	testlog << nl << "Main exit !"<< std::endl;
+	//Reminder hte logger is not thread safe... concurrency access may cause problems...
+	//such as not writing "Main exit" in the log file quick enough 
+	//because it s been used by the thread...
+	//TODO : improve the test to avoid such issue... we shouldnt need to check a log file to determine if it s successful or not anyway...
 	return 0;
 }

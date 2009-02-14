@@ -2,6 +2,7 @@
 #define SDLTHREAD_HH
 
 #include "Functor.hh"
+#include "System/SDLScopedLock.hh"
 
 #include <fstream>
 #include <string>
@@ -32,16 +33,21 @@ namespace RAGE
         *
         */
 
+//TODO : Think of redesigning, maybe using exception to handle Thread wrapper errors ( different than underlying thread errors)
+//TODO : use a similar design for Timer
+//TODO : think of a thread object representing the execution of a thread... creation -> run, kill -> stop / destruction.
+//Refers to Boost thread... and maybe also C++09 upcoming standard...
+
 	unsigned long getCurrentThreadID();
 	
 	// these function are here to keep SDL function calls in implementation
 	// the client should not use them, and instead rely on the Thread class
 	unsigned long getThreadID(SDL_Thread *);
-	void runThread(SDL_Thread *,int threadcall (void *), void *data);
+	void runThread(SDL_Thread *&,int threadcall (void *), void *data);
 	int waitThread(SDL_Thread *);
 	void killThread(SDL_Thread *);
 
-	//TODO : make a nicer Functor por delegate so I dont have to use a class template here just to store the called class instance...
+	//TODO : make a nicer Functor or delegate so I dont have to use a class template here just to store the called class instance...
 	template < class TClass >
         class Thread
         {
@@ -57,7 +63,7 @@ namespace RAGE
 					ThreadCall(TClass* ptobj, int (TClass::*ptfunc) (void * args))
 					: TSpecificFunctor1<TClass,int>(ptobj,ptfunc)
 					{
-					}
+					}				
 			};
 
 			//structure for arguments
@@ -69,18 +75,20 @@ namespace RAGE
 			std::auto_ptr<tcdata> pvm_tcdata;
 
 			//static table lookup that stores pointer to threadcall
+			//has to be monitored for concurrent access...
 			static std::map<unsigned int, ThreadCall* > pvm_tctable;
-			//static std::map<unsigned int, SDL_ThreadID* > pvm_threadtable;
+			static std::map<unsigned int, SDL_Thread** > pvm_threadtable;
+			static Mutex mtx; //to protect the process of tread creation / termination
 			
 			public:
 
 		    	//static callback function who calls the right functor from the table
 			static int threadcall( void* args);
 	
-			
+			//value set to 0 by constructor if not running
 			SDL_Thread* pvm_thread;
 
-		friend unsigned long runThread(Thread<TClass> *,int threadcall (void *), void *data);
+		//friend unsigned long runThread(Thread<TClass> *,int threadcall (void *), void *data);
 		
 		public:
 			Thread();
@@ -89,10 +97,11 @@ namespace RAGE
 
 			void setThreadCall(TClass* instance,int (TClass::*func) ( void*), void* data);
 					
-			void run();
+			bool run();
+			inline bool running() { return pvm_thread !=0; }
 			
 			int wait();
-			void kill();
+			bool kill();
 
 			unsigned long getID();
 			
@@ -104,9 +113,11 @@ namespace RAGE
 
 	
 		template <class TClass>
-				std::map<unsigned int,typename Thread<TClass>::ThreadCall* > Thread<TClass>::pvm_tctable;
-		//template <class TClass>
-		//		std::map<unsigned int,SDL_ThreadID* > Thread<TClass>::_threadtable;
+			std::map<unsigned int,typename Thread<TClass>::ThreadCall* > Thread<TClass>::pvm_tctable;
+		template <class TClass>
+			std::map<unsigned int,SDL_Thread** > Thread<TClass>::pvm_threadtable;
+		template <class TClass>
+			Mutex Thread<TClass>::mtx;
 		
 		template <class TClass>
 				int Thread<TClass>::threadcall(void* data)
@@ -118,12 +129,27 @@ namespace RAGE
 			//Do the actual client callback
 			int res = itcd->second->call(calldata->data);
 
-			return res;
+			//critical section
+			ScopedLock lock(mtx);
+
+			//remove SDL_Thread * on end...
+			std::map<unsigned int,SDL_Thread** >::iterator itth=pvm_threadtable.find(calldata->lookupindex);
+			if ( itth != pvm_threadtable.end() )
+			{
+				*(itth->second) = 0;
+				pvm_threadtable.erase(itth);
+			}
+			//else doesnt exists anymore ? should not happen, but it s fine...
+
+			return res;//mutex unlock at end of scope
 		}
 		
 		template<class TClass>
 				void Thread<TClass>::setThreadCall(TClass* instance,int (TClass::*func) ( void*), void* data)
 		{
+			//critical section
+			ScopedLock lock(mtx);
+
 			typename std::map<unsigned int, ThreadCall*>::iterator it=pvm_tctable.find(pvm_index);
 			if ( it != pvm_tctable.end() )
 			{
@@ -157,9 +183,13 @@ namespace RAGE
 		template<class TClass>
 		Thread<TClass>::~Thread()
 		{
-			kill();// destructor abort a running timer if needed
+			kill();// destructor abort a running thread if needed
 			//if (_cbargs != NULL)
 			//	delete _cbargs, _cbargs = NULL;
+
+			//critical section
+			ScopedLock lock(mtx);
+
 			typename std::map<unsigned int, ThreadCall*>::iterator it=pvm_tctable.find(pvm_index);
 			if (it != pvm_tctable.end())
 			{
@@ -168,13 +198,21 @@ namespace RAGE
 			}
 		}
 
-		//returns true if the timer has been successfully launched. A timer can be launched only once. If this timer has already been launched this will return false.
+		//returns true if the thread has been successfully launched. A thread can be launched only once. If this thread has already been launched this will return false.
 		//returns false if the timer could not be launched.
-		//NB : a timer cannot be launched from another timer's callback. Timer may behave strangely in multithreaded applications
 		template<class TClass>
-		void Thread<TClass>::run()
+		bool Thread<TClass>::run()
 		{
-			runThread(pvm_thread,threadcall,pvm_tcdata.get());
+			//critical section
+			ScopedLock lock(mtx);
+
+			if ( pvm_thread == 0 && pvm_threadtable.count(pvm_index) == 0)
+			{
+				runThread(pvm_thread,threadcall,pvm_tcdata.get());
+					std::pair<std::map<unsigned int,SDL_Thread** >::iterator, bool > result = pvm_threadtable.insert(std::make_pair(pvm_index,&pvm_thread));
+				return result.second;
+			}
+			return false;
 		}
 		
 		template<class TClass>
@@ -187,23 +225,45 @@ namespace RAGE
 			return 0;
 		}
 
+		//return true if wait successful. return false if waiting failed ( the thread may already have stopped for example )
 		template<class TClass>
 		int Thread<TClass>::wait()
 		{
-			if (pvm_thread != 0 )
+
+			int res=-1;
+
+			//TODO : handle problems in pvm_threadtable with exceptions
+			if (pvm_thread != 0 && pvm_threadtable.count(pvm_index) != 0 )
 			{
-				return waitThread(pvm_thread);
+				res=waitThread(pvm_thread);
+
+				//critical section
+				ScopedLock lock(mtx);
+			
+				pvm_thread = 0;
+				pvm_threadtable.erase(pvm_index);
 			}
-			else return 0;
+			return (res);
 		}
 		
+		//return true if kill successful. return false if abortion failed ( the thread may already have stopped for example )
 		template<class TClass>
-		void Thread<TClass>::kill()
+		bool Thread<TClass>::kill()
 		{
-			if ( pvm_thread != 0 )
+
+			if ( pvm_thread != 0 && pvm_threadtable.count(pvm_index) != 0 )
 			{
 				killThread(pvm_thread);
+
+				//critical section
+				ScopedLock lock(mtx);
+
+				pvm_thread = 0;
+				pvm_threadtable.erase(pvm_index);
 			}
+
+			return (pvm_thread == 0 );
+
 		}
 
 		
