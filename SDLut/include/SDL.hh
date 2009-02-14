@@ -61,6 +61,7 @@
 #include "System/SDLNewTimer.hh"
 #include "System/SDLRWOps.hh"
 #include "System/SDLThread.hh"
+#include "System/SDLNewThread.hh"
 #include "System/SDLMutex.hh"
 #include "System/SDLSemaphore.hh"
 #include "System/SDLCondition.hh"

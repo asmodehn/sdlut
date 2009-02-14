@@ -22,7 +22,6 @@ class ObjectWithThreadCall
 		}
 		return 0;
 	}
-	
 };
 
 
@@ -37,23 +36,13 @@ int main(int argc, char *argv[])
 	ObjectWithThreadCall * obj = new ObjectWithThreadCall();
 
 	testlog << nl<<"Creating instance timer";
-	SDL::Thread<ObjectWithThreadCall>* thread = new SDL::Thread<ObjectWithThreadCall>();
-
-	thread->setThreadCall(obj,&ObjectWithThreadCall::threadcall,(void*)NULL);
-
-	thread->run();
+	SDL::NewThread<ObjectWithThreadCall>* thread = new SDL::NewThread<ObjectWithThreadCall>(obj,&ObjectWithThreadCall::threadcall,(void*)NULL);
 	SDL::Delay(3000);
 
 	if ( argc > 1 && std::string(argv[1]) == "wait" )
 	{
 		testlog << nl<< "Waiting for thread" << std::endl;
 		thread->wait();
-	}
-	else if ( argc > 1 && std::string(argv[1]) == "kill" )
-	{
-		testlog << nl <<"Killing thread: After That No Iteration Should Be Present" << std::endl;
-		thread->kill();
-		//BUG on windows in this case... TOFIX if we can...
 	}
 
 	testlog << nl << "Main exit !"<< std::endl;

@@ -1,4 +1,5 @@
 #include "System/SDLThread.hh"
+#include "System/SDLNewThread.hh"
 #include "SDLConfig.hh"
 
 

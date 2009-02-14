@@ -2,10 +2,7 @@
 #define SDL_NEWTIMER_HH
 
 #include "Functor.hh"
-#include "System/SDLScopedLock.hh"
 
-#include <utility>
-#include <map>
 #include <memory>
 #include <iostream>
 
@@ -42,11 +39,16 @@ namespace RAGE
 
 			SDL_TimerID m_timerid;
 			
+			//to prevent copy
+			NewTimer( const NewTimer &) ;
+
 		public:
 		
 			NewTimer();
 			NewTimer(TClass* instance, unsigned int (TClass::*func) (unsigned int, void*) , void* args, unsigned int interval = 0 ) throw (std::logic_error);
 			~NewTimer();
+
+			inline bool runnning() { return m_timerid != 0 ; }
 
 			bool abort();
 
@@ -80,7 +82,7 @@ namespace RAGE
 
 			m_timerid = AddGlobalTimer(interval,m_callback,m_cbargs.get());
 
-			if (m_timerid = NULL)
+			if (m_timerid == NULL)
 				throw std::logic_error(" Creation of SDL Timer failed !" );
 		}
 		catch (std::exception &e )
