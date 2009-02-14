@@ -69,14 +69,14 @@ public :
 		int i=0;
 		int nb_line = std::count(text.begin(), text.end(), '\n');
 		int current_line = 0;
-		int nb_line_toshow = (int)(surf->getHeight()/linesize);
+		int nb_line_toshow = (int)((surf->getHeight()-linesize)/linesize);
 		char line[256];
 
 		while ( ss.good() )
 		{
 			ss.getline(line,255);
 			++current_line;
-			if (current_line >= (nb_line-nb_line_toshow))
+			if (current_line > (nb_line-nb_line_toshow))
 			{
 				std::auto_ptr<RGBSurface> textsurf = _font.render(line,Color(255,255,255),Font::Solid);
 				assert(textsurf.get());
