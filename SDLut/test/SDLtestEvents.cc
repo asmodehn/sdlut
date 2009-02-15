@@ -86,7 +86,10 @@ public:
 	{
 		DefaultKeyboard::handleKeyEvent(s,pressed);
 
-		Log << nl << " Key Name : " << getKeyName(s.getKey()) <<  " pressed : " << pressed << std::endl;
+		Log << nl << "SDL Name : "<< getSDLKeyName(s.getKey())
+			<< " | Key Name : " << getKeyName(s.getKey());
+		if ( pressed ) Log << "pressed  "; else Log << "released ";
+		Log	<< " | Modifier : " << getModifierName(s.getMod()) ;
         
         return true;
 	}

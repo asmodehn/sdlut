@@ -1,5 +1,7 @@
 #include "Input/SDLKeyboard.hh"
 #include "System/SDLEventManager.hh"
+#include "SDLApp.hh" //for default behavior
+
 #include "SDLConfig.hh"
 #include <cassert>
 
@@ -13,7 +15,7 @@ namespace RAGE
 
 	    std::map<short,Keyboard::Modifier> Keyboard::Modsdl2rage;
 	    std::map<std::string,Keyboard::Modifier> Keyboard::Modstr2rage;
-
+		std::map<Keyboard::Modifier,std::string> Keyboard::Modrage2str;
 	    
 	    short Keyboard::Key2sdl(Keyboard::Key k)
 	    {
@@ -40,6 +42,10 @@ namespace RAGE
 	    Keyboard::Modifier Keyboard::sdl2Modifier(short sdlm)
 	    {
 		    return Modsdl2rage[sdlm];
+	    }
+		std::string Keyboard::Modifier2str(Keyboard::Modifier m)
+	    {
+		    return Modrage2str[m];
 	    }
 	    Keyboard::Modifier Keyboard::str2Modifier(std::string strm)
 	    {
@@ -79,10 +85,10 @@ namespace RAGE
 	    std::vector<short> Keyboard::InitModMapping()
 	    {
 		    std::vector<short> result;
-		std::map<Modifier,SDLMod> Modrage2sdlmap;
+			std::map<Modifier,SDLMod> Modrage2sdlmap;
 
 		int maxvecindex =0;
-#define ASSOCIATE( mod, sdlmod, strmod ) Modrage2sdlmap[mod] = sdlmod; Modsdl2rage[sdlmod] = mod; Modstr2rage[strmod] = mod; maxvecindex = (maxvecindex>mod)? maxvecindex : mod;
+#define ASSOCIATE( mod, sdlmod, strmod ) Modrage2sdlmap[mod] = sdlmod; Modsdl2rage[sdlmod] = mod; Modstr2rage[strmod] = mod; Modrage2str[mod] = strmod; maxvecindex = (maxvecindex>mod)? maxvecindex : mod;
 		#include "SDLModMapping.inl"
 		#undef ASSOCIATE
 
@@ -103,7 +109,7 @@ namespace RAGE
 	    std::vector<short> Keyboard::Modrage2sdl = InitModMapping();
 	    
 	    //initialises state at size 255 because of the ASCII table size.
-	    Keyboard::Keyboard() : _state(255,false), _quitRequested(false)
+	    Keyboard::Keyboard() : _state(255,false)
 	    {
 	    }
 	    Keyboard::~Keyboard()
@@ -126,19 +132,28 @@ namespace RAGE
             return _state;
         }
 
-        std::string Keyboard::getKeyName(Key k)
+        std::string Keyboard::getSDLKeyName(Key k)
         {
-		return std::string(SDL_GetKeyName(static_cast<SDLKey>(Key2sdl(k))));
+			return std::string(SDL_GetKeyName(static_cast<SDLKey>(Key2sdl(k))));
         }
+		std::string Keyboard::getKeyName(Key k)
+        {
+			return Key2str(k);
+        }
+		std::string Keyboard::getModifierName(Modifier m)
+        {
+			return Modifier2str(m);
+        }
+
 
         bool Keyboard::isModDown (Modifier m)
         {
-		return (Modifier2sdl(m) & SDL_GetModState()) !=0;
+			return (Modifier2sdl(m) & SDL_GetModState()) !=0;
         }
 
         void Keyboard::setModDown(Modifier m)
         {
-		SDL_SetModState(static_cast<SDLMod>(Modifier2sdl(m)));
+			SDL_SetModState(static_cast<SDLMod>(Modifier2sdl(m)));
         }
 
 	bool Keyboard::enableKeyRepeat()
@@ -176,7 +191,7 @@ namespace RAGE
                 case KEscape:
                 if (pressed==false)
                 {
-                    _quitRequested=true;
+					App::getInstance().requestTermination();
                     res=true;
                 }
                 break;

@@ -22,8 +22,6 @@ namespace RAGE
             std::vector<bool> _state;
 
             friend class EventManager;
-        protected:
-            bool _quitRequested;
 
         public:
 
@@ -49,6 +47,7 @@ namespace RAGE
 	    static std::vector<short> Modrage2sdl;
 	    static std::map<short,Modifier> Modsdl2rage;
 	    static std::map<std::string,Modifier> Modstr2rage;
+		static std::map<Modifier,std::string> Modrage2str;
 
 	    static std::vector<short> InitModMapping();
 
@@ -57,6 +56,7 @@ namespace RAGE
 			static short Modifier2sdl(Modifier m);
 			static Modifier sdl2Modifier(short sdlm);
 			static Modifier str2Modifier(std::string strm);
+			static std::string Modifier2str(Modifier m);
 			
             //TO BE CONTINUED
             typedef enum
@@ -226,7 +226,9 @@ namespace RAGE
             }
 
             //get the name of an SDL virtual key symbol
-            std::string getKeyName(Key k);
+            std::string getSDLKeyName(Key k);
+			std::string getKeyName(Key k);
+			std::string getModifierName(Modifier m);
 
             //get the current key modifier state
             bool isModDown (Modifier m = None);
