@@ -157,11 +157,18 @@ namespace RAGE
 
         bool Keyboard::handleKeyEvent (const Sym &s, bool pressed)
            {
+               return false;
+           }
+
+
+	Keyboard::Sym::Sym(const SDL_keysym & ksym) : _key(sdl2Key((short int)ksym.sym)), _mod(sdl2Modifier((short int)ksym.mod)), _unicode(ksym.unicode)
+	{
+	}
+
+
+        bool DefaultKeyboard::handleKeyEvent (const Sym &s, bool pressed)
+           {
                bool res = false;
-        #ifdef DEBUG
-                   Log << nl << " Key Name : " << getKeyName(s.getKey()) <<  " pressed : " << pressed << std::endl;
-                   res=true;
-        #endif
 
 	//default keyboard behaviour : ESC quits
             switch( s.getKey() )
@@ -169,9 +176,6 @@ namespace RAGE
                 case KEscape:
                 if (pressed==false)
                 {
-#ifdef DEBUG
-                    Log << nl << "Quit requested !" << std::endl;
-#endif
                     _quitRequested=true;
                     res=true;
                 }
@@ -181,11 +185,6 @@ namespace RAGE
             }
                return res;
            }
-
-
-	Keyboard::Sym::Sym(const SDL_keysym & ksym) : _key(sdl2Key((short int)ksym.sym)), _mod(sdl2Modifier((short int)ksym.mod)), _unicode(ksym.unicode)
-	{
-	}
 
         TextInput::TextInput()
         {
@@ -214,7 +213,7 @@ namespace RAGE
                 {
                     switch( s.getKey() )
                     {
-                        //deal with international characters TODO
+                        //TODO deal with international characters 
                         default: break;
                     }
 					res=false;

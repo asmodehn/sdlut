@@ -11,239 +11,84 @@ using namespace std;
 
 Logger Log("Test Events");
 
-class Console
-{
-
-	friend class MyEngine;
-
-	//if member embedded (object not reference), error when destructing Font...
-	//to debug -> copy / deletion problem
-	const Font _font;
-	short linesize;
-
-	Color _bgColor;
-
-	RGBSurface * surf;
-
-	std::string text;
-
-public :
-	Console(const Font & fnt = Font(),Color c = Color(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text(">")
-	{
-		//init();
-		//draw();
-		linesize = _font.getHeight();
-	}
-
-	bool init(int width, int height)
-	{
-		surf = new RGBSurface(_bgColor,width,height,8); //8 as magic number for minimum bpp.
-		if (surf == NULL) return false;
-		surf->optimise(); // Doesnt matter anyway we match the display one here.
-		return true;
-	}
-
-	//WARNING : BUG here if trying to set to fullscreen using F6, then error, then trying to resize -> crash
-	bool resize(int width, int height,bool keepcontent = true)
-	{
-		bool res = surf->resize(width,height,false);
-		draw();
-		return res;
-	}
-
-	void print(const std::string & newtext)
-	{
-		text += newtext + "\n";
-		draw();
-	}
-
-	void add(char newchar)
-	{
-		if (newchar != '\0')
-			text += newchar;
-		draw();
-	}
-
-	void draw()
-	{
-		std::stringstream ss(text); // Insert the text into a stream
-		surf->fill(_bgColor);
-		int i=0;
-		int nb_line = count(text.begin(), text.end(), '\n');
-		int current_line = 0;
-		int nb_line_toshow = (int)(850/linesize); //850 = screen_height - logo_height
-		char line[256];
-
-		while ( ss.getline(line,255) && ss.good() )
-		{
-			++current_line;
-			if (current_line >= (nb_line-nb_line_toshow))
-			{
-				std::auto_ptr<RGBSurface> textsurf = _font.render(line,Color(255,255,255),Font::Solid);
-				assert(textsurf.get());
-				surf->blit(*textsurf,Point (0,i * linesize));
-				++i;
-			}
-		}
-	}
-
-	~Console()
-	{
-		if (surf != NULL)
-			delete surf,surf = NULL;
-	}
-
-
-};
 
 //Defining general EventHandler
-class MyGeneralHandler : public GeneralHandler
+class MyGeneralHandler : public DefaultEventHandler
 {
 	friend class EventManager;
         bool _quitRequested;
 
-		Console * cons;
-
         public:
 
-			MyGeneralHandler(): GeneralHandler(), cons(NULL) {};
+			MyGeneralHandler(): DefaultEventHandler() {};
 			virtual ~MyGeneralHandler() {};
 
-		void setConsole(Console* csl)
-		{
-			cons = csl;
-		}
 
 			//Callbacks on Window / Display events
             virtual bool handleActiveEvent(bool gain, bool active, bool inputfocus, bool mousefocus)
-		{
-			if ( cons == NULL )	return false;
-			else
 			{
-				cons->print("Active");
+				Log << nl << "Active" ;
+				return true;
 			}
-			return true;
-		}
 
             virtual bool handleResizeEvent(int w, int h)
-		{
-
-				App::getInstance().getWindow().resizeDisplay(w,h);
-        		
-				
-			if ( cons == NULL )	return false;
-			else
 			{
-				cons->print("Resize");
-			}
-			
-
+				DefaultEventHandler::handleResizeEvent(w,h);
+        		Log << nl << "Resize";
 				return true;
-		}
+			}
+
             virtual bool handleExposeEvent()
-		{
-			 	if ( cons == NULL )	return false;
-			else
 			{
-				cons->print("Expose");
-			}
-			
-
+				Log << nl << "Expose";
 				return true;
-		}
+			}
+
             //callback on platform-dependent windows manager event
             virtual bool handleSysWMEvent(void)
-    {
-        			 			if ( cons == NULL )	return false;
-			else
 			{
-				cons->print("System WM");
-			}
-			
-
+        		Log << nl << "System WM";
 				return true;
-    }
+			}
 
             //Callback on other Events
-	    virtual bool handleUserEvent(Event::Type type, int code, void* data1, void* data2)
-    {
-        			 			if ( cons == NULL )	return false;
-			else
+			virtual bool handleUserEvent(Event::Type type, int code, void* data1, void* data2)
 			{
-				cons->print("User Event");
+        		Log << nl <<"User Event";
+				return true;
 			}
 			
-
-				return true;
-    }
-
-
             //Callback on Quit Event
             virtual bool handleQuitEvent(void)
-		{
-        
-        		if ( cons == NULL )	return false;
-				else
-				{
-					cons->print("Quit");
-				}
-			
-				_quitRequested=true;
+			{
+				DefaultEventHandler::handleQuitEvent();
+				Log << nl << "Quit";
 				return true;
-		}
-            //Catch-all callback
-            virtual bool handleEvent(Event &event)
-		{
-#if (DEBUG ==2)
-        //Getting the details of the Event
-        Log << nl << "Last chance handler : " << cevent.getType() << std::endl;
-        return true;
-#else
+			}
 
-        return false;
-#endif
-		}
+			//Catch-all callback
+            virtual bool handleEvent(Event & cevent)
+			{
+				//Getting the details of the Event
+				Log << nl << "Last chance handler : " << cevent.getType() << std::endl;
+				return true;
+			}
 
 };
 
-class MyKeyboard: public Keyboard
+class MyKeyboard: public DefaultKeyboard
 {
 public:
 
-	Console *cons;
-
-	MyKeyboard() : Keyboard(), cons(NULL) {}
-
-	void setConsole (Console * newcons)
-	{
-		cons = newcons;
-	}
+	MyKeyboard() : DefaultKeyboard() {}
 
 	virtual bool handleKeyEvent (const Sym &s, bool pressed)
 	{
-		         bool res = false;
-        #ifdef DEBUG
-                   Log << nl << " Key Name : " << getKeyName(s.getKey()) <<  " pressed : " << pressed << std::endl;
-                   res=true;
-        #endif
+		DefaultKeyboard::handleKeyEvent(s,pressed);
 
-	//default keyboard behaviour : ESC quits
-            switch( s.getKey() )
-            {
-                case KEscape:
-                if (pressed==false)
-                {
-#ifdef DEBUG
-                    Log << nl << "Quit requested !" << std::endl;
-#endif
-                    _quitRequested=true;
-                    res=true;
-                }
-                break;
-                default:
-                res = false;
-            }
-               return res;
+		Log << nl << " Key Name : " << getKeyName(s.getKey()) <<  " pressed : " << pressed << std::endl;
+        
+        return true;
 	}
 };
 
@@ -251,35 +96,27 @@ class MyMouse: public Mouse
 {
 public:
 
-	Console *cons;
-
-	MyMouse() : Mouse(), cons(NULL) {}
-
-	void setConsole (Console * newcons)
-	{
-		cons = newcons;
-	}
+	MyMouse() : Mouse() {}
 
 	//Callbacks on Mouse Events
         virtual bool handleMouseMotionEvent (bool button_pressed, unsigned int x, unsigned int y,
                                              signed int xrel, signed int yrel)
 		{
-			if ( cons != NULL )
-			{
 				std::stringstream str;
-				if ( button_pressed ) str<<"Mouse Drag : X=" << x << " Y=" << y << " Xrel=" << xrel << " Yrel=" << yrel ;
-				else str<<"Mouse Moved : X=" << x << " Y=" << y << " Xrel=" << xrel << " Yrel=" << yrel ;
-				cons->print( str.str() );
-			}
-			
+				if ( button_pressed )
+				{
+					Log << nl << "Mouse Drag : X=" << x << " Y=" << y << " Xrel=" << xrel << " Yrel=" << yrel;
+				}
+				else
+				{
+					Log << nl <<"Mouse Moved : X=" << x << " Y=" << y << " Xrel=" << xrel << " Yrel=" << yrel ;
+				}
 			return true;
 		}
 
         virtual bool handleMouseButtonEvent (Button button, unsigned int x, unsigned int y,
                                              bool pressed)
 		{
-			if ( cons != NULL )
-			{
 				std::string but=" Button";
 				switch (button)
 				{
@@ -297,16 +134,13 @@ public:
 					break;
 				}
 
-				std::stringstream str;
-				str<< but << " X=" << x << "Y=" << y << " pressed? " << pressed;
-
-				cons->print( str.str() );
-			}
+				Log << nl << but << " X=" << x << "Y=" << y << " pressed? " << pressed;
 			return true;
 		}
 
 };
 
+//TODO : Test textinput, maybe in another test not to ocnfuse with keyboard keys events...
 
 /*
 //Defining UserInput
@@ -356,64 +190,6 @@ public:
     }
 };
 */
-class MyEngine : public DefaultEngine
-{
-
-public:
-
-	Point consolePos;
-	Console * console;
-	std::auto_ptr<RGBSurface> HelpMsg;
-		
-	MyEngine() : consolePos(0,0), console (NULL), HelpMsg(0)
-	{}
-
-	void setConsole( Console * cons ) { console = cons;}
-
-    virtual ~MyEngine()
-	{
-	}
-
-	bool init(int width, int height)
-	{
-		DefaultEngine::init(width,height);
-		console->init(width,height - 2 * DefaultEngine::_logo.getHeight());
-		consolePos.sety(DefaultEngine::_logo.getHeight());
-		HelpMsg = console->_font.render("Plz Use Keyboard To Write Text Down", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
-		return true;
-	}
-
-	bool resize(int width, int height)
-	{
-		DefaultEngine::resize(width,height);
-		console->resize(width,height - 2 * DefaultEngine::_logo.getHeight());
-		consolePos.sety(DefaultEngine::_logo.getHeight());
-		return true;
-	}
-
-	void prerender()
-	{
-		//nothing for now
-	}
-
-	void render(VideoSurface & screen) const
-    {
-		DefaultEngine::render(screen);
-
-		if (HelpMsg.get()) 
-			screen.blit( *HelpMsg, Point::Point(5, 5) );
-
-		if (console !=NULL)			
-		{			
-			screen.blit(*(console->surf),consolePos);
-		}
-    }
-
-	void postrender()
-	{
-		//nothing for now
-	}
-};
 
 
 //Main Program
@@ -441,26 +217,15 @@ int main(int argc, char** argv)
 	font.setTTF(argv[1],24);
     }
 
-	Console cons(font);
-	MyEngine engine;
-	engine.setConsole(&cons);
-	
     MyGeneralHandler gh;
-		gh.setConsole(&cons);
 	MyKeyboard kb;
-		kb.setConsole(&cons);
 	MyMouse mouse;
-		mouse.setConsole(&cons);
     App::getInstance().getWindow().getEventManager().setKeyboard(&kb);
 	App::getInstance().getWindow().getEventManager().setMouse(&mouse);
    App::getInstance().getWindow().getEventManager().setGeneralHandler(&gh);
 
 
-	//without this line the default engine is used
-    App::getInstance().getWindow().setEngine(&engine);
-
-
-    if (! (App::getInstance().getWindow().resetDisplay(800,1000)))
+    if (! (App::getInstance().getWindow().resetDisplay(800,600)))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);

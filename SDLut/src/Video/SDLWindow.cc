@@ -205,7 +205,13 @@ namespace RAGE
 	}
 
         Window::Window(std::string title)
-	: _title(title),_background(Color(0,0,0)), pvm_screen(0), _icon ( RWOps( _defaultIcon, sizeof(_defaultIcon))), myLoadingScreen(NULL), ShowingLoadingScreen(false)
+		 :	_title(title),
+			_background(Color(0,0,0)),
+			pvm_screen(0),
+			_icon ( RWOps( _defaultIcon, sizeof(_defaultIcon))),
+			myLoadingScreen(NULL),
+			ShowingLoadingScreen(false),
+			m_exitMainLoop(false)
         {
 #ifdef DEBUG
             Log << nl << "Window::Window(" << title << ") called ..." ;
@@ -492,7 +498,7 @@ namespace RAGE
 				unsigned long lastevent = SDL_GetTicks();
 				unsigned long newlastrender= SDL_GetTicks();
 				unsigned long lastrender= newlastrender;
-				while (!(pvm_eventmanager.quitRequested()))
+				while (! m_exitMainLoop )
 				{
 					//handling all the events
 					//

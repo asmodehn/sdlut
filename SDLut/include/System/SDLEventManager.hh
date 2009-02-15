@@ -2,7 +2,7 @@
 #define SDL_EVENTMANAGER_HH
 
 #include "System/SDLEvent.hh"
-
+#include "System/SDLEventHandler.hh"
 #include "Input/SDLMouse.hh"
 #include "Input/SDLKeyboard.hh"
 #include "Input/SDLJoystick.hh"
@@ -14,49 +14,6 @@ namespace RAGE
     namespace SDL
     {
 
-        /**
-         * \class GeneralHandler
-         *
-         * \ingroup EventHandling
-         *
-         * \brief This class handles general events in SDLut
-         *
-         * \author Alex
-         *
-         * \date 2005/12/27
-         *
-         * Contact: asmodehn@gna.org
-         *
-         */
-
-        class GeneralHandler
-        {
-            friend class EventManager;
-            bool _quitRequested;
-
-        public:
-
-            GeneralHandler() : _quitRequested(false)
-            {}
-            virtual ~GeneralHandler()
-            {}
-
-            //Callbacks on Window / Display events
-            virtual bool handleActiveEvent(bool gain, bool active, bool inputfocus, bool mousefocus);
-            virtual bool handleResizeEvent(int w, int h);
-            virtual bool handleExposeEvent();
-            //callback on platform-dependent windows manager event
-            virtual bool handleSysWMEvent(void);
-
-            //Callback on other Events
-	    virtual bool handleUserEvent(Event::Type type, int code, void* data1, void* data2);
-
-            //Callback on Quit Event
-            virtual bool handleQuitEvent(void);
-
-            //Catch-all callback
-            virtual bool handleEvent(Event &event);
-        };
 
         /**
         * \class EventManager
@@ -82,7 +39,7 @@ namespace RAGE
 
 
 		bool usergeneral;
-		GeneralHandler * ghndlr;
+			BaseEventHandler * ghndlr;
 
 		bool usermouse;
             Mouse * mhndlr;
@@ -91,7 +48,7 @@ namespace RAGE
             Keyboard * khndlr;
 
 
-	    EventManager()  : usergeneral(false),ghndlr(new GeneralHandler()),usermouse(false),mhndlr(new Mouse()),userkeyboard(false), khndlr(new Keyboard())
+	    EventManager()  : usergeneral(false),ghndlr(new DefaultEventHandler()),usermouse(false),mhndlr(new Mouse()),userkeyboard(false), khndlr(new DefaultKeyboard())
             {
 		    
 	    }
@@ -115,7 +72,7 @@ namespace RAGE
 				userkeyboard = true;
                 khndlr = newkhndlr;
             }
-            void setGeneralHandler(GeneralHandler * newghndlr)
+            void setGeneralHandler(BaseEventHandler * newghndlr)
             {
 				delete ghndlr,ghndlr=NULL;
 				usergeneral = true;
@@ -126,17 +83,6 @@ namespace RAGE
 				delete mhndlr,mhndlr=NULL;
 				usermouse = true;
                 mhndlr = newmhndlr;
-            }
-
-            //method to trigger the app exiting of the mainloop...
-            bool quitRequested()
-            {
-                bool res = false;
-                if (khndlr != NULL)
-                    res = res || khndlr->_quitRequested ;
-                if (ghndlr !=NULL)
-                    res = res || ghndlr->_quitRequested ;
-                return res;
             }
 
             //Wait indefinitely for the next available event

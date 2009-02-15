@@ -17,7 +17,7 @@ namespace RAGE
 {
 
         //further reference
-	class GeneralHandler;
+	class BaseEventHandler;
 	/*class Keyboard;
 	class Mouse;*/
 
@@ -90,7 +90,7 @@ namespace RAGE
 
 
             //calls the handler coresponding to the event
-	bool callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse *  mhndlr);
+	bool callHandler(BaseEventHandler * ghndlr, Keyboard * khndlr, Mouse *  mhndlr);
 
 	SDL_Event get_SDL();
 	SDL_Event* get_pSDL() { return _event.get(); }

@@ -259,6 +259,15 @@ namespace RAGE
 
         };
 
+		//This class defines default behavior
+		class DefaultKeyboard: public Keyboard
+		{
+			public:
+				virtual bool handleKeyEvent (const Sym &s, bool pressed);
+		};
+
+
+
         ///This class is not suitable for Gaming Input (doesnt detect key releases). Use Keyboard instead.
         ///However this class is well adapted for accurate text typing, with unicode enabled.
         class TextInput : public Keyboard

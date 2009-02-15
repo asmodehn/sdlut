@@ -7,7 +7,7 @@ namespace RAGE
     namespace SDL
     {
 
-	App::App() : pvm_manager(0), pvm_window(0), pvm_mixer(0), pvm_jpool(0)
+	App::App() : pvm_manager(0), pvm_window(0), pvm_mixer(0), pvm_jpool(0), m_quitRequested(false)
         {
 #ifdef DEBUG
             Log << nl << "App::App() called";
@@ -228,6 +228,23 @@ namespace RAGE
 			return false;
 			
 		}
+
+		bool App::requestTermination(bool emergencyBreak )
+			{
+				if  ( emergencyBreak )
+				{
+					m_quitRequested = true;
+					this->pvm_window->m_exitMainLoop = true;
+				}
+				else
+				{
+					//TODO : do whatever is needed for a gracefull termination
+					m_quitRequested = true;
+					this->pvm_window->m_exitMainLoop = true;
+				}
+				
+				return m_quitRequested;
+			}
     }
 }
 

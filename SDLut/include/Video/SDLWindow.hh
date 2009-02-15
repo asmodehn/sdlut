@@ -48,7 +48,10 @@ namespace RAGE
         class Window
         {
             friend class App; //to access the constructor
+			
+			//and be able to exit mainloop
 
+			bool m_exitMainLoop;
 
 
         protected:

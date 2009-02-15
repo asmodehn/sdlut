@@ -39,6 +39,8 @@ namespace RAGE
 	    
         class App
         {
+			bool m_quitRequested;
+
 	    ///Managing the underlying SDL library
             std::auto_ptr<Manager> pvm_manager;
 
@@ -153,6 +155,10 @@ namespace RAGE
 		assert (pvm_jpool.get() && "The JoystickPool has not been created yet.To do that, use the initJoystick() function before calling getJoystickPool()." );
                 return *pvm_jpool;
             }
+			
+			bool requestTermination(bool emergencyBreak = false );
+			bool isTerminating () { return m_quitRequested; }
+
 
         };
     }

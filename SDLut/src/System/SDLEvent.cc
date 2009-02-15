@@ -180,7 +180,7 @@ void Event::Set_ActiveInfosFromEvent(bool& isActive, bool& hasInputFocus, bool& 
 	gain = (_event->active.gain == 1);
 }
 
-bool Event::callHandler(GeneralHandler * ghndlr, Keyboard * khndlr, Mouse*  mhndlr )
+bool Event::callHandler(BaseEventHandler * ghndlr, Keyboard * khndlr, Mouse*  mhndlr )
 {
 
     bool ev_handled = false;
