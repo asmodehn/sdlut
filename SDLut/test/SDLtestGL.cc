@@ -29,8 +29,9 @@ public:
                     Log << nl << "Quit requested !" << std::endl;
 #endif
 
-                    _quitRequested=true;
-                    res=true;
+                    App::getInstance().requestTermination();
+				    //_quitRequested=true;
+					res=true;
                 }
                 break;
                 case KF5:
@@ -259,7 +260,7 @@ int main(int argc, char** argv)
 	MyEngine engine;
 	App::getInstance().getWindow().setEngine(&engine);
 
-    if(App::getInstance().getWindow().resetDisplay())
+    if(App::getInstance().getWindow().resetDisplay(800,600))
     {
        App::getInstance().getWindow().mainLoop();
     }

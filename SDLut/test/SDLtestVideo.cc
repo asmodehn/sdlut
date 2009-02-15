@@ -22,7 +22,8 @@ public:
                     Log << nl << "Quit requested !" << std::endl;
 #endif
 
-                    _quitRequested=true;
+					App::getInstance().requestTermination();
+                   // _quitRequested=true;
                     res=true;
                 }
                 break;

@@ -50,7 +50,8 @@ public:
 					}
 					else if (GLOBAL_STATE == 3)
 					{
-						_quitRequested=true;
+						App::getInstance().requestTermination();
+						//_quitRequested=true;
 					}
 				}
 				break;
