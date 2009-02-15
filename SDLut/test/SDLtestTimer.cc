@@ -97,14 +97,9 @@ public:
 
 		testlog << nl << SDL::GetTicks() - ticks  << " ms : direct callback2 Called back ! Number: " << sobj->direct_timer_it-- ;
 
-		//SDL doesnt support calling timer from another timer ( because of threads implementation differences )
-		//However SDLut implemented a workaround for timer called from another timer. seems to work fine so far
-		//static SDL_TimerID gt_id = SDL::AddGlobalTimer(50,callback,NULL);
-
 		if ( sobj->direct_timer_it != 0 )
 			return interval;
-
-		//SDL::RemoveGlobalTimer(gt_id);
+		
 		testlog << nl << "Stopping direct timer" << std::endl;
 		return 0;
 	}
@@ -118,6 +113,8 @@ try {
 	testlog << nl<<"SDL init...";
 
 	SDL::App::getInstance().initTimer();
+
+	//static SDL_TimerID gt_id = SDL::AddGlobalTimer(50,callback,NULL);
 			
 	testlog << nl<<"Creating instance";
 	ObjectWithCallback* obj = new ObjectWithCallback(80);
@@ -141,6 +138,7 @@ try {
 	testlog << nl <<"Cleaning and finished";
 	direct_timer.abort();
 	delete obj, obj = NULL;
+	//SDL::RemoveGlobalTimer(gt_id);
 
 	return 0;
 } catch (std::exception &exc) {
