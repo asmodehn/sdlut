@@ -185,18 +185,30 @@ namespace RAGE
            {
                bool res = false;
 
-	//default keyboard behaviour : ESC quits
+			//default keyboard behaviour :
+			   
             switch( s.getKey() )
             {
-                case KEscape:
+				//ESC quits
+                case Key_Escape:
                 if (pressed==false)
                 {
 					App::getInstance().requestTermination();
                     res=true;
                 }
                 break;
+				case Key_F4: //ALT+F4 quits
+					if ( (pressed==true) && (isModDown(Mod_Alt)) )
+                    App::getInstance().requestTermination();
+					res = true;
+                break;
+				case Key_F11: //F11 toggles fullscreen
+                if (pressed==true)
+                    App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
+					res = true;
+                break;
                 default:
-                res = false;
+					res = false;
             }
                return res;
            }

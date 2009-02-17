@@ -36,7 +36,7 @@ public:
     {
         switch( s.getKey() )
         {
-            case KEscape:
+            case Key_Escape:
 				if (pressed)
 				{
 					if (GLOBAL_STATE == 1)
@@ -51,13 +51,12 @@ public:
 					else if (GLOBAL_STATE == 3)
 					{
 						App::getInstance().requestTermination();
-						//_quitRequested=true;
 					}
 				}
 				break;
            
             default:
-				break;;
+				break;
         }
         return true;
     }

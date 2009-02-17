@@ -12,45 +12,6 @@ using namespace RAGE::SDL;
 
 Logger Log("Test GL");
 
-//Defining UserInput
-class MyUserInput : public Keyboard
-{
-public:
-
-    virtual bool handleKeyEvent (const Sym &s, bool pressed)
-    {
-        bool res = false;
-            switch( s.getKey() )
-            {
-                case KEscape:
-                if (pressed==false)
-                {
-#ifdef DEBUG
-                    Log << nl << "Quit requested !" << std::endl;
-#endif
-
-                    App::getInstance().requestTermination();
-				    //_quitRequested=true;
-					res=true;
-                }
-                break;
-                case KF5:
-                if (pressed==true)
-                    App::getInstance().getWindow().iconify();
-                res = true;
-                break;
-				case KF6:
-                if (pressed==true)
-                    App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
-                res = true;
-                break;
-                default:
-                res = false;
-            }
-        return res;
-    }
-};
-
 #include <math.h>
 //if not define by math (why ??)
 #ifndef M_PI
@@ -229,14 +190,9 @@ int main(int argc, char** argv)
     App::getInstance().initVideo(false,true,true,false);
     App::getInstance().setName ("RAGE::SDL test - OpenGL");
 	
-
     //Getting video informations
     testlog << nl << App::getInstance().getWindow().getVideoInfo() << std::endl;
 
-    //UI Creation
-    MyUserInput ui;
-    App::getInstance().getWindow().getEventManager().setKeyboard(&ui);
-    
 	App::getInstance().getWindow().setBGColor(Color (64,0,0));
 
     //MyUserInput ui;

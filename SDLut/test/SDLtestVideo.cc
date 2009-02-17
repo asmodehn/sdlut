@@ -5,48 +5,6 @@ using namespace RAGE::SDL;
 
 Logger Log("Test Video");
 
-//Defining UserInput
-class MyUserInput : public Keyboard
-{
-public:
-
-    virtual bool handleKeyEvent (const Sym &s, bool pressed)
-    {
-        bool res = false;
-            switch( s.getKey() )
-            {
-                case KEscape:
-                if (pressed==false)
-                {
-#ifdef DEBUG
-                    Log << nl << "Quit requested !" << std::endl;
-#endif
-
-					App::getInstance().requestTermination();
-                   // _quitRequested=true;
-                    res=true;
-                }
-                break;
-                case KF5:
-                if (pressed==true)
-                    App::getInstance().getWindow().iconify();
-                res = true;
-                break;
-		case KF6:
-                if (pressed==true)
-				{
-					//App::getInstance().getWindow().resizeDisplay(800, 600);
-                    App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
-				}
-                res = true;
-                break;
-                default:
-                res = false;
-            }
-        return res;
-    }
-};
-
 class MyEngine : public DefaultEngine
 {
 
@@ -94,12 +52,6 @@ int main(int argc, char** argv)
     App::getInstance().initVideo(true,false,true,false);
     
 	App::getInstance().setName ("RAGE::SDL test - Video");
-    
-
-    testlog << nl << " Creating the User Interface... " << std::endl;
-    //UI Creation
-    MyUserInput ui;
-    App::getInstance().getWindow().getEventManager().setKeyboard(&ui);
 
     App::getInstance().getWindow().setBGColor(Color (128,0,0));
 	

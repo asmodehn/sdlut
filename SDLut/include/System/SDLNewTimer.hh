@@ -96,6 +96,11 @@ namespace RAGE
 		template<class TClass>
 		NewTimer<TClass>::~NewTimer()
 		{
+			if (m_cbargs.get() != 0)
+			{
+				delete m_cbargs->cb, m_cbargs->cb = NULL;
+				delete m_cbargs->args, m_cbargs->args = NULL;
+			}
 		}
 
 		//return true if abort successful. return false if abortion failed ( the timer may already have stopped for example )

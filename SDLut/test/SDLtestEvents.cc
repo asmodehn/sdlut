@@ -212,14 +212,6 @@ int main(int argc, char** argv)
  
     App::getInstance().getWindow().setBGColor(Color (64,0,0));
 
-    Font font;
-    
-    if (argc > 1)
-    {
-	//specific font
-	font.setTTF(argv[1],24);
-    }
-
     MyGeneralHandler gh;
 	MyKeyboard kb;
 	MyMouse mouse;

@@ -131,6 +131,11 @@ namespace RAGE
 		template<class TClass>
 		NewThread<TClass>::~NewThread()
 		{
+			if (m_tcdata.get() != 0)
+			{
+				delete m_tcdata->tc, m_tcdata->tc = NULL;
+				delete m_tcdata->data, m_tcdata->data = NULL;
+			}
 		}
 
 		template<class TClass>

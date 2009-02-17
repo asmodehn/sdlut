@@ -25,23 +25,21 @@ namespace RAGE
 
         public:
 
-	//NB : this is lined to implementation to make accurate conversion from and to SDLMod
-            typedef enum
+            typedef enum Modifier
             {
-                None = 0,
-                LShift, RShift,
-                LCtrl, RCtrl,
-                LAlt, RAlt,
-                LMeta, RMeta,
-                Num,
-                Caps,
-                Mode,
-                Ctrl,
-                Shift,
-                Alt,
-                Meta
-            }
-            Modifier;
+                Mod_None = 0,
+                Mod_LShift, Mod_RShift,
+                Mod_LCtrl, Mod_RCtrl,
+                Mod_LAlt, Mod_RAlt,
+                Mod_LMeta, Mod_RMeta,
+                Mod_Num,
+                Mod_Caps,
+                Mod_Mode,
+                Mod_Ctrl,
+                Mod_Shift,
+                Mod_Alt,
+                Mod_Meta
+            };
 
 		private :
 	    static std::vector<short> Modrage2sdl;
@@ -59,97 +57,98 @@ namespace RAGE
 			static std::string Modifier2str(Modifier m);
 			
             //TO BE CONTINUED
-            typedef enum
+            typedef enum Key
             {
-                KBackspace = 1,
-                KTab,
-                KClear,
-                KReturn,
-                KPause,
-                KEscape,
-                KSpace,
-                KExclaim,
-                KQuotedbl,
-                KHash,
-                KDollar,
-                KAmpersand,
-                KQuote,
-                KLeftparen,
-                KRightparen,
-                KAsterisk,
-                KPlus,
-                KComma,
-                KMinus,
-                KPeriod,
-                KSlash,
-                K0,
-                K1,
-                K2,
-                K3,
-                K4,
-                K5,
-                K6,
-                K7,
-                K8,
-				K9, //31
-                KColon, KSemicolon, KLess, KEquals, KGreater, KQuestion, KAt, KLeftbracket, KBackslash, KRightbracket, KCaret, KUnderscore, KBackquote, KA, KB, KC, KD, KE, KF, KG, KH, KI, KJ, KK, KL, KM, KN, KO, KP , KQ, KR, KS, KT, KU, KV, KW, KX, KY, KZ, KDelete,
-				KWorld0,KWorld1,KWorld2,KWorld3, KWorld4, KWorld5, KWorld6, KWorld7, KWorld8, KWorld9, //81
-                KWorld10,KWorld11,KWorld12,KWorld13, KWorld14, KWorld15, KWorld16, KWorld17, KWorld18, KWorld19,
-                KWorld20,KWorld21,KWorld22,KWorld23, KWorld24, KWorld25, KWorld26, KWorld27, KWorld28, KWorld29,
-                KWorld30,KWorld31,KWorld32,KWorld33, KWorld34, KWorld35, KWorld36, KWorld37, KWorld38, KWorld39,
-                KWorld40,KWorld41,KWorld42,KWorld43, KWorld44, KWorld45, KWorld46, KWorld47, KWorld48, KWorld49,
-                KWorld50,KWorld51,KWorld52,KWorld53, KWorld54, KWorld55, KWorld56, KWorld57, KWorld58, KWorld59,
-                KWorld60,KWorld61,KWorld62,KWorld63, KWorld64, KWorld65, KWorld66, KWorld67, KWorld68, KWorld69,
-                KWorld70,KWorld71,KWorld72,KWorld73, KWorld74, KWorld75, KWorld76, KWorld77, KWorld78, KWorld79,
-                KWorld80,KWorld81,KWorld82,KWorld83, KWorld84, KWorld85, KWorld86, KWorld87, KWorld88, KWorld89,
-				KWorld90,KWorld91,KWorld92,KWorld93, KWorld94, KWorld95, //167
-                KKp0,
-				KKp1,
-				KKp2,
-				KKp3,
-				KKp4,
-				KKp5,
-				KKp6,
-				KKp7,
-				KKp8,
-				KKp9,
-				KKPeriod,
-                KKDivide,
-				KKMultiply,
-				KKMinus,
-				KKPlus,
-				KKEnter,
-				KKEquals,
-                KUp,
-                KDown,
-                KRight,
-                KLeft,
-                KInsert, KHome, KEnd, KPageup, KPagedown,
-				KF1,
-				KF2,
-				KF3,
-				KF4,
-				KF5,
-				KF6,
-				KF7,
-				KF8,
-				KF9,
-				KF10,
-				KF11, //200
-				KF12,
-				KF13,
-				KF14,
-				KF15,
-                KNumlock, KCapslock, KScrollock,
-				KRShift,
-				KLshift,
-				KLctrl,
-				KRctrl,
-				KRalt,
-				KLalt,
-				KRmeta, KLmeta, KRsuper, KLsuper, KMode, KCompose, KHelp, KPrintscreen, KSysreq, KBreak, KMenu, KPower, KEuro, KUndo //227
-            }
-            Key;
+                Key_Backspace = 1,
+                Key_Tab,
+                Key_Clear,
+                Key_Return,
+                Key_Pause,
+                Key_Escape,
+                Key_Space,
+                Key_Exclaim,
+                Key_Quotedbl,
+                Key_Hash,
+                Key_Dollar,
+                Key_Ampersand,
+                Key_Quote,
+                Key_Leftparen,
+                Key_Rightparen,
+                Key_Asterisk,
+                Key_Plus,
+                Key_Comma,
+                Key_Minus,
+                Key_Period,
+                Key_Slash,
+                Key_0,
+                Key_1,
+                Key_2,
+                Key_3,
+                Key_4,
+                Key_5,
+                Key_6,
+                Key_7,
+                Key_8,
+				Key_9, //31
+                Key_Colon, Key_Semicolon, Key_Less, Key_Equals, Key_Greater, Key_Question, Key_At, Key_Leftbracket, Key_Backslash, Key_Rightbracket, Key_Caret, Key_Underscore, Key_Backquote,
+				Key_A, Key_B, Key_C, Key_D, Key_E, Key_F, Key_G, Key_H, Key_I, Key_J, Key_K, Key_L, Key_M, Key_N, Key_O, Key_P , Key_Q, Key_R, Key_S, Key_T, Key_U, Key_V, Key_W, Key_X, Key_Y, Key_Z,
+				Key_Delete,
+				Key_World0,Key_World1,Key_World2,Key_World3, Key_World4, Key_World5, Key_World6, Key_World7, Key_World8, Key_World9, //81
+                Key_World10,Key_World11,Key_World12,Key_World13, Key_World14, Key_World15, Key_World16, Key_World17, Key_World18, Key_World19,
+                Key_World20,Key_World21,Key_World22,Key_World23, Key_World24, Key_World25, Key_World26, Key_World27, Key_World28, Key_World29,
+                Key_World30,Key_World31,Key_World32,Key_World33, Key_World34, Key_World35, Key_World36, Key_World37, Key_World38, Key_World39,
+                Key_World40,Key_World41,Key_World42,Key_World43, Key_World44, Key_World45, Key_World46, Key_World47, Key_World48, Key_World49,
+                Key_World50,Key_World51,Key_World52,Key_World53, Key_World54, Key_World55, Key_World56, Key_World57, Key_World58, Key_World59,
+                Key_World60,Key_World61,Key_World62,Key_World63, Key_World64, Key_World65, Key_World66, Key_World67, Key_World68, Key_World69,
+                Key_World70,Key_World71,Key_World72,Key_World73, Key_World74, Key_World75, Key_World76, Key_World77, Key_World78, Key_World79,
+                Key_World80,Key_World81,Key_World82,Key_World83, Key_World84, Key_World85, Key_World86, Key_World87, Key_World88, Key_World89,
+				Key_World90,Key_World91,Key_World92,Key_World93, Key_World94, Key_World95, //167
+                Key_Kp0,
+				Key_Kp1,
+				Key_Kp2,
+				Key_Kp3,
+				Key_Kp4,
+				Key_Kp5,
+				Key_Kp6,
+				Key_Kp7,
+				Key_Kp8,
+				Key_Kp9,
+				Key_KPeriod,
+                Key_KDivide,
+				Key_KMultiply,
+				Key_KMinus,
+				Key_KPlus,
+				Key_KEnter,
+				Key_KEquals,
+                Key_Up,
+                Key_Down,
+                Key_Right,
+                Key_Left,
+                Key_Insert, Key_Home, Key_End, Key_Pageup, Key_Pagedown,
+				Key_F1,
+				Key_F2,
+				Key_F3,
+				Key_F4,
+				Key_F5,
+				Key_F6,
+				Key_F7,
+				Key_F8,
+				Key_F9,
+				Key_F10,
+				Key_F11, //200
+				Key_F12,
+				Key_F13,
+				Key_F14,
+				Key_F15,
+                Key_Numlock, Key_Capslock, Key_Scrollock,
+				Key_RShift,
+				Key_Lshift,
+				Key_Lctrl,
+				Key_Rctrl,
+				Key_Ralt,
+				Key_Lalt,
+				Key_Rmeta, Key_Lmeta, Key_Rsuper, Key_Lsuper, Key_Mode, Key_Compose, Key_Help, Key_Printscreen, Key_Sysreq, Key_Break, Key_Menu, Key_Power, Key_Euro, Key_Undo //227
+            };
 
 		private :
 	    static std::vector<short> Keyrage2sdl;
@@ -196,7 +195,7 @@ namespace RAGE
 				inline char getChar() const
 				{
 					//special cases
-					if ( _key == KReturn )
+					if ( _key == Key_Return )
 						return('\n');
 					
 					return(static_cast<char>(_unicode & 0x7F));
@@ -231,9 +230,9 @@ namespace RAGE
 			std::string getModifierName(Modifier m);
 
             //get the current key modifier state
-            bool isModDown (Modifier m = None);
+            bool isModDown (Modifier m = Mod_None);
             //set the current key modifier state
-            void setModDown(Modifier m = None);
+            void setModDown(Modifier m = Mod_None);
 
 
             // Unicode keyboard translation
@@ -272,7 +271,7 @@ namespace RAGE
 
         ///This class is not suitable for Gaming Input (doesnt detect key releases). Use Keyboard instead.
         ///However this class is well adapted for accurate text typing, with unicode enabled.
-        class TextInput : public Keyboard
+        class TextInput : public DefaultKeyboard
         {
         public:
             TextInput();

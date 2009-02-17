@@ -96,7 +96,7 @@ public :
 };
 
 //Defining UserInput
-class MyUserInput : public TextInput
+class MyUserInput : public TextInput //Should TextInput have a DefaultTextI nput with default behavior too ???
 {
 public:
 
@@ -111,35 +111,11 @@ public:
 
     virtual bool handleKeyEvent (const Sym &s, bool pressed)
     {
-        bool res = false;
-            switch( s.getKey() )
-            {
-                case KEscape:
-                if (pressed==false)
-                {
-#ifdef DEBUG
-                    Log << nl << "Quit requested !" << std::endl;
-#endif
+		TextInput::handleKeyEvent(s,pressed);
 
-					App::getInstance().requestTermination();
-					//_quitRequested=true;
-                    res=true;
-                }
-                break;
-                case KF5:
-                if (pressed==true)
-                    App::getInstance().getWindow().iconify();
-                res = true;
-                break;
-				case KF6:
-                if (pressed==true)
-                    App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
-                res = true;
-                break;
-				default: if (pressed == true) cons->add(s.getChar());
-                res = true;
-            }
-        return res;
+		if (pressed == true) cons->add(s.getChar());
+        
+		return true;
     }
 };
 
