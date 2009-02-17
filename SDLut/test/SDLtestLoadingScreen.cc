@@ -78,9 +78,14 @@ class RenderEngine : public DefaultEngine
 {
 private:
 	std::string LSBGFn;
+	std::auto_ptr<Font> LS_F25;
+	std::auto_ptr<Font> LS_F14;
 public:
 	RenderEngine(const std::string& LoadingScreenBg_Filename) : LSBGFn(LoadingScreenBg_Filename)
-	{}
+	{
+		LS_F25.reset( new Font("data/ECHELON.TTF", 25) );
+		LS_F14.reset( new Font("data/ECHELON.TTF", 14) );
+	}
 
     ~RenderEngine() {}
 			
@@ -100,7 +105,7 @@ public:
 			DefaultEngine::render(screen);
 		else if (GLOBAL_STATE == 2)
 		{
-			App::getInstance().getWindow().ShowLoadingScreen( LSBGFn, "YOU ARE INSIDE THE MAAAATRIX", std::auto_ptr<Font>(new Font("data/ECHELON.TTF", 25)), "", std::auto_ptr<Font>( new Font("data/ECHELON.TTF", 14)), Rect(100, 400, 600, 25) );
+			App::getInstance().getWindow().ShowLoadingScreen( LSBGFn, "YOU ARE INSIDE THE MAAAATRIX", LS_F25.get(), "", LS_F14.get(), Rect(100, 400, 600, 25) );
 			App::getInstance().getWindow().UpdateLoadingScreen(100, "Washing Your Brain, Press Esc Key Twice To Flee ...");
 		}
     }
@@ -125,7 +130,9 @@ try {
 
 	//Show Loading Screen
 	App::getInstance().getWindow().resetDisplay(800,600);
-	App::getInstance().getWindow().ShowLoadingScreen( loading_screen, "GLOBAL BLABLA", std::auto_ptr<Font>(new Font("data/ECHELON.TTF", 25)), "Setting User Input", std::auto_ptr<Font>( new Font("data/ECHELON.TTF", 12)), Rect(100, 400, 600, 25) );
+	std::auto_ptr<Font> LS_F25( new Font("data/ECHELON.TTF", 25) );
+	std::auto_ptr<Font> LS_F12( new Font("data/ECHELON.TTF", 12) );
+	App::getInstance().getWindow().ShowLoadingScreen( loading_screen, "GLOBAL BLABLA", LS_F25.get(), "Setting User Input", LS_F12.get(), Rect(100, 400, 600, 25) );
 
 	//Setting User Input
 	KeyboardInput myKeyboardInput(loading_screen);

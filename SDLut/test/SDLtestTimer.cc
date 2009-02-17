@@ -49,8 +49,17 @@ public:
 
 	~ObjectWithCallback()
 	{
-		delete Play_Timer_1, Play_Timer_1 = NULL;
-		delete Play_Timer_2, Play_Timer_2 = NULL;
+		if (Play_Timer_1 != NULL)
+		{
+			Play_Timer_1->abort();
+			delete Play_Timer_1, Play_Timer_1 = NULL;
+		}
+
+		if (Play_Timer_2 != NULL)
+		{			
+			Play_Timer_2->abort();
+			delete Play_Timer_2, Play_Timer_2 = NULL;
+		}
 		delete sobj, sobj = NULL;
 	}
 

@@ -181,23 +181,19 @@ namespace RAGE
 
 			protected:
 				std::auto_ptr<RGBSurface> Loading_BG;
-				std::auto_ptr<Font> Loading_Global_Msg_Font, Loading_Specific_Msg_Font;
+				Font *Loading_Global_Msg_Font, *Loading_Specific_Msg_Font; //ref
 				std::string Loading_Global_Msg, Loading_Specific_Msg;
 				short Progress_Percent;
 				Rect Progress_Bar_Infos;
 
-				LoadingScreen(std::auto_ptr<RGBSurface> _Loading_BG, const std::string& _Loading_Global_Msg, std::auto_ptr<Font> _Loading_Global_Msg_Font, const std::string& _Loading_Specific_Msg, std::auto_ptr<Font>  _Loading_Specific_Msg_Font, const Rect& Progress_Bar_Infos) :
+				LoadingScreen(std::auto_ptr<RGBSurface> _Loading_BG, const std::string& _Loading_Global_Msg, Font*& _Loading_Global_Msg_Font, const std::string& _Loading_Specific_Msg, Font*& _Loading_Specific_Msg_Font, const Rect& Progress_Bar_Infos) :
 					Loading_BG(_Loading_BG), Loading_Global_Msg(_Loading_Global_Msg), Loading_Global_Msg_Font(_Loading_Global_Msg_Font), Loading_Specific_Msg(_Loading_Specific_Msg), Loading_Specific_Msg_Font(_Loading_Specific_Msg_Font), Progress_Bar_Infos(Progress_Bar_Infos)
 				{
 					Progress_Percent = 0;
 				}
 
 				~LoadingScreen()
-				{
-					Loading_BG.release();
-					Loading_Global_Msg_Font.release();
-					Loading_Specific_Msg_Font.release();
-				}
+				{}
 
 				/**
 				 * Blit bg than global msg than specific msg than progression bar on the screen then refresh it
@@ -217,11 +213,11 @@ namespace RAGE
 				#ifdef HAVE_SDLTTF
 					//Blit Global Msg
 					if (Loading_Global_Msg != "")
-						Screen->blit(*Loading_Global_Msg_Font->render(Loading_Global_Msg,RGBColor(0,0,0), Font::Blended), Point( ls_x + Progress_Bar_Infos.getx(), std::max(ls_y, ls_y + Progress_Bar_Infos.gety() - 40) ) );
+						Screen->blit(*(Loading_Global_Msg_Font->render(Loading_Global_Msg,RGBColor(0,0,0), Font::Blended)), Point( ls_x + Progress_Bar_Infos.getx(), std::max(ls_y, ls_y + Progress_Bar_Infos.gety() - 40) ) );
 
 					//Blit Specific Msg
 					if (Loading_Specific_Msg != "")
-						Screen->blit(*Loading_Specific_Msg_Font->render(Loading_Specific_Msg,RGBColor(0,0,0), Font::Blended), Point(ls_x + Progress_Bar_Infos.getx(), ls_y + Progress_Bar_Infos.gety() + Progress_Bar_Infos.geth()*2 ) );
+						Screen->blit(*(Loading_Specific_Msg_Font->render(Loading_Specific_Msg,RGBColor(0,0,0), Font::Blended)), Point(ls_x + Progress_Bar_Infos.getx(), ls_y + Progress_Bar_Infos.gety() + Progress_Bar_Infos.geth()*2 ) );
 				#endif //HAVE_SDLTTF
 
 					//progression bar
@@ -240,12 +236,12 @@ namespace RAGE
 			 *
 			 * @Loading_BG_Filename, a string to the filename image to display in background
 			 * @Loading_Global_Msg, a string to the global loading screen msg that wont change until loading screen hide
-			 * @Loading_Global_Msg_Font, a Font auto pointer used to display Loading_Global_Msg
+			 * @Loading_Global_Msg_Font, a Font ref to pointer used to display Loading_Global_Msg
 			 * @Loading_Specific_Msg, a string to the scpecific loading screen msg that will be blit at the initial shown of the loading screen and then be updated
-			 * @Loading_Specific_Msg_Font, a Font auto pointer used to display Loading_Specific_Msg_Font
+			 * @Loading_Specific_Msg_Font, a Font ref to pointer used to display Loading_Specific_Msg_Font
 			 * @Progress_Bar_Infos, a Rect containing first the progress bar origin coordinates (also used for specific msg position) and then the width/height of the bar. Default an empty Rect. 
 			 **/
-			void ShowLoadingScreen( const std::string& Loading_BG_Filename, const std::string& Loading_Global_Msg, std::auto_ptr<Font> Loading_Global_Msg_Font, const std::string& Loading_Specific_Msg, std::auto_ptr<Font> Loading_Specific_Msg_Font, const Rect& Progress_Bar_Infos = Rect() );
+			void ShowLoadingScreen( const std::string& Loading_BG_Filename, const std::string& Loading_Global_Msg, Font* Loading_Global_Msg_Font, const std::string& Loading_Specific_Msg, Font* Loading_Specific_Msg_Font, const Rect& Progress_Bar_Infos = Rect() );
 			
 			/**
 			 * Show a loading Screen: a static bg with a global msg and a specific msg.

@@ -78,9 +78,12 @@ public :
 			++current_line;
 			if (current_line > (nb_line-nb_line_toshow))
 			{
-				std::auto_ptr<RGBSurface> textsurf = _font.render(line,Color(255,255,255),Font::Solid);
-				assert(textsurf.get());
-				surf->blit(*textsurf,Point (0,i * linesize));
+				if ((std::string)line != "")
+				{
+					std::auto_ptr<RGBSurface> textsurf = _font.render(line,Color(255,255,255),Font::Solid);
+					assert(textsurf.get());
+					surf->blit(*textsurf,Point (0,i * linesize));
+				}
 				++i;
 			}
 		}

@@ -16,7 +16,6 @@ Logger Log("Test Text Input");
 class MyGeneralHandler : public DefaultEventHandler
 {
 	friend class EventManager;
-        bool _quitRequested;
 
         public:
 

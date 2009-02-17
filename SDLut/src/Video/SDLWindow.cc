@@ -387,7 +387,7 @@ namespace RAGE
             return res;
         }
 
-		void Window::ShowLoadingScreen( const std::string& Loading_BG_Filename, const std::string& Loading_Global_Msg, std::auto_ptr<Font> Loading_Global_Msg_Font, const std::string& Loading_Specific_Msg, std::auto_ptr<Font> Loading_Specific_Msg_Font, const Rect& Progress_Bar_Infos /*=Rect()*/ )
+		void Window::ShowLoadingScreen( const std::string& Loading_BG_Filename, const std::string& Loading_Global_Msg, Font* Loading_Global_Msg_Font, const std::string& Loading_Specific_Msg,  Font* Loading_Specific_Msg_Font, const Rect& Progress_Bar_Infos /*=Rect()*/ )
         {
 		try
         {

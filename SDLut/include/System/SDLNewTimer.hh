@@ -96,6 +96,7 @@ namespace RAGE
 		template<class TClass>
 		NewTimer<TClass>::~NewTimer()
 		{
+			//ALWAYS BE SURE THE TIMER IS HALTED BEFORE TRYING TO DESTRUCT IT !!
 			if (m_cbargs.get() != 0)
 			{
 				delete m_cbargs->cb, m_cbargs->cb = NULL;
