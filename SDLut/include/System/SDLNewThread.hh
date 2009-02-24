@@ -5,6 +5,7 @@
 
 
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <memory>
 #include <stdexcept>
@@ -72,7 +73,7 @@ namespace RAGE
 			NewThread(TClass* instance,int (TClass::*func) ( void*), void* data) throw (std::logic_error);
 			~NewThread();
 
-			inline bool running() { return pvm_thread !=0; }
+			inline bool running() { return m_thread !=0; }
 			
 			int wait();
 
@@ -83,7 +84,7 @@ namespace RAGE
 			
 			inline SDL_Thread & get_rSDL() const
 			{
-				return *pvm_thread;
+				return *m_thread;
 			}
         };
 
@@ -107,7 +108,7 @@ namespace RAGE
 		}			
 
 		template<class TClass>
-		NewThread<TClass>::NewThread(TClass* instance,int (TClass::*func) ( void*), void* data)
+		NewThread<TClass>::NewThread(TClass* instance,int (TClass::*func) ( void*), void* data) throw(std::logic_error)
 		try : m_tcdata(0), m_thread(0)
 		{
 
@@ -123,8 +124,8 @@ namespace RAGE
 		catch (std::exception &e )
 		{
 			//Cannot use log here... find a way to be more consistent with the other classes' constructor behavior
-			std::cout << nl << "Exception catched in Thread Constructor !!!"  << nl <<
-            e.what() << nl << GetError() << std::endl;
+			std::cout << "Exception catched in Thread Constructor !!!"  << std::endl <<
+            e.what() << std::endl;
             //TODO : much more explicit error message...
 		}
 
@@ -141,9 +142,9 @@ namespace RAGE
 		template<class TClass>
 		unsigned long NewThread<TClass>::getID()
 		{
-			if  (pvm_thread != 0 )
+			if  (m_thread != 0 )
 			{
-				return getThreadID(pvm_thread);
+				return getThreadID(m_thread);
 			}
 			return 0;
 		}

@@ -72,7 +72,7 @@ namespace RAGE
 		}
 
 		template<class TClass>
-		NewTimer<TClass>::NewTimer(TClass* instance,unsigned int (TClass::*func) (unsigned int, void*), void* args, unsigned int interval)
+		NewTimer<TClass>::NewTimer(TClass* instance,unsigned int (TClass::*func) (unsigned int, void*), void* args, unsigned int interval) throw (std::logic_error)
 			try : m_cbargs(), m_timerid(0)
 		{
 			
@@ -88,8 +88,8 @@ namespace RAGE
 		catch (std::exception &e )
 		{
 			//Cannot use log here... find a way to be more consistent with the other classes' constructor behavior
-			std::cout << nl << "Exception catched in Timer Constructor !!!"  << nl <<
-            e.what() << nl << GetError() << std::endl;
+			std::cout << "Exception catched in Timer Constructor !!!"  << std::endl <<
+            e.what() << std::endl;
             //TODO : much more explicit error message...
 		}
 

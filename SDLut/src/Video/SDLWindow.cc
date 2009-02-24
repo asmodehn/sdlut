@@ -46,24 +46,24 @@ namespace RAGE
         //old version
         void Window::getCaption(std::string & title, std::string & iconname)
         {
-            char * t="";
-            char * i="" ;
-            SDL_WM_GetCaption(&t,&i);
+            char t[256]= {}; //size ??
+            char i[256]= {}; //size ??
+            SDL_WM_GetCaption((char**)&t,(char**)&i); // to test on gcc.. be careful about long strings...
             title=std::string(t);
             iconname=std::string(i);
         }
 
         std::string Window::getTitle()
         {
-            char * t = "" ;
-            SDL_WM_GetCaption(&t,NULL);
+            char t[256]= {}; //size ??
+            SDL_WM_GetCaption((char**)&t,NULL); // to test on gcc.. be careful about long strings...
             return std::string(t);
 
         }
         std::string Window::getIconName()
         {
-            char * i  = "";
-            SDL_WM_GetCaption(NULL,&i);
+            char i[256]= {}; //size ??
+            SDL_WM_GetCaption(NULL,(char**)&i); // to test on gcc.. be careful about long strings...
             return std::string(i);
         }
 
