@@ -4,7 +4,12 @@
 
 #include <iostream>
 #include "SDL.hh"
+#include <ctime>
+#include <sstream>
+
 using namespace RAGE;
+using namespace RAGE::SDL;
+using namespace std;
 
 static long ticks;
 
@@ -16,108 +21,290 @@ Logger testlog("testTimer");
 	return 50;
 }*/
 
+int random(int min, int max)
+{
+	return min + (rand()%(max+1-min));
+}
+
+std::string Int_To_String(const int &to_convert)
+{
+	std::stringstream s;
+    if (s << to_convert) // conversion worked
+        return s.str();
+
+	//failed
+	return NULL;
+}
+
 class SimpleObject
 {
-	friend class ObjectWithCallback;
-
-protected:
-	int callback_interval;
-	SimpleObject(const int& callback_interval)
-	{
-		this->callback_interval = callback_interval;
-		
-		direct_timer_it = 5;
-	}
-
-	int direct_timer_it;
-};
-
-class ObjectWithCallback
-{
-private:
-	SDL::NewTimer<ObjectWithCallback> *Play_Timer_1;
-	SDL::NewTimer<ObjectWithCallback> *Play_Timer_2;
-	SimpleObject *sobj;
-	
+	friend class ObjectWithCallbacks;
+	friend class OwnerOfObjWCallbacks;
+	friend class DerivateOwnerOfObjWCallbacks;
 
 public:
-	ObjectWithCallback(const int& callback_interval) : sobj(NULL), Play_Timer_1(NULL), Play_Timer_2(NULL)
+	int callback_interval, cb_frames;
+	SimpleObject()
 	{
-		sobj = new SimpleObject(callback_interval);
-		
+		callback_interval = random(50,100);
+		cb_frames = random(5,9);
+	}
+};
+
+class SimpleArgObject
+{
+
+public:
+	int isao;
+
+	SimpleArgObject()
+	{
+		isao = random(1,10);
+	}
+};
+
+class ObjectWithCallbacks
+{
+	friend class OwnerOfObjWCallbacks;
+
+private:
+	SDL::NewTimer<ObjectWithCallbacks> *Play_Timer_1x;
+	SimpleObject *sobj;
+
+	int direct_timer_it, direct_timer_int;	
+
+	int loop_nb;
+
+	long start_timer_tick;
+
+
+protected:
+	int flag; //0: default|initial, 1: used by callback, 2: callback ended
+
+public:
+	ObjectWithCallbacks() : sobj(NULL), Play_Timer_1x(NULL)
+	{
+	try	{
+		direct_timer_it = 8;
+		direct_timer_int = 200;
+		loop_nb = 0;
+
+		flag = 0;
+		start_timer_tick = 0;
+
+		sobj = new SimpleObject();
+	
+	} catch (std::exception &exc) {
+		Clean_ObjectWithCallbacks();
+		throw std::logic_error("Error in ObjectWithCallbacks Constructor " + (string)exc.what() );
+	} catch (...) {
+		Clean_ObjectWithCallbacks();
+		throw std::logic_error("Unhandled Error in ObjectWithCallbacks Constructor" );
+	}
 	}
 
-	~ObjectWithCallback()
+	~ObjectWithCallbacks()
 	{
-		if (Play_Timer_1 != NULL)
+		Clean_ObjectWithCallbacks();
+	}
+
+	void Clean_ObjectWithCallbacks()
+	{		
+		if (Play_Timer_1x != NULL)
 		{
-			Play_Timer_1->abort();
-			delete Play_Timer_1, Play_Timer_1 = NULL;
+			Play_Timer_1x->abort();
+			delete Play_Timer_1x, Play_Timer_1x = NULL;
 		}
 
-		if (Play_Timer_2 != NULL)
-		{			
-			Play_Timer_2->abort();
-			delete Play_Timer_2, Play_Timer_2 = NULL;
-		}
 		delete sobj, sobj = NULL;
 	}
 
-	void play1_1()
+	//Manual abort
+	void stop()
 	{
-		try
+		if (Play_Timer_1x != NULL)
 		{
-			Play_Timer_1 = new SDL::NewTimer<ObjectWithCallback>(this,&ObjectWithCallback::callback1_1, NULL);
-		}
-		catch (std::exception &)
-		{
-			throw std::logic_error("Unable to launch the callback on Play_Timer_1");
+			testlog << nl << Play_Timer_1x << " aborted by ObjectWithCallbacks::stop()" << std::endl;
+			Play_Timer_1x->abort();
+			delete Play_Timer_1x, Play_Timer_1x = NULL;
+			flag = 0;
 		}
 	}
-	void play1_2()
+
+	void play1_1(SimpleArgObject*& ArgObject)
 	{
-		try
-		{
-			Play_Timer_2 = new SDL::NewTimer<ObjectWithCallback>(this,&ObjectWithCallback::callback1_2, NULL);
-		}
-		catch (std::exception &)
-		{
-			throw std::logic_error("Unable to launch the callback on Play_Timer_2");
-		}
+	try {
+
+		loop_nb = 0;
+		flag = 1;
+		delete Play_Timer_1x, Play_Timer_1x = NULL;
+	
+		Play_Timer_1x = new SDL::NewTimer<ObjectWithCallbacks>(this,&ObjectWithCallbacks::callback1_1, (void*)(ArgObject)/*NULL*/ );
+			
+		testlog << nl << "play1_1 create Timer " << Play_Timer_1x << " and launching it" << std::endl;
+	
+	} catch (std::exception &exc) {
+		Clean_ObjectWithCallbacks();
+		throw std::logic_error("Error in ObjectWithCallbacks::play1_1 " + (string)exc.what() );
+	} catch (...) {
+		Clean_ObjectWithCallbacks();
+		throw std::logic_error("Unhandled Error in ObjectWithCallbacks::play1_1" );
 	}
+	}
+	
 
 private:
 	unsigned int callback1_1(unsigned int interval, void* args)
 	{
-		testlog << nl << SDL::GetTicks() - ticks  << " ms : callback1_1 Called back ! " << std::endl;
-		return sobj->callback_interval;
+	try	{
+
+		testlog << nl << SDL::GetTicks() - ticks  << " ms : " << this << "'s callback1_1 called back at frame " << loop_nb << std::endl;
+
+		if (args == NULL)
+		{
+			assert(args == NULL && "Arg Pointer is NULL !");
+			throw std::logic_error("Arg Pointer is NULL !");
+		}
+
+		//Check nb of frame
+		if (++loop_nb < sobj->cb_frames)
+			return sobj->callback_interval;
+		else
+		{
+			flag = 2;
+			return 0;
+		}
+
+	} catch (std::exception &exc)	{
+		Clean_ObjectWithCallbacks();
+		throw std::logic_error("Error in ObjectWithCallbacks::callback1_1 " + (string)exc.what() );
+	} catch (...) {
+		Clean_ObjectWithCallbacks();
+		throw std::logic_error("Unhandled Error in ObjectWithCallbacks::callback1_1" );
 	}
-	unsigned int callback1_2(unsigned int interval, void* args)
-	{
-		testlog << nl << SDL::GetTicks() - ticks  << " ms : callback1_2 Called back ! " << std::endl;
-		return sobj->callback_interval;
 	}
+
 
 public:
 	unsigned int callback2(unsigned int interval, void* args)
 	{
-		//call the timer 5 times
-		//static int iter = 5;
+	try	{
+		testlog << nl << SDL::GetTicks() - ticks  << " ms : direct callback2 Called back ! Number: " << direct_timer_it-- ;
 
-		testlog << nl << SDL::GetTicks() - ticks  << " ms : direct callback2 Called back ! Number: " << sobj->direct_timer_it-- ;
-
-		if ( sobj->direct_timer_it != 0 )
-			return interval;
+		if ( direct_timer_it != 0 )
+			return direct_timer_int;
 		
 		testlog << nl << "Stopping direct timer" << std::endl;
 		return 0;
+
+	} catch (std::exception &exc) {
+		Clean_ObjectWithCallbacks();
+		throw std::logic_error("Error in ObjectWithCallbacks::callback2 " + (string)exc.what() );
+	} catch (...) {
+		Clean_ObjectWithCallbacks();
+		throw std::logic_error("Unhandled Error in ObjectWithCallbacks::callback2" );
+	}
 	}
 };
+
+class OwnerOfObjWCallbacks
+{
+	friend class DerivateOwnerOfObjWCallbacks;
+	friend class ObjectWithCallbacks;
+
+protected:
+	ObjectWithCallbacks* objwcb;
+	SimpleArgObject* sao;
+
+public:
+	OwnerOfObjWCallbacks() : objwcb(NULL), sao(NULL)
+	{
+	try {
+
+		objwcb = new ObjectWithCallbacks();
+		sao = new SimpleArgObject();
+
+	} catch (std::exception &exc) {
+		Clean_OwnerOfObjWCallbacks();
+		throw std::logic_error("Error in OwnerOfObjWCallbacks Constructor()" +(string)exc.what() );
+	} catch (...) {
+		Clean_OwnerOfObjWCallbacks();
+		throw std::logic_error("Unhandled Error in OwnerOfObjWCallbacks Constructor" );
+	}
+	}
+
+	virtual ~OwnerOfObjWCallbacks()
+	{
+		Clean_OwnerOfObjWCallbacks();
+	}
+
+	void Clean_OwnerOfObjWCallbacks()
+	{
+		delete objwcb, objwcb = NULL;
+		delete sao, sao = NULL;
+	}
+
+	void DoSthg()
+	{
+	try {
+
+		switch (objwcb->flag)
+		{
+		case 0: //no callback running
+			testlog << nl << "OwnerOfObjWCallbacks " << this << "'s ObjectWithCallbacks::play1_1() called" << std::endl;
+			objwcb->start_timer_tick = SDL::GetTicks();
+			objwcb->play1_1( sao );
+			break;
+
+		case 1: //one callback running 			
+			if (objwcb->start_timer_tick + 1100 < SDL::GetTicks()) //1100ms = max nb de frame potential * max interval potentiel + 100ms
+			{
+				testlog << nl << "ERROR : A timer encounter an abornal termination for OwnerOfObjWCallbacks " << this << std::endl;
+				throw logic_error( " A timer encounter an abornal termination");
+			}
+			break;
+
+		case 2: //one callback ended
+			testlog << nl << "callback1_1 Ended, Resetting objwcb->flag to 0 inside " << this << " OwnerOfObjWCallbacks" << std::endl;
+			objwcb->flag = 0;
+			break;
+
+		default:
+			throw logic_error( "unkown objwcb->flag value : " + Int_To_String(objwcb->flag) );
+			break;
+
+		}
+
+	} catch (std::exception &exc) {
+		Clean_OwnerOfObjWCallbacks();
+		throw std::logic_error("Error in OwnerOfObjWCallbacks::DoSthg() : " + (string)exc.what() );
+	} catch (...) {
+		Clean_OwnerOfObjWCallbacks();
+		throw std::logic_error("Unhandled Error in OwnerOfObjWCallbacks::DoSthg" );
+	}
+	}
+};
+
+/*class DerivateOwnerOfObjWCallbacks : public OwnerOfObjWCallbacks
+{
+
+public:
+	DerivateOwnerOfObjWCallbacks()
+	{}
+};*/
 
 
 int main(int argc, char *argv[])
 {
 try {
+	unsigned int NB_OBJ = 15;
+	long TEST_DURATION = 20000; //ms
+
+/***Init & Implement***/
+
+	//Init the rand method using the current time in order to generate more random numbers
+	srand( (unsigned)time( NULL ) );
+
 	testlog.enableFileLog("testTimer.log");
 	testlog << nl<<"SDL init...";
 
@@ -126,31 +313,60 @@ try {
 	//static SDL_TimerID gt_id = SDL::AddGlobalTimer(50,callback,NULL);
 			
 	testlog << nl<<"Creating instance";
-	ObjectWithCallback* obj = new ObjectWithCallback(80);
+	ObjectWithCallbacks* gobj = new ObjectWithCallbacks();
 
 	testlog << nl<<"Creating instance timer";
-	SDL::Timer<ObjectWithCallback> direct_timer;
-
-	direct_timer.setCallback(obj,&ObjectWithCallback::callback2,(void*)NULL);
-
-	//ticks = SDL::GetTicks();
-	testlog << nl << "Starting instance timer1_x ( 80ms )";
-	obj->play1_1();
-	obj->play1_2();
-	
+	SDL::Timer<ObjectWithCallbacks> direct_timer;
+	direct_timer.setCallback(gobj,&ObjectWithCallbacks::callback2,(void*)NULL);
 	testlog << nl <<"Starting instance timer 2 (every 200ms)";
 	direct_timer.launch(200);
 
-		
-	SDL::Delay(5000); //TODO Display time running
-	
-	testlog << nl <<"Cleaning and finished";
+
+	vector<OwnerOfObjWCallbacks*>* voocb = new vector<OwnerOfObjWCallbacks*>;
+	for (unsigned int i = 0; i < NB_OBJ; i++)
+	{
+		voocb->push_back( new OwnerOfObjWCallbacks() );
+	}
+
+	//DerivateOwnerOfObjWCallbacks* iocb = new DerivateOwnerOfObjWCallbacks();
+
+/***Run***/	
+	//SDL::Delay(15000); //TODO Display time running
+	ticks = SDL::GetTicks();
+
+	while (SDL::GetTicks() < (ticks + TEST_DURATION))
+	{
+		for (unsigned int i = 0; i < voocb->size(); i++)
+		{
+			voocb->at(i)->DoSthg();
+		}
+		//iocb->DoSthg();	
+	}
+
+
+/***Clean***/
+	testlog << nl << "Cleaning and finished";
+
 	direct_timer.abort();
-	delete obj, obj = NULL;
+
+	delete gobj, gobj = NULL;
+
+	for (unsigned int i = 0; i < voocb->size(); i++)
+	{
+		delete voocb->at(i), voocb->at(i) = NULL;
+	}
+	delete voocb, voocb = NULL;
+
+	//delete iocb, iocb = NULL;
+
 	//SDL::RemoveGlobalTimer(gt_id);
 
 	return 0;
 } catch (std::exception &exc) {
-		testlog << nl<< exc.what();
+	testlog << nl << " ***** ERROR ***** : " << exc.what();
+	//SDL::Delay(2000); 
+
+} catch (...) {
+	throw std::logic_error("Unhandled Error in Main !" );
 }
 }
