@@ -98,7 +98,7 @@ namespace RAGE
 			int res = calldata->tc->call(calldata->data);
 
 
-			return res;//mutex unlock at end of scope
+			return res;
 		}
 		
 
@@ -135,7 +135,7 @@ namespace RAGE
 			if (m_tcdata.get() != 0)
 			{
 				delete m_tcdata->tc, m_tcdata->tc = NULL;
-				delete m_tcdata->data, m_tcdata->data = NULL;
+				//m_tcdata->data managed by client
 			}
 		}
 

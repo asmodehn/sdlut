@@ -39,6 +39,10 @@ namespace RAGE
 
 			SDL_TimerID m_timerid;
 			
+			//for safety on timer creation / deletion
+			//doesnt seem the fix hte problem
+			//static Mutex mtx;
+
 			//to prevent copy
 			NewTimer( const NewTimer &) ;
 
@@ -65,6 +69,9 @@ namespace RAGE
 			return res;
 		}
 
+		//template<class TClass>
+		//Mutex NewTimer<TClass>::mtx;
+
 		template<class TClass>
 		NewTimer<TClass>::NewTimer()
 		 : m_cbargs(), m_timerid(0)
@@ -80,6 +87,7 @@ namespace RAGE
 			m_cbargs->cb=new Callback(instance,func);
 			m_cbargs->args=args;
 
+			//ScopedLock lock(mtx);
 			m_timerid = AddGlobalTimer(interval,m_callback,m_cbargs.get());
 
 			if (m_timerid == NULL)
@@ -97,10 +105,13 @@ namespace RAGE
 		NewTimer<TClass>::~NewTimer()
 		{
 			//ALWAYS BE SURE THE TIMER IS HALTED BEFORE TRYING TO DESTRUCT IT !!
+			abort(); // maybe not absolutely necessary, ie a bug...
+			//TODO : think of a way to "detach" it. Destruct the Timer object, but keep the timer running... have a look at boost threads...
+
 			if (m_cbargs.get() != 0)
 			{
 				delete m_cbargs->cb, m_cbargs->cb = NULL;
-				delete m_cbargs->args, m_cbargs->args = NULL;
+				//do not delete args here as it should be managed by the client
 			}
 		}
 
@@ -111,7 +122,10 @@ namespace RAGE
 			//TODO, find the meaning of error / success if timer already finished ? or never existed ? 
 			bool res = true;
 			if ( m_timerid!= NULL )
+			{
+				//ScopedLock lock(mtx);
 				res = RemoveGlobalTimer(m_timerid);
+			}
 			return res;
 		}
 		
