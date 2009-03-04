@@ -149,7 +149,7 @@ SCOPED_LOCK(mymtx);
 	
 		Play_Timer_1x = new SDL::NewTimer<ObjectWithCallbacks>(this,&ObjectWithCallbacks::callback1_1, (void*)(ArgObject)/*NULL*/ );
 			
-		testlog << nl << this << "\'s play1_1 create Timer " << Play_Timer_1x << " and launching it" << std::endl;
+		testlog << nl << SDL::GetTicks() - ticks  << " ms : " << this << "\'s play1_1 create Timer " << Play_Timer_1x << " and launching it" << std::endl;
 	
 	} catch (std::exception &exc) {
 		Clean_ObjectWithCallbacks();

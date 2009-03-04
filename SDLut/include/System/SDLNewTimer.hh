@@ -13,10 +13,11 @@ namespace RAGE
     namespace SDL
     {
 
+		extern void TimerLog(const std::string& text);
+
     	template <class TClass>
 		class NewTimer
 		{
-
 			//Functor for Timer Callback
 	    		//the only constraint about the callback function is that it should return int (next interval to apply)
 	    		//and the arguments should be void* to be able to pass anything...
@@ -90,14 +91,14 @@ namespace RAGE
 			//ScopedLock lock(mtx);
 			m_timerid = AddGlobalTimer(interval,m_callback,m_cbargs.get());
 
-			if (m_timerid == NULL)
+			if (m_timerid == 0)
 				throw std::logic_error(" Creation of SDL Timer failed !" );
 		}
 		catch (std::exception &e )
 		{
 			//Cannot use log here... find a way to be more consistent with the other classes' constructor behavior
-			std::cout << "Exception catched in Timer Constructor !!!"  << std::endl <<
-            e.what() << std::endl;
+			TimerLog( "Exception catched in Timer Constructor !!!");
+			TimerLog(e.what());
             //TODO : much more explicit error message...
 		}
 

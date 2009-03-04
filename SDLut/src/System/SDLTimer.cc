@@ -6,7 +6,16 @@ namespace RAGE
 {
     namespace SDL
     {
-	    //Mutex TimerMtx;
+
+		Mutex TimerMtx;
+
+		void TimerLog(const std::string& text)
+		{
+			ScopedLock lock(TimerMtx);
+			Log << nl << text << std::endl;
+		}
+
+	    
 
 	//Simple SDL_delay implementation
 	    void Delay(long millisec)
