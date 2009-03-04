@@ -7,6 +7,10 @@
 #include <ctime>
 #include <sstream>
 
+//to be able to easily remove the locks
+#define SCOPED_LOCK(mtx) ScopedLock lock(mtx)
+//#define SCOPED_LOCK(mtx)
+
 using namespace RAGE;
 using namespace RAGE::SDL;
 using namespace std;
@@ -77,6 +81,7 @@ private:
 
 	long start_timer_tick;
 
+	Mutex mymtx;
 
 protected:
 	int flag; //0: default|initial, 1: used by callback, 2: callback ended
@@ -122,6 +127,8 @@ public:
 	//Manual abort
 	void stop()
 	{
+SCOPED_LOCK(mymtx);
+
 		if (Play_Timer_1x != NULL)
 		{
 			testlog << nl << Play_Timer_1x << " aborted by ObjectWithCallbacks::stop()" << std::endl;
@@ -134,6 +141,7 @@ public:
 	void play1_1(SimpleArgObject*& ArgObject)
 	{
 	try {
+SCOPED_LOCK(mymtx);
 
 		loop_nb = 0;
 		flag = 1;
@@ -141,7 +149,7 @@ public:
 	
 		Play_Timer_1x = new SDL::NewTimer<ObjectWithCallbacks>(this,&ObjectWithCallbacks::callback1_1, (void*)(ArgObject)/*NULL*/ );
 			
-		testlog << nl << "play1_1 create Timer " << Play_Timer_1x << " and launching it" << std::endl;
+		testlog << nl << this << "\'s play1_1 create Timer " << Play_Timer_1x << " and launching it" << std::endl;
 	
 	} catch (std::exception &exc) {
 		Clean_ObjectWithCallbacks();
@@ -157,8 +165,8 @@ private:
 	unsigned int callback1_1(unsigned int interval, void* args)
 	{
 	try	{
-
-		testlog << nl << SDL::GetTicks() - ticks  << " ms : " << this << "'s callback1_1 called back at frame " << loop_nb << std::endl;
+SCOPED_LOCK(mymtx);
+		testlog << nl << SDL::GetTicks() - ticks  << " ms : " << this << "\'s callback1_1 called back at frame " << loop_nb << std::endl;
 
 		if (args == NULL)
 		{
@@ -189,12 +197,13 @@ public:
 	unsigned int callback2(unsigned int interval, void* args)
 	{
 	try	{
-		testlog << nl << SDL::GetTicks() - ticks  << " ms : direct callback2 Called back ! Number: " << direct_timer_it-- ;
+SCOPED_LOCK(mymtx);
+		testlog << nl << " ====>> " << SDL::GetTicks() - ticks  << " ms : " << this << "\'s direct callback2 Called back ! Number: " << direct_timer_it-- ;
 
 		if ( direct_timer_it != 0 )
 			return direct_timer_int;
 		
-		testlog << nl << "Stopping direct timer" << std::endl;
+		testlog << nl << "Stopping " << this << "\'s direct timer" << std::endl;
 		return 0;
 
 	} catch (std::exception &exc) {
@@ -247,11 +256,11 @@ public:
 	void DoSthg()
 	{
 	try {
-
+SCOPED_LOCK(objwcb->mymtx);
 		switch (objwcb->flag)
 		{
 		case 0: //no callback running
-			testlog << nl << "OwnerOfObjWCallbacks " << this << "'s ObjectWithCallbacks::play1_1() called" << std::endl;
+			testlog << nl << "OwnerOfObjWCallbacks " << this << "\'s ObjectWithCallbacks @ " << this->objwcb << " ::play1_1() called" << std::endl;
 			objwcb->start_timer_tick = SDL::GetTicks();
 			objwcb->play1_1( sao );
 			break;
@@ -259,13 +268,13 @@ public:
 		case 1: //one callback running 			
 			if (objwcb->start_timer_tick + 1100 < SDL::GetTicks()) //1100ms = max nb de frame potential * max interval potentiel + 100ms
 			{
-				testlog << nl << "ERROR : A timer encounter an abornal termination for OwnerOfObjWCallbacks " << this << std::endl;
+				testlog << nl << "ERROR : A timer encounter an abornal termination for OwnerOfObjWCallbacks " << this << "\'s ObjectWithCallbacks @ " << this->objwcb << std::endl;
 				throw logic_error( " A timer encounter an abornal termination");
 			}
 			break;
 
 		case 2: //one callback ended
-			testlog << nl << "callback1_1 Ended, Resetting objwcb->flag to 0 inside " << this << " OwnerOfObjWCallbacks" << std::endl;
+			testlog << nl << "callback1_1 Ended, Resetting objwcb->flag to 0 inside OwnerOfObjWCallbacks" << this << "\'s ObjectWithCallbacks @ " <<this->objwcb << std::endl;
 			objwcb->flag = 0;
 			break;
 
@@ -316,10 +325,9 @@ try {
 	ObjectWithCallbacks* gobj = new ObjectWithCallbacks();
 
 	testlog << nl<<"Creating instance timer";
-	SDL::Timer<ObjectWithCallbacks> direct_timer;
-	direct_timer.setCallback(gobj,&ObjectWithCallbacks::callback2,(void*)NULL);
+	SDL::NewTimer<ObjectWithCallbacks> direct_timer(gobj,&ObjectWithCallbacks::callback2,(void*)NULL,200);
+
 	testlog << nl <<"Starting instance timer 2 (every 200ms)";
-	direct_timer.launch(200);
 
 
 	vector<OwnerOfObjWCallbacks*>* voocb = new vector<OwnerOfObjWCallbacks*>;
