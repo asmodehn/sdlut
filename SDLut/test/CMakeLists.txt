@@ -49,6 +49,10 @@ ADD_EXECUTABLE(SDLtestTimer SDLtestTimer.cc)
 ADD_DEPENDENCIES(SDLtestTimer SDLut)
 ADD_TEST(Timing ${EXECUTABLE_OUTPUT_PATH}/SDLtestTimer)
 
+ADD_EXECUTABLE(SDLtestStressTimer SDLtestStressTimer.cc)
+ADD_DEPENDENCIES(SDLtestStressTimer SDLut)
+ADD_TEST(Timing ${EXECUTABLE_OUTPUT_PATH}/SDLtestStressTimer)
+
 ADD_EXECUTABLE(SDLtestThread SDLtestThread.cc)
 ADD_DEPENDENCIES(SDLtestThread SDLut)
 ADD_TEST(Timing ${EXECUTABLE_OUTPUT_PATH}/SDLtestThread)
