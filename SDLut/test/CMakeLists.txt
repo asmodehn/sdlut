@@ -57,13 +57,10 @@ ADD_EXECUTABLE(SDLtestThread SDLtestThread.cc)
 ADD_DEPENDENCIES(SDLtestThread SDLut)
 ADD_TEST(Thread ${EXECUTABLE_OUTPUT_PATH}/SDLtestThread)
 ADD_TEST(Thread_wait ${EXECUTABLE_OUTPUT_PATH}/SDLtestThread "wait")
-ADD_TEST(Thread_kill ${EXECUTABLE_OUTPUT_PATH}/SDLtestThread "kill")
 
 ADD_EXECUTABLE(SDLtestStressThread SDLtestStressThread.cc)
 ADD_DEPENDENCIES(SDLtestStressThread SDLut)
 ADD_TEST(Stress_Thread ${EXECUTABLE_OUTPUT_PATH}/SDLtestStressThread)
-ADD_TEST(Stress_Thread_wait ${EXECUTABLE_OUTPUT_PATH}/SDLtestStressThread "wait")
-ADD_TEST(Stress_Thread_kill ${EXECUTABLE_OUTPUT_PATH}/SDLtestStressThread "kill")
 
 ADD_EXECUTABLE(SDLtestMutex SDLtestMutex.cc)
 ADD_DEPENDENCIES(SDLtestMutex SDLut)

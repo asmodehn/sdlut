@@ -31,10 +31,11 @@ namespace RAGE
 			return status;
 		}
 		
-		void killThread(SDL_Thread * sdlt)
-		{
-			SDL_KillThread(sdlt);
-		}
+		//Not portable, doesnt work anymore, and shouldnt be used anyway
+		//void killThread(SDL_Thread * sdlt)
+		//{
+		//	SDL_KillThread(sdlt);
+		//}
 
 		
 	}

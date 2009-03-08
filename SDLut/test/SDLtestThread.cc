@@ -18,7 +18,7 @@ class ObjectWithThreadCall
 		testlog << nl << " --- Thread " << SDL::getCurrentThreadID() << "called. Counting from 0 to 20000 --- " << std::endl;
 		for (int i = 0; i < 20000; i++)
 		{
-			testlog << nl << "Iteration N°" << i << std::endl;
+			std::cout << "Iteration N°" << i << "\r";
 		}
 		return 0;
 	}

@@ -42,7 +42,8 @@ namespace RAGE
 			bool lock();
 			bool unlock();
 	};
-    }
-}
+
+    } // SDL
+}// RAGE
 
 #endif

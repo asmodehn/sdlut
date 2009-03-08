@@ -31,6 +31,8 @@ namespace RAGE
         *
         */
 
+//TODO : Make a NewThread without template to support callback on static and global functions. Same in newtimers.
+
 //TODO : Think of redesigning, maybe using exception to handle Thread wrapper errors ( different than underlying thread errors)
 //TODO : use a similar design for Timer
 
