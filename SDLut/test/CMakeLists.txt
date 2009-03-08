@@ -43,21 +43,31 @@ ADD_TEST(Test_App ${EXECUTABLE_OUTPUT_PATH}/SDLtestApp)
 
 ADD_EXECUTABLE(SDLtestDumbLoop SDLtestDumbLoop.cc)
 ADD_DEPENDENCIES(SDLtestDumbLoop SDLut)
-ADD_TEST(Test_App ${EXECUTABLE_OUTPUT_PATH}/SDLtestDumbLoop)
+ADD_TEST(Test_DumbLoop ${EXECUTABLE_OUTPUT_PATH}/SDLtestDumbLoop)
 
 ADD_EXECUTABLE(SDLtestTimer SDLtestTimer.cc)
 ADD_DEPENDENCIES(SDLtestTimer SDLut)
-ADD_TEST(Timing ${EXECUTABLE_OUTPUT_PATH}/SDLtestTimer)
+ADD_TEST(Timer ${EXECUTABLE_OUTPUT_PATH}/SDLtestTimer)
 
 ADD_EXECUTABLE(SDLtestStressTimer SDLtestStressTimer.cc)
 ADD_DEPENDENCIES(SDLtestStressTimer SDLut)
-ADD_TEST(Timing ${EXECUTABLE_OUTPUT_PATH}/SDLtestStressTimer)
+ADD_TEST(Stress_Timer ${EXECUTABLE_OUTPUT_PATH}/SDLtestStressTimer)
 
 ADD_EXECUTABLE(SDLtestThread SDLtestThread.cc)
 ADD_DEPENDENCIES(SDLtestThread SDLut)
-ADD_TEST(Timing ${EXECUTABLE_OUTPUT_PATH}/SDLtestThread)
-ADD_TEST(Timing ${EXECUTABLE_OUTPUT_PATH}/SDLtestThread "wait")
-ADD_TEST(Timing ${EXECUTABLE_OUTPUT_PATH}/SDLtestThread "kill")
+ADD_TEST(Thread ${EXECUTABLE_OUTPUT_PATH}/SDLtestThread)
+ADD_TEST(Thread_wait ${EXECUTABLE_OUTPUT_PATH}/SDLtestThread "wait")
+ADD_TEST(Thread_kill ${EXECUTABLE_OUTPUT_PATH}/SDLtestThread "kill")
+
+ADD_EXECUTABLE(SDLtestStressThread SDLtestStressThread.cc)
+ADD_DEPENDENCIES(SDLtestStressThread SDLut)
+ADD_TEST(Stress_Thread ${EXECUTABLE_OUTPUT_PATH}/SDLtestStressThread)
+ADD_TEST(Stress_Thread_wait ${EXECUTABLE_OUTPUT_PATH}/SDLtestStressThread "wait")
+ADD_TEST(Stress_Thread_kill ${EXECUTABLE_OUTPUT_PATH}/SDLtestStressThread "kill")
+
+ADD_EXECUTABLE(SDLtestMutex SDLtestMutex.cc)
+ADD_DEPENDENCIES(SDLtestMutex SDLut)
+ADD_TEST(Thread_Mutex ${EXECUTABLE_OUTPUT_PATH}/SDLtestMutex )
 
 ADD_EXECUTABLE(SDLtestVideo SDLtestVideo.cc)
 ADD_DEPENDENCIES(SDLtestVideo SDLut)
