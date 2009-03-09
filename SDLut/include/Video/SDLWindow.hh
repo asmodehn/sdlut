@@ -57,7 +57,7 @@ namespace RAGE
         protected:
 
             std::string _title, _iconname;
-            Color _background;
+            RGBColor _background;
 
             //here because Event are initialised along with video...
             EventManager pvm_eventmanager;
@@ -133,7 +133,7 @@ namespace RAGE
 
 
             void setEngine(Engine * engine);
-            void setBGColor(const Color & color)
+            void setBGColor(const RGBColor & color)
 			{
 				_background = color;
 			}
@@ -141,7 +141,7 @@ namespace RAGE
 			//fill the VideoSurface with the BGColor
 			void applyBGColor() const;
 
-            Color getBGColor ()
+            RGBColor getBGColor ()
             {
                 return _background;
             }

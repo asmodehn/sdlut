@@ -210,7 +210,7 @@ int main(int argc, char** argv)
 
     testlog << nl << " Creating the User Interface... " << std::endl;
  
-    App::getInstance().getWindow().setBGColor(Color (64,0,0));
+    App::getInstance().getWindow().setBGColor(RGBColor (64,0,0));
 
     MyGeneralHandler gh;
 	MyKeyboard kb;

@@ -59,7 +59,7 @@ namespace RAGE
         protected:
             static unsigned long _defaultflags;
 
-            Color _background;
+            RGBColor _background;
 
 
 

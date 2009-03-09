@@ -16,6 +16,8 @@
 //same for threads
 #include <SDL_thread.h>
 
+//useful aliases
+#define Color RGBColor
 
 //utils
 #include "Logger.hh"

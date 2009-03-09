@@ -35,7 +35,7 @@ namespace SDL
 			virtual bool isTTFImpl() const { return false; }
 			//Rendering
 			//bgc is used only if mode == shaded. Otherwise it s transparent
-			virtual std::auto_ptr<RGBSurface> render(const std::string & text,Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid ) const;
+			virtual std::auto_ptr<RGBSurface> render(const std::string & text,RGBColor c, RGBColor bgc = RGBColor(), Font::RenderMode mode = Font::Solid ) const;
 		
 	};
 }

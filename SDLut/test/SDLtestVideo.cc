@@ -53,7 +53,7 @@ int main(int argc, char** argv)
     
 	App::getInstance().setName ("RAGE::SDL test - Video");
 
-    App::getInstance().getWindow().setBGColor(Color (128,0,0));
+    App::getInstance().getWindow().setBGColor(RGBColor (128,0,0));
 	
 	//if argument we load the image in the test engine 
 	MyEngine * engine = NULL;

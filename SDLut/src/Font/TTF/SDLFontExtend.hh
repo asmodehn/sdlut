@@ -55,7 +55,7 @@ namespace SDL
 			Rect getSize(const std::string& text) const;
 
 			//The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-			std::auto_ptr<RGBSurface> render(const std::string& text, Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid) const;
+			std::auto_ptr<RGBSurface> render(const std::string& text, RGBColor c, RGBColor bgc = RGBColor(), Font::RenderMode mode = Font::Solid) const;
 	};
 
 

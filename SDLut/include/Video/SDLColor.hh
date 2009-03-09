@@ -124,9 +124,6 @@ namespace RAGE
 
 		};
 
-        //defining an alias. Could be usefull.
-#define Color RGBColor
-
         /**
          * \class Palette
          *

@@ -19,14 +19,14 @@ class Console
 	const Font _font;
 	short linesize;
 
-	Color _bgColor;
+	RGBColor _bgColor;
 
 	RGBSurface * surf;
 
 	std::string text;
 
 public :
-	Console(const Font & fnt = Font(),Color c = Color(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text("")
+	Console(const Font & fnt = Font(),RGBColor c = RGBColor(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text("")
 	{
 		//init();
 		//draw();
@@ -80,7 +80,7 @@ public :
 			{
 				if ((std::string)line != "")
 				{
-					std::auto_ptr<RGBSurface> textsurf = _font.render(line,Color(255,255,255),Font::Solid);
+					std::auto_ptr<RGBSurface> textsurf = _font.render(line,RGBColor(255,255,255),Font::Solid);
 					assert(textsurf.get());
 					surf->blit(*textsurf,Point (0,i * linesize));
 				}
@@ -145,7 +145,7 @@ public:
 		DefaultEngine::init(width,height);
 		console->init(width,height - 2 * DefaultEngine::_logo.getHeight());
 		consolePos.sety(DefaultEngine::_logo.getHeight());
-		HelpMsg = console->_font.render("Plz Use Keyboard To Write Text Down", Color(0xFF, 0xFF, 0xFF), Font::Shaded, Color(0, 0, 0));
+		HelpMsg = console->_font.render("Plz Use Keyboard To Write Text Down", RGBColor(0xFF, 0xFF, 0xFF), Font::Shaded, RGBColor(0, 0, 0));
 		return true;
 	}
 
@@ -195,7 +195,7 @@ int main(int argc, char** argv)
 
     testlog << nl << " Creating the User Interface... " << std::endl;
  
-    App::getInstance().getWindow().setBGColor(Color (64,0,0));
+    App::getInstance().getWindow().setBGColor(RGBColor (64,0,0));
 
     Font font;
     
