@@ -96,6 +96,39 @@
 #include "Math/SDLPoint.hh"
 #include "Math/SDLRect.hh"
 
+//Build platform useful definitions
+#if defined (__MINGW32__) && defined(SDLUT_BUILD)
+#define GCN_CORE_DECLSPEC __declspec(dllexport)
+
+#elif defined (__MINGW32__) && defined(SDLUT_EXTENSION_BUILD)
+#define GCN_EXTENSION_DECLSPEC __declspec(dllexport)
+#define GCN_CORE_DECLSPEC __declspec(dllimport)
+
+#elif defined (__MINGW32__) && defined(SDLUT_DLL_IMPORT)
+#define GCN_CORE_DECLSPEC __declspec(dllimport)
+#define GCN_EXTENSION_DECLSPEC __declspec(dllimport)
+
+#elif defined(_MSC_VER) && defined(SDLUT_BUILD)
+#define GCN_CORE_DECLSPEC _declspec(dllexport)
+
+#elif defined(_MSC_VER) && defined(SDLUT_EXTENSION_BUILD)
+#define GCN_CORE_DECLSPEC _declspec(dllimport)
+#define GCN_EXTENSION_DECLSPEC _declspec(dllexport)
+
+#endif
+
+#ifndef SDLUT_CORE_DECLSPEC
+#define SDLUT_CORE_DECLSPEC
+#endif
+
+#ifndef SDLUT_EXTENSION_DECLSPEC
+#define SDLUT_EXTENSION_DECLSPEC
+#endif
+
+#ifndef NULL
+#define NULL 0
+#endif
+
 //just a little usefull tip for mingw
 #ifdef __MINGW32__
 #ifdef main

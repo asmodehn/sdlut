@@ -235,11 +235,11 @@ namespace RAGE
 				#ifdef HAVE_SDLTTF
 					//Blit Global Msg
 					if (Loading_Global_Msg != "")
-						Screen->blit(*(Loading_Global_Msg_Font.render(Loading_Global_Msg,RGBColor(0,0,0), Font::Blended)), Point( ls_x + Progress_Bar_Infos.getx(), std::max(ls_y, ls_y + Progress_Bar_Infos.gety() - 40) ) );
+						Screen->blit(*(Loading_Global_Msg_Font.render(Loading_Global_Msg,RGBColor(0,0,0), Font::Blended )), Point( ls_x + Progress_Bar_Infos.getx(), std::max(ls_y, ls_y + Progress_Bar_Infos.gety() - 40) ) );
 
 					//Blit Specific Msg
 					if (Loading_Specific_Msg != "")
-						Screen->blit(*(Loading_Specific_Msg_Font.render(Loading_Specific_Msg,RGBColor(0,0,0), Font::Blended)), Point(ls_x + Progress_Bar_Infos.getx(), ls_y + Progress_Bar_Infos.gety() + Progress_Bar_Infos.geth()*2 ) );
+						Screen->blit(*(Loading_Specific_Msg_Font.render(Loading_Specific_Msg,RGBColor(0,0,0), Font::Blended )), Point(ls_x + Progress_Bar_Infos.getx(), ls_y + Progress_Bar_Infos.gety() + Progress_Bar_Infos.geth()*2 ) );
 				#endif //HAVE_SDLTTF
 
 					//progression bar

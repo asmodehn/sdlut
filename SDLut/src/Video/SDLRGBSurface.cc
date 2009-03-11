@@ -9,6 +9,8 @@ namespace RAGE
     {
 
        unsigned long RGBSurface::RGBFlags=SDL_SWSURFACE;
+	   void RGBSurface::resetFlags() { RGBFlags=SDL_SWSURFACE; }// back to default
+
 	   RWOps RGBSurface::defaultContent(_defaultImage,sizeof(_defaultImage));
 	   int RGBSurface::offset = defaultContent.tell();
 
@@ -552,6 +554,35 @@ namespace RAGE
 
             return res;
         }
+
+		bool RGBSurface::convert(PixelFormat pfmt, bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
+{
+            assert(_surf.get());
+            bool res;
+            std::auto_ptr<SDL_Surface> cvtsurf(0);
+            
+			unsigned long flags = RGBFlags;
+
+			SWSURFACE ? flags|= SDL_SWSURFACE : flags&= (~SDL_SWSURFACE);
+			HWSURFACE ? flags|= SDL_HWSURFACE : flags&= (~SDL_HWSURFACE);
+			SRCCOLORKEY ? flags|= SDL_SRCCOLORKEY : flags&= (~SDL_SRCCOLORKEY);
+			SRCALPHA ? flags|= SDL_SRCALPHA : flags&= (~SDL_SRCALPHA);
+			
+			cvtsurf.reset(SDL_ConvertSurface(_surf.get(),const_cast<SDL_PixelFormat *>( pfmt._pformat ),flags));
+
+            if (!cvtsurf.get())
+                res = false;
+            else
+            {
+                SDL_FreeSurface(_surf.release());
+                _surf=cvtsurf;
+                res = true;
+            }
+
+            return res;
+}
+
+
 
 		bool RGBSurface::flip(bool vertical, bool horizontal)
 		{

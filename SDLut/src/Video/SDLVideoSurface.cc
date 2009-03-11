@@ -232,25 +232,19 @@ namespace RAGE
     bool VideoSurface::update(Rect r)
     {
         fill(_background);
-        if (locked())
-            return false;//to prevent calling while locked
-        else
-            SDL_UpdateRect(_surf.get(), r.getx(), r.gety(), r.getw(), r.geth());
+        SDL_UpdateRect(_surf.get(), r.getx(), r.gety(), r.getw(), r.geth());
         return true;
     }
 
     bool VideoSurface::update(std::vector<Rect> rlist)
     {
         fill(_background);
-        if (locked())
-            return false;//to prevent calling while locked
-        else
-        {
-            SDL_Rect* list = new SDL_Rect[rlist.size()];
-            for (unsigned int i=0; i<rlist.size() ; i++)
-                list[i]=*(rlist[i]._rect);
-            SDL_UpdateRects(_surf.get(), rlist.size(), list);
-        }
+
+        SDL_Rect* list = new SDL_Rect[rlist.size()];
+        for (unsigned int i=0; i<rlist.size() ; i++)
+            list[i]=*(rlist[i]._rect);
+        SDL_UpdateRects(_surf.get(), rlist.size(), list);
+ 
         return true;
     }
 

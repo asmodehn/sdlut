@@ -12,7 +12,6 @@ namespace RAGE
         {
             if (SDL_MUSTLOCK(_surf))
             {
-                locks++;
                 return SDL_LockSurface(_surf.get()) == 0;
             }
             else
@@ -23,23 +22,21 @@ namespace RAGE
         {
             if (SDL_MUSTLOCK(_surf))
             {
-                if ( locks > 0 )
-                    locks--;
                 SDL_UnlockSurface(_surf.get());
             }
             return true;
         }
 
 	///Conversion Constructor
-	BaseSurface::BaseSurface(SDL_Surface * s) : _surf(s),locks(0)
+	BaseSurface::BaseSurface(SDL_Surface * s) : _surf(s)
 	{}
 	    
 	//Conversion Constructor with explicit ownership transfer as it s using an auto_ptr
-	BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) : _surf(s),locks(0)
+	BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) : _surf(s)
 	{}
 
         BaseSurface::BaseSurface(const BaseSurface & s) throw (std::logic_error)
-        try : _surf(0), locks(0)
+        try : _surf(0)
         {
 #ifdef DEBUG
             Log << nl << "BaseSurface::BaseSurface(" << &s << ") called...";
@@ -88,7 +85,7 @@ BaseSurface::~BaseSurface()
 }
 
         BaseSurface::BaseSurface(const BaseSurface & s ,unsigned long flags, PixelFormat pfmt) throw (std::logic_error)
-        try : _surf(0), locks(0)
+        try : _surf(0)
         {
 #ifdef DEBUG
             Log << nl << "BaseSurface::BaseSurface(const BaseSurface & s,unsigned long flags, PixelFormat pfmt) called...";

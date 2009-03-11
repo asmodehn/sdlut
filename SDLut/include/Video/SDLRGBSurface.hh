@@ -50,17 +50,6 @@ public :
 	RGBSurface( std::string filename )throw (std::logic_error);
 	RGBSurface( std::string filename, const RGBAColor & colorKey )throw (std::logic_error);
 	
-	/* DEPRECATED 
-	 *
-	 * USE FONT::RENDER FROM NOW ON
-	
-	//creates a surface from a text (solid or blended mode).
-	//RGBSurface ( const Font & font, std::string text, Color color, bool blended = false);
-	//creates a surface from a text (shaded mode).
-	//RGBSurface ( const Font & font, std::string text, Color color, RGBColor bgcolor);
-
-	 **/
-
 	//creates a surface from a RWOps containing a image.
 	RGBSurface (const RWOps & rwops)  throw (std::logic_error); //TODO : add optional format
 	//default constructor
@@ -76,10 +65,11 @@ public :
     RGBSurface(const BaseSurface & s ) throw (std::logic_error);
     RGBSurface& operator=(const BaseSurface& s);
 
-	//not sure if this is useful or not, but the default copy constructor has to be properly overloaded
-	//RGBSurface(const RGBSurface & s , bool cloning = false, bool toDisplay = true, bool alpha = false) throw (std::logic_error);
-
+	bool convert(PixelFormat pfmt, bool SWSURFACE = false, bool HWSURFACE = true, bool SRCCOLORKEY = false, bool SRCALPHA = false);
+	
 	static void setFlags(bool SWSURFACE = false, bool HWSURFACE = true, bool SRCCOLORKEY = false, bool SRCALPHA = false);
+	static void resetFlags(); // back to default
+		
 
 	//Destructor
 	~RGBSurface(){}

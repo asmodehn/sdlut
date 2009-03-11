@@ -83,21 +83,6 @@ namespace RAGE
             }
             //could be useless if exception handle is well coded in the heriting tree
 
-			
-
-            //TODO : delete this, already in SDL_Surface structure
-            //To manage locks
-            unsigned int locks;
-            inline bool locked(void)
-            {
-                return locks > 0;
-            }
-            inline bool unlocked(void)
-            {
-                return !locked();
-            }
-
-
         public: //useful else we can't access those functions outside of friend class (for example in GuiChan)
 
             ///This method return true if all is OK,or if it doesn't need being locked/unlocked.
@@ -105,7 +90,6 @@ namespace RAGE
             bool lock(void);
             bool unlock(void);
 
-		
             PixelColor getpixel(int x, int y);
             void setpixel(int x, int y, PixelColor pixel, unsigned char alpha = 255);
 
