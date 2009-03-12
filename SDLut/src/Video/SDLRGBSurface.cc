@@ -86,8 +86,10 @@ namespace RAGE
                 Log << "Unable to set " <<  width<<  " x " <<  height <<  " rgb surface : " ;
                 throw std::logic_error("SDL_CreateRGBSurface returns NULL");
             }
-            else
+            else if (width != 0 && height != 0)
+			{
                 fill(color);
+			}
 #ifdef DEBUG
 
             Log << nl << "RGBSurface::RGBSurface(" << color << ", " << width << ", " <<height << ", " << bpp << ") done.";
