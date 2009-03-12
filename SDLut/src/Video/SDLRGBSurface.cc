@@ -555,12 +555,17 @@ namespace RAGE
             return res;
         }
 
-		bool RGBSurface::convert(PixelFormat pfmt, bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
+		bool RGBSurface::convert(const PixelFormat & pfmt, bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
 {
             assert(_surf.get());
             bool res;
             std::auto_ptr<SDL_Surface> cvtsurf(0);
             
+
+			//For Debug displaying pixel format before conversion
+	
+			Log << nl << this->getPixelFormat();
+	
 			unsigned long flags = RGBFlags;
 
 			SWSURFACE ? flags|= SDL_SWSURFACE : flags&= (~SDL_SWSURFACE);
@@ -578,6 +583,10 @@ namespace RAGE
                 _surf=cvtsurf;
                 res = true;
             }
+
+			//For Debug displaying pixel format after conversion
+
+			Log << nl << this->getPixelFormat();
 
             return res;
 }

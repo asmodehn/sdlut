@@ -2,7 +2,7 @@
 #define SDL_PIXELFORMAT_HH
 
 #include "SDLColor.hh"
-
+#include "Logger.hh"
 //declaring SDL_type for late binding
 struct SDL_PixelFormat;
 
@@ -71,7 +71,7 @@ public: //necessary if we want to use getPixelFormat() accessor from the BaseSur
 	Palette * getPalette() const;
 
 	//display all detected informations about pixelformat
-	friend std::ostream & operator << (std::ostream & ostr, const PixelFormat & pformat);
+	friend Logger & operator << (Logger & ostr, const PixelFormat & pformat);
 
 	//methods for Color conversion :
 	PixelColor getValueFromRGB(const RGBColor& val) const ;

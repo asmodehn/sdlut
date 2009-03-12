@@ -65,7 +65,7 @@ public :
     RGBSurface(const BaseSurface & s ) throw (std::logic_error);
     RGBSurface& operator=(const BaseSurface& s);
 
-	bool convert(PixelFormat pfmt, bool SWSURFACE = false, bool HWSURFACE = true, bool SRCCOLORKEY = false, bool SRCALPHA = false);
+	bool convert(const PixelFormat & pfmt, bool SWSURFACE = false, bool HWSURFACE = true, bool SRCCOLORKEY = false, bool SRCALPHA = false);
 	
 	static void setFlags(bool SWSURFACE = false, bool HWSURFACE = true, bool SRCCOLORKEY = false, bool SRCALPHA = false);
 	static void resetFlags(); // back to default

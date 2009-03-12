@@ -14,8 +14,7 @@ namespace RAGE
             {
                 return SDL_LockSurface(_surf.get()) == 0;
             }
-            else
-                return true;
+            return true;
         }
 
         bool BaseSurface::unlock(void)
