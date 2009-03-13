@@ -9,7 +9,6 @@ namespace RAGE
     {
 
        unsigned long RGBSurface::RGBFlags=SDL_SWSURFACE;
-	   void RGBSurface::resetFlags() { RGBFlags=SDL_SWSURFACE; }// back to default
 
 	   RWOps RGBSurface::defaultContent(_defaultImage,sizeof(_defaultImage));
 	   int RGBSurface::offset = defaultContent.tell();
@@ -17,7 +16,7 @@ namespace RAGE
 	//Conversion Constructor
     	RGBSurface::RGBSurface(std::auto_ptr<SDL_Surface> s) : BaseSurface(s)
     	{
-	}
+		}
 	
         RGBSurface::RGBSurface(int width, int height, int bpp) throw (std::logic_error)
         try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
@@ -450,7 +449,7 @@ namespace RAGE
             return *this;
         }
 
-        void RGBSurface::setFlags(bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
+        void RGBSurface::resetFlags(bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
         {
             if ( SWSURFACE )
                 RGBFlags|= SDL_SWSURFACE;
@@ -589,6 +588,8 @@ namespace RAGE
 			//For Debug displaying pixel format after conversion
 
 			Log << nl << this->getPixelFormat();
+
+			Log << nl << std::hex << this->getpixel(1,1);
 
             return res;
 }

@@ -67,10 +67,7 @@ public :
 
 	bool convert(const PixelFormat & pfmt, bool SWSURFACE = false, bool HWSURFACE = true, bool SRCCOLORKEY = false, bool SRCALPHA = false);
 	
-	static void setFlags(bool SWSURFACE = false, bool HWSURFACE = true, bool SRCCOLORKEY = false, bool SRCALPHA = false);
-	static void resetFlags(); // back to default
-		
-
+	static void resetFlags(bool SWSURFACE = true, bool HWSURFACE = false, bool SRCCOLORKEY = false, bool SRCALPHA = false);
 	//Destructor
 	~RGBSurface(){}
 
