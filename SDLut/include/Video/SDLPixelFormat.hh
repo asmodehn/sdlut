@@ -68,7 +68,7 @@ public: //necessary if we want to use getPixelFormat() accessor from the BaseSur
 
 	PixelColor getColorKey() const;
 	int getAlpha() const;
-	Palette * getPalette() const;
+	Palette* getPalette() const;
 
 	//display all detected informations about pixelformat
 	friend Logger & operator << (Logger & ostr, const PixelFormat & pformat);

@@ -85,9 +85,9 @@ namespace RAGE
 	    {
 		    return _pformat->alpha;
 	    }
-	    Palette * PixelFormat::getPalette() const
+	    Palette* PixelFormat::getPalette() const
 	    {
-		    return new Palette(_pformat->palette);
+		    return &Palette(_pformat->palette);
 	    }
 
 	    
