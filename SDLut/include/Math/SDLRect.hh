@@ -61,23 +61,27 @@ public:
     unsigned int getw() const;
     unsigned int geth() const;
 
-	//Methods
-	//
+//Methods
 	//Return the bigger Rect contained in both Rects
 	Rect inf(const Rect & r);
 	//Return the shorter Rect containing the both Rects
 	Rect sup(const Rect & r);
 
-  //scalar operations
-		Rect& operator*=(unsigned int s);
-		Rect& operator/=(unsigned int s);
-		friend Rect operator*(unsigned int s, const Rect& u);
-		friend Rect operator*(const Rect& u, unsigned int s);
-		friend Rect operator/(const Rect& u, unsigned int s);
-		
-	//TODO growCenter, growCorner, rotate90, rotate180, rotate270
+	//move from (x,y) to (nx,ny) wo impacting w & h
+	void move(int nx, int ny);
 
-	//TODO tests operators :  != == <= < >= > (about size of the area only)
+
+ //scalar operations
+	Rect& operator*=(unsigned int s);
+	Rect& operator/=(unsigned int s);
+	friend Rect operator*(unsigned int s, const Rect& u);
+	friend Rect operator*(const Rect& u, unsigned int s);
+	friend Rect operator/(const Rect& u, unsigned int s);		
+		
+
+//TODO growCenter, growCorner, rotate90, rotate180, rotate270
+
+//TODO tests operators :  != == <= < >= > (about size of the area only)
 		bool operator==(const Rect & r);
 
 		bool operator!=(const Rect& r);

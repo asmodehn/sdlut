@@ -98,6 +98,12 @@ namespace RAGE
             return *this;
         }
 
+		void Rect::move(int nx, int ny)
+		{
+			_rect->x=(Sint16)(nx);
+			_rect->y=(Sint16)(ny);
+		}
+
 		bool Rect::operator==(const Rect & r)
 		{
 			return (Point::operator==(r)) && _rect->w == r.getw() && _rect->h == r.geth();

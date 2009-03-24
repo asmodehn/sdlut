@@ -62,7 +62,7 @@ namespace RAGE
 
 				//Methods
 
-			void translate(int x ,int y);
+			void translate(int w, int h); //translate from (x,y) to (x+w, y+w)			
 
 				Point& operator=(const Point&);
 

@@ -58,10 +58,10 @@ namespace RAGE
 	}
 
 	
-	void Point::translate(int x ,int y)
+	void Point::translate(int w ,int h)
 	{
-		_rect->x=(Sint16)(_rect->x + x);
-		_rect->y=(Sint16)(_rect->y + y);
+		_rect->x=(Sint16)(_rect->x + w);
+		_rect->y=(Sint16)(_rect->y + h);
 	}
 
 
