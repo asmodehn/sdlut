@@ -564,9 +564,9 @@ namespace RAGE
             
 
 			//For Debug displaying pixel format before conversion
-	
+#ifdef DEBUG
 			Log << nl << this->getPixelFormat();
-	
+#endif
 			unsigned long flags = RGBFlags;
 
 			SWSURFACE ? flags|= SDL_SWSURFACE : flags&= (~SDL_SWSURFACE);
@@ -586,11 +586,11 @@ namespace RAGE
             }
 
 			//For Debug displaying pixel format after conversion
-
+#ifdef DEBUG
 			Log << nl << this->getPixelFormat();
 
 			Log << nl << std::hex << this->getpixel(1,1);
-
+#endif
             return res;
 }
 
