@@ -8,27 +8,51 @@ namespace RAGE
     namespace SDL
     {
 
-       unsigned long RGBSurface::RGBFlags=SDL_SWSURFACE;
-
-	   RWOps RGBSurface::defaultContent(_defaultImage,sizeof(_defaultImage));
-	   int RGBSurface::offset = defaultContent.tell();
-
 	//Conversion Constructor
-    	RGBSurface::RGBSurface(std::auto_ptr<SDL_Surface> s) : BaseSurface(s)
+		RGBSurface::RGBSurface(SDL_Surface * s)
+		try : BaseSurface(s)
     	{
 		}
-	
-        RGBSurface::RGBSurface(int width, int height, int bpp) throw (std::logic_error)
-        try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
+		catch (std::exception &e)
+        {
+            Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
+            e.what() << nl << GetError() << std::endl;
+            //TODO : much more explicit error message...
+        }
+
+		RGBSurface::RGBSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error)
+		try : BaseSurface(s)
+    	{
+		}
+		catch (std::exception &e)
+        {
+            Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
+            e.what() << nl << GetError() << std::endl;
+            //TODO : much more explicit error message...
+        }
+
+
+        RGBSurface::RGBSurface(	int width, int height, int bpp,
+								bool hardware , bool colorkey ,bool alpha,
+								unsigned long r_mask , unsigned long g_mask , unsigned long b_mask , unsigned long a_mask
+								) throw (std::logic_error)
+        try : BaseSurface()
         {
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << width << ", " << height << ", " << bpp << ") called...";
 #endif
 
-            //std::cerr << "RGBSurface Constructor Called" << std::endl;
-            if (bpp == 0)
-                throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");
-            if(!initialized())
+			unsigned long flags(0);
+            if ( hardware )	{ flags|= SDL_HWSURFACE; flags&= (~SDL_SWSURFACE); }
+            else { flags&= (~SDL_HWSURFACE); flags|= SDL_SWSURFACE;	}
+            if ( colorkey ) flags|= SDL_SRCCOLORKEY;
+            else flags&= (~SDL_SRCCOLORKEY);
+            if ( alpha ) flags|= SDL_SRCALPHA;
+            else flags&= (~SDL_SRCALPHA);
+
+			bool surfok = set_SDL_Surface(SDL_CreateRGBSurface(flags, width, height, bpp, r_mask, g_mask, b_mask, a_mask));
+            if (bpp == 0) throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");
+            if(! surfok)
             {
                 std::stringstream ss;
                 ss << "Unable to set " <<  width<<  " x " <<  height <<  " rgb surface : ";
@@ -47,14 +71,15 @@ namespace RAGE
             //TODO : much more explicit error message...
         }
 
-        RGBSurface::RGBSurface(void* pixeldata, int depth, int pitch, int width, int height) throw (std::logic_error)
-        try : BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitch, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
+        RGBSurface::RGBSurface(	void* pixeldata, int depth, int pitch, int width, int height,
+								unsigned long r_mask , unsigned long g_mask, unsigned long b_mask , unsigned long a_mask
+								) throw (std::logic_error)
+        try : BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitch, r_mask, g_mask, b_mask, a_mask))
         {
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width << ", " <<height << ") called...";
 #endif
-            //std::cerr << "RGBSurface Constructor Called" << std::endl;
-            if(!initialized())
+			if(! initialized())
             {
                 Log << "Unable to set " << width<< " x " << height<< " rgb surface : ";
                 throw std::logic_error("SDL_CreateRGBSurface returns NULL");
@@ -71,327 +96,7 @@ namespace RAGE
             //TODO : much more explicit error message...
         }
 
-        RGBSurface::RGBSurface(const RGBAColor & color, int width, int height, int bpp )throw (std::logic_error)
-        try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
-        {
-#ifdef DEBUG
-            Log << nl << "RGBSurface::RGBSurface(" << color << ", " << width << ", " <<height << ", " << bpp << ") called...";
-#endif
-            //std::cerr << "RGBSurface Constructor Called" << std::endl;
-            if (bpp == 0)
-                throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");
-            if(!initialized())
-            {
-                Log << "Unable to set " <<  width<<  " x " <<  height <<  " rgb surface : " ;
-                throw std::logic_error("SDL_CreateRGBSurface returns NULL");
-            }
-            else if (width != 0 && height != 0)
-			{
-                fill(color);
-			}
-#ifdef DEBUG
-
-            Log << nl << "RGBSurface::RGBSurface(" << color << ", " << width << ", " <<height << ", " << bpp << ") done.";
-#endif
-
-        }
-        catch (std::exception &e)
-        {
-            Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
-            e.what() << nl << GetError() << std::endl ;
-            //TODO : much more explicit error message...
-        }
-
-		/*RGBSurface::RGBSurface( const RGBColor & color, int width , int height, int bpp )throw (std::logic_error)
-		try : BaseSurface(SDL_CreateRGBSurface(RGBFlags, width, height, bpp, r_default_mask, g_default_mask, b_default_mask, a_default_mask))
-        {
-#ifdef DEBUG
-            Log << nl << "RGBSurface::RGBSurface(" << color << ", " << width << ", " <<height << ", " << bpp << ") called...";
-#endif
-            //std::cerr << "RGBSurface Constructor Called" << std::endl;
-            if (bpp == 0)
-                throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");
-            if(!initialized())
-            {
-                Log << "Unable to set " <<  width<<  " x " <<  height <<  " rgb surface : " ;
-                throw std::logic_error("SDL_CreateRGBSurface returns NULL");
-            }
-            else
-                fill(color);
-#ifdef DEBUG
-
-            Log << nl << "RGBSurface::RGBSurface(" << color << ", " << width << ", " <<height << ", " << bpp << ") done.";
-#endif
-
-        }
-        catch (std::exception &e)
-        {
-            Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
-            e.what() << nl << GetError() << std::endl ;
-            //TODO : much more explicit error message...
-        }*/
-
-        RGBSurface::RGBSurface( std::string filename )throw (std::logic_error)
-	try :
-#ifdef HAVE_SDLIMAGE
-			BaseSurface(IMG_Load(filename.c_str()))
-#else
-			BaseSurface(SDL_LoadBMP(filename.c_str()))
-#endif
-        {
-
-#ifdef DEBUG
-            Log << nl << "RGBSurface::RGBSurface(" << filename<< ") called...";
-#endif
-
-            //std::cerr << "RGBSurface Constructor Called" << std::endl;
-            //TODO : support for other format than BMP with SDL_image
-            if(!initialized())
-            {
-                Log << nl << "Unable to set rgb surface from " << filename << std::endl;
-                throw std::logic_error(
-#ifdef HAVE_SDLIMAGE
-					"IMG_Load returns NULL");
-#else
-					"SDL_LoadBMP returns NULL");
-#endif
-            }
-
-#ifdef DEBUG
-            Log << nl << "RGBSurface::RGBSurface(" << filename<< ") done.";
-#endif
-
-        }
-        catch (std::exception &e)
-        {
-            Log << nl << "Exception catched in RGBSurface Constructor !!!"  << nl <<
-            e.what() << nl << GetError();
-            //TODO : much more explicit error message...
-        }
-
-        RGBSurface::RGBSurface( std::string filename, const RGBAColor & colorKey )throw (std::logic_error)
-        try :
-#ifdef HAVE_SDLIMAGE
-			BaseSurface(IMG_Load(filename.c_str()))
-#else
-			BaseSurface(SDL_LoadBMP(filename.c_str()))
-#endif
-        {
-#ifdef DEBUG
-            Log << nl << "RGBSurface::RGBSurface(" << filename << ", " << colorKey << ") called...";
-#endif
-            //std::cerr << "RGBSurface Constructor Called" << std::endl;
-            //TODO : support for other format than BMP with SDL_image
-            if(!initialized())
-            {
-                Log << nl << "Unable to set rgb surface from " << filename << std::endl;
-		throw std::logic_error(
-#ifdef HAVE_SDLIMAGE
-					"IMG_Load returns NULL");
-#else
-					"SDL_LoadBMP returns NULL");
-#endif
-            }
-            else
-                setColorKeyAndAlpha(colorKey);
-#ifdef DEBUG
-
-            Log << nl << "RGBSurface::RGBSurface(" << filename << ", " << colorKey << ") done.";
-#endif
-
-        }
-        catch (std::exception &e)
-        {
-            Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
-            e.what() << nl << GetError();
-            //TODO : much more explicit error message...
-        }
-
-
-	RGBSurface::RGBSurface (const RWOps & rwops) throw (std::logic_error)
-        try :
-#ifdef HAVE_SDLIMAGE
-			BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0))
-#else
-			BaseSurface(SDL_LoadBMP_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0))
-#endif
-        {
-#ifdef DEBUG
-            Log << nl << "RGBSurface::RGBSurface(RWOps) called...";
-#endif
-            //std::cerr << "RGBSurface Constructor Called" << std::endl;
-            //TODO : support for other format than BMP with SDL_image
-            if(!initialized())
-            {
-				Log << nl << "Error : Unable to set rgb surface from RWOps ";
-				
-#ifdef HAVE_SDLIMAGE
-			    throw std::logic_error("IMG_Load_RW returns NULL");
-#else
-	          throw std::logic_error("SDL_LoadBMP_RW returns NULL");
-#endif
-      
-            }
-
-			//We put back the RWOps read cursor at the beginning
-			offset = defaultContent.seek(0,RWOps::Set);
-
-#ifdef DEBUG
-
-            Log << nl << "RGBSurface::RGBSurface(RWOps) done.";
-#endif
-
-        }
-        catch (std::exception &e)
-        {
-            Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
-            e.what() << nl << GetError();
-            //TODO : much more explicit error message...
-        }
-
-	//default constructor
-	RGBSurface::RGBSurface () throw (std::logic_error)
-        try :
-#ifdef HAVE_SDLIMAGE
-			//BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(RWOps(_defaultImage,sizeof(_defaultImage)).get_pSDL()),0))
-		BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(defaultContent.get_pSDL()),0))
-#else
-		BaseSurface(SDL_LoadBMP_RW(const_cast<SDL_RWops*>(defaultContent.get_pSDL()),0))
-#endif
-        {
-#ifdef DEBUG
-            Log << nl << "RGBSurface::RGBSurface(RWOps) called...";
-#endif
-            //std::cerr << "RGBSurface Constructor Called" << std::endl;
-            //TODO : support for other format than BMP with SDL_image
-            if(!initialized())
-            {
-				Log << nl << "Error : Unable to set rgb surface from RWOps ";
-				
-#ifdef HAVE_SDLIMAGE
-			    throw std::logic_error("IMG_Load_RW returns NULL");
-#else
-	          throw std::logic_error("SDL_LoadBMP_RW returns NULL");
-#endif
-      
-            }
-
-			//We put back the RWOps read cursor at the beginning
-			offset = defaultContent.seek(0,RWOps::Set);
-
-#ifdef DEBUG
-
-            Log << nl << "RGBSurface::RGBSurface(RWOps) done.";
-#endif
-        }
-        catch (std::exception &e)
-        {
-            Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
-            e.what() << nl << GetError();
-            //TODO : much more explicit error message...
-        }
-
-
-//
-//	//creates a surface from a text (solid or blended mode).
-//		RGBSurface::RGBSurface ( const Font & font, std::string text, RGBColor color, bool blended)
-//			try : BaseSurface(font.render(text, color, blended? Font::Blended : Font::Solid ))
-//		{
-//			
-//#ifdef DEBUG
-//            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") called...";
-//#endif
-//            if(_surf == NULL)
-//            {
-//                throw std::logic_error("Unable to set rgb surface from " + text);
-//            }
-//#ifdef DEBUG
-//
-//            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") done.";
-//#endif
-//
-//        }
-//        catch (std::exception &e)
-//        {
-//            Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
-//            e.what() << nl << GetError();
-//            //TODO : much more explicit error message...
-//        };
-//
-//
-//	//creates a surface from a text (shaded mode).
-//		RGBSurface::RGBSurface ( const Font & font, std::string text, RGBColor color, RGBColor bgcolor)
-//		try : BaseSurface(font.render(text, color, Font::Shaded, bgcolor ))
-//		{
-//			
-//#ifdef DEBUG
-//            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") called...";
-//#endif
-//            if(_surf == NULL)
-//            {
-//                throw std::logic_error("Unable to set rgb surface from " + text);
-//            }
-//#ifdef DEBUG
-//
-//            Log << nl << "RGBSurface::RGBSurface(Font," << text << ", " << color << ") done.";
-//#endif
-//
-//        }
-//        catch (std::exception &e)
-//        {
-//            Log << nl << "Exception catched in RGBSurface Constructor !!!" << nl <<
-//            e.what() << nl << GetError();
-//            //TODO : much more explicit error message...
-//        };
-//
-
-
-        ////Copy Constructor ( doesn't copy the content of the surface)
-        ////and Clone (also copy the content of the surface)
-        //RGBSurface::RGBSurface(const RGBSurface & s , const PixelFormat& fmt, Uint32 flags, bool cloning) throw (std::logic_error)
-        //try : BaseSurface (  cloning ?
-        //    SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*fmt._pformat),flags) // copy to deal with const... maybe a const cast should be ok...
-        //    : SDL_CreateRGBSurface(flags, s.getWidth(), s.getHeight(), fmt.getBitsPerPixel(), fmt.getRmask(), fmt.getGmask(), fmt.getBmask(), fmt.getAmask())
-        //  )
-        //{
-        // //std::cerr << "RGBSurface Copy Called" << std::endl;
-        // const std::string errstr = cloning ? "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
-        //    if(_surf == NULL)
-        // {
-        //  Log << nl << "Unable to copy the RGBsurface @ " << &s << std::endl;
-        //        throw std::logic_error(errstr + " returns NULL");
-        //    }
-        //    else
-        //  Log << nl << "SDL_Surface created @ " <<  _surf << std::endl;
-        //}
-        //catch (std::exception &e)
-        //{
-        // Log << nl<< "Exception catched in RGBSurface Copy Constructor !!!"<< nl <<
-        //  e.what() << nl << GetError() << std::endl;
-        //};
-        //
-        //
-        //RGBSurface::RGBSurface(const RGBSurface & s , Uint32 flags, bool cloning) throw (std::logic_error)
-        //try : BaseSurface (  cloning ?
-        //    SDL_ConvertSurface(s._surf,new SDL_PixelFormat(*(s._surf->format)),flags) // copy to deal with const... maybe a const cast should be ok...
-        //    : SDL_CreateRGBSurface(flags, s.getWidth(), s.getHeight(), s._surf->format->BitsPerPixel, s._surf->format->Rmask, s._surf->format->Gmask, s._surf->format->Bmask, s._surf->format->Amask)
-        //  )
-        //{
-        // //std::cerr << "RGBSurface Copy Called" << std::endl;
-        // const std::string errstr = cloning ? "SDL_ConvertSurface" : "SDL_CreateRGBSurface";
-        //    if(_surf == NULL)
-        // {
-        //  Log << nl << "Unable to copy the RGBsurface @ "  << &s << std::endl;
-        //        throw std::logic_error(errstr + " returns NULL");
-        //    }
-        //    else
-        //  Log << nl << "SDL_Surface created @ " << _surf << std::endl;
-        //}
-        //catch (std::exception &e)
-        //{
-        // Log << nl << "Exception catched in RGBSurface Copy Constructor !!!" << nl <<
-        //  e.what() << nl << GetError() << std::endl;
-        //};
+       
 
         RGBSurface::RGBSurface(const RGBSurface & s ) throw (std::logic_error)
         try : BaseSurface(s)
@@ -447,26 +152,6 @@ namespace RAGE
                 this->BaseSurface::operator=(s);
             }
             return *this;
-        }
-
-        void RGBSurface::resetFlags(bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
-        {
-            if ( SWSURFACE )
-                RGBFlags|= SDL_SWSURFACE;
-            else
-                RGBFlags&= (~SDL_SWSURFACE);
-            if ( HWSURFACE )
-                RGBFlags|= SDL_HWSURFACE;
-            else
-                RGBFlags&= (~SDL_HWSURFACE);
-            if ( SRCCOLORKEY )
-                RGBFlags|= SDL_SRCCOLORKEY;
-            else
-                RGBFlags&= (~SDL_SRCCOLORKEY);
-            if ( SRCALPHA )
-                RGBFlags|= SDL_SRCALPHA;
-            else
-                RGBFlags&= (~SDL_SRCALPHA);
         }
 
 		bool RGBSurface::setColorKeyAndAlpha(const RGBAColor & key, bool rleAccel)
@@ -530,12 +215,12 @@ namespace RAGE
 			return ( SDL_SRCALPHA & _surf->flags ) != 0;
 		}
 		
-        bool RGBSurface::optimise(bool alpha)
+        bool RGBSurface::convertToDisplayFormat()
         {
             assert(_surf.get());
             bool res;
             std::auto_ptr<SDL_Surface> optsurf(0);
-            if ( alpha )
+			if ( isSRCAlphaset() )
             {
                 optsurf.reset( SDL_DisplayFormatAlpha(_surf.get()) );
             }
@@ -555,45 +240,6 @@ namespace RAGE
 
             return res;
         }
-
-		bool RGBSurface::convert(const PixelFormat & pfmt, bool SWSURFACE, bool HWSURFACE, bool SRCCOLORKEY, bool SRCALPHA)
-{
-            assert(_surf.get());
-            bool res;
-            std::auto_ptr<SDL_Surface> cvtsurf(0);
-            
-
-			//For Debug displaying pixel format before conversion
-#ifdef DEBUG
-			Log << nl << this->getPixelFormat();
-#endif
-			unsigned long flags = RGBFlags;
-
-			SWSURFACE ? flags|= SDL_SWSURFACE : flags&= (~SDL_SWSURFACE);
-			HWSURFACE ? flags|= SDL_HWSURFACE : flags&= (~SDL_HWSURFACE);
-			SRCCOLORKEY ? flags|= SDL_SRCCOLORKEY : flags&= (~SDL_SRCCOLORKEY);
-			SRCALPHA ? flags|= SDL_SRCALPHA : flags&= (~SDL_SRCALPHA);
-			
-			cvtsurf.reset(SDL_ConvertSurface(_surf.get(),const_cast<SDL_PixelFormat *>( pfmt._pformat ),flags));
-
-            if (!cvtsurf.get())
-                res = false;
-            else
-            {
-                SDL_FreeSurface(_surf.release());
-                _surf=cvtsurf;
-                res = true;
-            }
-
-			//For Debug displaying pixel format after conversion
-#ifdef DEBUG
-			Log << nl << this->getPixelFormat();
-
-			Log << nl << std::hex << this->getpixel(1,1);
-#endif
-            return res;
-}
-
 
 
 		bool RGBSurface::flip(bool vertical, bool horizontal)
@@ -691,37 +337,10 @@ namespace RAGE
 //	return out;
 //}
 
-
-
-#ifdef HAVE_OPENGL
-		//bool RGBSurface::isGLvalid()
-		//{
-		//		//Not the good test - TO CORRECT
-		//		if (getWidth() >= 1 && getWidth() % 2 == 0 && getHeight() % 2 == 0 )
-		//		{
-		//			return true;
-		//		}
-		//		return false;
-		//}
-
-	//return a GL texture that you have to bind
-		GLuint RGBSurface::generateTexture()
+		RGBColor RGBSurface::getColorKey()
 		{
-			GLuint texture; //maybe keep that not to reload the texture each and everytime ??
-			//Create the texture
-			glGenTextures(1, &texture);
-			//Load the texture
-			glBindTexture(GL_TEXTURE_2D, texture);
-			//Generate the texture
-			#ifdef WIN32
-				glTexImage2D(GL_TEXTURE_2D, 0, 3, getWidth(),getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, _surf->pixels);
-			#else
-				glTexImage2D(GL_TEXTURE_2D, 0, 3, getWidth(),getHeight(), 0, GL_BGR, GL_UNSIGNED_BYTE, _surf->pixels);
-			#endif
-
-			return texture;
+			return getPixelFormat().getRGBValue(getPixelFormat().getColorKey());
 		}
-#endif
 
         /*
         int RGBSurface::update(void)

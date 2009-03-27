@@ -27,7 +27,7 @@ namespace RAGE
             virtual void render(VideoSurface & screen) const = 0;
 
 			//this is run just after the render, and refresh of the screen
-	    virtual void postrender(void) {}
+			virtual void postrender(void) {}
 
 			//to initialise the engine, just called once before any render
             virtual bool init(int width, int height) = 0;
@@ -44,7 +44,7 @@ namespace RAGE
 			protected:
 			//will be initialized in init
 			//might be better in a constructor actually...
-			RGBSurface _logo;
+				std::auto_ptr<RGBSurface> _logo;
 			//TODO : change to RGBSurface, used as reference where needed.
 
 			public:
@@ -69,7 +69,7 @@ namespace RAGE
 		protected:
 			//will be initialized in init
 			//might be better in a constructor actually...
-			RGBSurface _logo;
+			std::auto_ptr<RGBSurface> _logo;
 			unsigned int _logotexture;
 			
 

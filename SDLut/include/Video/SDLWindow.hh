@@ -23,6 +23,7 @@
 #include "Video/SDLColor.hh"
 #ifdef HAVE_OPENGL
  #include "Video/SDLGLManager.hh"
+ #include "Video/SDLVideoGLSurface.hh"
 #endif //HAVE_OPENGL
 #include "System/SDLEventManager.hh"
 #ifdef HAVE_SDLTTF
@@ -35,7 +36,8 @@
 #define DEFAULT_DISPLAY_WIDTH 640
 #define DEFAULT_DISPLAY_HEIGHT 480
 #define DEFAULT_DISPLAY_BPP 0 //0 for current display pixel mode
-#define DEFAULT_WINDOW_TITLE "RAGE::SDL"
+#define DEFAULT_WINDOW_TITLE "SDLut Window"
+#define DEFAULT_ICON_TITLE "SDLut"
 
 namespace RAGE
 {
@@ -72,7 +74,7 @@ namespace RAGE
 #endif
 
             std::auto_ptr<VideoSurface> pvm_screen;
-		RGBSurface _icon;
+			std::auto_ptr<RGBSurface> _icon;
 
             Window(std::string title); // TODO :: add the icon here
 
@@ -154,7 +156,7 @@ namespace RAGE
 
         protected:
 
-            void setCaption(std::string title = DEFAULT_WINDOW_TITLE, std::string iconname = "");
+            void setCaption(std::string title = DEFAULT_WINDOW_TITLE, std::string iconname = DEFAULT_ICON_TITLE );
             //oldversion
             void getCaption(std::string & title, std::string & iconname);
 
@@ -224,6 +226,9 @@ namespace RAGE
 				 **/
 				void render(std::auto_ptr<VideoSurface>& Screen)
 				{
+				
+					assert(Loading_BG.get());
+
 					//get Screen usefull infos and use them to set positions
 					int ls_x = ( Screen->getWidth() - Loading_BG->getWidth() ) / 2;
 					int ls_y = ( Screen->getHeight() - Loading_BG->getHeight() ) / 2;
@@ -243,7 +248,9 @@ namespace RAGE
 				#endif //HAVE_SDLTTF
 
 					//progression bar
-					Screen->blit(RGBSurface(RGBAColor(225,0,0,200), Progress_Percent*Progress_Bar_Infos.getw()/100, Progress_Bar_Infos.geth(), sbpp ), Point( ls_x + Progress_Bar_Infos.getx(), ls_y + Progress_Bar_Infos.gety() ) );
+					RGBSurface progressbar( Progress_Percent*Progress_Bar_Infos.getw()/100, Progress_Bar_Infos.geth(), sbpp );
+					progressbar.fill(RGBAColor(225,0,0,200));
+					Screen->blit(progressbar, Point( ls_x + Progress_Bar_Infos.getx(), ls_y + Progress_Bar_Infos.gety() ) );
 
 					//Force screen to refresh and display the loading screen
 					Screen->refresh();

@@ -43,7 +43,6 @@ namespace RAGE
         {
             friend class Window;
 
-
         private:
             static const VideoInfo * _vinfo; ///a usefull static pointer, set to the current VideoInfo by AppWindow and reset to 0 on Window destruction
 
@@ -52,12 +51,12 @@ namespace RAGE
 			//Moved out of RGBSurface, because VideoSurface might need those sometime...
 			//SDL interprets each pixel as a 32-bit number, so our masks must depend
 			//on the endianness (byte order) of the machine */
-			#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+			#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
 				static const unsigned long r_default_mask = 0xff000000;
 				static const unsigned long g_default_mask = 0x00ff0000;
 				static const unsigned long b_default_mask = 0x0000ff00;
 				static const unsigned long a_default_mask = 0x000000ff;
-			#else
+			#else // SDL_BYTEORDER == SDL_LIL_ENDIAN
 				static const unsigned long r_default_mask = 0x000000ff;
 				static const unsigned long g_default_mask = 0x0000ff00;
 				static const unsigned long b_default_mask = 0x00ff0000;
@@ -90,18 +89,30 @@ namespace RAGE
             bool lock(void);
             bool unlock(void);
 
-            PixelColor getpixel(int x, int y);
-            void setpixel(int x, int y, PixelColor pixel, unsigned char alpha = 255);
+            RGBAColor getpixel(int x, int y);
+            void setpixel(int x, int y, RGBAColor pixel);
 
 		protected:
-            ///Conversion Constructor
-            explicit BaseSurface(SDL_Surface * s);
-	     ///< This one should be called only by subclasses
+			//Default Constructor overload
+			BaseSurface();
+			///< should be called only by subclasses
+
+            ///RAII Conversion Constructor
+			explicit BaseSurface(SDL_Surface * s) throw (std::logic_error) ;
+			///< should be called only by subclasses
 	    
-	    ///Conversion Constructor with explicit ownership transfer as it s using an auto_ptr
-	    explicit BaseSurface(std::auto_ptr<SDL_Surface> s);
-	     ///< This one should be called only by subclasses as well
-			    
+			///RAII Conversion Constructor with explicit ownership transfer as it s using an auto_ptr
+			explicit BaseSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error) ;
+			///< should be called only by subclasses
+			
+			///to assign a surface to a BaseSurface
+			bool set_SDL_Surface(SDL_Surface * s);
+			///< should be called only by subclasses
+
+			///to assign a surface to a BaseSurface
+			bool set_SDL_Surface(std::auto_ptr<SDL_Surface> s);
+			///< should be called only by subclasses
+
             /** \brief Copy constructor overload.
               */
             BaseSurface(const BaseSurface & s) throw (std::logic_error);
@@ -122,21 +133,22 @@ namespace RAGE
 
             ///Accessors
 
+		protected:
 			//usefull to get the SDL structure without no risk of modifying it
-		SDL_Surface get_SDL() const;
+			SDL_Surface get_SDL() const;
 		
 			//usefull to get the SDL structure
-			//DEPRECATED : use get_rSDL instead to avoid accidental deletion
-		/*const SDL_Surface * get_pSDL() const
-		{
-			return _surf;
-		}*/
+			const SDL_Surface * get_pSDL() const
+			{
+				return _surf.get();
+			}
 
 		const SDL_Surface & get_rSDL() const
 		{
 			return *_surf; // Indirection of auto_ptr ???? -> TO INVESTIGATE....
 		}
 
+		public:
 			int getHeight(void) const;
 			int getWidth(void) const;
 
@@ -153,6 +165,8 @@ namespace RAGE
 			bool isPreAllocset(void) const;
 
 			//if not NULL, contains the raw pixel data for the surface
+			//shouldnt be public -> format problems, managed by pixel format
+			//TO FIX
 			void * getpixels(void) const;
 			
             ///Accessor to pixelFormat

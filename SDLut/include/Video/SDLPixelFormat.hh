@@ -10,9 +10,6 @@ namespace RAGE
 {
     namespace SDL {
 
-//to store pixel colors
-typedef unsigned long PixelColor;
-
 class PixelFormat
 {
 	//because SDLPixelColor needs to access actual SDL_PixelFormat
@@ -20,6 +17,7 @@ class PixelFormat
 	friend class VideoSurface;
 	friend class RGBSurface;
 	friend class BaseSurface;
+	friend class SurfaceLoader;
 
 	bool pointerCopy;
 

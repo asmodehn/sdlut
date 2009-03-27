@@ -40,6 +40,9 @@ namespace RAGE
     namespace SDL
     {
 
+//to store pixel colors
+typedef unsigned long PixelColor;
+
         //TODO : Color constructor with string ("black", "yellow", "grey", etc. )
         //TODO : Color operator, like + - = etc. (like a vector)
         class RGBColor
@@ -75,6 +78,9 @@ namespace RAGE
 		unsigned char getR() const;
 		unsigned char getG() const;
 		unsigned char getB() const;
+
+		bool operator==(const RGBColor& color) const;
+        bool operator!=(const RGBColor& color) const;
 
             inline friend std::ostream& operator << (std::ostream& os, const RGBColor& c)
             {
@@ -121,6 +127,9 @@ namespace RAGE
         
 		bool operator==(const RGBAColor& color) const;
         bool operator!=(const RGBAColor& color) const;
+
+		//return a pixel color formatted as RGBA, in that order, always...
+		PixelColor getGLPixelColor();
 
 		};
 

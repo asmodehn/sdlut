@@ -1,6 +1,10 @@
 namespace RAGE {
 	namespace SDL{
 
+//TODO : default Image -> SDL Logo
+// but we also need an error image for silent error option if loading fails...
+
+
 #ifdef HAVE_SDLIMAGE_DISABLED_FEATURE
 			// The problem here is that if the libpng.dll is not available at run time the program will fail ( icon, etc.)
 			// And I am not aware of any way currently to prevent that.

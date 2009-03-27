@@ -1,5 +1,8 @@
 #include "Video/SDLWindow.hh"
 #include "System/SDLEventManager.hh"
+
+#include "Video/SDLSurfaceLoader.hh"
+
 #include "SDLConfig.hh"
 #include "SDLResources.inc"
 
@@ -39,8 +42,8 @@ namespace RAGE
 
         void Window::setIcon(const RGBSurface & icon)
         {
-	    _icon = icon;
-            SDL_WM_SetIcon( const_cast<SDL_Surface*>(&_icon.get_rSDL()) , NULL);
+			_icon.reset(new RGBSurface( icon ) );
+            SDL_WM_SetIcon( const_cast<SDL_Surface*>(&(_icon->get_rSDL())) , NULL);
         }
 
         //old version
@@ -208,7 +211,7 @@ namespace RAGE
 		 :	_title(title),
 			_background(Color(0,0,0)),
 			pvm_screen(0),
-			_icon ( RWOps( _defaultIcon, sizeof(_defaultIcon))),
+			_icon(0),
 			myLoadingScreen(NULL),
 			ShowingLoadingScreen(false),
 			m_exitMainLoop(false)
@@ -219,7 +222,13 @@ namespace RAGE
 
             try
             {
-		_engine = new DefaultEngine();
+				SurfaceLoader loader;
+				_icon = loader.load( RWOps( _defaultIcon, sizeof(_defaultIcon)) );
+				if ( ( _icon.get() == 0 ) || ( ! _icon->initialized() ) )
+				{
+					throw std::logic_error("Error initializing default Icon !");
+				}
+				_engine = new DefaultEngine();
                 _userengine=false;
             }
             catch (std::exception &e)
@@ -230,8 +239,8 @@ namespace RAGE
             //setting the static videoInfo to be used by all surfaces...
             BaseSurface::_vinfo = &pvm_videoinfo;
 
-            setCaption(_title,"DefaultIcon");
-	    SDL_WM_SetIcon( const_cast<SDL_Surface*>(&_icon.get_rSDL()) , NULL);
+			setCaption(_title );
+			SDL_WM_SetIcon( const_cast<SDL_Surface*>(&_icon->get_rSDL()) , NULL);
 
 #ifdef DEBUG
 
@@ -340,10 +349,17 @@ namespace RAGE
                 //create a new screen
                 try
                 {
-                        pvm_screen.reset(new VideoSurface(width, height, bpp));
-			_engine->init(width, height);
-                        applyBGColor();
-			res=true;
+					if ( isOpenGL() )
+					{
+						pvm_screen.reset(new VideoGLSurface(width, height, bpp));
+					}
+					else
+					{
+						pvm_screen.reset(new VideoSurface(width, height, bpp));
+					}
+					_engine->init(width, height);
+                    applyBGColor();
+					res=true;
                 }
                 catch(std::exception & e)
                 {
@@ -413,7 +429,9 @@ namespace RAGE
 			if (myLoadingScreen != NULL)
 				delete myLoadingScreen, myLoadingScreen = NULL;
 
-			myLoadingScreen = new LoadingScreen(std::auto_ptr<RGBSurface>(new RGBSurface(Loading_BG_Filename)), Loading_Global_Msg, Loading_Global_Msg_Font, Loading_Specific_Msg, Loading_Specific_Msg_Font, Progress_Bar_Infos );
+			SurfaceLoader loader;
+			std::auto_ptr<RGBSurface> surf_apt = loader.load(Loading_BG_Filename);
+			myLoadingScreen = new LoadingScreen(surf_apt, Loading_Global_Msg, Loading_Global_Msg_Font, Loading_Specific_Msg, Loading_Specific_Msg_Font, Progress_Bar_Infos );
 
 			myLoadingScreen->render(pvm_screen);
 

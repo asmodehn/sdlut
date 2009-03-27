@@ -14,7 +14,7 @@ namespace SDL
 	{
 
 		//this version keeps the right value for render
-		RGBSurface _fontsurf;
+		std::auto_ptr<RGBSurface> _fontsurf;
 
 		static std::map<char,Rect> alphalookup;
 		static std::map<char,Rect> InitAlphaLookup();

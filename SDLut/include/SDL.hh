@@ -47,6 +47,8 @@
 #include "Video/SDLWindow.hh"
 #include "Video/SDLVideoInfo.hh"
 #include "Video/SDLVideoSurface.hh"
+#include "Video/SDLRGBSurface.hh"
+#include "Video/SDLSurfaceLoader.hh"
 #include "Video/SDLGLManager.hh"
 #include "Video/SDLEngine.hh"
 #include "Video/SDLColor.hh"

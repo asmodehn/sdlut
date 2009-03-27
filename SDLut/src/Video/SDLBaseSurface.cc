@@ -26,13 +26,43 @@ namespace RAGE
             return true;
         }
 
+	BaseSurface::BaseSurface() throw (std::logic_error)
+	{
+	}
+	
+	bool BaseSurface::set_SDL_Surface(SDL_Surface * s)
+	{
+		bool res = (s != NULL);
+		if ( res )
+		{
+			SDL_FreeSurface(_surf.release());
+			_surf.reset(s);
+		}
+		return res;
+	}
+
+	bool BaseSurface::set_SDL_Surface(std::auto_ptr<SDL_Surface> s)
+	{
+		bool res = (s.get() != NULL);
+		if ( res )
+		{
+			SDL_FreeSurface(_surf.release());
+			_surf = s;
+		}
+		return res;	
+	}
+
 	///Conversion Constructor
-	BaseSurface::BaseSurface(SDL_Surface * s) : _surf(s)
-	{}
+	BaseSurface::BaseSurface(SDL_Surface * s) throw (std::logic_error) : _surf(s)
+	{
+		if (_surf.get() == 0 ) throw std::logic_error("Surface not initialised properly : SDL_Surface NULL pointer.");
+	}
 	    
 	//Conversion Constructor with explicit ownership transfer as it s using an auto_ptr
-	BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) : _surf(s)
-	{}
+	BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error) : _surf(s)
+	{
+		if (_surf.get() == 0 ) throw std::logic_error("Surface not initialised properly : SDL_Surface NULL pointer.");
+	}
 
         BaseSurface::BaseSurface(const BaseSurface & s) throw (std::logic_error)
         try : _surf(0)
@@ -41,9 +71,9 @@ namespace RAGE
             Log << nl << "BaseSurface::BaseSurface(" << &s << ") called...";
 #endif
 
-            _surf.reset(SDL_ConvertSurface(s._surf.get(),s._surf->format,s._surf->flags));
-	    const std::string errstr = "SDL_ConvertSurface";
-            if(_surf.get() == 0)
+			const std::string errstr = "SDL_ConvertSurface";
+			bool surfok = set_SDL_Surface(SDL_ConvertSurface(s._surf.get(),s._surf->format,s._surf->flags));
+            if( ! surfok)
             {
                 Log << nl << "Unable to copy the RGBsurface" ;
                 throw std::logic_error(errstr + " returns NULL");
@@ -63,11 +93,10 @@ BaseSurface& BaseSurface::operator=(const BaseSurface& s)
 {
     if (this != &s) // make sure not same object
     {
-	    SDL_FreeSurface(_surf.release());
-            _surf.reset(SDL_ConvertSurface(s._surf.get(),s._surf->format,s._surf->flags)); //deep copy...
-            if (_surf.get() == 0)
-	    {
-                Log << nl << "Unable to copy the BaseSurface : error in SDL_ConvertSurface -> " << GetError() ;
+	    bool surfok = set_SDL_Surface(SDL_ConvertSurface(s._surf.get(),s._surf->format,s._surf->flags)); //deep copy...
+        if (! surfok)
+		{
+			Log << nl << "Unable to copy the BaseSurface : error in SDL_ConvertSurface -> " << GetError() ;
 	    }
     }
     return *this;
@@ -90,10 +119,9 @@ BaseSurface::~BaseSurface()
             Log << nl << "BaseSurface::BaseSurface(const BaseSurface & s,unsigned long flags, PixelFormat pfmt) called...";
 #endif
 
-            _surf.reset(SDL_ConvertSurface(s._surf.get(),const_cast<SDL_PixelFormat *>(pfmt._pformat),flags)); //SDL shouldnt modify the pixel format at all
-
             const std::string errstr = "SDL_ConvertSurface";
-            if(_surf.get() == 0)
+            bool surfok = set_SDL_Surface(SDL_ConvertSurface(s._surf.get(),const_cast<SDL_PixelFormat *>(pfmt._pformat),flags)); //SDL shouldnt modify the pixel format at all
+            if(! surfok)
             {
                 Log << nl << "Unable to copy the RGBsurface" ;
                 throw std::logic_error(errstr + " returns NULL");
@@ -161,7 +189,7 @@ BaseSurface::~BaseSurface()
 		return PixelFormat(_surf->format);
 	}
 
-        PixelColor BaseSurface::getpixel(int x, int y)
+        RGBAColor BaseSurface::getpixel(int x, int y)
         {
             lock();
             /* Here p is the address to the pixel we want to retrieve */
@@ -193,15 +221,16 @@ BaseSurface::~BaseSurface()
 				break;
             }
             unlock();
-            return pixel;
+            return getPixelFormat().getRGBAValue(pixel);
         }
 
-        void BaseSurface::setpixel(int x, int y, PixelColor pixel, unsigned char alpha)
+        void BaseSurface::setpixel(int x, int y, RGBAColor pixelcolor)
         {
             lock();
             /* Here p is the address to the pixel we want to set */
             Uint8 *p = (Uint8 *)_surf->pixels + y * _surf->pitch + x * _surf->format->BytesPerPixel;
-
+			int alpha= pixelcolor.getA();
+			PixelColor pixel = getPixelFormat().getValueFromRGBA(pixelcolor);
 			if ( alpha == 255 )
 			{
 				switch(_surf->format->BytesPerPixel)
@@ -314,11 +343,10 @@ Log << nl << "BaseSurface::fill (const PixelColor& color," << dest_rect << ") do
 Log << nl << "BaseSurface::blit (const BaseSurface& src," << dest_rect << ", " << src_rect << ") called...";
 #endif
             bool res=false;
-#ifdef DEBUG
+
             //to make sure the SDL surface is completely usable
             assert(_surf->format);
             assert(src._surf->format);
-#endif
 
             switch (SDL_BlitSurface(src._surf.get(), src_rect._rect , _surf.get(), dest_rect._rect))
             {

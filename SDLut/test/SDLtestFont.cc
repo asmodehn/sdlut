@@ -35,9 +35,9 @@ public :
 
 	bool init(int width, int height)
 	{
-		surf = new RGBSurface(_bgColor,width,height,8); //8 as magic number for minimum bpp.
+		surf = new RGBSurface(width,height,8); //8 as magic number for minimum bpp.
+		surf->fill(_bgColor);
 		if (surf == NULL) return false;
-		surf->optimise(); // Doesnt matter anyway we match the display one here.
 		return true;
 	}
 
@@ -143,8 +143,8 @@ public:
 	bool init(int width, int height)
 	{
 		DefaultEngine::init(width,height);
-		console->init(width,height - 2 * DefaultEngine::_logo.getHeight());
-		consolePos.sety(DefaultEngine::_logo.getHeight());
+		console->init(width,height - 2 * DefaultEngine::_logo->getHeight());
+		consolePos.sety(DefaultEngine::_logo->getHeight());
 		HelpMsg = console->_font.render("Plz Use Keyboard To Write Text Down", RGBColor(0xFF, 0xFF, 0xFF), Font::Shaded, RGBColor(0, 0, 0));
 		return true;
 	}
@@ -152,8 +152,8 @@ public:
 	bool resize(int width, int height)
 	{
 		DefaultEngine::resize(width,height);
-		console->resize(width,height - 2 * DefaultEngine::_logo.getHeight());
-		consolePos.sety(DefaultEngine::_logo.getHeight());
+		console->resize(width,height - 2 * DefaultEngine::_logo->getHeight());
+		consolePos.sety(DefaultEngine::_logo->getHeight());
 		return true;
 	}
 

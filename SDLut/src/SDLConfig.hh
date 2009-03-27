@@ -8,6 +8,9 @@
 //TODO : change all DEBUG here to RAGE_SDL_DEBUG and map it to DEBUG here.
 //find a way to manage debug level also... ( for logging stuff in tights loops )
 
+//TODO : make a macro to make it easier
+//TODO : make our own exception class (with a macro to make launching easier and clear )
+
 //Mandatory
 #include "CMakeConfig.hh"
 #include <SDL.h>

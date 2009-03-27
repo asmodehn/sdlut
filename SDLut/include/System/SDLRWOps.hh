@@ -59,7 +59,7 @@ namespace RAGE
 				return pvm_rwops.get();
 			}
 
-			typedef enum {Set, Cur, End}Seek;
+			enum Seek {Set, Cur, End};
 
 			int tell() const;
 			int seek(int offset,Seek start);

@@ -10,31 +10,34 @@ class MyEngine : public DefaultEngine
 
 public:
 
-	RGBSurface loadedimage;
+	std::auto_ptr<RGBSurface> loadedimage;
 	Point imagepos;
 
-	MyEngine( const std::string & imagefilename) : loadedimage(imagefilename,RGBAColor(0,0,0,200)),imagepos()
-	{}
+	MyEngine( const std::string & imagefilename) : imagepos()
+	{
+		SurfaceLoader loader;
+		loadedimage = loader.load(imagefilename,RGBAColor(0,0,0,200));
+	}
 
     virtual ~MyEngine(){}
 			
     bool init(int width, int height)
 	{
-		imagepos.setx( (width - loadedimage.getWidth()) /2);
-		imagepos.sety( (height - loadedimage.getHeight()) /2);
+		imagepos.setx( (width - loadedimage->getWidth()) /2);
+		imagepos.sety( (height - loadedimage->getHeight()) /2);
 		return DefaultEngine::init(width,height);
 	}
 
 	bool resize(int width, int height)
 	{
-		imagepos.setx( (width - loadedimage.getWidth()) /2);
-		imagepos.sety( (height - loadedimage.getHeight()) /2);
+		imagepos.setx( (width - loadedimage->getWidth()) /2);
+		imagepos.sety( (height - loadedimage->getHeight()) /2);
 		return DefaultEngine::resize(width,height);
 	}
 
 	void render(VideoSurface & screen) const
     {
-		screen.blit(loadedimage, imagepos );
+		screen.blit(*loadedimage, imagepos );
 		DefaultEngine::render(screen);
     }
 };
