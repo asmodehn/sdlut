@@ -106,9 +106,7 @@ namespace RAGE
 		{
 			_color->r=rgbacolor.getR();
 			_color->g=rgbacolor.getG();
-			;
 			_color->b=rgbacolor.getB();
-			;
 			_color->unused=rgbacolor.getA();
 			return *this;
 		}

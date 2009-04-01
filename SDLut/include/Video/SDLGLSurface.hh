@@ -29,6 +29,9 @@ class GLSurface : public RGBSurface
 
 protected:
 
+	//to mark the texture as modified, if texture update needed before using it
+	bool modified;
+
 	unsigned int textureHandle;
 	int textureWidth;
 	int textureHeight;
@@ -37,6 +40,25 @@ protected:
 	unsigned int getTextureHandle();
 
 public : 
+
+	//Constructor
+	//BPP should NEVER be == 0 !!!!
+	GLSurface( int width, int height, int bpp,
+				bool alpha = false,
+				bool colorkey = false,
+				bool hardware = false,
+				unsigned long r_mask = r_default_mask,
+				unsigned long g_mask = g_default_mask,
+				unsigned long b_mask = b_default_mask,
+				unsigned long a_mask = a_default_mask
+				) throw (std::logic_error);
+
+	GLSurface( void * pixeldata, int depth, int pitch, int width, int height,
+				unsigned long r_mask = r_default_mask,
+				unsigned long g_mask = g_default_mask,
+				unsigned long b_mask = b_default_mask,
+				unsigned long a_mask = a_default_mask
+				) throw (std::logic_error);
 
 	virtual ~GLSurface();
 

@@ -144,6 +144,7 @@ namespace RAGE
             Uint8 r, g, b, a;
             //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
             SDL_GetRGBA(color, const_cast<SDL_PixelFormat*>(_pformat), &r, &g, &b, &a);
+			//BUG here : seems to ignore alpha ? ( found with SDLTestColor )
             return RGBAColor(r, g, b, a);
         }
     }

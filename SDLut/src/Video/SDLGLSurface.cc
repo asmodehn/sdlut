@@ -9,7 +9,7 @@ namespace RAGE
 
 //Conversion Constructor
 		GLSurface::GLSurface(SDL_Surface * s)
-		try : RGBSurface(s), textureWidth(0), textureHeight(0), texturePixels(NULL)
+		try : RGBSurface(s), textureWidth(0), textureHeight(0), texturePixels(NULL), modified(false)
     	{
 			computeGLWidthHeight();convertPixels();
 		}
@@ -21,7 +21,7 @@ namespace RAGE
         }
 
 		GLSurface::GLSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error)
-		try : RGBSurface(s), textureWidth(0), textureHeight(0), texturePixels(NULL)
+		try : RGBSurface(s), textureWidth(0), textureHeight(0), texturePixels(NULL), modified(false)
     	{
 			computeGLWidthHeight();convertPixels();
 		}
@@ -32,6 +32,39 @@ namespace RAGE
             //TODO : much more explicit error message...
         }
 
+		GLSurface::GLSurface( int width, int height, int bpp, bool alpha , bool colorkey , bool hardware, 
+				unsigned long r_mask ,
+				unsigned long g_mask ,
+				unsigned long b_mask ,
+				unsigned long a_mask 
+				) throw (std::logic_error)
+		try : RGBSurface(width, height, bpp, alpha, colorkey, hardware, r_mask, g_mask, b_mask, a_mask), modified(false)
+		{
+			computeGLWidthHeight();convertPixels();
+		}
+		catch (std::exception &e)
+		{
+			Log << nl << "Exception catched in GLSurface Constructor !!!"  << nl <<
+			e.what() << nl << GetError() << std::endl;
+			//TODO : much more explicit error message...
+		}
+
+		GLSurface::GLSurface( void * pixeldata, int depth, int pitch, int width, int height,
+				unsigned long r_mask ,
+				unsigned long g_mask ,
+				unsigned long b_mask ,
+				unsigned long a_mask 
+				) throw (std::logic_error)
+		try	: RGBSurface(pixeldata, depth, pitch, width, height, r_mask, g_mask, b_mask, a_mask), modified(false)
+		{
+			computeGLWidthHeight();convertPixels();
+		}
+		catch (std::exception &e)
+		{
+			Log << nl << "Exception catched in GLSurface Constructor !!!"  << nl <<
+			e.what() << nl << GetError() << std::endl;
+			//TODO : much more explicit error message...
+		}
 
 		void GLSurface::computeGLWidthHeight()
 		{
@@ -64,6 +97,7 @@ namespace RAGE
 					}
 					else
 					{
+						//filling with transparent 0s...
 						texturePixels[x + y * textureWidth] = 0x00000000;
 					}
 				}

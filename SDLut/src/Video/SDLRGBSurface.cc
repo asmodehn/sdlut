@@ -10,7 +10,7 @@ namespace RAGE
 
 	//Conversion Constructor
 		RGBSurface::RGBSurface(SDL_Surface * s)
-		try : BaseSurface(s)
+		try : BaseSurface(s), optimised(false)
     	{
 		}
 		catch (std::exception &e)
@@ -21,7 +21,7 @@ namespace RAGE
         }
 
 		RGBSurface::RGBSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error)
-		try : BaseSurface(s)
+		try : BaseSurface(s), optimised(false)
     	{
 		}
 		catch (std::exception &e)
@@ -33,10 +33,10 @@ namespace RAGE
 
 
         RGBSurface::RGBSurface(	int width, int height, int bpp,
-								bool hardware , bool colorkey ,bool alpha,
+								bool alpha, bool colorkey , bool hardware , 
 								unsigned long r_mask , unsigned long g_mask , unsigned long b_mask , unsigned long a_mask
 								) throw (std::logic_error)
-        try : BaseSurface()
+        try : BaseSurface(), optimised(false)
         {
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << width << ", " << height << ", " << bpp << ") called...";
@@ -52,6 +52,15 @@ namespace RAGE
 
 			bool surfok = set_SDL_Surface(SDL_CreateRGBSurface(flags, width, height, bpp, r_mask, g_mask, b_mask, a_mask));
             if (bpp == 0) throw std::logic_error("bpp should not be set to 0 for rgb surfaces !");
+			//
+			//if a_mask == 0 then SDL BUG !!
+			//workaround : 
+			//if ( alpha )
+			//{
+			//	SDL_SetAlpha(_surf.get(),flags,0);
+			//}
+			//
+
             if(! surfok)
             {
                 std::stringstream ss;
@@ -74,7 +83,7 @@ namespace RAGE
         RGBSurface::RGBSurface(	void* pixeldata, int depth, int pitch, int width, int height,
 								unsigned long r_mask , unsigned long g_mask, unsigned long b_mask , unsigned long a_mask
 								) throw (std::logic_error)
-        try : BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitch, r_mask, g_mask, b_mask, a_mask))
+        try : BaseSurface(SDL_CreateRGBSurfaceFrom(pixeldata, width, height, depth, pitch, r_mask, g_mask, b_mask, a_mask)), optimised(false)
         {
 #ifdef DEBUG
             Log << nl << "RGBSurface::RGBSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width << ", " <<height << ") called...";

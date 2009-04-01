@@ -213,8 +213,13 @@ BaseSurface::~BaseSurface()
 #endif
 					break;
                 case 4:
-                pixel= *(Uint32 *)p;
-				break;
+                //pixel= *(Uint32 *)p;
+#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+                    pixel= p[0] << 24 | p[1] << 16 | p[2] << 8 | p[3];
+#else
+                    pixel= p[0] | p[1] << 8 | p[2] << 16 | p[3] << 24;
+#endif
+					break;
 
                 default:
                 pixel= 0;       /* shouldn't happen, but avoids warnings */
@@ -229,10 +234,10 @@ BaseSurface::~BaseSurface()
             lock();
             /* Here p is the address to the pixel we want to set */
             Uint8 *p = (Uint8 *)_surf->pixels + y * _surf->pitch + x * _surf->format->BytesPerPixel;
-			int alpha= pixelcolor.getA();
+			//int alpha= pixelcolor.getA();
 			PixelColor pixel = getPixelFormat().getValueFromRGBA(pixelcolor);
-			if ( alpha == 255 )
-			{
+			//if ( alpha == 255 )
+			//{
 				switch(_surf->format->BytesPerPixel)
 				{
 					case 1:
@@ -256,58 +261,69 @@ BaseSurface::~BaseSurface()
 						break;
 
 					case 4:
-						*(Uint32 *)p = (Uint32) pixel;
-						break;
-				}
-			}
-			else //If We Want To Set A Pixel With Alpha !
-			{
-				unsigned int r, g, b;
-				RGBColor color;
-				switch(_surf->format->BytesPerPixel)
-				{
-					case 1:
-						*p = (Uint8) pixel;
-						break;
-
-					case 2:
-						r = ((pixel & _surf->format->Rmask) * alpha + (*(Uint32 *)p & _surf->format->Rmask) * (255 - alpha)) >> 8;
-						g = ((pixel & _surf->format->Gmask) * alpha + (*(Uint32 *)p & _surf->format->Gmask) * (255 - alpha)) >> 8;
-						b = ((pixel & _surf->format->Bmask) * alpha + (*(Uint32 *)p & _surf->format->Bmask) * (255 - alpha)) >> 8;
-
-						*(Uint16 *)p = ( (unsigned short)( (r & _surf->format->Rmask) | (g & _surf->format->Gmask) | (b & _surf->format->Bmask) ) );
-						break;
-
-					case 3:
-						color = ((PixelFormat*)(_surf->format))->getRGBValue(pixel);
+						//*(Uint32 *)p = (Uint32) pixel;
 						#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-							r = (p[0] * (255 - alpha) + color.getR() * alpha) >> 8;
-							g = (p[1] * (255 - alpha) + color.getG() * alpha) >> 8;
-							b = (p[2] * (255 - alpha) + color.getB() * alpha) >> 8;
-
-							p[2] = b;
-							p[1] = g;
-							p[0] = r;
+							p[0] = (Uint8) (pixel >> 24) & 0xff;
+							p[1] = (Uint8) (pixel >> 16) & 0xff;
+							p[2] = (Uint8) (pixel >> 8) & 0xff;
+							p[3] = (Uint8) pixel & 0xff;
 						#else
-							r = (p[2] * (255 - alpha) + color.getR() * alpha) >> 8;
-							g = (p[1] * (255 - alpha) + color.getG() * alpha) >> 8;
-							b = (p[0] * (255 - alpha) + color.getB() * alpha) >> 8;
-
-							p[0] = b;
-							p[1] = g;
-							p[2] = r;
+							p[0] = (Uint8) pixel & 0xff;
+							p[1] = (Uint8) (pixel >> 8) & 0xff;
+							p[2] = (Uint8) (pixel >> 16) & 0xff;
+							p[3] = (Uint8) (pixel >> 24) & 0xff;
 						#endif
 						break;
-
-					case 4:
-						r = ((pixel & 0xff) * alpha + (*(Uint32 *)p & 0xff) * (255 - alpha)) >> 8;
-						g = ((pixel & 0xff00) * alpha + (*(Uint32 *)p & 0xff00) * (255 - alpha)) >> 8;
-						b = ((pixel & 0xff0000) * alpha + (*(Uint32 *)p & 0xff0000) * (255 - alpha)) >> 8;
-
-						*(Uint32 *)p = ( (r & 0xff) | (g & 0xff00) | (b & 0xff0000) );
-						break;
 				}
-			}
+			//}
+			//else //If We Want To Set A Pixel With Alpha !
+			//{
+			//	unsigned int r, g, b;
+			//	RGBColor color;
+			//	switch(_surf->format->BytesPerPixel)
+			//	{
+			//		case 1:
+			//			*p = (Uint8) pixel;
+			//			break;
+
+			//		case 2:
+			//			r = ((pixel & _surf->format->Rmask) * alpha + (*(Uint32 *)p & _surf->format->Rmask) * (256 - alpha)) >> 8;
+			//			g = ((pixel & _surf->format->Gmask) * alpha + (*(Uint32 *)p & _surf->format->Gmask) * (256 - alpha)) >> 8;
+			//			b = ((pixel & _surf->format->Bmask) * alpha + (*(Uint32 *)p & _surf->format->Bmask) * (256 - alpha)) >> 8;
+
+			//			*(Uint16 *)p = ( (unsigned short)( (r & _surf->format->Rmask) | (g & _surf->format->Gmask) | (b & _surf->format->Bmask) ) );
+			//			break;
+
+			//		case 3:
+			//			color = ((PixelFormat*)(_surf->format))->getRGBValue(pixel);
+			//			#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+			//				r = (p[0] * (256 - alpha) + color.getR() * alpha) >> 8;
+			//				g = (p[1] * (256 - alpha) + color.getG() * alpha) >> 8;
+			//				b = (p[2] * (256 - alpha) + color.getB() * alpha) >> 8;
+
+			//				p[2] = b;
+			//				p[1] = g;
+			//				p[0] = r;
+			//			#else
+			//				r = (p[2] * (256 - alpha) + color.getR() * alpha) >> 8;
+			//				g = (p[1] * (256 - alpha) + color.getG() * alpha) >> 8;
+			//				b = (p[0] * (256 - alpha) + color.getB() * alpha) >> 8;
+
+			//				p[0] = b;
+			//				p[1] = g;
+			//				p[2] = r;
+			//			#endif
+			//			break;
+
+			//		case 4:
+			//			r = ((pixel & 0xff) * alpha + (*(Uint32 *)p & 0xff) * (256 - alpha)) >> 8;
+			//			g = ((pixel & 0xff00) * alpha + (*(Uint32 *)p & 0xff00) * (256 - alpha)) >> 8;
+			//			b = ((pixel & 0xff0000) * alpha + (*(Uint32 *)p & 0xff0000) * (256 - alpha)) >> 8;
+
+			//			*(Uint32 *)p = ( (r & 0xff) | (g & 0xff00) | (b & 0xff0000) );
+			//			break;
+			//	}
+			//}
             unlock();
         }
 

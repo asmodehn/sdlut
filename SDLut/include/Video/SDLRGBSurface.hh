@@ -24,6 +24,10 @@ class RGBSurface : public BaseSurface
 	friend class SurfaceLoader;
 
 protected:
+
+	//set to true if the convert to Display format function has been called for this surface.
+	bool optimised;
+
 	///Conversion Constructor
     	explicit RGBSurface(SDL_Surface * s); ///< This one should be called only by friends
 
@@ -35,20 +39,20 @@ public :
 	//Constructor
 	//BPP should NEVER be == 0 !!!!
 	RGBSurface( int width, int height, int bpp,
-				bool hardware = false,
-				bool colorkey = false,
 				bool alpha = false,
-				unsigned long r_mask = 0,
-				unsigned long g_mask = 0,
-				unsigned long b_mask = 0,
-				unsigned long a_mask = 0
+				bool colorkey = false,
+				bool hardware = false,
+				unsigned long r_mask = r_default_mask,
+				unsigned long g_mask = g_default_mask,
+				unsigned long b_mask = b_default_mask,
+				unsigned long a_mask = a_default_mask
 				) throw (std::logic_error);
 
 	RGBSurface( void * pixeldata, int depth, int pitch, int width, int height,
-				unsigned long r_mask = 0,
-				unsigned long g_mask = 0,
-				unsigned long b_mask = 0,
-				unsigned long a_mask = 0
+				unsigned long r_mask = r_default_mask,
+				unsigned long g_mask = g_default_mask,
+				unsigned long b_mask = b_default_mask,
+				unsigned long a_mask = a_default_mask
 				) throw (std::logic_error);
 
 public :
