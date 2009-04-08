@@ -37,7 +37,7 @@ public:
 		Log << nl << "Green Pixel : " << std::hex << green->getpixel(0,0);
 		Log << nl << "Blue Pixel : " << std::hex << blue->getpixel(0,0);
 		alpha->setpixel(0,0,RGBAColor(255,255,255,0));
-		Log << nl << "Alpha Pixel : " << std::hex << alpha->getpixel(0,0); //BUG HERE: alpha value is always gotten at FF
+		Log << nl << "Alpha Pixel : " << std::hex << alpha->getpixel(0,0);
 
 		return DefaultEngine::init(width,height);
 	}
@@ -67,7 +67,6 @@ public:
 		screen.blit(*green,Point(0 + red->getWidth(),0));
 		screen.blit(*blue,Point(0 + red->getWidth() + green->getWidth(), 0));
 		screen.blit(*alpha,Point(0 + red->getWidth() + green->getWidth() + blue->getWidth(), 0));
-		//BUG HERE: no merge w the BGColor even if there is a alpha on this color
 		return DefaultEngine::render(screen);
     }
 

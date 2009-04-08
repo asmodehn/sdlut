@@ -126,6 +126,9 @@ namespace RAGE
 	    ///<usefull accessor for children only
 	    unsigned long getFlags(void) const;
 
+		///<protected because parameter const differs between derivates
+		bool blit(const BaseSurface& src, Rect& dest_rect, const Rect& src_rect );
+
         public:
 
             /// Virtual Destructor
@@ -208,27 +211,9 @@ namespace RAGE
             {
                 return fill(getPixelFormat().getValueFromRGBA(color), dest_rect);
             }
-            bool fill (const PixelColor& color, Rect dest_rect);
+            virtual bool fill (const PixelColor& color, Rect dest_rect);
 
-            //Blit src surface on this surface
-            inline bool blit (const BaseSurface& src, const Point& dest_pos=Point())
-            {
-                Rect dest_rect(dest_pos);
-                return blit(src, dest_rect);
-            }
-            inline bool blit (const BaseSurface& src, const Point& dest_pos, const Rect& src_rect)
-            {
-                Rect dest_rect(dest_pos);
-                return blit(src, dest_rect, src_rect);
-            }
-            //Beware ! The final blitting rectangle is saved in dest_rect.
-            inline bool blit (const BaseSurface& src, Rect& dest_rect)
-            {
-                Rect src_rect(src.getWidth(), src.getHeight());
-                return blit(src, dest_rect, src_rect);
-            }
-            //Blit src into the current surface.
-            bool blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect);
+
 
 	bool resize(const Rect & r)
 	{

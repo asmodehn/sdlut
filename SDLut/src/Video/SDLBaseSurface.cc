@@ -353,7 +353,7 @@ Log << nl << "BaseSurface::fill (const PixelColor& color," << dest_rect << ") do
             return res == 0;
         }
 
-        bool BaseSurface::blit(const BaseSurface& src, Rect& dest_rect, const Rect& src_rect )
+		 bool BaseSurface::blit(const BaseSurface& src, Rect& dest_rect, const Rect& src_rect )
         {
 #if (DEBUG == 2)
 Log << nl << "BaseSurface::blit (const BaseSurface& src," << dest_rect << ", " << src_rect << ") called...";
@@ -380,7 +380,6 @@ Log << nl << "BaseSurface::blit (const BaseSurface& src," << dest_rect << ", " <
 #endif
             return res;
         }
-
 
         //Set the clip rect
         void BaseSurface::setClipRect(const Rect& rect)

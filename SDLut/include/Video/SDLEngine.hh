@@ -6,6 +6,7 @@
  ******************************************************************************/
 
 #include "SDLRGBSurface.hh"
+#include "SDLGLSurface.hh"
 #include "SDLVideoSurface.hh"
 
 namespace RAGE
@@ -44,7 +45,8 @@ namespace RAGE
 			protected:
 			//will be initialized in init
 			//might be better in a constructor actually...
-				std::auto_ptr<RGBSurface> _logo;
+			std::auto_ptr<RGBSurface> _logo;
+				
 			//TODO : change to RGBSurface, used as reference where needed.
 
 			public:
@@ -62,35 +64,7 @@ namespace RAGE
             virtual bool resize(int width, int height);
 		};
 
-#ifdef HAVE_OPENGL
-		// Default GL Engine ( only used if no engine is defined )
-		class DefaultGLEngine : public Engine
-        {
-		protected:
-			//will be initialized in init
-			//might be better in a constructor actually...
-			std::auto_ptr<RGBSurface> _logo;
-			unsigned int _logotexture;
-			
 
-			public:
-
-				DefaultGLEngine();
-				virtual ~DefaultGLEngine();
-
-			//this is run just before the render
-			virtual void prerender(unsigned long deltaticks);
-
-			//this render function should not modify the engine
-            virtual void render(VideoSurface & screen) const;
-
-			//to initialise the engine, just called once before any render
-            virtual bool init(int width, int height);
-
-			//call everytime the display is resized
-            virtual bool resize(int width, int height);
-		};
-#endif //HAVE_OPENGL
 
 
     }

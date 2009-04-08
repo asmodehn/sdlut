@@ -228,6 +228,22 @@ namespace RAGE
 	    return (res && initialized());
     }
 
+		bool VideoSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect)
+	{
+#if (DEBUG == 2)
+Log << nl << "VideoSurface::blit (const RGBSurface& src," << dest_rect << ", " << src_rect << ") called...";
+#endif
+		if ( ! src.optimised )
+		{
+			src.convertToDisplayFormat();
+		}
+		bool res = BaseSurface::blit(src,dest_rect, src_rect);
+
+#if (DEBUG == 2)
+Log << nl << "VideoSurface::blit (const RGBSurface& src," << dest_rect << ", " << src_rect << ") done.";
+#endif
+		return res;
+	}
 
     bool VideoSurface::update(Rect r)
     {

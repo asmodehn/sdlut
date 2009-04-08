@@ -68,6 +68,10 @@ public :
 
 	bool convertToDisplayFormat();
 
+    bool fill (const PixelColor& color, Rect dest_rect);
+
+	bool blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect);
+
     friend Logger & operator << (Logger & ostr, const RGBSurface & surf);
 
 };

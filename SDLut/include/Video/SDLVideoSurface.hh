@@ -81,11 +81,32 @@ namespace RAGE
             //to flip the videosurface
             virtual bool refresh(void);
 
+			//Blit src surface on this surface
+			//Blit using non const surface, as the video surface might change the blitted src surface for optimisation, updates or other reasons...
+            inline bool blit (RGBSurface& src, const Point& dest_pos=Point())
+            {
+				//bydefault we blit the entire surface onto a surface of the same size
+				Rect dest_rect(dest_pos,src.getWidth(), src.getHeight());
+                return blit(src, dest_rect);
+            }
+            inline bool blit (RGBSurface& src, const Point& dest_pos, const Rect& src_rect)
+            {
+                Rect dest_rect(dest_pos,src_rect.getw(), src_rect.geth());
+                return blit(src, dest_rect, src_rect);
+            }
+            //Beware ! The final blitting rectangle is saved in dest_rect.
+            inline bool blit (RGBSurface& src, Rect& dest_rect)
+            {
+                Rect src_rect(src.getWidth(), src.getHeight());
+                return blit(src, dest_rect, src_rect);
+            }
+			//Blit src into the current surface.
+            virtual bool blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
+
             //Maybe in Window only ?
             bool update(Rect r);
             bool update(std::vector<Rect> rlist);
             //May be using a default value.. depending on what has to be done for GLWindow
-
 
 
             //those methods just changes the static flags used on display creation.

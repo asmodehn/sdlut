@@ -60,8 +60,6 @@ namespace RAGE
             RGBColor _background;
 
 
-
-
             //Constructor
             //Note : The user should not be able to set raw SDL flags manually.
             VideoGLSurface(int width, int height, int bpp) throw (std::logic_error);
@@ -73,7 +71,7 @@ namespace RAGE
             //this kind of surface shouldnt be deleted by hand. the raw SDL methods takes care of it
 
 			//Blit src into the current surface.
-            bool blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect);
+            bool blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
 
             //to resize the display
             virtual bool resize (int width, int height, bool keepcontent = false);

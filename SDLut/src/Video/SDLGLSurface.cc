@@ -38,7 +38,7 @@ namespace RAGE
 				unsigned long b_mask ,
 				unsigned long a_mask 
 				) throw (std::logic_error)
-		try : RGBSurface(width, height, bpp, alpha, colorkey, hardware, r_mask, g_mask, b_mask, a_mask), modified(false)
+		try : RGBSurface(width, height, bpp, alpha, colorkey, hardware, r_mask, g_mask, b_mask, a_mask),textureWidth(0), textureHeight(0), texturePixels(NULL), modified(false)
 		{
 			computeGLWidthHeight();convertPixels();
 		}
@@ -55,7 +55,7 @@ namespace RAGE
 				unsigned long b_mask ,
 				unsigned long a_mask 
 				) throw (std::logic_error)
-		try	: RGBSurface(pixeldata, depth, pitch, width, height, r_mask, g_mask, b_mask, a_mask), modified(false)
+		try	: RGBSurface(pixeldata, depth, pitch, width, height, r_mask, g_mask, b_mask, a_mask),textureWidth(0), textureHeight(0), texturePixels(NULL), modified(false)
 		{
 			computeGLWidthHeight();convertPixels();
 		}
@@ -77,6 +77,7 @@ namespace RAGE
 
 		void GLSurface::convertPixels()
 		{
+			if ( texturePixels != NULL ) delete texturePixels, texturePixels=NULL;
 			texturePixels = new unsigned int[ textureWidth * textureHeight ];
 			RGBAColor c;
 			for (int y = 0; y < textureHeight; y++)
@@ -121,6 +122,18 @@ namespace RAGE
 			return textureHeight;
 		}
 
+		bool GLSurface::fill (const PixelColor& color, Rect dest_rect)
+		{
+			modified = true;
+			return RGBSurface::fill(color, dest_rect);
+		}
+
+		bool GLSurface::blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect)
+		{
+			modified = true;
+			return RGBSurface::blit(src, dest_rect, src_rect);
+		}
+
 		bool GLSurface::convertToDisplayFormat()
 		{
 			if (texturePixels == NULL) return true; //already converted -> silently exit
@@ -149,6 +162,7 @@ namespace RAGE
 	            }
 				return false;
 			}
+			modified = false;//resseting modified flag to false. in memory texture is now updated.
 		return true;
 		}
 	

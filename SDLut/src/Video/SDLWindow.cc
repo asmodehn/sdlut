@@ -135,17 +135,6 @@ namespace RAGE
         {
             bool res = true;
 
-			if (val)
-			{
-				setEngine(new DefaultGLEngine());
-				_userengine=false;
-			}
-			else
-			{
-				setEngine(new DefaultEngine());
-				_userengine=false;
-			}
-
             if (!pvm_screen.get())
 			{
 				VideoSurface::setOpenGL(val);

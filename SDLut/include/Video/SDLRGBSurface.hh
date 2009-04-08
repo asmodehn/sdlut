@@ -23,6 +23,8 @@ class RGBSurface : public BaseSurface
 	//To be able to construct RGBSurface from Loader :
 	friend class SurfaceLoader;
 
+	friend class VideoSurface;
+
 protected:
 
 	//set to true if the convert to Display format function has been called for this surface.
@@ -87,6 +89,27 @@ public :
 	RGBColor getColorKey();
 
 	virtual bool convertToDisplayFormat();
+
+	            //Blit src surface on this surface
+            inline bool blit (const RGBSurface& src, const Point& dest_pos=Point())
+            {
+                Rect dest_rect(dest_pos,src.getWidth(), src.getHeight());
+                return blit(src, dest_rect);
+            }
+            inline bool blit (const RGBSurface& src, const Point& dest_pos, const Rect& src_rect)
+            {
+                Rect dest_rect(dest_pos,src_rect.getw(), src_rect.geth());
+                return blit(src, dest_rect, src_rect);
+            }
+            //Beware ! The final blitting rectangle is saved in dest_rect.
+            inline bool blit (const RGBSurface& src, Rect& dest_rect)
+            {
+                Rect src_rect(src.getWidth(), src.getHeight());
+                return blit(src, dest_rect, src_rect);
+            }
+            //Blit src into the current surface.
+            virtual bool blit (const RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
+
 
 	bool flip(bool vertical = true, bool horizontal = false);
 

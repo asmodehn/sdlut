@@ -100,19 +100,45 @@ namespace RAGE
     }
 
 
-	//Blit src into the current surface.
-		bool VideoGLSurface::blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect)
+		//Blit src into the current surface.
+		bool VideoGLSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect)
 		{
-#ifdef DEBUG
-			Log << nl << "VideoGLSurfac::blit() " ;
+#if (DEBUG == 2)
+			Log << nl << "VideoGLSurface::blit (const RGBSurface& src," << dest_rect << ", " << src_rect << ") called...";
 #endif
+			bool success = false;
+
 			try
 			{
 				//Test if src is a GLSurface
-				//TODO : design needs to make sure of this... somehow...
-				const GLSurface& glsrc = dynamic_cast<const GLSurface&>(src);
+				//TODO : if not a GL Surface -> find solution
+				//TODO : RGB / GL surface difference has to be hidden from client, but rendering speed should remain optimum...
+				GLSurface& glsrc = dynamic_cast<GLSurface&>(src);
 
+			//optimisation tricks
+			if ( glsrc.modified )
+			{
+				glsrc.computeGLWidthHeight();
+				glsrc.convertPixels();
+				glsrc.optimised = false; // to trigger regeneration of texture if needed
+			}
+			if ( ! glsrc.optimised )
+			{
+				//if not converted to display format already,
+				//or if the surface has changed since last blit, 
+				//then convert it now (optimisation)
+				//TODO : find a way to do that without impacting rendering speed...
+				glsrc.convertToDisplayFormat();
+			}
 	
+
+			//finding texture size in coord weight
+			float texx= static_cast<float>(src_rect.getx()) / glsrc.getTextureWidth();
+			float texy= static_cast<float>(src_rect.gety()) / glsrc.getTextureHeight();
+			float texw= static_cast<float>(src_rect.getw()) / glsrc.getTextureWidth();
+			float texh= static_cast<float>(src_rect.geth()) / glsrc.getTextureHeight();
+
+
 			//render it
 			//2D Rendering
 	
@@ -127,36 +153,55 @@ namespace RAGE
 			//Enable texturing
 			glEnable(GL_TEXTURE_2D);
 	
+
+			if( glsrc.isSRCAlphaset() || glsrc.isSRCColorKeyset())
+			{
+				glEnable(GL_BLEND);
+			}
+
 			//Load the texture
 			glBindTexture(GL_TEXTURE_2D, glsrc.textureHandle);
 	
 			glBegin( GL_QUADS ) ;
-				glTexCoord2i( 0,0) ;
-				glVertex2i( getWidth() - glsrc.getWidth() , getHeight()- glsrc.getHeight() ) ;
+				glTexCoord2f( texx,texy) ;
+				glVertex2i(dest_rect.getx(), dest_rect.gety() ) ;
 
-				glTexCoord2i( 0, 1) ;
-				glVertex2i( getWidth() - glsrc.getWidth() , getHeight()) ;
+				glTexCoord2f( texx, texy+texh) ;
+				glVertex2i(dest_rect.getx(), dest_rect.gety() + dest_rect.geth()) ;
 	
-				glTexCoord2i( 1, 1) ;
-				glVertex2i( getWidth() , getHeight()) ;
-				
-				glTexCoord2i( 1, 0) ;
-				glVertex2i( getWidth(), getHeight() - glsrc.getHeight() ) ;
+				glTexCoord2f( texx+texw, texy+texh) ;
+				glVertex2i(dest_rect.getx() + dest_rect.getw(), dest_rect.gety() + dest_rect.geth()) ;
+
+				glTexCoord2f( texx+texw, texy) ;
+				glVertex2i( dest_rect.getx() + dest_rect.getw(), dest_rect.gety()) ;
+
 			glEnd() ;
 
+
+			if( glsrc.isSRCAlphaset() || glsrc.isSRCColorKeyset())
+			{
+				glDisable(GL_BLEND);
+			}
 
 			//Disable texturing
 			glDisable(GL_TEXTURE_2D);
 			
+			success = true;
+
 			}
 			catch (std::bad_cast& bc)
 			{
 				//If not convert it
 				//TODO
-				Log << "bad_cast caught: " << bc.what() ;
+				//Log << "bad_cast caught: " << bc.what() ;
+				success = false;
 			}
 
-			return true;
+#if (DEBUG == 2)
+	Log << nl << "VideoGLSurface::blit (const RGBSurface& src," << dest_rect << ", " << src_rect << ") done.";
+#endif
+
+			return success;
 		}
 
     Logger & operator << (Logger & log, const VideoGLSurface & surf)

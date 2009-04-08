@@ -18,7 +18,7 @@ Logger Log("Test GL");
 #define M_PI  3.14159265358979323846
 #endif
 
-class MyEngine : public DefaultGLEngine
+class MyEngine : public DefaultEngine
 {
 
 	//GLint to store the gllist index for the logo
@@ -60,16 +60,14 @@ void setMaterial(GLenum mode,GLfloat *f,GLfloat alpha) const
 
 public:
 
-	MyEngine() : DefaultGLEngine()
+	MyEngine() : DefaultEngine()
 	{}
 
     virtual ~MyEngine(){}
 
 	bool init(int width, int height)
 	{
-		DefaultGLEngine::init(width,height);
-
-
+		DefaultEngine::init(width,height);
 
 	  //generate object list
 
@@ -106,13 +104,13 @@ public:
 	bool resize(int width, int height)
 	{
 
-		return DefaultGLEngine::resize(width,height);
+		return DefaultEngine::resize(width,height);
 		
 	}
 
 	void prerender(unsigned long deltaticks)
 	{
-		return DefaultGLEngine::prerender(deltaticks);
+		return DefaultEngine::prerender(deltaticks);
 		//TODO : keep the rotation speed constant even if the framerate drops...
 	}
 
@@ -167,12 +165,12 @@ public:
 		glDisable (GL_LIGHTING);
 
 		//Now drawing the SDL logo in 2D ( Ortho projection )
-		return DefaultGLEngine::render(screen);
+		return DefaultEngine::render(screen);
     }
 
 	void postrender()
 	{
-		return DefaultGLEngine::postrender();
+		return DefaultEngine::postrender();
 	}
 };
 
