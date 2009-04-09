@@ -149,15 +149,16 @@ namespace RAGE
 			glOrtho( 0, getWidth(), getHeight(), 0, 0, 1 ) ;
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
-	
-			//Enable texturing
-			glEnable(GL_TEXTURE_2D);
-	
 
 			if( glsrc.isSRCAlphaset() || glsrc.isSRCColorKeyset())
 			{
 				glEnable(GL_BLEND);
+				glEnable(GL_ALPHA_TEST);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			}
+				
+			//Enable texturing
+			glEnable(GL_TEXTURE_2D);
 
 			//Load the texture
 			glBindTexture(GL_TEXTURE_2D, glsrc.textureHandle);
@@ -180,6 +181,7 @@ namespace RAGE
 
 			if( glsrc.isSRCAlphaset() || glsrc.isSRCColorKeyset())
 			{
+				glDisable(GL_ALPHA_TEST);
 				glDisable(GL_BLEND);
 			}
 
