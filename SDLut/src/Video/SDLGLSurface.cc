@@ -128,7 +128,7 @@ namespace RAGE
 			return RGBSurface::fill(color, dest_rect);
 		}
 
-		bool GLSurface::blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect)
+		bool GLSurface::blit (const RGBSurface& src, Rect& dest_rect, const Rect& src_rect)
 		{
 			modified = true;
 			return RGBSurface::blit(src, dest_rect, src_rect);

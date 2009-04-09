@@ -3,7 +3,7 @@
 
 #include "Video/SDLColor.hh"
 #include "Math/SDLRect.hh"
-#include "Video/SDLRGBSurface.hh"
+#include "Video/SDLGLSurface.hh"
 
 #include <memory>
 
@@ -37,7 +37,7 @@ class FontImpl;
 	    
 class Font {
 
-	friend class RGBSurface; // to access render()
+	//friend class RGBSurface; // to access render()
 
 public:
 	typedef enum { Default, Normal, Bold, Italic, Underline} Style;

@@ -35,7 +35,7 @@ public :
 
 	bool init(int width, int height)
 	{
-		surf = new RGBSurface(width,height,8); //8 as magic number for minimum bpp.
+		surf = new GLSurface(width,height,8); //8 as magic number for minimum bpp.
 		surf->fill(_bgColor);
 		if (surf == NULL) return false;
 		return true;
@@ -164,13 +164,13 @@ public:
 
 	void render(VideoSurface & screen) const
     {
-		DefaultEngine::render(screen);
-
 		if (HelpMsg.get()) 
 			screen.blit( *HelpMsg, Point::Point(5, 5) );
 
 		if (console !=NULL)
 			screen.blit(*(console->surf),consolePos);
+
+		DefaultEngine::render(screen);
     }
 
 	void postrender()
@@ -186,11 +186,15 @@ int main(int argc, char** argv)
 
     Logger testlog("Test Log");
 
+	bool ogl = false;
+	if (argc > 1 && std::string(argv[1]) == "opengl" ) ogl = true;
+
+
     //Setup example
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
 	App::getInstance().setName ("RAGE::SDL test - Font");
-    App::getInstance().initVideo(false,false,false,false);
+    App::getInstance().initVideo(false,ogl,false,false);
 	App::getInstance().initText();
 
     testlog << nl << " Creating the User Interface... " << std::endl;
@@ -217,6 +221,8 @@ int main(int argc, char** argv)
 
 	//without this line the default engine is used
     App::getInstance().getWindow().setEngine(&engine);
+
+	
 
 
     if (! (App::getInstance().getWindow().resetDisplay(800,600)))

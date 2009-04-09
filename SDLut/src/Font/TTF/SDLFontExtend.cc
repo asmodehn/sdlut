@@ -1,5 +1,7 @@
 #include "SDLFontExtend.hh"
 
+#include "Video/SDLGLSurface.hh"
+
 #include "SDLConfig.hh"
 
 namespace RAGE
@@ -59,7 +61,7 @@ namespace SDL
 				default: surf.reset(TTF_RenderText_Solid(_ttfstruct,text.c_str(), c.get_SDL())); break;
 			}
 			//return surf;//beware : auto_ptr ownership transferred ;)
-			return std::auto_ptr<RGBSurface>(new RGBSurface(surf));
+			return std::auto_ptr<RGBSurface>(new GLSurface(surf));
 		}
 
 		//Attributes Access

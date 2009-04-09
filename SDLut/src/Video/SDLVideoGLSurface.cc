@@ -195,7 +195,7 @@ namespace RAGE
 			{
 				//If not convert it
 				//TODO
-				//Log << "bad_cast caught: " << bc.what() ;
+				Log << "bad_cast caught: " << bc.what() ;
 				success = false;
 			}
 

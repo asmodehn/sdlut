@@ -18,6 +18,8 @@ class GLSurface : public RGBSurface
 
 	friend class SurfaceLoader;
 
+	friend class FontExtend;
+
 	///Conversion Constructor
     	explicit GLSurface(SDL_Surface * s); ///< This one should be called only by friends
 
@@ -70,7 +72,7 @@ public :
 
     bool fill (const PixelColor& color, Rect dest_rect);
 
-	bool blit (const BaseSurface& src, Rect& dest_rect, const Rect& src_rect);
+	bool blit (const RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
 
     friend Logger & operator << (Logger & ostr, const RGBSurface & surf);
 
