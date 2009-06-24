@@ -1,5 +1,5 @@
 #include "Video/SDLGLSurface.hh"
-#include "SDLconfig.hh"
+#include "SDLConfig.hh"
 
 namespace RAGE 
 {
@@ -8,7 +8,7 @@ namespace RAGE
 
 
 //Conversion Constructor
-		GLSurface::GLSurface(SDL_Surface * s)
+		GLSurface::GLSurface(SDL_Surface * s) throw (std::logic_error)
 		try : RGBSurface(s), textureWidth(0), textureHeight(0), texturePixels(NULL), modified(false)
     	{
 			computeGLWidthHeight();convertPixels();

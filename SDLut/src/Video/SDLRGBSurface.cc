@@ -9,7 +9,7 @@ namespace RAGE
     {
 
 	//Conversion Constructor
-		RGBSurface::RGBSurface(SDL_Surface * s)
+		RGBSurface::RGBSurface(SDL_Surface * s) throw (std::logic_error)
 		try : BaseSurface(s), optimised(false)
     	{
 		}

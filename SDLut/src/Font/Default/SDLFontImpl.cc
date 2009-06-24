@@ -13,7 +13,8 @@ namespace RAGE
 		try: _fontsurf(0)
 		{
 			SurfaceLoader loader;
-			_fontsurf = loader.load( RWOps(_defaultFont,sizeof(_defaultFont)) );
+			RWOps _fontres (_defaultFont,sizeof(_defaultFont));  
+			_fontsurf = loader.load( _fontres );
 			if ( ( _fontsurf.get() == 0 ) || ( ! _fontsurf->initialized() ) )
 			{
 				throw std::logic_error("Error initializing default Font !");

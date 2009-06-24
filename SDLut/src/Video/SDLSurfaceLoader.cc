@@ -103,7 +103,7 @@ namespace RAGE
 	}
 
 
-	std::auto_ptr<RGBSurface> SurfaceLoader::load(std::string filename, const RGBAColor & colorKey, bool no_failure )
+	std::auto_ptr<RGBSurface> SurfaceLoader::load(std::string filename, const RGBAColor & colorKey, bool no_failure ) throw ( std::logic_error)
 	{
 		std::auto_ptr<RGBSurface> surf;
 		try {
@@ -140,7 +140,7 @@ namespace RAGE
 	}
 
 	//creates a surface from a RWOps containing a image.
-	std::auto_ptr<RGBSurface> SurfaceLoader::load(RWOps & rwops) //TODO : add optional format
+	std::auto_ptr<RGBSurface> SurfaceLoader::load(RWOps & rwops) throw(std::logic_error) //TODO : add optional format
 	{
         std::auto_ptr<RGBSurface> surf;
 		try {

@@ -21,10 +21,10 @@ class GLSurface : public RGBSurface
 	friend class FontExtend;
 
 	///Conversion Constructor
-    	explicit GLSurface(SDL_Surface * s); ///< This one should be called only by friends
+    	explicit GLSurface(SDL_Surface * s) throw (std::logic_error); ///< This one should be called only by friends
 
 	///Conversion Constructor with explicit ownership transfert
-    	explicit GLSurface(std::auto_ptr<SDL_Surface> s);
+    	explicit GLSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error);
 
 	void computeGLWidthHeight();
 	void convertPixels();

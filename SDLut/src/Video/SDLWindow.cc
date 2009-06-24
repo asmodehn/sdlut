@@ -212,7 +212,8 @@ namespace RAGE
             try
             {
 				SurfaceLoader loader;
-				_icon = loader.load( RWOps( _defaultIcon, sizeof(_defaultIcon)) );
+				RWOps _iconres = RWOps( _defaultIcon, sizeof(_defaultIcon));  
+				_icon = loader.load( _iconres );
 				if ( ( _icon.get() == 0 ) || ( ! _icon->initialized() ) )
 				{
 					throw std::logic_error("Error initializing default Icon !");

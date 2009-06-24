@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <map>
+#include <string>
 
 struct SDL_keysym;
 
@@ -25,7 +26,7 @@ namespace RAGE
 
         public:
 
-            typedef enum Modifier
+            enum Modifier
             {
                 Mod_None = 0,
                 Mod_LShift, Mod_RShift,
@@ -57,7 +58,7 @@ namespace RAGE
 			static std::string Modifier2str(Modifier m);
 			
             //TO BE CONTINUED
-            typedef enum Key
+            enum Key
             {
                 Key_Backspace = 1,
                 Key_Tab,

@@ -31,10 +31,10 @@ protected:
 	bool optimised;
 
 	///Conversion Constructor
-    	explicit RGBSurface(SDL_Surface * s); ///< This one should be called only by friends
+    	explicit RGBSurface(SDL_Surface * s) throw (std::logic_error); ///< This one should be called only by friends
 
 	///Conversion Constructor with explicit ownership transfert
-    	explicit RGBSurface(std::auto_ptr<SDL_Surface> s);
+    	explicit RGBSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error);
 
 public :
 				

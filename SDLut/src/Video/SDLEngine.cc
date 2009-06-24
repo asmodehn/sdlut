@@ -18,7 +18,8 @@ namespace RAGE
 			loader.resetOpengl(true);
 #endif
 			try{
-				_logo = loader.load( RWOps( _defaultImage,sizeof(_defaultImage) ) );
+				RWOps _iconres( _defaultImage,sizeof(_defaultImage) );  
+				_logo = loader.load( _iconres );
 			}
 			catch(std::exception &)
 			{

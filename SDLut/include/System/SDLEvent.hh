@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <map>
+#include <memory>
 
 union SDL_Event;
 

@@ -1,5 +1,6 @@
 #include "Video/SDLVideoGLSurface.hh"
 #include "SDLConfig.hh"
+#include <typeinfo> //for std::bad_cast
 //#include <sstream>
 
 namespace RAGE

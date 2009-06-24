@@ -94,7 +94,7 @@ namespace RAGE
 
 		protected:
 			//Default Constructor overload
-			BaseSurface();
+			BaseSurface() throw (std::logic_error) ;
 			///< should be called only by subclasses
 
             ///RAII Conversion Constructor
