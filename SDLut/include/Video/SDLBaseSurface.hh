@@ -41,7 +41,7 @@ namespace RAGE
         //The goal is to have _surf and this really tied.
         class BaseSurface
         {
-            friend class Window;
+            friend class ScreenBuffer;
 
         private:
             static const VideoInfo * _vinfo; ///a usefull static pointer, set to the current VideoInfo by AppWindow and reset to 0 on Window destruction
@@ -75,6 +75,9 @@ namespace RAGE
                 return _vinfo;
             } ///access method to be used by derivated classes
 
+        public: //useful else we can't access those functions outside of friend class (for example in GuiChan)
+
+
             /// This method return true if the surface is initialized, false otherwise.
             bool initialized() const
             {
@@ -82,8 +85,7 @@ namespace RAGE
             }
             //could be useless if exception handle is well coded in the heriting tree
 
-        public: //useful else we can't access those functions outside of friend class (for example in GuiChan)
-
+					
             ///This method return true if all is OK,or if it doesn't need being locked/unlocked.
             ///it return false only if this cannot be locked...
             bool lock(void);
@@ -137,15 +139,17 @@ namespace RAGE
             ///Accessors
 
 		protected:
-			//usefull to get the SDL structure without no risk of modifying it
-			SDL_Surface get_SDL() const;
-		
+				
 			//usefull to get the SDL structure
 			const SDL_Surface * get_pSDL() const
 			{
 				return _surf.get();
 			}
 
+		public:
+			//usefull to get the SDL structure without no risk of modifying it
+			SDL_Surface get_SDL() const;
+		
 		const SDL_Surface & get_rSDL() const
 		{
 			return *_surf; // Indirection of auto_ptr ???? -> TO INVESTIGATE....

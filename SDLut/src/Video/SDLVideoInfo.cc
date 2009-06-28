@@ -39,6 +39,19 @@ namespace RAGE
             //and *this* is not constructed since we throw an exception
         }
 
+		VideoInfo::VideoInfo( const VideoInfo& vi)
+			: _info(vi._info), _pformat(vi._pformat)
+		{
+			
+		}
+
+		VideoInfo& VideoInfo::operator=(const VideoInfo& vi)
+		{
+			VideoInfo newvi(vi);
+			return newvi;
+		}
+
+		
         VideoInfo::~VideoInfo()
         {
 #ifdef DEBUG

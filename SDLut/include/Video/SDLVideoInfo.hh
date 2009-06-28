@@ -34,7 +34,7 @@ namespace RAGE
 
         class VideoInfo
         {
-            friend class Window;
+            friend class ScreenBuffer;
 
         private:
             //Actual VideoInfo pointer
@@ -47,6 +47,10 @@ namespace RAGE
             PixelFormat * _pformat; //dynamically constructed when needed
             //Constructor
             VideoInfo() throw (std::logic_error);
+			//Copy Constructor : sharing the member pointer
+			VideoInfo( const VideoInfo& vi);
+			//Assignemt operator : sharing the member pointer
+			VideoInfo& operator=(const VideoInfo& vi);
 
         public:
 

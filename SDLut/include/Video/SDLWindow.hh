@@ -16,15 +16,10 @@
  * Contact: asmodehn@gna.org
  *
  */
+
 
-#include "Video/SDLEngine.hh"
-#include "Video/SDLVideoInfo.hh"
-#include "Video/SDLVideoSurface.hh"
+#include "Video/ScreenBuffer.hh"
 #include "Video/SDLColor.hh"
-#ifdef HAVE_OPENGL
- #include "Video/SDLGLManager.hh"
- #include "Video/SDLVideoGLSurface.hh"
-#endif //HAVE_OPENGL
 #include "System/SDLEventManager.hh"
 #ifdef HAVE_SDLTTF
 #include "Font/SDLFont.hh"
@@ -32,10 +27,6 @@
 
 #include <memory>
 
-//Default Setup
-#define DEFAULT_DISPLAY_WIDTH 640
-#define DEFAULT_DISPLAY_HEIGHT 480
-#define DEFAULT_DISPLAY_BPP 0 //0 for current display pixel mode
 #define DEFAULT_WINDOW_TITLE "SDLut Window"
 #define DEFAULT_ICON_TITLE "SDLut"
 
@@ -59,22 +50,13 @@ namespace RAGE
         protected:
 
             std::string _title, _iconname;
-            RGBColor _background;
 
             //here because Event are initialised along with video...
             EventManager pvm_eventmanager;
 
-            VideoInfo pvm_videoinfo;
+            ScreenBuffer pvm_screen;
 
-            bool _userengine;
-            Engine* _engine;
-#ifdef HAVE_OPENGL
-
-            GLManager pvm_glmanager;
-#endif
-
-            std::auto_ptr<VideoSurface> pvm_screen;
-			std::auto_ptr<RGBSurface> _icon;
+		std::auto_ptr<RGBSurface> _icon;
 
             Window(std::string title); // TODO :: add the icon here
 
@@ -91,22 +73,15 @@ namespace RAGE
             //just resize the screen (without changing flags, or bpp)
 			//returns NULL if no screen available
 			// calls Engine->resize();
-            bool resizeDisplay (int width, int height) const;
+            bool resizeDisplay (int width, int height);
 
             VideoSurface & getDisplay( void )
             {
 		    //if (!pvm_screen.get()) resetDisplay();
-                return *pvm_screen;
+                return pvm_screen.getDisplay();
             }
-//            void setDisplay( VideoSurface * display)
-//            {
-//                _screen=display;
-//            }
 
-            inline VideoInfo & getVideoInfo( void )
-            {
-                return pvm_videoinfo;
-            }
+            
 
 	    inline EventManager & getEventManager()
             {
@@ -119,9 +94,9 @@ namespace RAGE
             bool setFullscreen(bool val);
 #ifdef HAVE_OPENGL
 
-            inline GLManager & getGLManager()
+            inline GLManager & getGLManager() //TEMPORARY... should matter only to screenbuffer
             {
-                return pvm_glmanager;
+                return pvm_screen.getGLManager();
             }
             bool setOpenGL(bool val);
 #endif
@@ -133,11 +108,9 @@ namespace RAGE
 			bool isOpenGL();
 			bool isNoFrame();
 
-
-            void setEngine(Engine * engine);
             void setBGColor(const RGBColor & color)
 			{
-				_background = color;
+				pvm_screen.setBGColor(color);
 			}
 
 			//fill the VideoSurface with the BGColor
@@ -145,7 +118,7 @@ namespace RAGE
 
             RGBColor getBGColor ()
             {
-                return _background;
+                return pvm_screen.getBGColor();
             }
 
             //return true on success, false otherwise
@@ -172,7 +145,7 @@ namespace RAGE
 
 		private:
 			bool ShowingLoadingScreen; //indicate if a Loading Screen is being shown
-			
+			/*
 			class LoadingScreen
 			{
 				friend class Window;
@@ -219,11 +192,11 @@ namespace RAGE
 				~LoadingScreen()
 				{}
 
-				/**
+				*//**
 				 * Blit bg than global msg than specific msg than progression bar on the screen then refresh it
 				 *
 				 * @Screen, the videosurface where everything is blitted
-				 **/
+				 **//*
 				void render(std::auto_ptr<VideoSurface>& Screen)
 				{
 				
@@ -257,7 +230,7 @@ namespace RAGE
 				}
 			};
 			LoadingScreen* myLoadingScreen;
-
+*/
 		public:
 			/**
 			 * Show a loading Screen: a static bg with a global msg and a specific msg.
@@ -270,7 +243,7 @@ namespace RAGE
 			 * @Loading_Specific_Msg_Font, a Font ref to pointer used to display Loading_Specific_Msg_Font
 			 * @Progress_Bar_Infos, a Rect containing first the progress bar origin coordinates (also used for specific msg position) and then the width/height of the bar. Default an empty Rect. 
 			 **/
-			void ShowLoadingScreen(
+/*			void ShowLoadingScreen(
 				const std::string& Loading_BG_Filename,
 				const std::string& Loading_Global_Msg,
 				#ifdef HAVE_SDLTTF
@@ -282,20 +255,20 @@ namespace RAGE
 				#endif
 				const Rect& Progress_Bar_Infos = Rect()
 				);
-			
+*/			
 			/**
 			 * Show a loading Screen: a static bg with a global msg and a specific msg.
 			 *
 			 * @Progress_Percent, a value between 0 and 100 (forced) that represent the progression of the loading
 			 * @Loading_Specific_Msg, a string to the scpecific msg that must reflect update
 			 **/
-			void UpdateLoadingScreen( const unsigned short& Progress_Percent, const std::string& Loading_Specific_Msg );
-
+/*			void UpdateLoadingScreen( const unsigned short& Progress_Percent, const std::string& Loading_Specific_Msg );
+*/
 			/**
 			 * Simply set ShowingLoadingScreen to false and delete myLoadingScreen
 			 **/
-			void HideLoadingScreen();
-
+/*			void HideLoadingScreen();
+*/
 			//Handles the event, and Call engine->prerender, engine ->render() and engine->postrender()
             bool mainLoop(unsigned int framerate = 60,unsigned int eventrate = 60);
 

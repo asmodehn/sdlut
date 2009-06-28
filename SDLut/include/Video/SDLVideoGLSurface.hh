@@ -51,7 +51,7 @@ namespace RAGE
         {
 
             friend class Overlay;
-            friend class Window;
+            friend class ScreenBuffer;
 
 
         protected:

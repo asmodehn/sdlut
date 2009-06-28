@@ -70,138 +70,52 @@ namespace RAGE
             return std::string(i);
         }
 
-        bool Window::setResizable(bool val)
+        bool Window::setResizable(bool val) //TODO : not really useful here, transfer to screenbuffer with accessor
         {
-            bool res = true;
-            if (!pvm_screen.get())
-                VideoSurface::setResizable(val);
-            else if (pvm_screen->isResizableset() !=val ) //if called inside mainLoop while screen is active
-            {
-				VideoSurface::setResizable(val);
-                if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight(),pvm_screen->getBPP()))
-                    res=false;
-            }
-            return res;
+            return pvm_screen.setResizable(val);
         }
 
-        bool Window::setFullscreen(bool val)
+        bool Window::setFullscreen(bool val) // TODO : not really useful here, transfer to screenbuffer with accessor
         {
-#ifdef DEBUG
-            Log << nl << "Window::setFullscreen(" << val << ") called" << std::endl;
-#endif
-
-            bool res = true;
-            if (!pvm_screen.get())
-	    {
-                VideoSurface::setFullscreen(val);
-	    }
-            else
-            {
-#ifdef DEBUG
-                Log << nl << pvm_screen->isFullScreenset() << " != " << val << std::endl;
-#endif
-
-                if (pvm_screen->isFullScreenset() != val ) //if called inside mainLoop while screen is active
-                {
-			VideoSurface::setFullscreen(val);
-			if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight(),pvm_screen->getBPP()))
-			{
-				res=false;
-			}
-                }
-            }
-
-#ifdef DEBUG
-            Log << nl << "Window::setFullscreen(" << val << ") done" << std::endl;
-#endif
-            return res;
+		return pvm_screen.setFullscreen(val);
         }
 
-        bool Window::setNoFrame(bool val)
+        bool Window::setNoFrame(bool val) // TODO : not really useful here, transfer to screenbuffer with accessor
         {
-            bool res = true;
-            if (!pvm_screen.get())
-                VideoSurface::setNoFrame(val);
-            else if (pvm_screen->isNoFrameset() !=val )  //if called inside mainLoop while screen is active
-            {
-				VideoSurface::setNoFrame(val);
-                if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight(),pvm_screen->getBPP()))
-                    res=false;
-            }
-            return res;
+		return pvm_screen.setNoFrame(val);
         }
+
 #ifdef HAVE_OPENGL
-        bool Window::setOpenGL(bool val)
+        bool Window::setOpenGL(bool val) // TODO : not really useful here, transfer to screenbuffer with accessor
         {
-            bool res = true;
-
-            if (!pvm_screen.get())
-			{
-				VideoSurface::setOpenGL(val);
-			}
-            else if ( pvm_screen->isOpenGLset() !=val ) //if called inside mainLoop while screen is active
-            {
-                VideoSurface::setOpenGL(val);
-                if (! resetDisplay(pvm_screen->getWidth(),pvm_screen->getHeight(),pvm_screen->getBPP()))
-                    res=false;
-            }
-            return res;
+		return pvm_screen.setOpenGL(val);
         }
 #endif
 
 	//to check the current properties of the display
-	bool Window::isFullscreen()
+	bool Window::isFullscreen() // TODO : not really useful here, transfer to screenbuffer with accessor
 	{
-		if (pvm_screen.get())
-		{
-			return pvm_screen->isFullScreenset();
-		}
-		else
-		{
-			return ( SDL_FULLSCREEN & VideoSurface::_defaultflags ) != 0;
-		}
+		return pvm_screen.isFullscreen();
 	}
+
 	bool Window::isResizable()
 	{
-		if (pvm_screen.get())
-		{
-			return pvm_screen->isResizableset();
-		}
-		else
-		{
-			return ( SDL_RESIZABLE & VideoSurface::_defaultflags ) != 0;
-		}
+		return pvm_screen.isResizable();
 	}
 	bool Window::isOpenGL()
 	{
-		if (pvm_screen.get())
-		{
-			return pvm_screen->isOpenGLset();
-		}
-		else
-		{
-			return ( SDL_OPENGL & VideoSurface::_defaultflags ) != 0;
-		}
+		return pvm_screen.isOpenGL();
 	}
 	bool Window::isNoFrame()
 	{
-
-		if (pvm_screen.get())
-		{
-			return pvm_screen->isNoFrameset();
-		}
-		else
-		{
-			return ( SDL_NOFRAME & VideoSurface::_defaultflags ) != 0;
-		}
+		return pvm_screen.isNoFrame();
 	}
 
         Window::Window(std::string title)
 		 :	_title(title),
-			_background(Color(0,0,0)),
-			pvm_screen(0),
+			pvm_screen(ScreenBuffer(0,0,0)),
 			_icon(0),
-			myLoadingScreen(NULL),
+			//myLoadingScreen(NULL),
 			ShowingLoadingScreen(false),
 			m_exitMainLoop(false)
         {
@@ -218,16 +132,12 @@ namespace RAGE
 				{
 					throw std::logic_error("Error initializing default Icon !");
 				}
-				_engine = new DefaultEngine();
-                _userengine=false;
+			
             }
             catch (std::exception &e)
             {
                 Log << nl << e.what() << std::endl;
             }
-
-            //setting the static videoInfo to be used by all surfaces...
-            BaseSurface::_vinfo = &pvm_videoinfo;
 
 			setCaption(_title );
 			SDL_WM_SetIcon( const_cast<SDL_Surface*>(&_icon->get_rSDL()) , NULL);
@@ -245,13 +155,13 @@ namespace RAGE
 #ifdef DEBUG
             Log << nl << "Window::~Window() called ..." << std::endl;
 #endif			
-            if (!_userengine) //if the user set his own engine , he is responsible for deleting it
-                delete _engine, _engine = NULL;
+			//transferred to ScreenBuffer
+            //if (!_userengine) //if the user set his own engine , he is responsible for deleting it
+            //    delete _engine, _engine = NULL;
 
-			if (myLoadingScreen != NULL)
-				delete myLoadingScreen, myLoadingScreen = NULL;
+			//if (myLoadingScreen != NULL)
+			//	delete myLoadingScreen, myLoadingScreen = NULL;
 
-            BaseSurface::_vinfo = NULL;
 #ifdef DEBUG
 
             Log << nl << "Window::~Window() done." << std::endl;
@@ -262,138 +172,26 @@ namespace RAGE
 
         void Window::applyBGColor() const
             {
-                if (pvm_screen.get()) // if auto pointer valid
-				{
-#ifdef HAVE_OPENGL
-					if (pvm_screen->isOpenGLset())
-					{
-						glClearColor(static_cast<float> (_background.getR() ) / 255.0f, static_cast<float> (_background.getG() ) / 255.0f,static_cast<float> (_background.getB() ) / 255.0f,0.0f);
-						glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-					}
-					else
-					{
-#endif
-						//TODO background can be null, andthis will not be called.... ( speed improvemnt )
-						pvm_screen->fill(_background);
-#ifdef HAVE_OPENGL
-					}
-#endif
-				}
+                pvm_screen.applyBGColor();
             }
 
-        void Window::setEngine (Engine *engine)
+
+        bool Window::resetDisplay (unsigned int width, unsigned int height, unsigned int bpp)
         {
-#ifdef DEBUG
-            Log << nl << "Window::setEngine(" << engine << ") called ...";
-#endif
-            assert(engine);
-			if(!_userengine)
-				delete _engine, _engine=NULL;
-            _userengine=true;
-            _engine=engine;
-
-#ifdef DEBUG
-            Log << nl << "Window::setEngine(" << engine << ") done.";
-
-#endif
-
+			pvm_screen.hide();
+			//for Backward compatibility mostly... should be done differently now
+			ScreenBuffer newscreen(width, height, bpp);//to test thoroughly
+			pvm_screen = newscreen;
+			return pvm_screen.show();
+        }
+		
+        bool Window::resizeDisplay (int width, int height)
+        {
+			return pvm_screen.resize(width,height);
         }
 
-        bool Window::resetDisplay( unsigned int width, unsigned int height, unsigned int bpp)
-        {
-#ifdef DEBUG
-            Log << nl << "Window::resetDisplay( " << width << ", " << height << ", " << bpp << ") called ..." << std::endl;
-#endif
-	bool res = false;
 
-		//force usage of DEFAULT_DISPLAY_WIDTH & DEFAULT_DISPLAY_HEIGHT when only one param is equal to 0. 
-		if ((width == 0 && height != 0) || (width != 0 && height == 0))
-		{
-			width = DEFAULT_DISPLAY_WIDTH;
-			height = DEFAULT_DISPLAY_HEIGHT;
-		}
-		//Both equal to 0 means use dekstop/current mode.
-		if (width == 0 && height == 0)
-		{
-			width = VideoSurface::getVideoInfo()->get_current_width();
-			height = VideoSurface::getVideoInfo()->get_current_height();
-		}
-
-	    if ( bpp == 0 ) //here 0 means autodetection
-	    {
-		    bpp=VideoSurface::getSuggestedBPP(width, height);
-	    }
-	    else
-	    {
-		    //TODO : check that the value of bpp asked for is supported...
-	    }
-            //but beware about bpp == 0...
-            if (bpp == 0 )
-            {//0 as return code mean the current format is not supported
-                Log << nl << "The requested video mode is not supported under any bit depth. Display reset cancelled !";
-            }
-            else
-            {
-                Log << nl << "SDL will use " << width << "x" << height << "@" <<bpp;
-                //create a new screen
-                try
-                {
-					if ( isOpenGL() )
-					{
-						pvm_screen.reset(new VideoGLSurface(width, height, bpp));
-					}
-					else
-					{
-						pvm_screen.reset(new VideoSurface(width, height, bpp));
-					}
-					_engine->init(width, height);
-                    applyBGColor();
-					res=true;
-                }
-                catch(std::exception & e)
-                {
-                    Log << nl << " Exception caught in Window::resetDisplay() : " << e.what();
-		    res=false;
-                }
-            }
-#ifdef DEBUG
-            Log << nl << "Window::resetDisplay(" << width << "," << height << ", " << bpp << ") done." << std::endl;
-#endif
-
-            return res;
-        }
-
-        bool Window::resizeDisplay (int width, int height) const
-        {
-
-#ifdef DEBUG
-            Log << nl << "Window::resize() called ...";
-            assert (pvm_screen.get());
-#endif
-
-	    bool res = true;
-
-            if (pvm_screen.get())
-            {
-                res = res && pvm_screen->resize(width,height);//doesnt keep content
-		res = res && _engine->resize(width,height);
-		//this order otherwise we lose opengl context from the engine just after the resize ( reinit )
-		//because screen resize recreates the window, and lose opengl context as documented in SDL docs...
-		applyBGColor();
-            }
-
-#ifdef DEBUG
-            Log << nl << "Window::resize() done.";
-#endif
-
-		//Forcing the refresh (display the backcolor)
-		pvm_screen->refresh();
-
-            return res;
-        }
-
-		void Window::ShowLoadingScreen(
+/*		void Window::ShowLoadingScreen(
 			const std::string& Loading_BG_Filename,
 			const std::string& Loading_Global_Msg,
 			#ifdef HAVE_SDLTTF
@@ -403,7 +201,7 @@ namespace RAGE
 			#ifdef HAVE_SDLTTF
 				const Font& Loading_Specific_Msg_Font,
 			#endif
-			const Rect& Progress_Bar_Infos /*=Rect()*/ )
+			const Rect& Progress_Bar_Infos )
         {
 		try
         {
@@ -495,7 +293,8 @@ namespace RAGE
 			throw std::logic_error( "Unhandled Exception in Window::HideLoadingScreen()" );
 		}
 		}
-
+*/
+		
         bool Window::mainLoop(unsigned int framerate, unsigned int eventrate)
         {
 			if (ShowingLoadingScreen)
@@ -506,16 +305,16 @@ namespace RAGE
 			bool res = false;
 
 #ifdef DEBUG
-            assert (pvm_screen.get());
 			assert (_engine);
 #endif
 
-            if (pvm_screen.get())
+			//if the videosurface is displayed ( ie the content of the window is shown )
+            if (pvm_screen.show()) // is shown only ? can game not run hidden ??
             {
 				unsigned long lastframe = SDL_GetTicks();
 				unsigned long lastevent = SDL_GetTicks();
-				unsigned long newlastrender= SDL_GetTicks();
-				unsigned long lastrender= newlastrender;
+				//unsigned long newlastrender= SDL_GetTicks();
+				//unsigned long lastrender= newlastrender;
 				while (! m_exitMainLoop )
 				{
 					//handling all the events
@@ -526,36 +325,19 @@ namespace RAGE
 						lastevent = SDL_GetTicks();
 					}
 
-					//applying the background
-					if (!ShowingLoadingScreen)
-						applyBGColor();
-
+					//TODO: make a similar eventhandlepass() method in event manager.
+					
 					//calling engine for prerender and render events
-					newlastrender = SDL_GetTicks();
-					_engine->prerender( newlastrender - lastrender);
-					lastrender = newlastrender;
-					if (!ShowingLoadingScreen)
-						_engine->render(*pvm_screen);
-	
-					//refresh screen
-					//Log << nl << "before :" << SDL_GetTicks() - lastframe ;
-					if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
-						SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
-
-					pvm_screen->refresh();
-					//Log << nl << "after :" << SDL_GetTicks() - lastframe ;
-
-					lastframe=SDL_GetTicks();
-
-					//calling engine for postrender events
-					_engine ->postrender();
+					//newlastrender = SDL_GetTicks();
+					pvm_screen.renderpass(framerate, lastframe);
+					//lastrender = newlastrender;
 
 				}
 				res = true;
                 }
                 else
                 {
-                    Log << nl << "ERROR : DisplaySurface @ " << pvm_screen.get() << " can't be used !" << std::endl;
+                    Log << nl << "ERROR : Screen Buffer @ " << &pvm_screen << " can't be used !" << std::endl;
                     Log  << nl <<" Ignoring mainLoop call." << std::endl;
                 }
 

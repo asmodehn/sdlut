@@ -37,7 +37,7 @@ namespace RAGE
 //TEst to do on linux, to choose a class behaviour
 class GLManager
 {
-    friend class Window;
+    friend class ScreenBuffer;
 
 	GLManager(){}
 

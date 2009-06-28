@@ -18,7 +18,7 @@ namespace RAGE
             BaseSurface(SDL_SetVideoMode(width,height,bpp,_defaultflags )),_background(0,0,0)
         {
 #ifdef DEBUG
-            Log << nl << "VideoSurface::VideoSurface() called ...";
+            Log << nl << "VideoSurface::VideoSurface( "<< width<<", "<<height<<", "<<bpp<<", "<<_defaultflags<<") called ...";
 #endif
 
              if (!initialized())
@@ -28,7 +28,7 @@ namespace RAGE
             }
 
 #ifdef DEBUG
-            Log << nl << "VideoSurface::VideoSurface() done.";
+            Log << nl << "VideoSurface::VideoSurface( "<< width<<", "<<height<<", "<<bpp<<", "<<_defaultflags<<") done.";
 #endif
 
         }
