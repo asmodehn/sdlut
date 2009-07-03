@@ -210,8 +210,9 @@ int main(int argc, char** argv)
     }
 
 	Console cons(font);
-	MyEngine engine;
-	engine.setConsole(&cons);
+	MyEngine * pt_eng = new MyEngine();
+	pt_eng->setConsole(&cons);
+	std::auto_ptr<Engine> engine( pt_eng);// to pass on deleting responsibility
 	
    //UI Creation
     MyUserInput ui;
@@ -220,7 +221,7 @@ int main(int argc, char** argv)
 
 
 	//without this line the default engine is used
-    App::getInstance().getWindow().setEngine(&engine);
+    App::getInstance().getWindow().getScreenBuffer().resetEngine(engine);
 
 	
 

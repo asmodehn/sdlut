@@ -89,23 +89,23 @@ int main(int argc, char** argv)
 	App::getInstance().setName ("RAGE::SDL test Color : Displayed Color order \"Red - Green - Blue - Purple if alpha is working else White\"");  //BUG HERE: Title never displayed ?!
 	
     //Getting video informations
-    testlog << nl << App::getInstance().getWindow().getVideoInfo() << std::endl;
+    testlog << nl << App::getInstance().getWindow().getScreenBuffer().getVideoInfo() << std::endl;
 	//BUG HERE: displayed infos are false like available memory @ 0 for example
 
 	//Purple background color (useful to test alpha / color key)
 	App::getInstance().getWindow().setBGColor(RGBColor (255,0,255));
 
-	Engine* engine;
-	engine = new MyEngine();
+	std::auto_ptr<Engine> engine(new MyEngine());
+	//sinking the auto_ptr, and transmitting delete responsibility...
+	App::getInstance().getWindow().getScreenBuffer().resetEngine(engine);
 
-	App::getInstance().getWindow().setEngine(engine);
-
+	
     if(App::getInstance().getWindow().resetDisplay(800,600))
     {
        App::getInstance().getWindow().mainLoop();
     }
 
-	delete engine;
+	//enging managed by auto_ptr now, deleted by the screen buffer...
 	delete red; delete green; delete blue; delete alpha;
     return 0;
 }

@@ -81,6 +81,10 @@ namespace RAGE
                 return pvm_screen.getDisplay();
             }
 
+			ScreenBuffer & getScreenBuffer( )
+			{
+				return pvm_screen;
+			}
             
 
 	    inline EventManager & getEventManager()
