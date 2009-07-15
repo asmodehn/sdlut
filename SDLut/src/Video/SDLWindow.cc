@@ -126,13 +126,13 @@ namespace RAGE
             try
             {
 				SurfaceLoader loader;
-				RWOps _iconres = RWOps( _defaultIcon, sizeof(_defaultIcon));  
+				RWOps _iconres = RWOps( _defaultIcon, sizeof(_defaultIcon));
 				_icon = loader.load( _iconres );
 				if ( ( _icon.get() == 0 ) || ( ! _icon->initialized() ) )
 				{
 					throw std::logic_error("Error initializing default Icon !");
 				}
-			
+
             }
             catch (std::exception &e)
             {
@@ -154,7 +154,7 @@ namespace RAGE
         {
 #ifdef DEBUG
             Log << nl << "Window::~Window() called ..." << std::endl;
-#endif			
+#endif
 			//transferred to ScreenBuffer
             //if (!_userengine) //if the user set his own engine , he is responsible for deleting it
             //    delete _engine, _engine = NULL;
@@ -176,15 +176,15 @@ namespace RAGE
             }
 
 
-        bool Window::resetDisplay (unsigned int width, unsigned int height, unsigned int bpp)
+        bool Window::setDisplay (unsigned int width, unsigned int height, unsigned int bpp)
         {
-			pvm_screen.hide();
-			//for Backward compatibility mostly... should be done differently now
-			ScreenBuffer newscreen(width, height, bpp);//to test thoroughly
-			pvm_screen = newscreen;
-			return pvm_screen.show();
+			pvm_screen.setWidth(width);
+			pvm_screen.setHeight(height);
+			pvm_screen.setBPP(bpp);
+			return true; // for now always true.
+			//TODO: Checks must be done to make sure the required resolution is supported
         }
-		
+
         bool Window::resizeDisplay (int width, int height)
         {
 			return pvm_screen.resize(width,height);
@@ -243,7 +243,7 @@ namespace RAGE
 		try
         {
 			if (ShowingLoadingScreen && myLoadingScreen != NULL )
-			{			
+			{
 				myLoadingScreen->Progress_Percent = std::min(100, std::max(0, (int)Progress_Percent)); //force the progression to be between 0 and 100
 				myLoadingScreen->Loading_Specific_Msg = Loading_Specific_Msg;
 				myLoadingScreen->render(pvm_screen);
@@ -254,7 +254,7 @@ namespace RAGE
 				throw std::logic_error( "Trying to update a loading screen that doesn't exists." );
 			#endif
 			}
-			
+
 		}
 		catch(std::exception & e)
         {
@@ -294,7 +294,7 @@ namespace RAGE
 		}
 		}
 */
-		
+
         bool Window::mainLoop(unsigned int framerate, unsigned int eventrate)
         {
 			if (ShowingLoadingScreen)
@@ -303,10 +303,6 @@ namespace RAGE
 			}
 			assert(framerate > 0 && "framerate must be greater than 0 !");
 			bool res = false;
-
-#ifdef DEBUG
-			assert (_engine);
-#endif
 
 			//if the videosurface is displayed ( ie the content of the window is shown )
             if (pvm_screen.show()) // is shown only ? can game not run hidden ??
@@ -326,7 +322,7 @@ namespace RAGE
 					}
 
 					//TODO: make a similar eventhandlepass() method in event manager.
-					
+
 					//calling engine for prerender and render events
 					//newlastrender = SDL_GetTicks();
 					pvm_screen.renderpass(framerate, lastframe);

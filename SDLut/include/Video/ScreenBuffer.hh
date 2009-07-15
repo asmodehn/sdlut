@@ -4,7 +4,7 @@
 /**
  * \class ScreenBuffer
  * \ingroup Video
- * 
+ *
  * \brief This class handles the displayed zone stored on memory...
  *
  * This class hides the details of implementation of 2D display and
@@ -13,7 +13,7 @@
  * \author Alex
  *
  * \date 2009\06\24
- * 
+ *
  * contact : asmodehn@gna.org
  */
 
@@ -24,7 +24,7 @@
  #include "Video/SDLGLManager.hh"
 #endif //HAVE_OPENGL
 #include "Video/SDLEngine.hh"
-
+#include "Functor.hh" //for callbacks storage...
 
 //Default Setup
 #define DEFAULT_DISPLAY_WIDTH 640 // TODO not needed , can default to 4/3 mode or advised mode or desktop if nothing given...
@@ -36,12 +36,14 @@ namespace RAGE
 	namespace SDL
 	{
 
+
 		class ScreenBuffer
 		{
+
 			int m_width;
 			int m_height;
 			int m_bpp;
-			
+
 		 protected:
             VideoInfo m_videoinfo;
 			std::auto_ptr<VideoSurface> m_screen;
@@ -49,12 +51,20 @@ namespace RAGE
             GLManager m_glmanager;
 #endif
 			RGBColor m_background;
+
+			//TODO : instead of Engine, we can store here 3 functors : init() resize() and render().
+			//-> better for consistency + more flexible maybe...
             std::auto_ptr<Engine> m_engine;
 
 		 public:
 			ScreenBuffer(int width = 0, int height = 0, int bpp = 0) throw (std::logic_error);
-			ScreenBuffer( const ScreenBuffer & );//behavior ? not sure yet...
+			ScreenBuffer( const ScreenBuffer & );
 			~ScreenBuffer();
+
+//warning no protection offered here in case of wrong / unsupported size ( TODO )
+            void setWidth(int width) { m_width = width;}
+            void setHeight(int height) { m_height = height;}
+            void setBPP(int bpp) { m_bpp = bpp; }
 
 			//preset or "dynamically change" properties of the display...
             bool setResizable(bool val);
@@ -85,7 +95,7 @@ namespace RAGE
 			void applyBGColor() const;
 
 			void resetEngine(std::auto_ptr<Engine> pt_engine);
-					
+
             VideoSurface & getDisplay( void )
             {
 		    //if (!pvm_screen.get()) resetDisplay();
@@ -96,7 +106,7 @@ namespace RAGE
             {
                 return m_videoinfo;
             }
-				
+
 			bool resize(int width, int height);
 			bool show(); // return true if the screenbuffer is displayed. creates the Videosurface if needed.
 			bool hide();
@@ -106,7 +116,105 @@ namespace RAGE
 			//LATER
 			bool renderpass(unsigned long framerate, unsigned long& lastframe);
 			bool refresh();
-				
+
+private:
+            template <class TClass>
+            class InitCB : public TSpecificFunctor2<TClass, bool, int, int>
+			{
+				public:
+					InitCB(TClass* ptobj, bool (TClass::*ptfunc) (int width, int height))
+					: TSpecificFunctor2<TClass,bool,int,int>(ptobj,ptfunc)
+					{
+					}
+
+			};
+
+            //normal pointer because we need the polymorphism here
+            TFunctor2<bool,int,int>* m_initcb;
+
+			template <class UClass>
+            class ResizeCB : public TSpecificFunctor2<UClass, bool, int, int>
+			{
+				public:
+					ResizeCB(UClass* ptobj, bool (UClass::*ptfunc) (int width, int height))
+					: TSpecificFunctor2<UClass,bool,int,int>(ptobj,ptfunc)
+					{
+					}
+
+			};
+
+            //normal pointer because we need the polymorphism here
+            TFunctor2<bool,int,int> * m_resizecb;
+
+
+			template <class VClass>
+            class NewFrameCB : public TSpecificFunctor2<VClass, bool, unsigned long, unsigned long >
+			{
+				public:
+					NewFrameCB(VClass* ptobj, bool (VClass::*ptfunc) (unsigned long, unsigned long))
+					: TSpecificFunctor2<VClass,bool,unsigned long,unsigned long>(ptobj,ptfunc)
+					{
+					}
+
+			};
+
+            //normal pointer because we need the polymorphism here
+			TFunctor2<bool,unsigned long, unsigned long> * m_newframecb;
+
+
+			template <class WClass>
+            class RenderCB : public TSpecificConstFunctor1<WClass, bool, VideoSurface& >
+			{
+				public:
+					RenderCB(WClass* ptobj, bool (WClass::*ptfunc) (VideoSurface& screen) const ) // render function should be const
+					: TSpecificConstFunctor1<WClass,bool,VideoSurface& >(ptobj,ptfunc)
+					{
+					}
+
+			};
+
+            //normal pointer because we need the polymorphism here
+			TFunctor1<bool,VideoSurface&> * m_rendercb;
+
+public:
+
+			template <class TClass>
+			void resetInitCallback(TClass* instance, bool (TClass::*func) ( int width, int height) )
+			{
+			    if ( m_initcb ) delete m_initcb, m_initcb = NULL;
+			    m_initcb = new InitCB<TClass>(instance,func);
+			}
+
+            //this callback is run whenever a resize is needed.
+            //parameter is the desired new size.
+			template <class UClass>
+			void resetResizeCallback(UClass* instance, bool (UClass::*func) ( int width, int height) )
+			{
+			    if ( m_resizecb ) delete m_resizecb, m_resizecb= NULL;
+			    m_resizecb = new ResizeCB<UClass>(instance,func);
+            }
+
+			//this callback is run just before the render
+			//deltaticks is the amount of ticks between the end of the last render and now.
+			//framerate is in fps.
+			template <class VClass>
+			void resetNewFrameCallback(VClass* instance, bool (VClass::*func) ( unsigned long framerate, unsigned long deltaticks) )
+			{
+			    if ( m_newframecb ) delete m_newframecb, m_newframecb = NULL;
+			    m_newframecb = new NewFrameCB<VClass>(instance,func);
+            }
+
+            //this callback is run just for rendering purpose. therefore it s already too late to modify anything -> const
+            //if there is anything you need to modify please use the newframe callback
+			template <class WClass>
+			void resetRenderCallback(WClass* instance, bool (WClass::*func) (RAGE::SDL::VideoSurface& ) const )
+			{
+			    if ( m_rendercb ) delete m_rendercb, m_rendercb = NULL;
+			    m_rendercb = new RenderCB<WClass>(instance,func);
+            }
+
+
+
 		};
 
 	} // SDL

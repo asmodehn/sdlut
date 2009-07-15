@@ -42,16 +42,17 @@ namespace RAGE
 		VideoInfo::VideoInfo( const VideoInfo& vi)
 			: _info(vi._info), _pformat(vi._pformat)
 		{
-			
+
 		}
 
 		VideoInfo& VideoInfo::operator=(const VideoInfo& vi)
 		{
-			VideoInfo newvi(vi);
-			return newvi;
+            delete _pformat, _pformat = NULL;
+			_pformat = vi._pformat;
+			return *this;
 		}
 
-		
+
         VideoInfo::~VideoInfo()
         {
 #ifdef DEBUG
@@ -146,7 +147,7 @@ namespace RAGE
 		return SDL_GetVideoInfo()->current_h;
 	}
 
-	
+
         //return the SDLPixelFormat for the current video device
         PixelFormat * VideoInfo::getPixelFormat() const
         {

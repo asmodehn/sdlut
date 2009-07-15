@@ -18,7 +18,7 @@ namespace RAGE
 			loader.resetOpengl(true);
 #endif
 			try{
-				RWOps _iconres( _defaultImage,sizeof(_defaultImage) );  
+				RWOps _iconres( _defaultImage,sizeof(_defaultImage) );
 				_logo = loader.load( _iconres );
 			}
 			catch(std::exception &)
@@ -28,11 +28,11 @@ namespace RAGE
 				//if this occurs, behavior is totally unknown...
 			}
 	    }
-	    
+
 		//this render function should not modify the engine
-		void DefaultEngine::render(VideoSurface & screen) const
+		bool DefaultEngine::render(VideoSurface & screen) const
 		{
-			screen.blit(*_logo,Point( screen.getWidth() - _logo->getWidth(), screen.getHeight() - _logo->getHeight()));
+			return screen.blit(*_logo,Point( screen.getWidth() - _logo->getWidth(), screen.getHeight() - _logo->getHeight()));
 		}
 
 			//to initialise the engine, just called once before any render
@@ -46,7 +46,7 @@ namespace RAGE
 		{
 			return true;
 		}
-		
+
 		DefaultEngine::~DefaultEngine()
 		{
 		}

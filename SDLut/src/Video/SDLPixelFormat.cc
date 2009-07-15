@@ -85,12 +85,12 @@ namespace RAGE
 	    {
 		    return _pformat->alpha;
 	    }
-	    Palette* PixelFormat::getPalette() const
+	    Palette PixelFormat::getPalette() const
 	    {
-		    return &Palette(_pformat->palette);
+		    return Palette(_pformat->palette);
 	    }
 
-	    
+
         Logger & operator << (Logger & log, const PixelFormat & pformat)
         {
             log << nl << "PixelFormat:" << nl <<
@@ -112,16 +112,16 @@ namespace RAGE
             std::dec<<
             " - Color Key = " << pformat.getColorKey() << nl <<
             " - Alpha = " << pformat.getAlpha() << nl <<
-            " - Palette = " << pformat.getPalette() ;
+            " - Palette = " << &pformat.getPalette() ; //TODO: Palette debug display on stream...
             return log;
         }
 
         PixelColor PixelFormat::getValueFromRGB(const RGBColor& val) const
         {
-            
+
             //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
             return SDL_MapRGB(const_cast<SDL_PixelFormat*>(_pformat), val.getR(), val.getG(), val.getB());
-			
+
         }
 
         PixelColor PixelFormat::getValueFromRGBA(const RGBAColor& val) const

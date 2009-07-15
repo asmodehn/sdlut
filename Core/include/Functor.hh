@@ -39,20 +39,46 @@ namespace RAGE
 				_ptobj = ptobj;
 				_ptfunc = ptfunc;
 			}
-	
+
 			virtual returnType operator()(void)
 			{
 				return (_ptobj->*_ptfunc)();
 			}
-			
+
 			virtual returnType call(void)
 			{
 				return (_ptobj->*_ptfunc)();
 			}
-				
+
 	};
 
-	
+
+	template <class TClass,typename returnType = void>
+	class TSpecificConstFunctor : public TFunctor<returnType>
+	{
+		private:
+			returnType (TClass::*_ptfunc) (void) const; //member function pointer
+			TClass *_ptobj;//instance pointer
+		public:
+			TSpecificConstFunctor(TClass* ptobj, returnType (TClass::*ptfunc) (void) const)
+			{
+				_ptobj = ptobj;
+				_ptfunc = ptfunc;
+			}
+
+			virtual returnType operator()(void)
+			{
+				return (_ptobj->*_ptfunc)();
+			}
+
+			virtual returnType call(void)
+			{
+				return (_ptobj->*_ptfunc)();
+			}
+
+	};
+
+
 	//Generic functor implementing any return type, with a void* as arguments
 	template <typename returnType = void, typename arg1Type = void* >
 	class TFunctor1
@@ -75,17 +101,44 @@ namespace RAGE
 				_ptobj = ptobj;
 				_ptfunc = ptfunc;
 			}
-			
+
 			virtual returnType operator()(arg1Type arg)
 			{
 				return (_ptobj->*_ptfunc)(arg);
 			}
-			
+
 			virtual returnType call(arg1Type arg)
 			{
 				return (_ptobj->*_ptfunc)(arg);
 			}
-				
+
+	};
+
+
+	template <class TClass,typename returnType = void, typename arg1Type = void *>
+			class TSpecificConstFunctor1 : public TFunctor1<returnType,arg1Type>
+	{
+		private:
+			returnType (TClass::*_ptfunc) (arg1Type arg) const; //member function pointer
+			TClass *_ptobj;//instance pointer
+
+		public:
+			TSpecificConstFunctor1(TClass* ptobj, returnType (TClass::*ptfunc) (arg1Type arg) const)
+			{
+				_ptobj = ptobj;
+				_ptfunc = ptfunc;
+			}
+
+			virtual returnType operator()(arg1Type arg)
+			{
+				return (_ptobj->*_ptfunc)(arg);
+			}
+
+			virtual returnType call(arg1Type arg)
+			{
+				return (_ptobj->*_ptfunc)(arg);
+			}
+
 	};
 
 	//Generic functor implementing any return type, with a void* as arguments
@@ -111,17 +164,17 @@ namespace RAGE
 						_ptobj = ptobj;
 						_ptfunc = ptfunc;
 					}
-			
+
 					virtual returnType operator()(arg1Type arg1,arg2Type arg2)
 					{
 						return (_ptobj->*_ptfunc)(arg1,arg2);
 					}
-			
+
 					virtual returnType call(arg1Type arg1,arg2Type arg2)
 					{
 						return (_ptobj->*_ptfunc)(arg1,arg2);
 					}
-				
+
 			};
 
 
@@ -147,17 +200,17 @@ namespace RAGE
 										_ptobj = ptobj;
 										_ptfunc = ptfunc;
 									}
-			
+
 									virtual returnType operator()(arg1Type arg1,arg2Type arg2,arg3Type arg3)
 									{
 										return (_ptobj->*_ptfunc)(arg1,arg2,arg3);
 									}
-			
+
 									virtual returnType call(arg1Type arg1,arg2Type arg2,arg3Type arg3)
 									{
 										return (_ptobj->*_ptfunc)(arg1,arg2,arg3);
 									}
-				
+
 							};
 
 

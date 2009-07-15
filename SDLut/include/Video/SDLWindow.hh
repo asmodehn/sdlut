@@ -41,7 +41,7 @@ namespace RAGE
         class Window
         {
             friend class App; //to access the constructor
-			
+
 			//and be able to exit mainloop
 
 			bool m_exitMainLoop;
@@ -64,12 +64,11 @@ namespace RAGE
 
             ~Window();
 
-            //create the screen or reset it if needed because some parameters changed
-			//returns NULL if no screen available
-			// calls Engine->init();
-			//since sdl 1.2.10 if width and height are both 0, SDL_SetVideoMode will use the width and height of the desktop mode
-			// bpp = 0 means autodetect best bpp
-            bool resetDisplay( unsigned int width = 0, unsigned int height = 0, unsigned int bpp = 0 );
+            //sets Display size and BPP
+            bool setDisplay( unsigned int width = 0, unsigned int height = 0, unsigned int bpp = 0 );
+            bool show() { pvm_screen.show(); }
+            bool hide() { pvm_screen.hide(); }
+
             //just resize the screen (without changing flags, or bpp)
 			//returns NULL if no screen available
 			// calls Engine->resize();
@@ -85,7 +84,7 @@ namespace RAGE
 			{
 				return pvm_screen;
 			}
-            
+
 
 	    inline EventManager & getEventManager()
             {
@@ -154,7 +153,7 @@ namespace RAGE
 			{
 				friend class Window;
 				friend class App;
-			
+
 			private:
 				LoadingScreen(){}
 
@@ -203,7 +202,7 @@ namespace RAGE
 				 **//*
 				void render(std::auto_ptr<VideoSurface>& Screen)
 				{
-				
+
 					assert(Loading_BG.get());
 
 					//get Screen usefull infos and use them to set positions
@@ -212,7 +211,7 @@ namespace RAGE
 					int sbpp = Screen->getVideoInfo()->getPixelFormat()->getBitsPerPixel();
 
 					//Blit BG
-					Screen->blit(*Loading_BG, Point( ls_x, ls_y ) );					
+					Screen->blit(*Loading_BG, Point( ls_x, ls_y ) );
 
 				#ifdef HAVE_SDLTTF
 					//Blit Global Msg
@@ -245,7 +244,7 @@ namespace RAGE
 			 * @Loading_Global_Msg_Font, a Font ref to pointer used to display Loading_Global_Msg
 			 * @Loading_Specific_Msg, a string to the scpecific loading screen msg that will be blit at the initial shown of the loading screen and then be updated
 			 * @Loading_Specific_Msg_Font, a Font ref to pointer used to display Loading_Specific_Msg_Font
-			 * @Progress_Bar_Infos, a Rect containing first the progress bar origin coordinates (also used for specific msg position) and then the width/height of the bar. Default an empty Rect. 
+			 * @Progress_Bar_Infos, a Rect containing first the progress bar origin coordinates (also used for specific msg position) and then the width/height of the bar. Default an empty Rect.
 			 **/
 /*			void ShowLoadingScreen(
 				const std::string& Loading_BG_Filename,
@@ -259,7 +258,7 @@ namespace RAGE
 				#endif
 				const Rect& Progress_Bar_Infos = Rect()
 				);
-*/			
+*/
 			/**
 			 * Show a loading Screen: a static bg with a global msg and a specific msg.
 			 *

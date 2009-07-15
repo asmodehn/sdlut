@@ -22,13 +22,13 @@ namespace RAGE
 
 			//this is run just before the render
 			//deltaticks is the amount of ticks between the end of the last render and now.
-			virtual void prerender(unsigned long deltaticks) {}
+			//virtual void prerender(unsigned long deltaticks) {}
 
 			//this render function should not modify the engine
-            virtual void render(VideoSurface & screen) const = 0;
+            virtual bool render(VideoSurface & screen) const = 0;
 
 			//this is run just after the render, and refresh of the screen
-			virtual void postrender(void) {}
+			//virtual void postrender(void) {}
 
 			//to initialise the engine, just called once before any render
             virtual bool init(int width, int height) = 0;
@@ -46,7 +46,7 @@ namespace RAGE
 			//will be initialized in init
 			//might be better in a constructor actually...
 			std::auto_ptr<RGBSurface> _logo;
-				
+
 			//TODO : change to RGBSurface, used as reference where needed.
 
 			public:
@@ -55,7 +55,7 @@ namespace RAGE
 				virtual ~DefaultEngine();
 
 			//this render function should not modify the engine
-            virtual void render(VideoSurface & screen) const;
+            virtual bool render(VideoSurface & screen) const;
 
 			//to initialise the engine, just called once before any render
             virtual bool init(int width, int height);

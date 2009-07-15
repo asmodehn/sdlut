@@ -13,11 +13,11 @@ Logger Log("Test Color");
 
 class MyEngine : public DefaultEngine
 {
-	
+
 public:
 
 	MyEngine() : DefaultEngine()
-	{ 
+	{
 	}
 
     virtual ~MyEngine(){}
@@ -52,28 +52,20 @@ public:
 		blue = new GLSurface(width/4,height,32);
 		blue->fill(RGBColor(0,0,255));
 		alpha = new GLSurface(width-red->getWidth()-green->getWidth()-blue->getWidth(),height,32, true);
-		alpha->fill(RGBAColor(255,255,255,0)); 
+		alpha->fill(RGBAColor(255,255,255,0));
 		return DefaultEngine::resize(width,height);
 	}
 
-	void prerender(unsigned long deltaticks)
-	{
-		return DefaultEngine::prerender(deltaticks);
-	}
-
-	void render(VideoSurface & screen) const
+	bool render(VideoSurface & screen) const
     {
 		screen.blit(*red,Point(0,0));
 		screen.blit(*green,Point(0 + red->getWidth(),0));
 		screen.blit(*blue,Point(0 + red->getWidth() + green->getWidth(), 0));
 		screen.blit(*alpha,Point(0 + red->getWidth() + green->getWidth() + blue->getWidth(), 0));
-		return DefaultEngine::render(screen);
+		DefaultEngine::render(screen);
+		return true;
     }
 
-	void postrender()
-	{
-		return DefaultEngine::postrender();
-	}
 };
 
 
@@ -87,20 +79,27 @@ int main(int argc, char** argv)
     //Starting with usual SDL window
     App::getInstance().initVideo(false,ogl,true,false);
 	App::getInstance().setName ("RAGE::SDL test Color : Displayed Color order \"Red - Green - Blue - Purple if alpha is working else White\"");  //BUG HERE: Title never displayed ?!
-	
-    //Getting video informations
-    testlog << nl << App::getInstance().getWindow().getScreenBuffer().getVideoInfo() << std::endl;
-	//BUG HERE: displayed infos are false like available memory @ 0 for example
 
 	//Purple background color (useful to test alpha / color key)
 	App::getInstance().getWindow().setBGColor(RGBColor (255,0,255));
 
+    //Setting Display size and BPP
+    App::getInstance().getWindow().setDisplay(800,600); // using autodetected bpp
+
+    //Getting video informations
+    testlog << nl << App::getInstance().getWindow().getScreenBuffer().getVideoInfo() << std::endl;
+	//BUG HERE: displayed infos are false like available memory @ 0 for example
+
 	std::auto_ptr<Engine> engine(new MyEngine());
 	//sinking the auto_ptr, and transmitting delete responsibility...
-	App::getInstance().getWindow().getScreenBuffer().resetEngine(engine);
+	//App::getInstance().getWindow().getScreenBuffer().resetEngine(engine);
+    //update : not anymore -> using callbacks now
 
-	
-    if(App::getInstance().getWindow().resetDisplay(800,600))
+	App::getInstance().getWindow().getScreenBuffer().resetInitCallback(&*engine,&Engine::init);
+	App::getInstance().getWindow().getScreenBuffer().resetResizeCallback(&*engine,&Engine::resize);
+	App::getInstance().getWindow().getScreenBuffer().resetRenderCallback(&*engine,&Engine::render);
+
+    if(App::getInstance().getWindow().show())
     {
        App::getInstance().getWindow().mainLoop();
     }

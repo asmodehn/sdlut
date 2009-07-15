@@ -7,20 +7,21 @@ namespace RAGE
 	{
 
 		ScreenBuffer::ScreenBuffer(int width, int height, int bpp) throw (std::logic_error)
-		: m_width(width), m_height(height),m_bpp(bpp), m_engine(new DefaultEngine()), m_background(RGBColor(0,0,0))
+		: m_width(width), m_height(height),m_bpp(bpp), m_engine(new DefaultEngine()), m_background(RGBColor(0,0,0)),
+		m_initcb(NULL),m_resizecb(NULL), m_newframecb(NULL), m_rendercb(NULL)
 		{
-			
+
             //setting the static videoInfo to be used by all surfaces...
             BaseSurface::_vinfo = &m_videoinfo;
 
-			//force usage of DEFAULT_DISPLAY_WIDTH & DEFAULT_DISPLAY_HEIGHT when only one param is equal to 0. 
+			//force usage of DEFAULT_DISPLAY_WIDTH & DEFAULT_DISPLAY_HEIGHT when only one param is equal to 0.
 			if ((width == 0 && height != 0) || (width != 0 && height == 0))
 			{
 				width = DEFAULT_DISPLAY_WIDTH;
 				height = DEFAULT_DISPLAY_HEIGHT;
 			}
 			//TODO get rid of default display size and try 4/3 size, or pick first of suggested size by video info
-			
+
 			//Both equal to 0 means use dekstop/current mode.
 			if (width == 0 && height == 0)
 			{
@@ -41,7 +42,7 @@ namespace RAGE
 			m_height = height;
 			m_bpp = bpp;
 
-			
+
 	        //but beware about bpp == 0...
         	if (m_bpp == 0 )
 			{//0 as return code mean the current format is not supported
@@ -49,15 +50,21 @@ namespace RAGE
 				throw std::logic_error("VideoSurface::getSuggestedBPP(width, height) returned 0");
         	}
 		}
-		
-		ScreenBuffer::ScreenBuffer( const ScreenBuffer & )//behavior ? not sure yet...
+
+        //recreating Engine here to make sure both origin and destination engines are independant.
+		ScreenBuffer::ScreenBuffer( const ScreenBuffer & sb )
+		: m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp), m_engine(new DefaultEngine()), m_background(sb.m_background),
+		m_initcb(sb.m_initcb),m_resizecb(sb.m_resizecb), m_newframecb(sb.m_newframecb), m_rendercb(sb.m_rendercb)
 		{
+		    //warning no protection offered here in case of wrong / unsupported size ( for the moment )
 		}
-		
+
 		ScreenBuffer::~ScreenBuffer()
 		{
             BaseSurface::_vinfo = NULL;
 		}
+
+
 
 	    bool ScreenBuffer::setResizable(bool val)
 	    {
@@ -221,9 +228,9 @@ namespace RAGE
 		{			//if reset is wanted the buffer shoul be recreated
 			return true;
 		}
-		//else the screen hasnt been displayed yet, or has been hidden.					
+		//else the screen hasnt been displayed yet, or has been hidden.
 		bool res = false;
-		
+
        	Log << nl <<"SDL is using " << m_width << "x" << m_height << "@" <<m_bpp;
        	//create a new screen
         try
@@ -236,7 +243,9 @@ namespace RAGE
 			{
 				m_screen.reset(new VideoSurface(m_width, m_height, m_bpp));
 			}
-			m_engine->init(m_width, m_height);
+			//m_engine->init(m_width, m_height);
+			if ( m_initcb ) m_initcb->call( m_width, m_height );
+
 			applyBGColor();
 			res=true;
         }
@@ -268,7 +277,8 @@ namespace RAGE
     	if (m_screen.get())
         {
     		res = res && m_screen->resize(width,height);//doesnt keep content
-			res = res && m_engine->resize(width,height);
+			//res = res && m_engine->resize(width,height);
+			if ( m_resizecb ) m_resizecb->call(width, height);
 			//this order otherwise we lose opengl context from the engine just after the resize ( reinit )
 			//because screen resize recreates the window, and lose opengl context as documented in SDL docs...
 			applyBGColor();
@@ -290,13 +300,17 @@ namespace RAGE
 
 		bool ScreenBuffer::renderpass( unsigned long framerate, unsigned long& lastframe)
 		{
+		    //Callback for preparing new frame
+		    if ( m_newframecb ) m_newframecb->call( framerate, SDL_GetTicks() - lastframe );
+
 			//applying the background
 					//if (!ShowingLoadingScreen)
 						applyBGColor();
-					
+
 					//if (!ShowingLoadingScreen)
-						m_engine->render(*m_screen);
-	
+						//m_engine->render(*m_screen); //TMP
+						if ( m_rendercb ) m_rendercb->call( *m_screen );
+
 					//refresh screen
 					//Log << nl << "before :" << SDL_GetTicks() - lastframe ;
 					if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
@@ -308,20 +322,21 @@ namespace RAGE
 					lastframe=SDL_GetTicks();
 
 					//calling engine for postrender events
-					m_engine ->postrender();
+					//m_engine ->postrender();
 
 		}
 
 
 		void ScreenBuffer::resetEngine(std::auto_ptr<Engine> pt_engine)//warning ownership transfer
 		{
-			
+
 #ifdef DEBUG
             Log << nl << "ScreenBuffer::resetEngine(" << pt_engine << ") called ...";
 #endif
 			// we delete the old engine if there was one, and we replace it with the new one.
 			// useful autoptr semantics...
 			m_engine = pt_engine;
+			//BUG : polymorphism lost here...
 
 #ifdef DEBUG
             Log << nl << "ScreenBuffer::resetEngine(" << pt_engine << ") done.";
