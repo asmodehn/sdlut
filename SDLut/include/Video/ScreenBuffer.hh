@@ -52,9 +52,7 @@ namespace RAGE
 #endif
 			RGBColor m_background;
 
-			//TODO : instead of Engine, we can store here 3 functors : init() resize() and render().
-			//-> better for consistency + more flexible maybe...
-            std::auto_ptr<Engine> m_engine;
+            SDLEngine m_engine; // for now only one engine... later multiple engine will be possible
 
 		 public:
 			ScreenBuffer(int width = 0, int height = 0, int bpp = 0) throw (std::logic_error);
@@ -93,8 +91,6 @@ namespace RAGE
 
 			//fill the VideoSurface with the BGColor
 			void applyBGColor() const;
-
-			void resetEngine(std::auto_ptr<Engine> pt_engine);
 
             VideoSurface & getDisplay( void )
             {

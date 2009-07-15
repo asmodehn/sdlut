@@ -13,34 +13,8 @@ namespace RAGE
 {
     namespace SDL
     {
-
-        // Engine interface
-        class Engine
-        {
-
-		public:
-
-			//this is run just before the render
-			//deltaticks is the amount of ticks between the end of the last render and now.
-			//virtual void prerender(unsigned long deltaticks) {}
-
-			//this render function should not modify the engine
-            virtual bool render(VideoSurface & screen) const = 0;
-
-			//this is run just after the render, and refresh of the screen
-			//virtual void postrender(void) {}
-
-			//to initialise the engine, just called once before any render
-            virtual bool init(int width, int height) = 0;
-
-			//call everytime the display is resized
-            virtual bool resize(int width, int height) = 0;
-
-			virtual ~Engine() {}
-        };
-
 		// Default 2D Engine ( only used if no engine is defined )
-		class DefaultEngine : public Engine
+		class SDLEngine
         {
 			protected:
 			//will be initialized in init
@@ -51,8 +25,8 @@ namespace RAGE
 
 			public:
 
-				DefaultEngine();
-				virtual ~DefaultEngine();
+				SDLEngine();
+				virtual ~SDLEngine();
 
 			//this render function should not modify the engine
             virtual bool render(VideoSurface & screen) const;

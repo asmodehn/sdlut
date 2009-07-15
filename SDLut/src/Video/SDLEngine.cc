@@ -11,7 +11,7 @@ namespace RAGE
     {
 
 		//loading the default RGBSurface from the Resources as logo
-		DefaultEngine::DefaultEngine() : _logo(0)
+		SDLEngine::SDLEngine() : _logo(0)
 	    {
 			SurfaceLoader loader;
 #ifdef HAVE_OPENGL
@@ -30,24 +30,24 @@ namespace RAGE
 	    }
 
 		//this render function should not modify the engine
-		bool DefaultEngine::render(VideoSurface & screen) const
+		bool SDLEngine::render(VideoSurface & screen) const
 		{
 			return screen.blit(*_logo,Point( screen.getWidth() - _logo->getWidth(), screen.getHeight() - _logo->getHeight()));
 		}
 
 			//to initialise the engine, just called once before any render
-		bool DefaultEngine::init(int width, int height)
+		bool SDLEngine::init(int width, int height)
 		{
 			return true;
 		}
 
 		//get called everytime the display is resized
-		bool DefaultEngine::resize(int width, int height)
+		bool SDLEngine::resize(int width, int height)
 		{
 			return true;
 		}
 
-		DefaultEngine::~DefaultEngine()
+		SDLEngine::~SDLEngine()
 		{
 		}
 	}

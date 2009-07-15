@@ -11,12 +11,12 @@ Logger Log("Test Color");
 	RGBSurface* blue;
 	RGBSurface* alpha;
 
-class MyEngine : public DefaultEngine
+class MyEngine
 {
 
 public:
 
-	MyEngine() : DefaultEngine()
+	MyEngine()
 	{
 	}
 
@@ -39,7 +39,7 @@ public:
 		alpha->setpixel(0,0,RGBAColor(255,255,255,0));
 		Log << nl << "Alpha Pixel : " << std::hex << alpha->getpixel(0,0);
 
-		return DefaultEngine::init(width,height);
+		return true;
 	}
 
 	bool resize(int width, int height)
@@ -53,7 +53,7 @@ public:
 		blue->fill(RGBColor(0,0,255));
 		alpha = new GLSurface(width-red->getWidth()-green->getWidth()-blue->getWidth(),height,32, true);
 		alpha->fill(RGBAColor(255,255,255,0));
-		return DefaultEngine::resize(width,height);
+		return true;
 	}
 
 	bool render(VideoSurface & screen) const
@@ -62,7 +62,7 @@ public:
 		screen.blit(*green,Point(0 + red->getWidth(),0));
 		screen.blit(*blue,Point(0 + red->getWidth() + green->getWidth(), 0));
 		screen.blit(*alpha,Point(0 + red->getWidth() + green->getWidth() + blue->getWidth(), 0));
-		DefaultEngine::render(screen);
+
 		return true;
     }
 
@@ -80,31 +80,28 @@ int main(int argc, char** argv)
     App::getInstance().initVideo(false,ogl,true,false);
 	App::getInstance().setName ("RAGE::SDL test Color : Displayed Color order \"Red - Green - Blue - Purple if alpha is working else White\"");  //BUG HERE: Title never displayed ?!
 
-	//Purple background color (useful to test alpha / color key)
-	App::getInstance().getWindow().setBGColor(RGBColor (255,0,255));
-
     //Setting Display size and BPP
     App::getInstance().getWindow().setDisplay(800,600); // using autodetected bpp
+
+	//Purple background color (useful to test alpha / color key)
+	App::getInstance().getWindow().setBGColor(RGBColor (255,0,255));
 
     //Getting video informations
     testlog << nl << App::getInstance().getWindow().getScreenBuffer().getVideoInfo() << std::endl;
 	//BUG HERE: displayed infos are false like available memory @ 0 for example
 
-	std::auto_ptr<Engine> engine(new MyEngine());
-	//sinking the auto_ptr, and transmitting delete responsibility...
-	//App::getInstance().getWindow().getScreenBuffer().resetEngine(engine);
-    //update : not anymore -> using callbacks now
+	std::auto_ptr<MyEngine> engine(new MyEngine());
 
-	App::getInstance().getWindow().getScreenBuffer().resetInitCallback(&*engine,&Engine::init);
-	App::getInstance().getWindow().getScreenBuffer().resetResizeCallback(&*engine,&Engine::resize);
-	App::getInstance().getWindow().getScreenBuffer().resetRenderCallback(&*engine,&Engine::render);
+	App::getInstance().getWindow().getScreenBuffer().resetInitCallback(&*engine,&MyEngine::init);
+	App::getInstance().getWindow().getScreenBuffer().resetResizeCallback(&*engine,&MyEngine::resize);
+	App::getInstance().getWindow().getScreenBuffer().resetRenderCallback(&*engine,&MyEngine::render);
 
     if(App::getInstance().getWindow().show())
     {
        App::getInstance().getWindow().mainLoop();
     }
 
-	//enging managed by auto_ptr now, deleted by the screen buffer...
+	//engine managed by auto_ptr, deleted by the screen buffer...
 	delete red; delete green; delete blue; delete alpha;
     return 0;
 }
