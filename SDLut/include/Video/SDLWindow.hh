@@ -66,8 +66,8 @@ namespace RAGE
 
             //sets Display size and BPP
             bool setDisplay( unsigned int width = 0, unsigned int height = 0, unsigned int bpp = 0 );
-            bool show() { pvm_screen.show(); }
-            bool hide() { pvm_screen.hide(); }
+            bool show() { return pvm_screen.show(); }
+            bool hide() { return pvm_screen.hide(); }
 
             //just resize the screen (without changing flags, or bpp)
 			//returns NULL if no screen available
