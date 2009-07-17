@@ -267,6 +267,7 @@ namespace RAGE
 	bool ScreenBuffer::hide()
 	{
 		delete m_screen.release();// to test...
+		return true; //not used for now
 	}
 
 	bool ScreenBuffer::resize (int width, int height)
@@ -309,14 +310,16 @@ namespace RAGE
 		bool ScreenBuffer::renderpass( unsigned long framerate, unsigned long& lastframe)
 		{
 		    //Callback for preparing new frame
-		    if ( m_newframecb ) m_newframecb->call( framerate, SDL_GetTicks() - lastframe );
+		    if ( m_newframecb )
+				m_newframecb->call( framerate, SDL_GetTicks() - lastframe );
 
 			//applying the background
 					//if (!ShowingLoadingScreen)
 						applyBGColor();
 
 					//if (!ShowingLoadingScreen)
-                		if ( m_rendercb ) m_rendercb->call( *m_screen );
+                		if ( m_rendercb )
+							m_rendercb->call( *m_screen );
 
                 		//calling our engine render function ( on top of user render )
                 		//TODO : add a timer if not demo release...
@@ -335,7 +338,9 @@ namespace RAGE
 					//calling engine for postrender events
 					//m_engine ->postrender();
 
+					return true; //not used for now
 		}
+		
 
 	} // SDL
 } // RAGE
