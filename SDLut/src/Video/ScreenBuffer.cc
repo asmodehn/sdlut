@@ -6,8 +6,8 @@ namespace RAGE
 	namespace SDL
 	{
 
-		ScreenBuffer::ScreenBuffer(int width, int height, int bpp) throw (std::logic_error)
-		: m_width(width), m_height(height),m_bpp(bpp), m_background(RGBColor(0,0,0)),
+		ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error)
+		: m_width(width), m_height(height),m_bpp(bpp), pm_manager(manager), m_background(RGBColor(0,0,0)),
 		m_initcb(NULL),m_resizecb(NULL), m_newframecb(NULL), m_rendercb(NULL)
 		{
 
@@ -49,12 +49,19 @@ namespace RAGE
 	        	Log << nl << "The requested video mode is not supported under any bit depth. Screen creation cancelled !";
 				throw std::logic_error("VideoSurface::getSuggestedBPP(width, height) returned 0");
         	}
+
+        	//we need a manager to manage settings
+        	if (! pm_manager )
+			{
+	        	Log << nl << "The requested SDLManager hasnt been properly passed to ScreenBuffer Constructor. Screen creation cancelled !";
+				throw std::logic_error("SDL::Manager manager parameter points to 0x0");
+        	}
 		}
 
         //recreating Engine here to make sure both origin and destination engines are independant.
         //maybe not really needed, but safer in case of copy ( or should we completely forbid copy ? )
 		ScreenBuffer::ScreenBuffer( const ScreenBuffer & sb )
-		: m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp), m_background(sb.m_background),
+		: m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp), pm_manager(sb.pm_manager), m_background(sb.m_background),
 		m_initcb(sb.m_initcb),m_resizecb(sb.m_resizecb), m_newframecb(sb.m_newframecb), m_rendercb(sb.m_rendercb)
 		{
 		    //warning no protection offered here in case of wrong / unsupported size ( for the moment )
@@ -137,12 +144,17 @@ namespace RAGE
 
             if (!m_screen.get())
 			{
-				VideoSurface::setOpenGL(val);
+			    if ( val ) { pm_manager->enableOpenGL(); }
+			    else { pm_manager->disableOpenGL(); }
+
 			}
             else if ( m_screen->isOpenGLset() !=val ) //if called inside mainLoop while screen is active
             {
 				hide();
-                VideoSurface::setOpenGL(val);
+
+			    if ( val ) { pm_manager->enableOpenGL(); }
+			    else { pm_manager->disableOpenGL(); }
+
                 if (! show() )//resetDisplay(m_screen->getWidth(),m_screen->getHeight(),m_screen->getBPP()))
                     res=false;
             }
@@ -177,11 +189,13 @@ namespace RAGE
 	{
 		if (m_screen.get())
 		{
+		    //accurate check
 			return m_screen->isOpenGLset();
 		}
 		else
 		{
-			return ( SDL_OPENGL & VideoSurface::_defaultflags ) != 0;
+		    //check through SDLManager
+			return pm_manager->isOpenGLEnabled();
 		}
 	}
 	bool ScreenBuffer::isNoFrame()
@@ -319,10 +333,10 @@ namespace RAGE
 
 					//if (!ShowingLoadingScreen)
                 		if ( m_rendercb )
-							m_rendercb->call( *m_screen );
+							m_rendercb->call( *this );
 
                 		//calling our engine render function ( on top of user render )
-                		//TODO : add a timer if not demo release...
+                		//TODO : add a timer to display logos if not demo release...
                 		m_engine.render(*m_screen);
 
 					//refresh screen
@@ -335,12 +349,18 @@ namespace RAGE
 
 					lastframe=SDL_GetTicks();
 
-					//calling engine for postrender events
-					//m_engine ->postrender();
-
 					return true; //not used for now
 		}
-		
+
+
+        //TODO : should be in a different object than the main loop to avoid conflicts and race conditions if wrong use by the client...
+        bool ScreenBuffer::blit (Image& src, Rect& dest_rect, const Rect& src_rect)
+        {
+            //careful... we need double polymorphism here in the end...
+            m_screen.get()->blit( *(src.m_img) , dest_rect, src_rect );
+            //TODO: TEST extensively...
+        }
+
 
 	} // SDL
 } // RAGE

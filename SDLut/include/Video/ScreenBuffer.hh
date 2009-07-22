@@ -8,7 +8,7 @@
  * \brief This class handles the displayed zone stored on memory...
  *
  * This class hides the details of implementation of 2D display and
- * the details of refreshing only the parts of the screen needed...
+ * the details of refreshing only the parts of the screen needed...( coming soon... )
  *
  * \author Alex
  *
@@ -17,9 +17,11 @@
  * contact : asmodehn@gna.org
  */
 
+#include "SDLManager.hh"
 #include "Video/SDLVideoInfo.hh"
 #include "Video/SDLVideoSurface.hh"
 #include "Video/SDLVideoGLSurface.hh"
+#include "Video/Image.hh"
 #ifdef HAVE_OPENGL
  #include "Video/SDLGLManager.hh"
 #endif //HAVE_OPENGL
@@ -47,6 +49,8 @@ namespace RAGE
 		 protected:
             VideoInfo m_videoinfo;
 			std::auto_ptr<VideoSurface> m_screen;
+
+			Manager* pm_manager;
 #ifdef HAVE_OPENGL
             GLManager m_glmanager;
 #endif
@@ -55,7 +59,7 @@ namespace RAGE
             SDLEngine m_engine; // for now only one engine... later multiple engine will be possible
 
 		 public:
-			ScreenBuffer(int width = 0, int height = 0, int bpp = 0) throw (std::logic_error);
+			ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error);
 			ScreenBuffer( const ScreenBuffer & );
 			~ScreenBuffer();
 
@@ -159,18 +163,18 @@ private:
 
 
 			template <class WClass>
-            class RenderCB : public TSpecificConstFunctor1<WClass, bool, VideoSurface& >
+            class RenderCB : public TSpecificConstFunctor1<WClass, bool, ScreenBuffer& >
 			{
 				public:
-					RenderCB(WClass* ptobj, bool (WClass::*ptfunc) (VideoSurface& screen) const ) // render function should be const
-					: TSpecificConstFunctor1<WClass,bool,VideoSurface& >(ptobj,ptfunc)
+					RenderCB(WClass* ptobj, bool (WClass::*ptfunc) (ScreenBuffer& screen) const ) // render function should be const
+					: TSpecificConstFunctor1<WClass,bool,ScreenBuffer& >(ptobj,ptfunc)
 					{
 					}
 
 			};
 
             //normal pointer because we need the polymorphism here
-			TFunctor1<bool,VideoSurface&> * m_rendercb;
+			TFunctor1<bool,ScreenBuffer&> * m_rendercb;
 
 public:
 
@@ -203,11 +207,40 @@ public:
             //this callback is run just for rendering purpose. therefore it s already too late to modify anything -> const
             //if there is anything you need to modify please use the newframe callback
 			template <class WClass>
-			void resetRenderCallback(WClass* instance, bool (WClass::*func) (RAGE::SDL::VideoSurface& ) const )
+			void resetRenderCallback(WClass* instance, bool (WClass::*func) (RAGE::SDL::ScreenBuffer& ) const )
 			{
 			    if ( m_rendercb ) delete m_rendercb, m_rendercb = NULL;
 			    m_rendercb = new RenderCB<WClass>(instance,func);
             }
+
+
+
+        //
+        //function to be used in the render callback... We should make a separate object for that...
+        //TODO
+        //
+
+        //Blit src image on the screen.
+
+            inline bool blit (Image& src, const Point& dest_pos=Point())
+            {
+				//bydefault we blit the entire image
+				Rect dest_rect(dest_pos,src.getWidth(), src.getHeight());
+                return blit(src, dest_rect);
+            }
+            inline bool blit (Image& src, const Point& dest_pos, const Rect& src_rect)
+            {
+                Rect dest_rect(dest_pos,src_rect.getw(), src_rect.geth());
+                return blit(src, dest_rect, src_rect);
+            }
+            //Beware ! The final blitting rectangle is saved in dest_rect.
+            inline bool blit (Image& src, Rect& dest_rect)
+            {
+                Rect src_rect(src.getWidth(), src.getHeight());
+                return blit(src, dest_rect, src_rect);
+            }
+			//Blit src into the screen
+            bool blit (Image& src, Rect& dest_rect, const Rect& src_rect);
 
 
 

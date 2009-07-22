@@ -13,7 +13,6 @@ namespace RAGE
 			_color->g=g;
 			_color->b=b;
 			_color->unused = 255;
-			pointerCopy = false;
 		}
 		RGBColor::RGBColor(const RGBColor & rgbcolor)
 			:_color(new SDL_Color)
@@ -24,7 +23,6 @@ namespace RAGE
 			_color->b=rgbcolor.getB();
 			;
 			_color->unused=255;
-			pointerCopy = false;
 		}
 		RGBColor& RGBColor::operator=( const RGBColor & rgbcolor)
 		{
@@ -34,13 +32,11 @@ namespace RAGE
 			_color->b=rgbcolor.getB();
 			;
 			_color->unused=255;
-			pointerCopy = false;
 			return *this;
 		}
 		RGBColor::~RGBColor()
 		{
-			if (!pointerCopy)
-				delete _color;
+				delete _color;// SDL_Color is a simple SDL structure, no fancy delete needed AFAIK
 		}
 
 		SDL_Color RGBColor::get_SDL() const

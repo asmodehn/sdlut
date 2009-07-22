@@ -19,7 +19,7 @@ namespace RAGE
 #ifndef DEBUG
 	    Log.disableConsoleLog();
 #endif
-	    
+
 #ifdef DEBUG
             Log << nl << "App::App() done";
 #endif
@@ -61,7 +61,7 @@ namespace RAGE
 				return true;
 			}
 			return false;
-			
+
 		}
 
 		bool App::initNet()
@@ -77,7 +77,7 @@ namespace RAGE
 				return true;
 			}
 			return false;
-			
+
 		}
 
 
@@ -90,7 +90,7 @@ namespace RAGE
 				return true;
 			}
 			return pvm_manager->enableCdrom();
-			
+
 		}
 
 		//Initialize sdl timer
@@ -102,7 +102,7 @@ namespace RAGE
 				return true;
 			}
 			return pvm_manager->enableTimer();
-		
+
 		}
 
         bool App::initVideo( bool fullscreen,bool opengl, bool resizable, bool noframe)
@@ -120,7 +120,7 @@ namespace RAGE
                     res = pvm_manager->enableVideo();
                 }
 
-                pvm_window.reset(new Window(pvm_name));
+                pvm_window.reset(new Window(pvm_name, pvm_manager.get()));//manager now contains also the SDL specific settings
 
 
                 //setting the required flags...
@@ -180,7 +180,7 @@ namespace RAGE
                 Log << nl << " Joystick " << i << " : " << pvm_jpool->getName(i) ;
 #endif
 	    }
-	    
+
             return res;
         }
 
@@ -189,7 +189,7 @@ namespace RAGE
 		bool res = false;
 		try
 		{
-		
+
 			if (!pvm_manager.get())
 			{
 				pvm_manager.reset(new Manager(false,true,false,false,false,false,false));
@@ -199,12 +199,12 @@ namespace RAGE
 			{
 				res = pvm_manager->enableAudio();
 			}
-		
+
 			if ( res == true )
 			{
 				pvm_mixer.reset(new Mixer(frequency, channels, buffer_size));
 			}
-		
+
 		}
 		catch (std::exception &e)
 		{
@@ -213,11 +213,11 @@ namespace RAGE
 			exit(1);
 		}
 
-		
+
 		return res;
 	}
-			
-	
+
+
 		bool App::init()
 		{
 			if (!pvm_manager.get())
@@ -226,7 +226,7 @@ namespace RAGE
 				return (pvm_manager.get() != 0);
 			}
 			return false;
-			
+
 		}
 
 		bool App::requestTermination(bool emergencyBreak )
@@ -242,7 +242,7 @@ namespace RAGE
 					m_quitRequested = true;
 					this->pvm_window->m_exitMainLoop = true;
 				}
-				
+
 				return m_quitRequested;
 			}
     }

@@ -111,9 +111,10 @@ namespace RAGE
 		return pvm_screen.isNoFrame();
 	}
 
-        Window::Window(std::string title)
+        Window::Window(std::string title, Manager* manager)
 		 :	_title(title),
-			pvm_screen(ScreenBuffer(0,0,0)),
+            pvm_manager(manager),
+			pvm_screen(ScreenBuffer(0,0,0, manager)),
 			_icon(0),
 			//myLoadingScreen(NULL),
 			ShowingLoadingScreen(false),

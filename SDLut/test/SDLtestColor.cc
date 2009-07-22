@@ -6,10 +6,10 @@ using namespace RAGE::SDL;
 
 Logger Log("Test Color");
 
-	RGBSurface* red;
-	RGBSurface* green;
-	RGBSurface* blue;
-	RGBSurface* alpha;
+	Image* red;
+	Image* green;
+	Image* blue;
+	Image* alpha;
 
 class MyEngine
 {
@@ -24,19 +24,19 @@ public:
 
 	bool init(int width, int height)
 	{
-		red = new GLSurface(width/4,height,32);
+		red = new Image(width/4,height,32);
 		red->fill(RGBColor(255,0,0));
-		green = new GLSurface(width/4,height,32);
+		green = new Image(width/4,height,32);
 		green->fill(RGBColor(0,255,0));
-		blue = new GLSurface(width/4,height,32);
+		blue = new Image(width/4,height,32);
 		blue->fill(RGBColor(0,0,255));
-		alpha = new GLSurface(width-red->getWidth()-green->getWidth()-blue->getWidth(),height,32,true);
+		alpha = new Image(width-red->getWidth()-green->getWidth()-blue->getWidth(),height,32,true);
 		alpha->fill(RGBAColor(255,255,255,0));
 
 		Log << nl << "Red Pixel : " << std::hex << red->getpixel(0,0);
 		Log << nl << "Green Pixel : " << std::hex << green->getpixel(0,0);
 		Log << nl << "Blue Pixel : " << std::hex << blue->getpixel(0,0);
-		alpha->setpixel(0,0,RGBAColor(255,255,255,0));
+		//alpha->setpixel(0,0,RGBAColor(255,255,255,0)); //TMP : for testing only
 		Log << nl << "Alpha Pixel : " << std::hex << alpha->getpixel(0,0);
 
 		return true;
@@ -45,18 +45,18 @@ public:
 	bool resize(int width, int height)
 	{
 		delete red; delete green; delete blue; delete alpha;
-		red = new GLSurface(width/4,height,32);
+		red = new Image(width/4,height,32);
 		red->fill(RGBColor(255,0,0));
-		green = new GLSurface(width/4,height,32);
+		green = new Image(width/4,height,32);
 		green->fill(RGBColor(0,255,0));
-		blue = new GLSurface(width/4,height,32);
+		blue = new Image(width/4,height,32);
 		blue->fill(RGBColor(0,0,255));
-		alpha = new GLSurface(width-red->getWidth()-green->getWidth()-blue->getWidth(),height,32, true);
+		alpha = new Image(width-red->getWidth()-green->getWidth()-blue->getWidth(),height,32, true);
 		alpha->fill(RGBAColor(255,255,255,0));
 		return true;
 	}
 
-	bool render(VideoSurface & screen) const
+	bool render(ScreenBuffer & screen) const
     {
 		screen.blit(*red,Point(0,0));
 		screen.blit(*green,Point(0 + red->getWidth(),0));

@@ -52,13 +52,6 @@ typedef unsigned long PixelColor;
         protected:
             //the address of the SDL_Color struct should never change
             SDL_Color * const _color;
-            bool pointerCopy;
-
-            //Maybe useless ??
-            /*explicit SDLRGBColor(SDL_Color * color) : _color(color)
-            {
-            	pointerCopy = true;
-            }*/
 
         public:
 
@@ -124,7 +117,7 @@ typedef unsigned long PixelColor;
             {
                 return os << "RGBAColor : R=" << (int)c.getR() << " G=" << (int)c.getG() << " B=" << (int)c.getB() << " A=" << (int)c.getA() << " " ;
             } //not sure how to derivate that properly... TODO
-        
+
 		bool operator==(const RGBAColor& color) const;
         bool operator!=(const RGBAColor& color) const;
 
@@ -179,7 +172,7 @@ typedef unsigned long PixelColor;
             //beware : store only a pointer...
             //so the original should not be destroyed !
 	    explicit Palette(const SDL_Palette* palette);
-	    
+
         public:
 
 		~Palette(void);

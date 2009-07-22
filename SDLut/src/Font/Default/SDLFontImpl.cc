@@ -13,7 +13,7 @@ namespace RAGE
 		try: _fontsurf(0)
 		{
 			SurfaceLoader loader;
-			RWOps _fontres (_defaultFont,sizeof(_defaultFont));  
+			RWOps _fontres (_defaultFont,sizeof(_defaultFont));
 			_fontsurf = loader.load( _fontres );
 			if ( ( _fontsurf.get() == 0 ) || ( ! _fontsurf->initialized() ) )
 			{
@@ -24,14 +24,14 @@ namespace RAGE
 		{
 			Log << nl << "Exception caught in internal FontImpl constructor : " << e.what();
 		}
-			
+
 		std::map<char, Rect> FontImpl::InitAlphaLookup()
 		{
 			std::map<char, Rect> result;
 			#define ASSOCIATE( key, x, y ) result[key] = Rect( 14 * x, 16 * y, 14, 16 );
 			#include "SDLFontLookup.inl"
 			#undef ASSOCIATE
-			
+
 			return result;
 		}
 
@@ -46,14 +46,14 @@ namespace RAGE
 		}
 
 			int FontImpl::height()
-			{ 
+			{
 				return 16;
 			}
 
 			FontImpl::FontImpl(const FontImpl & font) : _fontsurf(0)
 			{
 				//deep copy of the RGB Surface
-				_fontsurf.reset( new RGBSurface(*(font._fontsurf)) );	
+				_fontsurf.reset( new RGBSurface(*(font._fontsurf)) );
 			}
 
 			FontImpl::~FontImpl()
@@ -61,7 +61,7 @@ namespace RAGE
 				alphalookup.clear();
 			}
 
-			std::auto_ptr<RGBSurface> FontImpl::render(const std::string & text,Color c, Color bgc, Font::RenderMode mode) const
+			std::auto_ptr<RGBSurface> FontImpl::render(const std::string & text,RGBColor c, RGBColor bgc, Font::RenderMode mode) const
 			{
 
 				std::auto_ptr<RGBSurface> result( new GLSurface( getSize(text).getw(), getSize(text).geth(), 16) );
@@ -70,7 +70,7 @@ namespace RAGE
 				for (unsigned int i= 0; i< text.size(); i++)
 				{
 					//BUG : blit doesnt seem to work here... but only if Opengl mode... WHY ??
-								
+
 					result->blit(*_fontsurf, Rect(i*14,0,14,16),alphalookup[text[i]]);
 					//SDL_BlitSurface(const_cast<SDL_Surface*>(&_fontsurf.get_rSDL()),const_cast<SDL_Rect*>(alphalookup[text[i]].get_pSDL()),result.get(),const_cast<SDL_Rect*>(Rect(0,i*14,14,16).get_pSDL()));
 				}

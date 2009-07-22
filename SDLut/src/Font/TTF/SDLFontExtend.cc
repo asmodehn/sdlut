@@ -50,7 +50,7 @@ namespace SDL
 			TTF_CloseFont(_ttfstruct);
 		}
 
-		std::auto_ptr<RGBSurface> FontExtend::render(const std::string& text, Color c, Color bgc, Font::RenderMode mode) const
+		std::auto_ptr<RGBSurface> FontExtend::render(const std::string& text, RGBColor c, RGBColor bgc, Font::RenderMode mode) const
 		{
 			std::auto_ptr<SDL_Surface> surf;
 			switch ( mode )
@@ -95,7 +95,7 @@ namespace SDL
 				}
 			}
 
-			
+
 			int FontExtend::height()
 			{
 				return TTF_FontHeight(_ttfstruct);

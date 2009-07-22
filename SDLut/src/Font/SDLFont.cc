@@ -40,7 +40,7 @@ catch (std::exception& e)
 			e.what() << std::endl;
             //TODO : much more explicit error message...
 }
-		
+
 
 //Copy Constructor
 Font::Font(const Font &font)
@@ -59,7 +59,7 @@ Font::Font(const Font &font)
 			_font.reset(new FontImpl(*font._font));
 		}
 	}
-	
+
 }
 
 
@@ -68,7 +68,7 @@ Font::~Font()
 }
 
 
-std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mode, Color bgc) const
+std::auto_ptr<RGBSurface> Font::render(std::string text, RGBColor c, RenderMode mode, RGBColor bgc) const
 {
 	return _font->render(text,c,bgc,mode);
 	//return std::auto_ptr<RGBSurface>(new RGBSurface(_font->render(text,c,bgc,mode)));
@@ -99,7 +99,7 @@ std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mod
 	{
 		return _font->isTTFImpl();
 	}
-	
+
 	Font::Style Font::getStyle() const
 	{
 		return _font->getStyle();
@@ -121,7 +121,7 @@ std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mod
 		//return (static_cast<FontExtend*>(_font.get()))->height();
 		return _font.get()->height();
 	}
-	
+
 
 
 

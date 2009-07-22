@@ -19,9 +19,6 @@
 //same for threads
 #include <SDL_thread.h>
 
-//useful aliases
-#define Color RGBColor
-
 //utils
 #include "Logger.hh"
 
@@ -63,7 +60,7 @@ namespace RAGE
 		extern Logger Log;
 
 		std::string GetError();
-		
+
 		namespace Optional
 		{
 //list of modules
@@ -74,7 +71,7 @@ namespace RAGE
 				Mixer,
 				Net
 			}Module;
-		
+
 		std::string GetError(Module);
 
 		bool isCompiled(Module);
@@ -82,7 +79,7 @@ namespace RAGE
 		bool Init(Module);
 		bool WasInit(Module);
 		void Quit(Module);
-			
+
 		}
 
 	}
@@ -113,5 +110,5 @@ class CPU
 #endif
 
 
-	
+
 #endif

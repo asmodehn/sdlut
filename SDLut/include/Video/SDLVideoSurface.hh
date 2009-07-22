@@ -54,6 +54,7 @@ namespace RAGE
 
             friend class Overlay;
             friend class ScreenBuffer;
+            friend class Manager;
 
 
         protected:

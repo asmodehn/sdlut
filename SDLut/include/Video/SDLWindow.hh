@@ -51,6 +51,8 @@ namespace RAGE
 
             std::string _title, _iconname;
 
+            Manager* pvm_manager; // here because the manager contains also the SDL specific settings that we need...
+
             //here because Event are initialised along with video...
             EventManager pvm_eventmanager;
 
@@ -58,7 +60,7 @@ namespace RAGE
 
 		std::auto_ptr<RGBSurface> _icon;
 
-            Window(std::string title); // TODO :: add the icon here
+            Window(std::string title, Manager* manager); // TODO :: add the icon here
 
         public:
 
