@@ -7,8 +7,7 @@ namespace RAGE
 	{
 
 		ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error)
-		: m_width(width), m_height(height),m_bpp(bpp), pm_manager(manager), m_background(RGBColor(0,0,0)),
-		m_initcb(NULL),m_resizecb(NULL), m_newframecb(NULL), m_rendercb(NULL)
+		: m_width(width), m_height(height),m_bpp(bpp), pm_manager(manager), m_background(RGBColor(0,0,0))
 		{
 
             //setting the static videoInfo to be used by all surfaces...
@@ -61,8 +60,7 @@ namespace RAGE
         //recreating Engine here to make sure both origin and destination engines are independant.
         //maybe not really needed, but safer in case of copy ( or should we completely forbid copy ? )
 		ScreenBuffer::ScreenBuffer( const ScreenBuffer & sb )
-		: m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp), pm_manager(sb.pm_manager), m_background(sb.m_background),
-		m_initcb(sb.m_initcb),m_resizecb(sb.m_resizecb), m_newframecb(sb.m_newframecb), m_rendercb(sb.m_rendercb)
+		: m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp), pm_manager(sb.pm_manager), m_background(sb.m_background)
 		{
 		    //warning no protection offered here in case of wrong / unsupported size ( for the moment )
 		}
@@ -261,10 +259,6 @@ namespace RAGE
 			//initializing engine
 			m_engine.init(m_width, m_height);
 
-			//calling user init callback if it exists
-			if ( m_initcb ) m_initcb->call( m_width, m_height );
-
-			applyBGColor();
 			res=true;
         }
         catch(std::exception & e)
@@ -300,11 +294,8 @@ namespace RAGE
     		//calling our engine resize method
 			res = res && m_engine.resize(width,height);
 
-			//calling user callback for resize if it exists
-			if ( m_resizecb ) m_resizecb->call(width, height);
 			//this order otherwise we lose opengl context from the engine just after the resize ( reinit )
 			//because screen resize recreates the window, and lose opengl context as documented in SDL docs...
-			applyBGColor();
 		}
 		else
 		{
@@ -323,23 +314,13 @@ namespace RAGE
 
 		bool ScreenBuffer::renderpass( unsigned long framerate, unsigned long& lastframe)
 		{
-		    //Callback for preparing new frame
-		    if ( m_newframecb )
-				m_newframecb->call( framerate, SDL_GetTicks() - lastframe );
 
-			//applying the background
-					//if (!ShowingLoadingScreen)
-						applyBGColor();
-
-					//if (!ShowingLoadingScreen)
-                		if ( m_rendercb )
-							m_rendercb->call( *this );
 
                 		//calling our engine render function ( on top of user render )
                 		//TODO : add a timer to display logos if not demo release...
                 		m_engine.render(*m_screen);
 
-					//refresh screen
+                    //refresh screen
 					//Log << nl << "before :" << SDL_GetTicks() - lastframe ;
 					if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
 						SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
@@ -348,6 +329,7 @@ namespace RAGE
 					//Log << nl << "after :" << SDL_GetTicks() - lastframe ;
 
 					lastframe=SDL_GetTicks();
+
 
 					return true; //not used for now
 		}

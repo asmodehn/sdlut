@@ -16,7 +16,7 @@ namespace RAGE
 	    std::map<short,Keyboard::Modifier> Keyboard::Modsdl2rage;
 	    std::map<std::string,Keyboard::Modifier> Keyboard::Modstr2rage;
 		std::map<Keyboard::Modifier,std::string> Keyboard::Modrage2str;
-	    
+
 	    short Keyboard::Key2sdl(Keyboard::Key k)
 	    {
 		    return Keyrage2sdl[k];
@@ -27,14 +27,14 @@ namespace RAGE
 	    }
 		std::string Keyboard::Key2str(Keyboard::Key k)
 	    {
-			return (k == 0) ? ("") : (Keyrage2str[k]); 
+			return (k == 0) ? ("") : (Keyrage2str[k]);
 	    }
 	    Keyboard::Key Keyboard::str2Key(std::string strk)
 	    {
 		    return Keystr2rage[strk];
 	    }
 
-	    
+
 	    short Keyboard::Modifier2sdl(Keyboard::Modifier m)
 	    {
 		    return Modrage2sdl[m];
@@ -51,7 +51,7 @@ namespace RAGE
 	    {
 		    return Modstr2rage[strm];
 	    }
-	    
+
 	    //based on the fact that Rage's enum map to in [0..number-1]. This way the vector is easily built
 	    std::vector<short> Keyboard::InitKeyMapping()
 	    {
@@ -60,7 +60,7 @@ namespace RAGE
 
 		//using a max here to support partial mapping list...
 		int maxvecindex =0;
-		
+
 		#define ASSOCIATE( key, sdlkey, strkey ) Keyrage2sdlmap[key] = sdlkey; Keysdl2rage[sdlkey] = key; Keystr2rage[strkey] = key; Keyrage2str[key] = strkey; maxvecindex = (maxvecindex>key)? maxvecindex : key;
 		#include "SDLKeyMapping.inl"
 		#undef ASSOCIATE
@@ -81,7 +81,7 @@ namespace RAGE
 
 	    //using vector because the values of enum are cointiguous
 	    std::vector<short> Keyboard::Keyrage2sdl = InitKeyMapping();
-	    
+
 	    std::vector<short> Keyboard::InitModMapping()
 	    {
 		    std::vector<short> result;
@@ -107,7 +107,7 @@ namespace RAGE
 	    }
 
 	    std::vector<short> Keyboard::Modrage2sdl = InitModMapping();
-	    
+
 	    //initialises state at size 255 because of the ASCII table size.
 	    Keyboard::Keyboard() : _state(255,false)
 	    {
@@ -186,7 +186,7 @@ namespace RAGE
                bool res = false;
 
 			//default keyboard behaviour :
-			   
+
             switch( s.getKey() )
             {
 				//ESC quits
@@ -204,7 +204,7 @@ namespace RAGE
                 break;
 				case Key_F11: //F11 toggles fullscreen
                 if (pressed==true)
-                    App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
+                    App::getInstance().getDisplay().setFullscreen(!App::getInstance().getDisplay().isFullscreen());
 					res = true;
                 break;
                 default:
@@ -240,7 +240,7 @@ namespace RAGE
                 {
                     switch( s.getKey() )
                     {
-                        //TODO deal with international characters 
+                        //TODO deal with international characters
                         default: break;
                     }
 					res=false;

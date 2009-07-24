@@ -67,6 +67,10 @@ namespace RAGE
             void setWidth(int width) { m_width = width;}
             void setHeight(int height) { m_height = height;}
             void setBPP(int bpp) { m_bpp = bpp; }
+            int getWidth() { return m_width; }
+            int getHeight() { return m_height; }
+            int getBPP() { return m_bpp; }
+
 
 			//preset or "dynamically change" properties of the display...
             bool setResizable(bool val);
@@ -116,102 +120,6 @@ namespace RAGE
 			//LATER
 			bool renderpass(unsigned long framerate, unsigned long& lastframe);
 			bool refresh();
-
-private:
-            template <class TClass>
-            class InitCB : public TSpecificFunctor2<TClass, bool, int, int>
-			{
-				public:
-					InitCB(TClass* ptobj, bool (TClass::*ptfunc) (int width, int height))
-					: TSpecificFunctor2<TClass,bool,int,int>(ptobj,ptfunc)
-					{
-					}
-
-			};
-
-            //normal pointer because we need the polymorphism here
-            TFunctor2<bool,int,int>* m_initcb;
-
-			template <class UClass>
-            class ResizeCB : public TSpecificFunctor2<UClass, bool, int, int>
-			{
-				public:
-					ResizeCB(UClass* ptobj, bool (UClass::*ptfunc) (int width, int height))
-					: TSpecificFunctor2<UClass,bool,int,int>(ptobj,ptfunc)
-					{
-					}
-
-			};
-
-            //normal pointer because we need the polymorphism here
-            TFunctor2<bool,int,int> * m_resizecb;
-
-
-			template <class VClass>
-            class NewFrameCB : public TSpecificFunctor2<VClass, bool, unsigned long, unsigned long >
-			{
-				public:
-					NewFrameCB(VClass* ptobj, bool (VClass::*ptfunc) (unsigned long, unsigned long))
-					: TSpecificFunctor2<VClass,bool,unsigned long,unsigned long>(ptobj,ptfunc)
-					{
-					}
-
-			};
-
-            //normal pointer because we need the polymorphism here
-			TFunctor2<bool,unsigned long, unsigned long> * m_newframecb;
-
-
-			template <class WClass>
-            class RenderCB : public TSpecificConstFunctor1<WClass, bool, ScreenBuffer& >
-			{
-				public:
-					RenderCB(WClass* ptobj, bool (WClass::*ptfunc) (ScreenBuffer& screen) const ) // render function should be const
-					: TSpecificConstFunctor1<WClass,bool,ScreenBuffer& >(ptobj,ptfunc)
-					{
-					}
-
-			};
-
-            //normal pointer because we need the polymorphism here
-			TFunctor1<bool,ScreenBuffer&> * m_rendercb;
-
-public:
-
-			template <class TClass>
-			void resetInitCallback(TClass* instance, bool (TClass::*func) ( int width, int height) )
-			{
-			    if ( m_initcb ) delete m_initcb, m_initcb = NULL;
-			    m_initcb = new InitCB<TClass>(instance,func);
-			}
-
-            //this callback is run whenever a resize is needed.
-            //parameter is the desired new size.
-			template <class UClass>
-			void resetResizeCallback(UClass* instance, bool (UClass::*func) ( int width, int height) )
-			{
-			    if ( m_resizecb ) delete m_resizecb, m_resizecb= NULL;
-			    m_resizecb = new ResizeCB<UClass>(instance,func);
-            }
-
-			//this callback is run just before the render
-			//deltaticks is the amount of ticks between the end of the last render and now.
-			//framerate is in fps.
-			template <class VClass>
-			void resetNewFrameCallback(VClass* instance, bool (VClass::*func) ( unsigned long framerate, unsigned long deltaticks) )
-			{
-			    if ( m_newframecb ) delete m_newframecb, m_newframecb = NULL;
-			    m_newframecb = new NewFrameCB<VClass>(instance,func);
-            }
-
-            //this callback is run just for rendering purpose. therefore it s already too late to modify anything -> const
-            //if there is anything you need to modify please use the newframe callback
-			template <class WClass>
-			void resetRenderCallback(WClass* instance, bool (WClass::*func) (RAGE::SDL::ScreenBuffer& ) const )
-			{
-			    if ( m_rendercb ) delete m_rendercb, m_rendercb = NULL;
-			    m_rendercb = new RenderCB<WClass>(instance,func);
-            }
 
 
 

@@ -81,24 +81,24 @@ int main(int argc, char** argv)
 	App::getInstance().setName ("RAGE::SDL test Color : Displayed Color order \"Red - Green - Blue - Purple if alpha is working else White\"");  //BUG HERE: Title never displayed ?!
 
     //Setting Display size and BPP
-    App::getInstance().getWindow().setDisplay(800,600); // using autodetected bpp
+    App::getInstance().getDisplay().setDisplay(800,600); // using autodetected bpp
 
 	//Purple background color (useful to test alpha / color key)
-	App::getInstance().getWindow().setBGColor(RGBColor (255,0,255));
+	App::getInstance().getDisplay().setBGColor(RGBColor (255,0,255));
 
     //Getting video informations
-    testlog << nl << App::getInstance().getWindow().getScreenBuffer().getVideoInfo() << std::endl;
+    testlog << nl << App::getInstance().getDisplay().getScreenBuffer().getVideoInfo() << std::endl;
 	//BUG HERE: displayed infos are false like available memory @ 0 for example
 
 	std::auto_ptr<MyEngine> engine(new MyEngine());
 
-	App::getInstance().getWindow().getScreenBuffer().resetInitCallback(&*engine,&MyEngine::init);
-	App::getInstance().getWindow().getScreenBuffer().resetResizeCallback(&*engine,&MyEngine::resize);
-	App::getInstance().getWindow().getScreenBuffer().resetRenderCallback(&*engine,&MyEngine::render);
+	App::getInstance().getDisplay().resetInitCallback(&*engine,&MyEngine::init);
+	App::getInstance().getDisplay().resetResizeCallback(&*engine,&MyEngine::resize);
+	App::getInstance().getDisplay().resetRenderCallback(&*engine,&MyEngine::render);
 
-    if(App::getInstance().getWindow().show())
+    if(App::getInstance().getDisplay().show())
     {
-       App::getInstance().getWindow().mainLoop();
+       App::getInstance().getDisplay().mainLoop();
     }
 
 	//engine managed by auto_ptr, deleted by the screen buffer...

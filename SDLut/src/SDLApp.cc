@@ -7,7 +7,7 @@ namespace RAGE
     namespace SDL
     {
 
-	App::App() : pvm_manager(0), pvm_window(0), pvm_mixer(0), pvm_jpool(0), m_quitRequested(false)
+	App::App() : pvm_manager(0), pvm_display(0), pvm_mixer(0), pvm_jpool(0), m_quitRequested(false)
         {
 #ifdef DEBUG
             Log << nl << "App::App() called";
@@ -120,22 +120,22 @@ namespace RAGE
                     res = pvm_manager->enableVideo();
                 }
 
-                pvm_window.reset(new Window(pvm_name, pvm_manager.get()));//manager now contains also the SDL specific settings
+                pvm_display.reset(new Display(pvm_name, pvm_manager.get()));//manager now contains also the SDL specific settings
 
 
                 //setting the required flags...
 #ifdef HAVE_OPENGL
 
-		pvm_window->setOpenGL(opengl);
+		pvm_display->setOpenGL(opengl);
 #else
 
                 if(opengl)
                     Log << nl << "Not compiled with opengl support --> Ignoring opengl window request"<< std::endl;
 #endif
 
-                    pvm_window->setFullscreen(fullscreen);
-                    pvm_window->setResizable(resizable);
-                    pvm_window->setNoFrame(noframe);
+                    pvm_display->setFullscreen(fullscreen);
+                    pvm_display->setResizable(resizable);
+                    pvm_display->setNoFrame(noframe);
 
             }
             catch (std::exception &e)
@@ -234,13 +234,13 @@ namespace RAGE
 				if  ( emergencyBreak )
 				{
 					m_quitRequested = true;
-					this->pvm_window->m_exitMainLoop = true;
+					this->pvm_display->m_exitMainLoop = true;
 				}
 				else
 				{
 					//TODO : do whatever is needed for a gracefull termination
 					m_quitRequested = true;
-					this->pvm_window->m_exitMainLoop = true;
+					this->pvm_display->m_exitMainLoop = true;
 				}
 
 				return m_quitRequested;

@@ -39,8 +39,10 @@ typedef uint32_t	Uint32;
  *
  */
 
+
+#include "Video/Display.hh"
+
 #include "SDLManager.hh"
-#include "Video/SDLWindow.hh"
 #include "Input/SDLJoystick.hh"
 #include "Audio/SDLMixer.hh"
 
@@ -57,7 +59,7 @@ namespace RAGE
     {
 
 	extern std::string GetError();
-	    
+
         class App
         {
 			bool m_quitRequested;
@@ -66,7 +68,7 @@ namespace RAGE
             std::auto_ptr<Manager> pvm_manager;
 
 	    ///Handling Video Ouput related behaviour
-            std::auto_ptr<Window> pvm_window; // for video
+            std::auto_ptr<Display> pvm_display; // for video
 
 	    ///Handling Audio Ouput related behaviour
             std::auto_ptr<Mixer> pvm_mixer; // for audio framework
@@ -117,7 +119,7 @@ namespace RAGE
 
 	    ///Minimal init for SDL
 	    bool init();
-			
+
 	    ///Initializing Video
             ///this is mandatory to get a display and event handling (window manager, mouse, keyboard)
             bool initVideo(bool fullscreen = false,bool opengl = false,  bool resizable = true, bool noframe = false);
@@ -139,7 +141,7 @@ namespace RAGE
 		 * @frequency, default files frequency
 		 * @channels, default files nb of channels
 		 * @buffer_size, default files buffer size
-		 */ 
+		 */
 	    bool initAudio(int frequency = 44100,unsigned short channels = 2,unsigned short buffer_size = 2048);
 
 	    ///Initializing Text
@@ -149,20 +151,20 @@ namespace RAGE
             bool initNet();
 
             ///Accessor to the Window
-            Window & getWindow()
+            Display & getDisplay()
             {
-		assert (pvm_window.get() && "The Window has not been created yet.To do that, use the initVideo() function before calling getWindow()." );
-                return *pvm_window;
+		assert (pvm_display.get() && "The Window has not been created yet.To do that, use the initVideo() function before calling getWindow()." );
+                return *pvm_display;
             }
-	    
-	    
+
+
 	    ///Accessor to the Mixer
 	    Mixer & getMixer()
 	    {
 		    assert (pvm_mixer.get() && "The Mixer has not been created yet.To do that, use the initAudio() function before calling getMixer()." );
 		    return *pvm_mixer;
 	    }
-	    
+
 	    ///Accessor to the Manager
             Manager & getManager()
             {
@@ -176,7 +178,7 @@ namespace RAGE
 		assert (pvm_jpool.get() && "The JoystickPool has not been created yet.To do that, use the initJoystick() function before calling getJoystickPool()." );
                 return *pvm_jpool;
             }
-			
+
 			bool requestTermination(bool emergencyBreak = false );
 			bool isTerminating () { return m_quitRequested; }
 

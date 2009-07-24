@@ -53,6 +53,7 @@
 #include "Video/SDLEngine.hh"
 #include "Video/SDLColor.hh"
 #include "Video/SDLOverlay.hh"
+#include "Video/Display.hh"
 #include "Video/ScreenBuffer.hh"
 #include "Video/Image.hh"
 

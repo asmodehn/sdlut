@@ -16,7 +16,7 @@ namespace RAGE
 
 	bool DefaultEventHandler::handleResizeEvent(int w, int h)
     {
-        App::getInstance().getWindow().resizeDisplay(w,h);
+        App::getInstance().getDisplay().resizeDisplay(w,h);
         return true;
     }
 

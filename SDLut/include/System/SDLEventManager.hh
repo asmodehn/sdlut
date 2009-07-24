@@ -33,7 +33,7 @@ namespace RAGE
         */
         class EventManager
         {
-            friend class Window; // to build the unique instance of EventManager
+            friend class Display; // to build the unique instance of EventManager
 
         protected:
 
@@ -50,7 +50,7 @@ namespace RAGE
 
 	    EventManager()  : usergeneral(false),ghndlr(new DefaultEventHandler()),usermouse(false),mhndlr(new Mouse()),userkeyboard(false), khndlr(new DefaultKeyboard())
             {
-		    
+
 	    }
 
         public :
@@ -65,7 +65,7 @@ namespace RAGE
 					delete khndlr, khndlr = NULL;
 			}
 
-			
+
             void setKeyboard(Keyboard * newkhndlr)
             {
 				delete khndlr,khndlr=NULL;
@@ -106,7 +106,7 @@ namespace RAGE
             //Pump the event loop.
             //Implicitely called by handleAll() or handleNext() but not by the "critical" methods
 	    void pump();
-	    
+
         };
     }
 }
