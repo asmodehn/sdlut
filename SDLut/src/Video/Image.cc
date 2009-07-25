@@ -69,11 +69,13 @@ namespace RAGE
     bool Image::fill (const RGBAColor& color, const Rect& dest_rect)
     {
         m_img->fill(color,dest_rect);
+		return true; //todo
     }
 
     bool Image::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)
     {
         m_img->blit( *(src.m_img), dest_rect, src_rect );
+		return true; //todo
     }
 
 

@@ -2,6 +2,7 @@
 #include "Logger.hh"
 
 #include <cstdlib>
+#include <ctime>
 
 using namespace RAGE;
 using namespace RAGE::SDL;
@@ -26,13 +27,13 @@ public:
 	bool init(int width, int height)
 	{
 	    /* initialize random seed: */
-        srand ( time(NULL) );
+        srand ( (unsigned)time(NULL) );
 
 
 	    m_width = width;
 	    m_height = height;
 
-        for ( int i=0; i<logos.size(); i++ )
+        for ( unsigned int i=0; i<logos.size(); i++ )
         {
             int newx = rand() % m_width;
             int newy = rand() % m_height;
@@ -53,7 +54,7 @@ public:
     bool newframe(unsigned long framerate, unsigned long elapsedticks )
     {
 
-        for ( int i=0; i<logos.size(); i++ )
+        for ( unsigned int i=0; i<logos.size(); i++ )
         {
             int newx = rand() % m_width;
             int newy = rand() % m_height;
@@ -105,7 +106,7 @@ int main(int argc, char** argv)
     logos.push_back(&sp2);
 
 
-    for ( int i=0; i< logos.size(); i++)
+    for ( unsigned int i=0; i< logos.size(); i++)
     {
         App::getInstance().getDisplay().getScene().add(logos[i]);
     }

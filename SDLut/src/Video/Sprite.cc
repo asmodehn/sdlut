@@ -36,12 +36,16 @@ namespace RAGE
     {
         m_posx += deltax;
         m_posy += deltay;
+
+		return true; //todo
     }
 
     bool Sprite::moveto( int posx, int posy)
     {
         m_posx = posx;
         m_posy = posy;
+
+		return true; //todo
     }
 
 

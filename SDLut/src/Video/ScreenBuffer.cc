@@ -317,7 +317,7 @@ namespace RAGE
                 //Maybe we ll do that in Screenbuffer later if small code enough...
                 std::vector<Sprite*> rlist = pm_scene->getRenderList();
 
-                for( int i = 0; i< rlist.size(); i++)
+                for( unsigned int i = 0; i< rlist.size(); i++)
                 {
                     //TODO make sure the pointer is valid here
                     assert ( rlist[i] && "ERROR : sprite has been deleted before render!!!" );
@@ -338,6 +338,8 @@ namespace RAGE
 
           		//TODO : we can here compute what part of the screen should be refreshed...
           		//for the user render callback, we can ask/expect a refresh zone in return...
+
+				return true; //todo
 		}
 
         bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
@@ -370,6 +372,8 @@ namespace RAGE
             //careful... we need double polymorphism here in the end...
             m_screen.get()->blit( *(src.m_img) , dest_rect, src_rect );
             //TODO: TEST extensively...
+
+			return true; //todo
         }
 
 

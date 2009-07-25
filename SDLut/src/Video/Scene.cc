@@ -43,6 +43,7 @@ namespace RAGE
     bool Scene::add( Sprite * s)
     {
         m_spritelist.push_back(s);
+		return true; //todo
     }
 
     //This return the list of sprite that need to be displayed, with the correct screen coordinates and dimensions
@@ -50,7 +51,7 @@ namespace RAGE
     {
         std::vector<Sprite*> res;
 
-        for ( int i=0; i<m_spritelist.size(); i++)
+        for ( unsigned int i=0; i<m_spritelist.size(); i++)
         {
 
             int posx = m_spritelist[i]->posX();
