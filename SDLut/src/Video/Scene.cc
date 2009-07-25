@@ -52,8 +52,14 @@ namespace RAGE
 
         for ( int i=0; i<m_spritelist.size(); i++)
         {
-            if ( ( m_spritelist[i]->posX() > 0 && m_spritelist[i]->posX() < m_width ) //TODO : correct this
-            && ( m_spritelist[i]->posY()>0 && m_spritelist[i]->posY() < m_height ) ) //TODO : and that
+
+            int posx = m_spritelist[i]->posX();
+            int posy = m_spritelist[i]->posY();
+//#ifdef DEBUG
+            Log << nl << "X = " << posx << " Y= " << posy;
+//#endif
+            if ( ( posx > 0 && posx < m_width ) //TODO : correct this
+            && ( posy>0 && posy< m_height ) ) //TODO : and that
             {
                 res.push_back(m_spritelist[i]);
             }

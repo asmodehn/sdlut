@@ -43,6 +43,8 @@ namespace RAGE
 
 		class ScreenBuffer
 		{
+            std::vector<Rect> refreshlist;
+            std::vector<Rect> oldlist;
 
 			int m_width;
 			int m_height;

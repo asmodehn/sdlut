@@ -22,6 +22,8 @@ class Image{
 
   RGBSurface* m_img;
 
+public: // TMP : until ImageLoader becomes operational
+
 	///Conversion Constructor
     	explicit Image(RGBSurface * s) throw (std::logic_error); ///< This one should be called only by friends
 

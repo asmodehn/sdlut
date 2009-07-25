@@ -78,6 +78,11 @@ ADD_TEST(PNG_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.png"
 ADD_TEST(TIF_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.tif")
 ADD_TEST(JPG_Loading ${EXECUTABLE_OUTPUT_PATH}/SDLtestVideo "data/SDLsample.jpg")
 
+
+ADD_EXECUTABLE(SDLtestScene SDLtestScene.cc)
+ADD_DEPENDENCIES(SDLtestScene SDLut)
+ADD_TEST(Scene_Test ${EXECUTABLE_OUTPUT_PATH}/SDLtestScene "data/smiley.bmp" )
+
 ADD_EXECUTABLE(SDLtestAudioChannel SDLtestAudioChannel.cc)
 ADD_DEPENDENCIES(SDLtestAudioChannel SDLut)
 ADD_TEST(WAV_Sound ${EXECUTABLE_OUTPUT_PATH}/SDLtestAudioChannel "data/soundSample.wav")

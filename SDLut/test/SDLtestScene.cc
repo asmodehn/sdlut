@@ -12,6 +12,8 @@ std::vector<Sprite*> logos;
 
 class MyEngine
 {
+    int m_width;
+    int m_height;
 
 public:
 
@@ -23,9 +25,18 @@ public:
 
 	bool init(int width, int height)
 	{
+	    /* initialize random seed: */
+        srand ( time(NULL) );
+
+
+	    m_width = width;
+	    m_height = height;
+
         for ( int i=0; i<logos.size(); i++ )
         {
-            logos[i].moveto(rand() % width, random() % height);
+            int newx = rand() % m_width;
+            int newy = rand() % m_height;
+            logos[i]->moveto( newx, newy );
         }
 
 		return true;
@@ -33,15 +44,20 @@ public:
 
 	bool resize(int width, int height)
 	{
+	    m_width = width;
+	    m_height = height;
+
 		return true;
 	}
 
-    bool newframe(int width, int height)
+    bool newframe(unsigned long framerate, unsigned long elapsedticks )
     {
 
         for ( int i=0; i<logos.size(); i++ )
         {
-            logos[i].moveto(rand() % width, random() % height);
+            int newx = rand() % m_width;
+            int newy = rand() % m_height;
+            logos[i]->moveto( newx, newy );
         }
 
         return true;
@@ -79,19 +95,19 @@ int main(int argc, char** argv)
 
     //TODO : improve this section by improving ImageLoader...
     SurfaceLoader loader;
-    Image loadedimage = loader.load("data/smiley.bmp");
+    Image loadedimage( loader.load("data/smiley.bmp") );
 
     Sprite sp1, sp2;
-    sp1.setImage(loadedimage);
-    sp2.setImage(loadedimage);
+    sp1.setImage(&loadedimage);
+    sp2.setImage(&loadedimage);
 
-    logos.push_back(sp1);
-    logos.push_back(sp2);
+    logos.push_back(&sp1);
+    logos.push_back(&sp2);
 
 
     for ( int i=0; i< logos.size(); i++)
     {
-        App::getInstance().getScene().add(logos[i]);
+        App::getInstance().getDisplay().getScene().add(logos[i]);
     }
 
     if(App::getInstance().getDisplay().show())

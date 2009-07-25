@@ -71,16 +71,22 @@ public:
 			// calls Engine->resize();
             bool resizeDisplay (int width, int height);
 
-            VideoSurface & getDisplay( void )
-            {
-		    //if (!pvm_screen.get()) resetDisplay();
-                return pvm_screen.getDisplay();
-            }
+
+            //VideoSurface & getDisplay( void )
+            //{
+		    ////if (!pvm_screen.get()) resetDisplay();
+            //    return pvm_screen.getDisplay();
+            //}
 
 			ScreenBuffer & getScreenBuffer( )
 			{
 				return pvm_screen;
 			}
+
+            Scene & getScene()
+            {
+                return pvm_scene;
+            }
 
             inline EventManager & getEventManager()
             {

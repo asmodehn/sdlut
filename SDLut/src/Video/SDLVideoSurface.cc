@@ -117,7 +117,7 @@ namespace RAGE
 
 		std::auto_ptr <std::list <std::pair <int, int> > > VideoSurface::Get_Resolution_List()
 		{
-			//NB:  we could use SDL_ListModes (http://www.libsdl.org/cgi/docwiki.cgi/SDL_ListModes) to do the same job as this function but it doesn't work well 
+			//NB:  we could use SDL_ListModes (http://www.libsdl.org/cgi/docwiki.cgi/SDL_ListModes) to do the same job as this function but it doesn't work well
 
 			std::auto_ptr <std::list <std::pair <int, int> > > res (new std::list <std::pair <int, int> > );
 
@@ -155,7 +155,7 @@ namespace RAGE
 
 			short bpp = 32; //we test for 32bit coz we only want resolutions available in all mode (8/16/24/32)
 			for (std::list< std::pair<int, int> >::iterator it = res->begin(); it != res->end(); )
-			{	
+			{
 				if ( SDL_VideoModeOK(it->first, it->second, bpp, SDL_FULLSCREEN) == 0 )
 					it = res->erase(it); //mode not available
 				else
@@ -201,7 +201,7 @@ namespace RAGE
             if (!newSurf.get()) //SetVideoMode has failed
             {
                 Log << "Unable to resize to " << width << " x " << height << " 2D display surface " << nl << GetError();
-				
+
 #ifdef DEBUG
         Log << nl << "VideoSurface::resize(" << width << ", " << height << ") failed.";
 #endif
@@ -247,20 +247,28 @@ Log << nl << "VideoSurface::blit (const RGBSurface& src," << dest_rect << ", " <
 
     bool VideoSurface::update(Rect r)
     {
-        fill(_background);
         SDL_UpdateRect(_surf.get(), r.getx(), r.gety(), r.getw(), r.geth());
         return true;
     }
 
     bool VideoSurface::update(std::vector<Rect> rlist)
     {
-        fill(_background);
+        //fill(_background);
 
+        /* this breaks as soon as a rect is a bit out of the screen : known issue in SDL 1.2 */
+        /* therefore we cant use it until we manage the clipping here... */
+        /*
         SDL_Rect* list = new SDL_Rect[rlist.size()];
         for (unsigned int i=0; i<rlist.size() ; i++)
             list[i]=*(rlist[i]._rect);
         SDL_UpdateRects(_surf.get(), rlist.size(), list);
- 
+        */
+
+        for ( unsigned int i=0; i<rlist.size(); i++)
+        {
+            SDL_UpdateRect(_surf.get(), rlist[i].getx(), rlist[i].gety(), rlist[i].getw(), rlist[i].geth());
+        }
+
         return true;
     }
 

@@ -306,7 +306,6 @@ namespace RAGE
 		Log << nl << "ScreenBuffer::resize() done.";
 #endif
 
-		//Forcing the refresh (display the backcolor)
 		m_screen->refresh();
 
         return res;
@@ -314,12 +313,19 @@ namespace RAGE
 
 		bool ScreenBuffer::renderpass( unsigned long framerate, unsigned long& lastframe)
 		{
+                //the scene sould here decide which sprite get displayed or not
+                //Maybe we ll do that in Screenbuffer later if small code enough...
                 std::vector<Sprite*> rlist = pm_scene->getRenderList();
 
                 for( int i = 0; i< rlist.size(); i++)
                 {
                     //TODO make sure the pointer is valid here
                     assert ( rlist[i] && "ERROR : sprite has been deleted before render!!!" );
+
+                    // get new position rectangle from sprite
+                    Rect newpos( rlist[i]->posX(), rlist[i]->posY(), rlist[i]->getImage().getWidth(), rlist[i]->getImage().getHeight() );
+                    refreshlist.push_back(newpos);
+
                     if ( rlist[i]->hasImage() )
                     {
                         blit(rlist[i]->getImage(),Point(rlist[i]->posX(), rlist[i]->posY()));
@@ -341,7 +347,14 @@ namespace RAGE
 				if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
 					SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
 
-				m_screen->refresh();
+				//m_screen->refresh();
+				//now refreshing only what is needed
+				m_screen->update(refreshlist);
+				m_screen->update(oldlist);
+				oldlist=refreshlist;
+				refreshlist.clear();
+
+
 				//Log << nl << "after :" << SDL_GetTicks() - lastframe ;
 
 				lastframe=SDL_GetTicks();
