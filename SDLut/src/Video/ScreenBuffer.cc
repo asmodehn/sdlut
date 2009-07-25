@@ -6,8 +6,8 @@ namespace RAGE
 	namespace SDL
 	{
 
-		ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error)
-		: m_width(width), m_height(height),m_bpp(bpp), pm_manager(manager), m_background(RGBColor(0,0,0))
+		ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Scene* scene, Manager* manager) throw (std::logic_error)
+		: m_width(width), m_height(height),m_bpp(bpp), pm_scene(scene), pm_manager(manager), m_background(RGBColor(0,0,0))
 		{
 
             //setting the static videoInfo to be used by all surfaces...
@@ -60,7 +60,7 @@ namespace RAGE
         //recreating Engine here to make sure both origin and destination engines are independant.
         //maybe not really needed, but safer in case of copy ( or should we completely forbid copy ? )
 		ScreenBuffer::ScreenBuffer( const ScreenBuffer & sb )
-		: m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp), pm_manager(sb.pm_manager), m_background(sb.m_background)
+		: m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp),pm_scene(sb.pm_scene), pm_manager(sb.pm_manager), m_background(sb.m_background)
 		{
 		    //warning no protection offered here in case of wrong / unsupported size ( for the moment )
 		}
@@ -314,29 +314,45 @@ namespace RAGE
 
 		bool ScreenBuffer::renderpass( unsigned long framerate, unsigned long& lastframe)
 		{
+                std::vector<Sprite*> rlist = pm_scene->getRenderList();
 
+                for( int i = 0; i< rlist.size(); i++)
+                {
+                    //TODO make sure the pointer is valid here
+                    assert ( rlist[i] && "ERROR : sprite has been deleted before render!!!" );
+                    if ( rlist[i]->hasImage() )
+                    {
+                        blit(rlist[i]->getImage(),Point(rlist[i]->posX(), rlist[i]->posY()));
+                    }
+                }
 
-                		//calling our engine render function ( on top of user render )
-                		//TODO : add a timer to display logos if not demo release...
-                		m_engine.render(*m_screen);
+           		//calling our engine render function ( on top of user render )
+           		//TODO : add a timer to display logos if not demo release...
+          		m_engine.render(*m_screen);
 
-                    //refresh screen
-					//Log << nl << "before :" << SDL_GetTicks() - lastframe ;
-					if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
-						SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
+          		//TODO : we can here compute what part of the screen should be refreshed...
+          		//for the user render callback, we can ask/expect a refresh zone in return...
+		}
 
-					m_screen->refresh();
-					//Log << nl << "after :" << SDL_GetTicks() - lastframe ;
+        bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
+        {
+                //refresh screen
+                //Log << nl << "before :" << SDL_GetTicks() - lastframe ;
+				if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
+					SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
 
-					lastframe=SDL_GetTicks();
+				m_screen->refresh();
+				//Log << nl << "after :" << SDL_GetTicks() - lastframe ;
 
+				lastframe=SDL_GetTicks();
 
-					return true; //not used for now
+				return true; //not used for now
 		}
 
 
+
         //TODO : should be in a different object than the main loop to avoid conflicts and race conditions if wrong use by the client...
-        bool ScreenBuffer::blit (Image& src, Rect& dest_rect, const Rect& src_rect)
+        bool ScreenBuffer::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)
         {
             //careful... we need double polymorphism here in the end...
             m_screen.get()->blit( *(src.m_img) , dest_rect, src_rect );

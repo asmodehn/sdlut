@@ -22,6 +22,8 @@
 #include "Video/SDLVideoSurface.hh"
 #include "Video/SDLVideoGLSurface.hh"
 #include "Video/Image.hh"
+#include "Video/Scene.hh"
+
 #ifdef HAVE_OPENGL
  #include "Video/SDLGLManager.hh"
 #endif //HAVE_OPENGL
@@ -56,10 +58,12 @@ namespace RAGE
 #endif
 			RGBColor m_background;
 
-            SDLEngine m_engine; // for now only one engine... later multiple engine will be possible
+            SDLEngine m_engine; // for now only one engine... later multiple engines will be possible
+
+            Scene* pm_scene;//TODO : later Camera, not scene...
 
 		 public:
-			ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error);
+			ScreenBuffer(int width, int height, int bpp, Scene* scene, Manager* manager) throw (std::logic_error);
 			ScreenBuffer( const ScreenBuffer & );
 			~ScreenBuffer();
 
@@ -114,12 +118,9 @@ namespace RAGE
 			bool resize(int width, int height);
 			bool show(); // return true if the screenbuffer is displayed. creates the Videosurface if needed.
 			bool hide();
-			//LATER
-			// addImage(x, y, z, "key", Image); //add an image to the list of displayed image
-			// getImage("key"); //returns a sprite = position + image... -> client can translate or mirror it.. somehow...
-			//LATER
+
 			bool renderpass(unsigned long framerate, unsigned long& lastframe);
-			bool refresh();
+			bool refresh( unsigned long framerate, unsigned long& lastframe);
 
 
 
@@ -130,25 +131,25 @@ namespace RAGE
 
         //Blit src image on the screen.
 
-            inline bool blit (Image& src, const Point& dest_pos=Point())
+            inline bool blit ( const Image& src, const Point& dest_pos=Point())
             {
 				//bydefault we blit the entire image
 				Rect dest_rect(dest_pos,src.getWidth(), src.getHeight());
                 return blit(src, dest_rect);
             }
-            inline bool blit (Image& src, const Point& dest_pos, const Rect& src_rect)
+            inline bool blit ( const Image& src, const Point& dest_pos, const Rect& src_rect)
             {
                 Rect dest_rect(dest_pos,src_rect.getw(), src_rect.geth());
                 return blit(src, dest_rect, src_rect);
             }
             //Beware ! The final blitting rectangle is saved in dest_rect.
-            inline bool blit (Image& src, Rect& dest_rect)
+            inline bool blit ( const Image& src, Rect& dest_rect)
             {
                 Rect src_rect(src.getWidth(), src.getHeight());
                 return blit(src, dest_rect, src_rect);
             }
 			//Blit src into the screen
-            bool blit (Image& src, Rect& dest_rect, const Rect& src_rect);
+            bool blit ( const Image& src, Rect& dest_rect, const Rect& src_rect);
 
 
 

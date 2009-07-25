@@ -59,7 +59,8 @@ namespace RAGE
     Display::Display(std::string title, Manager * manager)
     :	m_initcb(NULL),m_resizecb(NULL), m_newframecb(NULL), m_rendercb(NULL),
         pvm_manager(manager),
-        pvm_screen(ScreenBuffer(0,0,0, manager)),
+        pvm_scene(0,0),
+        pvm_screen(ScreenBuffer(0,0,0, &pvm_scene, manager)),
         pvm_window(title),
         //myLoadingScreen(NULL),
 		ShowingLoadingScreen(false),
@@ -70,7 +71,8 @@ namespace RAGE
     Display::Display( const Display & d)
     :   m_initcb(d.m_initcb),m_resizecb(d.m_resizecb), m_newframecb(d.m_newframecb), m_rendercb(d.m_rendercb),
         pvm_manager(d.pvm_manager),
-        pvm_screen(ScreenBuffer(0,0,0, d.pvm_manager)),
+        pvm_scene(d.pvm_scene),
+        pvm_screen(ScreenBuffer(0,0,0, &pvm_scene, d.pvm_manager)),
         pvm_window(d.pvm_window.getTitle()),
         //myLoadingScreen(NULL),
 		ShowingLoadingScreen(false),
@@ -91,8 +93,13 @@ namespace RAGE
         bool Display::setDisplay (unsigned int width, unsigned int height, unsigned int bpp)
         {
 			pvm_screen.setWidth(width);
+			pvm_scene.setWidth(width);
+
 			pvm_screen.setHeight(height);
+			pvm_scene.setHeight(height);
+
 			pvm_screen.setBPP(bpp);
+
 			return true; // for now always true.
 			//TODO: Checks must be done to make sure the required resolution is supported
         }
@@ -235,6 +242,7 @@ namespace RAGE
 
 			//if the videosurface is displayed ( ie the content of the window is shown )
             if (pvm_screen.show()) // is shown only ? can game not run hidden ??
+            //TODO : separate event and render loop
             {
 				unsigned long lastframe = SDL_GetTicks();
 				unsigned long lastevent = SDL_GetTicks();
@@ -258,11 +266,13 @@ namespace RAGE
 					//if (!ShowingLoadingScreen)
 						applyBGColor();
 
+                    pvm_screen.renderpass(framerate, lastframe);
+
 					//if (!ShowingLoadingScreen)
                 		if ( m_rendercb )
 							m_rendercb->call( pvm_screen );
 
-                    pvm_screen.renderpass(framerate, lastframe);
+                    pvm_screen.refresh(framerate, lastframe);
 
 				}
 				res = true;
