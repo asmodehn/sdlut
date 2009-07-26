@@ -322,10 +322,6 @@ namespace RAGE
                     //TODO make sure the pointer is valid here
                     assert ( rlist[i] && "ERROR : sprite has been deleted before render!!!" );
 
-                    // get new position rectangle from sprite
-                    Rect newpos( rlist[i]->posX(), rlist[i]->posY(), rlist[i]->getImage().getWidth(), rlist[i]->getImage().getHeight() );
-                    refreshlist.push_back(newpos);
-
                     if ( rlist[i]->hasImage() )
                     {
                         blit(rlist[i]->getImage(),Point(rlist[i]->posX(), rlist[i]->posY()));
@@ -371,6 +367,9 @@ namespace RAGE
         {
             //careful... we need double polymorphism here in the end...
             m_screen.get()->blit( *(src.m_img) , dest_rect, src_rect );
+
+            // adding recangle to the list of rectangle to refresh
+            refreshlist.push_back(dest_rect);
             //TODO: TEST extensively...
 
 			return true; //todo

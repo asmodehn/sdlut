@@ -32,7 +32,12 @@ namespace RAGE
 		//this render function should not modify the engine
 		bool SDLEngine::render(VideoSurface & screen) const
 		{
-			return screen.blit(*_logo,Point( screen.getWidth() - _logo->getWidth(), screen.getHeight() - _logo->getHeight()));
+		    Rect dest( screen.getWidth() - _logo->getWidth(), screen.getHeight() - _logo->getHeight(), _logo->getWidth(), _logo->getHeight());
+			bool res = screen.blit(*_logo,dest);
+			res = res && screen.update(dest);
+			//TODO :  maybe we should delay the refresh with everything ??
+			//Maybe the refresh strategy should be implemented under -> in Video Surface
+			return res;
 		}
 
 			//to initialise the engine, just called once before any render
