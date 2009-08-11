@@ -7,8 +7,8 @@
 
 namespace RAGE
 {
-    namespace SDL
-    {
+namespace SDL
+{
 
 /**
  * \class PacketUDPIf
@@ -33,14 +33,14 @@ namespace RAGE
 //using Pimpl idiom to hide use of optional dependencies or fallback behaviour
 class PacketUDPIf
 {
-	public:
+public:
 
-	PacketUDPIf() throw (std::logic_error);
-	PacketUDPIf(const PacketUDPIf &) throw (std::logic_error);
-	
-	virtual bool isNETImpl() = 0 ;
+    PacketUDPIf() throw (std::logic_error);
+    PacketUDPIf(const PacketUDPIf &) throw (std::logic_error);
 
-	virtual ~PacketUDPIf() {};
+    virtual bool isNETImpl() = 0 ;
+
+    virtual ~PacketUDPIf() {};
 };
 
 /**
@@ -64,17 +64,17 @@ class PacketUDPIf
 
 class PacketUDP
 {
-	
+
 private :
-	std::auto_ptr<PacketUDPIf> pvm_packetUDPimpl;
-	
-	public:
-	PacketUDP() throw (std::logic_error);
-	PacketUDP(const PacketUDP &) throw (std::logic_error);
-	~PacketUDP();
+    std::auto_ptr<PacketUDPIf> pvm_packetUDPimpl;
+
+public:
+    PacketUDP() throw (std::logic_error);
+    PacketUDP(const PacketUDP &) throw (std::logic_error);
+    ~PacketUDP();
 
 };
 
-	}
+}
 }
 #endif

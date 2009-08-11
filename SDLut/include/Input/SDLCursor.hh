@@ -28,52 +28,52 @@ struct SDL_Cursor;
 
 namespace RAGE
 {
-    namespace SDL
-    {
+namespace SDL
+{
 
-        typedef enum
-        {
-            arrow, blackArrow
-        }
-        CursorShape;
+typedef enum
+{
+    arrow, blackArrow
+}
+CursorShape;
 
-        class Cursor
-        {
+class Cursor
+{
 
-            friend class Manager;
+    friend class Manager;
 
-            //default shapes for cursor (XPM format)
-            //corresponding to CursorShape
-            static const char* _shape_arrow[];
-            static const char* _shape_blackArrow[];
-            static const char** shapes[2];
-            //set Cursor from XPM
-            static SDL_Cursor *init_system_cursor(const char *image[]);
+    //default shapes for cursor (XPM format)
+    //corresponding to CursorShape
+    static const char* _shape_arrow[];
+    static const char* _shape_blackArrow[];
+    static const char** shapes[2];
+    //set Cursor from XPM
+    static SDL_Cursor *init_system_cursor(const char *image[]);
 
-            //The address of SDL_Cursor structure should not change
-            SDL_Cursor * const _cursor;
+    //The address of SDL_Cursor structure should not change
+    SDL_Cursor * const _cursor;
 
-	    explicit Cursor(SDL_Cursor * c);
+    explicit Cursor(SDL_Cursor * c);
 
-        public :
-            //Constructor
-            Cursor(CursorShape sh = arrow) throw (std::logic_error);
+public :
+    //Constructor
+    Cursor(CursorShape sh = arrow) throw (std::logic_error);
 
-            //Destructor
-	    ~Cursor();
+    //Destructor
+    ~Cursor();
 
-            //Static Methods
-	    static void setCurrent (const Cursor & cur);
-	    static Cursor getCurrent (void);
-	    static void warpCurrent (Point p);
+    //Static Methods
+    static void setCurrent (const Cursor & cur);
+    static Cursor getCurrent (void);
+    static void warpCurrent (Point p);
 
-            //Methods
-	    void show(void); // show the current Cursor
-	    void hide(void); // hide the current Cursor
-	    bool isVisible(void); // query the cursor - return true if the cursor is visible
+    //Methods
+    void show(void); // show the current Cursor
+    void hide(void); // hide the current Cursor
+    bool isVisible(void); // query the cursor - return true if the cursor is visible
 
-        };
-    }
+};
+}
 } //namespace RAGE::SDL
 
 #endif

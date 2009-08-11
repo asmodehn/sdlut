@@ -20,9 +20,11 @@
 
 #include <vector>
 
- namespace RAGE{
+namespace RAGE
+{
 
-     namespace SDL{
+namespace SDL
+{
 
 //NB : For now size of world = size of display in pixel. Later we ll make a distinction, with camera and other stuff...
 class Scene
@@ -51,9 +53,9 @@ public:
 
 };
 
-     } // SDL
+} // SDL
 
- } //RAGE
+} //RAGE
 
 #endif
 

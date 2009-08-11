@@ -7,19 +7,19 @@ struct SDL_CD;
 
 namespace RAGE
 {
-    namespace SDL
+namespace SDL
 {
 
-    class CDRom
-    {
-        SDL_CD * m_drive;
+class CDRom
+{
+    SDL_CD * m_drive;
 
-    public:
-	    static int numDrives(void);
+public:
+    static int numDrives(void);
 
-        CDRom(int drive = 0) throw (std::logic_error);
-        ~CDRom(void);
-    };
+    CDRom(int drive = 0) throw (std::logic_error);
+    ~CDRom(void);
+};
 
 }
 }

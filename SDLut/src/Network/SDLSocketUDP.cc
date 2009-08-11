@@ -7,33 +7,33 @@
 
 namespace RAGE
 {
-	namespace SDL
-	{
+namespace SDL
+{
 
-	SocketUDPIf::SocketUDPIf() throw (std::logic_error)
-	{
-	}
-	
-	SocketUDPIf::SocketUDPIf( const SocketUDPIf & s)  throw (std::logic_error)
-	{
-	}
+SocketUDPIf::SocketUDPIf() throw (std::logic_error)
+{
+}
+
+SocketUDPIf::SocketUDPIf( const SocketUDPIf & s)  throw (std::logic_error)
+{
+}
 
 
 
-	SocketUDP::SocketUDP() throw (std::logic_error)
-	{
-	}
-	
-	SocketUDP::SocketUDP(const SocketUDP &) throw (std::logic_error)
-	{
-	}
-	
-	SocketUDP::~SocketUDP()
-	{
-	}
+SocketUDP::SocketUDP() throw (std::logic_error)
+{
+}
 
-	
-	}
+SocketUDP::SocketUDP(const SocketUDP &) throw (std::logic_error)
+{
+}
+
+SocketUDP::~SocketUDP()
+{
+}
+
+
+}
 }
 
 

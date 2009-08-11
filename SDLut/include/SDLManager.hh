@@ -30,52 +30,52 @@
 
 namespace RAGE
 {
-    namespace SDL
+namespace SDL
 {
 
-    //Class to manage initializations in SDL
-    class Manager
-    {
+//Class to manage initializations in SDL
+class Manager
+{
 
     friend class App;
 
-    protected:
-        bool m_opengl;
+protected:
+    bool m_opengl;
 
-        Manager(bool video = false, bool audio = false, bool timer = false, bool cdrom = false, bool joystick = false, bool noparachute = false, bool eventthread = false) throw (std::logic_error);
+    Manager(bool video = false, bool audio = false, bool timer = false, bool cdrom = false, bool joystick = false, bool noparachute = false, bool eventthread = false) throw (std::logic_error);
 
-    public:
+public:
 
-	~Manager();
+    ~Manager();
 
     //Enablers
-        bool enableTimer(void);
-        bool enableAudio(void);
-        bool enableVideo(void);
-        bool enableCdrom(void);
-        bool enableJoystick(void);
-        bool enableEverything(void);
-        bool enableNoParachute(void);
-        bool enableEventThread(void);
+    bool enableTimer(void);
+    bool enableAudio(void);
+    bool enableVideo(void);
+    bool enableCdrom(void);
+    bool enableJoystick(void);
+    bool enableEverything(void);
+    bool enableNoParachute(void);
+    bool enableEventThread(void);
 
-        //Disablers
-        void disableTimer(void);
-        void disableAudio(void);
-        void disableVideo(void);
-        void disableCdrom(void);
-        void disableJoystick(void);
-        void disableEverything(void);
-        void disableNoParachute(void);
-        void disableEventThread(void);
+    //Disablers
+    void disableTimer(void);
+    void disableAudio(void);
+    void disableVideo(void);
+    void disableCdrom(void);
+    void disableJoystick(void);
+    void disableEverything(void);
+    void disableNoParachute(void);
+    void disableEventThread(void);
 
-        //Accesseurs
-	bool isTimerEnabled(void) const;
-	bool isAudioEnabled(void) const;
-	bool isVideoEnabled(void) const;
-	bool isCdromEnabled(void) const;
-	bool isJoystickEnabled(void) const;
-	bool isNoParachuteEnabled(void) const;
-	bool isEventThreadEnabled(void) const;
+    //Accesseurs
+    bool isTimerEnabled(void) const;
+    bool isAudioEnabled(void) const;
+    bool isVideoEnabled(void) const;
+    bool isCdromEnabled(void) const;
+    bool isJoystickEnabled(void) const;
+    bool isNoParachuteEnabled(void) const;
+    bool isEventThreadEnabled(void) const;
 
     //this is aiming at becoming the library reference for whether or not
     // the openGL rendering has been activated or not.
@@ -85,10 +85,10 @@ namespace RAGE
     bool isOpenGLEnabled(void) const;
     //Used to be in Screenbuffer... probably need to do the same for other VideoSuface settings
 
-        //display all Informations
-	friend Logger & operator << (Logger & log, const Manager & man);
+    //display all Informations
+    friend Logger & operator << (Logger & log, const Manager & man);
 
-    };
+};
 }
 }//namespace RAGE::SDL
 #endif

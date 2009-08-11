@@ -4,104 +4,104 @@
 
 namespace RAGE
 {
-    namespace SDL
+namespace SDL
 {
-	std::map<short,Mouse::Button> Mouse::Buttonsdl2rage;
-	std::map<std::string,Mouse::Button> Mouse::Buttonstr2rage;
-	std::map<Mouse::Button,std::string> Mouse::Buttonrage2str;
+std::map<short,Mouse::Button> Mouse::Buttonsdl2rage;
+std::map<std::string,Mouse::Button> Mouse::Buttonstr2rage;
+std::map<Mouse::Button,std::string> Mouse::Buttonrage2str;
 
-	//based on the fact that Rage's enum map to in [0..number-1]. This way the vector is easily built
-	std::vector<short> Mouse::InitButtonMapping()
-	{
-		std::vector<short> result;
-		
-		std::map<Mouse::Button,short> Buttonrage2sdlmap;
+//based on the fact that Rage's enum map to in [0..number-1]. This way the vector is easily built
+std::vector<short> Mouse::InitButtonMapping()
+{
+    std::vector<short> result;
 
-		//using a max here to support partial mapping list...
-		int maxvecindex =0;
-		
+    std::map<Mouse::Button,short> Buttonrage2sdlmap;
+
+    //using a max here to support partial mapping list...
+    int maxvecindex =0;
+
 #define ASSOCIATE( button, sdlbutton, strbutton ) Buttonrage2sdlmap[button] = sdlbutton; Buttonsdl2rage[sdlbutton] = button; Buttonstr2rage[strbutton] = button;  Buttonrage2str[button] = strbutton; maxvecindex = (maxvecindex>button)? maxvecindex : button;
 #include "SDLButtonMapping.inl"
 #undef ASSOCIATE
 
-		{
-			result.resize(maxvecindex+1, 0);
-
-			std::map<Mouse::Button,short>::iterator it = Buttonrage2sdlmap.begin();
-			std::map<Mouse::Button, short>::iterator itEnd = Buttonrage2sdlmap.end();
-			for (; it != itEnd; ++it)
-			{
-				assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
-				result[(*it).first] = (*it).second;
-			}
-		}
-return result;
-	}
-	
-	std::vector<short> Mouse::Buttonrage2sdl = InitButtonMapping();
-	
-	
-	short Mouse::Button2sdl(Mouse::Button b)
-	{
-		return Buttonrage2sdl[b];
-	}
-	Mouse::Button Mouse::sdl2Button(short sdlb)
-	{
-		return Buttonsdl2rage[sdlb];
-	}
-	std::string  Mouse::Button2str(Mouse::Button b)
     {
-		return Buttonrage2str[b]; 
+        result.resize(maxvecindex+1, 0);
+
+        std::map<Mouse::Button,short>::iterator it = Buttonrage2sdlmap.begin();
+        std::map<Mouse::Button, short>::iterator itEnd = Buttonrage2sdlmap.end();
+        for (; it != itEnd; ++it)
+        {
+            assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
+            result[(*it).first] = (*it).second;
+        }
     }
+    return result;
+}
 
-	Mouse::Button Mouse::str2Button(std::string strb)
-	{
-		return Buttonstr2rage[strb];
-	}
+std::vector<short> Mouse::Buttonrage2sdl = InitButtonMapping();
 
-	
-    Point Mouse::getPos()
+
+short Mouse::Button2sdl(Mouse::Button b)
+{
+    return Buttonrage2sdl[b];
+}
+Mouse::Button Mouse::sdl2Button(short sdlb)
+{
+    return Buttonsdl2rage[sdlb];
+}
+std::string  Mouse::Button2str(Mouse::Button b)
+{
+    return Buttonrage2str[b];
+}
+
+Mouse::Button Mouse::str2Button(std::string strb)
+{
+    return Buttonstr2rage[strb];
+}
+
+
+Point Mouse::getPos()
+{
+    int posX,posY;
+    SDL_GetMouseState(&posX,&posY);
+    return Point(posX,posY);
+}
+
+Point Mouse::getDeltaPos()
+{
+    int rposX,rposY;
+    SDL_GetRelativeMouseState(&rposX,&rposY);
+    return Point(rposX,rposY);
+}
+
+bool Mouse::isButtonPressed(Button b)
+{
+    return ( ( SDL_GetMouseState(NULL,NULL) & SDL_BUTTON(b) ) != 0 );
+}
+
+
+Mouse::Mouse()
+{
+    if (Buttonrage2sdl.empty())
     {
-        int posX,posY;
-        SDL_GetMouseState(&posX,&posY);
-        return Point(posX,posY);
+        InitButtonMapping();
     }
+}
 
-    Point Mouse::getDeltaPos()
-    {
-        int rposX,rposY;
-        SDL_GetRelativeMouseState(&rposX,&rposY);
-        return Point(rposX,rposY);
-    }
+Mouse::~Mouse()
+{
+}
 
-    bool Mouse::isButtonPressed(Button b)
-    {
-        return ( ( SDL_GetMouseState(NULL,NULL) & SDL_BUTTON(b) ) != 0 );
-    }
-
-    
-    Mouse::Mouse()
-    {
-	    if (Buttonrage2sdl.empty())
-		{
-			InitButtonMapping();
-		}
-    }
-
-    Mouse::~Mouse()
-    {
-    }
-    
-    	//Callbacks on Mouse Events
-    bool Mouse::handleMouseMotionEvent (bool button_pressed, unsigned int x, unsigned int y,signed int xrel, signed int yrel)
-	{
-	    bool res = false;
-        return res;
-	}
-	bool Mouse::handleMouseButtonEvent (Button button, unsigned int x, unsigned int y, bool pressed)
-	{
-	    bool res = false;
-        return res;
-	}
+//Callbacks on Mouse Events
+bool Mouse::handleMouseMotionEvent (bool button_pressed, unsigned int x, unsigned int y,signed int xrel, signed int yrel)
+{
+    bool res = false;
+    return res;
+}
+bool Mouse::handleMouseButtonEvent (Button button, unsigned int x, unsigned int y, bool pressed)
+{
+    bool res = false;
+    return res;
+}
 }
 }

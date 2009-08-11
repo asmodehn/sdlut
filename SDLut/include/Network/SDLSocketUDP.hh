@@ -7,8 +7,8 @@
 
 namespace RAGE
 {
-    namespace SDL
-    {
+namespace SDL
+{
 
 /**
  * \class SocketUDPIf
@@ -33,13 +33,13 @@ namespace RAGE
 //using Pimpl idiom to hide use of optional dependencies or fallback behaviour
 class SocketUDPIf
 {
-	public:
-	SocketUDPIf() throw (std::logic_error);
-	SocketUDPIf( const SocketUDPIf & s)  throw (std::logic_error);
-		
-	virtual bool isNETImpl() = 0 ;
-	
-	virtual ~SocketUDPIf() {};
+public:
+    SocketUDPIf() throw (std::logic_error);
+    SocketUDPIf( const SocketUDPIf & s)  throw (std::logic_error);
+
+    virtual bool isNETImpl() = 0 ;
+
+    virtual ~SocketUDPIf() {};
 };
 
 /**
@@ -64,14 +64,14 @@ class SocketUDPIf
 class SocketUDP
 {
 private :
-	std::auto_ptr<SocketUDPIf> pvm_socketUDPimpl;
-	
-	public:
-	SocketUDP() throw (std::logic_error);
-	SocketUDP(const SocketUDP &) throw (std::logic_error);
-	~SocketUDP();
+    std::auto_ptr<SocketUDPIf> pvm_socketUDPimpl;
+
+public:
+    SocketUDP() throw (std::logic_error);
+    SocketUDP(const SocketUDP &) throw (std::logic_error);
+    ~SocketUDP();
 };
 
-	}
+}
 }
 #endif

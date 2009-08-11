@@ -3,9 +3,9 @@
 
 /*Checking memory leaks with VLD under Win32 only !*/
 #ifdef WIN32
-	#ifdef VLD
-		#include "vld.h"
-	#endif
+#ifdef VLD
+#include "vld.h"
+#endif
 #endif
 
 /** This file gather all the header files a user need to include to be able to use RAGE::SDL

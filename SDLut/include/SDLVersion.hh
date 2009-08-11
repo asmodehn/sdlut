@@ -27,44 +27,44 @@ struct SDL_version;
 namespace RAGE
 {
 
-    namespace SDL
+namespace SDL
+{
+
+class Version
+{
+
+    SDL_version* _compiled;
+    SDL_version* _linked;
+
+public:
+
+
+
+    typedef enum
     {
+        Main,
+        Image,
+        TTF,
+        Mixer,
+        Net
+    }Component;
 
-	    class Version
-        {
+    Version(Component c);
+    ~Version();
 
-		SDL_version* _compiled;
-        SDL_version* _linked;
+    int getcompiledmajor() const;
+    int getcompiledminor() const;
+    int getcompiledpatch() const;
+    int getlinkedmajor() const;
+    int getlinkedminor() const;
+    int getlinkedpatch() const;
 
-        public:
+    //check if link and compiled matches
+    bool check() const;
 
-
-		
-		typedef enum
-		{
-			Main,
-			Image,
-			TTF,
-			Mixer,
-			Net
-		}Component;
-		
-		Version(Component c);
-            ~Version();
-
-        int getcompiledmajor() const;
-	    int getcompiledminor() const;
-	    int getcompiledpatch() const;
-	    int getlinkedmajor() const;
-	    int getlinkedminor() const;
-	    int getlinkedpatch() const;
-
-            //check if link and compiled matches
-	    bool check() const;
-
-            friend Logger & operator << (Logger& log, const Version & v);
-        };
-    }
+    friend Logger & operator << (Logger& log, const Version & v);
+};
+}
 }
 
 #endif

@@ -6,44 +6,44 @@ struct SDL_mutex;
 
 namespace RAGE
 {
-    namespace SDL
-    {
+namespace SDL
+{
 
-        /**
-        * \class Mutex
-        *
-        * \ingroup System
-        *
-        * \brief This class is a wrapper for Mutex
-        *
-        * \author Alex
-        *
-        * \date 2007/06/14
-        *
-        * Contact: asmodehn@gna.org
-        *
-        */
+/**
+* \class Mutex
+*
+* \ingroup System
+*
+* \brief This class is a wrapper for Mutex
+*
+* \author Alex
+*
+* \date 2007/06/14
+*
+* Contact: asmodehn@gna.org
+*
+*/
 
 //TODO : check, maybe it s possible to inline everything ( lighter SDL interface ? )
 
-	class Mutex
-	{
-		SDL_mutex* pvm_mutex;
-		
-		public :
-			Mutex();
-			~Mutex();
+class Mutex
+{
+    SDL_mutex* pvm_mutex;
 
-			inline SDL_mutex & get_rSDL() const
-			{
-				return *pvm_mutex;
-			}
-			
-			bool lock();
-			bool unlock();
-	};
+public :
+    Mutex();
+    ~Mutex();
 
-    } // SDL
+    inline SDL_mutex & get_rSDL() const
+    {
+        return *pvm_mutex;
+    }
+
+    bool lock();
+    bool unlock();
+};
+
+} // SDL
 }// RAGE
 
 #endif

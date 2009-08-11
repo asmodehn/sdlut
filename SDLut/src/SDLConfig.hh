@@ -23,7 +23,7 @@
 #include "Logger.hh"
 
 //TODO : look for a possibility to include all SDLs into RAGE::SDLut::SDL namespace after changed RAGE::SDL to RAGE::SDLut
-#ifdef HAVE_OPENGL
+#ifdef WK_OPENGL_FOUND
 #include <SDL_opengl.h>
 #endif
 
@@ -34,20 +34,20 @@
 
 //Conditionals
 
-#ifdef HAVE_SDLIMAGE
+#ifdef WK_SDLIMAGE_FOUND
 #include "SDL_image.h"
 #endif
 
 
-#ifdef HAVE_SDLMIXER
+#ifdef WK_SDLMIXER_FOUND
 #include "SDL_mixer.h"
 #endif
 
-#ifdef HAVE_SDLNET
+#ifdef WK_SDLNET_FOUND
 #include "SDL_net.h"
 #endif
 
-#ifdef HAVE_SDLTTF
+#ifdef WK_SDLTTF_FOUND
 #include "SDL_ttf.h"
 #endif
 

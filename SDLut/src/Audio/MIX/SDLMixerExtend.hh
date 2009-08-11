@@ -12,7 +12,7 @@ namespace SDL
 
 //if SDL_Mixer is used, provide a class to be used as a bridge.
 //this way the client doesnt have to take care of which function is available
-#ifdef HAVE_SDLMIXER
+#ifdef WK_SDLMIXER_FOUND
 
 	//TODO : verify the meaning of samples and chunksize depending on mix or default. just to make sure...
 	class MixerExtend : public MixerIf

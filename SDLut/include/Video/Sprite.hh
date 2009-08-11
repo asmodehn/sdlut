@@ -17,11 +17,13 @@
  */
 
 
- #include "Video/Image.hh"
+#include "Video/Image.hh"
 
- namespace RAGE{
+namespace RAGE
+{
 
-     namespace SDL{
+namespace SDL
+{
 
 class Sprite
 {
@@ -41,20 +43,32 @@ public:
     Sprite( const Sprite& );
     ~Sprite();
     bool setImage( const Image * );
-    bool hasImage() { return pm_img >0; }
-    const Image & getImage() { return *pm_img; }
+    bool hasImage()
+    {
+        return pm_img >0;
+    }
+    const Image & getImage()
+    {
+        return *pm_img;
+    }
 
     bool move( int deltax, int deltay );
     bool moveto( int posx, int posy);
 
-    int posX() { return m_posx; }
-    int posY() { return m_posy; }
+    int posX()
+    {
+        return m_posx;
+    }
+    int posY()
+    {
+        return m_posy;
+    }
 
 };
 
-     } // SDL
+} // SDL
 
- } //RAGE
+} //RAGE
 
 #endif
 

@@ -9,8 +9,8 @@
 
 namespace RAGE
 {
-    namespace SDL
-    {
+namespace SDL
+{
 
 /**
  * \class SoundIf
@@ -35,20 +35,20 @@ namespace RAGE
 //using Pimpl idiom to hide use of optional dependencies or fallback behaviour
 class SoundIf
 {
-	protected:
-	std::auto_ptr<RWOps> pvm_OriginalData;
-	
-	public:
-	//Sound Loader
-	SoundIf(std::string filename, bool loop_status = false) throw (std::logic_error);
-	//Sound Copy ( careful with conversion )
-	SoundIf( const SoundIf & s)  throw (std::logic_error);
-		
-	virtual bool isMIXImpl() = 0 ;
-	//careful here, the convert behavior of different implementation must match ( mixer convert on construction it seems...)
-	virtual bool Convert (unsigned short DestinationFormat,unsigned short DestinationChannels,int DestinationFrequency) = 0 ;
-	
-	virtual ~SoundIf() {};
+protected:
+    std::auto_ptr<RWOps> pvm_OriginalData;
+
+public:
+    //Sound Loader
+    SoundIf(std::string filename, bool loop_status = false) throw (std::logic_error);
+    //Sound Copy ( careful with conversion )
+    SoundIf( const SoundIf & s)  throw (std::logic_error);
+
+    virtual bool isMIXImpl() = 0 ;
+    //careful here, the convert behavior of different implementation must match ( mixer convert on construction it seems...)
+    virtual bool Convert (unsigned short DestinationFormat,unsigned short DestinationChannels,int DestinationFrequency) = 0 ;
+
+    virtual ~SoundIf() {};
 };
 
 /**
@@ -72,19 +72,19 @@ class SoundIf
 
 class Sound
 {
-	friend class Mixer;
-	
-private :
-	std::auto_ptr<SoundIf> pvm_soundimpl;
-	
-	public:
-	Sound(std::string filename, bool loop_status = false) throw (std::logic_error);
-	Sound(const Sound &) throw (std::logic_error);
-	~Sound();
+    friend class Mixer;
 
-	bool Convert (unsigned short DestinationFormat,unsigned short DestinationChannels,int DestinationFrequency);
+private :
+    std::auto_ptr<SoundIf> pvm_soundimpl;
+
+public:
+    Sound(std::string filename, bool loop_status = false) throw (std::logic_error);
+    Sound(const Sound &) throw (std::logic_error);
+    ~Sound();
+
+    bool Convert (unsigned short DestinationFormat,unsigned short DestinationChannels,int DestinationFrequency);
 };
 
-	}
+}
 }
 #endif

@@ -12,7 +12,7 @@ namespace SDL
 
 //if SDL_TTF used, provide a class to be used as a bridge.
 //this way the client doesnt have to take care of which function is available
-#ifdef HAVE_SDLTTF
+#ifdef WK_SDLTTF_FOUND
 
 	class FontExtend : public FontImpl
 	{

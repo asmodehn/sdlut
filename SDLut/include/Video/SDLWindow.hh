@@ -16,14 +16,16 @@
  * Contact: asmodehn@gna.org
  *
  */
-
+
+
 
 
 #include "Video/SDLColor.hh"
+#include "Video/SDLRGBSurface.hh"
 
-#ifdef HAVE_SDLTTF
+#ifdef WK_SDLTTF_FOUND
 #include "Font/SDLFont.hh"
-#endif //HAVE_SDLTTF
+#endif //WK_SDLTTF_FOUND
 
 #include <memory>
 
@@ -32,52 +34,52 @@
 
 namespace RAGE
 {
-    namespace SDL
+namespace SDL
+{
+
+
+class Window
+{
+
+    friend class Display;//to be able to create the unique window
+
+protected:
+
+    std::string _title, _iconname;
+
+    std::auto_ptr<RGBSurface> _icon;
+
+    Window(std::string title); // TODO :: add the icon here
+
+public:
+
+    ~Window();
+
+
+    //return true on success, false otherwise
+    bool iconify(void);
+    void grabInput(void);
+    void releaseInput(void);
+    bool isInputGrabbed(void);
+
+protected:
+
+    void setCaption(std::string title = DEFAULT_WINDOW_TITLE, std::string iconname = DEFAULT_ICON_TITLE );
+    //oldversion
+    void getCaption(std::string & title, std::string & iconname) const;
+
+public :
+    inline void setTitle(std::string title)
     {
-
-
-        class Window
-        {
-
-        friend class Display;//to be able to create the unique window
-
-        protected:
-
-            std::string _title, _iconname;
-
-            std::auto_ptr<RGBSurface> _icon;
-
-            Window(std::string title); // TODO :: add the icon here
-
-        public:
-
-            ~Window();
-
-
-            //return true on success, false otherwise
-            bool iconify(void);
-            void grabInput(void);
-            void releaseInput(void);
-            bool isInputGrabbed(void);
-
-        protected:
-
-            void setCaption(std::string title = DEFAULT_WINDOW_TITLE, std::string iconname = DEFAULT_ICON_TITLE );
-            //oldversion
-            void getCaption(std::string & title, std::string & iconname) const;
-
-        public :
-            inline void setTitle(std::string title)
-            {
-                setCaption(title);
-            }
-            std::string getTitle() const;
-
-            void setIcon(const RGBSurface & icon);
-            std::string getIconName() const;
-
-
-        };
+        setCaption(title);
     }
+    std::string getTitle() const;
+
+    void setIcon(const RGBSurface & icon);
+    std::string getIconName() const;
+
+
+};
+}
 }
 #endif

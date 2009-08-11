@@ -4,7 +4,8 @@
 
 namespace RAGE
 {
-    namespace SDL {
+namespace SDL
+{
 
 
 JoystickPool::JoystickPool()
@@ -55,54 +56,54 @@ std::string JoystickPool::getName(int index)
 
 
 
-	std::map<short,Joystick::JoyHat> Joystick::JoyHatsdl2rage;
-	std::map<std::string,Joystick::JoyHat> Joystick::JoyHatstr2rage;
+std::map<short,Joystick::JoyHat> Joystick::JoyHatsdl2rage;
+std::map<std::string,Joystick::JoyHat> Joystick::JoyHatstr2rage;
 
-	//based on the fact that Rage's enum map to in [0..number-1]. This way the vector is easily built
-	std::vector<short> Joystick::InitJoyHatMapping()
+//based on the fact that Rage's enum map to in [0..number-1]. This way the vector is easily built
+std::vector<short> Joystick::InitJoyHatMapping()
 {
-	std::vector<short> result;
-		
-	std::map<Joystick::JoyHat,short> JoyHatrage2sdlmap;
+    std::vector<short> result;
 
-		//using a max here to support partial mapping list...
-	int maxvecindex =0;
-		
+    std::map<Joystick::JoyHat,short> JoyHatrage2sdlmap;
+
+    //using a max here to support partial mapping list...
+    int maxvecindex =0;
+
 #define ASSOCIATE( jh, sdljh, strjh ) JoyHatrage2sdlmap[jh] = sdljh; JoyHatsdl2rage[sdljh] = jh; JoyHatstr2rage[strjh] = jh; maxvecindex = (maxvecindex>jh)? maxvecindex : jh;
 #include "SDLJoyHatMapping.inl"
 #undef ASSOCIATE
 
-{
-	result.resize(maxvecindex+1, 0);
+    {
+        result.resize(maxvecindex+1, 0);
 
-	std::map<Joystick::JoyHat,short>::iterator it = JoyHatrage2sdlmap.begin();
-	std::map<Joystick::JoyHat,short>::iterator itEnd = JoyHatrage2sdlmap.end();
-	for (; it != itEnd; ++it)
-	{
-		assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
-		result[(*it).first] = (*it).second;
-	}
+        std::map<Joystick::JoyHat,short>::iterator it = JoyHatrage2sdlmap.begin();
+        std::map<Joystick::JoyHat,short>::iterator itEnd = JoyHatrage2sdlmap.end();
+        for (; it != itEnd; ++it)
+        {
+            assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
+            result[(*it).first] = (*it).second;
+        }
+    }
+    return result;
 }
-return result;
-}
-	
-	std::vector<short> Joystick::JoyHatrage2sdl = InitJoyHatMapping();
-	
 
+std::vector<short> Joystick::JoyHatrage2sdl = InitJoyHatMapping();
 
 
-	
-	short Joystick::JoyHat2sdl(Joystick::JoyHat jh)
+
+
+
+short Joystick::JoyHat2sdl(Joystick::JoyHat jh)
 {
-	return JoyHatrage2sdl[jh];
+    return JoyHatrage2sdl[jh];
 }
-	Joystick::JoyHat Joystick::sdl2JoyHat(short sdljh)
+Joystick::JoyHat Joystick::sdl2JoyHat(short sdljh)
 {
-	return JoyHatsdl2rage[sdljh];
+    return JoyHatsdl2rage[sdljh];
 }
-	Joystick::JoyHat Joystick::str2JoyHat(std::string strjh)
+Joystick::JoyHat Joystick::str2JoyHat(std::string strjh)
 {
-	return JoyHatstr2rage[strjh];
+    return JoyHatstr2rage[strjh];
 }
 
 
@@ -162,9 +163,9 @@ Point Joystick::getBallDeltaPos(int ball)
     }
     else
     {
-    #ifdef DEBUG
-    Log << nl << "Error while getting JoyBall Delta Position" << std::endl;
-    #endif
+#ifdef DEBUG
+        Log << nl << "Error while getting JoyBall Delta Position" << std::endl;
+#endif
         return Point(0,0); // no movement...
     }
 }
@@ -209,5 +210,5 @@ bool JoystickPool::handleJoyBallEvent(unsigned short joystick, unsigned short ba
 #endif
 }
 
-    }
+}
 }

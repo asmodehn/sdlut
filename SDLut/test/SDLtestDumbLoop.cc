@@ -24,17 +24,17 @@
   //Audio Init
   testlog << nl << " Enabling Audio... " << std::endl;
   testlog << ( (SDL::App::getInstance().initAudio())? "OK" : "FAILED" );
-  
+
   //Timer Init
   testlog << nl << " Enabling Timer... " << std::endl;
   testlog << ( (SDL::App::getInstance().initTimer())? "OK" : "FAILED" );
-  
- #ifdef HAVE_SDLTTF
+
+ #ifdef WK_SDLTTF_FOUND
   //Font Init
   testlog << nl << " Enabling Text... " << std::endl;
   testlog << ( (SDL::App::getInstance().initText())? "OK" : "FAILED" );
  #endif
-  
+
   App::getInstance().getWindow().resetDisplay(800,600);
   App::getInstance().getWindow().mainLoop();
   return 0;
