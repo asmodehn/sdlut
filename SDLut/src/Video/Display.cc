@@ -59,8 +59,7 @@ bool Display::isNoFrame()
 Display::Display(std::string title, Manager * manager)
         :	m_initcb(NULL),m_resizecb(NULL), m_newframecb(NULL), m_rendercb(NULL),
         pvm_manager(manager),
-        pvm_scene(0,0),
-        pvm_screen(ScreenBuffer(0,0,0, &pvm_scene, manager)),
+        pvm_screen(ScreenBuffer(0,0,0, manager)),
         pvm_window(title),
         //myLoadingScreen(NULL),
         ShowingLoadingScreen(false),
@@ -71,8 +70,7 @@ Display::Display(std::string title, Manager * manager)
 Display::Display( const Display & d)
         :   m_initcb(d.m_initcb),m_resizecb(d.m_resizecb), m_newframecb(d.m_newframecb), m_rendercb(d.m_rendercb),
         pvm_manager(d.pvm_manager),
-        pvm_scene(d.pvm_scene),
-        pvm_screen(ScreenBuffer(0,0,0, &pvm_scene, d.pvm_manager)),
+        pvm_screen(ScreenBuffer(0,0,0, d.pvm_manager)),
         pvm_window(d.pvm_window.getTitle()),
         //myLoadingScreen(NULL),
         ShowingLoadingScreen(false),
@@ -93,10 +91,8 @@ void Display::applyBGColor() const
 bool Display::setDisplay (unsigned int width, unsigned int height, unsigned int bpp)
 {
     pvm_screen.setWidth(width);
-    pvm_scene.setWidth(width);
 
     pvm_screen.setHeight(height);
-    pvm_scene.setHeight(height);
 
     pvm_screen.setBPP(bpp);
 
@@ -291,6 +287,7 @@ bool Display::mainLoop(unsigned int framerate, unsigned int eventrate)
     return res;
 
 }
+
 
 
 

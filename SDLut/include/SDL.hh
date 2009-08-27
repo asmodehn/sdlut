@@ -56,6 +56,7 @@
 #include "Video/Display.hh"
 #include "Video/ScreenBuffer.hh"
 #include "Video/Image.hh"
+#include "Video/ImageLoader.hh"
 
 /**
   * \defgroup System

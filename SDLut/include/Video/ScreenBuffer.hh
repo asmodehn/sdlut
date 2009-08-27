@@ -62,10 +62,8 @@ protected:
 
     SDLEngine m_engine; // for now only one engine... later multiple engines will be possible
 
-    Scene* pm_scene;//TODO : later Camera, not scene...
-
 public:
-    ScreenBuffer(int width, int height, int bpp, Scene* scene, Manager* manager) throw (std::logic_error);
+    ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error);
     ScreenBuffer( const ScreenBuffer & );
     ~ScreenBuffer();
 

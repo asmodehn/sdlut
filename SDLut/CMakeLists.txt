@@ -30,3 +30,7 @@ WkDoc()
 
 WkTestBuild (SDLtestColor)
 WkTestRun (SDLtestColor)
+
+WkTestBuild (SDLtestScene)
+WkTestRun (SDLtestScene)
+

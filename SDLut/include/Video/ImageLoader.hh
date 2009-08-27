@@ -6,8 +6,7 @@
  ******************************************************************************/
 
 #include "Video/Image.hh"
-
-#include "Video/Loader.hh"
+#include "Video/SDLSurfaceLoader.hh"
 
 namespace RAGE
 {
@@ -22,7 +21,7 @@ class ImageLoader
 public:
 
     ImageLoader();
-    ImageLoader( const ImageLoader & il )
+    ImageLoader( const ImageLoader & il );
     ~ImageLoader();
 
 
@@ -39,15 +38,14 @@ public:
     //creates a surface from a RWOps containing a image.
     std::auto_ptr<Image> load(RWOps & rwops) throw (std::logic_error); //TODO : add optional format
 
+    //TODO : Implement those
     //To create new surface, using standard RGBFlags and masks...
     std::auto_ptr<Image> create( void * pixeldata, int depth, int pitch, int width, int height, bool no_failure = false )throw (std::logic_error);
     std::auto_ptr<Image> create( const RGBAColor & color, int width , int height, int bpp, bool no_failure = false )throw (std::logic_error);
     std::auto_ptr<Image> create(int width, int height, int bpp, bool no_failure = false )throw (std::logic_error);
 
     //convert creates a new RGBSurface
-    std::auto_ptr<Ìmage> copyconvert(const RGBSurface &, const PixelFormat & pfmt, bool no_failure = false )throw (std::logic_error);
-
-
+    std::auto_ptr<Image> copyconvert(const RGBSurface &, const PixelFormat & pfmt, bool no_failure = false )throw (std::logic_error);
 
 };
 

@@ -6,8 +6,8 @@ namespace RAGE
 namespace SDL
 {
 
-ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Scene* scene, Manager* manager) throw (std::logic_error)
-        : m_width(width), m_height(height),m_bpp(bpp), pm_scene(scene), pm_manager(manager), m_background(RGBColor(0,0,0))
+ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error)
+        : m_width(width), m_height(height),m_bpp(bpp), pm_manager(manager), m_background(RGBColor(0,0,0))
 {
 
     //setting the static videoInfo to be used by all surfaces...
@@ -60,7 +60,7 @@ ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Scene* scene, Manager
 //recreating Engine here to make sure both origin and destination engines are independant.
 //maybe not really needed, but safer in case of copy ( or should we completely forbid copy ? )
 ScreenBuffer::ScreenBuffer( const ScreenBuffer & sb )
-        : m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp),pm_scene(sb.pm_scene), pm_manager(sb.pm_manager), m_background(sb.m_background)
+        : m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp), pm_manager(sb.pm_manager), m_background(sb.m_background)
 {
     //warning no protection offered here in case of wrong / unsupported size ( for the moment )
 }
@@ -331,21 +331,6 @@ bool ScreenBuffer::resize (int width, int height)
 
 bool ScreenBuffer::renderpass( unsigned long framerate, unsigned long& lastframe)
 {
-    //the scene sould here decide which sprite get displayed or not
-    //Maybe we ll do that in Screenbuffer later if small code enough...
-    std::vector<Sprite*> rlist = pm_scene->getRenderList();
-
-    for ( unsigned int i = 0; i< rlist.size(); i++)
-    {
-        //TODO make sure the pointer is valid here
-        assert ( rlist[i] && "ERROR : sprite has been deleted before render!!!" );
-
-        if ( rlist[i]->hasImage() )
-        {
-            blit(rlist[i]->getImage(),Point(rlist[i]->posX(), rlist[i]->posY()));
-        }
-    }
-
     //calling our engine render function ( on top of user render )
     //TODO : add a timer to display logos if not demo release...
     m_engine.render(*m_screen);

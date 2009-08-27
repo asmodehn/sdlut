@@ -58,8 +58,6 @@ protected:
     Window pvm_window; //delegating charge of the window frame and decorations only
     ScreenBuffer pvm_screen;
 
-    Scene pvm_scene;
-
 public:
     //sets Display size and BPP
     bool setDisplay( unsigned int width = 0, unsigned int height = 0, unsigned int bpp = 0 );
@@ -81,11 +79,6 @@ public:
     ScreenBuffer & getScreenBuffer( )
     {
         return pvm_screen;
-    }
-
-    Scene & getScene()
-    {
-        return pvm_scene;
     }
 
     inline EventManager & getEventManager()
