@@ -10,7 +10,7 @@ namespace SDL
 //Conversion Constructor
 GLSurface::GLSurface(SDL_Surface * s) throw (std::logic_error)
 try :
-    RGBSurface(s), textureWidth(0), textureHeight(0), texturePixels(NULL), modified(false)
+    RGBSurface(s), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
 {
     computeGLWidthHeight();
     convertPixels();
@@ -24,7 +24,7 @@ catch (std::exception &e)
 
 GLSurface::GLSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error)
 try :
-    RGBSurface(s), textureWidth(0), textureHeight(0), texturePixels(NULL), modified(false)
+    RGBSurface(s), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
 {
     computeGLWidthHeight();
     convertPixels();
@@ -43,7 +43,7 @@ GLSurface::GLSurface( int width, int height, int bpp, bool alpha , bool colorkey
                       unsigned long a_mask
                     ) throw (std::logic_error)
 try :
-    RGBSurface(width, height, bpp, alpha, colorkey, hardware, r_mask, g_mask, b_mask, a_mask),textureWidth(0), textureHeight(0), texturePixels(NULL), modified(false)
+    RGBSurface(width, height, bpp, alpha, colorkey, hardware, r_mask, g_mask, b_mask, a_mask), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
 {
     computeGLWidthHeight();
     convertPixels();
@@ -62,7 +62,7 @@ GLSurface::GLSurface( void * pixeldata, int depth, int pitch, int width, int hei
                       unsigned long a_mask
                     ) throw (std::logic_error)
 try	:
-    RGBSurface(pixeldata, depth, pitch, width, height, r_mask, g_mask, b_mask, a_mask),textureWidth(0), textureHeight(0), texturePixels(NULL), modified(false)
+    RGBSurface(pixeldata, depth, pitch, width, height, r_mask, g_mask, b_mask, a_mask), modified(false),textureWidth(0), textureHeight(0), texturePixels(NULL)
 {
     computeGLWidthHeight();
     convertPixels();

@@ -57,24 +57,25 @@ bool Display::isNoFrame()
 
 
 Display::Display(std::string title, Manager * manager)
-        :	m_initcb(NULL),m_resizecb(NULL), m_newframecb(NULL), m_rendercb(NULL),
+        : m_exitMainLoop(false),
         pvm_manager(manager),
-        pvm_screen(ScreenBuffer(0,0,0, manager)),
         pvm_window(title),
+        pvm_screen(ScreenBuffer(0,0,0, manager)),
         //myLoadingScreen(NULL),
         ShowingLoadingScreen(false),
-        m_exitMainLoop(false)
+        m_initcb(NULL),m_resizecb(NULL), m_newframecb(NULL), m_rendercb(NULL)
 {
 }
 
 Display::Display( const Display & d)
-        :   m_initcb(d.m_initcb),m_resizecb(d.m_resizecb), m_newframecb(d.m_newframecb), m_rendercb(d.m_rendercb),
+        : m_exitMainLoop(false),
         pvm_manager(d.pvm_manager),
-        pvm_screen(ScreenBuffer(0,0,0, d.pvm_manager)),
         pvm_window(d.pvm_window.getTitle()),
+        pvm_screen(ScreenBuffer(0,0,0, d.pvm_manager)),
         //myLoadingScreen(NULL),
+
         ShowingLoadingScreen(false),
-        m_exitMainLoop(false)
+        m_initcb(d.m_initcb),m_resizecb(d.m_resizecb), m_newframecb(d.m_newframecb), m_rendercb(d.m_rendercb)
 {
 }
 

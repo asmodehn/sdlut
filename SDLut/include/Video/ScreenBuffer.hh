@@ -22,7 +22,6 @@
 #include "Video/SDLVideoSurface.hh"
 #include "Video/SDLVideoGLSurface.hh"
 #include "Video/Image.hh"
-#include "Video/Scene.hh"
 
 #ifdef WK_OPENGL_FOUND
 #include "Video/SDLGLManager.hh"
