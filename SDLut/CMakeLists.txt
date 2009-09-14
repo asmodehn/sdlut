@@ -10,13 +10,13 @@ WkProject ( SDLut CXX)
 # this should be a dependency
 #INCLUDE_DIRECTORIES(${SDLut_SOURCE_DIR}/../Core/include )
 
-WkDepends ( Core REQUIRED )
-WkDepends ( SDL REQUIRED )
-WkDepends ( OpenGL )
-WkDepends ( SDL_image)
-WkDepends ( SDL_ttf)
-WkDepends ( SDL_mixer)
-WkDepends ( SDL_net)
+WkDependsInclude ( Core REQUIRED )
+WkDependsInclude ( SDL REQUIRED )
+WkDependsInclude ( OpenGL )
+WkDependsInclude ( SDL_image)
+WkDependsInclude ( SDL_ttf)
+WkDependsInclude ( SDL_mixer)
+WkDependsInclude ( SDL_net)
 
 WkBuild ( LIBRARY STATIC )
 
