@@ -3,18 +3,18 @@
 
 namespace misc
 {
-	template <bool> struct compile_time_check;
+template <bool> struct compile_time_check;
 
-	template <> struct compile_time_check<true>{};
+template <> struct compile_time_check<true> {};
 
 }
-    
- /*
-    Similiar to assert, StaticAssert is only in operation when NDEBUG is not
-    defined. It will test its first argument at compile time and on failure
-    report the error message of the second argument, which must be a valid c++
-    classname. i.e. no spaces, punctuation or reserved keywords.
-    */
+
+/*
+   Similiar to assert, StaticAssert is only in operation when NDEBUG is not
+   defined. It will test its first argument at compile time and on failure
+   report the error message of the second argument, which must be a valid c++
+   classname. i.e. no spaces, punctuation or reserved keywords.
+   */
 
 #ifndef NDEBUG
 #   define StaticAssert1(test, errormsg)                         \

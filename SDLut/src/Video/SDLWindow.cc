@@ -95,7 +95,7 @@ Window::Window(std::string title)
         Log << nl << e.what() << std::endl;
     }
 
-    setCaption(_title );
+    setCaption(_title,_title );
     SDL_WM_SetIcon( const_cast<SDL_Surface*>(&_icon->get_rSDL()) , NULL);
 
 #ifdef DEBUG

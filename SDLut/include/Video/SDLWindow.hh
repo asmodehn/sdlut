@@ -71,7 +71,12 @@ protected:
 public :
     inline void setTitle(std::string title)
     {
-        setCaption(title);
+        setCaption(title,title);
+    }
+
+    inline void setTitle(std::string title, std::string icon_title)
+    {
+        setCaption(title,icon_title);
     }
     std::string getTitle() const;
 

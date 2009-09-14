@@ -8,8 +8,9 @@ INCLUDE ( CMake/WkDoc.cmake )
 WkProject ( SDLut CXX)
 
 # this should be a dependency
-INCLUDE_DIRECTORIES(${SDLut_SOURCE_DIR}/../Core/include )
+#INCLUDE_DIRECTORIES(${SDLut_SOURCE_DIR}/../Core/include )
 
+WkDepends ( Core REQUIRED )
 WkDepends ( SDL REQUIRED )
 WkDepends ( OpenGL )
 WkDepends ( SDL_image)
@@ -19,6 +20,7 @@ WkDepends ( SDL_net)
 
 WkBuild ( LIBRARY STATIC )
 
+WkDependsLink ( Core )
 WkDependsLink ( SDL )
 WkDependsLink ( OpenGL )
 WkDependsLink ( SDL_image)
