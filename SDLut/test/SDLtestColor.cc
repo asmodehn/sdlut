@@ -1,10 +1,7 @@
 #include "SDL.hh"
-#include "Logger.hh"
 
 using namespace RAGE;
 using namespace RAGE::SDL;
-
-Logger Log("Test Color");
 
 	Image* red;
 	Image* green;
@@ -33,11 +30,11 @@ public:
 		alpha = new Image(width-red->getWidth()-green->getWidth()-blue->getWidth(),height,32,true);
 		alpha->fill(RGBAColor(255,255,255,0));
 
-		Log << nl << "Red Pixel : " << std::hex << red->getpixel(0,0);
-		Log << nl << "Green Pixel : " << std::hex << green->getpixel(0,0);
-		Log << nl << "Blue Pixel : " << std::hex << blue->getpixel(0,0);
+		std::cout << "Red Pixel : " << std::hex << red->getpixel(0,0);
+		std::cout << "Green Pixel : " << std::hex << green->getpixel(0,0);
+		std::cout << "Blue Pixel : " << std::hex << blue->getpixel(0,0);
 		//alpha->setpixel(0,0,RGBAColor(255,255,255,0)); //TMP : for testing only
-		Log << nl << "Alpha Pixel : " << std::hex << alpha->getpixel(0,0);
+		std::cout << "Alpha Pixel : " << std::hex << alpha->getpixel(0,0);
 
 		return true;
 	}
@@ -71,7 +68,6 @@ public:
 
 int main(int argc, char** argv)
 {
-    Logger testlog("Test Log");
 
 	bool ogl = false;
 	if (argc > 1 && std::string(argv[1]) == "opengl" ) ogl = true;
@@ -87,8 +83,10 @@ int main(int argc, char** argv)
 	App::getInstance().getDisplay().setBGColor(RGBColor (255,0,255));
 
     //Getting video informations
-    testlog << nl << App::getInstance().getDisplay().getScreenBuffer().getVideoInfo() << std::endl;
+    //std::cout << App::getInstance().getDisplay().getScreenBuffer().getVideoInfo() << std::endl;
 	//BUG HERE: displayed infos are false like available memory @ 0 for example
+	//this shouldnt work anymore since we moved the Log out of SDLut
+	//TODO : find a way to force the dump of info into the SDLut Log
 
 	std::auto_ptr<MyEngine> engine(new MyEngine());
 

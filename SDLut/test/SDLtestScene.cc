@@ -1,13 +1,10 @@
 #include "SDL.hh"
-#include "Logger.hh"
 
 #include <cstdlib>
 #include <ctime>
 
 using namespace RAGE;
 using namespace RAGE::SDL;
-
-Logger Log("Test Scene");
 
 class Sprite
 {
@@ -153,7 +150,7 @@ std::vector<Sprite*> getRenderList() const
         int posx = m_spritelist[i]->posX();
         int posy = m_spritelist[i]->posY();
 //#ifdef DEBUG
-        //Log << nl << "X = " << posx << " Y= " << posy;
+        //std::cout << "X = " << posx << " Y= " << posy;
 //#endif
         if ( ( posx > 0 && posx < m_width ) //TODO : correct this
                 && ( posy>0 && posy< m_height ) ) //TODO : and that
@@ -261,7 +258,6 @@ public:
 
 int main(int argc, char** argv)
 {
-    Logger testlog("Test Log");
 
 	bool ogl = false;
 	if (argc > 1 && std::string(argv[1]) == "opengl" ) ogl = true;
