@@ -13,125 +13,125 @@ Made by XorfacX
 
 namespace gcn
 {
-    const SDLut::RGBAColor SDLutImage::magicPink = SDLut::RGBAColor(255,0,255,255);
+const SDLut::RGBAColor SDLutImage::magicPink = SDLut::RGBAColor(255,0,255,255);
 
-    SDLutImage::SDLutImage(SDLut::RGBSurface* surface, bool autoFree)
+SDLutImage::SDLutImage(SDLut::RGBSurface* surface, bool autoFree)
+{
+    mAutoFree = autoFree;
+    mSurface = surface;
+}
+
+SDLutImage::~SDLutImage()
+{
+    if (mAutoFree)
     {
-        mAutoFree = autoFree;
-        mSurface = surface;
+        free();
+    }
+}
+
+SDLut::RGBSurface* SDLutImage::getSurface() const
+{
+    return mSurface;
+}
+
+int SDLutImage::getWidth() const
+{
+    if (mSurface == NULL)
+    {
+        throw GCN_EXCEPTION("Trying to get the width of a non loaded image.");
     }
 
-    SDLutImage::~SDLutImage()
+    return mSurface->getWidth();
+}
+
+int SDLutImage::getHeight() const
+{
+    if (mSurface == NULL)
     {
-        if (mAutoFree)
+        throw GCN_EXCEPTION("Trying to get the height of a non loaded image.");
+    }
+
+    return mSurface->getHeight();
+}
+
+gcn::Color SDLutImage::getPixel(int x, int y)
+{
+    if (mSurface == NULL)
+    {
+        throw GCN_EXCEPTION("Trying to get a pixel from a non loaded image.");
+    }
+    SDLut::RGBAColor color = SDLutgetPixel((SDLut::BaseSurface*&)mSurface, x, y);
+    return gcn::Color( color.getR(), color.getG(), color.getB(), color.getA() );
+}
+
+void SDLutImage::putPixel(int x, int y, const gcn::Color& color)
+{
+    if (mSurface == NULL)
+    {
+        throw GCN_EXCEPTION("Trying to put a pixel in a non loaded image.");
+    }
+
+    SDLutputPixel((SDLut::BaseSurface*&)mSurface, x, y, color);
+}
+
+void SDLutImage::convertToDisplayFormat()
+{
+    if (mSurface == NULL)
+    {
+        throw GCN_EXCEPTION("Trying to convert a non loaded image to display format.");
+    }
+
+    SDLut::RGBAColor pink = magicPink;
+
+    bool hasPink = false;
+    bool hasAlpha = false;
+
+    for (signed int x = 0; x < mSurface->getWidth(); x++)
+    {
+        for (signed int y = 0; y < mSurface->getHeight(); y++)
         {
-            free();
+            SDLut::RGBAColor Current_pxColor = SDLutgetPixel((SDLut::BaseSurface*&)mSurface, x, y);
+
+            /*Looking for pink color as it's the default ColorKey for image in GuiChan*/
+            if (!hasPink)
+                if (Current_pxColor == pink )
+                    hasPink = true;
+
+            /*looking for an alpha*/
+            if (!hasAlpha)
+                if ( Current_pxColor.getA() != 255 )
+                {
+                    hasAlpha = true;
+                    pink.setA( Current_pxColor.getA() );
+                }
+
+
+            //leave loop when both has been found
+            if ( hasPink && hasAlpha )
+                break;
         }
+        //leave loop when both has been found
+        if ( hasPink && hasAlpha )
+            break;
+
     }
 
-    SDLut::RGBSurface* SDLutImage::getSurface() const
+    mSurface->optimise(hasAlpha);
+
+    //Enable alpha-blending with SDL_SRCALPHA
+    if (hasAlpha)
     {
-        return mSurface;
+        mSurface->resetFlags(true,false,false,true);
     }
 
-    int SDLutImage::getWidth() const
+    if (hasPink)
     {
-        if (mSurface == NULL)
-        {
-            throw GCN_EXCEPTION("Trying to get the width of a non loaded image.");
-        }
-
-        return mSurface->getWidth();
+        mSurface->setColorKeyAndAlpha( pink, true );
     }
+}
 
-    int SDLutImage::getHeight() const
-    {
-        if (mSurface == NULL)
-        {
-            throw GCN_EXCEPTION("Trying to get the height of a non loaded image.");
-        }
-
-        return mSurface->getHeight();
-    }
-
-	gcn::Color SDLutImage::getPixel(int x, int y)
-    {
-        if (mSurface == NULL)
-        {
-            throw GCN_EXCEPTION("Trying to get a pixel from a non loaded image.");
-        }
-		SDLut::RGBAColor color = SDLutgetPixel((SDLut::BaseSurface*&)mSurface, x, y);
-		return gcn::Color( color.getR(), color.getG(), color.getB(), color.getA() );
-    }
-
-    void SDLutImage::putPixel(int x, int y, const gcn::Color& color)
-    {
-		if (mSurface == NULL)
-        {
-            throw GCN_EXCEPTION("Trying to put a pixel in a non loaded image.");
-        }
-
-		SDLutputPixel((SDLut::BaseSurface*&)mSurface, x, y, color);
-    }
-
-    void SDLutImage::convertToDisplayFormat()
-    {
-        if (mSurface == NULL)
-        {
-            throw GCN_EXCEPTION("Trying to convert a non loaded image to display format.");
-        }
-
-		SDLut::RGBAColor pink = magicPink;
-		
-        bool hasPink = false;
-        bool hasAlpha = false;
-
-        for (signed int x = 0; x < mSurface->getWidth(); x++)
-        {
-			for (signed int y = 0; y < mSurface->getHeight(); y++)
-			{
-				SDLut::RGBAColor Current_pxColor = SDLutgetPixel((SDLut::BaseSurface*&)mSurface, x, y);
-
-				/*Looking for pink color as it's the default ColorKey for image in GuiChan*/
-				if (!hasPink)
-					if (Current_pxColor == pink )
-					hasPink = true;
-								
-				/*looking for an alpha*/
-				if (!hasAlpha)
-					if ( Current_pxColor.getA() != 255 )
-					{
-						hasAlpha = true;
-						pink.setA( Current_pxColor.getA() );
-					}
-
-
-				//leave loop when both has been found
-				if ( hasPink && hasAlpha )
-					break;
-			}
-			//leave loop when both has been found
-			if ( hasPink && hasAlpha )
-				break;
-			
-        }
-
-		mSurface->optimise(hasAlpha);
-
-		//Enable alpha-blending with SDL_SRCALPHA
-        if (hasAlpha)
-        {
-			mSurface->resetFlags(true,false,false,true);
-        }
-
-        if (hasPink)
-        {
-			mSurface->setColorKeyAndAlpha( pink, true );
-        }		
-    }
-
-    void SDLutImage::free()
-    {
-        delete mSurface, mSurface = NULL;
-    }
+void SDLutImage::free()
+{
+    delete mSurface, mSurface = NULL;
+}
 }

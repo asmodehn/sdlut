@@ -1,4 +1,4 @@
-/* 
+/*
 Made by XorfacX
 */
 #ifndef GCN_SDLutDepends_HPP

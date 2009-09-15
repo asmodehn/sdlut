@@ -5,9 +5,9 @@
 
 /*Checking memory leaks with VLD under Win32 only !*/
 #ifdef WIN32
-	#ifdef VLD
-		#include "vld.h"
-	#endif
+#ifdef VLD
+#include "vld.h"
+#endif
 #endif
 
 #include <guichan/sdlut/sdlutgraphics.hpp>
