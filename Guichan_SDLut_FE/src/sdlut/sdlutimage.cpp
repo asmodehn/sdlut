@@ -15,7 +15,7 @@ namespace gcn
 {
 const SDLut::RGBAColor SDLutImage::magicPink = SDLut::RGBAColor(255,0,255,255);
 
-SDLutImage::SDLutImage(SDLut::RGBSurface* surface, bool autoFree)
+SDLutImage::SDLutImage(SDLut::Image* surface, bool autoFree)
 {
     mAutoFree = autoFree;
     mSurface = surface;
@@ -29,7 +29,7 @@ SDLutImage::~SDLutImage()
     }
 }
 
-SDLut::RGBSurface* SDLutImage::getSurface() const
+SDLut::Image* SDLutImage::getSurface() const
 {
     return mSurface;
 }
@@ -60,7 +60,7 @@ gcn::Color SDLutImage::getPixel(int x, int y)
     {
         throw GCN_EXCEPTION("Trying to get a pixel from a non loaded image.");
     }
-    SDLut::RGBAColor color = SDLutgetPixel((SDLut::BaseSurface*&)mSurface, x, y);
+    SDLut::RGBAColor color = SDLutgetPixel((SDLut::Image*&)mSurface, x, y);
     return gcn::Color( color.getR(), color.getG(), color.getB(), color.getA() );
 }
 
@@ -71,11 +71,13 @@ void SDLutImage::putPixel(int x, int y, const gcn::Color& color)
         throw GCN_EXCEPTION("Trying to put a pixel in a non loaded image.");
     }
 
-    SDLutputPixel((SDLut::BaseSurface*&)mSurface, x, y, color);
+    SDLutputPixel((SDLut::Image*&)mSurface, x, y, color);
 }
 
 void SDLutImage::convertToDisplayFormat()
 {
+    //This already exist surely somewhere in SDLut... we should use that method instead
+    //TODO
     if (mSurface == NULL)
     {
         throw GCN_EXCEPTION("Trying to convert a non loaded image to display format.");
@@ -90,7 +92,7 @@ void SDLutImage::convertToDisplayFormat()
     {
         for (signed int y = 0; y < mSurface->getHeight(); y++)
         {
-            SDLut::RGBAColor Current_pxColor = SDLutgetPixel((SDLut::BaseSurface*&)mSurface, x, y);
+            SDLut::RGBAColor Current_pxColor = SDLutgetPixel((SDLut::Image*&)mSurface, x, y);
 
             /*Looking for pink color as it's the default ColorKey for image in GuiChan*/
             if (!hasPink)

@@ -31,7 +31,7 @@ public:
      * @param autoFree true if the surface should automatically be deleted.
      */
     static const SDLut::RGBAColor magicPink;
-    SDLutImage(SDLut::RGBSurface* surface, bool autoFree);
+    SDLutImage(SDLut::Image* surface, bool autoFree);
 
     /**
      * Destructor.
@@ -60,7 +60,7 @@ public:
     virtual void convertToDisplayFormat();
 
 protected:
-    SDLut::RGBSurface* mSurface;
+    SDLut::Image* mSurface;
     bool mAutoFree;
 };
 }

@@ -28,7 +28,7 @@ SDLutGraphics::SDLutGraphics()
     mAlpha = false;
 }
 
-void SDLutGraphics::setTarget(SDLut::BaseSurface* target)
+void SDLutGraphics::setTarget(SDLut::ScreenBuffer* target)
 {
     mTarget = target;
 }

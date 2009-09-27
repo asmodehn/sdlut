@@ -27,10 +27,8 @@ public:
     virtual Image* load(const std::string& filename, const SDLut::RGBAColor& rgba_color, bool convertToDisplayFormat = true);
 
 protected:
-    /* ALREADY DEFINED IN SDLUT
-    virtual RGBSurface* loadSDLutSurface(const std::string& filename);
-    */
-    virtual bool convertToStandardFormat(SDLut::RGBSurface* surface);
+
+    SDLut::ImageLoader sdlutimgloader;
 
 };
 }

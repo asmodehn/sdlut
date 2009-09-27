@@ -37,7 +37,7 @@ public:
      *
      * @param target the target to draw to.
      */
-    virtual void setTarget(SDLut::BaseSurface* target);
+    virtual void setTarget(SDLut::ScreenBuffer* target);
 
     /**
      * Gets the target BaseSurface.

@@ -15,16 +15,9 @@ namespace gcn
 {
 Image* SDLutImageLoader::load(const std::string& filename, bool convertToDisplayFormat)
 {
-    SDLut::RGBSurface* surface = new SDLut::RGBSurface(filename);
-    SDLutImage* image = NULL;
-    if ( true /*convertToStandardFormat(surface)*/ )
-    {
-        image = new SDLutImage( surface , true );
-    }
-    else
-    {
-        throw GCN_EXCEPTION( "Unable to convert to Standard Format " );
-    }
+
+    std::auto_ptr<SDLut::Image> img=sdlutimgloader.load(filename);
+    SDLutImage* image = new SDLutImage( img.release() , true );
 
     if ( image && convertToDisplayFormat)
     {
@@ -36,16 +29,8 @@ Image* SDLutImageLoader::load(const std::string& filename, bool convertToDisplay
 
 Image* SDLutImageLoader::load(const std::string& filename, const SDLut::RGBAColor& rgba_color, bool convertToDisplayFormat)
 {
-    SDLut::RGBSurface* surface = new SDLut::RGBSurface(filename, rgba_color);
-    SDLutImage* image = NULL;
-    if ( true /*convertToStandardFormat(surface)*/ )
-    {
-        image = new SDLutImage( surface , true );
-    }
-    else
-    {
-        throw GCN_EXCEPTION( "Unable to convert to Standard Format " );
-    }
+    std::auto_ptr<SDLut::Image> img=sdlutimgloader.load(filename, rgba_color);
+    SDLutImage* image = new SDLutImage( img.release() , true );
 
     if (image && convertToDisplayFormat)
     {
@@ -53,15 +38,6 @@ Image* SDLutImageLoader::load(const std::string& filename, const SDLut::RGBAColo
     }
 
     return image;
-}
-
-bool SDLutImageLoader::convertToStandardFormat(SDLut::RGBSurface* surface)
-{
-    SDLut::RGBSurface::resetFlags(true,false,false,false);
-    SDLut::RGBSurface colorSurface(SDLut::RGBColor(),0,0,32);
-    SDLut::RGBSurface::resetFlags();
-
-    return surface->convert(colorSurface.getPixelFormat(),true,false,false,false);
 }
 
 }
