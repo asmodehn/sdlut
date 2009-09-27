@@ -20,10 +20,9 @@ class Image;
 class GCN_EXTENSION_DECLSPEC SDLutImageLoader : public ImageLoader
 {
 public:
+    static const SDLut::RGBAColor magicPink;
 
     // Inherited from ImageLoader
-
-    virtual Image* load(const std::string& filename, bool convertToDisplayFormat = true);
     virtual Image* load(const std::string& filename, const SDLut::RGBAColor& rgba_color, bool convertToDisplayFormat = true);
 
 protected:

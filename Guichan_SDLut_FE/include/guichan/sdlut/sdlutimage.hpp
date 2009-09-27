@@ -30,7 +30,9 @@ public:
      * @param surface the surface from which to load.
      * @param autoFree true if the surface should automatically be deleted.
      */
-    static const SDLut::RGBAColor magicPink;
+
+    //moved into loader
+    //static const SDLut::RGBAColor magicPink;
     SDLutImage(SDLut::Image* surface, bool autoFree);
 
     /**
@@ -43,7 +45,7 @@ public:
      *
      * @return the RGBSurface for the image.
      */
-    virtual SDLut::RGBSurface* getSurface() const;
+    virtual SDLut::Image* getSurface() const;
 
     // Inherited from Image
 

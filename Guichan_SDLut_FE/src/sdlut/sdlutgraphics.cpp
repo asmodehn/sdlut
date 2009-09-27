@@ -33,7 +33,7 @@ void SDLutGraphics::setTarget(SDLut::ScreenBuffer* target)
     mTarget = target;
 }
 
-SDLut::BaseSurface* SDLutGraphics::getTarget() const
+SDLut::ScreenBuffer* SDLutGraphics::getTarget() const
 {
     return mTarget;
 }
@@ -157,7 +157,6 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
         int y2 = area.y + area.height < top.y + top.height ? area.y + area.height : top.y + top.height;
         int x, y;
 
-        mTarget->lock();
         for (y = y1; y < y2; y++)
         {
             for (x = x1; x < x2; x++)
@@ -165,8 +164,6 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
                 SDLutputPixelAlpha(mTarget, x, y, mColor);
             }
         }
-        mTarget->unlock();
-        //SDL_UnlockSurface(mTarget);
 
     }
     else
@@ -638,7 +635,7 @@ const gcn::Color& SDLutGraphics::getColor() const
     return mColor;
 }
 
-void SDLutGraphics::drawSDLutSurface(SDLut::BaseSurface& surface,
+void SDLutGraphics::drawSDLutSurface(SDLut::Image& surface,
                                      SDLut::Rect& source,
                                      SDLut::Rect& destination)
 {

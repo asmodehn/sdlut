@@ -92,7 +92,7 @@ void SDLutFont::drawString(Graphics* graphics, const std::string& text, const in
     RGBCol.setR(col.r);
     RGBCol.setG(col.g);
 
-    std::auto_ptr<SDLut::RGBSurface> textSurface = mFont->render(text.c_str(), RGBCol, mRenderMode);
+    std::auto_ptr<SDLut::Image> textSurface = mFont->render(text.c_str(), RGBCol, mRenderMode);
 
     SDLut::Rect dst, src;
     dst.setx( x );

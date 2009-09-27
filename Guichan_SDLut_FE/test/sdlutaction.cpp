@@ -9,7 +9,7 @@ namespace globals
 {
     gcn::Gui* gui;
 }
-#include "action.hpp"
+#include "guichan/action.hpp>"
 
 using namespace RAGE;
 using namespace RAGE::SDL;
@@ -57,11 +57,11 @@ public:
 					}
 					res = true;
 					break;
-                
+
 				default:
 					res = false;
             }
-		
+
 		/*
          * Now that we are done polling and using SDLut events we pass
          * the leftovers to the SDLutInput object to later be handled by
@@ -74,7 +74,7 @@ public:
 			input->pushInput(s, pressed);
 			res = true;
 		}
-	
+
         return res;
     }
 };
@@ -120,10 +120,10 @@ public:
 	RenderEngine(){}
 
     virtual ~RenderEngine(){}
-			
+
     bool init(int width, int height)
 	{
-		
+
 		return true;
 	}
 
@@ -135,7 +135,7 @@ public:
 	void prerender(unsigned long deltaticks)
 	{
 		//Check Gui Logic
-		gui->logic();        
+		gui->logic();
 	}
 
 	void render(VideoSurface& screen) const
@@ -175,7 +175,7 @@ void implement(bool ogl = false)
 
 	oglgraphics = new gcn::SDLutOGLGraphics(640, 480);
 	graphics = new gcn::SDLutGraphics();
-    
+
 //Gui Initialization
     gui = new gcn::Gui();
 	if (ogl)
@@ -191,9 +191,9 @@ else
 
 	input = new gcn::SDLutInput();
     gui->setInput(input);
-    
+
 	action::init();
-	
+
 //SDLuT Stuff
 	myKeyboardInput = new KeyboardInput();
 	App::getInstance().getWindow().getEventManager().setKeyboard(myKeyboardInput);
@@ -229,7 +229,7 @@ int main(int argc, char **argv)
         if ( argc > 1 && std::string(argv[1]) == "opengl" )
 		{
 			std::cout << "YEAH OpenGL" << std::endl;
-			init(true);			
+			init(true);
 			implement(true);
 		}
 		else

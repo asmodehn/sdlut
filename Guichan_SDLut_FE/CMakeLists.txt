@@ -14,4 +14,6 @@ WkDependsLink ( Guichan )
 
 WkDoc()
 
-WkTestBuild(
+WkTestBuild(sdlutaction)
+WkTestBuild(sdluthelloworld)
+WkTestBuild(sdlutwidgets)

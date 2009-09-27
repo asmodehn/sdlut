@@ -20,55 +20,13 @@ namespace gcn
  * @param y the y coordinate on the surface.
  * @return a gcn::Color of a pixel.
  */
-inline const SDLut::RGBAColor SDLutgetPixel(SDLut::BaseSurface*& surface, int x, int y)
+inline const SDLut::RGBAColor SDLutgetPixel(SDLut::Image*& img, int x, int y)
 {
-    //unsigned int color = mSurface->getpixel(x, y);
-
-    return surface->getPixelFormat().getRGBAValue( surface->getpixel(x, y) ) ;
-
-
-    /*
-    int bpp = surface->format->BytesPerPixel;
-
-    SDL_LockSurface(surface);
-
-    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
-
-    unsigned int color = 0;
-
-    switch(bpp)
-    {
-      case 1:
-          color = *p;
-          break;
-
-      case 2:
-          color = *(Uint16 *)p;
-          break;
-
-      case 3:
-          if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-          {
-              color = p[0] << 16 | p[1] << 8 | p[2];
-          }
-          else
-          {
-              color = p[0] | p[1] << 8 | p[2] << 16;
-          }
-          break;
-
-      case 4:
-          color = *(Uint32 *)p;
-          break;
-
-    }
-
-    unsigned char r,g,b,a;
-
-    SDL_GetRGBA(color, surface->format, &r, &g, &b, &a);
-    SDL_UnlockSurface(surface);
-
-    return Color(r,g,b,a);*/
+    return img->getpixel(x, y);
+}
+inline const SDLut::RGBAColor SDLutgetPixel(SDLut::ScreenBuffer*& scr, int x, int y)
+{
+    return scr->getpixel(x, y);
 }
 
 /**
@@ -78,9 +36,13 @@ inline const SDLut::RGBAColor SDLutgetPixel(SDLut::BaseSurface*& surface, int x,
  * @param y the y coordinate on the surface.
  * @param color the gcn::Color the pixel should be in.
  */
-inline void SDLutputPixel(SDLut::BaseSurface* surface, int x, int y, const gcn::Color& color)
+inline void SDLutputPixel(SDLut::Image* img, int x, int y, const gcn::Color& color)
 {
-    surface->setpixel( x, y, surface->getPixelFormat().getValueFromRGB(SDLut::RGBColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ) );
+    img->setpixel( x, y, SDLut::RGBColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ) ;
+}
+inline void SDLutputPixel(SDLut::ScreenBuffer* scr, int x, int y, const gcn::Color& color)
+{
+    scr->setpixel( x, y, SDLut::RGBColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ) ;
 }
 
 /**
@@ -90,10 +52,15 @@ inline void SDLutputPixel(SDLut::BaseSurface* surface, int x, int y, const gcn::
  * @param y the y coordinate on the surface.
  * @param gcn::RGBColor the color the pixel should be in.
  */
-inline void SDLutputPixelAlpha(SDLut::BaseSurface* surface, int x, int y, const gcn::Color& color)
+inline void SDLutputPixelAlpha(SDLut::Image* img, int x, int y, const gcn::Color& color)
 {
-    surface->setpixel( x, y, surface->getPixelFormat().getValueFromRGB(SDLut::RGBAColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ), (unsigned char)color.a );
+    img->setpixel( x, y, SDLut::RGBAColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b, (unsigned char)color.a ) );
 }
+inline void SDLutputPixelAlpha(SDLut::ScreenBuffer* scr, int x, int y, const gcn::Color& color)
+{
+    scr->setpixel( x, y, SDLut::RGBAColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b, (unsigned char)color.a ) );
+}
+
 }
 
 #endif // end GCN_SDLutPIXEL_HPP
