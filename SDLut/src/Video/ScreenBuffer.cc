@@ -363,11 +363,29 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
     return true; //not used for now
 }
 
+void ScreenBuffer::setClipRect( const Rect& clipr )
+{
+    m_screen->setClipRect(clipr);
+}
 
+
+Rect ScreenBuffer::getClipRect( void ) const
+{
+    return m_screen->getClipRect();
+}
+
+bool ScreenBuffer::fill (const RGBAColor& color, const Rect& dest_rect)
+{
+    m_screen->fill(color,dest_rect);
+    return true; //todo
+}
 
 //TODO : should be in a different object than the main loop to avoid conflicts and race conditions if wrong use by the client...
 bool ScreenBuffer::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)
 {
+    //optimising the surface if necessary
+    const_cast<Image&>(src).convertToDisplayFormat();
+
     //careful... we need double polymorphism here in the end...
     m_screen.get()->blit( *(src.m_img) , dest_rect, src_rect );
 

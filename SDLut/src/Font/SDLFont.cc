@@ -70,10 +70,11 @@ Font::~Font()
 }
 
 
-std::auto_ptr<RGBSurface> Font::render(std::string text, RGBColor c, RenderMode mode, RGBColor bgc) const
+std::auto_ptr<Image> Font::render(std::string text, RGBColor c, RenderMode mode, RGBColor bgc) const
 {
-    return _font->render(text,c,bgc,mode);
-    //return std::auto_ptr<RGBSurface>(new RGBSurface(_font->render(text,c,bgc,mode)));
+    std::auto_ptr<Image> textimg( new Image(_font->render(text,c,bgc,mode)) );
+
+    return textimg;
 }
 
 bool Font::setTTF(std::string filename, int ptsize)

@@ -89,6 +89,10 @@ public :
 
     RGBColor getColorKey();
 
+    bool isOptimised()
+    {
+        return optimised;
+    }
     virtual bool convertToDisplayFormat();
 
     //Blit src surface on this surface

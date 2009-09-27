@@ -16,7 +16,7 @@ namespace SDL
 Image::Image(RGBSurface * s) throw (std::logic_error)
         : m_img(s)
 {
-    if ( m_img == NULL ) throw std::logic_error("Error in image Constructor!!!");
+    if ( m_img == NULL ) throw std::logic_error("Error in image Conversion Constructor!!!");
 }
 
 ///Conversion Constructor with explicit ownership transfert
@@ -24,7 +24,7 @@ Image::Image(std::auto_ptr<RGBSurface> s) throw (std::logic_error)
         : m_img(NULL)
 {
     m_img=s.release();
-    if ( m_img == NULL ) throw std::logic_error("Error in image Constructor!!!");
+    if ( m_img == NULL ) throw std::logic_error("Error in image Conversion Constructor!!!");
 }
 
 //Constructor
@@ -65,6 +65,12 @@ Image::Image( void * pixeldata, int depth, int pitch, int width, int height
 Image::~Image()
 {
     delete m_img, m_img=NULL;
+}
+
+bool Image::convertToDisplayFormat()
+{
+    if ( ! m_img->isOptimised() ) return m_img->convertToDisplayFormat();
+    return true;
 }
 
 bool Image::fill (const RGBAColor& color, const Rect& dest_rect)

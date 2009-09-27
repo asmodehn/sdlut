@@ -142,15 +142,36 @@ public:
     bool renderpass(unsigned long framerate, unsigned long& lastframe);
     bool refresh( unsigned long framerate, unsigned long& lastframe);
 
+    //pixel drawing function
+    RGBAColor getpixel(int x, int y)
+    {
+        return m_screen->getpixel(x, y);
+    }
+
+    void setpixel(int x, int y, const RGBAColor & pixel)
+    {
+        return m_screen->setpixel(x, y, pixel);
+    }
+
+    //Defines a clippin Area
+    void setClipRect( const Rect& clipr );
+    Rect getClipRect( void ) const;
+
+    //filling function for screen
+    bool fill (const RGBAColor& color)
+    {
+        Rect dest_rect(getWidth(), getHeight());
+        return fill( color, dest_rect );
+    }
+    bool fill (const RGBAColor& color, const Rect& dest_rect);
 
 
-    //
-    //function to be used in the render callback... We should make a separate object for that...
-    //TODO
-    //
+    //These functions are same as the ones in Image
+    //Maybe we can privately inherit from a common base class... TODO
+    //TO THINK ABOUT : interest of having an overlayer on top of RGBSurface and BaseSurface ???
+    // Is the State pattern really useful here ?
 
     //Blit src image on the screen.
-
     inline bool blit ( const Image& src, const Point& dest_pos=Point())
     {
         //bydefault we blit the entire image

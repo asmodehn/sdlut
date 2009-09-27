@@ -7,7 +7,7 @@ namespace RAGE
 namespace SDL
 {
 
-App::App() : pvm_manager(0), pvm_display(0), pvm_mixer(0), pvm_jpool(0), m_quitRequested(false)
+App::App() : m_quitRequested(false), pvm_manager(0), pvm_display(0), pvm_mixer(0), pvm_jpool(0)
 {
 #ifdef DEBUG
     Log << nl << "App::App() called";

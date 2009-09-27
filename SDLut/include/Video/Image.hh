@@ -21,6 +21,7 @@ class Image
 {
     friend class ImageLoader;
     friend class ScreenBuffer;
+    friend class Font;
 
     RGBSurface* m_img;
 
@@ -47,6 +48,8 @@ public:
 
     ~Image();
 
+    bool convertToDisplayFormat();
+
     bool fill (const RGBAColor& color)
     {
         Rect dest_rect(getWidth(), getHeight());
@@ -55,7 +58,6 @@ public:
     bool fill (const RGBAColor& color, const Rect& dest_rect);
 
     bool blit (const Image& src, Rect& dest_rect, const Rect& src_rect);
-
 
     int getHeight(void) const
     {

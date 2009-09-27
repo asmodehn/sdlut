@@ -101,7 +101,7 @@ Scene( const Scene & s ) : m_width(s.m_width),m_height(s.m_height)
 ~Scene()
 {
     //we shall delete all sprites...
-    for ( int i=0; i< m_spritelist.size(); i++ )
+    for ( unsigned int i=0; i< m_spritelist.size(); i++ )
     {
         delete m_spritelist[i], m_spritelist[i]= NULL;
     }
@@ -129,7 +129,7 @@ bool add( std::auto_ptr<Sprite> s) // sink auto_ptr
     return true; //todo
 }
 
-bool moveRandom()
+void moveRandom()
 {
         for ( unsigned int i=0; i<m_spritelist.size(); i++ )
         {

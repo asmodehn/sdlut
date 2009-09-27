@@ -258,6 +258,7 @@ bool RGBSurface::convertToDisplayFormat()
     {
         SDL_FreeSurface(_surf.release());
         _surf=optsurf;
+        optimised= true;
         res = true;
     }
 

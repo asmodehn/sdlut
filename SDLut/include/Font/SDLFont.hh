@@ -3,7 +3,7 @@
 
 #include "Video/SDLColor.hh"
 #include "Math/SDLRect.hh"
-#include "Video/SDLGLSurface.hh"
+#include "Video/Image.hh"
 
 #include <memory>
 
@@ -83,7 +83,7 @@ public:
 
     //Rendering
     //The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-    std::auto_ptr<RGBSurface> render(std::string text, RGBColor c, RenderMode mode, RGBColor bgc = RGBColor()) const;
+    std::auto_ptr<Image> render(std::string text, RGBColor c, RenderMode mode, RGBColor bgc = RGBColor()) const;
 
 };
 

@@ -183,6 +183,7 @@ bool GLSurface::convertToDisplayFormat()
         return false;
     }
     modified = false;//resseting modified flag to false. in memory texture is now updated.
+    optimised = true;
     return true;
 }
 
