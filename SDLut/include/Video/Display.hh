@@ -76,6 +76,11 @@ public:
     //    return pvm_screen.getDisplay();
     //}
 
+    Window & getWindow()
+    {
+        return pvm_window;
+    }
+
     ScreenBuffer & getScreenBuffer( )
     {
         return pvm_screen;
