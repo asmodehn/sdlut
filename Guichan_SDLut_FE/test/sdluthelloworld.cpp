@@ -10,7 +10,7 @@
 	// Sometimes windows.h defines DELETE which causes a compilation
 	// error in a Guichan header.
 	#if defined (DELETE)
-		#undef DELETE 
+		#undef DELETE
 	#endif
 #endif
 
@@ -35,9 +35,7 @@ using namespace globals;
 //TODO : IF we dont want to use SLDut for the main window and top event handling...
 // these too can be transparently called from gcn::Graphics*... thanks to inheritance
 gcn::SDLutGraphics* graphics;       // Graphics driver
-gcn::SDLutOGLGraphics* oglgraphics;       // Graphics driver
 gcn::SDLutImageLoader* imageLoader; // For loading images
-gcn::SDLutOGLImageLoader* oglimageLoader; // For loading images
 
 Logger logger("Example"); //prefix
 
@@ -63,7 +61,7 @@ public:
 
                 case Key_F5: //iconify
 					if (pressed)
-						App::getInstance().getWindow().iconify();
+						App::getInstance().getDisplay().iconify();
 					res = true;
 					break;
 
@@ -75,7 +73,7 @@ public:
 					}
 					res = true;
 					break;
-                
+
 				default:
 					res = false;
             }
@@ -92,7 +90,7 @@ public:
 	RenderEngine(){}
 
     virtual ~RenderEngine(){}
-			
+
     bool init(int width, int height)
 	{
 		return true;
@@ -106,7 +104,7 @@ public:
 	void prerender(unsigned long deltaticks)
 	{
 		//Check Gui Logic
-		gui->logic();        
+		gui->logic();
 	}
 
 	void render(VideoSurface& screen) const
@@ -114,7 +112,7 @@ public:
 		// Set the target for the graphics object to be the screen.
 		// In other words, we will draw to the screen.
 		graphics->setTarget(&screen);
-		
+
 		//oglgraphics->setTargetPlane(640, 480);
 
 		//Draw The Gui
@@ -143,14 +141,14 @@ void init(bool ogl = false)
 }
 
 void implement(bool ogl = false)
-{	
+{
 //GuiChan SDLuT Stuff
     imageLoader = new gcn::SDLutImageLoader();
     oglimageLoader = new gcn::SDLutOGLImageLoader();
 
 	oglgraphics = new gcn::SDLutOGLGraphics(640, 480);
 	graphics = new gcn::SDLutGraphics();
-    
+
 //Gui Initialization
     gui = new gcn::Gui();
 	if (ogl)
@@ -192,11 +190,11 @@ int main(int argc, char **argv)
 {
     try
     {
-        
+
 		if ( argc > 1 && std::string(argv[1]) == "opengl" )
 		{
 			std::cout << "YEAH OpenGL" << std::endl;
-			init(true);			
+			init(true);
 			implement(true);
 		}
 		else

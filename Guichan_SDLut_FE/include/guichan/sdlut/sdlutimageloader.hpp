@@ -23,6 +23,9 @@ public:
     static const SDLut::RGBAColor magicPink;
 
     // Inherited from ImageLoader
+    //loadgin with default Guichan magicPink colorkey
+    virtual Image* load(const std::string& filename, bool convertToDisplayFormat = true);
+    //loading with custom colorkey. We need two different functions, to make sure hte interface base class function is overloaded
     virtual Image* load(const std::string& filename, const SDLut::RGBAColor& rgba_color, bool convertToDisplayFormat = true);
 
 protected:
