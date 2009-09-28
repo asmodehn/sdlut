@@ -26,7 +26,7 @@ namespace helloworld
         globals::gui->setTop(top);
 
         // Now we load the font used in this example.
-        font = new gcn::ImageFont("fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+        font = new gcn::ImageFont("test/fixedfont.bmp", " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
         // Widgets may have a global font so we don't need to pass the
         // font object to every created widget. The global font is static.
         gcn::Widget::setGlobalFont(font);
@@ -38,7 +38,7 @@ namespace helloworld
         // And finally we add the label to the top container.
         top->add(label);
     }
-    
+
     /**
      * Halts the Hello World example.
      */

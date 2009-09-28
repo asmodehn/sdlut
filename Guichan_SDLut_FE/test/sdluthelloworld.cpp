@@ -61,15 +61,15 @@ public:
 
                 case Key_F5: //iconify
 					if (pressed)
-						App::getInstance().getDisplay().iconify();
+						App::getInstance().getDisplay().getWindow().iconify();
 					res = true;
 					break;
 
 				case Key_F6: //FullScreen
 					if (pressed)
 					{
-						App::getInstance().getWindow().resizeDisplay(800, 600);
-						App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
+						App::getInstance().getDisplay().setDisplay(800, 600);
+						App::getInstance().getDisplay().setFullscreen(!App::getInstance().getDisplay().isFullscreen());
 					}
 					res = true;
 					break;
@@ -82,7 +82,7 @@ public:
     }
 };
 
-class RenderEngine : public Engine
+class RenderEngine
 {
 
 public:
@@ -101,13 +101,15 @@ public:
 		return true;
 	}
 
-	void prerender(unsigned long deltaticks)
+	bool prerender(unsigned long framerate, unsigned long deltaticks)
 	{
 		//Check Gui Logic
 		gui->logic();
+
+		return true;
 	}
 
-	void render(VideoSurface& screen) const
+	bool render(ScreenBuffer& screen) const
     {
 		// Set the target for the graphics object to be the screen.
 		// In other words, we will draw to the screen.
@@ -117,6 +119,8 @@ public:
 
 		//Draw The Gui
 		gui->draw();
+
+		return true;
     }
 };
 
@@ -132,7 +136,7 @@ void init(bool ogl = false)
 	if (! App::getInstance().initVideo(false, ogl, true, false) )
 		throw std::logic_error( "Init Video Failed: " + GetError() );
 
-	if (! App::getInstance().getWindow().resetDisplay(640, 480, 32)  )
+	if (! App::getInstance().getDisplay().setDisplay(640, 480, 32)  )
 		throw std::logic_error( "Create Surface Failed: " + GetError() );
 
 	/*glViewport(0, 0, 640, 480);
@@ -144,32 +148,26 @@ void implement(bool ogl = false)
 {
 //GuiChan SDLuT Stuff
     imageLoader = new gcn::SDLutImageLoader();
-    oglimageLoader = new gcn::SDLutOGLImageLoader();
 
-	oglgraphics = new gcn::SDLutOGLGraphics(640, 480);
 	graphics = new gcn::SDLutGraphics();
 
 //Gui Initialization
     gui = new gcn::Gui();
-	if (ogl)
-	{
-	    gcn::Image::setImageLoader(oglimageLoader);
-		gui->setGraphics(oglgraphics); /*SDLuTOGLgraphics*/
-	}
-else
-	{
-		gcn::Image::setImageLoader(imageLoader);
-		gui->setGraphics(graphics); /*SDLuTGraphics*/
-	}
+	gcn::Image::setImageLoader(imageLoader);
+	gui->setGraphics(graphics); /*SDLuTGraphics*/
 
 	helloworld::init();
 
 //SDLuT Stuff
 	myKeyboardInput = new KeyboardInput();
-	App::getInstance().getWindow().getEventManager().setKeyboard(myKeyboardInput);
+	App::getInstance().getDisplay().getEventManager().setKeyboard(myKeyboardInput);
 
 	myEngine = new RenderEngine();
-	App::getInstance().getWindow().setEngine(myEngine);
+
+    App::getInstance().getDisplay().resetInitCallback(myEngine,&RenderEngine::init);
+	App::getInstance().getDisplay().resetResizeCallback(myEngine,&RenderEngine::resize);
+//	App::getInstance().getDisplay().resetNewFrameCallback(myEngine,&RenderEngine::prerender);
+	App::getInstance().getDisplay().resetRenderCallback(myEngine,&RenderEngine::render);
 }
 
 void clean()
@@ -178,9 +176,9 @@ void clean()
     delete gui, gui = NULL;
 
     delete graphics, graphics = NULL;
-	delete oglgraphics, oglgraphics = NULL;
+
     delete imageLoader, imageLoader = NULL;
-	delete oglimageLoader, oglimageLoader = NULL;
+
 
 	delete myKeyboardInput, myKeyboardInput = NULL;
 	delete myEngine, myEngine = NULL;
@@ -204,7 +202,7 @@ int main(int argc, char **argv)
 			implement();
 		}
 
-		App::getInstance().getWindow().mainLoop();
+		App::getInstance().getDisplay().mainLoop();
 
         clean();
     }
