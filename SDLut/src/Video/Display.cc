@@ -80,7 +80,11 @@ Display::Display( const Display & d)
 }
 
 Display::~Display()
-{
+{ 
+	if ( m_initcb ) delete m_initcb, m_initcb = NULL;
+	if ( m_resizecb ) delete m_resizecb, m_resizecb= NULL;
+	if ( m_newframecb ) delete m_newframecb, m_newframecb = NULL;
+	if ( m_rendercb ) delete m_rendercb, m_rendercb = NULL;
 }
 
 void Display::applyBGColor() const
