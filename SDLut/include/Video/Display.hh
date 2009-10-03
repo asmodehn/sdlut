@@ -259,102 +259,53 @@ public:
 
 
 private:
-    template <class TClass>
-    class InitCB : public TSpecificFunctor2<TClass, bool, int, int>
-    {
-    public:
-        InitCB(TClass* ptobj, bool (TClass::*ptfunc) (int width, int height))
-                : TSpecificFunctor2<TClass,bool,int,int>(ptobj,ptfunc)
-        {
-        }
-
-    };
-
     //normal pointer because we need the polymorphism here
     TFunctor2<bool,int,int>* m_initcb;
+	TFunctor2<bool,int,int> * m_resizecb;
+	TFunctor2<bool,unsigned long, unsigned long> * m_newframecb;
+	TFunctor1<bool,ScreenBuffer&> * m_rendercb;
 
-    template <class UClass>
-    class ResizeCB : public TSpecificFunctor2<UClass, bool, int, int>
-    {
-    public:
-        ResizeCB(UClass* ptobj, bool (UClass::*ptfunc) (int width, int height))
-                : TSpecificFunctor2<UClass,bool,int,int>(ptobj,ptfunc)
-        {
-        }
-
-    };
-
-    //normal pointer because we need the polymorphism here
-    TFunctor2<bool,int,int> * m_resizecb;
-
-
-    template <class VClass>
-    class NewFrameCB : public TSpecificFunctor2<VClass, bool, unsigned long, unsigned long >
-    {
-    public:
-        NewFrameCB(VClass* ptobj, bool (VClass::*ptfunc) (unsigned long, unsigned long))
-                : TSpecificFunctor2<VClass,bool,unsigned long,unsigned long>(ptobj,ptfunc)
-        {
-        }
-
-    };
-
-    //normal pointer because we need the polymorphism here
-    TFunctor2<bool,unsigned long, unsigned long> * m_newframecb;
-
-
-    template <class WClass>
-    class RenderCB : public TSpecificConstFunctor1<WClass, bool, ScreenBuffer& >
-    {
-    public:
-        RenderCB(WClass* ptobj, bool (WClass::*ptfunc) (ScreenBuffer& screen) const ) // render function should be const
-                : TSpecificConstFunctor1<WClass,bool,ScreenBuffer& >(ptobj,ptfunc)
-        {
-        }
-
-    };
-
-    //normal pointer because we need the polymorphism here
-    TFunctor1<bool,ScreenBuffer&> * m_rendercb;
 
 public:
-
-    template <class TClass>
-    void resetInitCallback(TClass* instance, bool (TClass::*func) ( int width, int height) )
+	//this callback is run whenever at initialization (Display::show)
+	template <class TaClass>
+    void resetInitCallback(TaClass* instance, bool (TaClass::*func) ( int width, int height) )
     {
-        if ( m_initcb ) delete m_initcb, m_initcb = NULL;
-        m_initcb = new InitCB<TClass>(instance,func);
+        if ( m_initcb != NULL)
+			delete m_initcb, m_initcb = NULL;
+        m_initcb = new TSpecificFunctor2<TaClass,bool,int,int>(instance,func);
     }
 
     //this callback is run whenever a resize is needed.
     //parameter is the desired new size.
-    template <class UClass>
-    void resetResizeCallback(UClass* instance, bool (UClass::*func) ( int width, int height) )
+    template <class UaClass>
+    void resetResizeCallback(UaClass* instance, bool (UaClass::*func) ( int width, int height) )
     {
-        if ( m_resizecb ) delete m_resizecb, m_resizecb= NULL;
-        m_resizecb = new ResizeCB<UClass>(instance,func);
+        if ( m_resizecb )
+			delete m_resizecb, m_resizecb= NULL;
+        m_resizecb = new TSpecificFunctor2<UaClass,bool,int,int>(instance,func);
     }
 
     //this callback is run just before the render
     //deltaticks is the amount of ticks between the end of the last render and now.
     //framerate is in fps.
-    template <class VClass>
-    void resetNewFrameCallback(VClass* instance, bool (VClass::*func) ( unsigned long framerate, unsigned long deltaticks) )
+    template <class VaClass>
+    void resetNewFrameCallback(VaClass* instance, bool (VaClass::*func) ( unsigned long framerate, unsigned long deltaticks) )
     {
-        if ( m_newframecb ) delete m_newframecb, m_newframecb = NULL;
-        m_newframecb = new NewFrameCB<VClass>(instance,func);
+        if ( m_newframecb )
+			delete m_newframecb, m_newframecb = NULL;
+		m_newframecb = new TSpecificFunctor2<VaClass,bool,unsigned long, unsigned long>(instance,func);
     }
 
     //this callback is run just for rendering purpose. therefore it s already too late to modify anything -> const
     //if there is anything you need to modify please use the newframe callback
-    template <class WClass>
-    void resetRenderCallback(WClass* instance, bool (WClass::*func) (RAGE::SDL::ScreenBuffer& ) const )
+    template <class WaClass>
+    void resetRenderCallback(WaClass* instance, bool (WaClass::*func) (RAGE::SDL::ScreenBuffer& ) const )
     {
-        if ( m_rendercb ) delete m_rendercb, m_rendercb = NULL;
-        m_rendercb = new RenderCB<WClass>(instance,func);
+        if ( m_rendercb )
+			delete m_rendercb, m_rendercb = NULL;
+        m_rendercb = new TSpecificConstFunctor1<WaClass,bool,RAGE::SDL::ScreenBuffer&>(instance,func);
     }
-
-
 
 };
 

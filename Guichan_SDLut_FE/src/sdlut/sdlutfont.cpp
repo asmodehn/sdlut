@@ -88,6 +88,7 @@ void SDLutFont::drawString(Graphics* graphics, const std::string& text, const in
     Color col = sdlutGraphics->getColor();
 
     SDLut::RGBColor RGBCol;
+	//Warning: conversion from 'int' to 'unsigned char', possible loss of data
     RGBCol.setB(col.b);
     RGBCol.setR(col.r);
     RGBCol.setG(col.g);

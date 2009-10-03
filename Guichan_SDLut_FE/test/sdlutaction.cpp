@@ -234,7 +234,10 @@ int main(int argc, char **argv)
 			implement();
 		}
 
-		App::getInstance().getDisplay().mainLoop();
+		if(App::getInstance().getDisplay().show())
+		{
+		   App::getInstance().getDisplay().mainLoop();
+		}
 
         clean();
     }
