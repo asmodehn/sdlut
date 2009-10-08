@@ -126,6 +126,7 @@ public:
 
 	bool resize(int width, int height)
 	{
+		gui->getTop()->setDimension(gcn::Rectangle(0, 0, width, height));
 		return true;
 	}
 
