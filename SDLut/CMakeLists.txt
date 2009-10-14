@@ -25,6 +25,8 @@ WkDependsLink ( SDL_ttf)
 WkDependsLink ( SDL_mixer)
 WkDependsLink ( SDL_net)
 
+WkLink ()
+
 WkDoc()
 
 WkTestBuild (SDLtestColor)

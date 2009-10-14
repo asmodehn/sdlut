@@ -10,6 +10,7 @@ WkProject ( Core CXX)
 WkBuild ( LIBRARY STATIC )
 
 #WkDependsLink ( SigC++ )
+WkLink()
 
 WkDoc()
 

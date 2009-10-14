@@ -9,6 +9,7 @@ WkDependsInclude ( Guichan REQUIRED )
 WkBuild ( LIBRARY STATIC )
 WkDependsLink ( SDLut )
 WkDependsLink ( Guichan )
+WkLink()
 
 WkDoc()
 
