@@ -73,6 +73,18 @@ public:
     //Blit src into the current surface.
     bool blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
 
+    //Fill
+
+    virtual bool fill (const RGBColor& color);
+
+    virtual bool fill (const RGBColor& color, Rect dest_rect);
+    virtual bool fill (const RGBAColor& color);
+
+    virtual bool fill (const RGBAColor& color, Rect dest_rect);
+
+
+
+
     //to resize the display
     virtual bool resize (int width, int height, bool keepcontent = false);
     //to flip the videosurface

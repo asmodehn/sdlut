@@ -246,6 +246,38 @@ bool VideoSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect)
     return res;
 }
 
+
+//Fill
+bool VideoSurface::fill (const RGBColor& color)
+{
+    return fill(getPixelFormat().getValueFromRGB(color));
+}
+bool VideoSurface::fill (const RGBAColor& color)
+{
+    return fill(getPixelFormat().getValueFromRGBA(color));
+}
+
+bool VideoSurface::fill (const PixelColor& color)
+{
+    Rect dest_rect(getWidth(), getHeight());
+    return fill( color, dest_rect );
+}
+bool VideoSurface::fill (const RGBColor& color, Rect dest_rect)
+{
+    return fill(getPixelFormat().getValueFromRGB(color), dest_rect);
+}
+bool VideoSurface::fill (const RGBAColor& color, Rect dest_rect)
+{
+    return fill(getPixelFormat().getValueFromRGBA(color), dest_rect);
+}
+
+
+bool VideoSurface::fill (const PixelColor& color, Rect dest_rect)
+{
+    return BaseSurface::fill(color, dest_rect);
+}
+
+
 bool VideoSurface::update(Rect r)
 {
     SDL_UpdateRect(_surf.get(), r.getx(), r.gety(), r.getw(), r.geth());

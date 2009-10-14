@@ -261,18 +261,18 @@ public:
 private:
     //normal pointer because we need the polymorphism here
     TFunctor2<bool,int,int>* m_initcb;
-	TFunctor2<bool,int,int> * m_resizecb;
-	TFunctor2<bool,unsigned long, unsigned long> * m_newframecb;
-	TFunctor1<bool,ScreenBuffer&> * m_rendercb;
+    TFunctor2<bool,int,int> * m_resizecb;
+    TFunctor2<bool,unsigned long, unsigned long> * m_newframecb;
+    TFunctor1<bool,ScreenBuffer&> * m_rendercb;
 
 
 public:
-	//this callback is run whenever at initialization (Display::show)
-	template <class TaClass>
+    //this callback is run whenever at initialization (Display::show)
+    template <class TaClass>
     void resetInitCallback(TaClass* instance, bool (TaClass::*func) ( int width, int height) )
     {
         if ( m_initcb != NULL)
-			delete m_initcb, m_initcb = NULL;
+            delete m_initcb, m_initcb = NULL;
         m_initcb = new TSpecificFunctor2<TaClass,bool,int,int>(instance,func);
     }
 
@@ -282,7 +282,7 @@ public:
     void resetResizeCallback(UaClass* instance, bool (UaClass::*func) ( int width, int height) )
     {
         if ( m_resizecb )
-			delete m_resizecb, m_resizecb= NULL;
+            delete m_resizecb, m_resizecb= NULL;
         m_resizecb = new TSpecificFunctor2<UaClass,bool,int,int>(instance,func);
     }
 
@@ -293,8 +293,8 @@ public:
     void resetNewFrameCallback(VaClass* instance, bool (VaClass::*func) ( unsigned long framerate, unsigned long deltaticks) )
     {
         if ( m_newframecb )
-			delete m_newframecb, m_newframecb = NULL;
-		m_newframecb = new TSpecificFunctor2<VaClass,bool,unsigned long, unsigned long>(instance,func);
+            delete m_newframecb, m_newframecb = NULL;
+        m_newframecb = new TSpecificFunctor2<VaClass,bool,unsigned long, unsigned long>(instance,func);
     }
 
     //this callback is run just for rendering purpose. therefore it s already too late to modify anything -> const
@@ -303,7 +303,7 @@ public:
     void resetRenderCallback(WaClass* instance, bool (WaClass::*func) (RAGE::SDL::ScreenBuffer& ) const )
     {
         if ( m_rendercb )
-			delete m_rendercb, m_rendercb = NULL;
+            delete m_rendercb, m_rendercb = NULL;
         m_rendercb = new TSpecificConstFunctor1<WaClass,bool,RAGE::SDL::ScreenBuffer&>(instance,func);
     }
 

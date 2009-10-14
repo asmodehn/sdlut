@@ -128,6 +128,7 @@ Rect Rect::inf(const Rect & r)
     if ( (result.getx() == getx() && result.getx() < ( r.getx() + static_cast<int>(r.getw()) ))
             || (result.getx() == r.getx() && result.getx() < ( getx() + static_cast<int>(getw()) )) //Xintersection
        )
+    {
         if ( (result.gety() == gety() && result.gety() < ( r.gety() + static_cast<int>(r.geth()) ))
                 || (result.gety() == r.gety() && result.gety() < ( gety() + static_cast<int>(geth()) )) //Yintersection
            )
@@ -144,7 +145,7 @@ Rect Rect::inf(const Rect & r)
             result.setw(0);
             result.seth(0);
         }
-
+    }
     return result;
 }
 

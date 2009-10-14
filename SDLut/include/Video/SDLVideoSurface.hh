@@ -104,6 +104,23 @@ public:
     //Blit src into the current surface.
     virtual bool blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
 
+
+    //Fill
+    virtual bool fill (const RGBColor& color);
+    virtual bool fill (const RGBAColor& color);
+
+protected : // Pixel Color should be used only internally, because of its complexity in different formats
+    virtual bool fill (const PixelColor& color);
+
+public :
+    virtual bool fill (const RGBColor& color, Rect dest_rect);
+    virtual bool fill (const RGBAColor& color, Rect dest_rect);
+
+protected : // Pixel Color should be used only internally, because of its complexity in different formats
+    virtual bool fill (const PixelColor& color, Rect dest_rect);
+
+public:
+
     //Maybe in Window only ?
     bool update(Rect r);
     bool update(std::vector<Rect> rlist);

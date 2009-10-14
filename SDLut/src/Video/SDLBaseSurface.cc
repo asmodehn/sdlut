@@ -236,96 +236,99 @@ void BaseSurface::setpixel(int x, int y, RGBAColor pixelcolor)
     lock();
     /* Here p is the address to the pixel we want to set */
     Uint8 *p = (Uint8 *)_surf->pixels + y * _surf->pitch + x * _surf->format->BytesPerPixel;
-    //int alpha= pixelcolor.getA();
+    int alpha= pixelcolor.getA();
     PixelColor pixel = getPixelFormat().getValueFromRGBA(pixelcolor);
-    //if ( alpha == 255 )
-    //{
-    switch (_surf->format->BytesPerPixel)
+    if ( alpha == 255 )
     {
-    case 1:
-        *p = (Uint8) pixel;
-        break;
+        switch (_surf->format->BytesPerPixel)
+        {
+        case 1:
+            *p = (Uint8) pixel;
+            break;
 
-    case 2:
-        *(Uint16 *)p = (Uint16) pixel;
-        break;
+        case 2:
+            *(Uint16 *)p = (Uint16) pixel;
+            break;
 
-    case 3:
+        case 3:
 #if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-        p[0] = (Uint8) (pixel >> 16) & 0xff;
-        p[1] = (Uint8) (pixel >> 8) & 0xff;
-        p[2] = (Uint8) pixel & 0xff;
+            p[0] = (Uint8) (pixel >> 16) & 0xff;
+            p[1] = (Uint8) (pixel >> 8) & 0xff;
+            p[2] = (Uint8) pixel & 0xff;
 #else
-        p[0] = (Uint8) pixel & 0xff;
-        p[1] = (Uint8) (pixel >> 8) & 0xff;
-        p[2] = (Uint8) (pixel >> 16) & 0xff;
+            p[0] = (Uint8) pixel & 0xff;
+            p[1] = (Uint8) (pixel >> 8) & 0xff;
+            p[2] = (Uint8) (pixel >> 16) & 0xff;
 #endif
-        break;
+            break;
 
-    case 4:
-        //*(Uint32 *)p = (Uint32) pixel;
-#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-        p[0] = (Uint8) (pixel >> 24) & 0xff;
-        p[1] = (Uint8) (pixel >> 16) & 0xff;
-        p[2] = (Uint8) (pixel >> 8) & 0xff;
-        p[3] = (Uint8) pixel & 0xff;
-#else
-        p[0] = (Uint8) pixel & 0xff;
-        p[1] = (Uint8) (pixel >> 8) & 0xff;
-        p[2] = (Uint8) (pixel >> 16) & 0xff;
-        p[3] = (Uint8) (pixel >> 24) & 0xff;
-#endif
-        break;
+        case 4:
+            *(Uint32 *)p = (Uint32) pixel;
+            /*
+            #if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+                    p[0] = (Uint8) (pixel >> 24) & 0xff;
+                    p[1] = (Uint8) (pixel >> 16) & 0xff;
+                    p[2] = (Uint8) (pixel >> 8) & 0xff;
+                    p[3] = (Uint8) pixel & 0xff;
+            #else
+                    p[0] = (Uint8) pixel & 0xff;
+                    p[1] = (Uint8) (pixel >> 8) & 0xff;
+                    p[2] = (Uint8) (pixel >> 16) & 0xff;
+                    p[3] = (Uint8) (pixel >> 24) & 0xff;
+            #endif
+            */
+            break;
+
+        }
     }
-    //}
-    //else //If We Want To Set A Pixel With Alpha !
-    //{
-    //	unsigned int r, g, b;
-    //	RGBColor color;
-    //	switch(_surf->format->BytesPerPixel)
-    //	{
-    //		case 1:
-    //			*p = (Uint8) pixel;
-    //			break;
+    else //If We Want To Set A Pixel With Alpha !
+    {
+        unsigned int r, g, b;
+        RGBColor color;
+        switch (_surf->format->BytesPerPixel)
+        {
+        case 1:
+            *p = (Uint8) pixel;
+            break;
 
-    //		case 2:
-    //			r = ((pixel & _surf->format->Rmask) * alpha + (*(Uint32 *)p & _surf->format->Rmask) * (256 - alpha)) >> 8;
-    //			g = ((pixel & _surf->format->Gmask) * alpha + (*(Uint32 *)p & _surf->format->Gmask) * (256 - alpha)) >> 8;
-    //			b = ((pixel & _surf->format->Bmask) * alpha + (*(Uint32 *)p & _surf->format->Bmask) * (256 - alpha)) >> 8;
+        case 2:
+            r = ((pixel & _surf->format->Rmask) * alpha + (*(Uint32 *)p & _surf->format->Rmask) * (256 - alpha)) >> 8;
+            g = ((pixel & _surf->format->Gmask) * alpha + (*(Uint32 *)p & _surf->format->Gmask) * (256 - alpha)) >> 8;
+            b = ((pixel & _surf->format->Bmask) * alpha + (*(Uint32 *)p & _surf->format->Bmask) * (256 - alpha)) >> 8;
 
-    //			*(Uint16 *)p = ( (unsigned short)( (r & _surf->format->Rmask) | (g & _surf->format->Gmask) | (b & _surf->format->Bmask) ) );
-    //			break;
+            *(Uint16 *)p = ( (unsigned short)( (r & _surf->format->Rmask) | (g & _surf->format->Gmask) | (b & _surf->format->Bmask) ) );
+            break;
 
-    //		case 3:
-    //			color = ((PixelFormat*)(_surf->format))->getRGBValue(pixel);
-    //			#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-    //				r = (p[0] * (256 - alpha) + color.getR() * alpha) >> 8;
-    //				g = (p[1] * (256 - alpha) + color.getG() * alpha) >> 8;
-    //				b = (p[2] * (256 - alpha) + color.getB() * alpha) >> 8;
+        case 3:
+            color = ((PixelFormat*)(_surf->format))->getRGBValue(pixel);
+#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+            r = (p[0] * (256 - alpha) + color.getR() * alpha) >> 8;
+            g = (p[1] * (256 - alpha) + color.getG() * alpha) >> 8;
+            b = (p[2] * (256 - alpha) + color.getB() * alpha) >> 8;
 
-    //				p[2] = b;
-    //				p[1] = g;
-    //				p[0] = r;
-    //			#else
-    //				r = (p[2] * (256 - alpha) + color.getR() * alpha) >> 8;
-    //				g = (p[1] * (256 - alpha) + color.getG() * alpha) >> 8;
-    //				b = (p[0] * (256 - alpha) + color.getB() * alpha) >> 8;
+            p[2] = b;
+            p[1] = g;
+            p[0] = r;
+#else
+            r = (p[2] * (256 - alpha) + color.getR() * alpha) >> 8;
+            g = (p[1] * (256 - alpha) + color.getG() * alpha) >> 8;
+            b = (p[0] * (256 - alpha) + color.getB() * alpha) >> 8;
 
-    //				p[0] = b;
-    //				p[1] = g;
-    //				p[2] = r;
-    //			#endif
-    //			break;
+            p[0] = b;
+            p[1] = g;
+            p[2] = r;
+#endif
+            break;
 
-    //		case 4:
-    //			r = ((pixel & 0xff) * alpha + (*(Uint32 *)p & 0xff) * (256 - alpha)) >> 8;
-    //			g = ((pixel & 0xff00) * alpha + (*(Uint32 *)p & 0xff00) * (256 - alpha)) >> 8;
-    //			b = ((pixel & 0xff0000) * alpha + (*(Uint32 *)p & 0xff0000) * (256 - alpha)) >> 8;
+        case 4:
+            r = ((pixel & 0xff) * alpha + (*(Uint32 *)p & 0xff) * (256 - alpha)) >> 8;
+            g = ((pixel & 0xff00) * alpha + (*(Uint32 *)p & 0xff00) * (256 - alpha)) >> 8;
+            b = ((pixel & 0xff0000) * alpha + (*(Uint32 *)p & 0xff0000) * (256 - alpha)) >> 8;
 
-    //			*(Uint32 *)p = ( (r & 0xff) | (g & 0xff00) | (b & 0xff0000) );
-    //			break;
-    //	}
-    //}
+            *(Uint32 *)p = ( (r & 0xff) | (g & 0xff00) | (b & 0xff0000) );
+            break;
+        }
+    }
     unlock();
 }
 
@@ -340,15 +343,42 @@ bool BaseSurface::saveBMP(std::string filename) const
     return false;
 }
 
+//Fill
+bool BaseSurface::fill (const RGBColor& color)
+{
+    return fill(getPixelFormat().getValueFromRGB(color));
+}
+bool BaseSurface::fill (const RGBAColor& color)
+{
+    return fill(getPixelFormat().getValueFromRGBA(color));
+}
+
+bool BaseSurface::fill (const PixelColor& color)
+{
+    Rect dest_rect(getWidth(), getHeight());
+    return fill( color, dest_rect );
+}
+
+bool BaseSurface::fill (const RGBColor& color, Rect dest_rect)
+{
+    return fill(getPixelFormat().getValueFromRGB(color), dest_rect);
+}
+bool BaseSurface::fill (const RGBAColor& color, Rect dest_rect)
+{
+    return fill(getPixelFormat().getValueFromRGBA(color), dest_rect);
+}
+
+
 bool BaseSurface::fill (const PixelColor& color, Rect dest_rect)
 {
 #if (DEBUG == 2)
     Log << nl << "BaseSurface::fill (const PixelColor& color," << dest_rect << ") called...";
 #endif
+    lock();
     int res=SDL_FillRect(_surf.get(), dest_rect._rect, color);
     //std::cerr << "SDLBaseSurface::Fill(" << _surf << ", " << dest_rect << ", " << color << ")" << std::endl;
     //std::cerr << "returned " << res << std::endl;
-
+    unlock();
 #if (DEBUG == 2)
     Log << nl << "BaseSurface::fill (const PixelColor& color," << dest_rect << ") done.";
 #endif

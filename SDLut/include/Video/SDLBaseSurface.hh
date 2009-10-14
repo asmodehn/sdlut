@@ -194,31 +194,21 @@ public:
     //TODO : the same with other formats
 
     //Fill
-    inline bool fill (const RGBColor& color)
-    {
-        return fill(getPixelFormat().getValueFromRGB(color));
-    }
-    inline bool fill (const RGBAColor& color)
-    {
-        return fill(getPixelFormat().getValueFromRGBA(color));
-    }
-    inline bool fill (const PixelColor& color)
-    {
-        Rect dest_rect(getWidth(), getHeight());
-        return fill( color, dest_rect );
-    }
-    inline bool fill (const RGBColor& color, Rect dest_rect)
-    {
-        return fill(getPixelFormat().getValueFromRGB(color), dest_rect);
-    }
-    inline bool fill (const RGBAColor& color, Rect dest_rect)
-    {
-        return fill(getPixelFormat().getValueFromRGBA(color), dest_rect);
-    }
+    virtual bool fill (const RGBColor& color);
+    virtual bool fill (const RGBAColor& color);
+
+protected : // Pixel Color should be used only internally, because of its complexity in different formats
+    virtual bool fill (const PixelColor& color);
+
+public :
+    virtual bool fill (const RGBColor& color, Rect dest_rect);
+    virtual bool fill (const RGBAColor& color, Rect dest_rect);
+
+protected : // Pixel Color should be used only internally, because of its complexity in different formats
     virtual bool fill (const PixelColor& color, Rect dest_rect);
 
 
-
+public:
     bool resize(const Rect & r)
     {
         return resize(r.getw(),r.geth());

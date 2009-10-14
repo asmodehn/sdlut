@@ -70,6 +70,12 @@ unsigned char RGBColor::getB(void) const
     return _color->b;
 }
 
+
+unsigned char RGBColor::getA(void) const
+{
+    return _color->unused;
+}
+
 bool RGBColor::operator==(const RGBColor& color) const
 {
     return _color->r == color.getR() && _color->g == color.getG() && _color->b == color.getB();
@@ -78,6 +84,17 @@ bool RGBColor::operator==(const RGBColor& color) const
 bool RGBColor::operator!=(const RGBColor& color) const
 {
     return !( _color->r == color.getR() && _color->g == color.getG() && _color->b == color.getB() );
+}
+
+
+PixelColor RGBColor::getGLPixelColor() const
+{
+#if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
+    unsigned int glColor = _color->unused | _color->b << 8 | _color->g << 16 | _color->r << 24;
+#else
+    unsigned int glColor = _color->r | _color->g << 8 | _color->b << 16 | _color->unused << 24;
+#endif
+    return glColor;
 }
 
 
@@ -127,16 +144,6 @@ bool RGBAColor::operator==(const RGBAColor& color) const
 bool RGBAColor::operator!=(const RGBAColor& color) const
 {
     return !(_color->r == color.getR() && _color->g == color.getG() && _color->b == color.getB() && _color->unused == color.getA());
-}
-
-PixelColor RGBAColor::getGLPixelColor()
-{
-#if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
-    unsigned int glColor = _color->unused | _color->b << 8 | _color->g << 16 | _color->r << 24;
-#else
-    unsigned int glColor = _color->r | _color->g << 8 | _color->b << 16 | _color->unused << 24;
-#endif
-    return glColor;
 }
 
 Palette::Palette(const SDL_Palette* palette) : _palette(palette)

@@ -208,6 +208,79 @@ bool VideoGLSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rec
     return success;
 }
 
+
+
+//Fill
+bool VideoGLSurface::fill (const RGBAColor& color)
+{
+    return fill( RGBColor( color ) );
+}
+
+bool VideoGLSurface::fill (const RGBAColor& color, Rect dest_rect)
+{
+
+    return fill( RGBColor( color ), dest_rect );
+}
+
+bool VideoGLSurface::fill (const RGBColor& color)
+{
+    Rect dest_rect(getWidth(), getHeight());
+    return fill( color, dest_rect );
+}
+
+bool VideoGLSurface::fill (const RGBColor& color, Rect dest_rect)
+{
+
+#if (DEBUG == 2)
+    Log << nl << "VideoGLSurface::fill ( " << color << ", " << dest_rect << ", " << src_rect << ") called...";
+#endif
+    bool success = false;
+    //render it
+    //2D Rendering
+
+    glDisable( GL_DEPTH_TEST ) ;
+    glMatrixMode( GL_PROJECTION ) ;
+    glLoadIdentity() ;
+
+    glOrtho( 0, this->getWidth(), this->getHeight(), 0, 0, 1 ) ;
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    if ( color.hasAlpha() )
+    {
+        glEnable(GL_BLEND);
+        glEnable(GL_ALPHA_TEST);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+
+    glColor4ub(color.getR(), color.getG(), color.getB(), color.getA() );
+
+    glBegin( GL_QUADS ) ;
+
+    glVertex2i(dest_rect.getx(), dest_rect.gety() ) ;
+    glVertex2i(dest_rect.getx(), dest_rect.gety() + dest_rect.geth()) ;
+    glVertex2i(dest_rect.getx() + dest_rect.getw(), dest_rect.gety() + dest_rect.geth()) ;
+    glVertex2i( dest_rect.getx() + dest_rect.getw(), dest_rect.gety()) ;
+
+    glEnd() ;
+
+
+    if ( color.hasAlpha() )
+    {
+        glDisable(GL_ALPHA_TEST);
+        glDisable(GL_BLEND);
+    }
+
+    success = true;
+
+#if (DEBUG == 2)
+    Log << nl << "VideoGLSurface::fill ( " << color << ", " << dest_rect << ", " << src_rect << ") called...";
+#endif
+
+    return success;
+
+}
+
 Logger & operator << (Logger & log, const VideoGLSurface & surf)
 {
     //TODO : call base operator here...
@@ -220,5 +293,6 @@ Logger & operator << (Logger & log, const VideoGLSurface & surf)
     << "- Double Buffered ? " << surf.isDoubleBufset();
     return log;
 }
+
 }
 } //namespace RAGE::SDL

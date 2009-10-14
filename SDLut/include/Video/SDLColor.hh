@@ -71,6 +71,10 @@ public:
     unsigned char getR() const;
     unsigned char getG() const;
     unsigned char getB() const;
+    //TMP needed for OpenGL simple color handling
+    // By the way WHY do we have 2 classes for color ??
+    // Investigation needed
+    unsigned char getA() const;
 
     bool operator==(const RGBColor& color) const;
     bool operator!=(const RGBColor& color) const;
@@ -80,8 +84,19 @@ public:
         return os << "RGBColor : R=" << (int)c.getR() << " G=" << (int)c.getG() << " B=" << (int)c.getB() << " ";
     }
 
+    inline virtual bool hasAlpha() const
+    {
+        return false;
+    }
+
+    //return a pixel color formatted as RGB(A), in that order, always...
+    PixelColor getGLPixelColor() const;
 
 };
+
+//TODO : Why do we have two classes for color ? it would be much imple to have just one...
+//We need to investigate to see if we really need two
+
 
 /**
  * \class SDLRGBAColor (alias SDLColor)
@@ -121,9 +136,10 @@ public:
     bool operator==(const RGBAColor& color) const;
     bool operator!=(const RGBAColor& color) const;
 
-    //return a pixel color formatted as RGBA, in that order, always...
-    PixelColor getGLPixelColor();
-
+    inline bool hasAlpha() const
+    {
+        return true;
+    }
 };
 
 /**

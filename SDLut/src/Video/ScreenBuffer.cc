@@ -376,7 +376,7 @@ Rect ScreenBuffer::getClipRect( void ) const
 
 bool ScreenBuffer::fill (const RGBAColor& color, const Rect& dest_rect)
 {
-    m_screen->fill(color,dest_rect);
+    m_screen.get()->fill(color,dest_rect);
     return true; //todo
 }
 

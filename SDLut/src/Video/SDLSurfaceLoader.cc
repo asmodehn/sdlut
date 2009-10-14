@@ -10,10 +10,10 @@ namespace SDL
 
 SurfaceLoader::SurfaceLoader()
 try :
+    opengl(false),
     RGBFlags(SDL_SWSURFACE),
     errorContent(_defaultImage,sizeof(_defaultImage)),
-    offset(errorContent.tell()),
-    opengl(false)
+    offset(errorContent.tell())
 {
 
 }
@@ -26,10 +26,10 @@ catch (std::exception &e)
 
 SurfaceLoader::SurfaceLoader( const SurfaceLoader& sl)
 try :
+    opengl(sl.opengl),
     RGBFlags(sl.RGBFlags),
     errorContent(sl.errorContent),
-    offset(sl.offset),
-    opengl(sl.opengl)
+    offset(sl.offset)
 {
 
 }

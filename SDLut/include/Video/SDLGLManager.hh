@@ -38,6 +38,8 @@ namespace SDL
 //TEst to do on linux, to choose a class behaviour
 class GLManager
 {
+    int dummy; // to remove empty clas warning
+
     friend class ScreenBuffer;
 
     GLManager() {}
