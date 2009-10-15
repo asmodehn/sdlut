@@ -56,6 +56,11 @@ class VideoSurface : public BaseSurface
     friend class ScreenBuffer;
     friend class Manager;
 
+public:
+    virtual Renderer getRenderer()
+    {
+        return SDL;
+    }
 
 protected:
     static unsigned long _defaultflags;
@@ -81,6 +86,9 @@ public:
     virtual bool resize (int width, int height, bool keepcontent = false);
     //to flip the videosurface
     virtual bool refresh(void);
+
+    virtual RGBAColor getpixel(int x, int y);
+    virtual void setpixel(int x, int y, RGBAColor pixel);
 
     //Blit src surface on this surface
     //Blit using non const surface, as the video surface might change the blitted src surface for optimisation, updates or other reasons...

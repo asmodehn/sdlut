@@ -26,6 +26,13 @@ class RGBSurface : public BaseSurface
 
     friend class VideoSurface;
 
+
+public:
+    virtual Renderer getRenderer()
+    {
+        return SDL;
+    }
+
 protected:
 
     //set to true if the convert to Display format function has been called for this surface.

@@ -21,6 +21,15 @@ class GLSurface : public RGBSurface
 
     friend class FontExtend;
 
+
+
+public:
+    virtual Renderer getRenderer()
+    {
+        return OpenGL;
+    }
+
+private:
     ///Conversion Constructor
     explicit GLSurface(SDL_Surface * s) throw (std::logic_error); ///< This one should be called only by friends
 
@@ -62,6 +71,9 @@ public :
                unsigned long b_mask = b_default_mask,
                unsigned long a_mask = a_default_mask
              ) throw (std::logic_error);
+
+    ///Conversion from internal RGBSurface. Used by Image if needed in emergency.
+    explicit GLSurface( const RGBSurface & rgbs) throw (std::logic_error);
 
     virtual ~GLSurface();
 

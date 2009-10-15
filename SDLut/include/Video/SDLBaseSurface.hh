@@ -36,6 +36,15 @@ namespace RAGE
 namespace SDL
 {
 
+///defining a enumeration for renderers availables
+///here because must be available for both video and rgb surfaces
+#ifdef WK_OPENGL_FOUND
+enum Renderer { SDL, OpenGL };
+#else
+enum Renderer { SDL };
+#endif
+
+
 //TODO : make this class pure virtual one (how then?)... and manage creation of _surf with exception
 //in the derivating tree
 //The goal is to have _surf and this really tied.
@@ -43,8 +52,16 @@ class BaseSurface
 {
     friend class ScreenBuffer;
 
+public:
+    ///To enable external classes to retrive the renderer which must be defined in all classes
+    ///This type of detection avoid dynamic casts, which can be annoying and shouldnt be common anyway.
+    virtual Renderer getRenderer() = 0;
+
+
 private:
     static const VideoInfo * _vinfo; ///a usefull static pointer, set to the current VideoInfo by AppWindow and reset to 0 on Window destruction
+
+
 
 protected:
 
@@ -91,8 +108,8 @@ public: //useful else we can't access those functions outside of friend class (f
     bool lock(void);
     bool unlock(void);
 
-    RGBAColor getpixel(int x, int y);
-    void setpixel(int x, int y, RGBAColor pixel);
+    virtual RGBAColor getpixel(int x, int y);
+    virtual void setpixel(int x, int y, RGBAColor pixel);
 
 protected:
     //Default Constructor overload

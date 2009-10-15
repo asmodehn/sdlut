@@ -54,6 +54,12 @@ class VideoGLSurface : public VideoSurface
     friend class ScreenBuffer;
 
 
+public:
+    virtual Renderer getRenderer()
+    {
+        return OpenGL;
+    }
+
 protected:
     static unsigned long _defaultflags;
 
@@ -70,8 +76,13 @@ public:
     virtual ~VideoGLSurface();
     //this kind of surface shouldnt be deleted by hand. the raw SDL methods takes care of it
 
+
+    virtual RGBAColor getpixel(int x, int y);
+    virtual void setpixel(int x, int y, RGBAColor pixel);
+
+
     //Blit src into the current surface.
-    bool blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
+    virtual bool blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
 
     //Fill
 
@@ -87,8 +98,15 @@ public:
 
     //to resize the display
     virtual bool resize (int width, int height, bool keepcontent = false);
+
     //to flip the videosurface
     virtual bool refresh(void);
+
+
+    virtual bool update(Rect r);
+
+    virtual bool update(std::vector<Rect> rlist);
+
 
     friend Logger & operator << (Logger & log, const VideoSurface & surf);
 };

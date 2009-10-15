@@ -348,11 +348,21 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
     if ( SDL_GetTicks() - lastframe < 1000/framerate)//wait if needed - IMPORTANT otherwise the next value is far too high (not 0)
         SDL_Delay( 1000/framerate - ( SDL_GetTicks() - lastframe ) );
 
-    //m_screen->refresh();
-    //now refreshing only what is needed
-    m_screen->update(refreshlist);
-    m_screen->update(oldlist);
-    oldlist=refreshlist;
+    //TODO : this could be handled by calling a virtual function and letting inheritance do the rest, which would be nicer.
+    //However it implies that the VideoSurface itself would manage list of rectangles to refresh...
+    // Maybe later...
+    if ( m_screen->getRenderer() == OpenGL )
+    {
+        m_screen->refresh();
+    }
+    else
+    {
+        //now refreshing only what is needed
+        m_screen->update(refreshlist);
+        m_screen->update(oldlist);
+        oldlist=refreshlist;
+    }
+    //clear can be done here, just in case we filled it up in OpenGL by mistake
     refreshlist.clear();
 
 
@@ -380,11 +390,10 @@ bool ScreenBuffer::fill (const RGBAColor& color, const Rect& dest_rect)
     return true; //todo
 }
 
-//TODO : should be in a different object than the main loop to avoid conflicts and race conditions if wrong use by the client...
 bool ScreenBuffer::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)
 {
     //optimising the surface if necessary
-    const_cast<Image&>(src).convertToDisplayFormat();
+    const_cast<Image&>(src).convertToDisplayFormat(m_screen->getRenderer());
 
     //careful... we need double polymorphism here in the end...
     m_screen.get()->blit( *(src.m_img) , dest_rect, src_rect );

@@ -48,7 +48,7 @@ public:
 
     ~Image();
 
-    bool convertToDisplayFormat();
+    bool convertToDisplayFormat( Renderer r = SDL );
 
     bool fill (const RGBAColor& color)
     {

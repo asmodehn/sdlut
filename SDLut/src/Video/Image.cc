@@ -67,8 +67,41 @@ Image::~Image()
     delete m_img, m_img=NULL;
 }
 
-bool Image::convertToDisplayFormat()
+bool Image::convertToDisplayFormat(Renderer r)
 {
+    //TODO : We need to test the type matching of the surface and the videosurf here,
+    if ( r != m_img->getRenderer() )
+    {
+        //and convert if needed
+
+        //TMP just for debug sake
+        //static int incr;
+        //incr++;
+        //std::stringstream ss;
+        //ss << incr;
+
+        switch ( r )
+        {
+        case OpenGL:
+
+            Log << "Warning : Screen and Image using different renderers... ";
+            Log << "Attempting conversion of Image to "<< r ;
+
+            m_img = new GLSurface( *m_img );
+            //m_img->saveBMP( "Converted_" + ss.str() + ".bmp"  );
+            break;
+
+        case SDL: //NOT NEEDED : Handled by hierarchy for now as GLSurface derivates from RGBSurface
+            //m_img = new RGBSurface ( m_img );
+            break;
+
+        default:
+            Log << "Warning : unsupported Image conversion has been required !!! ABORTING.";
+            return false;
+            break;
+        }
+    }
+
     if ( ! m_img->isOptimised() ) return m_img->convertToDisplayFormat();
     return true;
 }

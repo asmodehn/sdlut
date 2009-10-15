@@ -39,6 +39,19 @@ catch (std::exception &e)
 VideoGLSurface::~VideoGLSurface()
 {}
 
+//Useless in OpenGL
+bool VideoGLSurface::update(Rect r)
+{
+    return true;
+}
+
+//Useless in OpenGL
+bool VideoGLSurface::update(std::vector<Rect> rlist)
+{
+    return true;
+}
+
+
 bool VideoGLSurface::refresh(void)
 {
     //This should always be true...
@@ -50,6 +63,68 @@ bool VideoGLSurface::refresh(void)
     //else
     //	return SDL_Flip(_surf.get()) == 0;
 }
+
+
+RGBAColor VideoGLSurface::getpixel(int x, int y)
+{
+    unsigned char pixel[4];
+    glReadPixels(x, y, 1, 1, GL_RGBA, GL_BYTE, &pixel);
+
+#if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
+    RGBAColor color(pixel[3], pixel[2], pixel[1], pixel[0]);
+#else
+    RGBAColor color(pixel[0], pixel[1], pixel[2], pixel[3]);
+#endif
+    return color;
+}
+
+void VideoGLSurface::setpixel(int x, int y, RGBAColor color)
+{
+
+#if (DEBUG == 2)
+    Log << nl << "VideoGLSurface::setpixel ( " x << ", "<< y << ", " << color << ") called...";
+#endif
+
+    //render it
+    //2D Rendering
+
+    glDisable( GL_DEPTH_TEST ) ;
+    glMatrixMode( GL_PROJECTION ) ;
+    glLoadIdentity() ;
+
+    glOrtho( 0, this->getWidth(), this->getHeight(), 0, 0, 1 ) ;
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    if ( color.hasAlpha() )
+    {
+        glEnable(GL_BLEND);
+        glEnable(GL_ALPHA_TEST);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+
+    glColor4ub(color.getR(), color.getG(), color.getB(), color.getA() );
+
+    glBegin( GL_POINTS ) ;
+
+    glVertex2i( x, y ) ;
+
+    glEnd() ;
+
+
+    if ( color.hasAlpha() )
+    {
+        glDisable(GL_ALPHA_TEST);
+        glDisable(GL_BLEND);
+    }
+
+#if (DEBUG == 2)
+    Log << nl << "VideoGLSurface::setpixel ( " x << ", "<< y << ", " << color << ") done.";
+#endif
+
+
+}
+
 
 //TODO : rethink about that again...( recopy the content if 2D or not at all ??? )
 bool VideoGLSurface::resize(int width, int height, bool keepcontent)
@@ -196,10 +271,11 @@ bool VideoGLSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rec
     catch (std::bad_cast& bc)
     {
         //If not convert it
-        //TODO
-        Log << "bad_cast caught: " << bc.what() ;
+        Log << " bad_cast caught: Surface wasnt a GLSurface. " << bc.what() ;
+        Log << " Conversion should be done before in Image::ConvertToDisplayFormat() " ;
         success = false;
     }
+
 
 #if (DEBUG == 2)
     Log << nl << "VideoGLSurface::blit (const RGBSurface& src," << dest_rect << ", " << src_rect << ") done.";

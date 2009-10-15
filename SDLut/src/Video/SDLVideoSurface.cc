@@ -229,6 +229,19 @@ bool VideoSurface::resize(int width, int height, bool keepcontent)
     return (res && initialized());
 }
 
+
+RGBAColor VideoSurface::getpixel(int x, int y)
+{
+    return BaseSurface::getpixel(x, y);
+}
+
+void VideoSurface::setpixel(int x, int y, RGBAColor pixel)
+{
+    return BaseSurface::setpixel( x, y, pixel );
+}
+
+
+
 bool VideoSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect)
 {
 #if (DEBUG == 2)

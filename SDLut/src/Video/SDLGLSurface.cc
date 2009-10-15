@@ -12,8 +12,20 @@ GLSurface::GLSurface(SDL_Surface * s) throw (std::logic_error)
 try :
     RGBSurface(s), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
 {
+
+#ifdef DEBUG
+    Log << nl << "GLSurface::GLSurface(" << s << ") called.";
+#endif
+
+
     computeGLWidthHeight();
     convertPixels();
+
+#ifdef DEBUG
+
+    Log << nl << "GLSurface::GLSurface(" << s << ") done -> " << _surf.get() << " created.";
+#endif
+
 }
 catch (std::exception &e)
 {
@@ -26,8 +38,45 @@ GLSurface::GLSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error)
 try :
     RGBSurface(s), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
 {
+
+#ifdef DEBUG
+    Log << nl << "GLSurface::GLSurface(" << s.get() << ") called.";
+#endif
+
     computeGLWidthHeight();
     convertPixels();
+
+#ifdef DEBUG
+
+    Log << nl << "GLSurface::GLSurface(" << s.get() << ") done -> " << _surf.get() << " created.";
+#endif
+
+}
+catch (std::exception &e)
+{
+    Log << nl << "Exception catched in GLSurface Constructor !!!"  << nl <<
+    e.what() << nl << GetError() << std::endl;
+    //TODO : much more explicit error message...
+}
+
+GLSurface::GLSurface( const RGBSurface & rgbs) throw (std::logic_error)
+try :
+    RGBSurface( rgbs ), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
+{
+
+#ifdef DEBUG
+    Log << nl << "GLSurface::GLSurface(" << &rgbs << ") called.";
+#endif
+
+
+    computeGLWidthHeight();
+    convertPixels();
+
+#ifdef DEBUG
+
+    Log << nl << "GLSurface::GLSurface(" << &rgbs << ") done -> " << _surf.get() << " created.";
+#endif
+
 }
 catch (std::exception &e)
 {
@@ -45,8 +94,18 @@ GLSurface::GLSurface( int width, int height, int bpp, bool alpha , bool colorkey
 try :
     RGBSurface(width, height, bpp, alpha, colorkey, hardware, r_mask, g_mask, b_mask, a_mask), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
 {
+
+#ifdef DEBUG
+    Log << nl << "GLSurface::GLSurface(" << width <<", " << height << ", " << bpp << ", "<< alpha << ", " << colorkey << ", " << hardware << "... ) called.";
+#endif
+
     computeGLWidthHeight();
     convertPixels();
+
+#ifdef DEBUG
+    Log << nl << "GLSurface::GLSurface(" << width <<", " << height << ", " << bpp << ", "<< alpha << ", " << colorkey << ", " << hardware << "...) done -> " << _surf.get() << " created.";
+#endif
+
 }
 catch (std::exception &e)
 {
@@ -64,8 +123,16 @@ GLSurface::GLSurface( void * pixeldata, int depth, int pitch, int width, int hei
 try	:
     RGBSurface(pixeldata, depth, pitch, width, height, r_mask, g_mask, b_mask, a_mask), modified(false),textureWidth(0), textureHeight(0), texturePixels(NULL)
 {
+#ifdef DEBUG
+    Log << nl << "GLSurface::GLSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width <<", " << height << "... ) called.";
+#endif
+
     computeGLWidthHeight();
     convertPixels();
+#ifdef DEBUG
+    Log << nl << "GLSurface::GLSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width <<", " << height << "...) done -> " << _surf.get() << " created.";
+#endif
+
 }
 catch (std::exception &e)
 {
