@@ -110,6 +110,12 @@ bool Image::convertToDisplayFormat(Renderer r)
     return res;
 }
 
+bool Image::resize(int width, int height, bool keepcontent)
+{
+    return m_img->resize(width, height, keepcontent );
+}
+
+
 bool Image::fill (const RGBAColor& color, const Rect& dest_rect)
 {
     return m_img->fill(color,dest_rect);

@@ -21,7 +21,7 @@ class Console
 
 	RGBColor _bgColor;
 
-	RGBSurface * surf;
+	Image * surf;
 
 	std::string text;
 
@@ -35,7 +35,7 @@ public :
 
 	bool init(int width, int height)
 	{
-		surf = new GLSurface(width,height,8); //8 as magic number for minimum bpp.
+		surf = new Image(width,height,8); //8 as magic number for minimum bpp.
 		surf->fill(_bgColor);
 		if (surf == NULL) return false;
 		return true;
@@ -80,7 +80,7 @@ public :
 			{
 				if ((std::string)line != "")
 				{
-					std::auto_ptr<RGBSurface> textsurf = _font.render(line,RGBColor(255,255,255),Font::Solid);
+					std::auto_ptr<Image> textsurf = _font.render(line,RGBColor(255,255,255),Font::Solid);
 					assert(textsurf.get());
 					surf->blit(*textsurf,Point (0,i * linesize));
 				}
@@ -117,20 +117,20 @@ public:
 		TextInput::handleKeyEvent(s,pressed);
 
 		if (pressed == true) cons->add(s.getChar());
-        
+
 		return true;
     }
 };
 
-class MyEngine : public DefaultEngine
+class MyEngine
 {
 
 public:
 
 	Point consolePos;
 	Console * console;
-	std::auto_ptr<RGBSurface> HelpMsg;
-		
+	std::auto_ptr<Image> HelpMsg;
+
 	MyEngine() : consolePos(0,0), console (NULL), HelpMsg(0)
 	{}
 
@@ -142,41 +142,27 @@ public:
 
 	bool init(int width, int height)
 	{
-		DefaultEngine::init(width,height);
-		console->init(width,height - 2 * DefaultEngine::_logo->getHeight());
-		consolePos.sety(DefaultEngine::_logo->getHeight());
+		console->init(width,height);
 		HelpMsg = console->_font.render("Plz Use Keyboard To Write Text Down", RGBColor(0xFF, 0xFF, 0xFF), Font::Shaded, RGBColor(0, 0, 0));
 		return true;
 	}
 
 	bool resize(int width, int height)
 	{
-		DefaultEngine::resize(width,height);
-		console->resize(width,height - 2 * DefaultEngine::_logo->getHeight());
-		consolePos.sety(DefaultEngine::_logo->getHeight());
+		console->resize(width,height);
 		return true;
 	}
 
-	void prerender()
-	{
-		//nothing for now
-	}
-
-	void render(VideoSurface & screen) const
+	bool render(ScreenBuffer & screen) const
     {
-		if (HelpMsg.get()) 
+		if (HelpMsg.get())
 			screen.blit( *HelpMsg, Point::Point(5, 5) );
 
 		if (console !=NULL)
 			screen.blit(*(console->surf),consolePos);
-
-		DefaultEngine::render(screen);
+    return true;
     }
 
-	void postrender()
-	{
-		//nothing for now
-	}
 };
 
 
@@ -198,11 +184,9 @@ int main(int argc, char** argv)
 	App::getInstance().initText();
 
     testlog << nl << " Creating the User Interface... " << std::endl;
- 
-    App::getInstance().getWindow().setBGColor(RGBColor (64,0,0));
 
     Font font;
-    
+
     if (argc > 1)
     {
 		//specific font
@@ -210,32 +194,30 @@ int main(int argc, char** argv)
     }
 
 	Console cons(font);
-	MyEngine * pt_eng = new MyEngine();
-	pt_eng->setConsole(&cons);
-	std::auto_ptr<Engine> engine( pt_eng);// to pass on deleting responsibility
-	
+	std::auto_ptr<MyEngine> engine(new MyEngine());
+	engine->setConsole(&cons);
+
    //UI Creation
     MyUserInput ui;
 	ui.setConsole(&cons);
-    App::getInstance().getWindow().getEventManager().setKeyboard(&ui);
+    App::getInstance().getDisplay().getEventManager().setKeyboard(&ui);
 
 
-	//without this line the default engine is used
-    App::getInstance().getWindow().getScreenBuffer().resetEngine(engine);
+	App::getInstance().getDisplay().resetInitCallback(&*engine,&MyEngine::init);
+	App::getInstance().getDisplay().resetResizeCallback(&*engine,&MyEngine::resize);
+	App::getInstance().getDisplay().resetRenderCallback(&*engine,&MyEngine::render);
 
-	
 
-
-    if (! (App::getInstance().getWindow().resetDisplay(800,600)))
+    if (! (App::getInstance().getDisplay().setDisplay(800,600)))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);
     }
-    else
+    else if ( App::getInstance().getDisplay().show() )
     {
-        App::getInstance().getWindow().mainLoop();
+        App::getInstance().getDisplay().mainLoop();
     }
-    
+
     return 0;
 }
 

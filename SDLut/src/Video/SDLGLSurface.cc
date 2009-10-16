@@ -186,6 +186,13 @@ GLSurface::~GLSurface()
         delete[] texturePixels, texturePixels = NULL;
 }
 
+bool GLSurface::resize(int width, int height, bool keepcontent)
+{
+    //TODO : test and fix
+    RGBSurface::resize(width, height, keepcontent);
+    modified = true;
+}
+
 
 int GLSurface::getTextureWidth()
 {

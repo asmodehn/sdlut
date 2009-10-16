@@ -57,7 +57,7 @@ class MyGeneralHandler : public DefaultEventHandler
         		Log << nl <<"User Event";
 				return true;
 			}
-			
+
             //Callback on Quit Event
             virtual bool handleQuitEvent(void)
 			{
@@ -88,9 +88,9 @@ public:
 
 		Log << nl << "SDL Name : "<< getSDLKeyName(s.getKey())
 			<< " | Key Name : " << getKeyName(s.getKey());
-		if ( pressed ) Log << "pressed  "; else Log << "released ";
+		if ( pressed ) Log << " pressed  "; else Log << " released ";
 		Log	<< " | Modifier : " << getModifierName(s.getMod()) ;
-        
+
         return true;
 	}
 };
@@ -143,58 +143,6 @@ public:
 
 };
 
-//TODO : Test textinput, maybe in another test not to ocnfuse with keyboard keys events...
-
-/*
-//Defining UserInput
-class MyUserInput : public TextInput
-{
-public:
-
-	Console *cons;
-
-	MyUserInput() : TextInput(), cons(NULL) {}
-
-	void setConsole (Console * newcons)
-	{
-		cons = newcons;
-	}
-
-    virtual bool handleKeyEvent (const Sym &s, bool pressed)
-    {
-        bool res = false;
-            switch( s.getKey() )
-            {
-                case KEscape:
-                if (pressed==false)
-                {
-#ifdef DEBUG
-                    Log << nl << "Quit requested !" << std::endl;
-#endif
-
-                    _quitRequested=true;
-                    res=true;
-                }
-                break;
-                case KF5:
-                if (pressed==true)
-                    App::getInstance().getWindow().iconify();
-                res = true;
-                break;
-				case KF6:
-                if (pressed==true)
-                    App::getInstance().getWindow().setFullscreen(!App::getInstance().getWindow().isFullscreen());
-                res = true;
-                break;
-				default: if (pressed == true) cons->add(s.getChar());
-                res = true;
-            }
-        return res;
-    }
-};
-*/
-
-
 //Main Program
 int main(int argc, char** argv)
 {
@@ -209,27 +157,27 @@ int main(int argc, char** argv)
 	App::getInstance().initText();
 
     testlog << nl << " Creating the User Interface... " << std::endl;
- 
-    App::getInstance().getWindow().setBGColor(RGBColor (64,0,0));
+
+    App::getInstance().getDisplay().setBGColor(RGBColor (64,0,0));
 
     MyGeneralHandler gh;
 	MyKeyboard kb;
 	MyMouse mouse;
-    App::getInstance().getWindow().getEventManager().setKeyboard(&kb);
-	App::getInstance().getWindow().getEventManager().setMouse(&mouse);
-   App::getInstance().getWindow().getEventManager().setGeneralHandler(&gh);
+    App::getInstance().getDisplay().getEventManager().setKeyboard(&kb);
+	App::getInstance().getDisplay().getEventManager().setMouse(&mouse);
+   App::getInstance().getDisplay().getEventManager().setGeneralHandler(&gh);
 
 
-    if (! (App::getInstance().getWindow().resetDisplay(800,600)))
+    if (! (App::getInstance().getDisplay().setDisplay(800,600)))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);
     }
     else
     {
-        App::getInstance().getWindow().mainLoop();
+        App::getInstance().getDisplay().mainLoop();
     }
-    
+
     return 0;
 }
 

@@ -7,40 +7,15 @@ namespace SDL
 {
 
 ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error)
-        : m_width(width), m_height(height),m_bpp(bpp), pm_manager(manager), m_background(RGBColor(0,0,0))
+        : m_width(width), m_height(height),m_bpp(bpp), fullRefreshNeeded(true), pm_manager(manager), m_background(RGBColor(0,0,0))
 {
 
     //setting the static videoInfo to be used by all surfaces...
     BaseSurface::_vinfo = &m_videoinfo;
 
-    //force usage of DEFAULT_DISPLAY_WIDTH & DEFAULT_DISPLAY_HEIGHT when only one param is equal to 0.
-    if ((width == 0 && height != 0) || (width != 0 && height == 0))
-    {
-        width = DEFAULT_DISPLAY_WIDTH;
-        height = DEFAULT_DISPLAY_HEIGHT;
-    }
-    //TODO get rid of default display size and try 4/3 size, or pick first of suggested size by video info
+    setSize( width, height );
 
-    //Both equal to 0 means use dekstop/current mode.
-    if (width == 0 && height == 0)
-    {
-        width = VideoSurface::getVideoInfo()->get_current_width();
-        height = VideoSurface::getVideoInfo()->get_current_height();
-    }
-
-    if ( bpp == 0 ) //here 0 means autodetection
-    {
-        bpp=VideoSurface::getSuggestedBPP(width, height);
-    }
-    else
-    {
-        //TODO : check that the value of bpp asked for is supported...
-    }
-
-    m_width = width;
-    m_height = height;
-    m_bpp = bpp;
-
+    setBPP ( bpp );
 
     //but beware about bpp == 0...
     if (m_bpp == 0 )
@@ -60,7 +35,7 @@ ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) thr
 //recreating Engine here to make sure both origin and destination engines are independant.
 //maybe not really needed, but safer in case of copy ( or should we completely forbid copy ? )
 ScreenBuffer::ScreenBuffer( const ScreenBuffer & sb )
-        : m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp), pm_manager(sb.pm_manager), m_background(sb.m_background)
+        : m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp), fullRefreshNeeded(true),pm_manager(sb.pm_manager), m_background(sb.m_background)
 {
     //warning no protection offered here in case of wrong / unsupported size ( for the moment )
 }
@@ -71,12 +46,51 @@ ScreenBuffer::~ScreenBuffer()
 }
 
 
+void ScreenBuffer::setSize(int width, int height)
+{
+    //force usage of DEFAULT_DISPLAY_WIDTH & DEFAULT_DISPLAY_HEIGHT when only one param is equal to 0.
+    if ((width == 0 && height != 0) || (width != 0 && height == 0))
+    {
+        width = DEFAULT_DISPLAY_WIDTH;
+        height = DEFAULT_DISPLAY_HEIGHT;
+    }
+    //TODO get rid of default display size and try 4/3 size, or pick first of suggested size by video info
+
+    //Both equal to 0 means use dekstop/current mode.
+    if (width == 0 && height == 0)
+    {
+        width = VideoSurface::getVideoInfo()->get_current_width();
+        height = VideoSurface::getVideoInfo()->get_current_height();
+    }
+
+    m_width = width;
+    m_height = height;
+
+}
+
+void ScreenBuffer::setBPP(int bpp)
+{
+
+    if ( bpp == 0 ) //here 0 means autodetection
+    {
+        bpp=VideoSurface::getSuggestedBPP(m_width, m_height);
+    }
+    else
+    {
+        //TODO : check that the value of bpp asked for is supported...
+    }
+
+    m_bpp = bpp;
+
+}
 
 bool ScreenBuffer::setResizable(bool val)
 {
     bool res = true;
     if (!m_screen.get()) //if not already created, set the static flag.
+    {
         VideoSurface::setResizable(val);
+    }
     else if (m_screen->isResizableset() !=val ) //if called inside mainLoop while screen is active
     {
         hide();
@@ -250,7 +264,7 @@ bool ScreenBuffer::show()
     Log << nl << "SceenBuffer::show() called ..." << std::endl;
 #endif
     if ( m_screen.get() != NULL ) // no need to reset the display
-    {			//if reset is wanted the buffer shoul be recreated
+    {			//if reset is wanted the buffer should be recreated
         return true;
     }
     //else the screen hasnt been displayed yet, or has been hidden.
@@ -271,6 +285,7 @@ bool ScreenBuffer::show()
         //initializing engine
         m_engine.init(m_width, m_height);
 
+        requestFullRefresh();
         res=true;
     }
     catch (std::exception & e)
@@ -311,19 +326,13 @@ bool ScreenBuffer::resize (int width, int height)
     }
     else
     {
-        if (width>0)
-        {
-            m_width = width;
-        }
-        if (height>0)
-        {
-            m_height= height;
-        }
+        setSize( (width>0) ? width : 0 , (height>0) ? height : 0 );
     }
 #ifdef DEBUG
     Log << nl << "ScreenBuffer::resize() done.";
 #endif
 
+    requestFullRefresh();
     m_screen->refresh();
 
     return res;
@@ -357,10 +366,20 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
     }
     else
     {
-        //now refreshing only what is needed
-        m_screen->update(refreshlist);
-        m_screen->update(oldlist);
-        oldlist=refreshlist;
+        if ( fullRefreshNeeded ) // first render, or periodically to avoid problems...
+        {
+            fullRefreshNeeded = false;
+            m_screen->refresh();
+            oldlist.clear(); // we dont need to refresh the old ones the next time.
+        }
+        else
+        {
+
+            //now refreshing only what is needed
+            m_screen->update(refreshlist);
+            m_screen->update(oldlist);
+            oldlist=refreshlist;
+        }
     }
     //clear can be done here, just in case we filled it up in OpenGL by mistake
     refreshlist.clear();

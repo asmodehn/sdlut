@@ -95,16 +95,20 @@ void Display::applyBGColor() const
 
 bool Display::setDisplay (unsigned int width, unsigned int height, unsigned int bpp)
 {
-    pvm_screen.setWidth(width);
-
-    pvm_screen.setHeight(height);
-
+    pvm_screen.setSize(width, height);
     pvm_screen.setBPP(bpp);
 
     return true; // for now always true.
     //TODO: Checks must be done to make sure the required resolution is supported
 }
 
+//TODO : this show() is a bit useless... Init could be done inside mainloop.
+// Also if we thing it s needed to have an init, we should have a fin to, for symetry reason.
+// The show/hide thing is tied to events being disjoint from display loop... apart from that
+// there is not much reason for such functions... Later
+//TODO
+// One solution : one mainloop that calls init.
+// show / hide just switch a flag that determine if we do the display part of the mainloop.
 bool Display::show()
 {
     bool res = pvm_screen.show();

@@ -18,7 +18,7 @@ Logger Log("Test GL");
 #define M_PI  3.14159265358979323846
 #endif
 
-class MyEngine : public DefaultEngine
+class MyEngine
 {
 
 	//GLint to store the gllist index for the logo
@@ -60,14 +60,13 @@ void setMaterial(GLenum mode,GLfloat *f,GLfloat alpha) const
 
 public:
 
-	MyEngine() : DefaultEngine()
+	MyEngine()
 	{}
 
     virtual ~MyEngine(){}
 
 	bool init(int width, int height)
 	{
-		DefaultEngine::init(width,height);
 
 	  //generate object list
 
@@ -98,23 +97,21 @@ public:
 
 	   glEndList();
 	   return true;
-   
+
 	}
 
 	bool resize(int width, int height)
 	{
 
-		return DefaultEngine::resize(width,height);
-		
 	}
 
-	void prerender(unsigned long deltaticks)
+	bool newframe(unsigned long framerate, unsigned long elapsedticks )
 	{
-		return DefaultEngine::prerender(deltaticks);
 		//TODO : keep the rotation speed constant even if the framerate drops...
+		return true;
 	}
 
-	void render(VideoSurface & screen) const
+	bool render(ScreenBuffer & screen) const
     {
 		//Switchig to 3D display
 		glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix
@@ -128,7 +125,7 @@ public:
 		GLdouble xmin = ymin * GLfloat(screen.getWidth()) / GLfloat(screen.getHeight());
 		GLdouble xmax = ymax * GLfloat(screen.getWidth()) / GLfloat(screen.getHeight());
 		glFrustum(xmin, xmax, ymin, ymax, znear, zfar);
-		
+
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
@@ -155,7 +152,7 @@ public:
     // Enable depth testing and backface culling.
     //
 
-    glEnable (GL_DEPTH_TEST);    
+    glEnable (GL_DEPTH_TEST);
     glEnable (GL_CULL_FACE);
 
 		//Rendering the OpenGL logo
@@ -164,14 +161,10 @@ public:
 		glDisable (GL_DEPTH_TEST);
 		glDisable (GL_LIGHTING);
 
-		//Now drawing the SDL logo in 2D ( Ortho projection )
-		return DefaultEngine::render(screen);
+        return true;
+
     }
 
-	void postrender()
-	{
-		return DefaultEngine::postrender();
-	}
 };
 
 
@@ -187,36 +180,41 @@ int main(int argc, char** argv)
     //Starting with usual SDL window
     App::getInstance().initVideo(false,true,true,false);
     App::getInstance().setName ("RAGE::SDL test - OpenGL");
-	
-    //Getting video informations
-    testlog << nl << App::getInstance().getWindow().getVideoInfo() << std::endl;
 
-	App::getInstance().getWindow().setBGColor(RGBColor (64,0,0));
+    //Getting video informations
+    testlog << nl << App::getInstance().getDisplay().getScreenBuffer().getVideoInfo() << std::endl;
+
+	App::getInstance().getDisplay().setBGColor(RGBColor (64,0,0));
 
     //MyUserInput ui;
     //App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 
     //GLManager test
-    App::getInstance().getWindow().getGLManager();
+    App::getInstance().getDisplay().getGLManager();
     testlog << nl<<std::boolalpha <<
-    "setRsize(5) " << App::getInstance().getWindow().getGLManager().setRSize(5) << nl <<
-    "setGSize(5) " << App::getInstance().getWindow().getGLManager().setGSize(5) << nl <<
-    "setBSize(5) " << App::getInstance().getWindow().getGLManager().setBSize(5) << nl <<
-    "setASize(5) " << App::getInstance().getWindow().getGLManager().setASize(5) << nl <<
-    "setBufferSize(5) " << App::getInstance().getWindow().getGLManager().setBufferSize(12) << nl <<
+    "setRsize(5) " << App::getInstance().getDisplay().getGLManager().setRSize(5) << nl <<
+    "setGSize(5) " << App::getInstance().getDisplay().getGLManager().setGSize(5) << nl <<
+    "setBSize(5) " << App::getInstance().getDisplay().getGLManager().setBSize(5) << nl <<
+    "setASize(5) " << App::getInstance().getDisplay().getGLManager().setASize(5) << nl <<
+    "setBufferSize(5) " << App::getInstance().getDisplay().getGLManager().setBufferSize(12) << nl <<
     std::endl;
 
 
 	//switch to opengl
-    //App::getInstance().getWindow()->setOpenGL(true);
-	
-	//Comment this line to use the default engine
-	MyEngine engine;
-	App::getInstance().getWindow().setEngine(&engine);
+    //App::getInstance().getDisplay()->setOpenGL(true);
 
-    if(App::getInstance().getWindow().resetDisplay(800,600))
+	std::auto_ptr<MyEngine> engine(new MyEngine());
+
+	App::getInstance().getDisplay().resetInitCallback(&*engine,&MyEngine::init);
+	App::getInstance().getDisplay().resetResizeCallback(&*engine,&MyEngine::resize);
+	App::getInstance().getDisplay().resetNewFrameCallback(&*engine,&MyEngine::newframe);
+	App::getInstance().getDisplay().resetRenderCallback(&*engine,&MyEngine::render);
+
+    App::getInstance().getDisplay().setDisplay(800,600);
+
+    if(App::getInstance().getDisplay().show())
     {
-       App::getInstance().getWindow().mainLoop();
+       App::getInstance().getDisplay().mainLoop();
     }
 
     return 0;
@@ -230,7 +228,7 @@ int main(int argc, char** argv)
 
 
 //DATA
-MyEngine::Material MyEngine::material = { 
+MyEngine::Material MyEngine::material = {
 	{0.0f,0.0f,0.0f},
 	{0.622157f,0.704118f,0.886667f},
 	{0.2f,0.2f,0.2f},

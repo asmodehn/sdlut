@@ -56,7 +56,7 @@ class MyGeneralHandler : public DefaultEventHandler
         		Log << nl <<"User Event";
 				return true;
 			}
-			
+
             //Callback on Quit Event
             virtual bool handleQuitEvent(void)
 			{
@@ -108,26 +108,26 @@ int main(int argc, char** argv)
 	App::getInstance().initText();
 
     testlog << nl << " Creating the User Interface... " << std::endl;
- 
-    App::getInstance().getWindow().setBGColor(RGBColor (64,0,0));
+
+    App::getInstance().getDisplay().setBGColor(RGBColor (64,0,0));
 
     MyGeneralHandler gh;
 	MyKeyboard kb;
 
-    App::getInstance().getWindow().getEventManager().setKeyboard(&kb);
-   App::getInstance().getWindow().getEventManager().setGeneralHandler(&gh);
+    App::getInstance().getDisplay().getEventManager().setKeyboard(&kb);
+   App::getInstance().getDisplay().getEventManager().setGeneralHandler(&gh);
 
 
-    if (! (App::getInstance().getWindow().resetDisplay(800,600)))
+    if (! (App::getInstance().getDisplay().setDisplay(800,600)))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
         exit(0);
     }
-    else
+    else if ( App::getInstance().getDisplay().show() )
     {
-        App::getInstance().getWindow().mainLoop();
+        App::getInstance().getDisplay().mainLoop();
     }
-    
+
     return 0;
 }
 

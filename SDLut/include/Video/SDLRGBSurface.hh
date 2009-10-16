@@ -89,7 +89,7 @@ public :
     	int update(void);
     */
 
-    bool resize(int width, int height, bool keepcontent = false);
+    virtual bool resize(int width, int height, bool keepcontent = false);
 
     bool isSRCColorKeyset(void);
     bool isSRCAlphaset(void);

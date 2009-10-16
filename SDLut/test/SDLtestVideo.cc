@@ -5,40 +5,41 @@ using namespace RAGE::SDL;
 
 Logger Log("Test Video");
 
-class MyEngine : public DefaultEngine
+class MyEngine
 {
 
 public:
 
-	std::auto_ptr<RGBSurface> loadedimage;
+	std::auto_ptr<Image> loadedimage;
 	Point imagepos;
 
 	MyEngine( const std::string & imagefilename) : imagepos()
 	{
-		SurfaceLoader loader;
-		loadedimage = loader.load(imagefilename,RGBAColor(0,0,0,200));
+		ImageLoader loader;
+		loadedimage = loader.load(imagefilename,RGBAColor(0,0,0,255));
 	}
 
     virtual ~MyEngine(){}
-			
+
     bool init(int width, int height)
 	{
 		imagepos.setx( (width - loadedimage->getWidth()) /2);
 		imagepos.sety( (height - loadedimage->getHeight()) /2);
-		return DefaultEngine::init(width,height);
+		return true;
 	}
 
 	bool resize(int width, int height)
 	{
 		imagepos.setx( (width - loadedimage->getWidth()) /2);
 		imagepos.sety( (height - loadedimage->getHeight()) /2);
-		return DefaultEngine::resize(width,height);
+		return true;
 	}
 
-	void render(VideoSurface & screen) const
+	bool render(ScreenBuffer & screen) const
     {
 		screen.blit(*loadedimage, imagepos );
-		DefaultEngine::render(screen);
+
+		return true;
     }
 };
 
@@ -52,33 +53,37 @@ int main(int argc, char** argv)
     //Setup example
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
-    App::getInstance().initVideo(true,false,true,false);
-    
+    App::getInstance().initVideo(false,false,true,false);
+
 	App::getInstance().setName ("RAGE::SDL test - Video");
 
-    App::getInstance().getWindow().setBGColor(RGBColor (128,0,0));
-	
-	//if argument we load the image in the test engine 
-	MyEngine * engine = NULL;
+    App::getInstance().getDisplay().setBGColor(RGBColor (128,0,0));
+
+
+	//if argument we load the image in the test engine
+	std::auto_ptr<MyEngine> engine;
 	if ( argc > 1)
 	{
-		engine = new MyEngine( static_cast<std::string>(argv[1]));
 
-		App::getInstance().getWindow().setEngine(engine);
+	engine.reset(new MyEngine(static_cast<std::string>(argv[1])));
+
+	App::getInstance().getDisplay().resetInitCallback(&*engine,&MyEngine::init);
+	App::getInstance().getDisplay().resetResizeCallback(&*engine,&MyEngine::resize);
+	App::getInstance().getDisplay().resetRenderCallback(&*engine,&MyEngine::render);
+
 	//otherwise we use the default engine only.
 	}
 
-    if (! (App::getInstance().getWindow().resetDisplay(0,0,16)))
+    if (! (App::getInstance().getDisplay().setDisplay(0,0,16)))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
-        exit(0);
     }
-    else
+    else if ( App::getInstance().getDisplay().show() )
     {
-        App::getInstance().getWindow().mainLoop(2);
+        App::getInstance().getDisplay().mainLoop(2);
 	//think about automatic exit after timeout...
     }
-	delete engine;
+
     return 0;
 }
 

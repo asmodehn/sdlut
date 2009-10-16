@@ -35,7 +35,7 @@
   testlog << ( (SDL::App::getInstance().initText())? "OK" : "FAILED" );
  #endif
 
-  App::getInstance().getWindow().resetDisplay(800,600);
-  App::getInstance().getWindow().mainLoop();
+  App::getInstance().getDisplay().setDisplay(800,600);
+  App::getInstance().getDisplay().mainLoop();
   return 0;
  }

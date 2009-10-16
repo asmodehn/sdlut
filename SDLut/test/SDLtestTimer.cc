@@ -6,6 +6,7 @@
 #include "SDL.hh"
 #include <ctime>
 #include <sstream>
+#include <cstdlib>
 
 //to be able to easily remove the locks
 #define SCOPED_LOCK(mtx) ScopedLock lock(mtx)
@@ -75,7 +76,7 @@ private:
 	SDL::NewTimer<ObjectWithCallbacks> *Play_Timer_1x;
 	SimpleObject *sobj;
 
-	int direct_timer_it, direct_timer_int;	
+	int direct_timer_it, direct_timer_int;
 
 	int loop_nb;
 
@@ -98,7 +99,7 @@ public:
 		start_timer_tick = 0;
 
 		sobj = new SimpleObject();
-	
+
 	} catch (std::exception &exc) {
 		Clean_ObjectWithCallbacks();
 		throw std::logic_error("Error in ObjectWithCallbacks Constructor " + (string)exc.what() );
@@ -114,7 +115,7 @@ public:
 	}
 
 	void Clean_ObjectWithCallbacks()
-	{		
+	{
 		if (Play_Timer_1x != NULL)
 		{
 			Play_Timer_1x->abort();
@@ -137,7 +138,7 @@ SCOPED_LOCK(mymtx);
 			flag = 0;
 		}
 	}
-	
+
 public:
 	unsigned int callback2(unsigned int interval, void* args)
 	{
@@ -147,7 +148,7 @@ SCOPED_LOCK(mymtx);
 
 		if ( direct_timer_it != 0 )
 			return direct_timer_int;
-		
+
 		testlog << nl << "Stopping " << this << "\'s direct timer" << std::endl;
 		return 0;
 
@@ -179,7 +180,7 @@ try {
 	SDL::App::getInstance().initTimer();
 
 	//static SDL_TimerID gt_id = SDL::AddGlobalTimer(50,callback,NULL);
-			
+
 	testlog << nl<<"Creating instance";
 	ObjectWithCallbacks* gobj = new ObjectWithCallbacks();
 
@@ -189,13 +190,13 @@ try {
 	testlog << nl <<"Starting instance timer 2 (every 200ms)";
 
 
-/***Run***/	
+/***Run***/
 	//SDL::Delay(15000); //TODO Display time running
 	ticks = SDL::GetTicks();
 
 	while (SDL::GetTicks() < (ticks + TEST_DURATION))
 	{
-		std::cout << SDL::GetTicks() << "\r";	
+		std::cout << SDL::GetTicks() << "\r";
 	}
 
 /***Clean***/

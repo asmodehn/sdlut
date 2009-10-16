@@ -32,6 +32,24 @@ WkDoc()
 WkTestBuild (SDLtestColor)
 WkTestRun (SDLtestColor)
 
-WkTestBuild (SDLtestScene)
-WkTestRun (SDLtestScene)
+WkTestBuild (SDLtestRefresh)
+WkTestRun (SDLtestRefresh)
 
+WkTestBuild ( SDLtestApp )
+WkTestBuild ( SDLtestDumbLoop )
+WkTestBuild ( SDLtestver )
+
+WkTestBuild ( SDLtestEvents )
+WkTestBuild ( SDLtestManager )
+
+WkTestBuild ( SDLtestTimer )
+WkTestBuild ( SDLtestStressTimer )
+WkTestBuild ( SDLtestMutex )
+WkTestBuild ( SDLtestThread )
+WkTestBuild ( SDLtestStressThread )
+
+WkTestBuild ( SDLtestVideo )
+WkTestBuild ( SDLtestGL )
+WkTestBuild ( SDLtestTextInput ) 
+
+WkTestBuild ( SDLtestFont )

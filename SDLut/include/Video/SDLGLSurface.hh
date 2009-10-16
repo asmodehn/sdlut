@@ -83,6 +83,8 @@ public :
 
     bool convertToDisplayFormat();
 
+    virtual bool resize(int width, int height, bool keepcontent = false);
+
     bool fill (const PixelColor& color, Rect dest_rect);
 
     bool blit (const RGBSurface& src, Rect& dest_rect, const Rect& src_rect);

@@ -53,6 +53,8 @@ protected:
     VideoInfo m_videoinfo;
     std::auto_ptr<VideoSurface> m_screen;
 
+    bool fullRefreshNeeded;
+
     Manager* pm_manager;
 #ifdef WK_OPENGL_FOUND
     GLManager m_glmanager;
@@ -66,19 +68,11 @@ public:
     ScreenBuffer( const ScreenBuffer & );
     ~ScreenBuffer();
 
-//warning no protection offered here in case of wrong / unsupported size ( TODO )
-    void setWidth(int width)
-    {
-        m_width = width;
-    }
-    void setHeight(int height)
-    {
-        m_height = height;
-    }
-    void setBPP(int bpp)
-    {
-        m_bpp = bpp;
-    }
+    ///Set size and BPP for next shown ScreenBuffer
+    ///Warning : different from resize which resize dynamically.
+    void setSize(int width, int height);
+    void setBPP(int bpp);
+
     int getWidth()
     {
         return m_width;
@@ -92,6 +86,10 @@ public:
         return m_bpp;
     }
 
+    void requestFullRefresh()
+    {
+        fullRefreshNeeded = true;
+    }
 
     //preset or "dynamically change" properties of the display...
     bool setResizable(bool val);

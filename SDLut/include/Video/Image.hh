@@ -50,12 +50,33 @@ public:
 
     bool convertToDisplayFormat( Renderer r = SDL );
 
+    bool resize(int width, int height, bool keepcontent = false);
+
     bool fill (const RGBAColor& color)
     {
         Rect dest_rect(getWidth(), getHeight());
         return fill( color, dest_rect );
     }
     bool fill (const RGBAColor& color, const Rect& dest_rect);
+
+
+    //Blit src surface on this surface
+    inline bool blit (const Image& src, const Point& dest_pos=Point())
+    {
+        Rect dest_rect(dest_pos,src.getWidth(), src.getHeight());
+        return blit(src, dest_rect);
+    }
+    inline bool blit (const Image& src, const Point& dest_pos, const Rect& src_rect)
+    {
+        Rect dest_rect(dest_pos,src_rect.getw(), src_rect.geth());
+        return blit(src, dest_rect, src_rect);
+    }
+    //Beware ! The final blitting rectangle is saved in dest_rect.
+    inline bool blit (const Image& src, Rect& dest_rect)
+    {
+        Rect src_rect(src.getWidth(), src.getHeight());
+        return blit(src, dest_rect, src_rect);
+    }
 
     bool blit (const Image& src, Rect& dest_rect, const Rect& src_rect);
 
