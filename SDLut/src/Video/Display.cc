@@ -267,11 +267,13 @@ bool Display::mainLoop(unsigned int framerate, unsigned int eventrate)
             //if (!ShowingLoadingScreen)
             applyBGColor();
 
-            pvm_screen.renderpass(framerate, lastframe);
-
             //if (!ShowingLoadingScreen)
             if ( m_rendercb )
                 m_rendercb->call( pvm_screen );
+
+
+            //calling internal engine render
+            pvm_screen.renderpass(framerate, lastframe);
 
             pvm_screen.refresh(framerate, lastframe);
 

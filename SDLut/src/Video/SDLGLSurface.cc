@@ -199,6 +199,8 @@ int GLSurface::getTextureHeight()
 
 bool GLSurface::fill (const PixelColor& color, Rect dest_rect)
 {
+    //easy way, but not really optimised.
+    //we could do it here as well, using the opengl color format...
     modified = true;
     return RGBSurface::fill(color, dest_rect);
 }

@@ -69,6 +69,8 @@ Image::~Image()
 
 bool Image::convertToDisplayFormat(Renderer r)
 {
+    bool res = false;
+
     //TODO : We need to test the type matching of the surface and the videosurf here,
     if ( r != m_img->getRenderer() )
     {
@@ -89,27 +91,28 @@ bool Image::convertToDisplayFormat(Renderer r)
 
             m_img = new GLSurface( *m_img );
             //m_img->saveBMP( "Converted_" + ss.str() + ".bmp"  );
+            res = true;
             break;
 
         case SDL: //NOT NEEDED : Handled by hierarchy for now as GLSurface derivates from RGBSurface
+            // Meaning SDL is the default renderer here when nothing else is specified explicitedly
             //m_img = new RGBSurface ( m_img );
+            res = true;
             break;
 
         default:
             Log << "Warning : unsupported Image conversion has been required !!! ABORTING.";
-            return false;
+            res = false;
             break;
         }
     }
 
-    if ( ! m_img->isOptimised() ) return m_img->convertToDisplayFormat();
-    return true;
+    return res;
 }
 
 bool Image::fill (const RGBAColor& color, const Rect& dest_rect)
 {
-    m_img->fill(color,dest_rect);
-    return true; //todo
+    return m_img->fill(color,dest_rect);
 }
 
 bool Image::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)

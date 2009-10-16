@@ -3,6 +3,8 @@
 #include <typeinfo> //for std::bad_cast
 //#include <sstream>
 
+//#define DEBUG 2
+
 namespace RAGE
 {
 namespace SDL
@@ -82,7 +84,7 @@ void VideoGLSurface::setpixel(int x, int y, RGBAColor color)
 {
 
 #if (DEBUG == 2)
-    Log << nl << "VideoGLSurface::setpixel ( " x << ", "<< y << ", " << color << ") called...";
+    Log << nl << "VideoGLSurface::setpixel ( " << x << ", "<< y << ", " << color << ") called...";
 #endif
 
     //render it
@@ -119,7 +121,7 @@ void VideoGLSurface::setpixel(int x, int y, RGBAColor color)
     }
 
 #if (DEBUG == 2)
-    Log << nl << "VideoGLSurface::setpixel ( " x << ", "<< y << ", " << color << ") done.";
+    Log << nl << "VideoGLSurface::setpixel ( " << x << ", "<< y << ", " << color << ") done.";
 #endif
 
 
@@ -308,7 +310,7 @@ bool VideoGLSurface::fill (const RGBColor& color, Rect dest_rect)
 {
 
 #if (DEBUG == 2)
-    Log << nl << "VideoGLSurface::fill ( " << color << ", " << dest_rect << ", " << src_rect << ") called...";
+    Log << nl << "VideoGLSurface::fill ( " << color << ", " << dest_rect << ") called...";
 #endif
     bool success = false;
     //render it
@@ -347,10 +349,11 @@ bool VideoGLSurface::fill (const RGBColor& color, Rect dest_rect)
         glDisable(GL_BLEND);
     }
 
+
     success = true;
 
 #if (DEBUG == 2)
-    Log << nl << "VideoGLSurface::fill ( " << color << ", " << dest_rect << ", " << src_rect << ") called...";
+    Log << nl << "VideoGLSurface::fill ( " << color << ", " << dest_rect << ") called...";
 #endif
 
     return success;
