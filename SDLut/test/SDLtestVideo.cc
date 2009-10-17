@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 
 	App::getInstance().setName ("RAGE::SDL test - Video");
 
-    App::getInstance().getDisplay().setBGColor(RGBColor (128,0,0));
+    App::getInstance().getDisplay().setBGColor(RGBAColor (128,0,0));
 
 
 	//if argument we load the image in the test engine
@@ -80,6 +80,7 @@ int main(int argc, char** argv)
     }
     else if ( App::getInstance().getDisplay().show() )
     {
+        //BUG TO FIX : At start SDL logo not shown... Need to resize to show it.. why ??
         App::getInstance().getDisplay().mainLoop(2);
 	//think about automatic exit after timeout...
     }

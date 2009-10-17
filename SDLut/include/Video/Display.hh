@@ -114,7 +114,7 @@ public:
     bool isOpenGL();
     bool isNoFrame();
 
-    void setBGColor(const RGBColor & color)
+    void setBGColor(const RGBAColor & color)
     {
         pvm_screen.setBGColor(color);
     }
@@ -122,7 +122,7 @@ public:
     //fill the VideoSurface with the BGColor
     void applyBGColor() const;
 
-    RGBColor getBGColor ()
+    RGBAColor getBGColor ()
     {
         return pvm_screen.getBGColor();
     }
@@ -198,11 +198,11 @@ Screen->blit(*Loading_BG, Point( ls_x, ls_y ) );
 #ifdef WK_SDLTTF_FOUND
 //Blit Global Msg
 if (Loading_Global_Msg != "")
-Screen->blit(*(Loading_Global_Msg_Font.render(Loading_Global_Msg,RGBColor(0,0,0), Font::Blended )), Point( ls_x + Progress_Bar_Infos.getx(), std::max(ls_y, ls_y + Progress_Bar_Infos.gety() - 40) ) );
+Screen->blit(*(Loading_Global_Msg_Font.render(Loading_Global_Msg,RGBAColor(0,0,0), Font::Blended )), Point( ls_x + Progress_Bar_Infos.getx(), std::max(ls_y, ls_y + Progress_Bar_Infos.gety() - 40) ) );
 
 //Blit Specific Msg
 if (Loading_Specific_Msg != "")
-Screen->blit(*(Loading_Specific_Msg_Font.render(Loading_Specific_Msg,RGBColor(0,0,0), Font::Blended )), Point(ls_x + Progress_Bar_Infos.getx(), ls_y + Progress_Bar_Infos.gety() + Progress_Bar_Infos.geth()*2 ) );
+Screen->blit(*(Loading_Specific_Msg_Font.render(Loading_Specific_Msg,RGBAColor(0,0,0), Font::Blended )), Point(ls_x + Progress_Bar_Infos.getx(), ls_y + Progress_Bar_Infos.gety() + Progress_Bar_Infos.geth()*2 ) );
 #endif //WK_SDLTTF_FOUND
 
 //progression bar

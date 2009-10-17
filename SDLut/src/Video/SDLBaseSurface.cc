@@ -284,7 +284,7 @@ void BaseSurface::setpixel(int x, int y, RGBAColor pixelcolor)
     else //If We Want To Set A Pixel With Alpha !
     {
         unsigned int r, g, b;
-        RGBColor color;
+        RGBAColor color;
         switch (_surf->format->BytesPerPixel)
         {
         case 1:
@@ -344,10 +344,6 @@ bool BaseSurface::saveBMP(std::string filename) const
 }
 
 //Fill
-bool BaseSurface::fill (const RGBColor& color)
-{
-    return fill(getPixelFormat().getValueFromRGB(color));
-}
 bool BaseSurface::fill (const RGBAColor& color)
 {
     return fill(getPixelFormat().getValueFromRGBA(color));
@@ -359,10 +355,6 @@ bool BaseSurface::fill (const PixelColor& color)
     return fill( color, dest_rect );
 }
 
-bool BaseSurface::fill (const RGBColor& color, Rect dest_rect)
-{
-    return fill(getPixelFormat().getValueFromRGB(color), dest_rect);
-}
 bool BaseSurface::fill (const RGBAColor& color, Rect dest_rect)
 {
     return fill(getPixelFormat().getValueFromRGBA(color), dest_rect);

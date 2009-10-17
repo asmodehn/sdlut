@@ -73,9 +73,9 @@ public: //necessary if we want to use getPixelFormat() accessor from the BaseSur
     friend Logger & operator << (Logger & ostr, const PixelFormat & pformat);
 
     //methods for Color conversion :
-    PixelColor getValueFromRGB(const RGBColor& val) const ;
+    PixelColor getValueFromRGB(const RGBAColor& val) const ;
     PixelColor getValueFromRGBA(const RGBAColor& val) const ;
-    RGBColor getRGBValue(const PixelColor& color) const ;
+    RGBAColor getRGBValue(const PixelColor& color) const ;
     RGBAColor getRGBAValue(const PixelColor& color) const ;
 
 };

@@ -116,7 +116,7 @@ Logger & operator << (Logger & log, const PixelFormat & pformat)
     return log;
 }
 
-PixelColor PixelFormat::getValueFromRGB(const RGBColor& val) const
+PixelColor PixelFormat::getValueFromRGB(const RGBAColor& val) const
 {
 
     //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
@@ -130,12 +130,12 @@ PixelColor PixelFormat::getValueFromRGBA(const RGBAColor& val) const
     return SDL_MapRGBA(const_cast<SDL_PixelFormat*>(_pformat), val.getR(), val.getG(), val.getB(), val.getA());
 }
 
-RGBColor PixelFormat::getRGBValue(const PixelColor& color) const
+RGBAColor PixelFormat::getRGBValue(const PixelColor& color) const
 {
     Uint8 r, g, b;
     //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
     SDL_GetRGB(color, const_cast<SDL_PixelFormat*>(_pformat), &r, &g, &b);
-    return RGBColor(r, g, b);
+    return RGBAColor(r, g, b);
 }
 
 RGBAColor PixelFormat::getRGBAValue(const PixelColor& color) const
@@ -147,5 +147,6 @@ RGBAColor PixelFormat::getRGBAValue(const PixelColor& color) const
     //BUG here : seems to ignore alpha ? ( found with SDLTestColor )
     return RGBAColor(r, g, b, a);
 }
+
 }
 } //namespace RAGE::SDL

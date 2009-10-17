@@ -189,8 +189,9 @@ GLSurface::~GLSurface()
 bool GLSurface::resize(int width, int height, bool keepcontent)
 {
     //TODO : test and fix
-    RGBSurface::resize(width, height, keepcontent);
+    bool res = RGBSurface::resize(width, height, keepcontent);
     modified = true;
+    return res;
 }
 
 

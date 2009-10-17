@@ -94,7 +94,7 @@ public :
     bool isSRCColorKeyset(void);
     bool isSRCAlphaset(void);
 
-    RGBColor getColorKey();
+    RGBAColor getColorKey();
 
     bool isOptimised()
     {

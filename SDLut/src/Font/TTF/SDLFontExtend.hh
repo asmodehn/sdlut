@@ -20,11 +20,11 @@ namespace SDL
 		long index;
 		std::auto_ptr<RWOps> pvm_OriginalData;
 		TTF_Font * _ttfstruct;
-		
+
 		public:
 			//Constructor
 			FontExtend(std::string filename, int ptsize = 16, long index = 0) throw (std::logic_error);
-			
+
 			//Copy Constructor
 			//copy completely the content of *_ttfstruct
 			FontExtend(const FontExtend & );
@@ -42,7 +42,7 @@ namespace SDL
 			void setStyle(Font::Style s);
 
 			bool isTTFImpl() const { return true; }
-			
+
 			int height();
 			int ascent();
 			int descent();
@@ -51,11 +51,11 @@ namespace SDL
 			bool faceIsFixedWidth();
 			std::string faceFamilyName();
 			std::string faceStyleName();
-			
+
 			Rect getSize(const std::string& text) const;
 
 			//The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-			std::auto_ptr<RGBSurface> render(const std::string& text, RGBColor c, RGBColor bgc = RGBColor(), Font::RenderMode mode = Font::Solid) const;
+			std::auto_ptr<RGBSurface> render(const std::string& text, RGBAColor c, RGBAColor bgc = RGBAColor(), Font::RenderMode mode = Font::Solid) const;
 	};
 
 

@@ -63,7 +63,7 @@ public:
 protected:
     static unsigned long _defaultflags;
 
-    RGBColor _background;
+    RGBAColor _background;
 
 
     //Constructor
@@ -85,10 +85,6 @@ public:
     virtual bool blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
 
     //Fill
-
-    virtual bool fill (const RGBColor& color);
-
-    virtual bool fill (const RGBColor& color, Rect dest_rect);
     virtual bool fill (const RGBAColor& color);
 
     virtual bool fill (const RGBAColor& color, Rect dest_rect);

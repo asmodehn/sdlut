@@ -375,7 +375,7 @@ bool RGBSurface::flip(bool vertical, bool horizontal)
 //	return out;
 //}
 
-RGBColor RGBSurface::getColorKey()
+RGBAColor RGBSurface::getColorKey()
 {
     return getPixelFormat().getRGBValue(getPixelFormat().getColorKey());
 }

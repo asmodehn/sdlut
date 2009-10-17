@@ -45,6 +45,7 @@ typedef unsigned long PixelColor;
 
 //TODO : Color constructor with string ("black", "yellow", "grey", etc. )
 //TODO : Color operator, like + - = etc. (like a vector)
+/* Removing RGBColor. RGBAClor should be used instead.
 class RGBColor
 {
     friend class SDLPalette;
@@ -94,10 +95,7 @@ public:
 
 };
 
-//TODO : Why do we have two classes for color ? it would be much imple to have just one...
-//We need to investigate to see if we really need two
-
-
+*/
 /**
  * \class SDLRGBAColor (alias SDLColor)
  *
@@ -113,20 +111,38 @@ public:
  *
  */
 
-class RGBAColor : public RGBColor
+class RGBAColor
 {
-    //	explicit SDLRGBAColor(SDL_Color * color) : SDLRGBColor(color) {}
+
+    friend class SDLPalette;
+
+protected:
+    //the address of the SDL_Color struct should never change
+    SDL_Color * const _color;
 
 public:
+
+    //Because NULL has no sense for function using colors, defaut constructor
+    // just paint it black :)
     RGBAColor(unsigned char r=0, unsigned char g=0, unsigned char b=0, unsigned char a=255);
-    RGBAColor(const RGBColor& color, unsigned char a=255);
     RGBAColor(const RGBAColor & rgbacolor);
     RGBAColor& operator=( const RGBAColor & rgbacolor );
     virtual ~RGBAColor();
 
+    SDL_Color get_SDL() const;
+
+    void setR(unsigned char nr);
+    void setG(unsigned char ng);
+    void setB(unsigned char nb);
     void setA(unsigned char na);
 
-    unsigned char getA(void) const;
+    unsigned char getR() const;
+    unsigned char getG() const;
+    unsigned char getB() const;
+    unsigned char getA() const;
+
+    //return a pixel color formatted as RGB(A), in that order, always...
+    PixelColor getGLPixelColor() const;
 
     inline friend std::ostream& operator << (std::ostream& os, const RGBAColor& c)
     {
@@ -138,7 +154,7 @@ public:
 
     inline bool hasAlpha() const
     {
-        return true;
+        return ( getA() < 255 ) ;
     }
 };
 

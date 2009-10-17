@@ -291,22 +291,11 @@ bool VideoGLSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rec
 //Fill
 bool VideoGLSurface::fill (const RGBAColor& color)
 {
-    return fill( RGBColor( color ) );
-}
-
-bool VideoGLSurface::fill (const RGBAColor& color, Rect dest_rect)
-{
-
-    return fill( RGBColor( color ), dest_rect );
-}
-
-bool VideoGLSurface::fill (const RGBColor& color)
-{
     Rect dest_rect(getWidth(), getHeight());
     return fill( color, dest_rect );
 }
 
-bool VideoGLSurface::fill (const RGBColor& color, Rect dest_rect)
+bool VideoGLSurface::fill (const RGBAColor& color, Rect dest_rect)
 {
 
 #if (DEBUG == 2)

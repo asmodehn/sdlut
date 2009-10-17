@@ -6,15 +6,16 @@ namespace RAGE
 namespace SDL
 {
 
-RGBColor::RGBColor(unsigned char r, unsigned char g, unsigned char b)
+RGBAColor::RGBAColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
         : _color(new SDL_Color)
 {
     _color->r=r;
     _color->g=g;
     _color->b=b;
-    _color->unused = 255;
+    _color->unused = a;
 }
-RGBColor::RGBColor(const RGBColor & rgbcolor)
+
+RGBAColor::RGBAColor(const RGBAColor & rgbcolor)
         :_color(new SDL_Color)
 {
     _color->r=rgbcolor.getR();
@@ -22,72 +23,65 @@ RGBColor::RGBColor(const RGBColor & rgbcolor)
     ;
     _color->b=rgbcolor.getB();
     ;
-    _color->unused=255;
+    _color->unused=rgbcolor.getA();
 }
-RGBColor& RGBColor::operator=( const RGBColor & rgbcolor)
+
+RGBAColor& RGBAColor::operator=( const RGBAColor & rgbcolor)
 {
     _color->r=rgbcolor.getR();
     _color->g=rgbcolor.getG();
     ;
     _color->b=rgbcolor.getB();
     ;
-    _color->unused=255;
+    _color->unused=rgbcolor.getA();
     return *this;
 }
-RGBColor::~RGBColor()
+RGBAColor::~RGBAColor()
 {
     delete _color;// SDL_Color is a simple SDL structure, no fancy delete needed AFAIK
 }
 
-SDL_Color RGBColor::get_SDL() const
+SDL_Color RGBAColor::get_SDL() const
 {
     return *_color;
 }
 
-void RGBColor::setR(unsigned char nr)
+void RGBAColor::setR(unsigned char nr)
 {
     _color->r=nr ;
 }
-void RGBColor::setG(unsigned char ng)
+void RGBAColor::setG(unsigned char ng)
 {
     _color->g=ng ;
 }
-void RGBColor::setB(unsigned char nb)
+void RGBAColor::setB(unsigned char nb)
 {
     _color->b=nb ;
 }
+void RGBAColor::setA(unsigned char na)
+{
+    _color->unused=na ;
+}
 
-unsigned char RGBColor::getR(void) const
+unsigned char RGBAColor::getR(void) const
 {
     return _color->r;
 }
-unsigned char RGBColor::getG(void) const
+unsigned char RGBAColor::getG(void) const
 {
     return _color->g;
 }
-unsigned char RGBColor::getB(void) const
+unsigned char RGBAColor::getB(void) const
 {
     return _color->b;
 }
 
-
-unsigned char RGBColor::getA(void) const
+unsigned char RGBAColor::getA(void) const
 {
     return _color->unused;
 }
 
-bool RGBColor::operator==(const RGBColor& color) const
-{
-    return _color->r == color.getR() && _color->g == color.getG() && _color->b == color.getB();
-}
-
-bool RGBColor::operator!=(const RGBColor& color) const
-{
-    return !( _color->r == color.getR() && _color->g == color.getG() && _color->b == color.getB() );
-}
-
-
-PixelColor RGBColor::getGLPixelColor() const
+PixelColor RGBAColor::getGLPixelColor() const
 {
 #if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
     unsigned int glColor = _color->unused | _color->b << 8 | _color->g << 16 | _color->r << 24;
@@ -95,45 +89,6 @@ PixelColor RGBColor::getGLPixelColor() const
     unsigned int glColor = _color->r | _color->g << 8 | _color->b << 16 | _color->unused << 24;
 #endif
     return glColor;
-}
-
-
-RGBAColor::RGBAColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-        : RGBColor(r, g, b)
-{
-    _color->unused=a;
-}
-RGBAColor::RGBAColor(const RGBColor& color, unsigned char a)
-{
-    _color->r = color.getR();
-    _color->g = color.getG();
-    _color->b = color.getB();
-    _color->unused = a;
-}
-RGBAColor::RGBAColor(const RGBAColor & rgbacolor)
-        : RGBColor(rgbacolor.getR(), rgbacolor.getG(), rgbacolor.getB())
-{
-    _color->unused=rgbacolor.getA();
-}
-RGBAColor& RGBAColor::operator=( const RGBAColor & rgbacolor )
-{
-    _color->r=rgbacolor.getR();
-    _color->g=rgbacolor.getG();
-    _color->b=rgbacolor.getB();
-    _color->unused=rgbacolor.getA();
-    return *this;
-}
-RGBAColor::~RGBAColor()
-{}
-
-void RGBAColor::setA(unsigned char na)
-{
-    _color->unused=na ;
-}
-
-unsigned char RGBAColor::getA(void) const
-{
-    return _color->unused;
 }
 
 bool RGBAColor::operator==(const RGBAColor& color) const
@@ -145,6 +100,8 @@ bool RGBAColor::operator!=(const RGBAColor& color) const
 {
     return !(_color->r == color.getR() && _color->g == color.getG() && _color->b == color.getB() && _color->unused == color.getA());
 }
+
+
 
 Palette::Palette(const SDL_Palette* palette) : _palette(palette)
 {

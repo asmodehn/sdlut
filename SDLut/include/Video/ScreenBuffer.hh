@@ -59,7 +59,7 @@ protected:
 #ifdef WK_OPENGL_FOUND
     GLManager m_glmanager;
 #endif // WK_OPENGL_FOUND
-    RGBColor m_background;
+    RGBAColor m_background;
 
     SDLEngine m_engine; // for now only one engine... later multiple engines will be possible
 
@@ -110,11 +110,11 @@ public:
     bool isOpenGL();
     bool isNoFrame();
 
-    void setBGColor(const RGBColor & color)
+    void setBGColor(const RGBAColor & color)
     {
         m_background = color;
     }
-    RGBColor getBGColor()
+    RGBAColor getBGColor()
     {
         return m_background;
     }

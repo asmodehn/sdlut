@@ -19,14 +19,14 @@ class Console
 	const Font _font;
 	short linesize;
 
-	RGBColor _bgColor;
+	RGBAColor _bgColor;
 
 	Image * surf;
 
 	std::string text;
 
 public :
-	Console(const Font & fnt = Font(),RGBColor c = RGBColor(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text("")
+	Console(const Font & fnt = Font(),RGBAColor c = RGBAColor(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text("")
 	{
 		//init();
 		//draw();
@@ -80,7 +80,7 @@ public :
 			{
 				if ((std::string)line != "")
 				{
-					std::auto_ptr<Image> textsurf = _font.render(line,RGBColor(255,255,255),Font::Solid);
+					std::auto_ptr<Image> textsurf = _font.render(line,RGBAColor(255,255,255),Font::Solid);
 					assert(textsurf.get());
 					surf->blit(*textsurf,Point (0,i * linesize));
 				}
@@ -143,7 +143,7 @@ public:
 	bool init(int width, int height)
 	{
 		console->init(width,height);
-		HelpMsg = console->_font.render("Plz Use Keyboard To Write Text Down", RGBColor(0xFF, 0xFF, 0xFF), Font::Shaded, RGBColor(0, 0, 0));
+		HelpMsg = console->_font.render("Plz Use Keyboard To Write Text Down", RGBAColor(0xFF, 0xFF, 0xFF), Font::Shaded, RGBAColor(0, 0, 0));
 		return true;
 	}
 

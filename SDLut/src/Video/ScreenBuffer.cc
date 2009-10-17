@@ -7,7 +7,7 @@ namespace SDL
 {
 
 ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error)
-        : m_width(width), m_height(height),m_bpp(bpp), fullRefreshNeeded(true), pm_manager(manager), m_background(RGBColor(0,0,0))
+        : m_width(width), m_height(height),m_bpp(bpp), fullRefreshNeeded(true), pm_manager(manager), m_background(RGBAColor(0,0,0))
 {
 
     //setting the static videoInfo to be used by all surfaces...

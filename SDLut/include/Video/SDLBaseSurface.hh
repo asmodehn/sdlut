@@ -211,14 +211,12 @@ public:
     //TODO : the same with other formats
 
     //Fill
-    virtual bool fill (const RGBColor& color);
     virtual bool fill (const RGBAColor& color);
 
 protected : // Pixel Color should be used only internally, because of its complexity in different formats
     virtual bool fill (const PixelColor& color);
 
 public :
-    virtual bool fill (const RGBColor& color, Rect dest_rect);
     virtual bool fill (const RGBAColor& color, Rect dest_rect);
 
 protected : // Pixel Color should be used only internally, because of its complexity in different formats
