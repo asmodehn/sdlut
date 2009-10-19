@@ -59,7 +59,9 @@ FontImpl::FontImpl(const FontImpl & font) : _fontsurf(0)
 
 FontImpl::~FontImpl()
 {
-    alphalookup.clear();
+
+    //statically initialized, so we shouldnt clear here
+    //alphalookup.clear();
 }
 
 std::auto_ptr<RGBSurface> FontImpl::render(const std::string & text,RGBAColor c, RGBAColor bgc, Font::RenderMode mode) const
@@ -70,12 +72,28 @@ std::auto_ptr<RGBSurface> FontImpl::render(const std::string & text,RGBAColor c,
     //Log << getSize(text);
     for (unsigned int i= 0; i< text.size(); i++)
     {
-        //BUG : blit doesnt seem to work here... but only if Opengl mode... WHY ??
-
         result->blit(*_fontsurf, Rect(i*14,0,14,16),alphalookup[text[i]]);
-        //SDL_BlitSurface(const_cast<SDL_Surface*>(&_fontsurf.get_rSDL()),const_cast<SDL_Rect*>(alphalookup[text[i]].get_pSDL()),result.get(),const_cast<SDL_Rect*>(Rect(0,i*14,14,16).get_pSDL()));
+        //Rect txtrect = alphalookup[text[i]];
+        //Log << nl << "Txtrect X : "<< txtrect.getx() << " Y : "<< txtrect.gety() << " W : " << txtrect.getw() << " H : " << txtrect.geth() ;
+        //Log.flush();
+
+        //Rect charrect(0,i*14,14,16);
+        //Log << nl << "Charrect X : "<< charrect.getx() << " Y : "<< charrect.gety() << " W : " << charrect.getw() << " H : " << charrect.geth() ;
+        //Log.flush();
+
+        //BUG here : only first letter is blitted.. why ???
+        //SDL_BlitSurface(const_cast<SDL_Surface*>(_fontsurf->get_pSDL()),
+        //                const_cast<SDL_Rect*>(txtrect.get_pSDL()),
+        //                const_cast<SDL_Surface*>(result->get_pSDL()),
+        //                const_cast<SDL_Rect*>(charrect.get_pSDL()));
+
+        //result->saveBMP( text + "_fimpl.bmp");
+
     }
-    return result;//beware : ownership transferred for auto_ptr
+
+    //beware : ownership transferred for auto_ptr
+    return result;
 }
+
 }
 }

@@ -48,6 +48,8 @@ public:
 
     ~Image();
 
+    bool saveBMP ( std::string filename);
+
     bool convertToDisplayFormat( Renderer r = SDL );
 
     bool resize(int width, int height, bool keepcontent = false);

@@ -70,8 +70,19 @@ std::auto_ptr<RGBSurface> FontExtend::render(const std::string& text, RGBAColor 
         surf.reset(TTF_RenderText_Solid(_ttfstruct,text.c_str(), c.get_SDL()));
         break;
     }
-    //return surf;//beware : auto_ptr ownership transferred ;)
-    return std::auto_ptr<RGBSurface>(new GLSurface(surf));
+
+
+    GLSurface * glsurf = new GLSurface (surf);
+
+    //glsurf->saveBMP( text + "_fext.bmp" );
+
+    //beware : auto_ptr ownership transferred ;)
+    std::auto_ptr<RGBSurface> result(glsurf );
+
+
+    //result->saveBMP ( text + "_fextres.bmp");
+
+    return result;
 }
 
 //Attributes Access

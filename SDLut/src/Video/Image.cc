@@ -67,6 +67,11 @@ Image::~Image()
     delete m_img, m_img=NULL;
 }
 
+bool Image::saveBMP( std::string filename )
+{
+    return m_img->saveBMP(filename);
+}
+
 bool Image::convertToDisplayFormat(Renderer r)
 {
     bool res = false;

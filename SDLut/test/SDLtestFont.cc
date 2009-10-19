@@ -173,8 +173,6 @@ int main(int argc, char** argv)
     Logger testlog("Test Log");
 
 	bool ogl = false;
-	if (argc > 1 && std::string(argv[1]) == "opengl" ) ogl = true;
-
 
     //Setup example
 
@@ -187,10 +185,22 @@ int main(int argc, char** argv)
 
     Font font;
 
-    if (argc > 1)
+    if (argc > 1 )
     {
-		//specific font
-		font.setTTF(argv[1],24);
+        if ( std::string(argv[1]) == "opengl" )
+        {
+            ogl = true;
+        }
+        else
+        {
+            //specific font
+            font.setTTF(argv[1],24);
+        }
+    }
+    if ( ogl && argc > 2 )
+    {
+            //specific font
+            font.setTTF(argv[2],24);
     }
 
 	Console cons(font);

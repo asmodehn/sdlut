@@ -336,11 +336,20 @@ void BaseSurface::setpixel(int x, int y, RGBAColor pixelcolor)
 
 bool BaseSurface::saveBMP(std::string filename) const
 {
+    bool res = false;
     if (initialized())
     {
-        return SDL_SaveBMP(_surf.get(),filename.c_str()) == 0;
+        if ( SDL_SaveBMP(_surf.get(),filename.c_str()) != 0 )
+        { //TODO : handle erros such as disk full, etc. )
+
+        }
+        else
+        {
+            res = true;
+        }
+
     }
-    return false;
+    return res;
 }
 
 //Fill

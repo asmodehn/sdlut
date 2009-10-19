@@ -395,6 +395,14 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
 void ScreenBuffer::setClipRect( const Rect& clipr )
 {
     m_screen->setClipRect(clipr);
+    //adding to refresh list here, in case we use applyBGColor with different color, we need to refresh it properly
+    //NB we could also do the refresh when we set ApplyBG color, but that kill the point of smart refresh
+    //if we applyBGcolor at everyrender, like now...
+    //Now we kill the point of smart refresh only in the clip rect, which is slightly better... yet not perfect...
+    //TODO FIX IT !!!
+    //-> apply BG Color only when color actually change, and adapt refresh strategy accordingly.
+    refreshlist.push_back(clipr);
+
 }
 
 
