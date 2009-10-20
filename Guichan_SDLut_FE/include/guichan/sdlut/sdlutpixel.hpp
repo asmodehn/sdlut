@@ -38,11 +38,11 @@ inline const SDLut::RGBAColor SDLutgetPixel(SDLut::ScreenBuffer*& scr, int x, in
  */
 inline void SDLutputPixel(SDLut::Image* img, int x, int y, const gcn::Color& color)
 {
-    img->setpixel( x, y, SDLut::RGBColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ) ;
+    img->setpixel( x, y, SDLut::RGBAColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ) ;
 }
 inline void SDLutputPixel(SDLut::ScreenBuffer* scr, int x, int y, const gcn::Color& color)
 {
-    scr->setpixel( x, y, SDLut::RGBColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ) ;
+    scr->setpixel( x, y, SDLut::RGBAColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ) ;
 }
 
 /**

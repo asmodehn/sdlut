@@ -87,13 +87,12 @@ void SDLutFont::drawString(Graphics* graphics, const std::string& text, const in
 
     Color col = sdlutGraphics->getColor();
 
-    SDLut::RGBColor RGBCol;
-	//Warning: conversion from 'int' to 'unsigned char', possible loss of data
-    RGBCol.setB(col.b);
-    RGBCol.setR(col.r);
-    RGBCol.setG(col.g);
+    SDLut::RGBAColor RGBACol (  static_cast<unsigned char>( col.r ),
+                                static_cast<unsigned char>( col.g ),
+                                static_cast<unsigned char>( col.b )
+                             );
 
-    std::auto_ptr<SDLut::Image> textSurface = mFont->render(text.c_str(), RGBCol, mRenderMode);
+    std::auto_ptr<SDLut::Image> textSurface = mFont->render(text.c_str(), RGBACol, mRenderMode);
 
     SDLut::Rect dst, src;
     dst.setx( x );
