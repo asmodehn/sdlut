@@ -258,7 +258,7 @@ public:
 
 int main(int argc, char** argv)
 {
-
+//BUG: first pass smileys (the first 2 ones) are not cleared after init nor resize
 	bool ogl = false;
 	if (argc > 1 && std::string(argv[1]) == "opengl" ) ogl = true;
 

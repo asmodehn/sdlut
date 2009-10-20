@@ -47,13 +47,19 @@ public:
 //Main Program
 int main(int argc, char** argv)
 {
-
+//BUG: OpenGL mode fucked up when displaying an external image (white square) and when resized the logo is fucked up the same way
     Logger testlog("Test Log");
+
+	bool ogl = false;
+	if ((argc > 1) && ( std::string(argv[1]) == "opengl" ) )
+    {
+        ogl = true;
+    }
 
     //Setup example
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
-    App::getInstance().initVideo(false,false,true,false);
+    App::getInstance().initVideo(false,ogl,true,false);
 
 	App::getInstance().setName ("RAGE::SDL test - Video");
 
@@ -62,10 +68,13 @@ int main(int argc, char** argv)
 
 	//if argument we load the image in the test engine
 	std::auto_ptr<MyEngine> engine;
-	if ( argc > 1)
+	if ( ( argc == 3) || ( argc == 2 && !ogl ) )
 	{
+	if ( argc == 3)
+		engine.reset(new MyEngine(static_cast<std::string>(argv[2])));
+	else // ( argc == 2 && !ogl )
+		engine.reset(new MyEngine(static_cast<std::string>(argv[1])));
 
-	engine.reset(new MyEngine(static_cast<std::string>(argv[1])));
 
 	App::getInstance().getDisplay().resetInitCallback(&*engine,&MyEngine::init);
 	App::getInstance().getDisplay().resetResizeCallback(&*engine,&MyEngine::resize);
@@ -74,14 +83,13 @@ int main(int argc, char** argv)
 	//otherwise we use the default engine only.
 	}
 
-    if (! (App::getInstance().getDisplay().setDisplay(0,0,16)))
+    if (! (App::getInstance().getDisplay().setDisplay(800,600,16)))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
     }
     else if ( App::getInstance().getDisplay().show() )
     {
-        //BUG TO FIX : At start SDL logo not shown... Need to resize to show it.. why ??
-        App::getInstance().getDisplay().mainLoop(2);
+        App::getInstance().getDisplay().mainLoop();
 	//think about automatic exit after timeout...
     }
 

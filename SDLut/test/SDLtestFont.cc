@@ -169,10 +169,18 @@ public:
 //Main Program
 int main(int argc, char** argv)
 {
+	//BUGs
+	//in foreign keyb language keys are not displayed correctly (a --> q, z --> w)
+	//unknown caracters shown another caracter (ç --> h; è --> g)
+	//IN OpenGL mode: caracters are not displayed on the program windows
 
     Logger testlog("Test Log");
 
 	bool ogl = false;
+	if ((argc > 1) && ( std::string(argv[1]) == "opengl" ) )
+    {
+        ogl = true;
+    }
 
     //Setup example
 
@@ -185,22 +193,15 @@ int main(int argc, char** argv)
 
     Font font;
 
-    if (argc > 1 )
+    if ((argc >= 1 ) && !ogl)
     {
-        if ( std::string(argv[1]) == "opengl" )
-        {
-            ogl = true;
-        }
-        else
-        {
-            //specific font
-            font.setTTF(argv[1],24);
-        }
+        //specific font
+        font.setTTF(argv[1],24);
     }
-    if ( ogl && argc > 2 )
+    else if ( ogl && argc > 2 )
     {
-            //specific font
-            font.setTTF(argv[2],24);
+        //specific font
+        font.setTTF(argv[2],24);
     }
 
 	Console cons(font);

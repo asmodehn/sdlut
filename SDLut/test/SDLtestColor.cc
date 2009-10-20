@@ -68,6 +68,7 @@ public:
 
 int main(int argc, char** argv)
 {
+	//BUG: OpenGL mode when resized the logo is fucked up (white square)
 
 	bool ogl = false;
 	if (argc > 1 && std::string(argv[1]) == "opengl" ) ogl = true;

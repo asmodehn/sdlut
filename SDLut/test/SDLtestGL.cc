@@ -102,6 +102,7 @@ public:
 
 	bool resize(int width, int height)
 	{
+		return true;
 
 	}
 
@@ -178,13 +179,13 @@ int main(int argc, char** argv)
     Logger testlog("Test Log");
 
     //Starting with usual SDL window
-    App::getInstance().initVideo(false,true,true,false);
+    App::getInstance().initVideo(false,true,false,false);
     App::getInstance().setName ("RAGE::SDL test - OpenGL");
 
     //Getting video informations
     testlog << nl << App::getInstance().getDisplay().getScreenBuffer().getVideoInfo() << std::endl;
 
-	App::getInstance().getDisplay().setBGColor(RGBColor (64,0,0));
+	App::getInstance().getDisplay().setBGColor(RGBAColor (64,0,0));
 
     //MyUserInput ui;
     //App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
