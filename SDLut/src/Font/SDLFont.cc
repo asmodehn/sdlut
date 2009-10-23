@@ -74,7 +74,7 @@ std::auto_ptr<Image> Font::render(std::string text, RGBAColor c, RenderMode mode
 {
     std::auto_ptr<Image> textimg( new Image(_font->render(text,c,bgc,mode)) );
 
-    textimg->saveBMP( text + ".bmp");
+    //textimg->saveBMP( text + ".bmp");
 
     return textimg;
 }
