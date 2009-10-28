@@ -1,5 +1,9 @@
 #include "Time.hh"
 
+#ifdef _WIN32
+#include <windows.h> //to get Sleep ...
+#endif
+
 namespace Core
 {
 
@@ -25,7 +29,7 @@ Date::~Date()
 
 const std::string Date::ascii()
 {
-    return std::string(asctime(&d));
+	return std::string(asctime(&d)); //warning C4996: 'asctime': This function or variable may be unsafe. Consider using asctime_s instead.
 }
 
 Time Date::mkTime()
@@ -78,7 +82,7 @@ void Time::sleep (unsigned int sec)
 unsigned long Time::clock (bool sec)
 {
 
-    clock_t clk = clock();
+	clock_t clk = ::clock();
 
     //0 is an error code here : information not availalbe
     unsigned long res = 0;
@@ -104,19 +108,19 @@ Time Time::now()
 
 std::string Time::localascii()
 {
-    return std::string(ctime( & tt ) );
+    return std::string(ctime( & tt ) ); //warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead.
 }
 
 Date Time::GMT()
 {
-    Date gmt(gmtime( & tt ));
+    Date gmt(gmtime( & tt )); //warning C4996: 'gmtime': This function or variable may be unsafe. Consider using gmtime_s instead.
     return gmt;
 }
 
 
 Date Time::local()
 {
-    Date loc(localtime( & tt ));
+    Date loc(localtime( & tt )); //warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead.
     return loc;
 }
 

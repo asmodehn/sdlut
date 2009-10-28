@@ -69,11 +69,12 @@ public:
     {
         return d.tm_isdst;
     }
-    ///Timezone character code
+    /* Not available on win32
+	///Timezone character code
     std::string zone()
     {
         return std::string(d.tm_zone);
-    }
+    }*/
 
     ///returns a textual version of the time
     const std::string ascii();
