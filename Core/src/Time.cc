@@ -29,7 +29,12 @@ Date::~Date()
 
 const std::string Date::ascii()
 {
-	return std::string(asctime(&d)); //warning C4996: 'asctime': This function or variable may be unsafe. Consider using asctime_s instead.
+    #ifdef _WIN32
+    return std::string(asctime_s(&d));
+    #else
+    return std::string(asctime(&d));
+    #endif
+
 }
 
 Time Date::mkTime()
@@ -82,7 +87,7 @@ void Time::sleep (unsigned int sec)
 unsigned long Time::clock (bool sec)
 {
 
-	clock_t clk = ::clock();
+    clock_t clk = ::clock();
 
     //0 is an error code here : information not availalbe
     unsigned long res = 0;
@@ -108,19 +113,31 @@ Time Time::now()
 
 std::string Time::localascii()
 {
-    return std::string(ctime( & tt ) ); //warning C4996: 'ctime': This function or variable may be unsafe. Consider using ctime_s instead.
+    #ifdef _WIN32
+    return std::string(ctime_s( & tt ) );
+    #else
+    return std::string(ctime( & tt ) );
+    #endif
 }
 
 Date Time::GMT()
 {
-    Date gmt(gmtime( & tt )); //warning C4996: 'gmtime': This function or variable may be unsafe. Consider using gmtime_s instead.
+    #ifdef _WIN32
+    Date gmt(gmtime_s( & tt ));
+    #else
+    Date gmt(gmtime( & tt ));
+    #endif
     return gmt;
 }
 
 
 Date Time::local()
 {
-    Date loc(localtime( & tt )); //warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead.
+    #ifdef _WIN32
+    Date loc(localtime_s( & tt ));
+    #else
+    Date loc(localtime( & tt ));
+    #endif
     return loc;
 }
 

@@ -70,7 +70,7 @@ public:
         return d.tm_isdst;
     }
     /* Not available on win32
-	///Timezone character code
+    ///Timezone character code
     std::string zone()
     {
         return std::string(d.tm_zone);
