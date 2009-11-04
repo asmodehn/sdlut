@@ -29,11 +29,15 @@ Date::~Date()
 
 const std::string Date::ascii()
 {
-    #ifdef _WIN32
-    return std::string(asctime_s(&d));
-    #else
+#ifdef _WIN32
+	char *res = NULL;
+	if (asctime_s(res, 32, &d))
+		return "";
+	else
+		return std::string(res);
+#else
     return std::string(asctime(&d));
-    #endif
+#endif
 
 }
 
@@ -113,32 +117,54 @@ Time Time::now()
 
 std::string Time::localascii()
 {
-    #ifdef _WIN32
-    return std::string(ctime_s( & tt ) );
-    #else
+#ifdef _WIN32
+	char *res = NULL;
+	if (ctime_s(res, 32, &tt))
+		return "";
+	else
+		return std::string(res);
+#else
     return std::string(ctime( & tt ) );
-    #endif
+#endif
 }
 
 Date Time::GMT()
 {
-    #ifdef _WIN32
-    Date gmt(gmtime_s( & tt ));
-    #else
+#ifdef _WIN32
+	struct tm d;
+    if (!gmtime_s(&d, &tt))
+	{
+		Date gmt(&d);
+		return gmt;
+	}
+	else
+	{
+		throw std::logic_error("Invalid Argument to gmtime_s");
+	}
+#else
     Date gmt(gmtime( & tt ));
-    #endif
-    return gmt;
+	return gmt;
+#endif    
 }
 
 
 Date Time::local()
 {
-    #ifdef _WIN32
-    Date loc(localtime_s( & tt ));
-    #else
+#ifdef _WIN32
+	struct tm d;
+    if (!localtime_s(&d, &tt))
+	{
+		Date loc(&d);
+		return loc;
+	}
+	else
+	{
+		throw std::logic_error("Invalid Argument to localtime_s");
+	}
+#else
     Date loc(localtime( & tt ));
-    #endif
-    return loc;
+	return loc;
+#endif
 }
 
 }//Core
