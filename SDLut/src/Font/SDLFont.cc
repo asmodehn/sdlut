@@ -5,6 +5,8 @@
 #include "Default/SDLFontImpl.hh"
 #include "TTF/SDLFontExtend.hh"
 
+//#define DEBUG 2
+
 namespace RAGE
 {
 namespace SDL
@@ -74,8 +76,9 @@ std::auto_ptr<Image> Font::render(std::string text, RGBAColor c, RenderMode mode
 {
     std::auto_ptr<Image> textimg( new Image(_font->render(text,c,bgc,mode)) );
 
-    //textimg->saveBMP( text + ".bmp");
-
+#if( DEBUG == 2)
+    textimg->saveBMP( text + ".bmp");
+#endif
     return textimg;
 }
 

@@ -53,3 +53,4 @@ WkTestBuild ( SDLtestGL )
 WkTestBuild ( SDLtestTextInput ) 
 
 WkTestBuild ( SDLtestFont )
+

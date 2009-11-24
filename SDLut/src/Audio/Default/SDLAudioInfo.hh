@@ -25,8 +25,8 @@ struct SDL_AudioSpec;
 
 namespace RAGE
 {
-    namespace SDL
-	{
+namespace SDL
+{
 
 //classes interaction :
 //Sound doesnt know Audio, or Mixer.
@@ -39,50 +39,53 @@ namespace RAGE
 
 //TODO : Redesign to have the same design scheme as the Video : AudioInfo and Mixer like VideoInfo and Window... (callback in Mixer, but similar creation scheme)
 //Might choose 1 instead of 2...
-		
 
 
 
-	//This class handle the Audio Device.
-	//Only one instance of this class should be used.
-	class AudioInfo
-	{
-		friend class SoundImpl;
-		friend class MusicImpl;
-		
-		protected :
 
-			std::auto_ptr<SDL_AudioSpec> _spec;
-			
-			//This handle explicit casts
-			explicit AudioInfo(SDL_AudioSpec* as);
+//This class handle the Audio Device.
+//Only one instance of this class should be used.
+class AudioInfo
+{
+    friend class SoundImpl;
+    friend class MusicImpl;
 
-		public :
+protected :
 
-			//if autoConvert is true, then the constructed AudioInfo will be what has been asked for, and if the hardware is different, SDL will take care of conversion
-			//if autoConvert is false, the constructed AudioInfo might be different from what has been asked for.
-			//in everycase, the current AudioInfo values must be used for Conversion, and this is handled by Mixer. Default for this value not yet chosen.
-			static bool autoConvert;
-			
-			AudioInfo(int frequency, unsigned char channels, unsigned short samples, void (*callback)(void *userdata, unsigned char *stream, int len), void* userdata = 0 ) throw (std::logic_error);
-			AudioInfo(const AudioInfo &);
-			~AudioInfo(void);
-			
-			int frequency() const;
-			unsigned int format() const;
-			unsigned int channels() const;
-			unsigned long samples() const;
-			void* userdata() const;
+    std::auto_ptr<SDL_AudioSpec> _spec;
 
-			SDL_AudioSpec get_SDL();
-			SDL_AudioSpec* get_pSDL() { return _spec.get(); }
+    //This handle explicit casts
+    explicit AudioInfo(SDL_AudioSpec* as);
 
-			friend Logger & operator << (Logger & ostr, const AudioInfo & ai);
-	
-	}; //class Audio
+public :
+
+    //if autoConvert is true, then the constructed AudioInfo will be what has been asked for, and if the hardware is different, SDL will take care of conversion
+    //if autoConvert is false, the constructed AudioInfo might be different from what has been asked for.
+    //in everycase, the current AudioInfo values must be used for Conversion, and this is handled by Mixer. Default for this value not yet chosen.
+    static bool autoConvert;
+
+    AudioInfo(int frequency, unsigned char channels, unsigned short samples, void (*callback)(void *userdata, unsigned char *stream, int len), void* userdata = 0 ) throw (std::logic_error);
+    AudioInfo(const AudioInfo &);
+    ~AudioInfo(void);
+
+    int frequency() const;
+    unsigned int format() const;
+    unsigned int channels() const;
+    unsigned long samples() const;
+    void* userdata() const;
+
+    SDL_AudioSpec get_SDL();
+    SDL_AudioSpec* get_pSDL()
+    {
+        return _spec.get();
+    }
+
+    friend Logger & operator << (Logger & ostr, const AudioInfo & ai);
+
+}; //class Audio
 
 
-	} // namespace SDL
+} // namespace SDL
 } // namespace RAGE
 
 

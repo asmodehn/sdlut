@@ -75,16 +75,12 @@ Display::Display( const Display & d)
         //myLoadingScreen(NULL),
 
         ShowingLoadingScreen(false),
-        m_initcb(d.m_initcb),m_resizecb(d.m_resizecb), m_newframecb(d.m_newframecb), m_rendercb(d.m_rendercb)
+        m_initcb(0),m_resizecb(0), m_newframecb(0), m_rendercb(0) // no duplication of auto_ptr, but meaning of display copy ?
 {
 }
 
 Display::~Display()
 {
-    if ( m_initcb ) delete m_initcb, m_initcb = NULL;
-    if ( m_resizecb ) delete m_resizecb, m_resizecb= NULL;
-    if ( m_newframecb ) delete m_newframecb, m_newframecb = NULL;
-    if ( m_rendercb ) delete m_rendercb, m_rendercb = NULL;
 }
 
 void Display::applyBGColor() const
@@ -113,7 +109,7 @@ bool Display::show()
 {
     bool res = pvm_screen.show();
     //calling user init callback if it exists
-    if ( m_initcb ) res = res && m_initcb->call( pvm_screen.getWidth() , pvm_screen.getHeight() );
+    if ( m_initcb.get() ) res = res && m_initcb->call( pvm_screen.getWidth() , pvm_screen.getHeight() );
     return res;
 }
 
@@ -127,7 +123,7 @@ bool Display::resizeDisplay (int width, int height)
     bool res = pvm_screen.resize(width,height);
 
     //calling user callback for resize if it exists
-    if ( m_resizecb ) res = res && m_resizecb->call(width, height);
+    if ( m_resizecb.get() ) res = res && m_resizecb->call(width, height);
     return res;
 }
 
@@ -264,7 +260,7 @@ bool Display::mainLoop(unsigned int framerate, unsigned int eventrate)
             }
 
             //Callback for preparing new frame
-            if ( m_newframecb )
+            if ( m_newframecb.get() )
                 m_newframecb->call( framerate, SDL_GetTicks() - lastframe );
 
             //applying the background
@@ -272,7 +268,7 @@ bool Display::mainLoop(unsigned int framerate, unsigned int eventrate)
             applyBGColor();
 
             //if (!ShowingLoadingScreen)
-            if ( m_rendercb )
+            if ( m_rendercb.get() )
                 m_rendercb->call( pvm_screen );
 
 

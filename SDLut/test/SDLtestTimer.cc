@@ -73,7 +73,7 @@ class ObjectWithCallbacks
 	friend class OwnerOfObjWCallbacks;
 
 private:
-	SDL::NewTimer<ObjectWithCallbacks> *Play_Timer_1x;
+	SDL::NewTimer *Play_Timer_1x;
 	SimpleObject *sobj;
 
 	int direct_timer_it, direct_timer_int;
@@ -140,7 +140,7 @@ SCOPED_LOCK(mymtx);
 	}
 
 public:
-	unsigned int callback2(unsigned int interval, void* args)
+	unsigned int callback2(unsigned int interval)
 	{
 	try	{
 SCOPED_LOCK(mymtx);
@@ -182,10 +182,10 @@ try {
 	//static SDL_TimerID gt_id = SDL::AddGlobalTimer(50,callback,NULL);
 
 	testlog << nl<<"Creating instance";
-	ObjectWithCallbacks* gobj = new ObjectWithCallbacks();
+	ObjectWithCallbacks gobj;
 
 	testlog << nl<<"Creating instance timer";
-	SDL::NewTimer<ObjectWithCallbacks> direct_timer(gobj,&ObjectWithCallbacks::callback2,(void*)NULL,200);
+	SDL::NewTimer direct_timer(gobj,&ObjectWithCallbacks::callback2,200);
 
 	testlog << nl <<"Starting instance timer 2 (every 200ms)";
 
@@ -204,7 +204,6 @@ try {
 
 	direct_timer.abort();
 
-	delete gobj, gobj = NULL;
 
 	return 0;
 } catch (std::exception &exc) {

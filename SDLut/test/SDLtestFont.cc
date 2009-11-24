@@ -58,9 +58,17 @@ public :
 	void add(char newchar)
 	{
 		if (newchar != '\0')
+		{
 			text += newchar;
+		}
 		draw();
 	}
+
+    void add(std::string newstr)
+    {
+        text += newstr + '\n' ;
+        draw();
+    }
 
 	void draw()
 	{
@@ -129,9 +137,8 @@ public:
 
 	Point consolePos;
 	Console * console;
-	std::auto_ptr<Image> HelpMsg;
 
-	MyEngine() : consolePos(0,0), console (NULL), HelpMsg(0)
+	MyEngine() : consolePos(0,0), console (NULL)
 	{}
 
 	void setConsole( Console * cons ) { console = cons;}
@@ -143,7 +150,7 @@ public:
 	bool init(int width, int height)
 	{
 		console->init(width,height);
-		HelpMsg = console->_font.render("Plz Use Keyboard To Write Text Down", RGBAColor(0xFF, 0xFF, 0xFF), Font::Shaded, RGBAColor(0, 0, 0));
+		console->add("Plz Use Keyboard To Write Text Down");
 		return true;
 	}
 
@@ -155,12 +162,10 @@ public:
 
 	bool render(ScreenBuffer & screen) const
     {
-		if (HelpMsg.get())
-			screen.blit( *HelpMsg, Point::Point(5, 5) );
-
 		if (console !=NULL)
+            console->surf->saveBMP("testingrender.bmp");
 			screen.blit(*(console->surf),consolePos);
-    return true;
+        return true;
     }
 
 };
@@ -193,7 +198,7 @@ int main(int argc, char** argv)
 
     Font font;
 
-    if ((argc >= 1 ) && !ogl)
+    if ((argc > 1 ) && !ogl)
     {
         //specific font
         font.setTTF(argv[1],24);

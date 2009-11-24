@@ -21,11 +21,14 @@
 #include "Video/SDLWindow.hh"
 #include "System/SDLEventManager.hh"
 
+
 #ifdef WK_OPENGL_FOUND
 #include "Video/SDLGLManager.hh"
 #endif //WK_OPENGL_FOUND
 #include "Video/SDLEngine.hh"
-#include "Functor.hh" //for callbacks storage...
+
+//to access functors and callback features
+#include "Core.hh"
 
 //Default Setup
 #define DEFAULT_DISPLAY_WIDTH 640 // TODO not needed , can default to 4/3 mode or advised mode or desktop if nothing given...
@@ -259,21 +262,19 @@ public:
 
 
 private:
-    //normal pointer because we need the polymorphism here
-    TFunctor2<bool,int,int>* m_initcb;
-    TFunctor2<bool,int,int> * m_resizecb;
-    TFunctor2<bool,unsigned long, unsigned long> * m_newframecb;
-    TFunctor1<bool,ScreenBuffer&> * m_rendercb;
-
+    //AutoPtr to callbacks. plymorphism _must_ be used...
+    std::auto_ptr<Core::Callback2Base<int,int,bool> > m_initcb;
+    std::auto_ptr<Core::Callback2Base<int,int,bool> > m_resizecb;
+    std::auto_ptr<Core::Callback2Base<unsigned long, unsigned long, bool> > m_newframecb;
+    std::auto_ptr<Core::Callback1Base<ScreenBuffer&,bool> > m_rendercb;
 
 public:
     //this callback is run whenever at initialization (Display::show)
     template <class TaClass>
     void resetInitCallback(TaClass* instance, bool (TaClass::*func) ( int width, int height) )
     {
-        if ( m_initcb != NULL)
-            delete m_initcb, m_initcb = NULL;
-        m_initcb = new TSpecificFunctor2<TaClass,bool,int,int>(instance,func);
+        //TODO : check if old callback is deleted by reset...
+        m_initcb.reset(new Core::Callback2<TaClass,int,int,bool>(instance, func));
     }
 
     //this callback is run whenever a resize is needed.
@@ -281,9 +282,8 @@ public:
     template <class UaClass>
     void resetResizeCallback(UaClass* instance, bool (UaClass::*func) ( int width, int height) )
     {
-        if ( m_resizecb )
-            delete m_resizecb, m_resizecb= NULL;
-        m_resizecb = new TSpecificFunctor2<UaClass,bool,int,int>(instance,func);
+        //TODO : check if old callback is deleted by reset...
+        m_resizecb.reset(new Core::Callback2<UaClass,int,int,bool>(instance,func));
     }
 
     //this callback is run just before the render
@@ -292,9 +292,8 @@ public:
     template <class VaClass>
     void resetNewFrameCallback(VaClass* instance, bool (VaClass::*func) ( unsigned long framerate, unsigned long deltaticks) )
     {
-        if ( m_newframecb )
-            delete m_newframecb, m_newframecb = NULL;
-        m_newframecb = new TSpecificFunctor2<VaClass,bool,unsigned long, unsigned long>(instance,func);
+        //TODO : check if old callback is deleted by reset...
+        m_newframecb.reset(new Core::Callback2<VaClass,unsigned long, unsigned long, bool>(instance,func));
     }
 
     //this callback is run just for rendering purpose. therefore it s already too late to modify anything -> const
@@ -302,9 +301,8 @@ public:
     template <class WaClass>
     void resetRenderCallback(WaClass* instance, bool (WaClass::*func) (RAGE::SDL::ScreenBuffer& ) const )
     {
-        if ( m_rendercb )
-            delete m_rendercb, m_rendercb = NULL;
-        m_rendercb = new TSpecificConstFunctor1<WaClass,bool,RAGE::SDL::ScreenBuffer&>(instance,func);
+        //TODO : check if old callback is deleted by reset...
+        m_rendercb.reset(new Core::Callback1<WaClass,RAGE::SDL::ScreenBuffer&,bool>(instance,func));
     }
 
 };

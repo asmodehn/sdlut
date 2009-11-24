@@ -15,21 +15,30 @@ namespace SDL
 //this way the client doesnt have to take care of which function is available
 #ifdef WK_SDLMIXER_FOUND
 
-	class SoundExtend : public SoundIf
-	{
-		std::auto_ptr<Mix_Chunk> pvm_chunk;
+class SoundExtend : public SoundIf
+{
+    std::auto_ptr<Mix_Chunk> pvm_chunk;
 
-		public:
-		SoundExtend(std::string filename, bool loop_status = false) throw (std::logic_error);
-		SoundExtend(const SoundExtend &) throw (std::logic_error);
-		~SoundExtend();
+public:
+    SoundExtend(std::string filename, bool loop_status = false) throw (std::logic_error);
+    SoundExtend(const SoundExtend &) throw (std::logic_error);
+    ~SoundExtend();
 
-		bool isMusic() { return false; }
-		bool isMIXImpl() { return true; }
-		bool Convert( short unsigned int, short unsigned int, int ) {return true;};
+    bool isMusic()
+    {
+        return false;
+    }
+    bool isMIXImpl()
+    {
+        return true;
+    }
+    bool Convert( short unsigned int, short unsigned int, int )
+    {
+        return true;
+    };
 
-		Mix_Chunk& get_rMIX() const;
-	};
+    Mix_Chunk& get_rMIX() const;
+};
 #endif
 }
 }

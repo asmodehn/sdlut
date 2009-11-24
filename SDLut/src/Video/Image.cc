@@ -76,7 +76,7 @@ bool Image::convertToDisplayFormat(Renderer r)
 {
     bool res = false;
 
-    //TODO : We need to test the type matching of the surface and the videosurf here,
+    // We need to test the type matching of the surface and the videosurf here,
     if ( r != m_img->getRenderer() )
     {
         //and convert if needed
@@ -110,6 +110,11 @@ bool Image::convertToDisplayFormat(Renderer r)
             res = false;
             break;
         }
+    }
+    else
+    {
+        //nothing to do, types already matching
+        res=true;
     }
 
     return res;

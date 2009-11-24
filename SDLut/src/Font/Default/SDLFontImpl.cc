@@ -73,6 +73,9 @@ std::auto_ptr<RGBSurface> FontImpl::render(const std::string & text,RGBAColor c,
     for (unsigned int i= 0; i< text.size(); i++)
     {
         result->blit(*_fontsurf, Rect(i*14,0,14,16),alphalookup[text[i]]);
+        //
+        //TODO : better if we code that directly in SDL, as we wont be affected by other code parts changes...
+        //
         //Rect txtrect = alphalookup[text[i]];
         //Log << nl << "Txtrect X : "<< txtrect.getx() << " Y : "<< txtrect.gety() << " W : " << txtrect.getw() << " H : " << txtrect.geth() ;
         //Log.flush();

@@ -31,6 +31,7 @@ namespace SDL
 *
 */
 
+/*
 //TODO : Make a NewThread without template to support callback on static and global functions. Same in newtimers.
 
 //TODO : Think of redesigning, maybe using exception to handle Thread wrapper errors ( different than underlying thread errors)
@@ -182,6 +183,8 @@ int NewThread<TClass>::wait()
 //	}
 //	return (m_thread == 0 );
 //}
+
+*/
 
 }
 

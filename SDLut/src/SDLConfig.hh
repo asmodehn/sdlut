@@ -54,35 +54,35 @@
 //Global default declarations
 namespace RAGE
 {
-	namespace SDL
-	{
-		//global, namespace visible, declaration for the SDLut logger. Will be initialized only once.
-		extern Logger Log;
+namespace SDL
+{
+//global, namespace visible, declaration for the SDLut logger. Will be initialized only once.
+extern Logger Log;
 
-		std::string GetError();
+std::string GetError();
 
-		namespace Optional
-		{
+namespace Optional
+{
 //list of modules
-			typedef enum
-			{
-				Image,
-				TTF,
-				Mixer,
-				Net
-			}Module;
+typedef enum
+{
+    Image,
+    TTF,
+    Mixer,
+    Net
+}Module;
 
-		std::string GetError(Module);
+std::string GetError(Module);
 
-		bool isCompiled(Module);
-		bool isLinked(Module);
-		bool Init(Module);
-		bool WasInit(Module);
-		void Quit(Module);
+bool isCompiled(Module);
+bool isLinked(Module);
+bool Init(Module);
+bool WasInit(Module);
+void Quit(Module);
 
-		}
+}
 
-	}
+}
 }
 
 
@@ -90,22 +90,22 @@ namespace RAGE
 #include "SDL_cpuinfo.h"
 namespace RAGE
 {
-	namespace SDL
-	{
+namespace SDL
+{
 class CPU
 {
-	public:
-		static bool hasRDTSC();
-		static bool hasMMX();
-		static bool hasMMXExt();
-		static bool has3DNow();
-		static bool has3DNowExt();
-            //static bool hasSSE();
-            //static bool hasSSEExt();
-		static bool hasAltiVec();
+public:
+    static bool hasRDTSC();
+    static bool hasMMX();
+    static bool hasMMXExt();
+    static bool has3DNow();
+    static bool has3DNowExt();
+    //static bool hasSSE();
+    //static bool hasSSEExt();
+    static bool hasAltiVec();
 
 };
-	}
+}
 }
 #endif
 

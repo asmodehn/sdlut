@@ -190,11 +190,15 @@ bool VideoGLSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rec
     try
     {
         //Test if src is a GLSurface
-        //TODO : if not a GL Surface -> find solution
-        //TODO : RGB / GL surface difference has to be hidden from client, but rendering speed should remain optimum...
+        // RGB / GL surface difference has to be hidden from client,
+        // but rendering speed should remain optimum...
         GLSurface& glsrc = dynamic_cast<GLSurface&>(src);
 
+        glsrc.saveBMP("testing.bmp");
+
         //optimisation tricks
+        //TODO :  the conversion to texture should be done just after modification (as a customisable default), as render must remain optimum,
+        // only the emergency conversion to display format is useful here. Maybe even not...
         if ( glsrc.modified )
         {
             glsrc.computeGLWidthHeight();

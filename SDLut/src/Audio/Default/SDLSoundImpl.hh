@@ -24,8 +24,8 @@
 
 namespace RAGE
 {
-	namespace SDL
-	{
+namespace SDL
+{
 
 //classes interaction :
 //Sound doesnt know Audio, or Mixer.
@@ -38,52 +38,55 @@ namespace RAGE
 
 //TODO : Redesign to have the same design scheme as the Video : AudioInfo and Mixer like VideoInfo and Window... (callback in Mixer, but similar creation scheme)
 //Might choose 1 instead of 2...
-		
 
-	//This class stores a Sound (original - not converted to Audio format yet )
-	class SoundImpl : public SoundIf
+
+//This class stores a Sound (original - not converted to Audio format yet )
+class SoundImpl : public SoundIf
 {/*
 		//total number of sound (internal SDL)
 	static int resourcecount;
 		//index of the current Sound (internal SDL reference)
 	int resourceindex;*/
 
-	friend class MixerImpl;
+    friend class MixerImpl;
 
-	AudioInfo _aInfo;
+    AudioInfo _aInfo;
 
-	
 
-	//true if this sound has already been converted.
-	bool converted;
-	//Length and data of the Sound
-	unsigned long _length;
-	unsigned char *_buf;
 
-	//manage if the sound is looping after it end
-	bool _loop_status;
+    //true if this sound has already been converted.
+    bool converted;
+    //Length and data of the Sound
+    unsigned long _length;
+    unsigned char *_buf;
 
-	public:
+    //manage if the sound is looping after it end
+    bool _loop_status;
 
-		//Sound Loader
-		SoundImpl(std::string filename, bool loop_status = false) throw (std::logic_error);
-		//Sound Copy ( careful with conversion )
-		SoundImpl( const SoundImpl & s)  throw (std::logic_error);
-		//Sound destructor
-		~SoundImpl();
+public:
 
-		
-		bool isMIXImpl() { return false;}
+    //Sound Loader
+    SoundImpl(std::string filename, bool loop_status = false) throw (std::logic_error);
+    //Sound Copy ( careful with conversion )
+    SoundImpl( const SoundImpl & s)  throw (std::logic_error);
+    //Sound destructor
+    ~SoundImpl();
 
-		//TODO : Convert should be done at load time.
-		//This must be done to match the SDL_mixer behaviour
-		//be carefull about the consequences :o/
-		bool Convert (unsigned short DestinationFormat,unsigned short DestinationChannels,int DestinationFrequency);
-		
-	
+
+    bool isMIXImpl()
+    {
+        return false;
+    }
+
+    //TODO : Convert should be done at load time.
+    //This must be done to match the SDL_mixer behaviour
+    //be carefull about the consequences :o/
+    bool Convert (unsigned short DestinationFormat,unsigned short DestinationChannels,int DestinationFrequency);
+
+
 };//class Sound
 
-	}
+}
 }
 
 #endif

@@ -47,6 +47,7 @@ void runThread(SDL_Thread *&,int threadcall (void *), void *data);
 int waitThread(SDL_Thread *);
 void killThread(SDL_Thread *);
 
+/*
 //TODO : make a nicer Functor or delegate so I dont have to use a class template here just to store the called class instance...
 template < class TClass >
 class Thread
@@ -273,7 +274,7 @@ bool Thread<TClass>::kill()
 
 }
 
-
+*/
 
 }
 

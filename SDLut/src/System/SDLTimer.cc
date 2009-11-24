@@ -67,6 +67,59 @@ bool RemoveGlobalTimer(SDL_TimerID t)
 }
 
 
+//NewTimer implementatino
+
+NewTimer::NewTimer()
+        : m_timerid(0), m_cb(0), m_args(0)
+{
+}
+
+NewTimer::NewTimer(const NewTimer & nt)
+        : m_timerid(0), m_cb(0), m_args(0)
+{
+}
+
+
+NewTimer::~NewTimer()
+{
+    //ALWAYS BE SURE THE TIMER IS HALTED BEFORE TRYING TO DESTRUCT IT !!
+    abort();
+    //TODO : think of a way to "detach" it. Destruct the Timer object, but keep the timer running... have a look at boost threads...
+
+    //Callback and argument delete should be handled by auto_ptr...
+
+
+}
+
+bool NewTimer::start(SDL_TimerID *& tid,unsigned int interval, unsigned int callback(unsigned int,void*) , void *param)
+{
+    if (m_cb.get())
+    {
+        //ScopedLock lock(mtx);
+
+        //no argument s here so we are using normal Adapter
+        m_timerid = AddGlobalTimer(interval,callback,param);
+        tid = &m_timerid;
+    }
+    return (m_timerid != 0 );
+}
+
+
+//return true if abort successful. return false if abortion failed ( the timer may already have stopped for example )
+bool NewTimer::abort()
+{
+    //TODO, find the meaning of error / success if timer already finished ? or never existed ?
+    bool res = true;
+    if ( m_timerid!= 0 )
+    {
+        //ScopedLock lock(mtx);
+        res = RemoveGlobalTimer(m_timerid);
+        m_timerid = 0;
+    }
+    return res;
+}
+
+
 
 }
 }

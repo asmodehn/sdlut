@@ -221,7 +221,14 @@ bool GLSurface::blit (const RGBSurface& src, Rect& dest_rect, const Rect& src_re
 
 bool GLSurface::convertToDisplayFormat()
 {
-    if (texturePixels == NULL) return true; //already converted -> silently exit
+    if (texturePixels == NULL)
+    {
+        //No data to convert
+        // Problem, convert Pixels should have been called before if there was any modification...
+        // Or no conversion is actually needed...
+        return false;
+    }
+
     glGenTextures(1, &textureHandle);
     glBindTexture(GL_TEXTURE_2D, textureHandle);
 
