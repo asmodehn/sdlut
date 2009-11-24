@@ -7,6 +7,21 @@
 namespace Core
 {
 
+//return the number of microseconds ( warning : precision loss ) the  program has been running.
+// or the number of clock cycles if usec == false
+// 0  as a return code means we cannot access this information
+unsigned long clock();
+unsigned long clocksec();
+unsigned long clockusec();
+
+//returns the process clock precision by comparing with wallclock
+double clockprec();
+
+//pause the execution of the current thread
+void sleep(unsigned int sec);
+void usleep (unsigned int usec);
+
+
 class Time;
 
 class Date
@@ -87,7 +102,7 @@ public:
 
 
 /** TODO : Class to handle portable calls to standard time functions
-
+ * NB : Time precision is the second...
 **/
 
 class Time
@@ -97,14 +112,6 @@ class Time
 
 
 public :
-
-//return the number of seconds ( warning : precision loss ) the  program has been running.
-// or the number of clock cycles if sec == false
-// 0  as a return code means we cannot access this information
-    static unsigned long clock(bool sec = true);
-
-//pause the execution of the current thread
-    static void sleep(unsigned int sec);
 
     static Time now();
 
@@ -128,7 +135,8 @@ public :
 
 //TODO setlocale...
 
-
+    //returns the time difference in seconds
+    double operator-(const Time & t ) const;
 
 
 };
@@ -146,6 +154,5 @@ public :
 
 };
 
-}// Core
-
+} //Core
 #endif

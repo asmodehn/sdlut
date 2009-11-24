@@ -30,11 +30,11 @@ Date::~Date()
 const std::string Date::ascii()
 {
 #ifdef _WIN32
-	char *res = NULL;
-	if (asctime_s(res, 32, &d))
-		return "";
-	else
-		return std::string(res);
+    char *res = NULL;
+    if (asctime_s(res, 32, &d))
+        return "";
+    else
+        return std::string(res);
 #else
     return std::string(asctime(&d));
 #endif
@@ -64,31 +64,56 @@ Time::~Time()
 {
 }
 
-void Time::sleep (unsigned int sec)
+void sleep (unsigned int sec)
 {
 
 #ifdef _WIN32
     Sleep (sec * 1000);
 #else
 #  if _POSIX_VERSION > 198808L
-    sleep (sec);
+    ::sleep (sec);
 #  else
     clock_t start, end;
 
-    end = start = clock ();
+    end = start = ::clock ();
     if (start != -1)
     {
         while ((end - start) / CLOCKS_PER_SEC < sec)
         {
             //That uses system resources, better solution should be possible
-            end = clock ();
+            end = ::clock ();
         }
     }
 #  endif /* _POSIX_VERSION */
 #endif /* _WIN32 */
 }
 
-unsigned long Time::clock (bool sec)
+
+void usleep (unsigned int usec)
+{
+
+#ifdef _WIN32
+    Sleep (usec / 1000);
+#else
+#  if _POSIX_VERSION > 198808L
+    ::usleep (usec);
+#  else
+    clock_t start, end;
+
+    end = start = ::clock ();
+    if (start != -1)
+    {
+        while ((end - start) / ( CLOCKS_PER_SEC/1000000l ) < usec)
+        {
+            //That uses system resources, better solution should be possible
+            end = ::clock ();
+        }
+    }
+#  endif /* _POSIX_VERSION */
+#endif /* _WIN32 */
+}
+
+unsigned long clock ()
 {
 
     clock_t clk = ::clock();
@@ -99,14 +124,65 @@ unsigned long Time::clock (bool sec)
     if ( clk != -1 )
     {
         res = (unsigned long)clk;
-        if ( sec)
-        {
-            res= (unsigned long) (res/ CLOCKS_PER_SEC) ;
-        }
     }
-    //lk == -1 -> information nto available we return 0
+    else
+    {
+        fprintf(stderr,"Error : ::clock() returned -1");
+    }
+    //clk == -1 -> information not available we return 0
 
     return res;
+}
+
+unsigned long clocksec ()
+{
+
+    clock_t clk = ::clock();
+
+    //0 is an error code here : information not availalbe
+    unsigned long res = 0;
+
+    if ( clk != -1 )
+    {
+        res = (unsigned long)clk / ( CLOCKS_PER_SEC) ;
+
+    }
+    else
+    {
+        fprintf(stderr,"Error : ::clock() returned -1");
+    }
+    //clk == -1 -> information not available we return 0
+
+    return res;
+}
+
+
+unsigned long clockusec ()
+{
+
+    clock_t clk = ::clock();
+
+    //0 is an error code here : information not availalbe
+    unsigned long res = 0;
+
+    if ( clk != -1 )
+    {
+        res = (unsigned long)clk / ( CLOCKS_PER_SEC / 1000000l) ;
+    }
+    else
+    {
+        fprintf(stderr,"Error : ::clock() returned -1");
+    }
+    //clk == -1 -> information not available we return 0
+
+    return res;
+}
+
+
+
+double clockprec ()
+{
+    return 1/(double)CLOCKS_PER_SEC;
 }
 
 Time Time::now()
@@ -118,11 +194,11 @@ Time Time::now()
 std::string Time::localascii()
 {
 #ifdef _WIN32
-	char *res = NULL;
-	if (ctime_s(res, 32, &tt))
-		return "";
-	else
-		return std::string(res);
+    char *res = NULL;
+    if (ctime_s(res, 32, &tt))
+        return "";
+    else
+        return std::string(res);
 #else
     return std::string(ctime( & tt ) );
 #endif
@@ -131,40 +207,47 @@ std::string Time::localascii()
 Date Time::GMT()
 {
 #ifdef _WIN32
-	struct tm d;
+    struct tm d;
     if (!gmtime_s(&d, &tt))
-	{
-		Date gmt(&d);
-		return gmt;
-	}
-	else
-	{
-		throw std::logic_error("Invalid Argument to gmtime_s");
-	}
+    {
+        Date gmt(&d);
+        return gmt;
+    }
+    else
+    {
+        throw std::logic_error("Invalid Argument to gmtime_s");
+    }
 #else
     Date gmt(gmtime( & tt ));
-	return gmt;
-#endif    
+    return gmt;
+#endif
 }
 
 
 Date Time::local()
 {
 #ifdef _WIN32
-	struct tm d;
+    struct tm d;
     if (!localtime_s(&d, &tt))
-	{
-		Date loc(&d);
-		return loc;
-	}
-	else
-	{
-		throw std::logic_error("Invalid Argument to localtime_s");
-	}
+    {
+        Date loc(&d);
+        return loc;
+    }
+    else
+    {
+        throw std::logic_error("Invalid Argument to localtime_s");
+    }
 #else
     Date loc(localtime( & tt ));
-	return loc;
+    return loc;
 #endif
 }
+
+double Time::operator-(const Time & t ) const
+{
+    return difftime(tt,t.tt);
+}
+
+
 
 }//Core

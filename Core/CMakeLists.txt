@@ -4,13 +4,21 @@ WkCMakeDir ( CMake )
 
 WkProject ( Core CXX)
 
-#Optional for now... Functor implements whats needed so far as well
-#WkDependsInclude ( SigC++ )
+WkDependsInclude ( SigC++ REQUIRED )
 
 WkBuild ( LIBRARY STATIC )
 
-#WkDependsLink ( SigC++ )
+WkDependsLink ( SigC++ REQUIRED )
 WkLink()
 
 WkDoc()
+
+WkTestBuild( TestDbgMem )
+WkTestBuild( TestLogger )
+WkTestBuild( TestStaticAssert )
+WkTestBuild( TestTime )
+WkTestBuild ( TestFunctor )
+WkTestBuild ( TestCallback )
+WkTestBuild ( TestAdapter )
+
 
