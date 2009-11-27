@@ -1,9 +1,5 @@
 #include "Time.hh"
 
-#ifdef _WIN32
-#include <windows.h> //to get Sleep ...
-#endif
-
 namespace Core
 {
 
@@ -67,9 +63,9 @@ Time::~Time()
 void sleep (unsigned int sec)
 {
 
-#ifdef _WIN32
-    Sleep (sec * 1000);
-#else
+/*#ifdef _WIN32
+    //Sleep (sec * 1000);
+#else*/
 #  if _POSIX_VERSION > 198808L
     ::sleep (sec);
 #  else
@@ -78,23 +74,23 @@ void sleep (unsigned int sec)
     end = start = ::clock ();
     if (start != -1)
     {
-        while ((end - start) / CLOCKS_PER_SEC < sec)
+        while (static_cast<unsigned int>( (end - start) / CLOCKS_PER_SEC) < sec)
         {
             //That uses system resources, better solution should be possible
             end = ::clock ();
         }
     }
 #  endif /* _POSIX_VERSION */
-#endif /* _WIN32 */
+/*#endif /* _WIN32 */
 }
 
 
 void usleep (unsigned int usec)
 {
 
-#ifdef _WIN32
-    Sleep (usec / 1000);
-#else
+/*#ifdef _WIN32
+    //Sleep (usec / 1000);
+#else*/
 #  if _POSIX_VERSION > 198808L
     ::usleep (usec);
 #  else
@@ -103,14 +99,14 @@ void usleep (unsigned int usec)
     end = start = ::clock ();
     if (start != -1)
     {
-        while ((end - start) / ( CLOCKS_PER_SEC/1000000l ) < usec)
+        while ( static_cast<unsigned int>( (end - start) / CLOCKS_PER_SEC * 1000000l ) < usec)
         {
             //That uses system resources, better solution should be possible
             end = ::clock ();
         }
     }
 #  endif /* _POSIX_VERSION */
-#endif /* _WIN32 */
+/*#endif /* _WIN32 */
 }
 
 unsigned long clock ()
@@ -167,7 +163,8 @@ unsigned long clockusec ()
 
     if ( clk != -1 )
     {
-        res = (unsigned long)clk / ( CLOCKS_PER_SEC / 1000000l) ;
+		//TODO : test long limits
+        res = (unsigned long)clk / ( CLOCKS_PER_SEC ) * 1000000l ;
     }
     else
     {

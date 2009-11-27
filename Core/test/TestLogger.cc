@@ -2,7 +2,7 @@
 /* Test program to try RAGE Logger
 */
 
-#include "SDL.hh"
+#include "Core.hh"
 using namespace RAGE;
 
 int main(int argc, char *argv[])

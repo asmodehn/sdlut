@@ -181,7 +181,7 @@ int main()
 	dbgmem_debug_heap_init();
 	atexit ( dbgmem_debug_heap_fini );
 
-	str2 = strdup(str[2]);	/* DOES NOT CATCH THE LEAK! -> try again - AV */
+	str2 = _strdup(str[2]);	/* DOES NOT CATCH THE LEAK! -> try again - AV */
 
 	string_test();
 	list_test();
