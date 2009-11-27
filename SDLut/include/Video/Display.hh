@@ -266,12 +266,12 @@ private:
     std::auto_ptr<Core::Callback2Base<int,int,bool> > m_initcb;
     std::auto_ptr<Core::Callback2Base<int,int,bool> > m_resizecb;
     std::auto_ptr<Core::Callback2Base<unsigned long, unsigned long, bool> > m_newframecb;
-    std::auto_ptr<Core::Callback1Base<ScreenBuffer&,bool> > m_rendercb;
+    std::auto_ptr<Core::Callback1constBase<ScreenBuffer&,bool> > m_rendercb;
 
 public:
     //this callback is run whenever at initialization (Display::show)
     template <class TaClass>
-    void resetInitCallback(TaClass* instance, bool (TaClass::*func) ( int width, int height) )
+    void resetInitCallback(TaClass& instance, bool (TaClass::*func) ( int width, int height) )
     {
         //TODO : check if old callback is deleted by reset...
         m_initcb.reset(new Core::Callback2<TaClass,int,int,bool>(instance, func));
@@ -280,7 +280,7 @@ public:
     //this callback is run whenever a resize is needed.
     //parameter is the desired new size.
     template <class UaClass>
-    void resetResizeCallback(UaClass* instance, bool (UaClass::*func) ( int width, int height) )
+    void resetResizeCallback(UaClass& instance, bool (UaClass::*func) ( int width, int height) )
     {
         //TODO : check if old callback is deleted by reset...
         m_resizecb.reset(new Core::Callback2<UaClass,int,int,bool>(instance,func));
@@ -290,7 +290,7 @@ public:
     //deltaticks is the amount of ticks between the end of the last render and now.
     //framerate is in fps.
     template <class VaClass>
-    void resetNewFrameCallback(VaClass* instance, bool (VaClass::*func) ( unsigned long framerate, unsigned long deltaticks) )
+    void resetNewFrameCallback(VaClass& instance, bool (VaClass::*func) ( unsigned long framerate, unsigned long deltaticks) )
     {
         //TODO : check if old callback is deleted by reset...
         m_newframecb.reset(new Core::Callback2<VaClass,unsigned long, unsigned long, bool>(instance,func));
@@ -299,10 +299,10 @@ public:
     //this callback is run just for rendering purpose. therefore it s already too late to modify anything -> const
     //if there is anything you need to modify please use the newframe callback
     template <class WaClass>
-    void resetRenderCallback(WaClass* instance, bool (WaClass::*func) (RAGE::SDL::ScreenBuffer& ) const )
+    void resetRenderCallback(WaClass& instance, bool (WaClass::*func) (RAGE::SDL::ScreenBuffer& ) const )
     {
         //TODO : check if old callback is deleted by reset...
-        m_rendercb.reset(new Core::Callback1<WaClass,RAGE::SDL::ScreenBuffer&,bool>(instance,func));
+        m_rendercb.reset(new Core::Callback1const<WaClass,RAGE::SDL::ScreenBuffer&,bool>(instance,func));
     }
 
 };

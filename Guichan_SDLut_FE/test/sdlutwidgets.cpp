@@ -153,7 +153,7 @@ public:
 
 KeyboardInput* myKeyboardInput = NULL;
 MouseInput* myMouseInput = NULL;
-RenderEngine* myEngine = NULL;
+RenderEngine myEngine;
 
 void init(bool ogl = false)
 {
@@ -217,7 +217,6 @@ void implement(bool ogl = false)
 	myMouseInput = new MouseInput();
 	App::getInstance().getDisplay().getEventManager().setMouse(myMouseInput);
 
-	myEngine = new RenderEngine();	
 	App::getInstance().getDisplay().resetInitCallback(myEngine,&RenderEngine::init);
 	App::getInstance().getDisplay().resetResizeCallback(myEngine,&RenderEngine::resize);
 	App::getInstance().getDisplay().resetNewFrameCallback(myEngine,&RenderEngine::prerender);
@@ -239,7 +238,6 @@ void clean()
 
 	delete myKeyboardInput, myKeyboardInput = NULL;
 	delete myMouseInput, myMouseInput = NULL;
-	delete myEngine, myEngine = NULL;
 }
 
 int main(int argc, char **argv)

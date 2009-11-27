@@ -126,7 +126,7 @@ public:
 };
 
 KeyboardInput* myKeyboardInput;
-RenderEngine* myEngine;
+RenderEngine myEngine;
 
 void init(bool ogl = false)
 {
@@ -163,8 +163,6 @@ void implement(bool ogl = false)
 	myKeyboardInput = new KeyboardInput();
 	App::getInstance().getDisplay().getEventManager().setKeyboard(myKeyboardInput);
 
-	myEngine = new RenderEngine();
-
     App::getInstance().getDisplay().resetInitCallback(myEngine,&RenderEngine::init);
 	App::getInstance().getDisplay().resetResizeCallback(myEngine,&RenderEngine::resize);
 //	App::getInstance().getDisplay().resetNewFrameCallback(myEngine,&RenderEngine::prerender);
@@ -182,7 +180,6 @@ void clean()
 
 
 	delete myKeyboardInput, myKeyboardInput = NULL;
-	delete myEngine, myEngine = NULL;
 }
 
 int main(int argc, char **argv)
