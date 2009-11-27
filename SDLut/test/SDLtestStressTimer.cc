@@ -73,7 +73,7 @@ class ObjectWithCallbacks
 	friend class OwnerOfObjWCallbacks;
 
 private:
-	SDL::NewTimer<ObjectWithCallbacks> *Play_Timer_1x;
+	SDL::NewTimer *Play_Timer_1x;
 	SimpleObject *sobj;
 
 	int direct_timer_it, direct_timer_int;
@@ -148,7 +148,7 @@ SCOPED_LOCK(mymtx);
 		flag = 1;
 		delete Play_Timer_1x, Play_Timer_1x = NULL;
 
-		Play_Timer_1x = new SDL::NewTimer<ObjectWithCallbacks>(this,&ObjectWithCallbacks::callback1_1, (void*)(ArgObject)/*NULL*/ );
+		Play_Timer_1x = new SDL::NewTimer(*this,&ObjectWithCallbacks::callback1_1);
 
 		testlog << nl << SDL::GetTicks() - ticks  << " ms : " << this << "\'s play1_1 create Timer " << Play_Timer_1x << " and launching it" << std::endl;
 
@@ -163,17 +163,17 @@ SCOPED_LOCK(mymtx);
 
 
 private:
-	unsigned int callback1_1(unsigned int interval, void* args)
+	unsigned int callback1_1(unsigned int interval)
 	{
 	try	{
 SCOPED_LOCK(mymtx);
 		testlog << nl << SDL::GetTicks() - ticks  << " ms : " << this << "\'s callback1_1 called back at frame " << loop_nb << std::endl;
 
-		if (args == NULL)
+/*		if (args == NULL)
 		{
 			assert(args == NULL && "Arg Pointer is NULL !");
 			throw std::logic_error("Arg Pointer is NULL !");
-		}
+		}*/
 
 		//Check nb of frame
 		if (++loop_nb < sobj->cb_frames)
@@ -244,7 +244,7 @@ SCOPED_LOCK(objwcb->mymtx);
 			break;
 
 		case 1: //one callback running
-			if (objwcb->start_timer_tick + 1100 < SDL::GetTicks()) //1100ms = max nb de frame potential * max interval potentiel + 100ms
+			if (objwcb->start_timer_tick + 3000 < SDL::GetTicks()) //1100ms = max nb de frame potential * max interval potentiel + 100ms
 			{
 				testlog << nl << "ERROR : A timer encounter an abornal termination for OwnerOfObjWCallbacks " << this << "\'s ObjectWithCallbacks @ " << this->objwcb << std::endl;
 				throw logic_error( " A timer encounter an abornal termination");
@@ -285,7 +285,7 @@ int main(int argc, char *argv[])
 {
 try {
 	unsigned int NB_OBJ = 15;
-	long TEST_DURATION = 20000; //ms
+	long TEST_DURATION = 30000; //ms
 
 /***Init & Implement***/
 
