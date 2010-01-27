@@ -4,36 +4,23 @@ WkCMakeDir ( CMake )
 
 WkProject ( SDLut CXX)
 
-# this should be a dependency
-#INCLUDE_DIRECTORIES(${SDLut_SOURCE_DIR}/../Core/include )
-
-WkDependsInclude ( Core REQUIRED )
-WkDependsInclude ( SDL REQUIRED )
-WkDependsInclude ( OpenGL )
-WkDependsInclude ( SDL_image)
-WkDependsInclude ( SDL_ttf)
-WkDependsInclude ( SDL_mixer)
-WkDependsInclude ( SDL_net)
+WkDepends ( Core REQUIRED )
+WkDepends ( SDL REQUIRED )
+WkDepends ( OpenGL )
+WkDepends ( SDL_image)
+WkDepends ( SDL_ttf)
+WkDepends ( SDL_mixer)
+WkDepends ( SDL_net)
 
 WkBuild ( LIBRARY STATIC )
 
-WkDependsLink ( Core )
-WkDependsLink ( SDL )
-WkDependsLink ( OpenGL )
-WkDependsLink ( SDL_image)
-WkDependsLink ( SDL_ttf)
-WkDependsLink ( SDL_mixer)
-WkDependsLink ( SDL_net)
-
-WkLink ()
-
 WkDoc()
 
-WkTestBuild (SDLtestColor)
-WkTestRun (SDLtestColor)
+WkTestBuild ( SDLtestColor )
+WkTestRun   ( SDLtestColor )
 
 WkTestBuild (SDLtestRefresh)
-WkTestRun (SDLtestRefresh)
+WkTestRun   (SDLtestRefresh)
 
 WkTestBuild ( SDLtestApp )
 WkTestBuild ( SDLtestDumbLoop )

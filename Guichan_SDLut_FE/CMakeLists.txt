@@ -4,12 +4,10 @@ WkCMakeDir ( CMake )
 
 WkProject ( Guichan_SDLut_FE CXX)
 
-WkDependsInclude ( SDLut REQUIRED )
-WkDependsInclude ( Guichan REQUIRED )
+WkDepends ( SDLut REQUIRED )
+WkDepends ( Guichan REQUIRED )
+
 WkBuild ( LIBRARY STATIC )
-WkDependsLink ( SDLut )
-WkDependsLink ( Guichan )
-WkLink()
 
 WkDoc()
 
