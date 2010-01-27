@@ -4,21 +4,23 @@ WkCMakeDir ( CMake )
 
 WkProject ( Core CXX)
 
-WkDependsInclude ( SigC++ REQUIRED )
+WkDepends ( SigC++ REQUIRED )
 
 WkBuild ( LIBRARY STATIC )
-
-WkDependsLink ( SigC++ REQUIRED )
-WkLink()
 
 WkDoc()
 
 WkTestBuild( TestDbgMem )
+WkTestRun( TestDbgMem )
 WkTestBuild( TestLogger )
+WkTestRun( TestLogger )
 WkTestBuild( TestStaticAssert )
+WkTestRun( TestStaticAssert )
 WkTestBuild( TestTime )
+WkTestRun( TestTime )
 WkTestBuild ( TestFunctor )
+WkTestRun( TestFunctor )
 WkTestBuild ( TestCallback )
+WkTestRun( TestCallback )
 WkTestBuild ( TestAdapter )
-
-
+WkTestRun( TestAdapter )
