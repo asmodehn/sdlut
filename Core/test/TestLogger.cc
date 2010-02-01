@@ -7,10 +7,10 @@ using namespace RAGE;
 
 int main(int argc, char *argv[])
 {
-	Logger testlog("testInit");
-		
-	
+    Logger testlog("testInit");
 
-	return 0;
+
+
+    return 0;
 }
 

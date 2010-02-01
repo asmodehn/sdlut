@@ -9,10 +9,22 @@
 using namespace Core;
 
 //assumed legacy invoker always have a ending void* parameter, to be able to pass any argument number to the callback
-int legacy0invoker( int (*func) (void *),void *v) { return func ( v); }
-int legacy1invoker( int (*func) (int, void*), int a, void* v) {return  func ( a, v ) ; }
-int legacy2invoker( int (*func) (int, int, void*) , int a, int b, void*v) {return func ( a, b, v); }
-int legacy3invoker( int (*func) (int, int, int, void*), int a, int b, int c, void* v) {return func ( a ,b ,c, v) ; }
+int legacy0invoker( int (*func) (void *),void *v)
+{
+    return func ( v);
+}
+int legacy1invoker( int (*func) (int, void*), int a, void* v)
+{
+    return  func ( a, v ) ;
+}
+int legacy2invoker( int (*func) (int, int, void*) , int a, int b, void*v)
+{
+    return func ( a, b, v);
+}
+int legacy3invoker( int (*func) (int, int, int, void*), int a, int b, int c, void* v)
+{
+    return func ( a ,b ,c, v) ;
+}
 
 
 int main( int argc, char * argv [] )

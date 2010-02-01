@@ -1,5 +1,7 @@
 #include "Time.hh"
 
+#include <cstdio>
+
 namespace Core
 {
 
@@ -63,9 +65,9 @@ Time::~Time()
 void sleep (unsigned int sec)
 {
 
-/*#ifdef _WIN32
-    //Sleep (sec * 1000);
-#else*/
+    /*#ifdef _WIN32
+        //Sleep (sec * 1000);
+    #else*/
 #  if _POSIX_VERSION > 198808L
     ::sleep (sec);
 #  else
@@ -81,16 +83,16 @@ void sleep (unsigned int sec)
         }
     }
 #  endif /* _POSIX_VERSION */
-/*#endif /* _WIN32 */
+    /*#endif /* _WIN32 */
 }
 
 
 void usleep (unsigned int usec)
 {
 
-/*#ifdef _WIN32
-    //Sleep (usec / 1000);
-#else*/
+    /*#ifdef _WIN32
+        //Sleep (usec / 1000);
+    #else*/
 #  if _POSIX_VERSION > 198808L
     ::usleep (usec);
 #  else
@@ -106,7 +108,7 @@ void usleep (unsigned int usec)
         }
     }
 #  endif /* _POSIX_VERSION */
-/*#endif /* _WIN32 */
+    /*#endif /* _WIN32 */
 }
 
 unsigned long clock ()
@@ -163,7 +165,7 @@ unsigned long clockusec ()
 
     if ( clk != -1 )
     {
-		//TODO : test long limits
+        //TODO : test long limits
         res = (unsigned long)clk / ( CLOCKS_PER_SEC ) * 1000000l ;
     }
     else

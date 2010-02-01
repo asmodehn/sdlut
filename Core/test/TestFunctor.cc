@@ -25,16 +25,31 @@ int func4 ( int a, int b, int c, int d)
 
 class Operand
 {
-int m_testval;
+    int m_testval;
 
-Operand() : m_testval(1)
-{}
-    public:
-int func0 ( ) { return m_testval; }
-int func1 ( Operand & o) { return m_testval+o.m_testval; }
-int func2 ( Operand & o, int a ) { return m_testval+o.m_testval+a; }
-int func3 (Operand& o, int a, int b) { return m_testval+o.m_testval+a+b; }
-int func4 (Operand& o, int a, int b, int c ) { return m_testval+o.m_testval+a+b+c; }
+    Operand() : m_testval(1)
+    {}
+public:
+    int func0 ( )
+    {
+        return m_testval;
+    }
+    int func1 ( Operand & o)
+    {
+        return m_testval+o.m_testval;
+    }
+    int func2 ( Operand & o, int a )
+    {
+        return m_testval+o.m_testval+a;
+    }
+    int func3 (Operand& o, int a, int b)
+    {
+        return m_testval+o.m_testval+a+b;
+    }
+    int func4 (Operand& o, int a, int b, int c )
+    {
+        return m_testval+o.m_testval+a+b+c;
+    }
 
 };
 
