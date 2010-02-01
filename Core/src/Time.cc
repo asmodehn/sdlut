@@ -1,6 +1,7 @@
 #include "Time.hh"
 
-#include <cstdio>
+#include <cstdio> //to access stderr and stdio for now
+//TODO : the Logger should handle this
 
 namespace Core
 {
@@ -83,7 +84,7 @@ void sleep (unsigned int sec)
         }
     }
 #  endif /* _POSIX_VERSION */
-    /*#endif /* _WIN32 */
+    /*#endif */ /* _WIN32 */
 }
 
 
@@ -108,7 +109,7 @@ void usleep (unsigned int usec)
         }
     }
 #  endif /* _POSIX_VERSION */
-    /*#endif /* _WIN32 */
+    /*#endif *//* _WIN32 */
 }
 
 unsigned long clock ()

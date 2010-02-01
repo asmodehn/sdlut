@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h> /* for strdup only is it really standard ? not in cppreference.com - AV */
 
+/* TO READ :  http://www.linuxjournal.com/article/6556 */
+
 /* Redefines memory operator if NDEBUG not defined, so it works a bit like assert */
 /*#ifndef NDEBUG
 #define DEBUG_MEMORY

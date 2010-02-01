@@ -5,11 +5,12 @@ WkCMakeDir ( CMake )
 WkProject ( Core CXX)
 
 WkDepends ( SigC++ REQUIRED )
-
 WkBuild ( LIBRARY STATIC )
 
 WkDoc()
+WkSvn()
 
+WkTestBuild( TestError )
 WkTestBuild( TestDbgMem )
 WkTestRun( TestDbgMem )
 WkTestBuild( TestLogger )
