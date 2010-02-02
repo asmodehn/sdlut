@@ -9,6 +9,7 @@
 #include "Config.hh" // for library configuration
 
 #include <string>
+#include <map>
 
 #include "GenericError.hh"
 

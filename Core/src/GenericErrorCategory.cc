@@ -59,7 +59,7 @@ std::string GenericErrorCategory::message( int ev ) const
                 ? std::string( c_str )
                 : unknownError;
 #  else
-        result = strerror_r( ev, bp, sz );
+        result = strerror_s( bp, sz, ev );
 #  endif
         if (result == 0 )
             break;
@@ -79,8 +79,14 @@ std::string GenericErrorCategory::message( int ev ) const
     std::string msg;
     try
     {
-        msg = ( ( result == invalid_argument ) ? "Unknown error" : bp );
+		msg = ( ( result == Generic::invalid_argument ) ? "Unknown error" : bp );
     }
+	catch(...)
+	{
+	// just eat the exception
+	//Boost ticket #2098
+	}
+
 
     if ( sz > sizeof(buf) ) std::free( bp );
     sz = 0;
