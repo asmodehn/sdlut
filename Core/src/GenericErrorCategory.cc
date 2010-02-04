@@ -79,13 +79,13 @@ std::string GenericErrorCategory::message( int ev ) const
     std::string msg;
     try
     {
-		msg = ( ( result == Generic::invalid_argument ) ? "Unknown error" : bp );
+        msg = ( ( result == Generic::invalid_argument ) ? "Unknown error" : bp );
     }
-	catch(...)
-	{
-	// just eat the exception
-	//Boost ticket #2098
-	}
+    catch (...)
+    {
+        // just eat the exception
+        //Boost ticket #2098
+    }
 
 
     if ( sz > sizeof(buf) ) std::free( bp );

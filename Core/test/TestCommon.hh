@@ -10,7 +10,7 @@
 //TODO : use cppunit
 //TODO : mix with ctest framework...
 //TODO : get inspiration from boost/detail/lightweight test
-#define TEST(x) assert(x);
+#define TEST(x) assert( (x) );
 #define TEST_FVAL(val, comp) assert( abs((val) - (comp)) < SMALL_NUMBER )
 
 ///Common classes used in all tests
