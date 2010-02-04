@@ -102,10 +102,13 @@ enum windows_error_code
 namespace windows = windows_error;
 # endif
 
+//Template for enableif<> boost mechanism. Find another way...
+/*
 template<> struct is_error_code_enum<windows_error::windows_error_code>
 {
     static const bool value = true;
 };
+*/
 
 namespace windows_error
 {

@@ -35,7 +35,7 @@
 
 #ifdef WK_BUILD
 # include "WkPlatform.h"
-# if defined ( WK_PLATFORM_WIN32 )
+# if defined ( WK_PLATFORM_IS_WIN32 )
 #  define CORE_PLATFORM_WIN32
 # elif defined ( WK_PLATFORM_POSIX )
 #  define CORE_PLATFORM_POSIX
