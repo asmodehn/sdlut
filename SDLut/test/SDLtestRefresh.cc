@@ -271,10 +271,10 @@ int main(int argc, char** argv)
 
 	std::auto_ptr<MyEngine> engine(new MyEngine(800,600));
 
-	App::getInstance().getDisplay().resetInitCallback(&*engine,&MyEngine::init);
-	App::getInstance().getDisplay().resetResizeCallback(&*engine,&MyEngine::resize);
-	App::getInstance().getDisplay().resetNewFrameCallback(&*engine,&MyEngine::newframe);
-	App::getInstance().getDisplay().resetRenderCallback(&*engine,&MyEngine::render);
+	App::getInstance().getDisplay().resetInitCallback(*engine,&MyEngine::init);
+	App::getInstance().getDisplay().resetResizeCallback(*engine,&MyEngine::resize);
+	App::getInstance().getDisplay().resetNewFrameCallback(*engine,&MyEngine::newframe);
+	App::getInstance().getDisplay().resetRenderCallback(*engine,&MyEngine::render);
 
     engine->addSmiley();
     engine->addSmiley();

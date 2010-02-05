@@ -76,9 +76,9 @@ int main(int argc, char** argv)
 		engine.reset(new MyEngine(static_cast<std::string>(argv[1])));
 
 
-	App::getInstance().getDisplay().resetInitCallback(&*engine,&MyEngine::init);
-	App::getInstance().getDisplay().resetResizeCallback(&*engine,&MyEngine::resize);
-	App::getInstance().getDisplay().resetRenderCallback(&*engine,&MyEngine::render);
+	App::getInstance().getDisplay().resetInitCallback(*engine,&MyEngine::init);
+	App::getInstance().getDisplay().resetResizeCallback(*engine,&MyEngine::resize);
+	App::getInstance().getDisplay().resetRenderCallback(*engine,&MyEngine::render);
 
 	//otherwise we use the default engine only.
 	}
