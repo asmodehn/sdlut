@@ -27,34 +27,34 @@ class MyGeneralHandler : public DefaultEventHandler
 			//Callbacks on Window / Display events
             virtual bool handleActiveEvent(bool gain, bool active, bool inputfocus, bool mousefocus)
 			{
-				Log << nl << "Active" ;
+				::Log << nl << "Active" ;
 				return true;
 			}
 
             virtual bool handleResizeEvent(int w, int h)
 			{
 				DefaultEventHandler::handleResizeEvent(w,h);
-        		Log << nl << "Resize";
+        		::Log << nl << "Resize";
 				return true;
 			}
 
             virtual bool handleExposeEvent()
 			{
-				Log << nl << "Expose";
+				::Log << nl << "Expose";
 				return true;
 			}
 
             //callback on platform-dependent windows manager event
             virtual bool handleSysWMEvent(void)
 			{
-        		Log << nl << "System WM";
+        		::Log << nl << "System WM";
 				return true;
 			}
 
             //Callback on other Events
 			virtual bool handleUserEvent(Event::Type type, int code, void* data1, void* data2)
 			{
-        		Log << nl <<"User Event";
+        		::Log << nl <<"User Event";
 				return true;
 			}
 
@@ -62,7 +62,7 @@ class MyGeneralHandler : public DefaultEventHandler
             virtual bool handleQuitEvent(void)
 			{
 				DefaultEventHandler::handleQuitEvent();
-				Log << nl << "Quit";
+				::Log << nl << "Quit";
 				return true;
 			}
 
@@ -70,7 +70,7 @@ class MyGeneralHandler : public DefaultEventHandler
             virtual bool handleEvent(Event & cevent)
 			{
 				//Getting the details of the Event
-				Log << nl << "Last chance handler : " << cevent.getType() << std::endl;
+				::Log << nl << "Last chance handler : " << cevent.getType() << std::endl;
 				return true;
 			}
 
@@ -86,10 +86,10 @@ public:
 	{
 		DefaultKeyboard::handleKeyEvent(s,pressed);
 
-		Log << nl << "SDL Name : "<< getSDLKeyName(s.getKey())
+		::Log << nl << "SDL Name : "<< getSDLKeyName(s.getKey())
 			<< " | Key Name : " << getKeyName(s.getKey());
-		if ( pressed ) Log << " pressed  "; else Log << " released ";
-		Log	<< " | Modifier : " << getModifierName(s.getMod()) ;
+		if ( pressed ) ::Log << " pressed  "; else ::Log << " released ";
+		::Log	<< " | Modifier : " << getModifierName(s.getMod()) ;
 
         return true;
 	}
@@ -108,11 +108,11 @@ public:
 				std::stringstream str;
 				if ( button_pressed )
 				{
-					Log << nl << "Mouse Drag : X=" << x << " Y=" << y << " Xrel=" << xrel << " Yrel=" << yrel;
+					::Log << nl << "Mouse Drag : X=" << x << " Y=" << y << " Xrel=" << xrel << " Yrel=" << yrel;
 				}
 				else
 				{
-					Log << nl <<"Mouse Moved : X=" << x << " Y=" << y << " Xrel=" << xrel << " Yrel=" << yrel ;
+					::Log << nl <<"Mouse Moved : X=" << x << " Y=" << y << " Xrel=" << xrel << " Yrel=" << yrel ;
 				}
 			return true;
 		}
@@ -137,7 +137,7 @@ public:
 					break;
 				}
 
-				Log << nl << but << " X=" << x << "Y=" << y << " pressed? " << pressed;
+				::Log << nl << but << " X=" << x << "Y=" << y << " pressed? " << pressed;
 			return true;
 		}
 

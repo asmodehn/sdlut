@@ -20,6 +20,9 @@
  */
 
 #include "Logger.hh"
+
+#include "SDLConfig.hh"
+
 #include "Math/SDLRect.hh"
 #include "Video/SDLVideoInfo.hh"
 

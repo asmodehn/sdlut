@@ -219,9 +219,9 @@ int main(int argc, char** argv)
     App::getInstance().getDisplay().getEventManager().setKeyboard(&ui);
 
 
-	App::getInstance().getDisplay().resetInitCallback(&*engine,&MyEngine::init);
-	App::getInstance().getDisplay().resetResizeCallback(&*engine,&MyEngine::resize);
-	App::getInstance().getDisplay().resetRenderCallback(&*engine,&MyEngine::render);
+	App::getInstance().getDisplay().resetInitCallback(*engine,&MyEngine::init);
+	App::getInstance().getDisplay().resetResizeCallback(*engine,&MyEngine::resize);
+	App::getInstance().getDisplay().resetRenderCallback(*engine,&MyEngine::render);
 
 
     if (! (App::getInstance().getDisplay().setDisplay(800,600)))

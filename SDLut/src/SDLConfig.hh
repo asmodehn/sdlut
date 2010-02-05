@@ -12,7 +12,8 @@
 //TODO : make our own exception class (with a macro to make launching easier and clear )
 
 //Mandatory
-#include "CMakeConfig.hh"
+#include "WkPlatform.h"
+
 #include <SDL.h>
 //Mandatory because we use RWOps in the wrapper, and we even wrap it
 #include <SDL_rwops.h>
