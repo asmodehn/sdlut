@@ -21,7 +21,8 @@
 
 #include "Logger.hh"
 
-#include "SDLConfig.hh"
+#include "WkPlatform.h"
+//to be able to know which renderers can be used on the platform
 
 #include "Math/SDLRect.hh"
 #include "Video/SDLVideoInfo.hh"
