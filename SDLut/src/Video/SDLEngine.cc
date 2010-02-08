@@ -11,7 +11,7 @@ namespace SDL
 {
 
 //loading the default RGBSurface from the Resources as logo
-SDLEngine::SDLEngine() : _logo(0)
+SDLEngine::SDLEngine() : m_logo(0)
 {
     SurfaceLoader loader;
 #ifdef WK_OPENGL_FOUND
@@ -20,7 +20,7 @@ SDLEngine::SDLEngine() : _logo(0)
     try
     {
         RWOps _iconres( _defaultImage,sizeof(_defaultImage) );
-        _logo = loader.load( _iconres );
+        m_logo = loader.load( _iconres );
     }
     catch (std::exception &)
     {
@@ -33,8 +33,16 @@ SDLEngine::SDLEngine() : _logo(0)
 //this render function should not modify the engine
 bool SDLEngine::render(VideoSurface & screen) const
 {
-    Rect dest( screen.getWidth() - _logo->getWidth(), screen.getHeight() - _logo->getHeight(), _logo->getWidth(), _logo->getHeight());
-    bool res = screen.blit(*_logo,dest);
+    Rect dest( screen.getWidth() - m_logo->getWidth(), screen.getHeight() - m_logo->getHeight(), m_logo->getWidth(), m_logo->getHeight());
+    bool res = screen.blit(*m_logo,dest);
+
+    //if OpenGL renderer
+    if ( m_logo->getRenderer() == OpenGL )
+    {
+        m_glLogo.render(screen);
+    }
+
+
     res = res && screen.update(dest);
     //Maybe the refresh strategy should be implemented under -> in Video Surface ??
     return res;
@@ -43,6 +51,13 @@ bool SDLEngine::render(VideoSurface & screen) const
 //to initialise the engine, just called once before any render
 bool SDLEngine::init(int width, int height)
 {
+    //if OpenGLrenderer
+    if (m_logo->getRenderer() == OpenGL )
+{
+    //set size of rendered gllogo equals to sdllogo
+    m_glLogo.init(m_logo->getWidth(), m_logo->getHeight());
+}
+
     return true;
 }
 
@@ -55,6 +70,7 @@ bool SDLEngine::resize(int width, int height)
 SDLEngine::~SDLEngine()
 {
 }
+
 }
 }
 

@@ -342,6 +342,7 @@ bool ScreenBuffer::renderpass( unsigned long framerate, unsigned long& lastframe
 {
     //calling our engine render function ( on top of user render )
     //TODO : add a timer to display logos if not demo release...
+
     m_engine.render(*m_screen);
 
     //TODO : we can here compute what part of the screen should be refreshed...

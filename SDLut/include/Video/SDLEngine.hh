@@ -8,20 +8,25 @@
 #include "SDLRGBSurface.hh"
 #include "SDLGLSurface.hh"
 #include "SDLVideoSurface.hh"
+#include "OGLLogo.hh"
 
 namespace RAGE
 {
 namespace SDL
 {
+
+
 // Default 2D Engine ( only used if no engine is defined )
 class SDLEngine
 {
 protected:
     //will be initialized in init
     //might be better in a constructor actually...
-    std::auto_ptr<RGBSurface> _logo;
+    std::auto_ptr<RGBSurface> m_logo;
 
-    //TODO : change to RGBSurface, used as reference where needed.
+    //OpenGL logo
+    OGLLogo m_glLogo;
+
 
 public:
 
