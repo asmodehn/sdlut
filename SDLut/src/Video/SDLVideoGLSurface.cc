@@ -21,7 +21,7 @@ try
 #endif
 
     //Setting up the GL Viewport
-    glViewport(0,0,getWidth(),getHeight());
+    glViewport(0,0,(GLsizei)getWidth(),(GLsizei)getHeight());
 
     if (!initialized())
     {
@@ -171,7 +171,7 @@ bool VideoGLSurface::resize(int width, int height, bool keepcontent)
         _surf=newSurf;
 
     //Setting up the GL Viewport
-    glViewport(0,0,getWidth(),getHeight());
+    glViewport(0,0,(GLsizei)getWidth(),(GLsizei)getHeight());
 
 
 #ifdef DEBUG

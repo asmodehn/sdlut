@@ -96,28 +96,24 @@ bool OGLLogo::init()
 
 bool OGLLogo::render(VideoSurface & screen) const
     {
-        //TODO : need to manage multiple viewports
-        //glViewport(screen.getWidth()- 2 * Logo::m_render_width, screen.getHeight() - 2* Logo::m_render_height, Logo::m_render_width, Logo::m_render_height);
 
-		//Switchig to 3D display
+        //glDisable( GL_DEPTH_TEST ) ;
+
+        //Switchig to 3D display
 		glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix
 		glLoadIdentity();         // Reset The Projection Matrix
 
-		//equivalent to gluPerspective
-		GLdouble znear = 0.001f ;
-		GLdouble zfar = 10.0f ;
-		GLdouble ymax = znear * tan(45.0f * M_PI / 360.0);
-		GLdouble ymin = -ymax;
-		GLdouble xmin = ymin * GLfloat(m_render_width) / GLfloat(m_render_width);
-		GLdouble xmax = ymax * GLfloat(m_render_height) / GLfloat(m_render_height);
-		glFrustum(xmin, xmax, ymin, ymax, znear, zfar);
+        /*orthonormal projection*/
+        //better: already the default
+        glOrtho( 0, screen.getWidth(), screen.getHeight(), 0, 0, 1 );
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
 		//putting the logo in the right place in the displayed scene...
-		glTranslatef(0.0f,0.0f,-1.0f);
+		glTranslatef(screen.getWidth()-m_render_width * 1.5f,screen.getHeight()-m_render_height * .5f ,0.5f);
 		static float rot = 0.0f;
+		glScalef(100.0f,100.0f,100.0f);
 		glRotatef(--rot,.3f,.0f,.0f);
 
 	GLfloat glfLightAmbient[] = { 0.1f, 0.1f, 0.1f};
