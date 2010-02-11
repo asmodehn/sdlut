@@ -20,6 +20,9 @@ try
     Log << nl << "VideoGLSurface::VideoGLSurface() called ...";
 #endif
 
+    //Setting up the GL Viewport
+    glViewport(0,0,getWidth(),getHeight());
+
     if (!initialized())
     {
         Log << nl <<"Unable to set " << width << " x " << height << " GL display surface : ";
@@ -166,6 +169,10 @@ bool VideoGLSurface::resize(int width, int height, bool keepcontent)
             SDL_FreeSurface(oldSurf.get());
         }
         _surf=newSurf;
+
+    //Setting up the GL Viewport
+    glViewport(0,0,getWidth(),getHeight());
+
 
 #ifdef DEBUG
         Log << nl << "VideoGLSurface::resize(" << width << ", " << height << ") succeeded.";

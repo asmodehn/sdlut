@@ -5,14 +5,14 @@
  * Class implementing an OpenGL Logo
  ******************************************************************************/
 
-#include "SDLVideoSurface.hh"
+#include "Logo.hh"
 
 namespace RAGE
 {
 namespace SDL
 {
 
-class OGLLogo
+class OGLLogo : public Logo
 {
 
 #ifdef WK_OPENGL_FOUND
@@ -46,14 +46,11 @@ void setMaterial(int mode,float *f,float alpha) const;
 
 public:
 
-	OGLLogo()
-	{}
+	OGLLogo();
+    virtual ~OGLLogo(){};
 
-    virtual ~OGLLogo(){}
 
-bool init(int width, int height);
-bool resize(int width, int height);
-bool newframe(unsigned long framerate, unsigned long elapsedticks );
+bool init();
 bool render(VideoSurface & screen) const;
 
 

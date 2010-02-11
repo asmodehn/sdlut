@@ -283,7 +283,7 @@ bool ScreenBuffer::show()
             m_screen.reset(new VideoSurface(m_width, m_height, m_bpp));
         }
         //initializing engine
-        m_engine.init(m_width, m_height);
+        m_engine.reset(new SDLEngine());
 
         requestFullRefresh();
         res=true;
@@ -318,10 +318,11 @@ bool ScreenBuffer::resize (int width, int height)
     {
         res = res && m_screen->resize(width,height);//doesnt keep content
 
-        //calling our engine resize method
-        res = res && m_engine.resize(width,height);
+        //resetting our Engine. Useful if OpenGL dependent : need to reload the new created context
+        //resizing engine doesnt make much sense though.
+        m_engine.reset(new SDLEngine());
 
-        //this order otherwise we lose opengl context from the engine just after the resize ( reinit )
+        //We do need to resetthis order otherwise we lose opengl context from the engine just after the resize ( reinit )
         //because screen resize recreates the window, and lose opengl context as documented in SDL docs...
     }
     else
@@ -343,7 +344,7 @@ bool ScreenBuffer::renderpass( unsigned long framerate, unsigned long& lastframe
     //calling our engine render function ( on top of user render )
     //TODO : add a timer to display logos if not demo release...
 
-    m_engine.render(*m_screen);
+    m_engine->render(*m_screen);
 
     //TODO : we can here compute what part of the screen should be refreshed...
     //for the user render callback, we can ask/expect a refresh zone in return...

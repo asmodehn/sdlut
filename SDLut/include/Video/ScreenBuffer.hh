@@ -61,7 +61,7 @@ protected:
 #endif // WK_OPENGL_FOUND
     RGBAColor m_background;
 
-    SDLEngine m_engine; // for now only one engine... later multiple engines will be possible
+    std::auto_ptr<SDLEngine> m_engine; // for now only one engine... later multiple engines will be possible
 
 public:
     ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error);

@@ -11,52 +11,30 @@ namespace SDL
 {
 
 //loading the default RGBSurface from the Resources as logo
-SDLEngine::SDLEngine() : m_logo(0)
+SDLEngine::SDLEngine() : m_Logo(), m_glLogo()
 {
-    SurfaceLoader loader;
-#ifdef WK_OPENGL_FOUND
-    loader.resetOpengl(true);
-#endif
-    try
-    {
-        RWOps _iconres( _defaultImage,sizeof(_defaultImage) );
-        m_logo = loader.load( _iconres );
-    }
-    catch (std::exception &)
-    {
-        Log << nl << " ERROR : Unable to load Default Logo ! ";
-        //shouldnt happen. therefore no rethrow. ( assumed RAII )
-        //if this occurs, behavior is totally unknown...
-    }
 }
 
 //this render function should not modify the engine
 bool SDLEngine::render(VideoSurface & screen) const
 {
-    Rect dest( screen.getWidth() - m_logo->getWidth(), screen.getHeight() - m_logo->getHeight(), m_logo->getWidth(), m_logo->getHeight());
-    bool res = screen.blit(*m_logo,dest);
+    bool res = false;
+    res = m_Logo.render(screen);
 
     //if OpenGL renderer
-    if ( m_logo->getRenderer() == OpenGL )
+    if ( screen.getRenderer() == OpenGL )
     {
-        m_glLogo.render(screen);
+        res = res && m_glLogo.render(screen);
     }
 
-
-    res = res && screen.update(dest);
-    //Maybe the refresh strategy should be implemented under -> in Video Surface ??
     return res;
 }
 
+/*
 //to initialise the engine, just called once before any render
 bool SDLEngine::init(int width, int height)
 {
-    //if OpenGLrenderer
-    if (m_logo->getRenderer() == OpenGL )
-{
-    //set size of rendered gllogo equals to sdllogo
-    m_glLogo.init(m_logo->getWidth(), m_logo->getHeight());
-}
+    //m_glLogo.init();
 
     return true;
 }
@@ -66,10 +44,12 @@ bool SDLEngine::resize(int width, int height)
 {
     return true;
 }
-
+*/
 SDLEngine::~SDLEngine()
 {
 }
+
+
 
 }
 }

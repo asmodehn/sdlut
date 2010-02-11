@@ -26,11 +26,10 @@ void OGLLogo::setMaterial(int mode,float *f,float alpha) const
  glMaterialfv (GL_FRONT_AND_BACK,(GLenum)mode,d);
 }
 
-	bool OGLLogo::init(int width, int height)
-	{
+    OGLLogo::OGLLogo()
+    {
 
 	  //generate object list
-
 	 _glLogoList=glGenLists(1);
 	   glNewList(_glLogoList, GL_COMPILE);
 
@@ -58,32 +57,48 @@ void OGLLogo::setMaterial(int mode,float *f,float alpha) const
 
 	   glEndList();
 
-
-	   //setup render zone in frame buffer
-
-
-	   return true;
-
 	}
 
-	bool OGLLogo::resize(int width, int height)
-	{
-
-	   //setup render zone in frame buffer
-
-
-		return true;
-
-	}
-
-	bool OGLLogo::newframe(unsigned long framerate, unsigned long elapsedticks )
-	{
-		//TODO : keep the rotation speed constant even if the framerate drops...
-		return true;
-	}
-
-	bool OGLLogo::render(VideoSurface & screen) const
+bool OGLLogo::init()
     {
+/*
+	  //generate object list
+	 _glLogoList=glGenLists(1);
+	   glNewList(_glLogoList, GL_COMPILE);
+
+	  // Logo Material
+	  GLfloat alpha=material.alpha;
+	  setMaterial (GL_AMBIENT, material.ambient,alpha);
+	  setMaterial (GL_DIFFUSE, material.diffuse,alpha);
+	  setMaterial (GL_SPECULAR, material.specular,alpha);
+	  setMaterial (GL_EMISSION, material.emission,alpha);
+	  glMaterialf (GL_FRONT_AND_BACK,GL_SHININESS,material.phExp);
+
+	  // Logo Faces
+		glBegin (GL_TRIANGLES);
+		for(int i=0;i< (int) (sizeof(face_indices)/sizeof(face_indices[0]));i++)
+		   {
+		   for(int j=0;j<3;j++)
+			{
+			  int vi=face_indices[i][j];
+			  int ni=face_indices[i][j+3];//Normal index
+			   glNormal3f (normals[ni][0],normals[ni][1],normals[ni][2]);
+			   glVertex3f (vertices[vi][0],vertices[vi][1],vertices[vi][2]);
+			}
+		   }
+		glEnd ();
+
+	   glEndList();
+	   */
+    return true;
+
+    }
+
+bool OGLLogo::render(VideoSurface & screen) const
+    {
+        //TODO : need to manage multiple viewports
+        //glViewport(screen.getWidth()- 2 * Logo::m_render_width, screen.getHeight() - 2* Logo::m_render_height, Logo::m_render_width, Logo::m_render_height);
+
 		//Switchig to 3D display
 		glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix
 		glLoadIdentity();         // Reset The Projection Matrix
@@ -93,8 +108,8 @@ void OGLLogo::setMaterial(int mode,float *f,float alpha) const
 		GLdouble zfar = 10.0f ;
 		GLdouble ymax = znear * tan(45.0f * M_PI / 360.0);
 		GLdouble ymin = -ymax;
-		GLdouble xmin = ymin * GLfloat(screen.getWidth()) / GLfloat(screen.getHeight());
-		GLdouble xmax = ymax * GLfloat(screen.getWidth()) / GLfloat(screen.getHeight());
+		GLdouble xmin = ymin * GLfloat(m_render_width) / GLfloat(m_render_width);
+		GLdouble xmax = ymax * GLfloat(m_render_height) / GLfloat(m_render_height);
 		glFrustum(xmin, xmax, ymin, ymax, znear, zfar);
 
 		glMatrixMode(GL_MODELVIEW);
@@ -131,6 +146,7 @@ void OGLLogo::setMaterial(int mode,float *f,float alpha) const
 
 		glDisable (GL_DEPTH_TEST);
 		glDisable (GL_LIGHTING);
+
 
         return true;
 
