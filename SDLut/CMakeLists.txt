@@ -20,6 +20,7 @@ WkTestBuild ( SDLtestColor )
 WkTestRun   ( SDLtestColor )
 
 WkTestBuild (SDLtestRefresh)
+WkTestData  (SDLtestRefresh smiley.bmp)
 WkTestRun   (SDLtestRefresh)
 
 WkTestBuild ( SDLtestApp )
