@@ -179,7 +179,7 @@ int main(int argc, char** argv)
     Logger testlog("Test Log");
 
     //Starting with usual SDL window
-    App::getInstance().initVideo(false,true,false,false);
+    App::getInstance().initVideo(false,true,true,false);
     App::getInstance().setName ("RAGE::SDL test - OpenGL");
 
     //Getting video informations
