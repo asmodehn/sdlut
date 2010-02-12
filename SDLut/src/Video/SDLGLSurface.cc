@@ -152,6 +152,12 @@ void GLSurface::computeGLWidthHeight()
 
 void GLSurface::convertPixels()
 {
+    //Todo : We need to here convert the surface to proper BPP to match video surface
+    //or OpenGL will not display it
+    RGBSurface::convertToDisplayFormat();
+    //but we re not completely ready yet
+    optimised = false;
+
     if ( texturePixels != NULL ) delete texturePixels, texturePixels=NULL;
     texturePixels = new unsigned int[ textureWidth * textureHeight ];
     RGBAColor c;
