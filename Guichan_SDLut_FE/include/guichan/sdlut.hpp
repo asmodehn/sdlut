@@ -16,6 +16,8 @@
 #include "guichan/sdlut/sdlutinput.hpp"
 #include "guichan/sdlut/sdlutfont.hpp"
 
+#include "guichan/widgets/widget_ImageSlider.hh"
+
 #include "guichan/platform.hpp"
 
 #endif
