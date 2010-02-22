@@ -122,7 +122,7 @@ try :
 #endif
 
     const std::string errstr = "SDL_ConvertSurface";
-    bool surfok = set_SDL_Surface(SDL_ConvertSurface(s._surf.get(),const_cast<SDL_PixelFormat *>(pfmt._pformat),flags)); //SDL shouldnt modify the pixel format at all
+    bool surfok = set_SDL_Surface(SDL_ConvertSurface(s._surf.get(),const_cast<SDL_PixelFormat *>(pfmt.ptm_sdl_pformat),flags)); //SDL shouldnt modify the pixel format at all
     if (! surfok)
     {
         Log << nl << "Unable to copy the RGBsurface" ;
@@ -191,7 +191,7 @@ PixelFormat BaseSurface::getPixelFormat(void) const
     return PixelFormat(_surf->format);
 }
 
-RGBAColor BaseSurface::getpixel(int x, int y)
+Color BaseSurface::getpixel(int x, int y)
 {
     lock();
     /* Here p is the address to the pixel we want to retrieve */
@@ -228,16 +228,16 @@ RGBAColor BaseSurface::getpixel(int x, int y)
         break;
     }
     unlock();
-    return getPixelFormat().getRGBAValue(pixel);
+    return getPixelFormat().getColorFromValue(pixel);
 }
 
-void BaseSurface::setpixel(int x, int y, RGBAColor pixelcolor)
+void BaseSurface::setpixel(int x, int y, Color pixelcolor)
 {
     lock();
     /* Here p is the address to the pixel we want to set */
     Uint8 *p = (Uint8 *)_surf->pixels + y * _surf->pitch + x * _surf->format->BytesPerPixel;
     int alpha= pixelcolor.getA();
-    PixelColor pixel = getPixelFormat().getValueFromRGBA(pixelcolor);
+    PixelColor pixel = getPixelFormat().getValueFromColor(pixelcolor);
     if ( alpha == 255 )
     {
         switch (_surf->format->BytesPerPixel)
@@ -284,7 +284,7 @@ void BaseSurface::setpixel(int x, int y, RGBAColor pixelcolor)
     else //If We Want To Set A Pixel With Alpha !
     {
         unsigned int r, g, b;
-        RGBAColor color;
+        Color color;
         switch (_surf->format->BytesPerPixel)
         {
         case 1:
@@ -300,7 +300,7 @@ void BaseSurface::setpixel(int x, int y, RGBAColor pixelcolor)
             break;
 
         case 3:
-            color = ((PixelFormat*)(_surf->format))->getRGBValue(pixel);
+            color = ((PixelFormat*)(_surf->format))->getColorFromValue(pixel);
 #if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
             r = (p[0] * (256 - alpha) + color.getR() * alpha) >> 8;
             g = (p[1] * (256 - alpha) + color.getG() * alpha) >> 8;
@@ -353,9 +353,9 @@ bool BaseSurface::saveBMP(std::string filename) const
 }
 
 //Fill
-bool BaseSurface::fill (const RGBAColor& color)
+bool BaseSurface::fill (const Color& color)
 {
-    return fill(getPixelFormat().getValueFromRGBA(color));
+    return fill(getPixelFormat().getValueFromColor(color));
 }
 
 bool BaseSurface::fill (const PixelColor& color)
@@ -364,9 +364,9 @@ bool BaseSurface::fill (const PixelColor& color)
     return fill( color, dest_rect );
 }
 
-bool BaseSurface::fill (const RGBAColor& color, Rect dest_rect)
+bool BaseSurface::fill (const Color& color, Rect dest_rect)
 {
-    return fill(getPixelFormat().getValueFromRGBA(color), dest_rect);
+    return fill(getPixelFormat().getValueFromColor(color), dest_rect);
 }
 
 

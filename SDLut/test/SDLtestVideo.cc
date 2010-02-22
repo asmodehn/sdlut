@@ -16,7 +16,7 @@ public:
 	MyEngine( const std::string & imagefilename) : imagepos()
 	{
 		ImageLoader loader;
-		loadedimage = loader.load(imagefilename,RGBAColor(0,0,0,255));
+		loadedimage = loader.load(imagefilename,Color(0,0,0,255));
 	}
 
     virtual ~MyEngine(){}
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
 
 	App::getInstance().setName ("RAGE::SDL test - Video");
 
-    App::getInstance().getDisplay().setBGColor(RGBAColor (128,0,0));
+    App::getInstance().getDisplay().setBGColor(Color (128,0,0));
 
 
 	//if argument we load the image in the test engine

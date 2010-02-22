@@ -107,7 +107,7 @@ std::auto_ptr<RGBSurface> SurfaceLoader::load(std::string filename , bool no_fai
 }
 
 
-std::auto_ptr<RGBSurface> SurfaceLoader::load(std::string filename, const RGBAColor & colorKey, bool no_failure ) throw ( std::logic_error)
+std::auto_ptr<RGBSurface> SurfaceLoader::load(std::string filename, const Color & colorKey, bool no_failure ) throw ( std::logic_error)
 {
     std::auto_ptr<RGBSurface> surf;
     try
@@ -185,7 +185,7 @@ std::auto_ptr<RGBSurface> SurfaceLoader::load(RWOps & rwops) throw(std::logic_er
 std::auto_ptr<RGBSurface> SurfaceLoader::copyconvert(const RGBSurface & s, const PixelFormat & pfmt, bool no_failure ) throw (std::logic_error)
 {
     std::auto_ptr<RGBSurface> surf;
-    SDL_Surface * cvtsurf = SDL_ConvertSurface(const_cast<SDL_Surface *>(s.get_pSDL()),const_cast<SDL_PixelFormat *>( pfmt._pformat ),RGBFlags);
+    SDL_Surface * cvtsurf = SDL_ConvertSurface(const_cast<SDL_Surface *>(s.get_pSDL()),const_cast<SDL_PixelFormat *>( pfmt.ptm_sdl_pformat ),RGBFlags);
 
     if ( cvtsurf == NULL) // convert error
     {

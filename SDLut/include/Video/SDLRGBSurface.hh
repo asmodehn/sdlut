@@ -78,7 +78,7 @@ public :
     //Destructor
     virtual ~RGBSurface() {}
 
-    bool setColorKeyAndAlpha(const RGBAColor &, bool rleAccel = true);
+    bool setColorKeyAndAlpha(const Color &, bool rleAccel = true);
 
 
     //Use Standard Colors here
@@ -94,7 +94,7 @@ public :
     bool isSRCColorKeyset(void);
     bool isSRCAlphaset(void);
 
-    RGBAColor getColorKey();
+    Color getColorKey();
 
     bool isOptimised()
     {

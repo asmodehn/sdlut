@@ -57,7 +57,7 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename , bool no_failure ) 
 }
 
 
-std::auto_ptr<Image> ImageLoader::load(std::string filename, const RGBAColor & colorKey, bool no_failure ) throw ( std::logic_error)
+std::auto_ptr<Image> ImageLoader::load(std::string filename, const Color & colorKey, bool no_failure ) throw ( std::logic_error)
 {
     std::auto_ptr<Image> img(new Image(surfloader.load(filename, colorKey, no_failure)));
     return img;

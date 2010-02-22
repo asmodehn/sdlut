@@ -41,7 +41,7 @@ public :
     }
     //Rendering
     //bgc is used only if mode == shaded. Otherwise it s transparent
-    virtual std::auto_ptr<RGBSurface> render(const std::string & text,RGBAColor c, RGBAColor bgc = RGBAColor(), Font::RenderMode mode = Font::Solid ) const;
+    virtual std::auto_ptr<RGBSurface> render(const std::string & text,Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid ) const;
 
 };
 }

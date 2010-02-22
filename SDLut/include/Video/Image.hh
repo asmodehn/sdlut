@@ -54,12 +54,12 @@ public:
 
     bool resize(int width, int height, bool keepcontent = false);
 
-    bool fill (const RGBAColor& color)
+    bool fill (const Color& color)
     {
         Rect dest_rect(getWidth(), getHeight());
         return fill( color, dest_rect );
     }
-    bool fill (const RGBAColor& color, const Rect& dest_rect);
+    bool fill (const Color& color, const Rect& dest_rect);
 
 
     //Blit src surface on this surface
@@ -92,12 +92,12 @@ public:
         return m_img->getWidth();
     }
 
-    RGBAColor getpixel(int x, int y)
+    Color getpixel(int x, int y)
     {
         return m_img->getpixel(x, y);
     }
 
-    void setpixel(int x, int y, const RGBAColor & pixel)
+    void setpixel(int x, int y, const Color & pixel)
     {
         return m_img->setpixel(x, y, pixel);
     }

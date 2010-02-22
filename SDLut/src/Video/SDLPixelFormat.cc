@@ -6,88 +6,88 @@ namespace RAGE
 namespace SDL
 {
 
-PixelFormat::PixelFormat(const SDL_PixelFormat* pf) : _pformat(pf)
+PixelFormat::PixelFormat(const SDL_PixelFormat* pf) : ptm_sdl_pformat(pf)
 {
     pointerCopy = true;
 }
 
 PixelFormat::~PixelFormat(void)
 {
-    if (!pointerCopy) delete _pformat;
+    if (!pointerCopy) delete ptm_sdl_pformat;
 }
 
 int PixelFormat::getBitsPerPixel() const
 {
-    return _pformat->BitsPerPixel;
+    return ptm_sdl_pformat->BitsPerPixel;
 }
 int PixelFormat::getBytesPerPixel() const
 {
-    return _pformat->BytesPerPixel;
+    return ptm_sdl_pformat->BytesPerPixel;
 }
 int PixelFormat::getRshift() const
 {
-    return _pformat->Rshift;
+    return ptm_sdl_pformat->Rshift;
 }
 int PixelFormat::getGshift() const
 {
-    return _pformat->Gshift;
+    return ptm_sdl_pformat->Gshift;
 }
 int PixelFormat::getBshift() const
 {
-    return _pformat->Bshift;
+    return ptm_sdl_pformat->Bshift;
 }
 int PixelFormat::getAshift() const
 {
-    return _pformat->Ashift;
+    return ptm_sdl_pformat->Ashift;
 }
 
 int PixelFormat::getRloss() const
 {
-    return _pformat->Rloss;
+    return ptm_sdl_pformat->Rloss;
 }
 int PixelFormat::getGloss() const
 {
-    return _pformat->Gloss;
+    return ptm_sdl_pformat->Gloss;
 }
 int PixelFormat::getBloss() const
 {
-    return _pformat->Bloss;
+    return ptm_sdl_pformat->Bloss;
 }
 int PixelFormat::getAloss() const
 {
-    return _pformat->Aloss;
+    return ptm_sdl_pformat->Aloss;
 }
 
 //BEWARE ! sometimes this has no sense, because only the palette is set...
 //TODO : Handle this...
 unsigned long PixelFormat::getRmask() const
 {
-    return _pformat->Rmask;
+    return ptm_sdl_pformat->Rmask;
 }
 unsigned long PixelFormat::getGmask() const
 {
-    return _pformat->Gmask;
+    return ptm_sdl_pformat->Gmask;
 }
 unsigned long PixelFormat::getBmask() const
 {
-    return _pformat->Bmask;
+    return ptm_sdl_pformat->Bmask;
 }
 unsigned long PixelFormat::getAmask() const
 {
-    return _pformat->Amask;
+    return ptm_sdl_pformat->Amask;
 }
 
 PixelColor PixelFormat::getColorKey() const
 {
-    return _pformat->colorkey;
+    return ptm_sdl_pformat->colorkey;
 }
 int PixelFormat::getAlpha() const
 {
-    return _pformat->alpha;
+    return ptm_sdl_pformat->alpha;
 }
 Palette PixelFormat::getPalette() const
 {
-    return Palette(_pformat->palette);
+    return Palette(ptm_sdl_pformat->palette);
 }
 
 
@@ -116,36 +116,24 @@ Logger & operator << (Logger & log, const PixelFormat & pformat)
     return log;
 }
 
-PixelColor PixelFormat::getValueFromRGB(const RGBAColor& val) const
+
+PixelColor PixelFormat::getValueFromColor(const Color& color) const
 {
-
-    //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
-    return SDL_MapRGB(const_cast<SDL_PixelFormat*>(_pformat), val.getR(), val.getG(), val.getB());
-
+    if ( ! color.hasAlpha() )
+    {
+        return SDL_MapRGB(const_cast<SDL_PixelFormat*>(ptm_sdl_pformat), color.getR(), color.getG(), color.getB());
+    }
+    return SDL_MapRGBA(const_cast<SDL_PixelFormat*>(ptm_sdl_pformat),color.getR(),color.getG(),color.getB(), color.getA());
 }
 
-PixelColor PixelFormat::getValueFromRGBA(const RGBAColor& val) const
-{
-    //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
-    return SDL_MapRGBA(const_cast<SDL_PixelFormat*>(_pformat), val.getR(), val.getG(), val.getB(), val.getA());
-}
-
-RGBAColor PixelFormat::getRGBValue(const PixelColor& color) const
-{
-    Uint8 r, g, b;
-    //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
-    SDL_GetRGB(color, const_cast<SDL_PixelFormat*>(_pformat), &r, &g, &b);
-    return RGBAColor(r, g, b);
-}
-
-RGBAColor PixelFormat::getRGBAValue(const PixelColor& color) const
+Color PixelFormat::getColorFromValue(const PixelColor& val) const
 {
 
     Uint8 r, g, b, a;
     //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
-    SDL_GetRGBA(color, const_cast<SDL_PixelFormat*>(_pformat), &r, &g, &b, &a);
+    SDL_GetRGBA(val, const_cast<SDL_PixelFormat*>(ptm_sdl_pformat), &r, &g, &b, &a);
     //BUG here : seems to ignore alpha ? ( found with SDLTestColor )
-    return RGBAColor(r, g, b, a);
+    return Color(r, g, b, a);
 }
 
 }

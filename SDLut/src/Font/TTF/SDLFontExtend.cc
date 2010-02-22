@@ -54,7 +54,7 @@ FontExtend::~FontExtend()
     TTF_CloseFont(_ttfstruct);
 }
 
-std::auto_ptr<RGBSurface> FontExtend::render(const std::string& text, RGBAColor c, RGBAColor bgc, Font::RenderMode mode) const
+std::auto_ptr<RGBSurface> FontExtend::render(const std::string& text, Color c, Color bgc, Font::RenderMode mode) const
 {
     std::auto_ptr<SDL_Surface> surf;
     switch ( mode )

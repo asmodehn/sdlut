@@ -72,7 +72,7 @@ Font::~Font()
 }
 
 
-std::auto_ptr<Image> Font::render(std::string text, RGBAColor c, RenderMode mode, RGBAColor bgc) const
+std::auto_ptr<Image> Font::render(std::string text, Color c, RenderMode mode, Color bgc) const
 {
     std::auto_ptr<Image> textimg( new Image(_font->render(text,c,bgc,mode)) );
 

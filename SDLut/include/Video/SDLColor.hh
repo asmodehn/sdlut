@@ -15,89 +15,21 @@
  ******************************************************************************/
 
 
-/**
- * \class SDLRGBColor
- *
- * \ingroup Video
- *
- * \brief This class wraps SDL_Color (without alpha)
- *
- * \author Alex
- *
- * \date 2005/10/02
- *
- * Contact: asmodehn@gna.org
- *
- */
-
-
 //declaring SDL type for late binding
 struct SDL_Color;
 struct SDL_Palette;
 
-namespace RAGE
-{
-namespace SDL
-{
 
-//to store pixel colors
+namespace RAGE {
+    namespace SDL {
+
+
+//should be 32 bits color. needs to match pixel format...
 typedef unsigned long PixelColor;
 
-//TODO : Color constructor with string ("black", "yellow", "grey", etc. )
-//TODO : Color operator, like + - = etc. (like a vector)
-/* Removing RGBColor. RGBAClor should be used instead.
-class RGBColor
-{
-    friend class SDLPalette;
 
-protected:
-    //the address of the SDL_Color struct should never change
-    SDL_Color * const _color;
-
-public:
-
-    //Because NULL has no sense for function using colors, defaut constructor
-    // just paint it black :)
-    RGBColor(unsigned char r=0, unsigned char g=0, unsigned char b=0);
-    RGBColor(const RGBColor & rgbcolor);
-    RGBColor& operator=( const RGBColor & rgbcolor);
-    virtual ~RGBColor();
-
-    SDL_Color get_SDL() const;
-
-    void setR(unsigned char nr);
-    void setG(unsigned char ng);
-    void setB(unsigned char nb);
-
-    unsigned char getR() const;
-    unsigned char getG() const;
-    unsigned char getB() const;
-    //TMP needed for OpenGL simple color handling
-    // By the way WHY do we have 2 classes for color ??
-    // Investigation needed
-    unsigned char getA() const;
-
-    bool operator==(const RGBColor& color) const;
-    bool operator!=(const RGBColor& color) const;
-
-    inline friend std::ostream& operator << (std::ostream& os, const RGBColor& c)
-    {
-        return os << "RGBColor : R=" << (int)c.getR() << " G=" << (int)c.getG() << " B=" << (int)c.getB() << " ";
-    }
-
-    inline virtual bool hasAlpha() const
-    {
-        return false;
-    }
-
-    //return a pixel color formatted as RGB(A), in that order, always...
-    PixelColor getGLPixelColor() const;
-
-};
-
-*/
 /**
- * \class SDLRGBAColor (alias SDLColor)
+ * \class SDLColor
  *
  * \ingroup Video
  *
@@ -111,23 +43,23 @@ public:
  *
  */
 
-class RGBAColor
+class Color
 {
 
     friend class SDLPalette;
 
 protected:
     //the address of the SDL_Color struct should never change
-    SDL_Color * const _color;
+    SDL_Color * const ptm_sdl_color;
 
 public:
 
     //Because NULL has no sense for function using colors, defaut constructor
     // just paint it black :)
-    RGBAColor(unsigned char r=0, unsigned char g=0, unsigned char b=0, unsigned char a=255);
-    RGBAColor(const RGBAColor & rgbacolor);
-    RGBAColor& operator=( const RGBAColor & rgbacolor );
-    virtual ~RGBAColor();
+    Color(unsigned char r=0, unsigned char g=0, unsigned char b=0, unsigned char a=255);
+    Color(const Color & rgbacolor);
+    Color& operator=( const Color & rgbacolor );
+    virtual ~Color();
 
     SDL_Color get_SDL() const;
 
@@ -144,13 +76,13 @@ public:
     //return a pixel color formatted as RGB(A), in that order, always...
     PixelColor getGLPixelColor() const;
 
-    inline friend std::ostream& operator << (std::ostream& os, const RGBAColor& c)
+    inline friend std::ostream& operator << (std::ostream& os, const Color& c)
     {
         return os << "RGBAColor : R=" << (int)c.getR() << " G=" << (int)c.getG() << " B=" << (int)c.getB() << " A=" << (int)c.getA() << " " ;
     } //not sure how to derivate that properly... TODO
 
-    bool operator==(const RGBAColor& color) const;
-    bool operator!=(const RGBAColor& color) const;
+    bool operator==(const Color& color) const;
+    bool operator!=(const Color& color) const;
 
     inline bool hasAlpha() const
     {
@@ -182,7 +114,7 @@ class Palette
 protected:
     //the adress of the SLD_Palette struct should never change
     //read only_access
-    const SDL_Palette * const _palette;
+    const SDL_Palette * const ptm_sdl_palette;
     // protected to prevent manual creation of palette
     //maybe completely useless...
     // default : one black color
@@ -210,9 +142,11 @@ public:
     ~Palette(void);
 
     int getNColors(void) const;
-    RGBAColor getColors(int index) const;
+    Color getColors(int index) const;
 
 };
+
+
 }
 }// namespace RAGE::SDL
 #endif

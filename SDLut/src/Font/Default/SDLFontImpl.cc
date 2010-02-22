@@ -64,7 +64,7 @@ FontImpl::~FontImpl()
     //alphalookup.clear();
 }
 
-std::auto_ptr<RGBSurface> FontImpl::render(const std::string & text,RGBAColor c, RGBAColor bgc, Font::RenderMode mode) const
+std::auto_ptr<RGBSurface> FontImpl::render(const std::string & text,Color c, Color bgc, Font::RenderMode mode) const
 {
 
     std::auto_ptr<RGBSurface> result( new GLSurface( getSize(text).getw(), getSize(text).geth(), 16) );

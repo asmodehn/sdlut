@@ -15,16 +15,16 @@ namespace SDL
 VideoInfo::VideoInfo(void) throw (std::logic_error)
 try
 :
-    _info(SDL_GetVideoInfo()),_pformat(NULL)
+    pvm_sdl_vinfo(SDL_GetVideoInfo()),ptm_pformat(NULL)
 {
 #ifdef DEBUG
     Log << nl << "VideoInfo::VideoInfo() called ...";
 #endif
 
-    if (_info==NULL)
+    if (pvm_sdl_vinfo==NULL)
         throw std::logic_error("SDL_GetVideoInfo() return NULL");
     else
-        _pformat = new PixelFormat(_info->vfmt);
+        ptm_pformat = new PixelFormat(pvm_sdl_vinfo->vfmt);
 
 #ifdef DEBUG
 
@@ -40,15 +40,15 @@ catch (std::exception &e)
 }
 
 VideoInfo::VideoInfo( const VideoInfo& vi)
-        : _info(vi._info), _pformat(vi._pformat)
+        : pvm_sdl_vinfo(vi.pvm_sdl_vinfo), ptm_pformat(vi.ptm_pformat)
 {
 
 }
 
 VideoInfo& VideoInfo::operator=(const VideoInfo& vi)
 {
-    delete _pformat, _pformat = NULL;
-    _pformat = vi._pformat;
+    delete ptm_pformat, ptm_pformat = NULL;
+    ptm_pformat = vi.ptm_pformat;
     return *this;
 }
 
@@ -59,7 +59,7 @@ VideoInfo::~VideoInfo()
     Log << nl << "VideoInfo::~VideoInfo() called ...";
 #endif
 
-    delete _pformat, _pformat = NULL;
+    delete ptm_pformat, ptm_pformat = NULL;
     //delete _info; //This is managed by SDL, we cant delete that here
 
 #ifdef DEBUG
@@ -79,79 +79,79 @@ std::string VideoInfo::getDriverName(void) const
 //return true if hardware acceleration is enabled
 bool VideoInfo::isHWAvailable() const
 {
-    return _info->hw_available;
+    return pvm_sdl_vinfo->hw_available;
 }
 
 //return true if a window manager is available
 bool VideoInfo::isWMAvailable() const
 {
-    return _info->wm_available;
+    return pvm_sdl_vinfo->wm_available;
 }
 
 //return true if hardware to hardware blits are accelerated
 bool VideoInfo::isBlitHWAccelAvailable() const
 {
-    return _info->blit_hw;
+    return pvm_sdl_vinfo->blit_hw;
 }
 
 //return true if hardware to hardware colorkey blits are accelerated
-bool VideoInfo::isBlitHWCCAccelAvailable() const
+bool VideoInfo::isBlitHWCKAccelAvailable() const
 {
-    return _info->blit_sw_CC;
+    return pvm_sdl_vinfo->blit_sw_CC;
 }
 
 //return true if hardware to hardware alpha blits are accelerated
 bool VideoInfo::isBlitHWAAccelAvailable() const
 {
-    return _info->blit_sw_A;
+    return pvm_sdl_vinfo->blit_sw_A;
 }
 
 //return true if software to hardware blits are accelerated
 bool VideoInfo::isBlitSWAccelAvailable() const
 {
-    return _info->blit_sw;
+    return pvm_sdl_vinfo->blit_sw;
 }
 
 //return true if software to hardware colorkey blits are accelerated
-bool VideoInfo::isBlitSWCCAccelAvailable() const
+bool VideoInfo::isBlitSWCKAccelAvailable() const
 {
-    return _info->blit_sw_CC;
+    return pvm_sdl_vinfo->blit_sw_CC;
 }
 
 //return true if software to hardware alpha blits are accelerated
 bool VideoInfo::isBlitSWAAccelAvailable() const
 {
-    return _info->blit_sw_A;
+    return pvm_sdl_vinfo->blit_sw_A;
 }
 
 //return true if color fills are accelerated
 bool VideoInfo::isBlitFillAccelAvailable() const
 {
-    return _info->blit_fill;
+    return pvm_sdl_vinfo->blit_fill;
 }
 
 //return the total amount of video memory in kilobytes
 unsigned long VideoInfo::videoMemSize() const
 {
-    return _info->video_mem;
+    return pvm_sdl_vinfo->video_mem;
 }
 
 //return current width of video mode, or of the desktop mode if called before SDL_SetVideoMode
-unsigned int VideoInfo::get_current_width() const
+unsigned int VideoInfo::getCurrentWidth() const
 {
     return SDL_GetVideoInfo()->current_w;
 }
 //return current height of video mode, or of the desktop mode if called before SDL_SetVideoMode
-unsigned int VideoInfo::get_current_height() const
+unsigned int VideoInfo::getCurrentHeight() const
 {
     return SDL_GetVideoInfo()->current_h;
 }
 
 
 //return the SDLPixelFormat for the current video device
-PixelFormat * VideoInfo::getPixelFormat() const
+const PixelFormat & VideoInfo::getPixelFormat() const
 {
-    return _pformat;
+    return *ptm_pformat;
 }
 
 Logger & operator << (Logger & log, const VideoInfo & vinfo)
@@ -162,10 +162,10 @@ Logger & operator << (Logger & log, const VideoInfo & vinfo)
     " - Is it possible to create Hardware Surfaces? " << vinfo.isHWAvailable() << nl <<
     " - Is there a window manager available? " << vinfo.isWMAvailable() << nl <<
     " - Are hardware to hardware blits accelerated? " << vinfo.isBlitHWAccelAvailable() << nl <<
-    " - Are hardware to hardware colorkey blits accelerated? " << vinfo.isBlitHWCCAccelAvailable() << nl <<
+    " - Are hardware to hardware colorkey blits accelerated? " << vinfo.isBlitHWCKAccelAvailable() << nl <<
     " - Are hardware to hardware alpha blits accelerated? " << vinfo.isBlitHWAAccelAvailable() << nl <<
     " - Are software to hardware blits accelerated? " << vinfo.isBlitSWAccelAvailable() << nl <<
-    " - Are software to hardware colorkey blits accelerated? " << vinfo.isBlitSWCCAccelAvailable() << nl <<
+    " - Are software to hardware colorkey blits accelerated? " << vinfo.isBlitSWCKAccelAvailable() << nl <<
     " - Are software to hardware alpha blits accelerated? " << vinfo.isBlitSWAAccelAvailable() << nl <<
     " - Are color fills accelerated? " << vinfo.isBlitFillAccelAvailable() << nl <<
     " - Total amount of video memory in Kilobytes : " << vinfo.videoMemSize() << nl <<

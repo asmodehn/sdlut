@@ -160,7 +160,7 @@ void GLSurface::convertPixels()
 
     if ( texturePixels != NULL ) delete texturePixels, texturePixels=NULL;
     texturePixels = new unsigned int[ textureWidth * textureHeight ];
-    RGBAColor c;
+    Color c;
     for (int y = 0; y < textureHeight; y++)
     {
         for (int x = 0; x < textureWidth; x++)

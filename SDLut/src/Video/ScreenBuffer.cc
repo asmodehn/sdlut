@@ -7,7 +7,7 @@ namespace SDL
 {
 
 ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error)
-        : m_width(width), m_height(height),m_bpp(bpp), fullRefreshNeeded(true), pm_manager(manager), m_background(RGBAColor(0,0,0))
+        : m_width(width), m_height(height),m_bpp(bpp), fullRefreshNeeded(true), pm_manager(manager), m_background(Color(0,0,0))
 {
 
     //setting the static videoInfo to be used by all surfaces...
@@ -59,8 +59,8 @@ void ScreenBuffer::setSize(int width, int height)
     //Both equal to 0 means use dekstop/current mode.
     if (width == 0 && height == 0)
     {
-        width = VideoSurface::getVideoInfo()->get_current_width();
-        height = VideoSurface::getVideoInfo()->get_current_height();
+        width = VideoSurface::getVideoInfo()->getCurrentWidth();
+        height = VideoSurface::getVideoInfo()->getCurrentHeight();
     }
 
     m_width = width;
@@ -413,7 +413,7 @@ Rect ScreenBuffer::getClipRect( void ) const
     return m_screen->getClipRect();
 }
 
-bool ScreenBuffer::fill (const RGBAColor& color, const Rect& dest_rect)
+bool ScreenBuffer::fill (const Color& color, const Rect& dest_rect)
 {
     m_screen.get()->fill(color,dest_rect);
     return true; //todo

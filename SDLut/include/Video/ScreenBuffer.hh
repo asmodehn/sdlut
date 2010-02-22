@@ -59,7 +59,7 @@ protected:
 #ifdef WK_OPENGL_FOUND
     GLManager m_glmanager;
 #endif // WK_OPENGL_FOUND
-    RGBAColor m_background;
+    Color m_background;
 
     std::auto_ptr<SDLEngine> m_engine; // for now only one engine... later multiple engines will be possible
 
@@ -110,11 +110,11 @@ public:
     bool isOpenGL();
     bool isNoFrame();
 
-    void setBGColor(const RGBAColor & color)
+    void setBGColor(const Color & color)
     {
         m_background = color;
     }
-    RGBAColor getBGColor()
+    Color getBGColor()
     {
         return m_background;
     }
@@ -141,12 +141,12 @@ public:
     bool refresh( unsigned long framerate, unsigned long& lastframe);
 
     //pixel drawing function
-    RGBAColor getpixel(int x, int y)
+    Color getpixel(int x, int y)
     {
         return m_screen->getpixel(x, y);
     }
 
-    void setpixel(int x, int y, const RGBAColor & pixel)
+    void setpixel(int x, int y, const Color & pixel)
     {
         return m_screen->setpixel(x, y, pixel);
     }
@@ -156,12 +156,12 @@ public:
     Rect getClipRect( void ) const;
 
     //filling function for screen
-    bool fill (const RGBAColor& color)
+    bool fill (const Color& color)
     {
         Rect dest_rect(getWidth(), getHeight());
         return fill( color, dest_rect );
     }
-    bool fill (const RGBAColor& color, const Rect& dest_rect);
+    bool fill (const Color& color, const Rect& dest_rect);
 
 
     //These functions are same as the ones in Image

@@ -45,9 +45,9 @@ class Window
 
 protected:
 
-    std::string _title, _iconname;
+    std::string ptm_title, ptm_iconname;
 
-    std::auto_ptr<RGBSurface> _icon;
+    std::auto_ptr<RGBSurface> ptm_icon;
 
     Window(std::string title); // TODO :: add the icon here
 

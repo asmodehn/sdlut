@@ -34,16 +34,16 @@ bool Window::isInputGrabbed()
 
 void Window::setCaption(std::string title, std::string iconname)
 {
-    _title=title;
-    _iconname=iconname;
-    SDL_WM_SetCaption(_title.c_str(), _iconname.c_str());
+    ptm_title=title;
+    ptm_iconname=iconname;
+    SDL_WM_SetCaption(ptm_title.c_str(), ptm_iconname.c_str());
     //seticon needed or ?
 }
 
 void Window::setIcon(const RGBSurface & icon)
 {
-    _icon.reset(new RGBSurface( icon ) );
-    SDL_WM_SetIcon( const_cast<SDL_Surface*>(&(_icon->get_rSDL())) , NULL);
+    ptm_icon.reset(new RGBSurface( icon ) );
+    SDL_WM_SetIcon( const_cast<SDL_Surface*>(&(ptm_icon->get_rSDL())) , NULL);
 }
 
 //old version
@@ -72,8 +72,8 @@ std::string Window::getIconName() const
 
 
 Window::Window(std::string title)
-        :	_title(title),
-        _icon(0)
+        :	ptm_title(title),
+            ptm_icon(0)
 {
 #ifdef DEBUG
     Log << nl << "Window::Window(" << title << ") called ..." ;
@@ -82,9 +82,9 @@ Window::Window(std::string title)
     try
     {
         SurfaceLoader loader;
-        RWOps _iconres = RWOps( _defaultIcon, sizeof(_defaultIcon));
-        _icon = loader.load( _iconres );
-        if ( ( _icon.get() == 0 ) || ( ! _icon->initialized() ) )
+        RWOps iconres = RWOps( _defaultIcon, sizeof(_defaultIcon));
+        ptm_icon = loader.load( iconres );
+        if ( ( ptm_icon.get() == 0 ) || ( ! ptm_icon->initialized() ) )
         {
             throw std::logic_error("Error initializing default Icon !");
         }
@@ -95,8 +95,8 @@ Window::Window(std::string title)
         Log << nl << e.what() << std::endl;
     }
 
-    setCaption(_title,_title );
-    SDL_WM_SetIcon( const_cast<SDL_Surface*>(&_icon->get_rSDL()) , NULL);
+    setCaption(ptm_title,ptm_title );
+    SDL_WM_SetIcon( const_cast<SDL_Surface*>(&ptm_icon->get_rSDL()) , NULL);
 
 #ifdef DEBUG
 

@@ -25,7 +25,7 @@ class PixelFormat
 protected:
     //read-only access
     //the address of the SDL_PixelFormat struct should never change
-    const SDL_PixelFormat* const _pformat;
+    const SDL_PixelFormat* const ptm_sdl_pformat;
 
 
     //Copy Constructor from SDL_PixelFormat
@@ -43,7 +43,7 @@ public: //necessary if we want to use getPixelFormat() accessor from the BaseSur
     //default Constructor
     //PixelFormat(void) { _pformat= new SDL_PixelFormat; }
     //TODO : To avoid using uninitialized PixelFormat , put default constructor on protected
-    //Really Usefull ??
+    //Really Useful ??
 
 
     int getBitsPerPixel() const;
@@ -73,12 +73,11 @@ public: //necessary if we want to use getPixelFormat() accessor from the BaseSur
     friend Logger & operator << (Logger & ostr, const PixelFormat & pformat);
 
     //methods for Color conversion :
-    PixelColor getValueFromRGB(const RGBAColor& val) const ;
-    PixelColor getValueFromRGBA(const RGBAColor& val) const ;
-    RGBAColor getRGBValue(const PixelColor& color) const ;
-    RGBAColor getRGBAValue(const PixelColor& color) const ;
+    PixelColor getValueFromColor(const Color& color) const ;
+    Color getColorFromValue(const PixelColor& val) const ;
 
 };
+
 }
 } //namespace RAGE::SDL
 

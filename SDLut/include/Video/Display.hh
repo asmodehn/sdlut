@@ -117,7 +117,7 @@ public:
     bool isOpenGL();
     bool isNoFrame();
 
-    void setBGColor(const RGBAColor & color)
+    void setBGColor(const Color & color)
     {
         pvm_screen.setBGColor(color);
     }
@@ -125,7 +125,7 @@ public:
     //fill the VideoSurface with the BGColor
     void applyBGColor() const;
 
-    RGBAColor getBGColor ()
+    Color getBGColor ()
     {
         return pvm_screen.getBGColor();
     }

@@ -112,8 +112,8 @@ public: //useful else we can't access those functions outside of friend class (f
     bool lock(void);
     bool unlock(void);
 
-    virtual RGBAColor getpixel(int x, int y);
-    virtual void setpixel(int x, int y, RGBAColor pixel);
+    virtual Color getpixel(int x, int y);
+    virtual void setpixel(int x, int y, Color pixel);
 
 protected:
     //Default Constructor overload
@@ -215,13 +215,13 @@ public:
     //TODO : the same with other formats
 
     //Fill
-    virtual bool fill (const RGBAColor& color);
+    virtual bool fill (const Color& color);
 
 protected : // Pixel Color should be used only internally, because of its complexity in different formats
     virtual bool fill (const PixelColor& color);
 
 public :
-    virtual bool fill (const RGBAColor& color, Rect dest_rect);
+    virtual bool fill (const Color& color, Rect dest_rect);
 
 protected : // Pixel Color should be used only internally, because of its complexity in different formats
     virtual bool fill (const PixelColor& color, Rect dest_rect);

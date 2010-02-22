@@ -83,7 +83,7 @@ public:
 
     //Rendering
     //The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-    std::auto_ptr<Image> render(std::string text, RGBAColor c, RenderMode mode, RGBAColor bgc = RGBAColor()) const;
+    std::auto_ptr<Image> render(std::string text, Color c, RenderMode mode, Color bgc = Color()) const;
 
 };
 

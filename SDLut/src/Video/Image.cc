@@ -126,7 +126,7 @@ bool Image::resize(int width, int height, bool keepcontent)
 }
 
 
-bool Image::fill (const RGBAColor& color, const Rect& dest_rect)
+bool Image::fill (const Color& color, const Rect& dest_rect)
 {
     return m_img->fill(color,dest_rect);
 }

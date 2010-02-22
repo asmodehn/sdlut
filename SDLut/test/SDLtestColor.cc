@@ -22,13 +22,13 @@ public:
 	bool init(int width, int height)
 	{
 		red = new Image(width/4,height,32);
-		red->fill(RGBAColor(255,0,0));
+		red->fill(Color(255,0,0));
 		green = new Image(width/4,height,32);
-		green->fill(RGBAColor(0,255,0));
+		green->fill(Color(0,255,0));
 		blue = new Image(width/4,height,32);
-		blue->fill(RGBAColor(0,0,255));
+		blue->fill(Color(0,0,255));
 		alpha = new Image(width-red->getWidth()-green->getWidth()-blue->getWidth(),height,32,true);
-		alpha->fill(RGBAColor(255,255,255,0));
+		alpha->fill(Color(255,255,255,0));
 
 		std::cout << "Red Pixel : " << std::hex << red->getpixel(0,0);
 		std::cout << "Green Pixel : " << std::hex << green->getpixel(0,0);
@@ -43,13 +43,13 @@ public:
 	{
 		delete red; delete green; delete blue; delete alpha;
 		red = new Image(width/4,height,32);
-		red->fill(RGBAColor(255,0,0));
+		red->fill(Color(255,0,0));
 		green = new Image(width/4,height,32);
-		green->fill(RGBAColor(0,255,0));
+		green->fill(Color(0,255,0));
 		blue = new Image(width/4,height,32);
-		blue->fill(RGBAColor(0,0,255));
+		blue->fill(Color(0,0,255));
 		alpha = new Image(width-red->getWidth()-green->getWidth()-blue->getWidth(),height,32, true);
-		alpha->fill(RGBAColor(255,255,255,0));
+		alpha->fill(Color(255,255,255,0));
 		return true;
 	}
 
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
     App::getInstance().getDisplay().setDisplay(800,600); // using autodetected bpp
 
 	//Purple background color (useful to test alpha / color key)
-	App::getInstance().getDisplay().setBGColor(RGBAColor (255,0,255));
+	App::getInstance().getDisplay().setBGColor(Color (255,0,255));
 
     //Getting video informations
     //std::cout << App::getInstance().getDisplay().getScreenBuffer().getVideoInfo() << std::endl;

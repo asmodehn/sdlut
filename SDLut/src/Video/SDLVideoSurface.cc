@@ -43,12 +43,12 @@ VideoSurface::~VideoSurface()
 {}
 
 
-bool VideoSurface::checkAvailableSize( const PixelFormat * fmt )
+bool VideoSurface::checkAvailableSize( const PixelFormat & fmt )
 {
     SDL_Rect ** modes;
     bool res;
     //we copy the pixelformat (because of const behaviour...)
-    SDL_PixelFormat* test_fmt= new SDL_PixelFormat( *(fmt->_pformat));
+    SDL_PixelFormat* test_fmt= new SDL_PixelFormat( *(fmt.ptm_sdl_pformat));
 
     modes=SDL_ListModes(test_fmt, _defaultflags);
     if (modes == (SDL_Rect **)0)
@@ -102,10 +102,9 @@ int VideoSurface::getSuggestedBPP(int width, int height)
 #ifdef DEBUG
     Log << nl << "VideoSurface::getSuggestedBPP(" << width << ", " << height << ") called...";
     assert( getVideoInfo()); //to make sure the auto_ptr is not 0
-    assert( getVideoInfo()->getPixelFormat());
 #endif
 
-    int res = SDL_VideoModeOK(width,height,getVideoInfo()->getPixelFormat()->getBitsPerPixel(),_defaultflags);
+    int res = SDL_VideoModeOK(width,height,getVideoInfo()->getPixelFormat().getBitsPerPixel(),_defaultflags);
 
 #ifdef DEBUG
 
@@ -230,12 +229,12 @@ bool VideoSurface::resize(int width, int height, bool keepcontent)
 }
 
 
-RGBAColor VideoSurface::getpixel(int x, int y)
+Color VideoSurface::getpixel(int x, int y)
 {
     return BaseSurface::getpixel(x, y);
 }
 
-void VideoSurface::setpixel(int x, int y, RGBAColor pixel)
+void VideoSurface::setpixel(int x, int y, Color pixel)
 {
     return BaseSurface::setpixel( x, y, pixel );
 }
@@ -261,9 +260,9 @@ bool VideoSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect)
 
 
 //Fill
-bool VideoSurface::fill (const RGBAColor& color)
+bool VideoSurface::fill (const Color& color)
 {
-    return fill(getPixelFormat().getValueFromRGBA(color));
+    return fill(getPixelFormat().getValueFromColor(color));
 }
 
 bool VideoSurface::fill (const PixelColor& color)
@@ -272,9 +271,9 @@ bool VideoSurface::fill (const PixelColor& color)
     return fill( color, dest_rect );
 }
 
-bool VideoSurface::fill (const RGBAColor& color, Rect dest_rect)
+bool VideoSurface::fill (const Color& color, Rect dest_rect)
 {
-    return fill(getPixelFormat().getValueFromRGBA(color), dest_rect);
+    return fill(getPixelFormat().getValueFromColor(color), dest_rect);
 }
 
 

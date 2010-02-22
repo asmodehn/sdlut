@@ -65,7 +65,7 @@ public:
 protected:
     static unsigned long _defaultflags;
 
-    RGBAColor _background;
+    Color _background;
 
 
 
@@ -87,8 +87,8 @@ public:
     //to flip the videosurface
     virtual bool refresh(void);
 
-    virtual RGBAColor getpixel(int x, int y);
-    virtual void setpixel(int x, int y, RGBAColor pixel);
+    virtual Color getpixel(int x, int y);
+    virtual void setpixel(int x, int y, Color pixel);
 
     //Blit src surface on this surface
     //Blit using non const surface, as the video surface might change the blitted src surface for optimisation, updates or other reasons...
@@ -114,13 +114,13 @@ public:
 
 
     //Fill
-    virtual bool fill (const RGBAColor& color);
+    virtual bool fill (const Color& color);
 
 protected : // Pixel Color should be used only internally, because of its complexity in different formats
     virtual bool fill (const PixelColor& color);
 
 public :
-    virtual bool fill (const RGBAColor& color, Rect dest_rect);
+    virtual bool fill (const Color& color, Rect dest_rect);
 
 protected : // Pixel Color should be used only internally, because of its complexity in different formats
     virtual bool fill (const PixelColor& color, Rect dest_rect);
@@ -157,7 +157,7 @@ public:
     bool isASyncBlitset(void) const;
     bool isHWPaletteset(void) const;
 
-    static bool checkAvailableSize( const PixelFormat * fmt );
+    static bool checkAvailableSize( const PixelFormat & fmt );
     static bool checkAvailableSize( void);
     static int getSuggestedBPP(int width, int height);
 

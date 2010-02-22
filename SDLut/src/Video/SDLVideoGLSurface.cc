@@ -70,20 +70,20 @@ bool VideoGLSurface::refresh(void)
 }
 
 
-RGBAColor VideoGLSurface::getpixel(int x, int y)
+Color VideoGLSurface::getpixel(int x, int y)
 {
     unsigned char pixel[4];
     glReadPixels(x, y, 1, 1, GL_RGBA, GL_BYTE, &pixel);
 
 #if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
-    RGBAColor color(pixel[3], pixel[2], pixel[1], pixel[0]);
+    Color color(pixel[3], pixel[2], pixel[1], pixel[0]);
 #else
-    RGBAColor color(pixel[0], pixel[1], pixel[2], pixel[3]);
+    Color color(pixel[0], pixel[1], pixel[2], pixel[3]);
 #endif
     return color;
 }
 
-void VideoGLSurface::setpixel(int x, int y, RGBAColor color)
+void VideoGLSurface::setpixel(int x, int y, Color color)
 {
 
 #if (DEBUG == 2)
@@ -300,13 +300,13 @@ bool VideoGLSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rec
 
 
 //Fill
-bool VideoGLSurface::fill (const RGBAColor& color)
+bool VideoGLSurface::fill (const Color& color)
 {
     Rect dest_rect(getWidth(), getHeight());
     return fill( color, dest_rect );
 }
 
-bool VideoGLSurface::fill (const RGBAColor& color, Rect dest_rect)
+bool VideoGLSurface::fill (const Color& color, Rect dest_rect)
 {
 
 #if (DEBUG == 2)

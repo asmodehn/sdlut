@@ -63,7 +63,7 @@ public:
 protected:
     static unsigned long _defaultflags;
 
-    RGBAColor _background;
+    Color _background;
 
 
     //Constructor
@@ -77,17 +77,17 @@ public:
     //this kind of surface shouldnt be deleted by hand. the raw SDL methods takes care of it
 
 
-    virtual RGBAColor getpixel(int x, int y);
-    virtual void setpixel(int x, int y, RGBAColor pixel);
+    virtual Color getpixel(int x, int y);
+    virtual void setpixel(int x, int y, Color pixel);
 
 
     //Blit src into the current surface.
     virtual bool blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
 
     //Fill
-    virtual bool fill (const RGBAColor& color);
+    virtual bool fill (const Color& color);
 
-    virtual bool fill (const RGBAColor& color, Rect dest_rect);
+    virtual bool fill (const Color& color, Rect dest_rect);
 
 
 
