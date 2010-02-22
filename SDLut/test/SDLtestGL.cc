@@ -185,7 +185,7 @@ int main(int argc, char** argv)
     //Getting video informations
     testlog << nl << App::getInstance().getDisplay().getScreenBuffer().getVideoInfo() << std::endl;
 
-	App::getInstance().getDisplay().setBGColor(RGBAColor (64,0,0));
+	App::getInstance().getDisplay().setBGColor(Color (64,0,0));
 
     //MyUserInput ui;
     //App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);

@@ -87,7 +87,7 @@ void SDLutFont::drawString(Graphics* graphics, const std::string& text, const in
 
     Color col = sdlutGraphics->getColor();
 
-    SDLut::RGBAColor RGBACol (  static_cast<unsigned char>( col.r ),
+    SDLut::Color RGBACol (  static_cast<unsigned char>( col.r ),
                                 static_cast<unsigned char>( col.g ),
                                 static_cast<unsigned char>( col.b )
                              );

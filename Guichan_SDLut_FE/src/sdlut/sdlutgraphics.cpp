@@ -174,7 +174,7 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
         rect.setw( area.width );
         rect.seth( area.height );
 
-        SDLut::RGBAColor rgbacolor( (unsigned char)mColor.r, (unsigned char)mColor.g, (unsigned char)mColor.b, (unsigned char)mColor.a );
+        SDLut::Color rgbacolor( (unsigned char)mColor.r, (unsigned char)mColor.g, (unsigned char)mColor.b, (unsigned char)mColor.a );
         mTarget->fill(rgbacolor, rect );
 
     }

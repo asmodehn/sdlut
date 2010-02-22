@@ -19,14 +19,14 @@ class Console
 	const Font _font;
 	short linesize;
 
-	RGBAColor _bgColor;
+	Color _bgColor;
 
 	Image * surf;
 
 	std::string text;
 
 public :
-	Console(const Font & fnt = Font(),RGBAColor c = RGBAColor(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text("")
+	Console(const Font & fnt = Font(),Color c = Color(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text("")
 	{
 		//init();
 		//draw();
@@ -88,7 +88,7 @@ public :
 			{
 				if ((std::string)line != "")
 				{
-					std::auto_ptr<Image> textsurf = _font.render(line,RGBAColor(255,255,255),Font::Solid);
+					std::auto_ptr<Image> textsurf = _font.render(line,Color(255,255,255),Font::Solid);
 					assert(textsurf.get());
 					surf->blit(*textsurf,Point (0,i * linesize));
 				}

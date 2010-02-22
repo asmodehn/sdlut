@@ -61,7 +61,7 @@ gcn::Color SDLutImage::getPixel(int x, int y)
     {
         throw GCN_EXCEPTION("Trying to get a pixel from a non loaded image.");
     }
-    SDLut::RGBAColor color = SDLutgetPixel((SDLut::Image*&)mSurface, x, y);
+    SDLut::Color color = SDLutgetPixel((SDLut::Image*&)mSurface, x, y);
     return gcn::Color( color.getR(), color.getG(), color.getB(), color.getA() );
 }
 
@@ -86,7 +86,7 @@ void SDLutImage::convertToDisplayFormat()
 
     //NOT SURE if part of the old algorithms is still needed...
     /*
-    SDLut::RGBAColor pink = magicPink;
+    SDLut::Color pink = magicPink;
 
     bool hasPink = false;
     bool hasAlpha = false;
@@ -95,7 +95,7 @@ void SDLutImage::convertToDisplayFormat()
     {
         for (signed int y = 0; y < mSurface->getHeight(); y++)
         {
-            SDLut::RGBAColor Current_pxColor = SDLutgetPixel((SDLut::Image*&)mSurface, x, y);
+            SDLut::Color Current_pxColor = SDLutgetPixel((SDLut::Image*&)mSurface, x, y);
 
             //Looking for pink color as it's the default ColorKey for image in GuiChan
             if (!hasPink)

@@ -20,11 +20,11 @@ namespace gcn
  * @param y the y coordinate on the surface.
  * @return a gcn::Color of a pixel.
  */
-inline const SDLut::RGBAColor SDLutgetPixel(SDLut::Image*& img, int x, int y)
+inline const SDLut::Color SDLutgetPixel(SDLut::Image*& img, int x, int y)
 {
     return img->getpixel(x, y);
 }
-inline const SDLut::RGBAColor SDLutgetPixel(SDLut::ScreenBuffer*& scr, int x, int y)
+inline const SDLut::Color SDLutgetPixel(SDLut::ScreenBuffer*& scr, int x, int y)
 {
     return scr->getpixel(x, y);
 }
@@ -38,11 +38,11 @@ inline const SDLut::RGBAColor SDLutgetPixel(SDLut::ScreenBuffer*& scr, int x, in
  */
 inline void SDLutputPixel(SDLut::Image* img, int x, int y, const gcn::Color& color)
 {
-    img->setpixel( x, y, SDLut::RGBAColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ) ;
+    img->setpixel( x, y, SDLut::Color( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ) ;
 }
 inline void SDLutputPixel(SDLut::ScreenBuffer* scr, int x, int y, const gcn::Color& color)
 {
-    scr->setpixel( x, y, SDLut::RGBAColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ) ;
+    scr->setpixel( x, y, SDLut::Color( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b ) ) ;
 }
 
 /**
@@ -54,11 +54,11 @@ inline void SDLutputPixel(SDLut::ScreenBuffer* scr, int x, int y, const gcn::Col
  */
 inline void SDLutputPixelAlpha(SDLut::Image* img, int x, int y, const gcn::Color& color)
 {
-    img->setpixel( x, y, SDLut::RGBAColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b, (unsigned char)color.a ) );
+    img->setpixel( x, y, SDLut::Color( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b, (unsigned char)color.a ) );
 }
 inline void SDLutputPixelAlpha(SDLut::ScreenBuffer* scr, int x, int y, const gcn::Color& color)
 {
-    scr->setpixel( x, y, SDLut::RGBAColor( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b, (unsigned char)color.a ) );
+    scr->setpixel( x, y, SDLut::Color( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b, (unsigned char)color.a ) );
 }
 
 }
