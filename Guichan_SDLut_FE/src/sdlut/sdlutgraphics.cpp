@@ -58,14 +58,12 @@ void SDLutGraphics::_endDraw()
 
 bool SDLutGraphics::pushClipArea(Rectangle area)
 {
-    SDLut::Rect rect;
+    
     bool result = Graphics::pushClipArea(area);
 
     const ClipRectangle& carea = mClipStack.top();
-    rect.setx( carea.x );
-    rect.sety( carea.y );
-    rect.setw( carea.width );
-    rect.seth( carea.height );
+
+    SDLut::Rect rect( carea.x, carea.y, carea.width, carea.height );
 
     mTarget->setClipRect(rect);
 
@@ -84,11 +82,11 @@ void SDLutGraphics::popClipArea()
     }
 
     const ClipRectangle& carea = mClipStack.top();
-    SDLut::Rect rect;
-    rect.setx( carea.x );
+    SDLut::Rect rect(carea.x, carea.y, carea.width, carea.height);
+   /*rect.setx( carea.x );
     rect.sety( carea.y );
     rect.setw( carea.width );
-    rect.seth( carea.height );
+    rect.seth( carea.height );*/
 
     mTarget->setClipRect(rect);
     //SDL_SetClipRect(mTarget, &rect);
@@ -111,14 +109,14 @@ void SDLutGraphics::drawImage(const Image* image,
 
     const ClipRectangle& top = mClipStack.top();
 
-    SDLut::Rect src;
-    SDLut::Rect dst;
-    src.setx( srcX );
+    SDLut::Rect src (srcX, srcY, width, height);
+    SDLut::Rect dst (dstX + top.xOffset, dstY + top.yOffset, 0, 0);
+    /*src.setx( srcX );
     src.sety( srcY );
     src.setw( width );
     src.seth( height );
     dst.setx( dstX + top.xOffset );
-    dst.sety( dstY + top.yOffset );
+    dst.sety( dstY + top.yOffset );*/
 
     const SDLutImage* srcImage = dynamic_cast<const SDLutImage*>(image);
 
@@ -168,11 +166,11 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
     }
     else
     {
-        SDLut::Rect rect;
-        rect.setx( area.x );
+        SDLut::Rect rect(area.x, area.y, area.width, area.height);
+        /*rect.setx( area.x );
         rect.sety( area.y );
         rect.setw( area.width );
-        rect.seth( area.height );
+        rect.seth( area.height );*/
 
         SDLut::Color rgbacolor( (unsigned char)mColor.r, (unsigned char)mColor.g, (unsigned char)mColor.b, (unsigned char)mColor.a );
         mTarget->fill(rgbacolor, rect );
@@ -644,8 +642,8 @@ void SDLutGraphics::drawSDLutSurface(SDLut::Image& surface,
 
     const ClipRectangle& top = mClipStack.top();
 
-    destination.setx( top.xOffset + destination.getx() );
-    destination.sety( top.yOffset + destination.gety() );
+    destination.resetx( top.xOffset + destination.getx() );
+    destination.resety( top.yOffset + destination.gety() );
 
     mTarget->blit( surface, destination, source);
 }

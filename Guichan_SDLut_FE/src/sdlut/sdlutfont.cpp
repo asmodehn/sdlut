@@ -94,13 +94,16 @@ void SDLutFont::drawString(Graphics* graphics, const std::string& text, const in
 
     std::auto_ptr<SDLut::Image> textSurface = mFont->render(text.c_str(), RGBACol, mRenderMode);
 
-    SDLut::Rect dst, src;
-    dst.setx( x );
-    dst.sety( y + yoffset );
-    src.setw( textSurface->getWidth() );
-    src.seth( textSurface->getHeight() );
-    src.setx( 0 );
-    src.sety( 0 );
+    SDLut::Rect dst(x, y + yoffset, 0, 0);
+	SDLut::Rect src(0, 0, textSurface->getWidth(), textSurface->getHeight());
+	/*
+    dst.resetx( x );
+    dst.resety( y + yoffset );
+    src.resetw( textSurface->getWidth() );
+    src.reseth( textSurface->getHeight() );
+    src.resetx( 0 );
+    src.resety( 0 );
+	*/
 
     sdlutGraphics->drawSDLutSurface(*textSurface, src, dst);
 

@@ -66,7 +66,7 @@ void SDLutInput::pushInput(SDLut::Event sdlut_event)
     SDLut::Keyboard::Sym* psdlut_sym = NULL;
     short state = 0;
     SDLut::Mouse::Button button;
-    SDLut::Point mouse_position;
+    SDLut::Rect mouse_position;
     bool motion_gain = false, motion_ActiveState = false, motion_InputFocusState = false, motion_MouseFocusState = false;
 
 
