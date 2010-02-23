@@ -101,8 +101,8 @@ public:
 
 
     void Set_KeyboardInfosFromEvent(Keyboard::Sym& s, short& state);
-    void Set_MouseButtonInfosFromEvent(Mouse::Button& button, Point& position, short& state);
-    void Set_MouseMotionInfosFromEvent(Point& position, short& state);
+    void Set_MouseButtonInfosFromEvent(Mouse::Button& button, Rect& position, short& state);
+    void Set_MouseMotionInfosFromEvent(Rect& position, short& state);
     void Set_ActiveInfosFromEvent(bool& isActive, bool& hasInputFocus, bool& hasMouseFocus, bool& gain);
 
     friend Logger & operator << (Logger & log, const Type & type);

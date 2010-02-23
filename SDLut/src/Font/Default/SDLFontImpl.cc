@@ -42,7 +42,7 @@ Rect FontImpl::getSize(const std::string & text) const
 {
     //number of lines in text -> todo
     //number of character max per line
-    Rect r(text.size() * 14,16);
+    Rect r(0,0,text.size() * 14,16);
     return r;
 }
 
@@ -72,7 +72,8 @@ std::auto_ptr<RGBSurface> FontImpl::render(const std::string & text,Color c, Col
     //Log << getSize(text);
     for (unsigned int i= 0; i< text.size(); i++)
     {
-        result->blit(*_fontsurf, Rect(i*14,0,14,16),alphalookup[text[i]]);
+        Rect src(i*14,0,14,16);
+        result->blit(*_fontsurf, src,alphalookup[text[i]]);
         //
         //TODO : better if we code that directly in SDL, as we wont be affected by other code parts changes...
         //

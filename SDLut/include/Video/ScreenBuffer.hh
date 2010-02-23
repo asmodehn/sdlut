@@ -158,7 +158,7 @@ public:
     //filling function for screen
     bool fill (const Color& color)
     {
-        Rect dest_rect(getWidth(), getHeight());
+        Rect dest_rect(0,0,getWidth(), getHeight());
         return fill( color, dest_rect );
     }
     bool fill (const Color& color, const Rect& dest_rect);
@@ -170,21 +170,10 @@ public:
     // Is the State pattern really useful here ?
 
     //Blit src image on the screen.
-    inline bool blit ( const Image& src, const Point& dest_pos=Point())
-    {
-        //bydefault we blit the entire image
-        Rect dest_rect(dest_pos,src.getWidth(), src.getHeight());
-        return blit(src, dest_rect);
-    }
-    inline bool blit ( const Image& src, const Point& dest_pos, const Rect& src_rect)
-    {
-        Rect dest_rect(dest_pos,src_rect.getw(), src_rect.geth());
-        return blit(src, dest_rect, src_rect);
-    }
     //Beware ! The final blitting rectangle is saved in dest_rect.
     inline bool blit ( const Image& src, Rect& dest_rect)
     {
-        Rect src_rect(src.getWidth(), src.getHeight());
+        Rect src_rect(0,0,src.getWidth(), src.getHeight());
         return blit(src, dest_rect, src_rect);
     }
     //Blit src into the screen

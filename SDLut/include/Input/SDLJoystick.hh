@@ -1,7 +1,7 @@
 #ifndef SDL_JOYSTICK_HH
 #define SDL_JOYSTICK_HH
 
-#include "Math/SDLPoint.hh"
+#include "Math/SDLRect.hh"
 #include <vector>
 #include <map>
 
@@ -41,7 +41,7 @@ public :
     signed int getAxisPos(int axis);
     // to think about the hat :  how to handle the different states and combinations
     bool isButtonPressed(int button);
-    Point getBallDeltaPos(int ball);
+    Rect getBallDeltaPos(int ball);
 
     static short JoyHat2sdl(JoyHat jh); //protect this ??
     static JoyHat sdl2JoyHat(short sdljh);

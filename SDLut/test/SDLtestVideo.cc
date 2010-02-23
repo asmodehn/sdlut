@@ -11,7 +11,7 @@ class MyEngine
 public:
 
 	std::auto_ptr<Image> loadedimage;
-	Point imagepos;
+	mutable Rect imagepos;
 
 	MyEngine( const std::string & imagefilename) : imagepos()
 	{
@@ -23,20 +23,25 @@ public:
 
     bool init(int width, int height)
 	{
-		imagepos.setx( (width - loadedimage->getWidth()) /2);
-		imagepos.sety( (height - loadedimage->getHeight()) /2);
+		imagepos.resetx( (width - loadedimage->getWidth()) /2);
+		imagepos.resety( (height - loadedimage->getHeight()) /2);
+		imagepos.resetw( loadedimage->getWidth());
+		imagepos.reseth( loadedimage->getHeight());
 		return true;
 	}
 
 	bool resize(int width, int height)
 	{
-		imagepos.setx( (width - loadedimage->getWidth()) /2);
-		imagepos.sety( (height - loadedimage->getHeight()) /2);
+		imagepos.resetx( (width - loadedimage->getWidth()) /2);
+		imagepos.resety( (height - loadedimage->getHeight()) /2);
+		imagepos.resetw( loadedimage->getWidth());
+		imagepos.reseth( loadedimage->getHeight());
 		return true;
 	}
 
 	bool render(ScreenBuffer & screen) const
     {
+
 		screen.blit(*loadedimage, imagepos );
 
 		return true;

@@ -23,7 +23,7 @@ try :
 
 #ifdef DEBUG
 
-    Log << nl << "GLSurface::GLSurface(" << s << ") done -> " << _surf.get() << " created.";
+    Log << nl << "GLSurface::GLSurface(" << s << ") done -> " << ptm_surf.get() << " created.";
 #endif
 
 }
@@ -48,7 +48,7 @@ try :
 
 #ifdef DEBUG
 
-    Log << nl << "GLSurface::GLSurface(" << s.get() << ") done -> " << _surf.get() << " created.";
+    Log << nl << "GLSurface::GLSurface(" << s.get() << ") done -> " << ptm_surf.get() << " created.";
 #endif
 
 }
@@ -74,7 +74,7 @@ try :
 
 #ifdef DEBUG
 
-    Log << nl << "GLSurface::GLSurface(" << &rgbs << ") done -> " << _surf.get() << " created.";
+    Log << nl << "GLSurface::GLSurface(" << &rgbs << ") done -> " << ptm_surf.get() << " created.";
 #endif
 
 }
@@ -103,7 +103,7 @@ try :
     convertPixels();
 
 #ifdef DEBUG
-    Log << nl << "GLSurface::GLSurface(" << width <<", " << height << ", " << bpp << ", "<< alpha << ", " << colorkey << ", " << hardware << "...) done -> " << _surf.get() << " created.";
+    Log << nl << "GLSurface::GLSurface(" << width <<", " << height << ", " << bpp << ", "<< alpha << ", " << colorkey << ", " << hardware << "...) done -> " << ptm_surf.get() << " created.";
 #endif
 
 }
@@ -130,7 +130,7 @@ try	:
     computeGLWidthHeight();
     convertPixels();
 #ifdef DEBUG
-    Log << nl << "GLSurface::GLSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width <<", " << height << "...) done -> " << _surf.get() << " created.";
+    Log << nl << "GLSurface::GLSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width <<", " << height << "...) done -> " << ptm_surf.get() << " created.";
 #endif
 
 }

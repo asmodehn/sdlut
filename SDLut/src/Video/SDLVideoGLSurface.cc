@@ -145,7 +145,7 @@ bool VideoGLSurface::resize(int width, int height, bool keepcontent)
     {
         oldSurf.reset( SDL_CreateRGBSurface(SDL_SWSURFACE,getWidth(),getHeight(),getBPP(),r_default_mask,g_default_mask, b_default_mask, a_default_mask) );
         SDL_DisplayFormat(oldSurf.get());
-        SDL_BlitSurface(_surf.get(),NULL,oldSurf.get(),NULL);
+        SDL_BlitSurface(ptm_surf.get(),NULL,oldSurf.get(),NULL);
     }
 
     //BEWARE : should match DisplaySurface Constructor code
@@ -168,7 +168,7 @@ bool VideoGLSurface::resize(int width, int height, bool keepcontent)
             SDL_BlitSurface(oldSurf.get(), NULL , newSurf.get(), NULL);
             SDL_FreeSurface(oldSurf.get());
         }
-        _surf=newSurf;
+        ptm_surf=newSurf;
 
     //Setting up the GL Viewport
     glViewport(0,0,(GLsizei)getWidth(),(GLsizei)getHeight());
@@ -302,7 +302,7 @@ bool VideoGLSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rec
 //Fill
 bool VideoGLSurface::fill (const Color& color)
 {
-    Rect dest_rect(getWidth(), getHeight());
+    Rect dest_rect(0,0,getWidth(), getHeight());
     return fill( color, dest_rect );
 }
 

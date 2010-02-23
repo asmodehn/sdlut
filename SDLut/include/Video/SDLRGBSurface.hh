@@ -78,7 +78,9 @@ public :
     //Destructor
     virtual ~RGBSurface() {}
 
-    bool setColorKeyAndAlpha(const Color &, bool rleAccel = true);
+    //if color has an alpha component, the surface alpha component will be set to it.
+    //otherwise (color.getA() == 255 ) and the color will be assigned as colorkey for the surface
+    bool setColorKeyAndAlpha(const Color &color, bool rleAccel = true);
 
 
     //Use Standard Colors here
@@ -102,24 +104,15 @@ public :
     }
     virtual bool convertToDisplayFormat();
 
-    //Blit src surface on this surface
-    inline bool blit (const RGBSurface& src, const Point& dest_pos=Point())
-    {
-        Rect dest_rect(dest_pos,src.getWidth(), src.getHeight());
-        return blit(src, dest_rect);
-    }
-    inline bool blit (const RGBSurface& src, const Point& dest_pos, const Rect& src_rect)
-    {
-        Rect dest_rect(dest_pos,src_rect.getw(), src_rect.geth());
-        return blit(src, dest_rect, src_rect);
-    }
+
     //Beware ! The final blitting rectangle is saved in dest_rect.
+    //blit all src into the current surface
     inline bool blit (const RGBSurface& src, Rect& dest_rect)
     {
-        Rect src_rect(src.getWidth(), src.getHeight());
+        Rect src_rect(0,0,src.getWidth(), src.getHeight());
         return blit(src, dest_rect, src_rect);
     }
-    //Blit src into the current surface.
+    //Blit only src_rect of src into the current surface.
     virtual bool blit (const RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
 
 

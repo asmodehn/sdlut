@@ -92,6 +92,7 @@ public :
     friend Logger & operator << (Logger & ostr, const RGBSurface & surf);
 
 };
+
 }
 } //namespace RAGE::SDL
 

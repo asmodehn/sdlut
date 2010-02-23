@@ -9,16 +9,16 @@ namespace SDL
 
 std::vector<int> VideoSurface::availableWidth;
 std::vector<int> VideoSurface::availableHeight;
-unsigned long VideoSurface::_defaultflags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
+unsigned long VideoSurface::ptm_defaultflags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;
 
 //Constructor
 VideoSurface::VideoSurface(int width, int height, int bpp) throw (std::logic_error)
 try
 :
-    BaseSurface(SDL_SetVideoMode(width,height,bpp,_defaultflags )),_background(0,0,0)
+    BaseSurface(SDL_SetVideoMode(width,height,bpp,ptm_defaultflags )),ptm_background(0,0,0)
 {
 #ifdef DEBUG
-    Log << nl << "VideoSurface::VideoSurface( "<< width<<", "<<height<<", "<<bpp<<", "<<_defaultflags<<") called ...";
+    Log << nl << "VideoSurface::VideoSurface( "<< width<<", "<<height<<", "<<bpp<<", "<<ptm_defaultflags<<") called ...";
 #endif
 
     if (!initialized())
@@ -28,7 +28,7 @@ try
     }
 
 #ifdef DEBUG
-    Log << nl << "VideoSurface::VideoSurface( "<< width<<", "<<height<<", "<<bpp<<", "<<_defaultflags<<") done.";
+    Log << nl << "VideoSurface::VideoSurface( "<< width<<", "<<height<<", "<<bpp<<", "<<ptm_defaultflags<<") done.";
 #endif
 
 }
@@ -50,7 +50,7 @@ bool VideoSurface::checkAvailableSize( const PixelFormat & fmt )
     //we copy the pixelformat (because of const behaviour...)
     SDL_PixelFormat* test_fmt= new SDL_PixelFormat( *(fmt.ptm_sdl_pformat));
 
-    modes=SDL_ListModes(test_fmt, _defaultflags);
+    modes=SDL_ListModes(test_fmt, ptm_defaultflags);
     if (modes == (SDL_Rect **)0)
         res=false;
     else
@@ -104,7 +104,7 @@ int VideoSurface::getSuggestedBPP(int width, int height)
     assert( getVideoInfo()); //to make sure the auto_ptr is not 0
 #endif
 
-    int res = SDL_VideoModeOK(width,height,getVideoInfo()->getPixelFormat().getBitsPerPixel(),_defaultflags);
+    int res = SDL_VideoModeOK(width,height,getVideoInfo()->getPixelFormat().getBitsPerPixel(),ptm_defaultflags);
 
 #ifdef DEBUG
 
@@ -175,7 +175,7 @@ bool VideoSurface::refresh(void)
     }
     else
 #endif //WK_OPENGL_FOUND
-        return SDL_Flip(_surf.get()) == 0;
+        return SDL_Flip(ptm_surf.get()) == 0;
 }
 
 //TODO : rethink about that again...( recopy the content if 2D or not at all ??? )
@@ -192,7 +192,7 @@ bool VideoSurface::resize(int width, int height, bool keepcontent)
     {
         oldSurf.reset( SDL_CreateRGBSurface(SDL_SWSURFACE,getWidth(),getHeight(),getBPP(),r_default_mask,g_default_mask, b_default_mask, a_default_mask) );
         SDL_DisplayFormat(oldSurf.get());
-        SDL_BlitSurface(_surf.get(),NULL,oldSurf.get(),NULL);
+        SDL_BlitSurface(ptm_surf.get(),NULL,oldSurf.get(),NULL);
     }
 
     //BEWARE : should match DisplaySurface Constructor code
@@ -215,7 +215,7 @@ bool VideoSurface::resize(int width, int height, bool keepcontent)
             SDL_BlitSurface(oldSurf.get(), NULL , newSurf.get(), NULL);
             SDL_FreeSurface(oldSurf.get());
         }
-        _surf=newSurf;
+        ptm_surf=newSurf;
 
 #ifdef DEBUG
         Log << nl << "VideoSurface::resize(" << width << ", " << height << ") succeeded.";
@@ -260,21 +260,21 @@ bool VideoSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect)
 
 
 //Fill
-bool VideoSurface::fill (const Color& color)
+/*bool VideoSurface::fill (const Color& color)
 {
     return fill(getPixelFormat().getValueFromColor(color));
-}
+}*/
 
 bool VideoSurface::fill (const PixelColor& color)
 {
-    Rect dest_rect(getWidth(), getHeight());
+    Rect dest_rect(0,0,getWidth(), getHeight());
     return fill( color, dest_rect );
 }
 
-bool VideoSurface::fill (const Color& color, Rect dest_rect)
+/*bool VideoSurface::fill (const Color& color, Rect dest_rect)
 {
     return fill(getPixelFormat().getValueFromColor(color), dest_rect);
-}
+}*/
 
 
 bool VideoSurface::fill (const PixelColor& color, Rect dest_rect)
@@ -285,7 +285,7 @@ bool VideoSurface::fill (const PixelColor& color, Rect dest_rect)
 
 bool VideoSurface::update(Rect r)
 {
-    SDL_UpdateRect(_surf.get(), r.getx(), r.gety(), r.getw(), r.geth());
+    SDL_UpdateRect(ptm_surf.get(), r.getx(), r.gety(), r.getw(), r.geth());
     return true;
 }
 
@@ -304,7 +304,7 @@ bool VideoSurface::update(std::vector<Rect> rlist)
 
     for ( unsigned int i=0; i<rlist.size(); i++)
     {
-        SDL_UpdateRect(_surf.get(), rlist[i].getx(), rlist[i].gety(), rlist[i].getw(), rlist[i].geth());
+        SDL_UpdateRect(ptm_surf.get(), rlist[i].getx(), rlist[i].gety(), rlist[i].getw(), rlist[i].geth());
     }
 
     return true;
@@ -316,108 +316,108 @@ bool VideoSurface::update(std::vector<Rect> rlist)
 void VideoSurface::setOpenGL(bool val)
 {
     if (val)
-        _defaultflags|= SDL_OPENGL;
+        ptm_defaultflags|= SDL_OPENGL;
     else
-        _defaultflags&= (~SDL_OPENGL) ;
+        ptm_defaultflags&= (~SDL_OPENGL) ;
 }
 void VideoSurface::setFullscreen(bool val)
 {
     if (val)
-        _defaultflags|= SDL_FULLSCREEN;
+        ptm_defaultflags|= SDL_FULLSCREEN;
     else
-        _defaultflags&= (~SDL_FULLSCREEN) ;
+        ptm_defaultflags&= (~SDL_FULLSCREEN) ;
 }
 void VideoSurface::setResizable(bool val)
 {
     if (val)
-        _defaultflags|= SDL_RESIZABLE;
+        ptm_defaultflags|= SDL_RESIZABLE;
     else
-        _defaultflags&= (~SDL_RESIZABLE) ;
+        ptm_defaultflags&= (~SDL_RESIZABLE) ;
 }
 void VideoSurface::setNoFrame(bool val)
 {
     if (val)
-        _defaultflags|= SDL_NOFRAME;
+        ptm_defaultflags|= SDL_NOFRAME;
     else
-        _defaultflags&= (~SDL_NOFRAME) ;
+        ptm_defaultflags&= (~SDL_NOFRAME) ;
 }
 void VideoSurface::setDoubleBuf(bool val)
 {
     if (val)
-        _defaultflags|= SDL_DOUBLEBUF;
+        ptm_defaultflags|= SDL_DOUBLEBUF;
     else
-        _defaultflags&= (~SDL_DOUBLEBUF) ;
+        ptm_defaultflags&= (~SDL_DOUBLEBUF) ;
 }
 void VideoSurface::setAnyFormat(bool val)
 {
     if (val)
-        _defaultflags|= SDL_ANYFORMAT;
+        ptm_defaultflags|= SDL_ANYFORMAT;
     else
-        _defaultflags&= (~SDL_ANYFORMAT) ;
+        ptm_defaultflags&= (~SDL_ANYFORMAT) ;
 }
 void VideoSurface::setSWSurface(bool val)
 {
     if (val)
-        _defaultflags|= SDL_SWSURFACE;
+        ptm_defaultflags|= SDL_SWSURFACE;
     else
-        _defaultflags&= (~SDL_SWSURFACE) ;
+        ptm_defaultflags&= (~SDL_SWSURFACE) ;
 }
 void VideoSurface::setHWSurface(bool val)
 {
     if (val)
-        _defaultflags|= SDL_HWSURFACE;
+        ptm_defaultflags|= SDL_HWSURFACE;
     else
-        _defaultflags&= (~SDL_HWSURFACE) ;
+        ptm_defaultflags&= (~SDL_HWSURFACE) ;
 }
 void VideoSurface::setHWPalette(bool val)
 {
     if (val)
-        _defaultflags|= SDL_HWPALETTE;
+        ptm_defaultflags|= SDL_HWPALETTE;
     else
-        _defaultflags&= (~SDL_HWPALETTE) ;
+        ptm_defaultflags&= (~SDL_HWPALETTE) ;
 }
 void VideoSurface::setAsyncBlit(bool val)
 {
     if (val)
-        _defaultflags|= SDL_ASYNCBLIT;
+        ptm_defaultflags|= SDL_ASYNCBLIT;
     else
-        _defaultflags&= (~SDL_ASYNCBLIT) ;
+        ptm_defaultflags&= (~SDL_ASYNCBLIT) ;
 }
 
 
 //Accessors
 bool VideoSurface::isOpenGLset(void) const
 {
-    return ( SDL_OPENGL & (initialized()?_surf->flags:_defaultflags )) != 0;
+    return ( SDL_OPENGL & (initialized()?ptm_surf->flags:ptm_defaultflags )) != 0;
 }
 bool VideoSurface::isFullScreenset(void) const
 {
-    return ( SDL_FULLSCREEN & (initialized()?_surf->flags:_defaultflags )) != 0;
+    return ( SDL_FULLSCREEN & (initialized()?ptm_surf->flags:ptm_defaultflags )) != 0;
 }
 bool VideoSurface::isResizableset(void) const
 {
-    return ( SDL_RESIZABLE & (initialized()?_surf->flags:_defaultflags )) != 0;
+    return ( SDL_RESIZABLE & (initialized()?ptm_surf->flags:ptm_defaultflags )) != 0;
 }
 bool VideoSurface::isNoFrameset(void) const
 {
-    return ( SDL_NOFRAME & (initialized()?_surf->flags:_defaultflags )) != 0;
+    return ( SDL_NOFRAME & (initialized()?ptm_surf->flags:ptm_defaultflags )) != 0;
 }
 bool VideoSurface::isAnyFormatset(void) const
 {
-    return ( SDL_ANYFORMAT & (initialized()?_surf->flags:_defaultflags )) != 0;
+    return ( SDL_ANYFORMAT & (initialized()?ptm_surf->flags:ptm_defaultflags )) != 0;
 }
 bool VideoSurface::isDoubleBufset(void) const
 {
-    return ( SDL_DOUBLEBUF & (initialized()?_surf->flags:_defaultflags )) != 0;
+    return ( SDL_DOUBLEBUF & (initialized()?ptm_surf->flags:ptm_defaultflags )) != 0;
 }
 //unused
 bool VideoSurface::isASyncBlitset(void) const
 {
-    return ( SDL_ASYNCBLIT & (initialized()?_surf->flags:_defaultflags )) != 0;
+    return ( SDL_ASYNCBLIT & (initialized()?ptm_surf->flags:ptm_defaultflags )) != 0;
 }
 bool VideoSurface::isHWPaletteset(void) const
 {
-    return ( SDL_HWPALETTE & (initialized()?_surf->flags:_defaultflags )) != 0;
+    return ( SDL_HWPALETTE & (initialized()?ptm_surf->flags:ptm_defaultflags )) != 0;
 }
 
 

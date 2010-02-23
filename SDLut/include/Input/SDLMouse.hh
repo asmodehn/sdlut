@@ -1,7 +1,7 @@
 #ifndef SDL_MOUSE_HH
 #define SDL_MOUSE_HH
 
-#include "Math/SDLPoint.hh"
+#include "Math/SDLRect.hh"
 
 #include <vector>
 #include <map>
@@ -41,8 +41,8 @@ public:
     }
     Button;
 
-    Point getPos();
-    Point getDeltaPos();
+    Rect getPos();
+    Rect getDeltaPos();
 
     bool isButtonPressed(Button b);
 

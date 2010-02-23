@@ -6,22 +6,22 @@ namespace RAGE
 namespace SDL
 {
 
-const VideoInfo * BaseSurface::_vinfo = 0;
+const VideoInfo * BaseSurface::pvm_vinfo = 0;
 
 bool BaseSurface::lock(void)
 {
-    if (SDL_MUSTLOCK(_surf))
+    if (SDL_MUSTLOCK(ptm_surf))
     {
-        return SDL_LockSurface(_surf.get()) == 0;
+        return SDL_LockSurface(ptm_surf.get()) == 0;
     }
     return true;
 }
 
 bool BaseSurface::unlock(void)
 {
-    if (SDL_MUSTLOCK(_surf))
+    if (SDL_MUSTLOCK(ptm_surf))
     {
-        SDL_UnlockSurface(_surf.get());
+        SDL_UnlockSurface(ptm_surf.get());
     }
     return true;
 }
@@ -35,8 +35,8 @@ bool BaseSurface::set_SDL_Surface(SDL_Surface * s)
     bool res = (s != NULL);
     if ( res )
     {
-        SDL_FreeSurface(_surf.release());
-        _surf.reset(s);
+        SDL_FreeSurface(ptm_surf.release());
+        ptm_surf.reset(s);
     }
     return res;
 }
@@ -46,34 +46,34 @@ bool BaseSurface::set_SDL_Surface(std::auto_ptr<SDL_Surface> s)
     bool res = (s.get() != NULL);
     if ( res )
     {
-        SDL_FreeSurface(_surf.release());
-        _surf = s;
+        SDL_FreeSurface(ptm_surf.release());
+        ptm_surf = s;
     }
     return res;
 }
 
 ///Conversion Constructor
-BaseSurface::BaseSurface(SDL_Surface * s) throw (std::logic_error) : _surf(s)
+BaseSurface::BaseSurface(SDL_Surface * s) throw (std::logic_error) : ptm_surf(s)
 {
-    if (_surf.get() == 0 ) throw std::logic_error("Surface not initialised properly : SDL_Surface NULL pointer.");
+    if (ptm_surf.get() == 0 ) throw std::logic_error("Surface not initialised properly : SDL_Surface NULL pointer.");
 }
 
 //Conversion Constructor with explicit ownership transfer as it s using an auto_ptr
-BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error) : _surf(s)
+BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error) : ptm_surf(s)
 {
-    if (_surf.get() == 0 ) throw std::logic_error("Surface not initialised properly : SDL_Surface NULL pointer.");
+    if (ptm_surf.get() == 0 ) throw std::logic_error("Surface not initialised properly : SDL_Surface NULL pointer.");
 }
 
 BaseSurface::BaseSurface(const BaseSurface & s) throw (std::logic_error)
 try :
-    _surf(0)
+    ptm_surf(0)
 {
 #ifdef DEBUG
     Log << nl << "BaseSurface::BaseSurface(" << &s << ") called...";
 #endif
 
     const std::string errstr = "SDL_ConvertSurface";
-    bool surfok = set_SDL_Surface(SDL_ConvertSurface(s._surf.get(),s._surf->format,s._surf->flags));
+    bool surfok = set_SDL_Surface(SDL_ConvertSurface(s.ptm_surf.get(),s.ptm_surf->format,s.ptm_surf->flags));
     if ( ! surfok)
     {
         Log << nl << "Unable to copy the RGBsurface" ;
@@ -94,7 +94,7 @@ BaseSurface& BaseSurface::operator=(const BaseSurface& s)
 {
     if (this != &s) // make sure not same object
     {
-        bool surfok = set_SDL_Surface(SDL_ConvertSurface(s._surf.get(),s._surf->format,s._surf->flags)); //deep copy...
+        bool surfok = set_SDL_Surface(SDL_ConvertSurface(s.ptm_surf.get(),s.ptm_surf->format,s.ptm_surf->flags)); //deep copy...
         if (! surfok)
         {
             Log << nl << "Unable to copy the BaseSurface : error in SDL_ConvertSurface -> " << GetError() ;
@@ -105,24 +105,24 @@ BaseSurface& BaseSurface::operator=(const BaseSurface& s)
 
 unsigned long BaseSurface::getFlags(void) const
 {
-    return _surf->flags;
+    return ptm_surf->flags;
 }
 
 BaseSurface::~BaseSurface()
 {
-    SDL_FreeSurface(_surf.release());
+    SDL_FreeSurface(ptm_surf.release());
 }
 
 BaseSurface::BaseSurface(const BaseSurface & s ,unsigned long flags, PixelFormat pfmt) throw (std::logic_error)
 try :
-    _surf(0)
+    ptm_surf(0)
 {
 #ifdef DEBUG
     Log << nl << "BaseSurface::BaseSurface(const BaseSurface & s,unsigned long flags, PixelFormat pfmt) called...";
 #endif
 
     const std::string errstr = "SDL_ConvertSurface";
-    bool surfok = set_SDL_Surface(SDL_ConvertSurface(s._surf.get(),const_cast<SDL_PixelFormat *>(pfmt.ptm_sdl_pformat),flags)); //SDL shouldnt modify the pixel format at all
+    bool surfok = set_SDL_Surface(SDL_ConvertSurface(s.ptm_surf.get(),const_cast<SDL_PixelFormat *>(pfmt.ptm_sdl_pformat),flags)); //SDL shouldnt modify the pixel format at all
     if (! surfok)
     {
         Log << nl << "Unable to copy the RGBsurface" ;
@@ -142,62 +142,62 @@ catch (std::exception &e)
 //usefull to get the SDL structure without no risk of modifying it
 SDL_Surface BaseSurface::get_SDL() const
 {
-    return *_surf;
+    return *ptm_surf;
 }
 
 int BaseSurface::getHeight(void) const
 {
-    return _surf->h;
+    return ptm_surf->h;
 }
 int BaseSurface::getWidth(void) const
 {
-    return _surf->w;
+    return ptm_surf->w;
 }
 
 int BaseSurface::getBPP(void) const
 {
-    assert(_surf->format);
-    return _surf->format->BitsPerPixel;
+    assert(ptm_surf->format);
+    return ptm_surf->format->BitsPerPixel;
 }
 bool BaseSurface::isSWset(void) const
 {
-    return ( SDL_SWSURFACE & _surf->flags ) != 0;
+    return ( SDL_SWSURFACE & ptm_surf->flags ) != 0;
 }
 bool BaseSurface::isHWset(void) const
 {
-    return ( SDL_HWSURFACE & _surf->flags ) != 0;
+    return ( SDL_HWSURFACE & ptm_surf->flags ) != 0;
 }
 bool BaseSurface::isHWAccelset(void) const
 {
-    return ( SDL_HWACCEL & _surf->flags ) != 0;
+    return ( SDL_HWACCEL & ptm_surf->flags ) != 0;
 }
 bool BaseSurface::isRLEAccelset(void) const
 {
-    return ( SDL_RLEACCEL & _surf->flags ) != 0;
+    return ( SDL_RLEACCEL & ptm_surf->flags ) != 0;
 }
 bool BaseSurface::isPreAllocset(void) const
 {
-    return ( SDL_PREALLOC & _surf->flags ) != 0;
+    return ( SDL_PREALLOC & ptm_surf->flags ) != 0;
 }
 
 void * BaseSurface::getpixels(void) const
 {
-    return _surf->pixels;
+    return ptm_surf->pixels;
 }
 
 ///Accessor to pixelFormat
 PixelFormat BaseSurface::getPixelFormat(void) const
 {
-    return PixelFormat(_surf->format);
+    return PixelFormat(ptm_surf->format);
 }
 
 Color BaseSurface::getpixel(int x, int y)
 {
     lock();
     /* Here p is the address to the pixel we want to retrieve */
-    Uint8 *p = (Uint8 *)_surf->pixels + y * _surf->pitch + x * _surf->format->BytesPerPixel;
+    Uint8 *p = (Uint8 *)ptm_surf->pixels + y * ptm_surf->pitch + x * ptm_surf->format->BytesPerPixel;
     Uint32 pixel;
-    switch (_surf->format->BytesPerPixel)
+    switch (ptm_surf->format->BytesPerPixel)
     {
     case 1:
         pixel=*p;
@@ -235,12 +235,12 @@ void BaseSurface::setpixel(int x, int y, Color pixelcolor)
 {
     lock();
     /* Here p is the address to the pixel we want to set */
-    Uint8 *p = (Uint8 *)_surf->pixels + y * _surf->pitch + x * _surf->format->BytesPerPixel;
+    Uint8 *p = (Uint8 *)ptm_surf->pixels + y * ptm_surf->pitch + x * ptm_surf->format->BytesPerPixel;
     int alpha= pixelcolor.getA();
     PixelColor pixel = getPixelFormat().getValueFromColor(pixelcolor);
     if ( alpha == 255 )
     {
-        switch (_surf->format->BytesPerPixel)
+        switch (ptm_surf->format->BytesPerPixel)
         {
         case 1:
             *p = (Uint8) pixel;
@@ -285,22 +285,22 @@ void BaseSurface::setpixel(int x, int y, Color pixelcolor)
     {
         unsigned int r, g, b;
         Color color;
-        switch (_surf->format->BytesPerPixel)
+        switch (ptm_surf->format->BytesPerPixel)
         {
         case 1:
             *p = (Uint8) pixel;
             break;
 
         case 2:
-            r = ((pixel & _surf->format->Rmask) * alpha + (*(Uint32 *)p & _surf->format->Rmask) * (256 - alpha)) >> 8;
-            g = ((pixel & _surf->format->Gmask) * alpha + (*(Uint32 *)p & _surf->format->Gmask) * (256 - alpha)) >> 8;
-            b = ((pixel & _surf->format->Bmask) * alpha + (*(Uint32 *)p & _surf->format->Bmask) * (256 - alpha)) >> 8;
+            r = ((pixel & ptm_surf->format->Rmask) * alpha + (*(Uint32 *)p & ptm_surf->format->Rmask) * (256 - alpha)) >> 8;
+            g = ((pixel & ptm_surf->format->Gmask) * alpha + (*(Uint32 *)p & ptm_surf->format->Gmask) * (256 - alpha)) >> 8;
+            b = ((pixel & ptm_surf->format->Bmask) * alpha + (*(Uint32 *)p & ptm_surf->format->Bmask) * (256 - alpha)) >> 8;
 
-            *(Uint16 *)p = ( (unsigned short)( (r & _surf->format->Rmask) | (g & _surf->format->Gmask) | (b & _surf->format->Bmask) ) );
+            *(Uint16 *)p = ( (unsigned short)( (r & ptm_surf->format->Rmask) | (g & ptm_surf->format->Gmask) | (b & ptm_surf->format->Bmask) ) );
             break;
 
         case 3:
-            color = ((PixelFormat*)(_surf->format))->getColorFromValue(pixel);
+            color = ((PixelFormat*)(ptm_surf->format))->getColorFromValue(pixel);
 #if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
             r = (p[0] * (256 - alpha) + color.getR() * alpha) >> 8;
             g = (p[1] * (256 - alpha) + color.getG() * alpha) >> 8;
@@ -339,7 +339,7 @@ bool BaseSurface::saveBMP(std::string filename) const
     bool res = false;
     if (initialized())
     {
-        if ( SDL_SaveBMP(_surf.get(),filename.c_str()) != 0 )
+        if ( SDL_SaveBMP(ptm_surf.get(),filename.c_str()) != 0 )
         { //TODO : handle erros such as disk full, etc. )
 
         }
@@ -353,22 +353,12 @@ bool BaseSurface::saveBMP(std::string filename) const
 }
 
 //Fill
-bool BaseSurface::fill (const Color& color)
-{
-    return fill(getPixelFormat().getValueFromColor(color));
-}
 
 bool BaseSurface::fill (const PixelColor& color)
 {
-    Rect dest_rect(getWidth(), getHeight());
+    Rect dest_rect(0,0,getWidth(), getHeight());
     return fill( color, dest_rect );
 }
-
-bool BaseSurface::fill (const Color& color, Rect dest_rect)
-{
-    return fill(getPixelFormat().getValueFromColor(color), dest_rect);
-}
-
 
 bool BaseSurface::fill (const PixelColor& color, Rect dest_rect)
 {
@@ -376,7 +366,7 @@ bool BaseSurface::fill (const PixelColor& color, Rect dest_rect)
     Log << nl << "BaseSurface::fill (const PixelColor& color," << dest_rect << ") called...";
 #endif
     lock();
-    int res=SDL_FillRect(_surf.get(), dest_rect._rect, color);
+    int res=SDL_FillRect(ptm_surf.get(), dest_rect.get_pSDL(), color);
     //std::cerr << "SDLBaseSurface::Fill(" << _surf << ", " << dest_rect << ", " << color << ")" << std::endl;
     //std::cerr << "returned " << res << std::endl;
     unlock();
@@ -394,10 +384,10 @@ bool BaseSurface::blit(const BaseSurface& src, Rect& dest_rect, const Rect& src_
     bool res=false;
 
     //to make sure the SDL surface is completely usable
-    assert(_surf->format);
-    assert(src._surf->format);
+    assert(ptm_surf->format);
+    assert(src.ptm_surf->format);
 
-    switch (SDL_BlitSurface(src._surf.get(), src_rect._rect , _surf.get(), dest_rect._rect))
+    switch (SDL_BlitSurface(src.ptm_surf.get(), src_rect.get_pSDL() , ptm_surf.get(), dest_rect.get_pSDL()))
     {
     case 0 :
         res=true;
@@ -417,14 +407,14 @@ bool BaseSurface::blit(const BaseSurface& src, Rect& dest_rect, const Rect& src_
 //Set the clip rect
 void BaseSurface::setClipRect(const Rect& rect)
 {
-    SDL_SetClipRect(_surf.get(),rect._rect);
+    SDL_SetClipRect(ptm_surf.get(),rect.get_pSDL());
 }
 
 //get the clip rect
 Rect BaseSurface::getClipRect(void) const
 {
     Rect r;
-    SDL_GetClipRect(_surf.get(), r._rect);
+    SDL_GetClipRect(ptm_surf.get(), r.get_pSDL());
     return r;
 }
 

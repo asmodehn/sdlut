@@ -154,19 +154,19 @@ bool Joystick::isButtonPressed(int button)
     return (SDL_JoystickGetButton(_joystick, button) != 0 );
 }
 
-Point Joystick::getBallDeltaPos(int ball)
+Rect Joystick::getBallDeltaPos(int ball)
 {
     int dx,dy;
     if (0 == SDL_JoystickGetBall(_joystick,ball,&dx, &dy))
     {
-        return Point(dx,dy);
+        return Rect(dx,dy,0,0);
     }
     else
     {
 #ifdef DEBUG
         Log << nl << "Error while getting JoyBall Delta Position" << std::endl;
 #endif
-        return Point(0,0); // no movement...
+        return Rect(0,0,0,0); // no movement...
     }
 }
 

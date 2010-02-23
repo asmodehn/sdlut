@@ -9,7 +9,7 @@
  *
  * \brief This class is a Rectangle
  *
- * This class wraps SDL_Rect as a Rectangle (width and height are always used, by opposition to SDLPoint)
+ * This class wraps SDL_Rect as a Rectangle. Width and Height are 0 if it actually represent a point
  *
  * \note The origin point can sometimes be ignored
  *
@@ -21,14 +21,18 @@
  *
  */
 
-#include "SDLPoint.hh"
+#include <iostream>
+
+//further definition
+struct SDL_Rect;
 
 namespace RAGE
 {
 namespace SDL
 {
 
-class Rect : public Point
+
+class Rect
 {
     //Because some functions of SDLBaseSurface needs access to SDL_Rect directly
     //And because SDLBaseSurface includes SDLRect.hh, we cannot specify the functions
@@ -37,16 +41,29 @@ class Rect : public Point
     friend class VideoSurface;
     friend class Overlay;
 
+private:
+    //the address of the SDL_Rect struct should never change...
+    SDL_Rect * const pvm_rect;
+
+
 protected :
+
+    //usefull to get the SDL rect without any risk of modification
+    SDL_Rect get_SDL() const;
+    //usefull to get the SDL rect
+    SDL_Rect * get_pSDL() const;
+
 
 public:
 
-    //also used to convert point for main methods use...
-    Rect(const Point& p , unsigned int nw=0, unsigned int nh=0);
-    Rect(int x, int y , unsigned int nw, unsigned int nh);
+    //CAreful with default values.
+    //size and position tends to be confused
 
-    //2 parameter define only a rectangular zone
-    Rect( unsigned int nw=0, unsigned int nh=0);
+    //Default Constructor ( needed for conatiners )
+    //construct rect(0,0,0,0)
+    Rect();
+    //Handy Constructor
+    Rect(int x, int y, unsigned int nw, unsigned int nh);
 
     //Copy Constructor
     Rect( const Rect& r);
@@ -56,9 +73,14 @@ public:
 
     Rect& operator=(const Rect& p);
 
-    void setw(unsigned int nw );
-    void seth(unsigned int nh );
 
+    void resetx(int nx = 0);
+    void resety(int ny = 0);
+    void resetw(unsigned int nw = 0);
+    void reseth(unsigned int nh = 0);
+
+    int getx() const;
+    int gety() const;
     unsigned int getw() const;
     unsigned int geth() const;
 
@@ -69,8 +91,9 @@ public:
     Rect sup(const Rect & r);
 
     //move from (x,y) to (nx,ny) wo impacting w & h
-    void move(int nx, int ny);
-
+    void moveto(int nx, int ny);
+    //move from (x,y) to (x+dx,y+dy) wo impacting w & h
+    void translate(int dx, int dy);
 
 //scalar operations
     Rect& operator*=(unsigned int s);
@@ -90,9 +113,10 @@ public:
 
     inline friend std::ostream& operator << (std::ostream& os, const Rect& r)
     {
-        return os << "Rect : ( " << r.getx() << ", " << r.gety() << ") W= " << r.getw() << " H= " << r.geth();
+        return os << std::dec << "Rect : ( " << r.getx() << ", " << r.gety() << ") W= " << r.getw() << " H= " << r.geth();
     }
 };
+
 }
 } //namespace RAGE::SDL
 

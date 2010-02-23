@@ -246,7 +246,8 @@ public:
 
         if ( rlist[i]->hasImage() )
         {
-            screen.blit(rlist[i]->getImage(),Point(rlist[i]->posX(), rlist[i]->posY()));
+            Rect dest(rlist[i]->posX(), rlist[i]->posY(),rlist[i]->getImage().getWidth(),rlist[i]->getImage().getHeight());
+            screen.blit(rlist[i]->getImage(),dest);
         }
     }
 

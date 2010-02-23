@@ -197,7 +197,7 @@ bool Manager::isOpenGLEnabled(void) const
 {
     //TODO : carefully check consistency with opengl setting on existing videosurface...
     //If needed check opengl set or not on creation and reset the default flags on Video Surface...
-    return ( SDL_OPENGL & VideoSurface::_defaultflags ) != 0;
+    return ( SDL_OPENGL & VideoSurface::ptm_defaultflags ) != 0;
 }
 
 

@@ -63,7 +63,7 @@ public:
 
 
 private:
-    static const VideoInfo * _vinfo; ///a usefull static pointer, set to the current VideoInfo by AppWindow and reset to 0 on Window destruction
+    static const VideoInfo * pvm_vinfo; ///a usefull static pointer, set to the current VideoInfo by ScreenBuffer and reset to 0 on Window destruction
 
 
 
@@ -90,10 +90,10 @@ protected:
     //the adress of SDL_Surface struct should never change
     //SDL_Surface * const _surf;
     //except for resize...
-    std::auto_ptr<SDL_Surface> _surf; ///< the actual allocated surface
+    std::auto_ptr<SDL_Surface> ptm_surf; ///< the actual allocated surface
     static const VideoInfo * getVideoInfo()
     {
-        return _vinfo;
+        return pvm_vinfo;
     } ///access method to be used by derivated classes
 
 public: //useful else we can't access those functions outside of friend class (for example in GuiChan)
@@ -102,7 +102,7 @@ public: //useful else we can't access those functions outside of friend class (f
     /// This method return true if the surface is initialized, false otherwise.
     bool initialized() const
     {
-        return _surf.get() != 0;
+        return ptm_surf.get() != 0;
     }
     //could be useless if exception handle is well coded in the heriting tree
 
@@ -164,7 +164,7 @@ protected:
     //usefull to get the SDL structure
     const SDL_Surface * get_pSDL() const
     {
-        return _surf.get();
+        return ptm_surf.get();
     }
 
 public:
@@ -173,7 +173,7 @@ public:
 
     const SDL_Surface & get_rSDL() const
     {
-        return *_surf; // Indirection of auto_ptr ???? -> TO INVESTIGATE....
+        return *ptm_surf; // Indirection of auto_ptr ???? -> TO INVESTIGATE....
     }
 
 public:
@@ -182,7 +182,7 @@ public:
 
     Rect getSize() const
     {
-        return Rect(getWidth(),getHeight());
+        return Rect(0,0,getWidth(),getHeight());
     }
 
     int getBPP(void) const;
@@ -204,7 +204,7 @@ public:
     //Default Reset the clip rect to the full size of the surface
     inline void setClipRect(void)
     {
-        return setClipRect(Rect(getWidth(),getHeight()));
+        return setClipRect(Rect(0,0,getWidth(),getHeight()));
     }
     void setClipRect(const Rect& rect);
     //get the clip rect
@@ -215,15 +215,7 @@ public:
     //TODO : the same with other formats
 
     //Fill
-    virtual bool fill (const Color& color);
-
-protected : // Pixel Color should be used only internally, because of its complexity in different formats
     virtual bool fill (const PixelColor& color);
-
-public :
-    virtual bool fill (const Color& color, Rect dest_rect);
-
-protected : // Pixel Color should be used only internally, because of its complexity in different formats
     virtual bool fill (const PixelColor& color, Rect dest_rect);
 
 

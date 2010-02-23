@@ -60,12 +60,6 @@ public:
         return OpenGL;
     }
 
-protected:
-    static unsigned long _defaultflags;
-
-    Color _background;
-
-
     //Constructor
     //Note : The user should not be able to set raw SDL flags manually.
     VideoGLSurface(int width, int height, int bpp) throw (std::logic_error);

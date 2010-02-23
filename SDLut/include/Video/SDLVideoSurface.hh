@@ -9,7 +9,7 @@
  *
  * \brief This class is handle a video surface.
  *
- * This class has a derivative if your display is 3d (OpenGL).
+ * This class has a derivative if your display is 3D (OpenGL).
  *
  * \author Alex
  *
@@ -63,9 +63,9 @@ public:
     }
 
 protected:
-    static unsigned long _defaultflags;
+    static unsigned long ptm_defaultflags;
 
-    Color _background;
+    Color ptm_background;
 
 
 
@@ -92,21 +92,10 @@ public:
 
     //Blit src surface on this surface
     //Blit using non const surface, as the video surface might change the blitted src surface for optimisation, updates or other reasons...
-    inline bool blit (RGBSurface& src, const Point& dest_pos=Point())
-    {
-        //bydefault we blit the entire surface onto a surface of the same size
-        Rect dest_rect(dest_pos,src.getWidth(), src.getHeight());
-        return blit(src, dest_rect);
-    }
-    inline bool blit (RGBSurface& src, const Point& dest_pos, const Rect& src_rect)
-    {
-        Rect dest_rect(dest_pos,src_rect.getw(), src_rect.geth());
-        return blit(src, dest_rect, src_rect);
-    }
     //Beware ! The final blitting rectangle is saved in dest_rect.
     inline bool blit (RGBSurface& src, Rect& dest_rect)
     {
-        Rect src_rect(src.getWidth(), src.getHeight());
+        Rect src_rect(0,0,src.getWidth(), src.getHeight());
         return blit(src, dest_rect, src_rect);
     }
     //Blit src into the current surface.
@@ -114,18 +103,8 @@ public:
 
 
     //Fill
-    virtual bool fill (const Color& color);
-
-protected : // Pixel Color should be used only internally, because of its complexity in different formats
     virtual bool fill (const PixelColor& color);
-
-public :
-    virtual bool fill (const Color& color, Rect dest_rect);
-
-protected : // Pixel Color should be used only internally, because of its complexity in different formats
     virtual bool fill (const PixelColor& color, Rect dest_rect);
-
-public:
 
     //Maybe in Window only ?
     bool update(Rect r);
@@ -170,6 +149,7 @@ public:
 
     friend Logger & operator << (Logger & log, const VideoSurface & surf);
 };
+
 }
 } //namespace RAGE::SDL
 

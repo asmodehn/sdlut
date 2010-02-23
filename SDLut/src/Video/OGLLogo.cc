@@ -96,7 +96,6 @@ bool OGLLogo::init()
 
 bool OGLLogo::render(VideoSurface & screen) const
     {
-
         //glDisable( GL_DEPTH_TEST ) ;
 
         //Switchig to 3D display
@@ -113,7 +112,7 @@ bool OGLLogo::render(VideoSurface & screen) const
 		//putting the logo in the right place in the displayed scene...
 		glTranslatef(screen.getWidth()-m_render_width * 1.5f,screen.getHeight()-m_render_height * .5f ,0.5f);
 		static float rot = 0.0f;
-		glScalef(100.0f,100.0f,100.0f);
+		glScalef(100.0f,-100.0f,100.0f);
 		glRotatef(--rot,.3f,.0f,.0f);
 
 	GLfloat glfLightAmbient[] = { 0.1f, 0.1f, 0.1f};

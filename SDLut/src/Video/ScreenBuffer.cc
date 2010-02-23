@@ -11,7 +11,7 @@ ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) thr
 {
 
     //setting the static videoInfo to be used by all surfaces...
-    BaseSurface::_vinfo = &m_videoinfo;
+    BaseSurface::pvm_vinfo = &m_videoinfo;
 
     setSize( width, height );
 
@@ -42,7 +42,7 @@ ScreenBuffer::ScreenBuffer( const ScreenBuffer & sb )
 
 ScreenBuffer::~ScreenBuffer()
 {
-    BaseSurface::_vinfo = NULL;
+    BaseSurface::pvm_vinfo = NULL;
 }
 
 
@@ -195,7 +195,7 @@ bool ScreenBuffer::isFullscreen()
     }
     else
     {
-        return ( SDL_FULLSCREEN & VideoSurface::_defaultflags ) != 0;
+        return ( SDL_FULLSCREEN & VideoSurface::ptm_defaultflags ) != 0;
     }
 }
 bool ScreenBuffer::isResizable()
@@ -206,7 +206,7 @@ bool ScreenBuffer::isResizable()
     }
     else
     {
-        return ( SDL_RESIZABLE & VideoSurface::_defaultflags ) != 0;
+        return ( SDL_RESIZABLE & VideoSurface::ptm_defaultflags ) != 0;
     }
 }
 bool ScreenBuffer::isOpenGL()
@@ -231,7 +231,7 @@ bool ScreenBuffer::isNoFrame()
     }
     else
     {
-        return ( SDL_NOFRAME & VideoSurface::_defaultflags ) != 0;
+        return ( SDL_NOFRAME & VideoSurface::ptm_defaultflags ) != 0;
     }
 }
 
@@ -248,8 +248,7 @@ void ScreenBuffer::applyBGColor() const
         else
         {
 #endif
-            //TODO background can be null, andthis will not be called.... ( speed improvemnt )
-            m_screen->fill(m_background);
+            m_screen->fill(m_screen->getPixelFormat().getValueFromColor(m_background));
 #ifdef WK_OPENGL_FOUND
         }
 #endif
@@ -415,7 +414,7 @@ Rect ScreenBuffer::getClipRect( void ) const
 
 bool ScreenBuffer::fill (const Color& color, const Rect& dest_rect)
 {
-    m_screen.get()->fill(color,dest_rect);
+    m_screen->fill(m_screen->getPixelFormat().getValueFromColor(color),dest_rect);
     return true; //todo
 }
 

@@ -60,18 +60,18 @@ Mouse::Button Mouse::str2Button(std::string strb)
 }
 
 
-Point Mouse::getPos()
+Rect Mouse::getPos()
 {
     int posX,posY;
     SDL_GetMouseState(&posX,&posY);
-    return Point(posX,posY);
+    return Rect(posX,posY,1,1);
 }
-
-Point Mouse::getDeltaPos()
+// TODO : Maybe we can combine thee into just one, returning a Rect
+Rect Mouse::getDeltaPos()
 {
     int rposX,rposY;
     SDL_GetRelativeMouseState(&rposX,&rposY);
-    return Point(rposX,rposY);
+    return Rect(rposX,rposY,1,1);
 }
 
 bool Mouse::isButtonPressed(Button b)

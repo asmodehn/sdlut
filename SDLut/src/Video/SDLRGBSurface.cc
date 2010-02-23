@@ -129,7 +129,7 @@ try :
 
 #ifdef DEBUG
 
-    Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << _surf.get() << " created.";
+    Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << ptm_surf.get() << " created.";
 #endif
 
 }
@@ -158,7 +158,7 @@ try :
 
 #ifdef DEBUG
 
-    Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << _surf.get() << " created.";
+    Log << nl << "RGBSurface::RGBSurface(" << &s << ") done -> " << ptm_surf.get() << " created.";
 #endif
 
 }
@@ -189,7 +189,7 @@ bool RGBSurface::setColorKeyAndAlpha(const Color & key, bool rleAccel)
         else
             flags=SDL_SRCCOLORKEY | SDL_SRCALPHA;
 
-        SDL_SetAlpha(_surf.get(), flags, key.getA());
+        SDL_SetAlpha(ptm_surf.get(), flags, key.getA());
     }
     else
     {
@@ -199,14 +199,14 @@ bool RGBSurface::setColorKeyAndAlpha(const Color & key, bool rleAccel)
             flags=SDL_SRCCOLORKEY;
     }
 
-    return SDL_SetColorKey(_surf.get(), flags, getPixelFormat().getValueFromColor(key) ) == 0;
+    return SDL_SetColorKey(ptm_surf.get(), flags, getPixelFormat().getValueFromColor(key) ) == 0;
 }
 
 bool RGBSurface::resize(int width, int height, bool keepcontent)
 {
     bool res;
 
-    std::auto_ptr<SDL_Surface> newSurf( SDL_CreateRGBSurface(_surf->flags,width,height,_surf->format->BitsPerPixel, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
+    std::auto_ptr<SDL_Surface> newSurf( SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
 
     if (!newSurf.get()) //SetVideoMode has failed
     {
@@ -217,47 +217,47 @@ bool RGBSurface::resize(int width, int height, bool keepcontent)
     {
         if (keepcontent)
         {
-            SDL_BlitSurface(_surf.get(), NULL , newSurf.get(), NULL);
+            SDL_BlitSurface(ptm_surf.get(), NULL , newSurf.get(), NULL);
         }
 
-        SDL_FreeSurface(_surf.release());
-        _surf=newSurf;
+        SDL_FreeSurface(ptm_surf.release());
+        ptm_surf=newSurf;
         res = true;
     }
-    return (res && _surf.get() != 0 ) ;
+    return (res && ptm_surf.get() != 0 ) ;
 }
 
 
 //Accesseurs - are they all really usefull ?
 bool RGBSurface::isSRCColorKeyset(void)
 {
-    return ( SDL_SRCCOLORKEY & _surf->flags ) != 0;
+    return ( SDL_SRCCOLORKEY & ptm_surf->flags ) != 0;
 }
 bool RGBSurface::isSRCAlphaset(void)
 {
-    return ( SDL_SRCALPHA & _surf->flags ) != 0;
+    return ( SDL_SRCALPHA & ptm_surf->flags ) != 0;
 }
 
 bool RGBSurface::convertToDisplayFormat()
 {
-    assert(_surf.get());
+    assert(ptm_surf.get());
     bool res;
     std::auto_ptr<SDL_Surface> optsurf(0);
     if ( isSRCAlphaset() )
     {
-        optsurf.reset( SDL_DisplayFormatAlpha(_surf.get()) );
+        optsurf.reset( SDL_DisplayFormatAlpha(ptm_surf.get()) );
     }
     else
     {
-        optsurf.reset( SDL_DisplayFormat(_surf.get()) );
+        optsurf.reset( SDL_DisplayFormat(ptm_surf.get()) );
     }
 
     if (!optsurf.get())
         res = false;
     else
     {
-        SDL_FreeSurface(_surf.release());
-        _surf=optsurf;
+        SDL_FreeSurface(ptm_surf.release());
+        ptm_surf=optsurf;
         optimised= true;
         res = true;
     }

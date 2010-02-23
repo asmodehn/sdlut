@@ -9,6 +9,8 @@ Logger Log("Test Font");
 #include <string>
 #include <algorithm>
 
+//BUG : Schliemel the painter CRAP :p
+//TOFIX
 class Console
 {
 
@@ -48,6 +50,16 @@ public :
 		draw();
 		return res;
 	}
+
+	unsigned int getWidth()
+	{
+	    return surf->getWidth();
+	}
+
+    unsigned int getHeight()
+    {
+        return surf->getHeight();
+    }
 
 	void print(const std::string & newtext)
 	{
@@ -90,7 +102,8 @@ public :
 				{
 					std::auto_ptr<Image> textsurf = _font.render(line,Color(255,255,255),Font::Solid);
 					assert(textsurf.get());
-					surf->blit(*textsurf,Point (0,i * linesize));
+                    Rect textsurf_dest(0,i * linesize,textsurf->getWidth(),textsurf->getHeight());
+					surf->blit(*textsurf,textsurf_dest);
 				}
 				++i;
 			}
@@ -135,13 +148,18 @@ class MyEngine
 
 public:
 
-	Point consolePos;
+	mutable Rect consolePos;
 	Console * console;
 
-	MyEngine() : consolePos(0,0), console (NULL)
+	MyEngine() : consolePos(0,0,0,0), console (NULL)
 	{}
 
-	void setConsole( Console * cons ) { console = cons;}
+	void setConsole( Console * cons )
+    {
+        console = cons;
+        consolePos.resetw(cons->getWidth());
+        consolePos.reseth(cons->getHeight());
+    }
 
     virtual ~MyEngine()
 	{

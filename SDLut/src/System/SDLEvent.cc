@@ -161,16 +161,16 @@ void Event::Set_KeyboardInfosFromEvent(Keyboard::Sym& s, short& state)
     state = static_cast<short>(_event->key.state);
 }
 
-void Event::Set_MouseButtonInfosFromEvent(Mouse::Button& button, Point& position, short& state)
+void Event::Set_MouseButtonInfosFromEvent(Mouse::Button& button, Rect& position, short& state)
 {
     button = Mouse::sdl2Button(_event->button.button);
-    position = Point(_event->button.x, _event->button.y);
+    position = Rect(_event->button.x, _event->button.y,0,0);
     state = static_cast<short>(_event->button.state);
 }
-
-void Event::Set_MouseMotionInfosFromEvent(Point& position, short& state)
+//TODO : Maybe we cn replace these 2 by only one with a proper Rect... need to check SDL doc
+void Event::Set_MouseMotionInfosFromEvent(Rect& position, short& state)
 {
-    position = Point(_event->motion.x, _event->motion.y);
+    position = Rect(_event->motion.x, _event->motion.y,0,0);
     state = static_cast<short>(_event->motion.state);
 }
 

@@ -179,10 +179,10 @@ Rect FontExtend::getSize(const std::string & text) const
     int w,h;
     int test = TTF_SizeText(_ttfstruct,text.c_str(),&w,&h);
     if (!test) //success
-        return Rect(w,h);
+        return Rect(0,0,w,h);
     //failure
     Log << nl << Optional::GetError(Optional::TTF);
-    return Rect(0,0);
+    return Rect(0,0,0,0);
 }
 
 #endif //WK_SDLTTF_FOUND

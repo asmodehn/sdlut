@@ -55,10 +55,14 @@ public:
 
 	bool render(ScreenBuffer & screen) const
     {
-		screen.blit(*red,Point(0,0));
-		screen.blit(*green,Point(0 + red->getWidth(),0));
-		screen.blit(*blue,Point(0 + red->getWidth() + green->getWidth(), 0));
-		screen.blit(*alpha,Point(0 + red->getWidth() + green->getWidth() + blue->getWidth(), 0));
+        Rect red_dst(0,0,red->getWidth(),red->getHeight());
+		screen.blit(*red,red_dst);
+		Rect green_dst(0 + red->getWidth(),0,green->getWidth(),green->getHeight());
+		screen.blit(*green,green_dst);
+		Rect blue_dst(0 + red->getWidth() + green->getWidth(), 0,blue->getWidth(),blue->getHeight());
+		screen.blit(*blue,blue_dst);
+		Rect alpha_dst(0 + red->getWidth() + green->getWidth() + blue->getWidth(), 0,alpha->getWidth(),alpha->getHeight());
+		screen.blit(*alpha,alpha_dst);
 
 		return true;
     }
