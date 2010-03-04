@@ -97,7 +97,6 @@
 /**
   * \defgroup Math
   */
-#include "Math/SDLPoint.hh"
 #include "Math/SDLRect.hh"
 
 //Build platform useful definitions

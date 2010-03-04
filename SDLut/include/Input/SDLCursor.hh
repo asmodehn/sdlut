@@ -1,7 +1,7 @@
 #ifndef SDL_CURSOR_HH
 #define SDL_CURSOR_HH
 
-#include "Math/SDLPoint.hh"
+#include "Math/SDLRect.hh"
 
 #include <stdexcept>
 
@@ -65,7 +65,7 @@ public :
     //Static Methods
     static void setCurrent (const Cursor & cur);
     static Cursor getCurrent (void);
-    static void warpCurrent (Point p);
+    static void warpCurrent (Rect p);
 
     //Methods
     void show(void); // show the current Cursor

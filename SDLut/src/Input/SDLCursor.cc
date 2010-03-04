@@ -181,7 +181,7 @@ Cursor Cursor::getCurrent (void)
     return Cursor(SDL_GetCursor());
 
 }
-void Cursor::warpCurrent (Point p)
+void Cursor::warpCurrent (Rect p)
 {
     SDL_WarpMouse((Uint16)p.getx(),(Uint16)p.gety());
     std::cout << "Mouse warped !" << std::endl;
