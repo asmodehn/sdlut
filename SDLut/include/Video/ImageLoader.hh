@@ -3,10 +3,12 @@
 
 /*******************************************************************************
  * Loads an Image from a file
+ * GLSurface are created if compilation found OpenGL
+ * otherwise RGBSurface are created.
  ******************************************************************************/
 
 #include "Video/Image.hh"
-#include "Video/SDLSurfaceLoader.hh"
+//#include "Video/SDLSurfaceLoader.hh"
 
 namespace RAGE
 {
@@ -16,7 +18,12 @@ namespace SDL
 class ImageLoader
 {
 
-    SurfaceLoader surfloader;
+    unsigned long pvm_RGBFlags;
+    // resource used in case of error during loading...
+    // because we know it works...
+    RWOps pvm_errorContent;
+    int pvm_offset;//usefull to debug RWOps
+
 
 public:
 
@@ -24,9 +31,7 @@ public:
     ImageLoader( const ImageLoader & il );
     ~ImageLoader();
 
-
     void resetFlags(bool SWSURFACE = true, bool HWSURFACE = false, bool SRCCOLORKEY = false, bool SRCALPHA = false);
-    void resetOpengl(bool ogl = false );//TODO : handle case without opengl...
 
     //creates surface from file, copying its content...
     //if an error happens, an exception is thrown.
@@ -35,9 +40,6 @@ public:
     std::auto_ptr<Image> load(std::string filename, bool no_failure = false ) throw (std::logic_error);
     std::auto_ptr<Image> load(std::string filename, const Color & colorKey, bool no_failure = false ) throw (std::logic_error);
 
-    //creates a surface from a RWOps containing a image.
-    std::auto_ptr<Image> load(RWOps & rwops) throw (std::logic_error); //TODO : add optional format
-
     //TODO : Implement those
     //To create new surface, using standard RGBFlags and masks...
     std::auto_ptr<Image> create( void * pixeldata, int depth, int pitch, int width, int height, bool no_failure = false )throw (std::logic_error);
@@ -45,7 +47,7 @@ public:
     std::auto_ptr<Image> create(int width, int height, int bpp, bool no_failure = false )throw (std::logic_error);
 
     //convert creates a new RGBSurface
-    std::auto_ptr<Image> copyconvert(const RGBSurface &, const PixelFormat & pfmt, bool no_failure = false )throw (std::logic_error);
+    std::auto_ptr<Image> copyconvert(const Image &, const PixelFormat & pfmt, bool no_failure = false )throw (std::logic_error);
 
 };
 

@@ -17,6 +17,18 @@ ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) thr
 
     setBPP ( bpp );
 
+
+//setting the required flags...
+#ifdef WK_OPENGL_FOUND
+        //OpenGL set by default
+        setOpenGL(true);
+#endif
+        //default
+        setFullscreen(false);
+        setResizable(true);
+        setNoFrame(false);
+
+
     //but beware about bpp == 0...
     if (m_bpp == 0 )
     {//0 as return code mean the current format is not supported
@@ -37,6 +49,7 @@ ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) thr
 ScreenBuffer::ScreenBuffer( const ScreenBuffer & sb )
         : m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp), fullRefreshNeeded(true),pm_manager(sb.pm_manager), m_background(sb.m_background)
 {
+    //also what about video surface flags ?
     //warning no protection offered here in case of wrong / unsupported size ( for the moment )
 }
 
@@ -104,7 +117,7 @@ bool ScreenBuffer::setResizable(bool val)
 bool ScreenBuffer::setFullscreen(bool val)
 {
 #ifdef DEBUG
-    Log << nl << "Window::setFullscreen(" << val << ") called" << std::endl;
+    Log << nl << "ScreenBuffer::setFullscreen(" << val << ") called" << std::endl;
 #endif
 
     bool res = true;
@@ -129,7 +142,7 @@ bool ScreenBuffer::setFullscreen(bool val)
     }
 
 #ifdef DEBUG
-    Log << nl << "Window::setFullscreen(" << val << ") done" << std::endl;
+    Log << nl << "ScreenBuffer::setFullscreen(" << val << ") done" << std::endl;
 #endif
     return res;
 }
@@ -152,36 +165,32 @@ bool ScreenBuffer::setNoFrame(bool val)
 #ifdef WK_OPENGL_FOUND
 bool ScreenBuffer::setOpenGL(bool val)
 {
-    bool res = true;
 
+#ifdef DEBUG
+    Log << nl << "ScreenBuffer::setOpenGL(" << val << ") called" << std::endl;
+#endif
+
+    bool res = true;
     if (!m_screen.get())
     {
-        if ( val )
-        {
-            pm_manager->enableOpenGL();
-        }
-        else
-        {
-            pm_manager->disableOpenGL();
-        }
-
+        VideoSurface::setOpenGL(val);
     }
-    else if ( m_screen->isOpenGLset() !=val ) //if called inside mainLoop while screen is active
+    else
     {
-        hide();
-
-        if ( val )
+        if (m_screen->isOpenGLset() != val ) //if called inside mainLoop while screen is active
         {
-            pm_manager->enableOpenGL();
+            hide();
+            VideoSurface::setOpenGL(val);
+            if (! show() )//resetDisplay(m_screen->getWidth(),m_screen->getHeight(),m_screen->getBPP()))
+            {
+                res=false;
+            }
         }
-        else
-        {
-            pm_manager->disableOpenGL();
-        }
-
-        if (! show() )//resetDisplay(m_screen->getWidth(),m_screen->getHeight(),m_screen->getBPP()))
-            res=false;
     }
+
+#ifdef DEBUG
+    Log << nl << "ScreenBuffer::setOpenGL(" << val << ") done" << std::endl;
+#endif
     return res;
 }
 #endif
@@ -218,8 +227,7 @@ bool ScreenBuffer::isOpenGL()
     }
     else
     {
-        //check through SDLManager
-        return pm_manager->isOpenGLEnabled();
+        return (SDL_OPENGL & VideoSurface::ptm_defaultflags ) != 0;
     }
 }
 bool ScreenBuffer::isNoFrame()
@@ -273,14 +281,12 @@ bool ScreenBuffer::show()
     //create a new screen
     try
     {
-        if ( isOpenGL() )
-        {
-            m_screen.reset(new VideoGLSurface(m_width, m_height, m_bpp));
-        }
-        else
-        {
-            m_screen.reset(new VideoSurface(m_width, m_height, m_bpp));
-        }
+        #ifdef WK_OPENGL_FOUND
+        m_screen.reset(new VideoGLSurface(m_width, m_height, m_bpp));
+        #else
+        m_screen.reset(new VideoSurface(m_width, m_height, m_bpp));
+        #endif
+
         //initializing engine
         m_engine.reset(new SDLEngine());
 
@@ -364,6 +370,9 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
     if ( m_screen->getRenderer() == OpenGL )
     {
         m_screen->refresh();
+
+        //clear just in case ( shouldnt change anything )
+        refreshlist.clear();
     }
     else
     {
@@ -380,10 +389,10 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
             m_screen->update(refreshlist);
             m_screen->update(oldlist);
             oldlist=refreshlist;
+            //clear should be done here
+            refreshlist.clear();
         }
     }
-    //clear can be done here, just in case we filled it up in OpenGL by mistake
-    refreshlist.clear();
 
 
     //Log << nl << "after :" << SDL_GetTicks() - lastframe ;
@@ -420,11 +429,11 @@ bool ScreenBuffer::fill (const Color& color, const Rect& dest_rect)
 
 bool ScreenBuffer::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)
 {
-    //optimising the surface if necessary
-    const_cast<Image&>(src).convertToDisplayFormat(m_screen->getRenderer());
+    //NOTE :
+    //conversion will be done in Video GLSurface, only if really needed to
+    //handle the VideoGL -> blit RGBSurf case. And only this one.
 
-    //careful... we need double polymorphism here in the end...
-    m_screen.get()->blit( *(src.m_img) , dest_rect, src_rect );
+    m_screen->blit( *(src.m_img) , dest_rect, src_rect );
 
     // adding recangle to the list of rectangle to refresh
     refreshlist.push_back(dest_rect);

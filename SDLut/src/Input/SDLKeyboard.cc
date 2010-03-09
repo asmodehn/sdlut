@@ -204,7 +204,8 @@ bool DefaultKeyboard::handleKeyEvent (const Sym &s, bool pressed)
         break;
     case Key_F11: //F11 toggles fullscreen
         if (pressed==true)
-            App::getInstance().getDisplay().setFullscreen(!App::getInstance().getDisplay().isFullscreen());
+            App::getInstance().getDisplay().getScreenBuffer().setFullscreen(
+                !App::getInstance().getDisplay().getScreenBuffer().isFullscreen());
         res = true;
         break;
     default:

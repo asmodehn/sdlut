@@ -122,7 +122,7 @@ public:
 
     ///Initializing Video
     ///this is mandatory to get a display and event handling (window manager, mouse, keyboard)
-    bool initVideo(bool fullscreen = false,bool opengl = false,  bool resizable = true, bool noframe = false);
+    bool initVideo(bool fullscreen = false,  bool resizable = true, bool noframe = false);
 
     ///Initializing Joystick-like inputs
     ///this is mandatory to get joystick event handling

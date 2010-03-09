@@ -260,15 +260,29 @@ public:
 int main(int argc, char** argv)
 {
 //BUG: first pass smileys (the first 2 ones) are not cleared after init nor resize
-	bool ogl = false;
-	if (argc > 1 && std::string(argv[1]) == "opengl" ) ogl = true;
+// only in SDL it seems
+
+#ifdef WK_OPENGL_FOUND
+	bool ogl = true;
+	if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
+#else
+    bool ogl = false;
+#endif
+
 
     //Starting with usual SDL window
-    App::getInstance().initVideo(false,ogl,true,false);
+    App::getInstance().initVideo(false,true,false);
 	App::getInstance().setName ("RAGE::SDL test Scene and refresh strategy");
+
 
     //Setting Display size and BPP
     App::getInstance().getDisplay().setDisplay(800,600); // using autodetected bpp
+
+    //TOFIX
+    if (argc > 1 && std::string(argv[1]) == "nogl" )
+    {
+        App::getInstance().getDisplay().getScreenBuffer().setOpenGL(false);
+    }
 
 	std::auto_ptr<MyEngine> engine(new MyEngine(800,600));
 

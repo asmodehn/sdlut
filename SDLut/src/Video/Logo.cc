@@ -1,6 +1,5 @@
 #include "Video/Logo.hh"
 
-#include "Video/SDLSurfaceLoader.hh"
 #include "SDLConfig.hh"
 
 #include "SDLResources.inc"
@@ -24,16 +23,14 @@ void Logo::resizerender(int renderwidth, int renderheight)
 //loading the default RGBSurface from the Resources as logo
 Logo::Logo()
 {
-
-    //TODO : OpenGL or not strategy should be defined...
-    SurfaceLoader loader;
-#ifdef WK_OPENGL_FOUND
-    loader.resetOpengl(true);
-#endif
     try
     {
         RWOps _iconres( _defaultImage,sizeof(_defaultImage) );
-        m_logo = loader.load( _iconres );
+        #ifdef WK_OPENGL_FOUND
+        m_logo.reset(new GLSurface( _iconres ));
+        #else
+        m_logo.reset(new RGBSurface( _iconres ));
+        #endif
     }
     catch (std::exception &)
     {
@@ -51,15 +48,23 @@ Logo::~Logo()
 
 void Logo::setLogoImage( const RGBSurface & mylogo )
 {
+    //we copy the image
+    #ifdef WK_OPENGL_FOUND
+    GLSurface* newlogo = new GLSurface(mylogo);
+    #else
     RGBSurface* newlogo = new RGBSurface(mylogo);
+    #endif
     m_logo.reset(newlogo);
 }
 
 
 //this render function should not modify the engine
+#ifdef WK_OPENGL_FOUND
+bool Logo::render(VideoGLSurface & screen) const
+#else
 bool Logo::render(VideoSurface & screen) const
+#endif
 {
-    //TODO : manage resize proportionally to the screen size
     Rect dest( screen.getWidth() - m_logo->getWidth(), screen.getHeight() - m_logo->getHeight(), m_logo->getWidth(), m_logo->getHeight());
     bool res = screen.blit(*m_logo,dest);
 

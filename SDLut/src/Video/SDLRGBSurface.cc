@@ -117,6 +117,24 @@ catch (std::exception &e)
     //TODO : much more explicit error message...
 }
 
+RGBSurface::RGBSurface(RWOps& rwops) throw (std::logic_error)
+#ifdef WK_SDLIMAGE_FOUND
+try : BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0)), optimised(false)
+#else
+try : BaseSurface(SDL_LoadBMP_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0)), optimised(false)
+#endif
+{
+        //We put back the RWOps read cursor at the beginning ( needed after load... )
+        rwops.seek(0,RWOps::Set);
+
+    }
+    catch (std::exception &e)
+    {
+        Log << "Exception catched in RGBSurface Constructor !!!" << nl <<
+        e.what() << nl << GetError() ;
+        //TODO : much more explicit error message...
+    }
+
 
 
 RGBSurface::RGBSurface(const RGBSurface & s ) throw (std::logic_error)
@@ -139,6 +157,7 @@ catch (std::exception &e)
     e.what() << nl << GetError() << std::endl;
 }
 
+
 RGBSurface& RGBSurface::operator=(const RGBSurface& s)
 {
     if (this != &s)
@@ -148,6 +167,7 @@ RGBSurface& RGBSurface::operator=(const RGBSurface& s)
     return *this;
 }
 
+/*
 RGBSurface::RGBSurface(const BaseSurface & s ) throw (std::logic_error)
 try :
     BaseSurface(s)
@@ -167,7 +187,30 @@ catch (std::exception &e)
     Log << nl << "Exception catched in RGBSurface Conversion Constructor !!!" << nl <<
     e.what() << nl << GetError() << std::endl;
 }
+*/
+/*
+RGBSurface::RGBSurface(std::auto_ptr<BaseSurface> s ) throw (std::logic_error)
+try :
+    BaseSurface(s)
+{
+#ifdef DEBUG
+    Log << nl << "RGBSurface::RGBSurface(" << s << ") called.";
+#endif
 
+#ifdef DEBUG
+
+    Log << nl << "RGBSurface::RGBSurface(" << s << ") done -> " << ptm_surf.get() << " created.";
+#endif
+
+}
+catch (std::exception &e)
+{
+    Log << nl << "Exception catched in RGBSurface Conversion Constructor !!!" << nl <<
+    e.what() << nl << GetError() << std::endl;
+}
+*/
+
+/*
 RGBSurface& RGBSurface::operator=(const BaseSurface& s)
 {
     if (this != &s)
@@ -176,6 +219,7 @@ RGBSurface& RGBSurface::operator=(const BaseSurface& s)
     }
     return *this;
 }
+*/
 
 bool RGBSurface::setColorKeyAndAlpha(const Color & key, bool rleAccel)
 {

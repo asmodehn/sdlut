@@ -16,9 +16,9 @@ namespace SDL
 
 FontExtend::FontExtend(std::string filename, int ptsize, long index) throw (std::logic_error)
 try :
-    FontImpl(), ptsize(ptsize), index(index),pvm_OriginalData(new RWOps(filename.c_str(), "rb")),_ttfstruct(TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index))
+    FontImpl(), ptsize(ptsize), index(index),pvm_OriginalData(new RWOps(filename.c_str(), "rb")),pvm_ttfstruct(TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index))
 {
-    if (_ttfstruct == NULL)
+    if (pvm_ttfstruct == NULL)
     {
         throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
     }
@@ -31,13 +31,14 @@ catch (std::exception& e)
     //TODO : much more explicit error message...
 }
 
-FontExtend::FontExtend(const FontExtend & font)
+FontExtend::FontExtend(const FontExtend & font)  throw (std::logic_error)
 try :
-    FontImpl(font), ptsize(font.ptsize), index(font.index), pvm_OriginalData(font.pvm_OriginalData.get() !=0 ? new RWOps(*font.pvm_OriginalData) : 0),_ttfstruct(0)
+    FontImpl(font), ptsize(font.ptsize), index(font.index), pvm_OriginalData(font.pvm_OriginalData.get() !=0 ? new RWOps(*font.pvm_OriginalData) : 0),pvm_ttfstruct(0)
 {
-    _ttfstruct = TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index);
-    if (_ttfstruct == 0)
+    pvm_ttfstruct = TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index);
+    if (pvm_ttfstruct == 0)
     {
+        Log << nl << pvm_OriginalData->get_pSDL();
         throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
     }
     pvm_OriginalData->seek(0,RWOps::Set);
@@ -49,9 +50,25 @@ catch (std::exception& e)
     //TODO : much more explicit error message...
 }
 
+
+FontExtend & FontExtend::operator=(const FontExtend & font) throw (std::logic_error)
+{
+    FontImpl::operator=(font);
+    ptsize = font.ptsize;
+    index = font.index;
+    pvm_OriginalData.reset(font.pvm_OriginalData.get() !=0 ? new RWOps(*font.pvm_OriginalData) : 0 );
+    pvm_ttfstruct = TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index);
+    pvm_OriginalData->seek(0,RWOps::Set);
+    if (pvm_ttfstruct == 0)
+    {
+        throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
+    }
+        return *this;
+}
+
 FontExtend::~FontExtend()
 {
-    TTF_CloseFont(_ttfstruct);
+    TTF_CloseFont(pvm_ttfstruct);
 }
 
 std::auto_ptr<RGBSurface> FontExtend::render(const std::string& text, Color c, Color bgc, Font::RenderMode mode) const
@@ -60,14 +77,14 @@ std::auto_ptr<RGBSurface> FontExtend::render(const std::string& text, Color c, C
     switch ( mode )
     {
     case Font::Blended :
-        surf.reset(TTF_RenderText_Blended(_ttfstruct,text.c_str(), c.get_SDL()));
+        surf.reset(TTF_RenderText_Blended(pvm_ttfstruct,text.c_str(), c.get_SDL()));
         break;
     case Font::Shaded :
-        surf.reset(TTF_RenderText_Shaded(_ttfstruct,text.c_str(),c.get_SDL(), bgc.get_SDL()));
+        surf.reset(TTF_RenderText_Shaded(pvm_ttfstruct,text.c_str(),c.get_SDL(), bgc.get_SDL()));
         break;
     case Font::Solid :
     default:
-        surf.reset(TTF_RenderText_Solid(_ttfstruct,text.c_str(), c.get_SDL()));
+        surf.reset(TTF_RenderText_Solid(pvm_ttfstruct,text.c_str(), c.get_SDL()));
         break;
     }
 
@@ -93,7 +110,7 @@ void FontExtend::byteSwapUNICODE(bool swapped)
 
 Font::Style FontExtend::getStyle()
 {
-    switch (TTF_GetFontStyle(_ttfstruct))
+    switch (TTF_GetFontStyle(pvm_ttfstruct))
     {
     case TTF_STYLE_NORMAL :
         return Font::Normal;
@@ -116,16 +133,16 @@ void FontExtend::setStyle(Font::Style s)
     switch (s)
     {
     case Font::Normal :
-        TTF_SetFontStyle(_ttfstruct,TTF_STYLE_NORMAL);
+        TTF_SetFontStyle(pvm_ttfstruct,TTF_STYLE_NORMAL);
         break;
     case Font::Bold :
-        TTF_SetFontStyle(_ttfstruct,TTF_STYLE_BOLD);
+        TTF_SetFontStyle(pvm_ttfstruct,TTF_STYLE_BOLD);
         break;
     case Font::Italic :
-        TTF_SetFontStyle(_ttfstruct,TTF_STYLE_ITALIC);
+        TTF_SetFontStyle(pvm_ttfstruct,TTF_STYLE_ITALIC);
         break;
     case Font::Underline :
-        TTF_SetFontStyle(_ttfstruct,TTF_STYLE_UNDERLINE);
+        TTF_SetFontStyle(pvm_ttfstruct,TTF_STYLE_UNDERLINE);
         break;
     case Font::Default : //TODO : Implement using parent class
     default :
@@ -136,48 +153,48 @@ void FontExtend::setStyle(Font::Style s)
 
 int FontExtend::height()
 {
-    return TTF_FontHeight(_ttfstruct);
+    return TTF_FontHeight(pvm_ttfstruct);
 }
 
 int FontExtend::ascent()
 {
-    return TTF_FontAscent(_ttfstruct);
+    return TTF_FontAscent(pvm_ttfstruct);
 }
 
 int FontExtend::descent()
 {
-    return TTF_FontDescent(_ttfstruct);
+    return TTF_FontDescent(pvm_ttfstruct);
 }
 
 int FontExtend::lineskip()
 {
-    return TTF_FontLineSkip(_ttfstruct);
+    return TTF_FontLineSkip(pvm_ttfstruct);
 }
 
 long FontExtend::faces()
 {
-    return TTF_FontFaces(_ttfstruct);
+    return TTF_FontFaces(pvm_ttfstruct);
 }
 
 bool FontExtend::faceIsFixedWidth()
 {
-    return TTF_FontFaceIsFixedWidth(_ttfstruct) != 0 ;
+    return TTF_FontFaceIsFixedWidth(pvm_ttfstruct) != 0 ;
 }
 
 std::string FontExtend::faceFamilyName()
 {
-    return std::string( TTF_FontFaceFamilyName(_ttfstruct) );
+    return std::string( TTF_FontFaceFamilyName(pvm_ttfstruct) );
 }
 
 std::string FontExtend::faceStyleName()
 {
-    return std::string( TTF_FontFaceStyleName(_ttfstruct) );
+    return std::string( TTF_FontFaceStyleName(pvm_ttfstruct) );
 }
 
 Rect FontExtend::getSize(const std::string & text) const
 {
     int w,h;
-    int test = TTF_SizeText(_ttfstruct,text.c_str(),&w,&h);
+    int test = TTF_SizeText(pvm_ttfstruct,text.c_str(),&w,&h);
     if (!test) //success
         return Rect(0,0,w,h);
     //failure

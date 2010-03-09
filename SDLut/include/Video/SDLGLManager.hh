@@ -34,6 +34,30 @@ namespace SDL
 //Howto use glSDL( planned in SDL from SDL 1.3) : http://icps.u-strasbg.fr/~marchesin/sdl/glsdl.html
 //GOOD STUFF TO ADD AT http://steinsoft.net
 
+
+/***************************************************************
+ * OpenGL / vs / SDL  => a strategy                            *
+ *                                                             *
+ * Compiled w/o OpenGL : only SDL classes compiled.            *
+ * -> No OpenGL option available at all                        *
+ *                                                             *
+ * Compiled w/ OpenGL : SDL + GL classes compiled.             *
+ * -> GL classes used. Can revert back to original SDL         *
+ * behavior as GLclass derivate from SDLclass                  *
+ * if opengl not chosen -> revert back to original SDL         *
+ *                                                             *
+ * dynload : if opengl not available ( no dll, etc. )          *
+ * -> revert back                                              *
+ *                                                             *
+ * Pb : One central option manager, accessible by all to       *
+ * say which renderer is used. => Manager -> TODO...           *
+ ***************************************************************
+ */
+
+
+
+
+
 //This may be useless in Windows....
 //TEst to do on linux, to choose a class behaviour
 class GLManager

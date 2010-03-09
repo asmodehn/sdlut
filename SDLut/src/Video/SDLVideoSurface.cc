@@ -167,15 +167,7 @@ std::auto_ptr <std::list <std::pair <int, int> > > VideoSurface::Get_Resolution_
 
 bool VideoSurface::refresh(void)
 {
-#ifdef WK_OPENGL_FOUND
-    if (isOpenGLset())
-    {
-        SDL_GL_SwapBuffers();
-        return true;
-    }
-    else
-#endif //WK_OPENGL_FOUND
-        return SDL_Flip(ptm_surf.get()) == 0;
+     return SDL_Flip(ptm_surf.get()) == 0;
 }
 
 //TODO : rethink about that again...( recopy the content if 2D or not at all ??? )

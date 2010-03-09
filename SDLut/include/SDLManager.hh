@@ -40,7 +40,6 @@ class Manager
     friend class App;
 
 protected:
-    bool m_opengl;
 
     Manager(bool video = false, bool audio = false, bool timer = false, bool cdrom = false, bool joystick = false, bool noparachute = false, bool eventthread = false) throw (std::logic_error);
 
@@ -77,18 +76,11 @@ public:
     bool isNoParachuteEnabled(void) const;
     bool isEventThreadEnabled(void) const;
 
-    //this is aiming at becoming the library reference for whether or not
-    // the openGL rendering has been activated or not.
-    //we should use this class also as a SDL specific settings holder...
-    bool enableOpenGL(void) const;
-    bool disableOpenGL(void) const;
-    bool isOpenGLEnabled(void) const;
-    //Used to be in Screenbuffer... probably need to do the same for other VideoSuface settings
-
     //display all Informations
     friend Logger & operator << (Logger & log, const Manager & man);
 
 };
+
 }
 }//namespace RAGE::SDL
 #endif

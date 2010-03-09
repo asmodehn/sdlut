@@ -51,7 +51,12 @@ class ScreenBuffer
 
 protected:
     VideoInfo m_videoinfo;
+    #ifdef WK_OPENGL_FOUND
+    std::auto_ptr<VideoGLSurface> m_screen;
+    #else
     std::auto_ptr<VideoSurface> m_screen;
+    #endif
+
 
     bool fullRefreshNeeded;
 

@@ -6,7 +6,7 @@
 
 namespace globals
 {
-    gcn::Gui* gui;
+gcn::Gui* gui;
 }
 #include "widgets.hpp"
 
@@ -30,49 +30,49 @@ public:
     bool handleKeyEvent (const Sym &s, bool pressed)
     {
         bool res = false;
-            switch( s.getKey() )
+        switch ( s.getKey() )
+        {
+        case Key_Escape: //Quit
+            if (!pressed)
             {
-                case Key_Escape: //Quit
-					if (!pressed)
-					{
-						logger << nl << "Quit requested !" << std::endl;
-						App::getInstance().requestTermination();
-						res=true;
-					}
-					break;
-
-                case Key_F5: //iconify
-					if (pressed)
-						App::getInstance().getDisplay().getWindow().iconify();
-					res = true;
-					break;
-
-				case Key_F6: //FullScreen
-					if (pressed)
-					{
-						App::getInstance().getDisplay().resizeDisplay(640, 480);
-						App::getInstance().getDisplay().setFullscreen(!App::getInstance().getDisplay().isFullscreen());
-					}
-					res = true;
-					break;
-                
-				default:
-					res = false;
+                logger << nl << "Quit requested !" << std::endl;
+                App::getInstance().requestTermination();
+                res=true;
             }
-		
-		/*
+            break;
+
+        case Key_F5: //iconify
+            if (pressed)
+                App::getInstance().getDisplay().getWindow().iconify();
+            res = true;
+            break;
+
+        case Key_F6: //FullScreen
+            if (pressed)
+            {
+                App::getInstance().getDisplay().resizeDisplay(640, 480);
+                App::getInstance().getDisplay().getScreenBuffer().setFullscreen(!App::getInstance().getDisplay().getScreenBuffer().isFullscreen());
+            }
+            res = true;
+            break;
+
+        default:
+            res = false;
+        }
+
+        /*
          * Now that we are done polling and using SDLut events we pass
          * the leftovers to the SDLutInput object to later be handled by
          * the Gui. (This example doesn't require us to do this coz there
-		 * is nothing to handle key input but will do it anyway to show
-		 * how to set up an SDLut application with Guichan.)
+         * is nothing to handle key input but will do it anyway to show
+         * how to set up an SDLut application with Guichan.)
         */
-		if (!res)
-		{
-			input->pushInput(s, pressed);
-			res = true;
-		}
-	
+        if (!res)
+        {
+            input->pushInput(s, pressed);
+            res = true;
+        }
+
         return res;
     }
 };
@@ -82,31 +82,31 @@ class MouseInput : public Mouse
 {
 public:
 
-	bool handleMouseButtonEvent (Button button, unsigned int x, unsigned int y, bool pressed)
-	{
-		bool res = false;
+    bool handleMouseButtonEvent (Button button, unsigned int x, unsigned int y, bool pressed)
+    {
+        bool res = false;
 
-		if (!res)
-		{
-			input->pushInput(button, x, y, pressed);
-			res = true;
-		}
+        if (!res)
+        {
+            input->pushInput(button, x, y, pressed);
+            res = true;
+        }
 
-		return res;
-	}
+        return res;
+    }
 
-	bool handleMouseMotionEvent (bool button_pressed, unsigned int x, unsigned int y, signed int xrel, signed int yrel)
-	{
-		bool res = false;
+    bool handleMouseMotionEvent (bool button_pressed, unsigned int x, unsigned int y, signed int xrel, signed int yrel)
+    {
+        bool res = false;
 
-		if (!res)
-		{
-			input->pushInput(x, y, xrel, yrel, button_pressed);
-			res = true;
-		}
+        if (!res)
+        {
+            input->pushInput(x, y, xrel, yrel, button_pressed);
+            res = true;
+        }
 
-		return res;
-	}
+        return res;
+    }
 
 };
 
@@ -115,39 +115,39 @@ class RenderEngine
 
 public:
 
-	RenderEngine(){}
+    RenderEngine() {}
 
-    virtual ~RenderEngine(){}
-			
+    virtual ~RenderEngine() {}
+
     bool init(int width, int height)
-	{
-		return true;
-	}
-
-	bool resize(int width, int height)
-	{
-		gui->getTop()->setDimension(gcn::Rectangle(0, 0, width, height));
-		return true;
-	}
-
-	bool prerender( unsigned long framerate, unsigned long deltaticks)
-	{
-		//Check Gui Logic
-		gui->logic();
-
-		return true;
-	}
-
-	bool render(ScreenBuffer& screen) const
     {
-		// Set the target for the graphics object to be the screen.
-		// In other words, we will draw to the screen.
-		graphics->setTarget(&screen);
+        return true;
+    }
 
-		//Draw The Gui
-		gui->draw();
+    bool resize(int width, int height)
+    {
+        gui->getTop()->setDimension(gcn::Rectangle(0, 0, width, height));
+        return true;
+    }
 
-		return true;
+    bool prerender( unsigned long framerate, unsigned long deltaticks)
+    {
+        //Check Gui Logic
+        gui->logic();
+
+        return true;
+    }
+
+    bool render(ScreenBuffer& screen) const
+    {
+        // Set the target for the graphics object to be the screen.
+        // In other words, we will draw to the screen.
+        graphics->setTarget(&screen);
+
+        //Draw The Gui
+        gui->draw();
+
+        return true;
     }
 };
 
@@ -157,22 +157,22 @@ RenderEngine myEngine;
 
 void init(bool ogl = false)
 {
-	logger.enableFileLog("Example.Log");
+    logger.enableFileLog("Example.Log");
 
-	App::getInstance().setName("Example");
+    App::getInstance().setName("Example");
 
-	if (! App::getInstance().initVideo(false, ogl, true, false) )
-		throw std::logic_error( "Init Video Failed: " + GetError() );
+    if (! App::getInstance().initVideo(false, true, false) )
+        throw std::logic_error( "Init Video Failed: " + GetError() );
 
-	//Initialize SDL_ttf (for sdlut only)
-	if (!ogl)
-	{		
-		if (! App::getInstance().initText())
-			throw std::logic_error( "TTF Init Failed: " + GetError() );
-	}
+    //Initialize SDL_ttf (for sdlut only)
+    if (!ogl)
+    {
+        if (! App::getInstance().initText())
+            throw std::logic_error( "TTF Init Failed: " + GetError() );
+    }
 
-	if (! App::getInstance().getDisplay().setDisplay(640, 480, 32)  )
-		throw std::logic_error( "Create Surface Failed: " + GetError() );
+    if (! App::getInstance().getDisplay().setDisplay(640, 480, 32)  )
+        throw std::logic_error( "Create Surface Failed: " + GetError() );
 
 
 }
@@ -183,61 +183,61 @@ void implement(bool ogl = false)
 //GuiChan SDLuT Stuff
     imageLoader = new gcn::SDLutImageLoader();
 
-	graphics = new gcn::SDLutGraphics();
-    
+    graphics = new gcn::SDLutGraphics();
+
 //Gui Initialization
     gui = new gcn::Gui();
-	gcn::Image::setImageLoader(imageLoader);
-	gui->setGraphics(graphics);
+    gcn::Image::setImageLoader(imageLoader);
+    gui->setGraphics(graphics);
 
-	input = new gcn::SDLutInput();
+    input = new gcn::SDLutInput();
     gui->setInput(input);
 
-	// Load the TTF font (for sdlut only)
+    // Load the TTF font (for sdlut only)
     if (!ogl)
-	{
-		font = new gcn::SDLutFont("SlimSansSerif.ttf", 13, RAGE::SDL::Font::Blended );
-	}
-    
-	//initWidgets();
-	widgets::init();
+    {
+        font = new gcn::SDLutFont("SlimSansSerif.ttf", 13, RAGE::SDL::Font::Blended );
+    }
 
-	// Clean old widgets::font (for sdlut only)
-	if (!ogl)
-	{
-		delete widgets::font, widgets::font = NULL;
-		// The global font is static and must be set.
-		gcn::Widget::setGlobalFont(font);
-	}
+    //initWidgets();
+    widgets::init();
+
+    // Clean old widgets::font (for sdlut only)
+    if (!ogl)
+    {
+        delete widgets::font, widgets::font = NULL;
+        // The global font is static and must be set.
+        gcn::Widget::setGlobalFont(font);
+    }
 
 //SDLuT Stuff
-	myKeyboardInput = new KeyboardInput();
-	App::getInstance().getDisplay().getEventManager().setKeyboard(myKeyboardInput);
+    myKeyboardInput = new KeyboardInput();
+    App::getInstance().getDisplay().getEventManager().setKeyboard(myKeyboardInput);
 
-	myMouseInput = new MouseInput();
-	App::getInstance().getDisplay().getEventManager().setMouse(myMouseInput);
+    myMouseInput = new MouseInput();
+    App::getInstance().getDisplay().getEventManager().setMouse(myMouseInput);
 
-	App::getInstance().getDisplay().resetInitCallback(myEngine,&RenderEngine::init);
-	App::getInstance().getDisplay().resetResizeCallback(myEngine,&RenderEngine::resize);
-	App::getInstance().getDisplay().resetNewFrameCallback(myEngine,&RenderEngine::prerender);
-	App::getInstance().getDisplay().resetRenderCallback(myEngine,&RenderEngine::render);
+    App::getInstance().getDisplay().resetInitCallback(myEngine,&RenderEngine::init);
+    App::getInstance().getDisplay().resetResizeCallback(myEngine,&RenderEngine::resize);
+    App::getInstance().getDisplay().resetNewFrameCallback(myEngine,&RenderEngine::prerender);
+    App::getInstance().getDisplay().resetRenderCallback(myEngine,&RenderEngine::render);
 }
 
 void clean()
 {
-	delete globals::gui, globals::gui = NULL;
-	delete font, font = NULL;
+    delete globals::gui, globals::gui = NULL;
+    delete font, font = NULL;
 
-	widgets::halt();
-	if (widgets::image != NULL)
-		delete widgets::image, widgets::image = NULL;
+    widgets::halt();
+    if (widgets::image != NULL)
+        delete widgets::image, widgets::image = NULL;
 
     delete input, input = NULL;
     delete graphics, graphics = NULL;
     delete imageLoader, imageLoader = NULL;
 
-	delete myKeyboardInput, myKeyboardInput = NULL;
-	delete myMouseInput, myMouseInput = NULL;
+    delete myKeyboardInput, myKeyboardInput = NULL;
+    delete myMouseInput, myMouseInput = NULL;
 }
 
 int main(int argc, char **argv)
@@ -245,41 +245,41 @@ int main(int argc, char **argv)
     try
     {
         if ( argc > 1 && std::string(argv[1]) == "opengl" )
-		{
-			std::cout << "YEAH OpenGL" << std::endl;
-			init(true);			
-			implement(true);
-		}
-		else
-		{
-			std::cout << "BOUH No OpenGL" << std::endl;
-			init();
-			implement();
-		}
+        {
+            std::cout << "YEAH OpenGL" << std::endl;
+            init(true);
+            implement(true);
+        }
+        else
+        {
+            std::cout << "BOUH No OpenGL" << std::endl;
+            init();
+            implement();
+        }
 
-		if(App::getInstance().getDisplay().show())
-		{
-		   App::getInstance().getDisplay().mainLoop(100,100);
-		}
+        if (App::getInstance().getDisplay().show())
+        {
+            App::getInstance().getDisplay().mainLoop(100,100);
+        }
 
         clean();
     }
     catch (gcn::Exception e)
     {
         logger << nl << e.getMessage() << std::endl;
-		Delay(2000);
+        Delay(2000);
         return 1;
     }
     catch (std::exception exc)
     {
         logger << nl << exc.what() << std::endl;
-		Delay(2000);
+        Delay(2000);
         return 1;
     }
     catch (...)
     {
         logger << nl << "Unknown exception" << std::endl;
-		Delay(2000);
+        Delay(2000);
         return 1;
     }
 

@@ -105,7 +105,7 @@ bool App::initTimer()
 
 }
 
-bool App::initVideo( bool fullscreen,bool opengl, bool resizable, bool noframe)
+bool App::initVideo( bool fullscreen, bool resizable, bool noframe)
 {
     bool res = false;
     try
@@ -122,26 +122,16 @@ bool App::initVideo( bool fullscreen,bool opengl, bool resizable, bool noframe)
 
         pvm_display.reset(new Display(pvm_name, pvm_manager.get()));//manager now contains also the SDL specific settings
 
-
-        //setting the required flags...
-#ifdef WK_OPENGL_FOUND
-
-        pvm_display->setOpenGL(opengl);
-#else
-
-        if (opengl)
-            Log << nl << "Not compiled with opengl support --> Ignoring opengl window request"<< std::endl;
-#endif
-
-        pvm_display->setFullscreen(fullscreen);
-        pvm_display->setResizable(resizable);
-        pvm_display->setNoFrame(noframe);
+        pvm_display->getScreenBuffer().setFullscreen(fullscreen);
+        pvm_display->getScreenBuffer().setResizable(resizable);
+        pvm_display->getScreenBuffer().setNoFrame(noframe);
 
     }
     catch (std::exception &e)
     {
         Log << nl << "Exception caught : " << e.what() << std::endl;
         Log << nl << "FATAL ERROR : InitVideo failed... Exiting" << std::endl;
+        //TODO : retry without opengl if opengl was enabled
         exit (1);
     }
     return res;

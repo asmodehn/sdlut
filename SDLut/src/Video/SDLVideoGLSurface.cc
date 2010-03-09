@@ -5,6 +5,11 @@
 
 //#define DEBUG 2
 
+#ifndef min
+#define min( a , b )  ( (a)>(b) )?(b):(a)
+#endif
+
+
 namespace RAGE
 {
 namespace SDL
@@ -20,8 +25,12 @@ try
     Log << nl << "VideoGLSurface::VideoGLSurface() called ...";
 #endif
 
-    //Setting up the GL Viewport
-    glViewport(0,0,(GLsizei)getWidth(),(GLsizei)getHeight());
+    //mandatory, because VideoGLSurface might not be have GL enabled...
+    if ( isOpenGLset() )
+    {
+        //Setting up the GL Viewport
+        glViewport(0,0,(GLsizei)getWidth(),(GLsizei)getHeight());
+    }
 
     if (!initialized())
     {
@@ -47,39 +56,62 @@ VideoGLSurface::~VideoGLSurface()
 //Useless in OpenGL
 bool VideoGLSurface::update(Rect r)
 {
-    return true;
+    if ( isOpenGLset())
+    {
+        return true;
+    }
+    else
+    {
+        return VideoSurface::update(r);
+    }
 }
 
 //Useless in OpenGL
 bool VideoGLSurface::update(std::vector<Rect> rlist)
 {
-    return true;
+
+    if ( isOpenGLset())
+    {
+        return true;
+    }
+    else
+    {
+        return VideoSurface::update(rlist);
+    }
 }
 
 
 bool VideoGLSurface::refresh(void)
 {
-    //This should always be true...
-    //if (isOpenGLset())
-    //{
-    SDL_GL_SwapBuffers();
-    return true;
-    //}
-    //else
-    //	return SDL_Flip(_surf.get()) == 0;
+    if (isOpenGLset())
+    {
+        SDL_GL_SwapBuffers();
+        return true;
+    }
+    else
+    	return VideoSurface::refresh();
 }
 
 
 Color VideoGLSurface::getpixel(int x, int y)
 {
+    Color color;
+    if ( isOpenGLset() )
+    {
+
     unsigned char pixel[4];
     glReadPixels(x, y, 1, 1, GL_RGBA, GL_BYTE, &pixel);
 
 #if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
-    Color color(pixel[3], pixel[2], pixel[1], pixel[0]);
+    color = Color(pixel[3], pixel[2], pixel[1], pixel[0]);
 #else
-    Color color(pixel[0], pixel[1], pixel[2], pixel[3]);
+    color = Color(pixel[0], pixel[1], pixel[2], pixel[3]);
 #endif
+    }
+    else
+    {
+        color = VideoSurface::getpixel(x,y);
+    }
     return color;
 }
 
@@ -90,6 +122,8 @@ void VideoGLSurface::setpixel(int x, int y, Color color)
     Log << nl << "VideoGLSurface::setpixel ( " << x << ", "<< y << ", " << color << ") called...";
 #endif
 
+    if ( isOpenGLset() )
+    {
     //render it
     //2D Rendering
 
@@ -121,6 +155,11 @@ void VideoGLSurface::setpixel(int x, int y, Color color)
     {
         glDisable(GL_ALPHA_TEST);
         glDisable(GL_BLEND);
+    }
+    }
+    else
+    {
+        VideoSurface::setpixel(x,y,color);
     }
 
 #if (DEBUG == 2)
@@ -170,9 +209,11 @@ bool VideoGLSurface::resize(int width, int height, bool keepcontent)
         }
         ptm_surf=newSurf;
 
-    //Setting up the GL Viewport
-    glViewport(0,0,(GLsizei)getWidth(),(GLsizei)getHeight());
-
+    if(isOpenGLset())
+    {
+        //Setting up the GL Viewport
+        glViewport(0,0,(GLsizei)getWidth(),(GLsizei)getHeight());
+    }
 
 #ifdef DEBUG
         Log << nl << "VideoGLSurface::resize(" << width << ", " << height << ") succeeded.";
@@ -190,21 +231,68 @@ bool VideoGLSurface::resize(int width, int height, bool keepcontent)
 bool VideoGLSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect)
 {
 #if (DEBUG == 2)
-    Log << nl << "VideoGLSurface::blit (const RGBSurface& src," << dest_rect << ", " << src_rect << ") called...";
+    Log << nl << "VideoGLSurface::blit ( RGBSurface& src," << dest_rect << ", " << src_rect << ") called...";
 #endif
-    bool success = false;
-
+bool res = false;
+if(isOpenGLset())
+{
+    GLSurface* glsrc;
     try
     {
+        Log << nl << "Surface wasnt recognized as a GLSurface !!! Forcing conversion" ;
         //Test if src is a GLSurface
         // RGB / GL surface difference has to be hidden from client,
         // but rendering speed should remain optimum...
-        GLSurface& glsrc = dynamic_cast<GLSurface&>(src);
-
-        glsrc.saveBMP("testing.bmp");
-
+        glsrc = &(dynamic_cast<GLSurface&>(src));
         //optimisation tricks
-        //TODO :  the conversion to texture should be done just after modification (as a customisable default), as render must remain optimum,
+        //TODO :  the conversion to texture should be done just after every modification (as a customisable default), as render must remain optimum,
+        // only the emergency conversion to display format is useful here. Maybe even not...
+    }
+    catch (std::bad_cast& bc)
+    {
+        //If not convert it
+        Log << " bad_cast caught: Surface wasnt a GLSurface. " << bc.what() ;
+        Log << " Creating GLSurface for rendering..." ;
+
+        glsrc = new GLSurface(src);
+        //no modification to handle here : GLSurf is brand new
+
+    }
+
+    src = *glsrc;//updating original
+
+
+    res= blit(*glsrc,dest_rect,src_rect);
+}
+else
+{
+    res= VideoSurface::blit(src,dest_rect,src_rect);
+}
+
+
+
+#if (DEBUG == 2)
+    Log << nl << "VideoGLSurface::blit (RGBSurface& src," << dest_rect << ", " << src_rect << ") done.";
+#endif
+
+return res;
+}
+
+//Blit src into the current surface.
+bool VideoGLSurface::blit (GLSurface& glsrc, Rect& dest_rect, const Rect& src_rect)
+{
+    #if (DEBUG == 2)
+    Log << nl << "VideoGLSurface::blit (GLSurface& src," << dest_rect << ", " << src_rect << ") called...";
+#endif
+
+//For safety
+//if OpenGL is not set
+if ( ! isOpenGLset() )
+{
+    return VideoSurface::blit(glsrc,dest_rect,src_rect);
+}
+
+        //TODO :  the conversion to texture should be done just after every modification (as a customisable default), as render must remain optimum,
         // only the emergency conversion to display format is useful here. Maybe even not...
         if ( glsrc.modified )
         {
@@ -212,15 +300,17 @@ bool VideoGLSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rec
             glsrc.convertPixels();
             glsrc.optimised = false; // to trigger regeneration of texture if needed
         }
+
         if ( ! glsrc.optimised )
         {
-            //if not converted to display format already,
-            //or if the surface has changed since last blit,
-            //then convert it now (optimisation)
-            //TODO : find a way to do that without impacting rendering speed...
-            glsrc.convertToDisplayFormat();
+                //generate the GL texture if needed
+                glsrc.convertToDisplayFormat();
         }
 
+        //in case the dest_rect is of different size than src_rect, we need to avoid scaling
+        // of the texture by opengl
+        dest_rect.resetw( min ( dest_rect.getw(), src_rect.getw()) );
+        dest_rect.reseth( min ( dest_rect.geth(), src_rect.geth()) );
 
         //finding texture size in coord weight
         float texx= static_cast<float>(src_rect.getx()) / glsrc.getTextureWidth();
@@ -252,6 +342,9 @@ bool VideoGLSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rec
 
         //Load the texture
         glBindTexture(GL_TEXTURE_2D, glsrc.textureHandle);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
 
         glBegin( GL_QUADS ) ;
         glTexCoord2f( texx,texy) ;
@@ -278,41 +371,33 @@ bool VideoGLSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rec
         //Disable texturing
         glDisable(GL_TEXTURE_2D);
 
-        success = true;
-
-    }
-    catch (std::bad_cast& bc)
-    {
-        //If not convert it
-        Log << " bad_cast caught: Surface wasnt a GLSurface. " << bc.what() ;
-        Log << " Conversion should be done before in Image::ConvertToDisplayFormat() " ;
-        success = false;
-    }
-
 
 #if (DEBUG == 2)
-    Log << nl << "VideoGLSurface::blit (const RGBSurface& src," << dest_rect << ", " << src_rect << ") done.";
+    Log << nl << "VideoGLSurface::blit (GLSurface& src," << dest_rect << ", " << src_rect << ") done.";
 #endif
 
-    return success;
+    return true;
 }
 
 
 
 //Fill
-bool VideoGLSurface::fill (const Color& color)
+bool VideoGLSurface::fill (const PixelColor& pcolor)
 {
     Rect dest_rect(0,0,getWidth(), getHeight());
-    return fill( color, dest_rect );
+    return fill( pcolor, dest_rect );
 }
 
-bool VideoGLSurface::fill (const Color& color, Rect dest_rect)
+bool VideoGLSurface::fill (const PixelColor& pcolor, Rect dest_rect)
 {
 
 #if (DEBUG == 2)
     Log << nl << "VideoGLSurface::fill ( " << color << ", " << dest_rect << ") called...";
 #endif
     bool success = false;
+
+    if ( isOpenGLset() )
+    {
     //render it
     //2D Rendering
 
@@ -320,17 +405,20 @@ bool VideoGLSurface::fill (const Color& color, Rect dest_rect)
     glMatrixMode( GL_PROJECTION ) ;
     glLoadIdentity() ;
 
-    glOrtho( 0, this->getWidth(), this->getHeight(), 0, 0, 1 ) ;
+    glOrtho( 0, getWidth(), getHeight(), 0, 0, 1 ) ;
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+
+    //TODO : this might be improved without using Color
+    //there should be a more direct way...
+    Color color= getPixelFormat().getColorFromValue(pcolor);
     if ( color.hasAlpha() )
     {
         glEnable(GL_BLEND);
         glEnable(GL_ALPHA_TEST);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
-
     glColor4ub(color.getR(), color.getG(), color.getB(), color.getA() );
 
     glBegin( GL_QUADS ) ;
@@ -351,9 +439,14 @@ bool VideoGLSurface::fill (const Color& color, Rect dest_rect)
 
 
     success = true;
+    }
+    else
+    {
+        success = VideoSurface::fill(pcolor,dest_rect);
+    }
 
 #if (DEBUG == 2)
-    Log << nl << "VideoGLSurface::fill ( " << color << ", " << dest_rect << ") called...";
+    Log << nl << "VideoGLSurface::fill ( " << pcolor << ", " << dest_rect << ") called...";
 #endif
 
     return success;

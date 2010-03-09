@@ -81,9 +81,8 @@ Window::Window(std::string title)
 
     try
     {
-        SurfaceLoader loader;
         RWOps iconres = RWOps( _defaultIcon, sizeof(_defaultIcon));
-        ptm_icon = loader.load( iconres );
+        ptm_icon.reset( new RGBSurface(iconres));
         if ( ( ptm_icon.get() == 0 ) || ( ! ptm_icon->initialized() ) )
         {
             throw std::logic_error("Error initializing default Icon !");

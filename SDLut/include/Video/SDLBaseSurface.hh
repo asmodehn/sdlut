@@ -141,7 +141,6 @@ protected:
     BaseSurface(const BaseSurface & s) throw (std::logic_error);
     BaseSurface(const BaseSurface & s , unsigned long flags, PixelFormat pfmt) throw (std::logic_error);
 
-
     /** \brief assignement operator overload.
     */
     BaseSurface& operator=(const BaseSurface& s);
@@ -177,8 +176,8 @@ public:
     }
 
 public:
-    int getHeight(void) const;
-    int getWidth(void) const;
+    unsigned int getHeight(void) const;
+    unsigned int getWidth(void) const;
 
     Rect getSize() const
     {

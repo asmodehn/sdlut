@@ -18,7 +18,7 @@ class PixelFormat
     friend class VideoSurface;
     friend class RGBSurface;
     friend class BaseSurface;
-    friend class SurfaceLoader;
+    friend class ImageLoader;
 
     bool pointerCopy;
 

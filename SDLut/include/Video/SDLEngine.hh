@@ -32,12 +32,14 @@ protected:
     //might be better in a constructor actually...
     std::auto_ptr<RGBSurface> m_logo;
 
-    //SDL default logo
-    Logo m_Logo;
 
 #ifdef WK_OPENGL_FOUND
-    //OpenGL logo
-    OGLLogo m_glLogo;
+    //OpenGL logo + SDL Logo in texture
+    //OpenGL logo displayed only if renderer is opengl
+    OGLLogo m_Logo;
+#else
+    //SDL default logo in BMP/PNG
+    Logo m_Logo;
 #endif
 
 public:
@@ -46,7 +48,11 @@ public:
     virtual ~SDLEngine();
 
     //this render function should not modify the engine
+    #ifdef WK_OPENGL_FOUND
+    virtual bool render(VideoGLSurface & screen) const;
+    #else
     virtual bool render(VideoSurface & screen) const;
+    #endif
 
     //to initialise the engine, just called once before any render
     //virtual bool init(int width, int height);

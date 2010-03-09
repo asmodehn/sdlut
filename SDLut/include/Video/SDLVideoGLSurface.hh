@@ -37,7 +37,10 @@ namespace SDL
  *
  * \brief A class to wrap SDL_Surface only when it is a Video one
  *
- * This class is meant to be used along with a engine. If there is no Engine provided it will use its own.
+ * This class code hte behaviour for a VideoSurface, when built with WK_OPENGL_FOUND
+ * Note that it doesnt mean that the OpenGL flag is set on the surface.
+ * Therefore it must be checked before any OpenGL call, and if not, equivalent Base Function
+ * should be called instead.
  *
  * \author Alex
  *
@@ -57,7 +60,14 @@ class VideoGLSurface : public VideoSurface
 public:
     virtual Renderer getRenderer()
     {
-        return OpenGL;
+        if (isOpenGLset() )
+            {
+                return OpenGL;
+            }
+        else
+        {
+            return SDL;
+        }
     }
 
     //Constructor
@@ -76,12 +86,20 @@ public:
 
 
     //Blit src into the current surface.
+    //emergency handling : surface might not be GLSurface, and if so, needs to be converted...
     virtual bool blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
 
-    //Fill
-    virtual bool fill (const Color& color);
+    inline bool blit (GLSurface& src, Rect& dest_rect)
+    {
+        Rect src_rect(0,0,src.getWidth(), src.getHeight());
+        return blit(src, dest_rect, src_rect);
+    }
+    bool blit (GLSurface& src, Rect& dest_rect, const Rect& src_rect);
 
-    virtual bool fill (const Color& color, Rect dest_rect);
+    //Fill
+    virtual bool fill (const PixelColor& pcolor);
+
+    virtual bool fill (const PixelColor& pcolor, Rect dest_rect);
 
 
 
@@ -100,6 +118,7 @@ public:
 
     friend Logger & operator << (Logger & log, const VideoSurface & surf);
 };
+
 }
 } //namespace RAGE::SDL
 

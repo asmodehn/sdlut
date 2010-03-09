@@ -7,7 +7,7 @@ namespace SDL
 {
 
 
-//Conversion Constructor
+////////////////private Conversion Constructor
 GLSurface::GLSurface(SDL_Surface * s) throw (std::logic_error)
 try :
     RGBSurface(s), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
@@ -59,6 +59,8 @@ catch (std::exception &e)
     //TODO : much more explicit error message...
 }
 
+
+////////////public Conversion constructor
 GLSurface::GLSurface( const RGBSurface & rgbs) throw (std::logic_error)
 try :
     RGBSurface( rgbs ), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
@@ -84,6 +86,34 @@ catch (std::exception &e)
     e.what() << nl << GetError() << std::endl;
     //TODO : much more explicit error message...
 }
+
+////////////Coopy Constructor
+GLSurface::GLSurface( const GLSurface & gls) throw (std::logic_error)
+try :
+    RGBSurface( gls ), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
+{
+
+#ifdef DEBUG
+    Log << nl << "GLSurface::GLSurface(" << &gls << ") called.";
+#endif
+
+
+    computeGLWidthHeight();
+    convertPixels();
+
+#ifdef DEBUG
+
+    Log << nl << "GLSurface::GLSurface(" << &gls << ") done -> " << ptm_surf.get() << " created.";
+#endif
+
+}
+catch (std::exception &e)
+{
+    Log << nl << "Exception catched in GLSurface Constructor !!!"  << nl <<
+    e.what() << nl << GetError() << std::endl;
+    //TODO : much more explicit error message...
+}
+
 
 GLSurface::GLSurface( int width, int height, int bpp, bool alpha , bool colorkey , bool hardware,
                       unsigned long r_mask ,
@@ -141,6 +171,27 @@ catch (std::exception &e)
     //TODO : much more explicit error message...
 }
 
+GLSurface::GLSurface(RWOps & rwops) throw (std::logic_error)
+try : RGBSurface(rwops), modified(false),textureWidth(0), textureHeight(0), texturePixels(NULL)
+{
+#ifdef DEBUG
+    Log << nl << "GLSurface::GLSurface(" << rwops << "... ) called.";
+#endif
+
+    computeGLWidthHeight();
+    convertPixels();
+#ifdef DEBUG
+    Log << nl << "GLSurface::GLSurface(" << rwops << "...) done -> " << ptm_surf.get() << " created.";
+#endif
+
+}
+catch (std::exception &e)
+{
+    Log << nl << "Exception catched in GLSurface Constructor !!!"  << nl <<
+    e.what() << nl << GetError() << std::endl;
+    //TODO : much more explicit error message...
+}
+
 void GLSurface::computeGLWidthHeight()
 {
     if ( getWidth() == 0 && getHeight() == 0 ) return;
@@ -161,9 +212,9 @@ void GLSurface::convertPixels()
     if ( texturePixels != NULL ) delete texturePixels, texturePixels=NULL;
     texturePixels = new unsigned int[ textureWidth * textureHeight ];
     Color c;
-    for (int y = 0; y < textureHeight; y++)
+    for (unsigned int y = 0; y < textureHeight; y++)
     {
-        for (int x = 0; x < textureWidth; x++)
+        for (unsigned int x = 0; x < textureWidth; x++)
         {
             if (x < getWidth() && y < getHeight())
             {
@@ -201,12 +252,12 @@ bool GLSurface::resize(int width, int height, bool keepcontent)
 }
 
 
-int GLSurface::getTextureWidth()
+unsigned int GLSurface::getTextureWidth()
 {
     return textureWidth;
 }
 
-int GLSurface::getTextureHeight()
+unsigned int GLSurface::getTextureHeight()
 {
     return textureHeight;
 }

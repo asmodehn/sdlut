@@ -9,53 +9,6 @@ namespace RAGE
 namespace SDL
 {
 
-bool Display::setResizable(bool val)
-//TODO : not really useful here, transfer to screenbuffer with accessor
-{
-    return pvm_screen.setResizable(val);
-}
-
-bool Display::setFullscreen(bool val)
-// TODO : not really useful here, transfer to screenbuffer with accessor
-{
-    return pvm_screen.setFullscreen(val);
-}
-
-bool Display::setNoFrame(bool val)
-// TODO : not really useful here, transfer to screenbuffer with accessor
-{
-    return pvm_screen.setNoFrame(val);
-}
-
-#ifdef WK_OPENGL_FOUND
-bool Display::setOpenGL(bool val)
-// TODO : not really useful here, transfer to screenbuffer with accessor
-{
-    return pvm_screen.setOpenGL(val);
-}
-#endif
-
-//to check the current properties of the display
-bool Display::isFullscreen()
-// TODO : not really useful here, transfer to screenbuffer with accessor
-{
-    return pvm_screen.isFullscreen();
-}
-
-bool Display::isResizable()
-{
-    return pvm_screen.isResizable();
-}
-bool Display::isOpenGL()
-{
-    return pvm_screen.isOpenGL();
-}
-bool Display::isNoFrame()
-{
-    return pvm_screen.isNoFrame();
-}
-
-
 Display::Display(std::string title, Manager * manager)
         : m_exitMainLoop(false),
         pvm_manager(manager),
@@ -81,11 +34,6 @@ Display::Display( const Display & d)
 
 Display::~Display()
 {
-}
-
-void Display::applyBGColor() const
-{
-    pvm_screen.applyBGColor();
 }
 
 
@@ -265,7 +213,7 @@ bool Display::mainLoop(unsigned int framerate, unsigned int eventrate)
 
             //applying the background
             //if (!ShowingLoadingScreen)
-            applyBGColor();
+            pvm_screen.applyBGColor();
 
             //if (!ShowingLoadingScreen)
             if ( m_rendercb.get() )

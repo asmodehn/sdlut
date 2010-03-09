@@ -20,9 +20,7 @@ Color::Color(const Color & rgbcolor)
 {
     ptm_sdl_color->r=rgbcolor.getR();
     ptm_sdl_color->g=rgbcolor.getG();
-    ;
     ptm_sdl_color->b=rgbcolor.getB();
-    ;
     ptm_sdl_color->unused=rgbcolor.getA();
 }
 
@@ -30,9 +28,7 @@ Color& Color::operator=( const Color & rgbcolor)
 {
     ptm_sdl_color->r=rgbcolor.getR();
     ptm_sdl_color->g=rgbcolor.getG();
-    ;
     ptm_sdl_color->b=rgbcolor.getB();
-    ;
     ptm_sdl_color->unused=rgbcolor.getA();
     return *this;
 }

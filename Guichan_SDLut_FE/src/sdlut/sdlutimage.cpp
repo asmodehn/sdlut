@@ -75,17 +75,20 @@ void SDLutImage::putPixel(int x, int y, const gcn::Color& color)
     SDLutputPixel((SDLut::Image*&)mSurface, x, y, color);
 }
 
+
 void SDLutImage::convertToDisplayFormat()
 {
+
     if (mSurface == NULL)
     {
         throw GCN_EXCEPTION("Trying to convert a non loaded image to display format.");
     }
 
-    mSurface->convertToDisplayFormat();
+    //This should now be automatic in SDLut blitting...
+    //mSurface->convertToDisplayFormat();
 
     //NOT SURE if part of the old algorithms is still needed...
-    /*
+/*
     SDLut::Color pink = magicPink;
 
     bool hasPink = false;
@@ -133,10 +136,11 @@ void SDLutImage::convertToDisplayFormat()
     {
         mSurface->setColorKeyAndAlpha( pink, true );
     }
+*/
 
-    */
 
 }
+
 
 void SDLutImage::free()
 {

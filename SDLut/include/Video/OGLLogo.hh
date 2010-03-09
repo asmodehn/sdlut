@@ -12,10 +12,11 @@ namespace RAGE
 namespace SDL
 {
 
+#ifdef WK_OPENGL_FOUND
 class OGLLogo : public Logo
 {
 
-#ifdef WK_OPENGL_FOUND
+
 //GLint to store the gllist index for the logo
 int _glLogoList;
 
@@ -49,12 +50,9 @@ public:
 	OGLLogo();
     virtual ~OGLLogo(){};
 
-
 bool init();
-bool render(VideoSurface & screen) const;
 
-
-
+virtual bool render(VideoGLSurface & screen) const;
 
 };
 

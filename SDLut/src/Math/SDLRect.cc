@@ -3,8 +3,13 @@
 
 #include <stdexcept>
 
+#ifndef min
 #define min( a , b )  ( (a)>(b) )?(b):(a)
+#endif
+
+#ifndef max
 #define max( a , b ) ((a)>(b))?(a):(b)
+#endif
 //#define ifpositive( a ) a>0?a:0
 
 namespace RAGE

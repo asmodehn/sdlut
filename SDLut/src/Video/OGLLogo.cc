@@ -27,6 +27,7 @@ void OGLLogo::setMaterial(int mode,float *f,float alpha) const
 }
 
     OGLLogo::OGLLogo()
+    : Logo()
     {
 
 	  //generate object list
@@ -59,60 +60,28 @@ void OGLLogo::setMaterial(int mode,float *f,float alpha) const
 
 	}
 
-bool OGLLogo::init()
+bool OGLLogo::render(VideoGLSurface& screen) const
     {
-/*
-	  //generate object list
-	 _glLogoList=glGenLists(1);
-	   glNewList(_glLogoList, GL_COMPILE);
-
-	  // Logo Material
-	  GLfloat alpha=material.alpha;
-	  setMaterial (GL_AMBIENT, material.ambient,alpha);
-	  setMaterial (GL_DIFFUSE, material.diffuse,alpha);
-	  setMaterial (GL_SPECULAR, material.specular,alpha);
-	  setMaterial (GL_EMISSION, material.emission,alpha);
-	  glMaterialf (GL_FRONT_AND_BACK,GL_SHININESS,material.phExp);
-
-	  // Logo Faces
-		glBegin (GL_TRIANGLES);
-		for(int i=0;i< (int) (sizeof(face_indices)/sizeof(face_indices[0]));i++)
-		   {
-		   for(int j=0;j<3;j++)
-			{
-			  int vi=face_indices[i][j];
-			  int ni=face_indices[i][j+3];//Normal index
-			   glNormal3f (normals[ni][0],normals[ni][1],normals[ni][2]);
-			   glVertex3f (vertices[vi][0],vertices[vi][1],vertices[vi][2]);
-			}
-		   }
-		glEnd ();
-
-	   glEndList();
-	   */
-    return true;
-
-    }
-
-bool OGLLogo::render(VideoSurface & screen) const
-    {
+        if ( screen.getRenderer() == OpenGL )
+        {
         //glDisable( GL_DEPTH_TEST ) ;
 
         //Switchig to 3D display
 		glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix
 		glLoadIdentity();         // Reset The Projection Matrix
 
-        /*orthonormal projection*/
-        //better: already the default
-        glOrtho( 0, screen.getWidth(), screen.getHeight(), 0, 0, 1 );
+        //depth should be refined depending how it is used for 2D and 3D later on...
+        glOrtho( 0, screen.getWidth(), screen.getHeight(), 0, -20 , 0 );
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
 		//putting the logo in the right place in the displayed scene...
-		glTranslatef(screen.getWidth()-m_render_width * 1.5f,screen.getHeight()-m_render_height * .5f ,0.5f);
+		// depth value is middle between glortho zmin and zmax
+		glTranslatef(screen.getWidth()-m_render_width * 1.5f,screen.getHeight()-m_render_height * .5f ,10.0f);
 		static float rot = 0.0f;
-		glScalef(100.0f,-100.0f,100.0f);
+		//scale on Y axis is negative because the ortho projection in 2D is Y inverted, compared with a usual 3D frustrum...
+		glScalef(100.0f,-100.0f,1.0f);
 		glRotatef(--rot,.3f,.0f,.0f);
 
 	GLfloat glfLightAmbient[] = { 0.1f, 0.1f, 0.1f};
@@ -136,14 +105,17 @@ bool OGLLogo::render(VideoSurface & screen) const
     glEnable (GL_DEPTH_TEST);
     glEnable (GL_CULL_FACE);
 
+    //TODO : background
+    //TODO : shadow...
+
 		//Rendering the OpenGL logo
 		glCallList(_glLogoList);
 
 		glDisable (GL_DEPTH_TEST);
 		glDisable (GL_LIGHTING);
+        }
 
-
-        return true;
+        return Logo::render(screen);
 
     }
 

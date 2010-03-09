@@ -180,27 +180,6 @@ bool Manager::isEventThreadEnabled(void) const
     return ( SDL_WasInit(SDL_INIT_EVENTTHREAD) ) != 0;
 }
 
-
-bool Manager::enableOpenGL(void) const
-{
-    VideoSurface::setOpenGL(true);
-    return isOpenGLEnabled();
-}
-
-bool Manager::disableOpenGL(void) const
-{
-    VideoSurface::setOpenGL(false);
-    return ! isOpenGLEnabled();
-}
-
-bool Manager::isOpenGLEnabled(void) const
-{
-    //TODO : carefully check consistency with opengl setting on existing videosurface...
-    //If needed check opengl set or not on creation and reset the default flags on Video Surface...
-    return ( SDL_OPENGL & VideoSurface::ptm_defaultflags ) != 0;
-}
-
-
 Logger & operator << (Logger & log, const Manager & man)
 {
     log << nl << std::boolalpha << "Manager :" << nl <<

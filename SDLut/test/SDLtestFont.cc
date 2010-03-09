@@ -5,188 +5,135 @@ using namespace RAGE::SDL;
 
 Logger Log("Test Font");
 
-#include <sstream>
-#include <string>
-#include <algorithm>
-
-//BUG : Schliemel the painter CRAP :p
-//TOFIX
-class Console
-{
-
-	friend class MyEngine;
-
-	//if member embedded (object not reference), error when destructing Font...
-	//to debug -> copy / deletion problem
-	const Font _font;
-	short linesize;
-
-	Color _bgColor;
-
-	Image * surf;
-
-	std::string text;
-
-public :
-	Console(const Font & fnt = Font(),Color c = Color(0,0,0)) :_font(fnt),_bgColor(c),surf(NULL),text("")
-	{
-		//init();
-		//draw();
-		linesize = _font.getHeight();
-	}
-
-	bool init(int width, int height)
-	{
-		surf = new Image(width,height,8); //8 as magic number for minimum bpp.
-		surf->fill(_bgColor);
-		if (surf == NULL) return false;
-		return true;
-	}
-
-	//WARNING : BUG here if trying to set to fullscreen using F6, then error, then trying to resize -> crash
-	bool resize(int width, int height,bool keepcontent = true)
-	{
-		bool res = surf->resize(width,height,false);
-		draw();
-		return res;
-	}
-
-	unsigned int getWidth()
-	{
-	    return surf->getWidth();
-	}
-
-    unsigned int getHeight()
-    {
-        return surf->getHeight();
-    }
-
-	void print(const std::string & newtext)
-	{
-		text += newtext + "\n";
-		draw();
-	}
-
-	void add(char newchar)
-	{
-		if (newchar != '\0')
-		{
-			text += newchar;
-		}
-		draw();
-	}
-
-    void add(std::string newstr)
-    {
-        text += newstr + '\n' ;
-        draw();
-    }
-
-	void draw()
-	{
-		std::stringstream ss(text); // Insert the text into a stream
-		surf->fill(_bgColor);
-		int i=0;
-		int nb_line = std::count(text.begin(), text.end(), '\n');
-		int current_line = 0;
-		int nb_line_toshow = (int)((surf->getHeight()-linesize)/linesize);
-		char line[256];
-
-		while ( ss.good() )
-		{
-			ss.getline(line,255);
-			++current_line;
-			if (current_line > (nb_line-nb_line_toshow))
-			{
-				if ((std::string)line != "")
-				{
-					std::auto_ptr<Image> textsurf = _font.render(line,Color(255,255,255),Font::Solid);
-					assert(textsurf.get());
-                    Rect textsurf_dest(0,i * linesize,textsurf->getWidth(),textsurf->getHeight());
-					surf->blit(*textsurf,textsurf_dest);
-				}
-				++i;
-			}
-		}
-	}
-
-	~Console()
-	{
-		if (surf != NULL)
-			delete surf,surf = NULL;
-	}
-
-
-};
-
-//Defining UserInput
-class MyUserInput : public TextInput //Should TextInput have a DefaultTextI nput with default behavior too ???
-{
-public:
-
-	Console *cons;
-
-	MyUserInput() : TextInput(), cons(NULL) {}
-
-	void setConsole (Console * newcons)
-	{
-		cons = newcons;
-	}
-
-    virtual bool handleKeyEvent (const Sym &s, bool pressed)
-    {
-		TextInput::handleKeyEvent(s,pressed);
-
-		if (pressed == true) cons->add(s.getChar());
-
-		return true;
-    }
-};
+//Engine will displayed the text with the different styles and rendermode availables in the font.
 
 class MyEngine
 {
 
+    //typedef enum { Default, Normal, Bold, Italic, Underline} Style;
+    //typedef enum { Solid, Shaded, Blended } RenderMode;
+
+    Color m_color, m_bgcolor;
+
+    Font m_font;
+
+    // mutable to allow blit to change them to rendered rect instead
+    mutable Rect sod,son,sob,soi,sou, shd,shn,shb,shi,shu, bld,bln,blb,bli,blu;
+
+    Text tsod,tson,tsob,tsoi,tsou, tshd,tshn,tshb,tshi,tshu, tbld,tbln,tblb,tbli,tblu;
+
 public:
+MyEngine(const Font & font)
+:   m_color(Color(255,255,255)),m_bgcolor(Color(64,64,64)),m_font(font)
+{
+    tsod = Text("Default_Solid",m_font,m_color,m_bgcolor);
+    tshd = Text("Default_Shaded",m_font,m_color,m_bgcolor);
+    tbld = Text("Default_Blended",m_font,m_color,m_bgcolor);
 
-	mutable Rect consolePos;
-	Console * console;
+    tson = Text("Normal_Solid",m_font,m_color,m_bgcolor);
+    tshn = Text("Normal_Shaded",m_font,m_color,m_bgcolor);
+    tbln = Text("Normal_Blended",m_font,m_color,m_bgcolor);
 
-	MyEngine() : consolePos(0,0,0,0), console (NULL)
-	{}
+    tsob = Text("Bold_Solid",m_font,m_color,m_bgcolor);
+    tshb = Text("Bold_Shaded",m_font,m_color,m_bgcolor);
+    tblb = Text("Bold_Blended",m_font,m_color,m_bgcolor);
 
-	void setConsole( Console * cons )
-    {
-        console = cons;
-        consolePos.resetw(cons->getWidth());
-        consolePos.reseth(cons->getHeight());
-    }
+    tsoi = Text("Italic_Solid",m_font,m_color,m_bgcolor);
+    tshi = Text("Italic_Shaded",m_font,m_color,m_bgcolor);
+    tbli = Text("Italic_Blended",m_font,m_color,m_bgcolor);
 
-    virtual ~MyEngine()
-	{
-	}
+    tsou = Text("Underl_Solid",m_font,m_color,m_bgcolor);
+    tshu = Text("Underl_Shaded",m_font,m_color,m_bgcolor);
+    tblu = Text("Underl_Blended",m_font,m_color,m_bgcolor);
+}
 
-	bool init(int width, int height)
-	{
-		console->init(width,height);
-		console->add("Plz Use Keyboard To Write Text Down");
-		return true;
-	}
+~MyEngine()
+{}
 
-	bool resize(int width, int height)
-	{
-		console->resize(width,height);
-		return true;
-	}
 
-	bool render(ScreenBuffer & screen) const
-    {
-		if (console !=NULL)
-            console->surf->saveBMP("testingrender.bmp");
-			screen.blit(*(console->surf),consolePos);
-        return true;
-    }
+  bool init(int width, int height)
+  {
+      return resize(width,height);
+  }
+
+  bool resize(int width, int height)
+  {
+      int hmargin = .1 * width;
+      int vmargin = .1 * height;
+      int cwidth = ( width - 2* hmargin) / 3;
+      int cheight = ( height - 2* vmargin) / 5;
+
+      sod = Rect(hmargin,vmargin,cwidth,cheight);
+      shd = Rect(hmargin + cwidth,vmargin,cwidth,cheight);
+      bld = Rect(hmargin + 2* cwidth,vmargin,cwidth,cheight);
+
+      son = Rect(hmargin,vmargin + cheight,cwidth,cheight);
+      shn = Rect(hmargin + cwidth,vmargin+ cheight,cwidth,cheight);
+      bln = Rect(hmargin + 2* cwidth,vmargin+ cheight,cwidth,cheight);
+
+      sob = Rect(hmargin,vmargin+ cheight * 2,cwidth,cheight);
+      shb = Rect(hmargin + cwidth,vmargin+ cheight * 2,cwidth,cheight);
+      blb = Rect(hmargin + 2* cwidth,vmargin+ cheight * 2,cwidth,cheight);
+
+      soi = Rect(hmargin,vmargin+ cheight * 3,cwidth,cheight);
+      shi = Rect(hmargin + cwidth,vmargin+ cheight * 3,cwidth,cheight);
+      bli = Rect(hmargin + 2* cwidth,vmargin+ cheight * 3,cwidth,cheight);
+
+      sou = Rect(hmargin,vmargin+ cheight * 4,cwidth,cheight);
+      shu = Rect(hmargin + cwidth,vmargin+ cheight * 4,cwidth,cheight);
+      blu = Rect(hmargin + 2* cwidth,vmargin+ cheight * 4,cwidth,cheight);
+
+
+      return true;
+  }
+
+  bool render( ScreenBuffer & screen) const
+  {
+      screen.blit(tsod,sod);
+      screen.blit(tshd,shd);
+      screen.blit(tbld,bld);
+
+      return render_n(screen);
+  }
+
+  bool render_n( ScreenBuffer &screen) const
+  {
+      screen.blit(tson,son);
+      screen.blit(tshn,shn);
+      screen.blit(tbln,bln);
+
+      return render_b(screen);
+  }
+
+    bool render_b( ScreenBuffer &screen) const
+  {
+      screen.blit(tsob,sob);
+      screen.blit(tshb,shb);
+      screen.blit(tblb,blb);
+
+      return render_i(screen);
+  }
+
+  bool render_i( ScreenBuffer &screen) const
+  {
+      screen.blit(tsoi,soi);
+      screen.blit(tshi,shi);
+      screen.blit(tbli,bli);
+
+      return render_u(screen);
+  }
+
+  bool render_u( ScreenBuffer &screen) const
+  {
+      screen.blit(tsou,sou);
+      screen.blit(tshu,shu);
+      screen.blit(tblu,blu);
+
+      return true;
+  }
 
 };
+
 
 
 //Main Program
@@ -199,47 +146,43 @@ int main(int argc, char** argv)
 
     Logger testlog("Test Log");
 
-	bool ogl = false;
-	if ((argc > 1) && ( std::string(argv[1]) == "opengl" ) )
-    {
-        ogl = true;
-    }
+
+#ifdef WK_OPENGL_FOUND
+	bool ogl = true;
+	if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
+#else
+    bool ogl = false;
+#endif
 
     //Setup example
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
 	App::getInstance().setName ("RAGE::SDL test - Font");
-    App::getInstance().initVideo(false,ogl,false,false);
+    App::getInstance().initVideo(false,false,false);
 	App::getInstance().initText();
 
     testlog << nl << " Creating the User Interface... " << std::endl;
 
     Font font;
 
-    if ((argc > 1 ) && !ogl)
+    if ((argc > 1 ) && std::string(argv[1]) != "nogl" )
     {
         //specific font
         font.setTTF(argv[1],24);
     }
-    else if ( ogl && argc > 2 )
+    else if ( argc > 2 )
     {
         //specific font
         font.setTTF(argv[2],24);
     }
 
-	Console cons(font);
-	std::auto_ptr<MyEngine> engine(new MyEngine());
-	engine->setConsole(&cons);
+	MyEngine engine(font);
 
-   //UI Creation
-    MyUserInput ui;
-	ui.setConsole(&cons);
-    App::getInstance().getDisplay().getEventManager().setKeyboard(&ui);
+    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(ogl);
 
-
-	App::getInstance().getDisplay().resetInitCallback(*engine,&MyEngine::init);
-	App::getInstance().getDisplay().resetResizeCallback(*engine,&MyEngine::resize);
-	App::getInstance().getDisplay().resetRenderCallback(*engine,&MyEngine::render);
+	App::getInstance().getDisplay().resetInitCallback(engine,&MyEngine::init);
+	App::getInstance().getDisplay().resetResizeCallback(engine,&MyEngine::resize);
+	App::getInstance().getDisplay().resetRenderCallback(engine,&MyEngine::render);
 
 
     if (! (App::getInstance().getDisplay().setDisplay(800,600)))

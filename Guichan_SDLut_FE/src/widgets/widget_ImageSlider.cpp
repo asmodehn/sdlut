@@ -7,221 +7,221 @@
 namespace gcn
 {
 
-    ImageSlider::ImageSlider() : 
-		myBGImage(NULL), myMarkerImage(NULL), BGIsInternalImage(false), MarkerIsInternalImage(false), marker_shift(0), markerValue(NULL)
-    { /*Protected*/ }
+ImageSlider::ImageSlider() :
+        myBGImage(NULL), myMarkerImage(NULL), BGIsInternalImage(false), MarkerIsInternalImage(false), marker_shift(0), markerValue(NULL)
+{ /*Protected*/ }
 
-	ImageSlider::ImageSlider(const std::string& marker_filename, double scaleStart, double scaleEnd) :
-		myBGImage(NULL), myMarkerImage(NULL), BGIsInternalImage(false), MarkerIsInternalImage(true), marker_shift(0), markerValue(NULL)
-	{
-		myMarkerImage = Image::load(marker_filename);
+ImageSlider::ImageSlider(const std::string& marker_filename, double scaleStart, double scaleEnd) :
+        myBGImage(NULL), myMarkerImage(NULL), BGIsInternalImage(false), MarkerIsInternalImage(true), marker_shift(0), markerValue(NULL)
+{
+    myMarkerImage = Image::load(marker_filename);
 
-		mDragged = false;
+    mDragged = false;
 
-        mScaleStart = scaleStart;
-        mScaleEnd = scaleEnd;
+    mScaleStart = scaleStart;
+    mScaleEnd = scaleEnd;
 
-        setFocusable(true);
-        setFrameSize(0);
-        setValue(scaleStart);
+    setFocusable(true);
+    setFrameSize(0);
+    setValue(scaleStart);
 
-		setMarkerLength(myMarkerImage->getHeight());
-		setStepLength( static_cast<int>(scaleEnd  - scaleStart)/getMarkerLength() );
+    setMarkerLength(myMarkerImage->getHeight());
+    setStepLength( static_cast<int>(scaleEnd  - scaleStart)/getMarkerLength() );
 
-		setOrientation(HORIZONTAL);
+    setOrientation(HORIZONTAL);
 
-		addMouseListener(this);
-        addKeyListener(this);
-	}
-	 
-	ImageSlider::ImageSlider(const std::string& bg_filename, const std::string& marker_filename, double scaleStart, double scaleEnd) :
-		myBGImage(NULL), myMarkerImage(NULL), BGIsInternalImage(true), MarkerIsInternalImage(true), markerValue(NULL)
-	{
-		myBGImage = Image::load(bg_filename);
-		myMarkerImage = Image::load(marker_filename);
+    addMouseListener(this);
+    addKeyListener(this);
+}
 
-		mDragged = false;
+ImageSlider::ImageSlider(const std::string& bg_filename, const std::string& marker_filename, double scaleStart, double scaleEnd) :
+        myBGImage(NULL), myMarkerImage(NULL), BGIsInternalImage(true), MarkerIsInternalImage(true), markerValue(NULL)
+{
+    myBGImage = Image::load(bg_filename);
+    myMarkerImage = Image::load(marker_filename);
 
-        mScaleStart = scaleStart;
-        mScaleEnd = scaleEnd;
+    mDragged = false;
 
-        setFocusable(true);
-        setFrameSize(0);       
-        setValue(scaleStart);
+    mScaleStart = scaleStart;
+    mScaleEnd = scaleEnd;
 
-		setWidth(myBGImage->getWidth());
-        setHeight(myBGImage->getHeight());
+    setFocusable(true);
+    setFrameSize(0);
+    setValue(scaleStart);
 
-		setMarkerLength(myMarkerImage->getHeight());
-		setStepLength( static_cast<int>(scaleEnd  - scaleStart)/getMarkerLength() );
+    setWidth(myBGImage->getWidth());
+    setHeight(myBGImage->getHeight());
 
-		setOrientation(HORIZONTAL);
+    setMarkerLength(myMarkerImage->getHeight());
+    setStepLength( static_cast<int>(scaleEnd  - scaleStart)/getMarkerLength() );
 
-		marker_shift = myBGImage->getHeight()/2 - myMarkerImage->getHeight()/2; //we're horizontal !
+    setOrientation(HORIZONTAL);
 
-		addMouseListener(this);
-        addKeyListener(this);
+    marker_shift = myBGImage->getHeight()/2 - myMarkerImage->getHeight()/2; //we're horizontal !
 
-	}
-	
-	ImageSlider::ImageSlider(const Image*& marker_image, double scaleStart, double scaleEnd) :
-		myBGImage(NULL), myMarkerImage(marker_image), BGIsInternalImage(false), MarkerIsInternalImage(false), marker_shift(0), markerValue(NULL)
-	{
-		mDragged = false;
+    addMouseListener(this);
+    addKeyListener(this);
 
-        mScaleStart = scaleStart;
-        mScaleEnd = scaleEnd;
+}
 
-        setFocusable(true);
-        setFrameSize(0);       
-        setValue(scaleStart);
+ImageSlider::ImageSlider(const Image*& marker_image, double scaleStart, double scaleEnd) :
+        myBGImage(NULL), myMarkerImage(marker_image), BGIsInternalImage(false), MarkerIsInternalImage(false), marker_shift(0), markerValue(NULL)
+{
+    mDragged = false;
 
-		setMarkerLength(myMarkerImage->getHeight());
-		setStepLength( static_cast<int>(scaleEnd  - scaleStart)/getMarkerLength() );
+    mScaleStart = scaleStart;
+    mScaleEnd = scaleEnd;
 
-		setOrientation(HORIZONTAL);
+    setFocusable(true);
+    setFrameSize(0);
+    setValue(scaleStart);
 
-		addMouseListener(this);
-        addKeyListener(this);
-	}
-	 
-	ImageSlider::ImageSlider(const Image*& bg_image, const Image*& marker_image, double scaleStart, double scaleEnd) :
-		myBGImage(bg_image), myMarkerImage(marker_image), BGIsInternalImage(false), MarkerIsInternalImage(false), markerValue(NULL)
-	{
-		mDragged = false;
+    setMarkerLength(myMarkerImage->getHeight());
+    setStepLength( static_cast<int>(scaleEnd  - scaleStart)/getMarkerLength() );
 
-        mScaleStart = scaleStart;
-        mScaleEnd = scaleEnd;
+    setOrientation(HORIZONTAL);
 
-        setFocusable(true);
-        setFrameSize(0);       
-        setValue(scaleStart);
+    addMouseListener(this);
+    addKeyListener(this);
+}
 
-		setWidth(myBGImage->getWidth());
-        setHeight(myBGImage->getHeight());
+ImageSlider::ImageSlider(const Image*& bg_image, const Image*& marker_image, double scaleStart, double scaleEnd) :
+        myBGImage(bg_image), myMarkerImage(marker_image), BGIsInternalImage(false), MarkerIsInternalImage(false), markerValue(NULL)
+{
+    mDragged = false;
 
-		setMarkerLength(myMarkerImage->getHeight());
-		setStepLength( static_cast<int>(scaleEnd  - scaleStart)/getMarkerLength() );
+    mScaleStart = scaleStart;
+    mScaleEnd = scaleEnd;
 
-		setOrientation(HORIZONTAL);
+    setFocusable(true);
+    setFrameSize(0);
+    setValue(scaleStart);
 
-		marker_shift = myBGImage->getHeight()/2 - myMarkerImage->getHeight()/2; //we're horizontal !
+    setWidth(myBGImage->getWidth());
+    setHeight(myBGImage->getHeight());
 
-		addMouseListener(this);
-        addKeyListener(this);
-	}
+    setMarkerLength(myMarkerImage->getHeight());
+    setStepLength( static_cast<int>(scaleEnd  - scaleStart)/getMarkerLength() );
 
-    ImageSlider::~ImageSlider()
+    setOrientation(HORIZONTAL);
+
+    marker_shift = myBGImage->getHeight()/2 - myMarkerImage->getHeight()/2; //we're horizontal !
+
+    addMouseListener(this);
+    addKeyListener(this);
+}
+
+ImageSlider::~ImageSlider()
+{
+    if (BGIsInternalImage)
     {
-        if (BGIsInternalImage)
-        {
-            delete myBGImage, myBGImage = NULL;
-        }
-		if (MarkerIsInternalImage)
-        {
-            delete myMarkerImage, myMarkerImage = NULL;
-        }
-
-		delete markerValue, markerValue = NULL;
+        delete myBGImage, myBGImage = NULL;
+    }
+    if (MarkerIsInternalImage)
+    {
+        delete myMarkerImage, myMarkerImage = NULL;
     }
 
-    void ImageSlider::setImageBG(const Image* image)
-    {
-        if (BGIsInternalImage)
-        {
-            delete myBGImage;
-        }
+    delete markerValue, markerValue = NULL;
+}
 
-        myBGImage = image;
-        BGIsInternalImage = false;
-    }   
-
-    const Image* ImageSlider::getImageBG() const
+void ImageSlider::setImageBG(const Image* image)
+{
+    if (BGIsInternalImage)
     {
-        return myBGImage;
+        delete myBGImage;
     }
 
-	void ImageSlider::setImageMarker(const Image* image)
+    myBGImage = image;
+    BGIsInternalImage = false;
+}
+
+const Image* ImageSlider::getImageBG() const
+{
+    return myBGImage;
+}
+
+void ImageSlider::setImageMarker(const Image* image)
+{
+    if (MarkerIsInternalImage)
     {
-        if (MarkerIsInternalImage)
-        {
-            delete myMarkerImage;
-        }
-
-        myMarkerImage = image;
-        myMarkerImage = false;
+        delete myMarkerImage;
     }
 
-	const Image* ImageSlider::getImageMarker() const
+    myMarkerImage = image;
+    myMarkerImage = false;
+}
+
+const Image* ImageSlider::getImageMarker() const
+{
+    return myMarkerImage;
+}
+
+void ImageSlider::draw(gcn::Graphics* graphics)
+{
+    //App_Logger << nl << getValue() << std::endl;
+
+    if (myBGImage != NULL)
     {
-        return myMarkerImage;
+        (getOrientation() == HORIZONTAL)
+        ? graphics->drawImage(myBGImage, myMarkerImage->getWidth()/2, 0)
+        : graphics->drawImage(myBGImage, 0, myMarkerImage->getHeight()/2);
     }
 
-  	void ImageSlider::draw(gcn::Graphics* graphics)
-    {		
-		//App_Logger << nl << getValue() << std::endl;
+    drawMarker(graphics);
 
-		if (myBGImage != NULL)
-		{
-			(getOrientation() == HORIZONTAL)
-				? graphics->drawImage(myBGImage, myMarkerImage->getWidth()/2, 0)
-				: graphics->drawImage(myBGImage, 0, myMarkerImage->getHeight()/2);
-		}
-
-        drawMarker(graphics);
-
-		if (markerValue != NULL)
-		{
-			drawValueLabel(graphics);
-		}
-    }
-
-    void ImageSlider::drawMarker(gcn::Graphics* graphics)
+    if (markerValue != NULL)
     {
-		(getOrientation() == HORIZONTAL)
-			? graphics->drawImage(myMarkerImage, getMarkerPosition(), marker_shift)
-			: graphics->drawImage(myMarkerImage, marker_shift, (getHeight() - getMarkerLength()) - getMarkerPosition());
+        drawValueLabel(graphics);
     }
+}
 
-	void ImageSlider::Display_Value_On_Marker(bool show /*=true*/)
-	{
-		if (show)
-		{
-			delete markerValue, markerValue = NULL;
+void ImageSlider::drawMarker(gcn::Graphics* graphics)
+{
+    (getOrientation() == HORIZONTAL)
+    ? graphics->drawImage(myMarkerImage, getMarkerPosition(), marker_shift)
+    : graphics->drawImage(myMarkerImage, marker_shift, (getHeight() - getMarkerLength()) - getMarkerPosition());
+}
 
-			int to_convert = static_cast<int>(floor(this->getValue()+0.5));
-			std::stringstream s;
-			s << to_convert;
-
-			markerValue = new Label( s.str() );
-			dynamic_cast<gcn::Container*>( this->getParent() )->add(markerValue);
-			markerValue->setVisible(true);
-			markerValue->setAlignment(Graphics::CENTER);
-		}
-		else 
-		{
-			markerValue->setVisible(false);
-			delete markerValue, markerValue = NULL;
-		}
-	}
-
-	void ImageSlider::drawValueLabel(gcn::Graphics* graphics)
+void ImageSlider::Display_Value_On_Marker(bool show /*=true*/)
+{
+    if (show)
     {
-		int to_convert = static_cast<int>(floor(this->getValue()+0.5));
-		std::stringstream s;
-		s << to_convert;
+        delete markerValue, markerValue = NULL;
 
-		markerValue->setCaption( s.str() );
-		markerValue->adjustSize();
-		
-		//set position depending on orientation.
-		//position is: slider position + marker position + positionned to the center of the marker
-		(getOrientation() == HORIZONTAL)
-		? markerValue->setPosition( this->getX() + getMarkerPosition()   + myMarkerImage->getWidth()/2 - markerValue->getWidth()/2,
-									this->getY() + marker_shift   +  myMarkerImage->getHeight()/2 - markerValue->getHeight()/2)
-		: markerValue->setPosition( this->getX() + marker_shift   + myMarkerImage->getWidth()/2 - markerValue->getWidth()/2,
-									this->getY() + (getHeight() - getMarkerLength()) - getMarkerPosition()   + myMarkerImage->getHeight()/2 - markerValue->getHeight()/2);
+        int to_convert = static_cast<int>(floor(this->getValue()+0.5));
+        std::stringstream s;
+        s << to_convert;
 
+        markerValue = new Label( s.str() );
+        dynamic_cast<gcn::Container*>( this->getParent() )->add(markerValue);
+        markerValue->setVisible(true);
+        markerValue->setAlignment(Graphics::CENTER);
     }
+    else
+    {
+        markerValue->setVisible(false);
+        delete markerValue, markerValue = NULL;
+    }
+}
+
+void ImageSlider::drawValueLabel(gcn::Graphics* graphics)
+{
+    int to_convert = static_cast<int>(floor(this->getValue()+0.5));
+    std::stringstream s;
+    s << to_convert;
+
+    markerValue->setCaption( s.str() );
+    markerValue->adjustSize();
+
+    //set position depending on orientation.
+    //position is: slider position + marker position + positionned to the center of the marker
+    (getOrientation() == HORIZONTAL)
+    ? markerValue->setPosition( this->getX() + getMarkerPosition()   + myMarkerImage->getWidth()/2 - markerValue->getWidth()/2,
+                                this->getY() + marker_shift   +  myMarkerImage->getHeight()/2 - markerValue->getHeight()/2)
+    : markerValue->setPosition( this->getX() + marker_shift   + myMarkerImage->getWidth()/2 - markerValue->getWidth()/2,
+                                this->getY() + (getHeight() - getMarkerLength()) - getMarkerPosition()   + myMarkerImage->getHeight()/2 - markerValue->getHeight()/2);
+
+}
 
 } //namespace

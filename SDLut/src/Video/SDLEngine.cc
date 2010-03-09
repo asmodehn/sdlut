@@ -11,21 +11,19 @@ namespace SDL
 {
 
 //loading the default RGBSurface from the Resources as logo
-SDLEngine::SDLEngine() : m_Logo(), m_glLogo()
+SDLEngine::SDLEngine() : m_Logo()
 {
 }
 
 //this render function should not modify the engine
+#ifdef WK_OPENGL_FOUND
+bool SDLEngine::render(VideoGLSurface & screen) const
+#else
 bool SDLEngine::render(VideoSurface & screen) const
+#endif
 {
     bool res = false;
     res = m_Logo.render(screen);
-
-    //if OpenGL renderer
-    if ( screen.getRenderer() == OpenGL )
-    {
-        res = res && m_glLogo.render(screen);
-    }
 
     return res;
 }

@@ -58,7 +58,7 @@ void SDLutGraphics::_endDraw()
 
 bool SDLutGraphics::pushClipArea(Rectangle area)
 {
-    
+
     bool result = Graphics::pushClipArea(area);
 
     const ClipRectangle& carea = mClipStack.top();
@@ -83,10 +83,10 @@ void SDLutGraphics::popClipArea()
 
     const ClipRectangle& carea = mClipStack.top();
     SDLut::Rect rect(carea.x, carea.y, carea.width, carea.height);
-   /*rect.setx( carea.x );
-    rect.sety( carea.y );
-    rect.setw( carea.width );
-    rect.seth( carea.height );*/
+    /*rect.setx( carea.x );
+     rect.sety( carea.y );
+     rect.setw( carea.width );
+     rect.seth( carea.height );*/
 
     mTarget->setClipRect(rect);
     //SDL_SetClipRect(mTarget, &rect);
@@ -647,4 +647,5 @@ void SDLutGraphics::drawSDLutSurface(SDLut::Image& surface,
 
     mTarget->blit( surface, destination, source);
 }
-}
+
+} //gcn

@@ -22,7 +22,7 @@ class RGBSurface : public BaseSurface
     friend class FontExtend;
 
     //To be able to construct RGBSurface from Loader :
-    friend class SurfaceLoader;
+    friend class ImageLoader;
 
     friend class VideoSurface;
 
@@ -65,14 +65,16 @@ public :
                 unsigned long a_mask = a_default_mask
               ) throw (std::logic_error);
 
+    RGBSurface(RWOps& rwops) throw (std::logic_error);
+
 public :
     //should be used as the copy constructor. But should also be able to get DisplaySurface as input...
-    RGBSurface(const RGBSurface & s ) throw (std::logic_error);
+    RGBSurface(const RGBSurface & s ) throw (std::logic_error); // deep copy
     RGBSurface& operator=(const RGBSurface& s);
     //Conversion constructor
     //NB : will get called if the Surface is not RGB only.
-    RGBSurface(const BaseSurface & s ) throw (std::logic_error);
-    RGBSurface& operator=(const BaseSurface& s);
+    //RGBSurface(const BaseSurface & s ) throw (std::logic_error);
+    //RGBSurface& operator=(const BaseSurface& s);
 
 
     //Destructor
@@ -121,6 +123,7 @@ public :
     friend Logger & operator << (Logger & ostr, const RGBSurface & surf);
 
 };
+
 }
 } //namespace RAGE::SDL
 

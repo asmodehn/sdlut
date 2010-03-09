@@ -176,28 +176,34 @@ public:
 int main(int argc, char** argv)
 {
 
+#ifdef WK_OPENGL_FOUND
+	bool ogl = true;
+	if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
+#else
+    bool ogl = false;
+#endif
+
+
     Logger testlog("Test Log");
 
     //Starting with usual SDL window
-    App::getInstance().initVideo(false,true,true,false);
+    App::getInstance().initVideo(false,true,false);
     App::getInstance().setName ("RAGE::SDL test - OpenGL");
 
     //Getting video informations
     testlog << nl << App::getInstance().getDisplay().getScreenBuffer().getVideoInfo() << std::endl;
 
-	App::getInstance().getDisplay().setBGColor(Color (64,0,0));
-
     //MyUserInput ui;
     //App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 
     //GLManager test
-    App::getInstance().getDisplay().getGLManager();
+    GLManager glman = App::getInstance().getDisplay().getScreenBuffer().getGLManager();
     testlog << nl<<std::boolalpha <<
-    "setRsize(5) " << App::getInstance().getDisplay().getGLManager().setRSize(5) << nl <<
-    "setGSize(5) " << App::getInstance().getDisplay().getGLManager().setGSize(5) << nl <<
-    "setBSize(5) " << App::getInstance().getDisplay().getGLManager().setBSize(5) << nl <<
-    "setASize(5) " << App::getInstance().getDisplay().getGLManager().setASize(5) << nl <<
-    "setBufferSize(5) " << App::getInstance().getDisplay().getGLManager().setBufferSize(12) << nl <<
+    "setRsize(5) " << glman.setRSize(5) << nl <<
+    "setGSize(5) " << glman.setGSize(5) << nl <<
+    "setBSize(5) " << glman.setBSize(5) << nl <<
+    "setASize(5) " << glman.setASize(5) << nl <<
+    "setBufferSize(5) " << glman.setBufferSize(12) << nl <<
     std::endl;
 
 

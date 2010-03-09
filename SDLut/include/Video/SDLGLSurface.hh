@@ -17,7 +17,7 @@ class GLSurface : public RGBSurface
 
     friend class VideoGLSurface;
 
-    friend class SurfaceLoader;
+    friend class ImageLoader;
 
     friend class FontExtend;
 
@@ -45,8 +45,8 @@ protected:
     bool modified;
 
     unsigned int textureHandle;
-    int textureWidth;
-    int textureHeight;
+    unsigned int textureWidth;
+    unsigned int textureHeight;
     unsigned int * texturePixels;
 
     unsigned int getTextureHandle();
@@ -72,14 +72,20 @@ public :
                unsigned long a_mask = a_default_mask
              ) throw (std::logic_error);
 
+    GLSurface ( RWOps & rwops) throw(std::logic_error);
+
     ///Conversion from internal RGBSurface. Used by Image if needed in emergency.
     explicit GLSurface( const RGBSurface & rgbs) throw (std::logic_error);
 
+    ///Copy from internal GLSurface.
+    explicit GLSurface( const GLSurface & gls) throw (std::logic_error);
+
+
     virtual ~GLSurface();
 
-    int getTextureWidth();
+    unsigned int getTextureWidth();
 
-    int getTextureHeight();
+    unsigned int getTextureHeight();
 
     bool convertToDisplayFormat();
 

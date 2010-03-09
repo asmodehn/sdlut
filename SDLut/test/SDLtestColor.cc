@@ -73,24 +73,24 @@ public:
 int main(int argc, char** argv)
 {
 
-	bool ogl = false;
-	if (argc > 1 && std::string(argv[1]) == "opengl" ) ogl = true;
+#ifdef WK_OPENGL_FOUND
+	bool ogl = true;
+	if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
+#else
+    bool ogl = false;
+#endif
 
     //Starting with usual SDL window
-    App::getInstance().initVideo(false,ogl,true,false);
-	App::getInstance().setName ("RAGE::SDL test Color : Displayed Color order \"Red - Green - Blue - Purple if alpha is working else White\"");  //BUG HERE: Title never displayed ?!
+    App::getInstance().initVideo(false,true,false);
+	App::getInstance().setName ("RAGE::SDL test Color : Displayed Color order \"Red - Green - Blue - Purple if alpha is working otherwise White\"");
 
     //Setting Display size and BPP
     App::getInstance().getDisplay().setDisplay(800,600); // using autodetected bpp
 
-	//Purple background color (useful to test alpha / color key)
-	App::getInstance().getDisplay().setBGColor(Color (255,0,255));
+    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(ogl);
 
-    //Getting video informations
-    //std::cout << App::getInstance().getDisplay().getScreenBuffer().getVideoInfo() << std::endl;
-	//BUG HERE: displayed infos are false like available memory @ 0 for example
-	//this shouldnt work anymore since we moved the Log out of SDLut
-	//TODO : find a way to force the dump of info into the SDLut Log
+	//Purple background color (useful to test alpha / color key)
+	App::getInstance().getDisplay().getScreenBuffer().setBGColor(Color (255,0,255));
 
 	std::auto_ptr<MyEngine> engine(new MyEngine());
 

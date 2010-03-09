@@ -14,7 +14,7 @@ class FontImpl
 {
 
     //this version keeps the right value for render
-    std::auto_ptr<RGBSurface> _fontsurf;
+    std::auto_ptr<RGBSurface> pvm_fontsurf;
 
     static std::map<char,Rect> alphalookup;
     static std::map<char,Rect> InitAlphaLookup();
@@ -23,7 +23,8 @@ public :
 
     //image 16x14 character, 225x225 pixels (all start at 0, not 1)
     FontImpl()  throw (std::logic_error);
-    FontImpl(const FontImpl & font);
+    FontImpl(const FontImpl & font)   throw (std::logic_error);
+    FontImpl & operator=(const FontImpl & font)   throw (std::logic_error);
     virtual ~FontImpl();
 
     virtual Rect getSize(const std::string & text) const;

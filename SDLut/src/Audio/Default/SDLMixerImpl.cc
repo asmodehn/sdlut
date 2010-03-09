@@ -1,8 +1,9 @@
 #include "SDLMixerImpl.hh"
 #include "SDLConfig.hh"
 
+
 #ifndef min
-#define min(a,b) (a<b)?a:b;
+#define min( a , b )  ( (a)>(b) )?(b):(a)
 #endif
 
 namespace RAGE

@@ -19,7 +19,7 @@ class FontExtend : public FontImpl
     int ptsize;
     long index;
     std::auto_ptr<RWOps> pvm_OriginalData;
-    TTF_Font * _ttfstruct;
+    TTF_Font * pvm_ttfstruct;
 
 public:
     //Constructor
@@ -27,13 +27,12 @@ public:
 
     //Copy Constructor
     //copy completely the content of *_ttfstruct
-    FontExtend(const FontExtend & );
+    FontExtend(const FontExtend & ) throw (std::logic_error);
     //Assignement operator
-    FontExtend & operator=(const FontExtend &);
+    FontExtend & operator=(const FontExtend &) throw (std::logic_error);
 
     //Destructor
     ~FontExtend();
-
 
     //Attributes Access
     static void byteSwapUNICODE(bool swapped);

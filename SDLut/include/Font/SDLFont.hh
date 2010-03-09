@@ -3,7 +3,7 @@
 
 #include "Video/SDLColor.hh"
 #include "Math/SDLRect.hh"
-#include "Video/Image.hh"
+#include "Video/SDLRGBSurface.hh"
 
 #include <memory>
 
@@ -32,13 +32,11 @@ namespace SDL
  *
  */
 
-//using Pimpl idiom to hide use of optional dependencies or fallback behaviour
 class FontImpl;
+class FontExtend;
 
 class Font
 {
-
-    //friend class RGBSurface; // to access render()
 
 public:
     typedef enum { Default, Normal, Bold, Italic, Underline} Style;
@@ -46,16 +44,15 @@ public:
 
 private:
 
-    //TODO : fix the problem when the TTF is absent !!!
-    std::auto_ptr<FontImpl> _font;//private class to handle SDL_ttf detection and use
-    //_font == NULL if TTF not available ( or unable to initialise the font )
-    //Default::Font * _deffont;
+//#ifdef WK_SDLTTF_FOUND
+//    std::auto_ptr<FontExtend> pvm_font;
+//#else
+    std::auto_ptr<FontImpl> pvm_font;
+//#endif
 
 public:
 
     //constructor
-
-
     Font() throw (std::logic_error);
     //if filename not found, uses default lib
     Font(std::string filename , int ptsize = 16);
@@ -75,15 +72,13 @@ public:
     Style getStyle() const;
     void setStyle(Style s);
 
-    Rect size(std::string text);
-
     Rect getSize(const std::string& text);
     int getHeight() const;
 
 
     //Rendering
     //The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-    std::auto_ptr<Image> render(std::string text, Color c, RenderMode mode, Color bgc = Color()) const;
+    std::auto_ptr<RGBSurface> render(std::string text, Color c, RenderMode mode, Color bgc = Color()) const;
 
 };
 

@@ -104,12 +104,12 @@ int main(int argc, char** argv)
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
 	App::getInstance().setName ("RAGE::SDL test - Font");
-    App::getInstance().initVideo(false,false,false,false);
+    App::getInstance().initVideo(false,false,false);
 	App::getInstance().initText();
 
     testlog << nl << " Creating the User Interface... " << std::endl;
 
-    App::getInstance().getDisplay().setBGColor(Color (64,0,0));
+    App::getInstance().getDisplay().getScreenBuffer().setBGColor(Color (64,0,0));
 
     MyGeneralHandler gh;
 	MyKeyboard kb;

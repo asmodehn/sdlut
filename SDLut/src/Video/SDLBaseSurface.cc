@@ -64,6 +64,7 @@ BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error) 
     if (ptm_surf.get() == 0 ) throw std::logic_error("Surface not initialised properly : SDL_Surface NULL pointer.");
 }
 
+//deep copy
 BaseSurface::BaseSurface(const BaseSurface & s) throw (std::logic_error)
 try :
     ptm_surf(0)
@@ -89,6 +90,8 @@ catch (std::exception &e)
     Log << nl << "Exception catched in SDLBaseSurface Copy Constructor !!!" << nl <<
     e.what() << nl << GetError();
 }
+
+
 
 BaseSurface& BaseSurface::operator=(const BaseSurface& s)
 {
@@ -145,13 +148,13 @@ SDL_Surface BaseSurface::get_SDL() const
     return *ptm_surf;
 }
 
-int BaseSurface::getHeight(void) const
+unsigned int BaseSurface::getHeight(void) const
 {
-    return ptm_surf->h;
+    return static_cast<unsigned int>(ptm_surf->h);
 }
-int BaseSurface::getWidth(void) const
+unsigned int BaseSurface::getWidth(void) const
 {
-    return ptm_surf->w;
+    return static_cast<unsigned int>(ptm_surf->w);
 }
 
 int BaseSurface::getBPP(void) const

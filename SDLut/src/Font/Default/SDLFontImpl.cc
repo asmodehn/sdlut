@@ -11,12 +11,12 @@ namespace SDL
 {
 FontImpl::FontImpl()  throw (std::logic_error)
 try:
-    _fontsurf(0)
+    pvm_fontsurf(0)
 {
-    SurfaceLoader loader;
-    RWOps _fontres (_defaultFont,sizeof(_defaultFont));
-    _fontsurf = loader.load( _fontres );
-    if ( ( _fontsurf.get() == 0 ) || ( ! _fontsurf->initialized() ) )
+    RWOps res(_defaultFont,sizeof(_defaultFont));
+    pvm_fontsurf.reset(new RGBSurface(res));
+    //checking initialized font
+    if ( ( pvm_fontsurf.get() == 0 ) || ( ! pvm_fontsurf->initialized() ) )
     {
         throw std::logic_error("Error initializing default Font !");
     }
@@ -51,10 +51,28 @@ int FontImpl::height()
     return 16;
 }
 
-FontImpl::FontImpl(const FontImpl & font) : _fontsurf(0)
+FontImpl::FontImpl(const FontImpl & font) throw (std::logic_error)
+ try : pvm_fontsurf(0)
 {
     //deep copy of the RGB Surface
-    _fontsurf.reset( new RGBSurface(*(font._fontsurf)) );
+    pvm_fontsurf.reset( new RGBSurface(*(font.pvm_fontsurf)) );
+    if ( pvm_fontsurf.get() == 0 )
+        throw std::logic_error("RGBSurface for fontsurf is NULL");
+}
+catch (std::exception& e)
+{
+    Log << nl << "Exception caught in internal FontImpl copy constructor : " << e.what();
+}
+
+
+FontImpl & FontImpl::operator=(const FontImpl & font) throw (std::logic_error)
+{
+    //deep copy of the RGB Surface
+    pvm_fontsurf.reset( new RGBSurface(*(font.pvm_fontsurf)) );
+    if ( pvm_fontsurf.get() == 0 )
+        throw std::logic_error("RGBSurface for fontsurf is NULL");
+
+    return * this;
 }
 
 FontImpl::~FontImpl()
@@ -73,7 +91,7 @@ std::auto_ptr<RGBSurface> FontImpl::render(const std::string & text,Color c, Col
     for (unsigned int i= 0; i< text.size(); i++)
     {
         Rect src(i*14,0,14,16);
-        result->blit(*_fontsurf, src,alphalookup[text[i]]);
+        result->blit(*pvm_fontsurf, src,alphalookup[text[i]]);
         //
         //TODO : better if we code that directly in SDL, as we wont be affected by other code parts changes...
         //

@@ -19,25 +19,31 @@ namespace SDL
 
 class Image
 {
-    friend class ImageLoader;
-    friend class ScreenBuffer;
-    friend class Font;
+    friend class ImageLoader; // to access conversion constructors
+    friend class ScreenBuffer;// to access m_img
 
-    RGBSurface* m_img;
+protected:
+#ifdef WK_OPENGL_FOUND
+    std::auto_ptr<GLSurface> m_img;
+#else
+    std::auto_ptr<RGBSurface> m_img;
+#endif
 
-public: // TMP : until ImageLoader becomes operational
-
-    ///Conversion Constructor
-    explicit Image(RGBSurface * s) throw (std::logic_error); ///< This one should be called only by friends
+#ifdef WK_OPENGL_FOUND
+    ///Conversion Constructor with explicit ownership transfert
+    explicit Image(std::auto_ptr<GLSurface> s) throw (std::logic_error);
+#endif
+//this is also valid in OpenGL : a GL surface will be made from RGB surfaces
 
     ///Conversion Constructor with explicit ownership transfert
     explicit Image(std::auto_ptr<RGBSurface> s) throw (std::logic_error);
+
 
 public:
 
     //Constructor
     //BPP should NEVER be == 0 !!!!
-    Image( int width, int height, int bpp,
+    Image( int width = 0, int height = 0, int bpp = 8,
            bool alpha = false,
            bool colorkey = false,
            bool hardware = false
@@ -46,11 +52,13 @@ public:
     Image( void * pixeldata, int depth, int pitch, int width, int height
          ) throw (std::logic_error);
 
+    Image(const Image &);
+
     ~Image();
 
     bool saveBMP ( std::string filename);
 
-    bool convertToDisplayFormat( Renderer r = SDL );
+    //bool convertToDisplayFormat( Renderer r = SDL );
 
     bool resize(int width, int height, bool keepcontent = false);
 

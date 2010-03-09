@@ -11,21 +11,32 @@ namespace RAGE
 namespace SDL
 {
 
+#ifdef WK_OPENGL_FOUND
+
+///Conversion Constructor with explicit ownership transfert
+Image::Image(std::auto_ptr<GLSurface> s) throw (std::logic_error)
+        : m_img(NULL)
+{
+    m_img=s;
+    if ( m_img.get() == NULL ) throw std::logic_error("Error in image Conversion Constructor!!!");
+}
+#endif // WK_OPENGL_FOUND
 
 ///Conversion Constructor
-Image::Image(RGBSurface * s) throw (std::logic_error)
-        : m_img(s)
-{
-    if ( m_img == NULL ) throw std::logic_error("Error in image Conversion Constructor!!!");
-}
 
 ///Conversion Constructor with explicit ownership transfert
 Image::Image(std::auto_ptr<RGBSurface> s) throw (std::logic_error)
         : m_img(NULL)
 {
-    m_img=s.release();
-    if ( m_img == NULL ) throw std::logic_error("Error in image Conversion Constructor!!!");
+#ifdef WK_OPENGL_FOUND
+    m_img.reset(new GLSurface(*s));// conversion if needed
+#else
+    m_img=s;
+#endif
+    if ( m_img.get() == NULL ) throw std::logic_error("Error in image Conversion Constructor!!!");
 }
+
+
 
 //Constructor
 //BPP should NEVER be == 0 !!!!
@@ -36,14 +47,11 @@ Image::Image( int width, int height, int bpp,
             ) throw (std::logic_error)
 
 {
-    if ( App::getInstance().getManager().isOpenGLEnabled() )
-    {
-        m_img = new GLSurface(width, height, bpp, alpha, colorkey, hardware);
-    }
-    else
-    {
-        m_img = new RGBSurface(width, height, bpp, alpha, colorkey, hardware);
-    }
+#ifdef WK_OPENGL_FOUND
+        m_img.reset(new GLSurface(width, height, bpp, alpha, colorkey, hardware));
+#else
+        m_img.reset(new RGBSurface(width, height, bpp, alpha, colorkey, hardware));
+#endif
 }
 
 
@@ -51,73 +59,32 @@ Image::Image( void * pixeldata, int depth, int pitch, int width, int height
             ) throw (std::logic_error)
 {
 
-    if ( App::getInstance().getManager().isOpenGLEnabled() )
-    {
-        m_img = new GLSurface(pixeldata, depth, pitch, width, height);
-    }
-    else
-    {
-        m_img = new RGBSurface(pixeldata, depth, pitch, width, height);
-    }
+#ifdef WK_OPENGL_FOUND
+        m_img.reset(new GLSurface(pixeldata, depth, pitch, width, height));
+#else
+        m_img.reset(new RGBSurface(pixeldata, depth, pitch, width, height));
+#endif
 }
 
+Image::Image(const Image & img)
+: m_img(NULL)
+{
+
+#ifdef WK_OPENGL_FOUND
+        m_img.reset(new GLSurface(*(img.m_img)));
+#else
+        m_img.reset(new RGBSurface(*(img.m_img)));
+#endif
+
+}
 
 Image::~Image()
 {
-    delete m_img, m_img=NULL;
 }
 
 bool Image::saveBMP( std::string filename )
 {
     return m_img->saveBMP(filename);
-}
-
-bool Image::convertToDisplayFormat(Renderer r)
-{
-    bool res = false;
-
-    // We need to test the type matching of the surface and the videosurf here,
-    if ( r != m_img->getRenderer() )
-    {
-        //and convert if needed
-
-        //TMP just for debug sake
-        //static int incr;
-        //incr++;
-        //std::stringstream ss;
-        //ss << incr;
-
-        switch ( r )
-        {
-        case OpenGL:
-
-            Log << "Warning : Screen and Image using different renderers... ";
-            Log << "Attempting conversion of Image to "<< r ;
-
-            m_img = new GLSurface( *m_img );
-            //m_img->saveBMP( "Converted_" + ss.str() + ".bmp"  );
-            res = true;
-            break;
-
-        case SDL: //NOT NEEDED : Handled by hierarchy for now as GLSurface derivates from RGBSurface
-            // Meaning SDL is the default renderer here when nothing else is specified explicitedly
-            //m_img = new RGBSurface ( m_img );
-            res = true;
-            break;
-
-        default:
-            Log << "Warning : unsupported Image conversion has been required !!! ABORTING.";
-            res = false;
-            break;
-        }
-    }
-    else
-    {
-        //nothing to do, types already matching
-        res=true;
-    }
-
-    return res;
 }
 
 bool Image::resize(int width, int height, bool keepcontent)

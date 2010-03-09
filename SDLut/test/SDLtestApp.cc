@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
 	//Video Init
 	testlog << nl << " Enabling Video... " << std::endl;
-	testlog << ( (SDL::App::getInstance().initVideo(false,false,false,false))? "OK" : "FAILED" );
+	testlog << ( (SDL::App::getInstance().initVideo(false,false,false))? "OK" : "FAILED" );
 
 	//Audio Init
 	testlog << nl << " Enabling Audio... " << std::endl;

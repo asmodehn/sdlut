@@ -14,9 +14,9 @@ namespace SDL
 
 Font::Font() throw (std::logic_error)
 try :
-    _font( new FontImpl())
+    pvm_font( new FontImpl())
 {
-    if (!_font.get())
+    if (!pvm_font.get())
     {
         throw std::logic_error("Font Support not available");
     }
@@ -30,10 +30,10 @@ catch (std::exception& e)
 
 Font::Font(std::string filename , int ptsize )
 try :
-    _font(0)
+    pvm_font(0)
 {
     bool ttfavailable = setTTF( filename, ptsize);
-    if (!ttfavailable || !_font.get())
+    if (!ttfavailable || !pvm_font.get())
     {
         throw std::logic_error("Font Support not available");
     }
@@ -48,33 +48,50 @@ catch (std::exception& e)
 
 //Copy Constructor
 Font::Font(const Font &font)
-        : _font(0)
+        : pvm_font(0)
 {
-    if (font._font.get() != 0 ) // should always be the case, just need to make sure with default and other constructors
+    if (font.pvm_font.get() != 0 ) // should always be the case, just need to make sure with default and other constructors
     {
         if ( font.isTTFAvailable() )
         {
             //duplicated
-            _font.reset(new FontExtend(static_cast<const FontExtend&>(*font._font)));
+            pvm_font.reset(new FontExtend(static_cast<const FontExtend&>(*font.pvm_font)));
         }
         else
         {
             //duplicated
-            _font.reset(new FontImpl(*font._font));
+            pvm_font.reset(new FontImpl(*font.pvm_font));
         }
     }
 
 }
 
+Font& Font::operator=(const Font & font)
+{
+    if (font.pvm_font.get() != 0 ) // should always be the case, just need to make sure with default and other constructors
+    {
+        if ( font.isTTFAvailable() )
+        {
+            //duplicated
+            pvm_font.reset(new FontExtend(static_cast<const FontExtend&>(*font.pvm_font)));
+        }
+        else
+        {
+            //duplicated
+            pvm_font.reset(new FontImpl(*font.pvm_font));
+        }
+    }
+
+    return *this;
+}
 
 Font::~Font()
 {
 }
 
-
-std::auto_ptr<Image> Font::render(std::string text, Color c, RenderMode mode, Color bgc) const
+std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mode, Color bgc) const
 {
-    std::auto_ptr<Image> textimg( new Image(_font->render(text,c,bgc,mode)) );
+    std::auto_ptr<RGBSurface> textimg = pvm_font->render(text,c,bgc,mode);
 
 #if( DEBUG == 2)
     textimg->saveBMP( text + ".bmp");
@@ -88,7 +105,7 @@ bool Font::setTTF(std::string filename, int ptsize)
 #ifdef WK_SDLTTF_FOUND
     try
     {
-        _font.reset( new FontExtend(filename,ptsize) );
+        pvm_font.reset( new FontExtend(filename,ptsize) );
     }
     catch (std::exception& e)
     {
@@ -96,7 +113,7 @@ bool Font::setTTF(std::string filename, int ptsize)
         e.what() << std::endl;
     };
 
-    changed = (_font.get() != 0);
+    changed = (pvm_font.get() != 0);
 #else
     Log << nl << "Feature not enabled. TTF loading is disabled.";
 #endif
@@ -105,29 +122,29 @@ bool Font::setTTF(std::string filename, int ptsize)
 
 bool Font::isTTFAvailable() const
 {
-    return _font->isTTFImpl();
+    return pvm_font->isTTFImpl();
 }
 
 Font::Style Font::getStyle() const
 {
-    return _font->getStyle();
+    return pvm_font->getStyle();
 }
 
 void Font::setStyle(Style s)
 {
-    _font->setStyle(s);
+    pvm_font->setStyle(s);
 }
 
 Rect Font::getSize(const std::string& text)
 {
     //return (static_cast<FontExtend*>(_font.get()))->getSize(text);
-    return _font.get()->getSize(text);
+    return pvm_font.get()->getSize(text);
 }
 
 int Font::getHeight() const
 {
     //return (static_cast<FontExtend*>(_font.get()))->height();
-    return _font.get()->height();
+    return pvm_font.get()->height();
 }
 
 

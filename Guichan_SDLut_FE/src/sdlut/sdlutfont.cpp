@@ -69,10 +69,12 @@ int SDLutFont::getHeight() const
 
 void SDLutFont::drawString(Graphics* graphics, const std::string& text, const int x, const int y)
 {
+    /*
     if (text == "")
     {
         return;
     }
+    */
 
     SDLutGraphics *sdlutGraphics = dynamic_cast<SDLutGraphics *>(graphics);
 
@@ -88,24 +90,26 @@ void SDLutFont::drawString(Graphics* graphics, const std::string& text, const in
     Color col = sdlutGraphics->getColor();
 
     SDLut::Color RGBACol (  static_cast<unsigned char>( col.r ),
-                                static_cast<unsigned char>( col.g ),
-                                static_cast<unsigned char>( col.b )
-                             );
+                            static_cast<unsigned char>( col.g ),
+                            static_cast<unsigned char>( col.b )
+                         );
 
-    std::auto_ptr<SDLut::Image> textSurface = mFont->render(text.c_str(), RGBACol, mRenderMode);
+
+    SDLut::Text textsurf(text, *mFont, RGBACol);
+    textsurf.changeRendermode(mRenderMode);
 
     SDLut::Rect dst(x, y + yoffset, 0, 0);
-	SDLut::Rect src(0, 0, textSurface->getWidth(), textSurface->getHeight());
-	/*
+    SDLut::Rect src(0, 0, textsurf.getWidth(), textsurf.getHeight());
+    /*
     dst.resetx( x );
     dst.resety( y + yoffset );
     src.resetw( textSurface->getWidth() );
     src.reseth( textSurface->getHeight() );
     src.resetx( 0 );
     src.resety( 0 );
-	*/
+    */
 
-    sdlutGraphics->drawSDLutSurface(*textSurface, src, dst);
+    sdlutGraphics->drawSDLutSurface(textsurf, src, dst);
 
 }
 

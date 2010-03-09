@@ -98,38 +98,6 @@ public:
     Display( const Display & d);
     ~Display();
 
-    //preset or "dynamically change" properies of the display...
-    bool setResizable(bool val);
-    bool setFullscreen(bool val);
-#ifdef WK_OPENGL_FOUND
-
-    inline GLManager & getGLManager() //TEMPORARY... should matter only to screenbuffer
-    {
-        return pvm_screen.getGLManager();
-    }
-    bool setOpenGL(bool val);
-#endif // WK_OPENGL_FOUND
-    bool setNoFrame(bool val);
-
-    //to check the current properties of the display
-    bool isFullscreen();
-    bool isResizable();
-    bool isOpenGL();
-    bool isNoFrame();
-
-    void setBGColor(const Color & color)
-    {
-        pvm_screen.setBGColor(color);
-    }
-
-    //fill the VideoSurface with the BGColor
-    void applyBGColor() const;
-
-    Color getBGColor ()
-    {
-        return pvm_screen.getBGColor();
-    }
-
 private:
     ////// WARNING : class Window has been changed to class Display and ScreenBuffer is new//////
     bool ShowingLoadingScreen; //indicate if a Loading Screen is being shown

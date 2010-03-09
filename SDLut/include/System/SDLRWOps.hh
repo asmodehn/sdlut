@@ -73,6 +73,11 @@ public:
     //faire un packer / unpacker similaire...
     bool dumpCode(const std::string & filename, const std::string & id);
 
+    inline friend std::ostream& operator << (std::ostream& os, const RWOps& r)
+    {
+        return os << std::hex << "RWOps "<< &r << " @ " << r.tell();
+    }
+
 };
 
 }

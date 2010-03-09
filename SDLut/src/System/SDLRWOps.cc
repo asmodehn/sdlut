@@ -94,6 +94,8 @@ try :
     {
         *pvm_rwops = *(rwops.pvm_rwops);
     }
+    //for safety -> new object is always ready to be used.
+    seek(0,RWOps::Set);
 }
 catch (std::exception & e)
 {

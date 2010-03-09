@@ -93,6 +93,7 @@
   * \defgroup Font
   */
 #include "Font/SDLFont.hh"
+#include "Font/Text.hh"
 
 /**
   * \defgroup Math
