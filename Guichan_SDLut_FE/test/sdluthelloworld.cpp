@@ -102,16 +102,12 @@ public:
         return true;
     }
 
-    bool prerender(unsigned long framerate, unsigned long deltaticks)
+    bool render(ScreenBuffer& screen) const
     {
+
         //Check Gui Logic
         gui->logic();
 
-        return true;
-    }
-
-    bool render(ScreenBuffer& screen) const
-    {
         // Set the target for the graphics object to be the screen.
         // In other words, we will draw to the screen.
         graphics->setTarget(&screen);
@@ -128,7 +124,7 @@ public:
 KeyboardInput* myKeyboardInput;
 RenderEngine myEngine;
 
-void init()
+void init(bool ogl)
 {
     logger.enableFileLog("Example.Log");
 
@@ -136,6 +132,8 @@ void init()
 
     if (! App::getInstance().initVideo(false, true, false) )
         throw std::logic_error( "Init Video Failed: " + GetError() );
+
+    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(ogl);
 
     if (! App::getInstance().getDisplay().setDisplay(640, 480, 32)  )
         throw std::logic_error( "Create Surface Failed: " + GetError() );
@@ -182,7 +180,13 @@ int main(int argc, char **argv)
     try
     {
 
-        init();
+#ifdef WK_OPENGL_FOUND
+	bool ogl = true;
+	if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
+#else
+    bool ogl = false;
+#endif
+        init(ogl);
         implement();
 
         if (App::getInstance().getDisplay().show())

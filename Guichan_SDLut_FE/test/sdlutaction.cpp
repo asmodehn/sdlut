@@ -218,18 +218,15 @@ int main(int argc, char **argv)
 {
     try
     {
-        if ( argc > 1 && std::string(argv[1]) == "opengl" )
-        {
-            std::cout << "YEAH OpenGL" << std::endl;
-            init(true);
-            implement();
-        }
-        else
-        {
-            std::cout << "BOUH No OpenGL" << std::endl;
-            init(false);
-            implement();
-        }
+        #ifdef WK_OPENGL_FOUND
+	bool ogl = true;
+	if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
+#else
+    bool ogl = false;
+#endif
+        init(ogl);
+        implement();
+
 
         if (App::getInstance().getDisplay().show())
         {
