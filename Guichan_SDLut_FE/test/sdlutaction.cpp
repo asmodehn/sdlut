@@ -165,6 +165,8 @@ void init(bool ogl = false)
     if (! App::getInstance().initVideo(false, true, false) )
         throw std::logic_error( "Init Video Failed: " + GetError() );
 
+    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(ogl);
+
     if (! App::getInstance().getDisplay().setDisplay(640, 480, 32)  )
         throw std::logic_error( "Create Surface Failed: " + GetError() );
 
@@ -218,11 +220,11 @@ int main(int argc, char **argv)
 {
     try
     {
-        #ifdef WK_OPENGL_FOUND
-	bool ogl = true;
-	if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
+#ifdef WK_OPENGL_FOUND
+        bool ogl = true;
+        if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
 #else
-    bool ogl = false;
+        bool ogl = false;
 #endif
         init(ogl);
         implement();

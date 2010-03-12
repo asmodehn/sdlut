@@ -181,10 +181,10 @@ int main(int argc, char **argv)
     {
 
 #ifdef WK_OPENGL_FOUND
-	bool ogl = true;
-	if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
+        bool ogl = true;
+        if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
 #else
-    bool ogl = false;
+        bool ogl = false;
 #endif
         init(ogl);
         implement();

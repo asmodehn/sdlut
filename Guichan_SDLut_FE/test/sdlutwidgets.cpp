@@ -164,12 +164,10 @@ void init(bool ogl = false)
     if (! App::getInstance().initVideo(false, true, false) )
         throw std::logic_error( "Init Video Failed: " + GetError() );
 
-    //Initialize SDL_ttf (for sdlut only)
-    //if (!ogl)
-    {
-        if (! App::getInstance().initText())
-            throw std::logic_error( "TTF Init Failed: " + GetError() );
-    }
+    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(ogl);
+
+    if (! App::getInstance().initText())
+        throw std::logic_error( "TTF Init Failed: " + GetError() );
 
     if (! App::getInstance().getDisplay().setDisplay(640, 480, 32)  )
         throw std::logic_error( "Create Surface Failed: " + GetError() );
@@ -177,7 +175,7 @@ void init(bool ogl = false)
 
 }
 
-void implement(bool ogl = false)
+void implement(std::string fontfile = "" )
 {
 
 //GuiChan SDLuT Stuff
@@ -193,24 +191,17 @@ void implement(bool ogl = false)
     input = new gcn::SDLutInput();
     gui->setInput(input);
 
-    // Load the TTF font (for sdlut only)
-    //if (!ogl)
-    {
-        font = new gcn::SDLutFont("SlimSansSerif.ttf", 13, RAGE::SDL::Font::Blended );
-    }
-
-    //initWidgets();
     widgets::init();
 
-    // Clean old widgets::font (for sdlut only)
-    //if (!ogl)
+    if (fontfile != "")
     {
+        font = new gcn::SDLutFont(fontfile, 13, RAGE::SDL::Font::Blended );
         delete widgets::font, widgets::font = NULL;
         // The global font is static and must be set.
         gcn::Widget::setGlobalFont(font);
     }
 
-//SDLuT Stuff
+    //SDLuT Stuff
     myKeyboardInput = new KeyboardInput();
     App::getInstance().getDisplay().getEventManager().setKeyboard(myKeyboardInput);
 
@@ -244,14 +235,34 @@ int main(int argc, char **argv)
 {
     try
     {
+        std::string fontfile = "";
 #ifdef WK_OPENGL_FOUND
-	bool ogl = true;
-	if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
+        bool ogl = true;
+        if (argc > 1)
+        {
+            if ( std::string(argv[1]) == "nogl" )
+            {
+                    ogl = false;
+                    if (argc > 2)
+                    {
+                        fontfile = std::string(argv[2]);
+                    }
+            }
+            else
+            {
+                fontfile = std::string(argv[1]);
+            }
+        }
+
 #else
-    bool ogl = false;
+        bool ogl = false;
+        if (argc > 1)
+        {
+            fontfile = std::string(argv[1]);
+        }
 #endif
         init(ogl);
-        implement(ogl);
+        implement(fontfile);
 
         if (App::getInstance().getDisplay().show())
         {
