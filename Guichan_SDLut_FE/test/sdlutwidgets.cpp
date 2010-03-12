@@ -165,7 +165,7 @@ void init(bool ogl = false)
         throw std::logic_error( "Init Video Failed: " + GetError() );
 
     //Initialize SDL_ttf (for sdlut only)
-    if (!ogl)
+    //if (!ogl)
     {
         if (! App::getInstance().initText())
             throw std::logic_error( "TTF Init Failed: " + GetError() );
@@ -194,7 +194,7 @@ void implement(bool ogl = false)
     gui->setInput(input);
 
     // Load the TTF font (for sdlut only)
-    if (!ogl)
+    //if (!ogl)
     {
         font = new gcn::SDLutFont("SlimSansSerif.ttf", 13, RAGE::SDL::Font::Blended );
     }
@@ -203,7 +203,7 @@ void implement(bool ogl = false)
     widgets::init();
 
     // Clean old widgets::font (for sdlut only)
-    if (!ogl)
+    //if (!ogl)
     {
         delete widgets::font, widgets::font = NULL;
         // The global font is static and must be set.
@@ -251,7 +251,7 @@ int main(int argc, char **argv)
     bool ogl = false;
 #endif
         init(ogl);
-        implement();
+        implement(ogl);
 
         if (App::getInstance().getDisplay().show())
         {

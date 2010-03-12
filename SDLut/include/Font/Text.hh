@@ -28,6 +28,11 @@ class Text : public Image
     Font::RenderMode m_mode;
 
 public:
+	inline std::string Get_String()
+	{
+		return m_text;
+	}
+
     Text(std::string = "",Font fnt = Font(),Color fg = Color(255,255,255),Color bgc = Color(0,0,0)) throw (std::logic_error);
 
     ///Copy Constructor

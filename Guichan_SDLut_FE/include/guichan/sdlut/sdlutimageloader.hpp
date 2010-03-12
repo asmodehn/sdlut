@@ -22,6 +22,8 @@ class GCN_EXTENSION_DECLSPEC SDLutImageLoader : public ImageLoader
 public:
     static const SDLut::Color magicPink;
 
+	SDLutImageLoader();
+
     // Inherited from ImageLoader
     //loadgin with default Guichan magicPink colorkey
     virtual Image* load(const std::string& filename, bool convertToDisplayFormat = true);

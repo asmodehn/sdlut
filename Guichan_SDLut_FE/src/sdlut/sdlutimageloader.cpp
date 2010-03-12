@@ -16,6 +16,10 @@ namespace gcn
 
 const SDLut::Color SDLutImageLoader::magicPink = SDLut::Color(255,0,255,255);
 
+SDLutImageLoader::SDLutImageLoader()
+{
+
+}
 
 Image* SDLutImageLoader::load(const std::string& filename, bool convertToDisplayFormat)
 {

@@ -91,15 +91,19 @@ void SDLutFont::drawString(Graphics* graphics, const std::string& text, const in
 
     SDLut::Color RGBACol (  static_cast<unsigned char>( col.r ),
                             static_cast<unsigned char>( col.g ),
-                            static_cast<unsigned char>( col.b )
+                            static_cast<unsigned char>( col.b ),
+							static_cast<unsigned char>( col.a )
                          );
 
 
     SDLut::Text textsurf(text, *mFont, RGBACol);
     textsurf.changeRendermode(mRenderMode);
 
-    SDLut::Rect dst(x, y + yoffset, 0, 0);
+    //SDLut::Rect dst(x, y + yoffset, 0, 0);
+    //SDLut::Rect src(0, 0, textsurf.getWidth(), textsurf.getHeight());
+	SDLut::Rect dst(x, y + yoffset, textsurf.getWidth(), textsurf.getHeight());
     SDLut::Rect src(0, 0, textsurf.getWidth(), textsurf.getHeight());
+
     /*
     dst.resetx( x );
     dst.resety( y + yoffset );
