@@ -69,12 +69,12 @@ int SDLutFont::getHeight() const
 
 void SDLutFont::drawString(Graphics* graphics, const std::string& text, const int x, const int y)
 {
-    /*
+    //this test is used to circumvenient font bug when trying to display an empty string
     if (text == "")
     {
         return;
     }
-    */
+  
 
     SDLutGraphics *sdlutGraphics = dynamic_cast<SDLutGraphics *>(graphics);
 

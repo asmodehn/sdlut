@@ -72,7 +72,7 @@ void SDLutImage::putPixel(int x, int y, const gcn::Color& color)
         throw GCN_EXCEPTION("Trying to put a pixel in a non loaded image.");
     }
 
-    SDLutputPixel((SDLut::Image*&)mSurface, x, y, color);
+    SDLutputPixelAlpha((SDLut::Image*&)mSurface, x, y, color);
 }
 
 
