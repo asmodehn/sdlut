@@ -61,7 +61,7 @@ gcn::Color SDLutImage::getPixel(int x, int y)
     {
         throw GCN_EXCEPTION("Trying to get a pixel from a non loaded image.");
     }
-    SDLut::Color color = SDLutgetPixel((SDLut::Image*&)mSurface, x, y);
+    SDLut::Color color = SDLutgetPixel(mSurface, x, y);
     return gcn::Color( color.getR(), color.getG(), color.getB(), color.getA() );
 }
 
@@ -72,7 +72,7 @@ void SDLutImage::putPixel(int x, int y, const gcn::Color& color)
         throw GCN_EXCEPTION("Trying to put a pixel in a non loaded image.");
     }
 
-    SDLutputPixelAlpha((SDLut::Image*&)mSurface, x, y, color);
+    SDLutputPixel(mSurface, x, y, color);
 }
 
 

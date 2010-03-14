@@ -159,7 +159,7 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
         {
             for (x = x1; x < x2; x++)
             {
-                SDLutputPixelAlpha(mTarget, x, y, mColor);
+                SDLutputPixel(mTarget, x, y, mColor);
             }
         }
 
@@ -193,14 +193,8 @@ void SDLutGraphics::drawPoint(int x, int y)
     if (!top.isPointInRect(x,y))
         return;
 
-    if (mAlpha)
-    {
-        SDLutputPixelAlpha(mTarget, x, y, mColor);
-    }
-    else
-    {
-        SDLutputPixel(mTarget, x, y, mColor);
-    }
+    SDLutputPixel(mTarget, x, y, mColor);
+
 }
 
 void SDLutGraphics::drawHLine(int x1, int y, int x2)
@@ -270,14 +264,7 @@ void SDLutGraphics::drawLine(int x1, int y1, int x2, int y2)
             {
                 if (top.isPointInRect(x, y))
                 {
-                    if (mAlpha)
-                    {
-                        SDLutputPixelAlpha(mTarget, x, y, mColor);
-                    }
-                    else
-                    {
-                        SDLutputPixel(mTarget, x, y, mColor);
-                    }
+                    SDLutputPixel(mTarget, x, y, mColor);
                 }
 
                 p += dy;
@@ -298,14 +285,7 @@ void SDLutGraphics::drawLine(int x1, int y1, int x2, int y2)
             {
                 if (top.isPointInRect(x, y))
                 {
-                    if (mAlpha)
-                    {
-                        SDLutputPixelAlpha(mTarget, x, y, mColor);
-                    }
-                    else
-                    {
-                        SDLutputPixel(mTarget, x, y, mColor);
-                    }
+                    SDLutputPixel(mTarget, x, y, mColor);
                 }
 
                 p += dy;
@@ -342,14 +322,7 @@ void SDLutGraphics::drawLine(int x1, int y1, int x2, int y2)
             {
                 if (top.isPointInRect(x, y))
                 {
-                    if (mAlpha)
-                    {
-                        SDLutputPixelAlpha(mTarget, x, y, mColor);
-                    }
-                    else
-                    {
-                        SDLutputPixel(mTarget, x, y, mColor);
-                    }
+                    SDLutputPixel(mTarget, x, y, mColor);
                 }
 
                 p += dx;
@@ -370,14 +343,7 @@ void SDLutGraphics::drawLine(int x1, int y1, int x2, int y2)
             {
                 if (top.isPointInRect(x, y))
                 {
-                    if (mAlpha)
-                    {
-                        SDLutputPixelAlpha(mTarget, x, y, mColor);
-                    }
-                    else
-                    {
-                        SDLutputPixel(mTarget, x, y, mColor);
-                    }
+                    SDLutputPixel(mTarget, x, y, mColor);
                 }
 
                 p += dx;
@@ -396,7 +362,7 @@ void SDLutGraphics::setColor(const gcn::Color& color)
 {
     mColor = color;
 
-    mAlpha = color.a != 255;
+    mAlpha = (color.a < 255);
 }
 
 const gcn::Color& SDLutGraphics::getColor() const
