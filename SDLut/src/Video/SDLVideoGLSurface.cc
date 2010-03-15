@@ -100,7 +100,7 @@ Color VideoGLSurface::getpixel(int x, int y)
     {
 
     unsigned char pixel[4];
-    glReadPixels(x, y, 1, 1, GL_RGBA, GL_BYTE, &pixel);
+    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, &pixel);
 
 #if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
     color = Color(pixel[3], pixel[2], pixel[1], pixel[0]);

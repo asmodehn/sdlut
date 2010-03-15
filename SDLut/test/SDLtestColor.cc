@@ -30,11 +30,11 @@ public:
 		alpha = new Image(width-red->getWidth()-green->getWidth()-blue->getWidth(),height,32,true);
 		alpha->fill(Color(255,255,255,0));
 
-		std::cout << "Red Pixel : " << std::hex << red->getpixel(0,0);
-		std::cout << "Green Pixel : " << std::hex << green->getpixel(0,0);
-		std::cout << "Blue Pixel : " << std::hex << blue->getpixel(0,0); // <<< HERE we get strange values + surface is NOT optimized yet ?? -> so if we call getpixel from the FE what will happen ? will the surface will ever be optimized ? and if yes, accurately ?
-		//alpha->setpixel(0,0,RGBAColor(255,255,255,0)); //TMP : for testing only
-		std::cout << "Alpha Pixel : " << std::hex << alpha->getpixel(0,0);
+		std::cout << "Red Pixel : " << std::hex << red->getpixel(0,0) << std::endl;
+		std::cout << "Green Pixel : " << std::hex << green->getpixel(0,0)<< std::endl;
+		std::cout << "Blue Pixel : " << std::hex << blue->getpixel(0,0)<< std::endl; // <<< HERE we get strange values + surface is NOT optimized yet ?? -> so if we call getpixel from the FE what will happen ? will the surface will ever be optimized ? and if yes, accurately ?
+		//alpha->setpixel(0,0,RGBAColor(255,255,255,0))<< std::endl; //TMP : for testing only
+		std::cout << "Alpha Pixel : " << std::hex << alpha->getpixel(0,0)<< std::endl;
 
 		return true;
 	}
@@ -61,7 +61,7 @@ public:
 		screen.blit(*green,green_dst);
 		Rect blue_dst(0 + red->getWidth() + green->getWidth(), 0,blue->getWidth(),blue->getHeight());
 		screen.blit(*blue,blue_dst);
-		std::cout << "blue+yellow merge pixel : " << std::hex << screen.getpixel(red->getWidth()+green->getWidth()+blue->getWidth()/2,0);  // <<< HERE we get others values + the surface is optimized ?
+		//std::cout << "blue+yellow merge pixel : " << std::hex << screen.getpixel(red->getWidth()+green->getWidth()+blue->getWidth()/2,0) << std::endl;  // <<< HERE we get others values + the surface is optimized ?
 		Rect alpha_dst(0 + red->getWidth() + green->getWidth() + blue->getWidth(), 0,alpha->getWidth(),alpha->getHeight());
 		screen.blit(*alpha,alpha_dst);
 
