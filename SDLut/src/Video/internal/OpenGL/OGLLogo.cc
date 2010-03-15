@@ -1,4 +1,4 @@
-#include "Video/OGLLogo.hh"
+#include "Video/internal/OpenGL/OGLLogo.hh"
 
 #include "SDLConfig.hh"
 

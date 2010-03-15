@@ -1,4 +1,4 @@
-#include "Video/Logo.hh"
+#include "Video/internal/SDLLogo.hh"
 
 #include "SDLConfig.hh"
 

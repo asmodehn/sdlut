@@ -5,7 +5,7 @@
  * Handle a Graphical GL Surface
  ******************************************************************************/
 
-#include "Video/SDLRGBSurface.hh"
+#include "Video/internal/SDLRGBSurface.hh"
 
 namespace RAGE
 {
@@ -20,8 +20,6 @@ class GLSurface : public RGBSurface
     friend class ImageLoader;
 
     friend class FontExtend;
-
-
 
 public:
     virtual Renderer getRenderer()

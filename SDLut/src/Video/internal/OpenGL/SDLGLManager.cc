@@ -1,4 +1,4 @@
-#include "Video/SDLGLManager.hh"
+#include "Video/internal/OpenGL/SDLGLManager.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE

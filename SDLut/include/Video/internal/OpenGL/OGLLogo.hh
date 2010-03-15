@@ -5,7 +5,7 @@
  * Class implementing an OpenGL Logo
  ******************************************************************************/
 
-#include "Logo.hh"
+#include "Video/internal/SDLLogo.hh"
 
 namespace RAGE
 {

@@ -1,7 +1,7 @@
 #ifndef SDL_CURSOR_HH
 #define SDL_CURSOR_HH
 
-#include "Math/SDLRect.hh"
+#include "Video/Rect.hh"
 
 #include <stdexcept>
 

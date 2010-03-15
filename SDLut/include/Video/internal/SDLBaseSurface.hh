@@ -24,8 +24,8 @@
 #include "WkPlatform.h"
 //to be able to know which renderers can be used on the platform
 
-#include "Math/SDLRect.hh"
-#include "Video/SDLVideoInfo.hh"
+#include "Video/Rect.hh"
+#include "Video/internal/SDLVideoInfo.hh"
 
 #include <iostream>
 #include <cassert>

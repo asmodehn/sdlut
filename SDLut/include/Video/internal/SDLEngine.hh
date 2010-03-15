@@ -13,10 +13,10 @@
  * Warning : GUI, is related to the application, and not to the display system *
  *******************************************************************************/
 
-#include "SDLRGBSurface.hh"
-#include "SDLGLSurface.hh"
-#include "SDLVideoSurface.hh"
-#include "OGLLogo.hh"
+#include "Video/internal/SDLRGBSurface.hh"
+#include "Video/internal/OpenGL/SDLGLSurface.hh"
+#include "Video/internal/SDLVideoSurface.hh"
+#include "Video/internal/OpenGL/OGLLogo.hh"
 
 namespace RAGE
 {

@@ -95,7 +95,7 @@ bool Image::resize(int width, int height, bool keepcontent)
 
 bool Image::fill (const Color& color, const Rect& dest_rect)
 {
-    return m_img->fill(m_img->getPixelFormat().getValueFromColor(color),dest_rect);
+    return m_img->fill(m_img->getPixelFormat().getPixelColor(color),dest_rect);
 }
 
 bool Image::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)

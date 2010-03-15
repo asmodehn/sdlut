@@ -1,4 +1,4 @@
-#include "Math/SDLRect.hh"
+#include "Video/Rect.hh"
 #include "SDLConfig.hh"
 
 #include <stdexcept>

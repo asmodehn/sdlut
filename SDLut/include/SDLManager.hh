@@ -24,7 +24,7 @@
 
 //we can include here the class that we manage...
 //Themselves should refer to the SDLManager through a singleton in SDLConfig.hh ( if ever.. probably no point to access their own settings through here... )
-#include "Video/SDLVideoSurface.hh"
+#include "Video/internal/SDLVideoSurface.hh"
 
 #include <stdexcept>
 

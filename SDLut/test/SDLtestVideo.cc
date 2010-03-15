@@ -53,16 +53,27 @@ public:
 //Main Program
 int main(int argc, char** argv)
 {
-    std::string imgFile(argv[1]);
+    std::string imgFile("");
 #ifdef WK_OPENGL_FOUND
 	bool ogl = true;
-	if (argc > 1 && std::string(argv[1]) == "nogl" )
+	if (argc > 1)
 	{
-	    //if first option was "nogl" then adjust filename
-	    ogl = false;
-	    imgFile = argv[2];
+	    if (std::string(argv[1]) == "nogl" )
+        {
+            //if first option was "nogl" then adjust filename
+            ogl = false;
+            imgFile = argv[2];
+        }
+        else
+        {
+            imgFile = std::string(argv[1]);
+        }
 	}
 #else
+    if ( argc > 1)
+    {
+        imgFile = std::string(argv[1]);
+    }
         bool ogl = false;
 #endif
 

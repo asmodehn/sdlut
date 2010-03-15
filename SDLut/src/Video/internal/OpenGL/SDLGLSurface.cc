@@ -1,4 +1,4 @@
-#include "Video/SDLGLSurface.hh"
+#include "Video/internal/OpenGL/SDLGLSurface.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE
@@ -230,7 +230,8 @@ void GLSurface::convertPixels()
                     texturePixels[x + y * textureWidth] = 0x00000000;
                 }
 
-                texturePixels[x + y * textureWidth] = c.getGLPixelColor();
+                //BUG here : TOFIX
+                texturePixels[x + y * textureWidth] = c;
             }
             else
             {

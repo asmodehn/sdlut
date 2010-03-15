@@ -1,4 +1,4 @@
-#include "Video/SDLVideoInfo.hh"
+#include "Video/internal/SDLVideoInfo.hh"
 #include "SDLManager.hh"
 
 #include "SDLConfig.hh"

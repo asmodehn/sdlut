@@ -5,11 +5,11 @@
  * Handle an Image
  ******************************************************************************/
 
-#include "Video/SDLRGBSurface.hh"
-#include "Video/SDLGLSurface.hh"
+#include "Video/internal/SDLRGBSurface.hh"
+#include "Video/internal/OpenGL/SDLGLSurface.hh"
 
-#include "Math/SDLRect.hh"
-#include "Video/SDLColor.hh"
+#include "Video/Rect.hh"
+#include "Video/Color.hh"
 
 namespace RAGE
 {

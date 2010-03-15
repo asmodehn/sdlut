@@ -17,8 +17,8 @@
  *
  */
 
-#include "Video/SDLVideoSurface.hh"
-#include "Video/SDLGLSurface.hh"
+#include "Video/internal/SDLVideoSurface.hh"
+#include "Video/internal/OpenGL/SDLGLSurface.hh"
 
 #include <iostream>
 #include <vector>

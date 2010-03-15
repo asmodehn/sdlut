@@ -18,14 +18,14 @@
 
 #include "SDLManager.hh"
 #include "Video/ScreenBuffer.hh"
-#include "Video/SDLWindow.hh"
+#include "Video/internal/SDLWindow.hh"
 #include "System/SDLEventManager.hh"
 
 
 #ifdef WK_OPENGL_FOUND
-#include "Video/SDLGLManager.hh"
+#include "Video/internal/OpenGL/SDLGLManager.hh"
 #endif //WK_OPENGL_FOUND
-#include "Video/SDLEngine.hh"
+#include "Video/internal/SDLEngine.hh"
 
 //to access functors and callback features
 #include "Core.hh"

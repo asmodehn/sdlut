@@ -1,7 +1,7 @@
 #ifndef SDL_PIXELFORMAT_HH
 #define SDL_PIXELFORMAT_HH
 
-#include "SDLColor.hh"
+#include "Video/Color.hh"
 #include "Logger.hh"
 //declaring SDL_type for late binding
 struct SDL_PixelFormat;

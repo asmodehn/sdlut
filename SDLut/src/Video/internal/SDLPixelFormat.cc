@@ -1,4 +1,4 @@
-#include "Video/SDLPixelFormat.hh"
+#include "Video/internal/SDLPixelFormat.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE
@@ -136,7 +136,7 @@ Color PixelFormat::getColor(const PixelColor& val) const
     return Color(r, g, b, a);
 }
 
-
+/*
 #ifdef WK_OPENGL_FOUND
     const GLbyte [] PixelFormat::getGLColor3bv(const PixelColor& val) const
     {
@@ -160,7 +160,7 @@ Color PixelFormat::getColor(const PixelColor& val) const
     const GLuint [] PixelFormat::getGLColor4uiv(const PixelColor& val) const;
 
 #endif
-
+*/
 
 
 

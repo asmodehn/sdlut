@@ -1,4 +1,4 @@
-#include "Video/SDLVideoGLSurface.hh"
+#include "Video/internal/OpenGL/SDLVideoGLSurface.hh"
 #include "SDLConfig.hh"
 #include <typeinfo> //for std::bad_cast
 //#include <sstream>
@@ -95,17 +95,28 @@ bool VideoGLSurface::refresh(void)
 
 PixelColor VideoGLSurface::getpixel(int x, int y)
 {
-    Color color;
+    PixelColor color;
     if ( isOpenGLset() )
     {
 
-    unsigned char pixel[4];
-    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, &pixel);
+    unsigned int p[4];
+    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, &p);
 
-#if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
-    //color = Color(pixel[3], pixel[2], pixel[1], pixel[0]);
+    Uint32 pixel;
+
+//#if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
+//    color = (0xff000000 & pixel[3]) | (0x00ff0000 & pixel[2]) | (0x0000ff00 & pixel[1]) | (0x000000ff & pixel[0]);
+//#else
+//    color = (0xff000000 & pixel[0]) | (0x00ff0000 & pixel[1]) | (0x0000ff00 & pixel[2]) | (0x000000ff & pixel[3]);
+//#endif
+//
+//OR
+//
+        //pixel= *(Uint32 *)p;
+#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+        pixel= p[0] << 24 | p[1] << 16 | p[2] << 8 | p[3];
 #else
-    //color = Color(pixel[0], pixel[1], pixel[2], pixel[3]);
+        pixel= p[0] | p[1] << 8 | p[2] << 16 | p[3] << 24;
 #endif
     }
     else
@@ -135,14 +146,23 @@ void VideoGLSurface::setpixel(int x, int y, PixelColor color)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    if ( color.hasAlpha() )
+    //alpha test
+#if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
+    if ( color & 0x000000ff != 0 )
+#else
+    if ( color & 0xff000000 != 0 )
+#endif
     {
         glEnable(GL_BLEND);
         glEnable(GL_ALPHA_TEST);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    glColor4ub(color.getR(), color.getG(), color.getB(), color.getA() );
+    Uint8 p[4];
+    //conversion from BaseSurface code
+    *(Uint32 *)p = (Uint32) color;
+
+    glColor4ubv(p);
 
     glBegin( GL_POINTS ) ;
 
@@ -151,7 +171,12 @@ void VideoGLSurface::setpixel(int x, int y, PixelColor color)
     glEnd() ;
 
 
-    if ( color.hasAlpha() )
+    //alpha test
+#if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
+    if ( color & 0x000000ff != 0 )
+#else
+    if ( color & 0xff000000 != 0 )
+#endif
     {
         glDisable(GL_ALPHA_TEST);
         glDisable(GL_BLEND);
@@ -412,7 +437,7 @@ bool VideoGLSurface::fill (const PixelColor& pcolor, Rect dest_rect)
 
     //TODO : this might be improved without using Color
     //there should be a more direct way...
-    Color color= getPixelFormat().getColorFromValue(pcolor);
+    Color color= getPixelFormat().getColor(pcolor);
     if ( color.hasAlpha() )
     {
         glEnable(GL_BLEND);
@@ -468,3 +493,4 @@ Logger & operator << (Logger & log, const VideoGLSurface & surf)
 
 }
 } //namespace RAGE::SDL
+

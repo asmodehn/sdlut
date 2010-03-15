@@ -13,9 +13,9 @@
 //to be able to know which renderers can be used for the logo
 
 #ifdef WK_OPENGL_FOUND
-#include "SDLVideoGLSurface.hh"
+#include "Video/internal/OpenGL/SDLVideoGLSurface.hh"
 #else
-#include "SDLVideoSurface.hh"
+#include "Video/internal/SDLVideoSurface.hh"
 #endif
 
 namespace RAGE

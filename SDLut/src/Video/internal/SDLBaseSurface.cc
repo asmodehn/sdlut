@@ -1,4 +1,4 @@
-#include "Video/SDLBaseSurface.hh"
+#include "Video/internal/SDLBaseSurface.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE
@@ -234,13 +234,16 @@ PixelColor BaseSurface::getpixel(int x, int y)
     return pixel;
 }
 
-void BaseSurface::setpixel(int x, int y, PixelColor pixelcolor)
+void BaseSurface::setpixel(int x, int y, PixelColor pixel)
 {
     lock();
     /* Here p is the address to the pixel we want to set */
     Uint8 *p = (Uint8 *)ptm_surf->pixels + y * ptm_surf->pitch + x * ptm_surf->format->BytesPerPixel;
-    int alpha= pixelcolor.getA();
-    PixelColor pixel = pixelcolor;
+#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+    Uint8 alpha= (Uint8) pixel & 0xff;
+#else
+    Uint8 alpha= (Uint8) (pixel >> 24) & 0xff;
+#endif
     if ( alpha == 255 )
     {
         switch (ptm_surf->format->BytesPerPixel)
@@ -287,7 +290,7 @@ void BaseSurface::setpixel(int x, int y, PixelColor pixelcolor)
     else //If We Want To Set A Pixel With Alpha !
     {
         unsigned int r, g, b;
-        Color color;
+
         switch (ptm_surf->format->BytesPerPixel)
         {
         case 1:
@@ -303,24 +306,14 @@ void BaseSurface::setpixel(int x, int y, PixelColor pixelcolor)
             break;
 
         case 3:
-            color = ((PixelFormat*)(ptm_surf->format))->getColorFromValue(pixel);
-#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-            r = (p[0] * (256 - alpha) + color.getR() * alpha) >> 8;
-            g = (p[1] * (256 - alpha) + color.getG() * alpha) >> 8;
-            b = (p[2] * (256 - alpha) + color.getB() * alpha) >> 8;
 
-            p[2] = b;
-            p[1] = g;
-            p[0] = r;
-#else
-            r = (p[2] * (256 - alpha) + color.getR() * alpha) >> 8;
-            g = (p[1] * (256 - alpha) + color.getG() * alpha) >> 8;
-            b = (p[0] * (256 - alpha) + color.getB() * alpha) >> 8;
+            r = ((pixel & 0xff) * alpha + (*(Uint32 *)p & 0xff) * (256 - alpha)) >> 8;
+            g = ((pixel & 0xff00) * alpha + (*(Uint32 *)p & 0xff00) * (256 - alpha)) >> 8;
+            b = ((pixel & 0xff0000) * alpha + (*(Uint32 *)p & 0xff0000) * (256 - alpha)) >> 8;
 
-            p[0] = b;
-            p[1] = g;
-            p[2] = r;
-#endif
+            *(Uint16 *)p = ( (r & 0xff) | (g & 0xff00) );
+            *(Uint8 *)(p+2) = (b & 0xff0000) ;
+
             break;
 
         case 4:

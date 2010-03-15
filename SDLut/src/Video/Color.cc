@@ -1,4 +1,4 @@
-#include "Video/SDLColor.hh"
+#include "Video/Color.hh"
 #include "SDLConfig.hh"
 
 namespace RAGE

@@ -1,7 +1,7 @@
 #ifndef SDL_MOUSE_HH
 #define SDL_MOUSE_HH
 
-#include "Math/SDLRect.hh"
+#include "Video/Rect.hh"
 
 #include <vector>
 #include <map>

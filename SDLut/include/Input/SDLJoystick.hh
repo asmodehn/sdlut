@@ -1,7 +1,7 @@
 #ifndef SDL_JOYSTICK_HH
 #define SDL_JOYSTICK_HH
 
-#include "Math/SDLRect.hh"
+#include "Video/Rect.hh"
 #include <vector>
 #include <map>
 

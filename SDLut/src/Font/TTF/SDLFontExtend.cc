@@ -1,6 +1,6 @@
 #include "SDLFontExtend.hh"
 
-#include "Video/SDLGLSurface.hh"
+#include "Video/internal/OpenGL/SDLGLSurface.hh"
 
 #include "SDLConfig.hh"
 

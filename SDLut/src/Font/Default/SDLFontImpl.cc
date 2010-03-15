@@ -1,6 +1,7 @@
 #include "SDLFontImpl.hh"
 
-#include "Video/SDLSurfaceLoader.hh"
+#include "Video/internal/SDLRGBSurface.hh"
+#include "Video/internal/OpenGL/SDLGLSurface.hh"
 
 #include "SDLConfig.hh"
 #include "SDLResources.inc"

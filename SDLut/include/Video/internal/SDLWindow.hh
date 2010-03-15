@@ -20,8 +20,8 @@
 
 
 
-#include "Video/SDLColor.hh"
-#include "Video/SDLRGBSurface.hh"
+#include "Video/Color.hh"
+#include "Video/internal/SDLRGBSurface.hh"
 
 #ifdef WK_SDLTTF_FOUND
 #include "Font/SDLFont.hh"

@@ -18,15 +18,15 @@
  */
 
 #include "SDLManager.hh"
-#include "Video/SDLVideoInfo.hh"
-#include "Video/SDLVideoSurface.hh"
-#include "Video/SDLVideoGLSurface.hh"
+#include "Video/internal/SDLVideoInfo.hh"
+#include "Video/internal/SDLVideoSurface.hh"
+#include "Video/internal/OpenGL/SDLVideoGLSurface.hh"
 #include "Video/Image.hh"
 
 #ifdef WK_OPENGL_FOUND
-#include "Video/SDLGLManager.hh"
+#include "Video/internal/OpenGL/SDLGLManager.hh"
 #endif //WK_OPENGL_FOUND
-#include "Video/SDLEngine.hh"
+#include "Video/internal/SDLEngine.hh"
 #include "Functor.hh" //for callbacks storage...
 
 //Default Setup
@@ -153,7 +153,7 @@ public:
 
     void setpixel(int x, int y, const Color & pixel)
     {
-        return m_screen->setpixel(x, y, m_screen->getPixelFormat().getPixelColor(pixel));
+        m_screen->setpixel(x, y, m_screen->getPixelFormat().getPixelColor(pixel));
     }
 
     //Defines a clippin Area

@@ -1,6 +1,5 @@
-#include "Video/SDLEngine.hh"
+#include "Video/internal/SDLEngine.hh"
 
-#include "Video/SDLSurfaceLoader.hh"
 #include "SDLConfig.hh"
 
 #include "SDLResources.inc"

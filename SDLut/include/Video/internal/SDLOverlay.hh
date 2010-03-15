@@ -1,8 +1,8 @@
 #ifndef SDL_OVERLAY_HH
 #define SDL_OVERLAY_HH
 
-#include "Math/SDLRect.hh"
-#include "Video/SDLVideoSurface.hh"
+#include "Video/Rect.hh"
+#include "Video/internal/SDLVideoSurface.hh"
 #include "SDLApp.hh"
 
 /**

@@ -42,19 +42,19 @@
   * \defgroup Video
   *
   */
-#include "Video/SDLWindow.hh"
-#include "Video/SDLVideoInfo.hh"
-#include "Video/SDLVideoSurface.hh"
-#include "Video/SDLRGBSurface.hh"
-#include "Video/SDLSurfaceLoader.hh"
-#include "Video/SDLGLManager.hh"
-#include "Video/SDLEngine.hh"
-#include "Video/SDLColor.hh"
-#include "Video/SDLOverlay.hh"
+//#include "Video/internal/SDLWindow.hh"
+//#include "Video/SDLVideoInfo.hh"
+//#include "Video/SDLVideoSurface.hh"
+//#include "Video/SDLRGBSurface.hh"
+//#include "Video/SDLGLManager.hh"
+//#include "Video/SDLEngine.hh"
+//#include "Video/SDLOverlay.hh"
+#include "Video/Color.hh"
 #include "Video/Display.hh"
 #include "Video/ScreenBuffer.hh"
 #include "Video/Image.hh"
 #include "Video/ImageLoader.hh"
+#include "Video/Rect.hh"
 
 /**
   * \defgroup System
@@ -94,11 +94,6 @@
   */
 #include "Font/SDLFont.hh"
 #include "Font/Text.hh"
-
-/**
-  * \defgroup Math
-  */
-#include "Math/SDLRect.hh"
 
 //Build platform useful definitions
 #if defined (__MINGW32__) && defined(SDLUT_BUILD)

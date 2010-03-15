@@ -1,4 +1,4 @@
-#include "Video/SDLRGBSurface.hh"
+#include "Video/internal/SDLRGBSurface.hh"
 #include "SDLConfig.hh"
 
 #include "SDLResources.inc"
@@ -226,14 +226,19 @@ bool RGBSurface::setColorKeyAndAlpha(const PixelColor & key, bool rleAccel)
     Uint32 flags;
 
     //Check if we have alpha transparency
-    if ( key.getA() < 255 )
+#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+    Uint8 alpha= (Uint8) key & 0xff;
+#else
+    Uint8 alpha= (Uint8) (key >> 24) & 0xff;
+#endif
+    if (alpha < 255)
     {
         if (rleAccel)
             flags=SDL_SRCCOLORKEY | SDL_SRCALPHA | SDL_RLEACCEL;
         else
             flags=SDL_SRCCOLORKEY | SDL_SRCALPHA;
 
-        SDL_SetAlpha(ptm_surf.get(), flags, key.getA());
+        SDL_SetAlpha(ptm_surf.get(), flags, alpha);
     }
     else
     {

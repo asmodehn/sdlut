@@ -256,7 +256,7 @@ void ScreenBuffer::applyBGColor() const
         else
         {
 #endif
-            m_screen->fill(m_screen->getPixelFormat().getValueFromColor(m_background));
+            m_screen->fill(m_screen->getPixelFormat().getPixelColor(m_background));
 #ifdef WK_OPENGL_FOUND
         }
 #endif
@@ -423,7 +423,7 @@ Rect ScreenBuffer::getClipRect( void ) const
 
 bool ScreenBuffer::fill (const Color& color, const Rect& dest_rect)
 {
-    m_screen->fill(m_screen->getPixelFormat().getValueFromColor(color),dest_rect);
+    m_screen->fill(m_screen->getPixelFormat().getPixelColor(color),dest_rect);
     return true; //todo
 }
 

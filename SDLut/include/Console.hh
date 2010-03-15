@@ -5,7 +5,7 @@
 #define CONS_COL 80
 
 #include "Video/Image.hh"
-#include "Video/SDLColor.hh"
+#include "Video/Color.hh"
 #include "Font/SDLFont.hh"
 #include "Video/ScreenBuffer.hh"
 
