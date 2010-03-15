@@ -92,12 +92,12 @@ public:
 
     Color getpixel(int x, int y)
     {
-        return m_img->getpixel(x, y);
+        return m_img->getPixelFormat().getColor(m_img->getpixel(x, y));
     }
 
     void setpixel(int x, int y, const Color & pixel)
     {
-        return m_img->setpixel(x, y, pixel);
+        return  m_img->setpixel(x, y, m_img->getPixelFormat().getPixelColor( pixel));
     }
 
 };

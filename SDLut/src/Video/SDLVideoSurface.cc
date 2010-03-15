@@ -221,12 +221,12 @@ bool VideoSurface::resize(int width, int height, bool keepcontent)
 }
 
 
-Color VideoSurface::getpixel(int x, int y)
+PixelColor VideoSurface::getpixel(int x, int y)
 {
     return BaseSurface::getpixel(x, y);
 }
 
-void VideoSurface::setpixel(int x, int y, Color pixel)
+void VideoSurface::setpixel(int x, int y, PixelColor pixel)
 {
     return BaseSurface::setpixel( x, y, pixel );
 }

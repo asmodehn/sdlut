@@ -87,8 +87,8 @@ public:
     //to flip the videosurface
     virtual bool refresh(void);
 
-    virtual Color getpixel(int x, int y);
-    virtual void setpixel(int x, int y, Color pixel);
+    virtual PixelColor getpixel(int x, int y);
+    virtual void setpixel(int x, int y, PixelColor pixel);
 
     //Blit src surface on this surface
     //Blit using non const surface, as the video surface might change the blitted src surface for optimisation, updates or other reasons...

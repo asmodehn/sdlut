@@ -31,8 +31,8 @@ namespace SDL
  * Manager of the GL state machine
  ******************************************************************************/
 
-//Howto use glSDL( planned in SDL from SDL 1.3) : http://icps.u-strasbg.fr/~marchesin/sdl/glsdl.html
 //GOOD STUFF TO ADD AT http://steinsoft.net
+//Howto use glSDL( planned in SDL from SDL 1.3) : http://icps.u-strasbg.fr/~marchesin/sdl/glsdl.html
 
 
 /***************************************************************

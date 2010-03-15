@@ -148,12 +148,12 @@ public:
     //pixel drawing function
     Color getpixel(int x, int y)
     {
-        return m_screen->getpixel(x, y);
+        return m_screen->getPixelFormat().getColor(m_screen->getpixel(x, y));
     }
 
     void setpixel(int x, int y, const Color & pixel)
     {
-        return m_screen->setpixel(x, y, pixel);
+        return m_screen->setpixel(x, y, m_screen->getPixelFormat().getPixelColor(pixel));
     }
 
     //Defines a clippin Area

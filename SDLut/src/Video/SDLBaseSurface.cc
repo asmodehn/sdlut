@@ -194,7 +194,7 @@ PixelFormat BaseSurface::getPixelFormat(void) const
     return PixelFormat(ptm_surf->format);
 }
 
-Color BaseSurface::getpixel(int x, int y)
+PixelColor BaseSurface::getpixel(int x, int y)
 {
     lock();
     /* Here p is the address to the pixel we want to retrieve */
@@ -231,16 +231,16 @@ Color BaseSurface::getpixel(int x, int y)
         break;
     }
     unlock();
-    return getPixelFormat().getColorFromValue(pixel);
+    return pixel;
 }
 
-void BaseSurface::setpixel(int x, int y, Color pixelcolor)
+void BaseSurface::setpixel(int x, int y, PixelColor pixelcolor)
 {
     lock();
     /* Here p is the address to the pixel we want to set */
     Uint8 *p = (Uint8 *)ptm_surf->pixels + y * ptm_surf->pitch + x * ptm_surf->format->BytesPerPixel;
     int alpha= pixelcolor.getA();
-    PixelColor pixel = getPixelFormat().getValueFromColor(pixelcolor);
+    PixelColor pixel = pixelcolor;
     if ( alpha == 255 )
     {
         switch (ptm_surf->format->BytesPerPixel)

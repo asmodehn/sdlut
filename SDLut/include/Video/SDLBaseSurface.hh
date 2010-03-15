@@ -112,8 +112,8 @@ public: //useful else we can't access those functions outside of friend class (f
     bool lock(void);
     bool unlock(void);
 
-    virtual Color getpixel(int x, int y);
-    virtual void setpixel(int x, int y, Color pixel);
+    virtual PixelColor getpixel(int x, int y);
+    virtual void setpixel(int x, int y, PixelColor pixel);
 
 protected:
     //Default Constructor overload

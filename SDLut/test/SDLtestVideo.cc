@@ -16,7 +16,8 @@ public:
 	MyEngine( const std::string & imagefilename) : imagepos()
 	{
 		ImageLoader loader;
-		loadedimage = loader.load(imagefilename,Color(0,0,0,255));
+		//setting white as transparent
+		loadedimage = loader.load(imagefilename,Color(255,255,255));
 	}
 
     virtual ~MyEngine(){}

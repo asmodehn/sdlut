@@ -211,7 +211,11 @@ void GLSurface::convertPixels()
 
     if ( texturePixels != NULL ) delete texturePixels, texturePixels=NULL;
     texturePixels = new unsigned int[ textureWidth * textureHeight ];
-    Color c;
+    PixelColor c,ckey = 0x00000000;
+    if ( isSRCColorKeyset() )
+    {
+        ckey = getColorKey();
+    }
     for (unsigned int y = 0; y < textureHeight; y++)
     {
         for (unsigned int x = 0; x < textureWidth; x++)
@@ -221,7 +225,7 @@ void GLSurface::convertPixels()
                 c = getpixel(x, y);
 
                 //ColorKey to transparent
-                if (isSRCColorKeyset() && getColorKey() == c )
+                if ( ckey == c )
                 {
                     texturePixels[x + y * textureWidth] = 0x00000000;
                 }

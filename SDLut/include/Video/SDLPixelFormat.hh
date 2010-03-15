@@ -73,8 +73,31 @@ public: //necessary if we want to use getPixelFormat() accessor from the BaseSur
     friend Logger & operator << (Logger & ostr, const PixelFormat & pformat);
 
     //methods for Color conversion :
-    PixelColor getValueFromColor(const Color& color) const ;
-    Color getColorFromValue(const PixelColor& val) const ;
+    PixelColor getPixelColor(const Color& color) const ;
+    Color getColor(const PixelColor& val) const ;
+
+/*
+#ifdef WK_OPENGL_FOUND
+    const GLbyte [] getGLColor3bv(const PixelColor& val) const;
+    const GLshort [] getGLColor3sv(const PixelColor& val) const;
+    const GLint [] getGLColor3iv(const PixelColor& val) const;
+    const GLfloat [] getGLColor3fv(const PixelColor& val) const;
+    const GLdouble [] getGLColor3dv(const PixelColor& val) const;
+    const GLubyte [] getGLColor3ubv(const PixelColor& val) const;
+    const GLushort [] getGLColor3usv(const PixelColor& val) const;
+    const GLuint [] getGLColor3uiv(const PixelColor& val) const;
+
+    const GLbyte [] getGLColor4bv(const PixelColor& val) const;
+    const GLshort [] getGLColor4sv(const PixelColor& val) const;
+    const GLint [] getGLColor4iv(const PixelColor& val) const;
+    const GLfloat [] getGLColor4fv(const PixelColor& val) const;
+    const GLdouble [] getGLColor4dv(const PixelColor& val) const;
+    const GLubyte [] getGLColor4ubv(const PixelColor& val) const;
+    const GLushort [] getGLColor4usv(const PixelColor& val) const;
+    const GLuint [] getGLColor4uiv(const PixelColor& val) const;
+
+#endif
+*/
 
 };
 

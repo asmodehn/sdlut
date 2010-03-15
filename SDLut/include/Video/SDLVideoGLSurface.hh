@@ -81,8 +81,8 @@ public:
     //this kind of surface shouldnt be deleted by hand. the raw SDL methods takes care of it
 
 
-    virtual Color getpixel(int x, int y);
-    virtual void setpixel(int x, int y, Color pixel);
+    virtual PixelColor getpixel(int x, int y);
+    virtual void setpixel(int x, int y, PixelColor pixel);
 
 
     //Blit src into the current surface.

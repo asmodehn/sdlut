@@ -117,7 +117,7 @@ Logger & operator << (Logger & log, const PixelFormat & pformat)
 }
 
 
-PixelColor PixelFormat::getValueFromColor(const Color& color) const
+PixelColor PixelFormat::getPixelColor(const Color& color) const
 {
     if ( ! color.hasAlpha() )
     {
@@ -126,7 +126,7 @@ PixelColor PixelFormat::getValueFromColor(const Color& color) const
     return SDL_MapRGBA(const_cast<SDL_PixelFormat*>(ptm_sdl_pformat),color.getR(),color.getG(),color.getB(), color.getA());
 }
 
-Color PixelFormat::getColorFromValue(const PixelColor& val) const
+Color PixelFormat::getColor(const PixelColor& val) const
 {
 
     Uint8 r, g, b, a;
@@ -135,6 +135,37 @@ Color PixelFormat::getColorFromValue(const PixelColor& val) const
     //BUG here : seems to ignore alpha ? ( found with SDLTestColor )
     return Color(r, g, b, a);
 }
+
+
+#ifdef WK_OPENGL_FOUND
+    const GLbyte [] PixelFormat::getGLColor3bv(const PixelColor& val) const
+    {
+    }
+
+    const GLshort [] PixelFormat::getGLColor3sv(const PixelColor& val) const;
+    const GLint [] PixelFormat::getGLColor3iv(const PixelColor& val) const;
+    const GLfloat [] PixelFormat::getGLColor3fv(const PixelColor& val) const;
+    const GLdouble [] PixelFormat::getGLColor3dv(const PixelColor& val) const;
+    const GLubyte [] PixelFormat::getGLColor3ubv(const PixelColor& val) const;
+    const GLushort [] PixelFormat::getGLColor3usv(const PixelColor& val) const;
+    const GLuint [] PixelFormat::getGLColor3uiv(const PixelColor& val) const;
+
+    const GLbyte [] PixelFormat::getGLColor4bv(const PixelColor& val) const;
+    const GLshort [] PixelFormat::getGLColor4sv(const PixelColor& val) const;
+    const GLint [] PixelFormat::getGLColor4iv(const PixelColor& val) const;
+    const GLfloat [] PixelFormat::getGLColor4fv(const PixelColor& val) const;
+    const GLdouble [] PixelFormat::getGLColor4dv(const PixelColor& val) const;
+    const GLubyte [] PixelFormat::getGLColor4ubv(const PixelColor& val) const;
+    const GLushort [] PixelFormat::getGLColor4usv(const PixelColor& val) const;
+    const GLuint [] PixelFormat::getGLColor4uiv(const PixelColor& val) const;
+
+#endif
+
+
+
+
+
+
 
 }
 } //namespace RAGE::SDL

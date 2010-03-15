@@ -93,7 +93,7 @@ bool VideoGLSurface::refresh(void)
 }
 
 
-Color VideoGLSurface::getpixel(int x, int y)
+PixelColor VideoGLSurface::getpixel(int x, int y)
 {
     Color color;
     if ( isOpenGLset() )
@@ -103,9 +103,9 @@ Color VideoGLSurface::getpixel(int x, int y)
     glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, &pixel);
 
 #if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
-    color = Color(pixel[3], pixel[2], pixel[1], pixel[0]);
+    //color = Color(pixel[3], pixel[2], pixel[1], pixel[0]);
 #else
-    color = Color(pixel[0], pixel[1], pixel[2], pixel[3]);
+    //color = Color(pixel[0], pixel[1], pixel[2], pixel[3]);
 #endif
     }
     else
@@ -115,7 +115,7 @@ Color VideoGLSurface::getpixel(int x, int y)
     return color;
 }
 
-void VideoGLSurface::setpixel(int x, int y, Color color)
+void VideoGLSurface::setpixel(int x, int y, PixelColor color)
 {
 
 #if (DEBUG == 2)

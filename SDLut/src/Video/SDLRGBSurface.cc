@@ -221,7 +221,7 @@ RGBSurface& RGBSurface::operator=(const BaseSurface& s)
 }
 */
 
-bool RGBSurface::setColorKeyAndAlpha(const Color & key, bool rleAccel)
+bool RGBSurface::setColorKeyAndAlpha(const PixelColor & key, bool rleAccel)
 {
     Uint32 flags;
 
@@ -243,7 +243,7 @@ bool RGBSurface::setColorKeyAndAlpha(const Color & key, bool rleAccel)
             flags=SDL_SRCCOLORKEY;
     }
 
-    return SDL_SetColorKey(ptm_surf.get(), flags, getPixelFormat().getValueFromColor(key) ) == 0;
+    return SDL_SetColorKey(ptm_surf.get(), flags, key ) == 0;
 }
 
 bool RGBSurface::resize(int width, int height, bool keepcontent)
@@ -419,9 +419,9 @@ bool RGBSurface::flip(bool vertical, bool horizontal)
 //	return out;
 //}
 
-Color RGBSurface::getColorKey()
+PixelColor RGBSurface::getColorKey()
 {
-    return getPixelFormat().getColorFromValue(getPixelFormat().getColorKey());
+    return getPixelFormat().getColorKey();
 }
 
 /*
