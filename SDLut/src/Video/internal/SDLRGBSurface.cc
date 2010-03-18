@@ -285,8 +285,10 @@ bool RGBSurface::convertToDisplayFormat()
     assert(ptm_surf.get());
     bool res;
     std::auto_ptr<SDL_Surface> optsurf(0);
-    if ( isSRCAlphaset() )
+    if ( isSRCAlphaset() /*|| isSRCColorKeyset()*/ )
     {
+        //this call will change colorkey in Alpha channel.
+        //Useful for GL but SDL can work without
         optsurf.reset( SDL_DisplayFormatAlpha(ptm_surf.get()) );
     }
     else
@@ -294,24 +296,7 @@ bool RGBSurface::convertToDisplayFormat()
         optsurf.reset( SDL_DisplayFormat(ptm_surf.get()) );
     }
 
-    if (!optsurf.get())
-        res = false;
-    else
-    {
-        //removing old pixelformat container
-        delete ptm_pformat, ptm_pformat = NULL;
-        //freeing old Surface
-        SDL_FreeSurface(ptm_surf.release());
-        //reseting surface
-        ptm_surf=optsurf;
-        //recreating proper pixelformat container
-        ptm_pformat = new PixelFormat(ptm_surf->format);
-        //setting flags
-        optimised= true;
-        res = true;
-    }
-
-    return res;
+    return optimised = set_SDL_Surface(optsurf);
 }
 
 bool RGBSurface::blit(const RGBSurface& src, Rect& dest_rect, const Rect& src_rect )

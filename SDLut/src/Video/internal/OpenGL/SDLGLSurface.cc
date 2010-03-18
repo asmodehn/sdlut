@@ -370,10 +370,6 @@ const PixelFormat& GLSurface::getPixelFormat(void) const
 
 bool GLSurface::convertToDisplayFormat()
 {
-
-
-
-
         // get the number of channels in the SDL surface
         int numbytes = RGBSurface::getPixelFormat().getBytesPerPixel();
 
@@ -387,30 +383,23 @@ Log << nl << " Before Convert " << RGBSurface::getPixelFormat();
 
 saveBMP("beforeconvert.bmp");
 
-/*
-            SDL_Surface * glsurf;
 
-            //if transparency -> need alpha channel
-            if ( isSRCColorKeyset() || isSRCAlphaset() )
-            {
-                glsurf = SDL_CreateRGBSurface( ptm_surf->flags, 1, 1, bpp_default_alpha ,r_default_mask, g_default_mask, b_default_mask, a_default_mask);
-                //saving colorkey
-                //Uint32 ck = ptm_surf->format->colorkey;
-            }
-            else
+    std::auto_ptr<SDL_Surface> optsurf(0);
+    if ( isSRCAlphaset() || isSRCColorKeyset())
+    {
+        //this call will change colorkey in Alpha channel.
+        //Required for colorkey to work with GL
+        //But SDL can work without
+        optsurf.reset( SDL_DisplayFormatAlpha(ptm_surf.get()) );
+    }
+    else
+    {
+        optsurf.reset( SDL_DisplayFormat(ptm_surf.get()) );
+    }
 
-            {
-                glsurf = SDL_CreateRGBSurface( ptm_surf->flags, 1, 1, bpp_default_noalpha ,g_default_mask, b_default_mask, a_default_mask, 0);
-            }
+    bool surfok = set_SDL_Surface(optsurf);
 
-            bool surfok = set_SDL_Surface(SDL_ConvertSurface(ptm_surf.get(),const_cast<SDL_PixelFormat *>(glsurf->format),ptm_surf->flags));
 
-                //copying the colorkey // MAYBE NOT NEEDED ?
-                //SDL_SetColorKey(ptm_surf.get(),ptm_surf->flags,ck);
-
-*/
-bool surfok = RGBSurface::convertToDisplayFormat();
-// display Format dependent...
 
                 if (! surfok)
                 {
@@ -428,6 +417,10 @@ bool surfok = RGBSurface::convertToDisplayFormat();
         }
 
         if (numbytes == 4) // contains an alpha channel
+        //NB : When converting to display format,
+        //SDL will put Aloss = 8 to store colorkey. But it is NOT proper alpha channel !
+        //If done with convertDisplayAlpha, SDL will put ashift = 24 for converted colorkey to alphachannel.
+        //TODO : check picture with original alpha channel
         {
             //WHAT ABOUT SDL_BYTEORDER == SDL_BIG_ENDIAN ???
             if (RGBSurface::getPixelFormat().getRshift() == 24 && RGBSurface::getPixelFormat().getAloss() == 0)
@@ -436,6 +429,11 @@ bool surfok = RGBSurface::convertToDisplayFormat();
                 textureFormat = GL_ABGR_EXT;
             }
             else if ( RGBSurface::getPixelFormat().getRshift() == 16 && RGBSurface::getPixelFormat().getAloss() == 8)
+            {
+                //for little endian
+                textureFormat = GL_BGRA;
+            }
+            else if ( RGBSurface::getPixelFormat().getRshift() == 16 && RGBSurface::getPixelFormat().getAshift() == 24)
             {
                 //for little endian
                 textureFormat = GL_BGRA;

@@ -17,7 +17,7 @@ public:
 	{
 		ImageLoader loader;
 		//setting white as transparent
-		loadedimage = loader.load(imagefilename)/*,Color(255,255,255))*/;
+		loadedimage = loader.load(imagefilename,Color(255,255,255));
 
 		loadedimage->saveBMP("TestVideoImage.bmp");
 	}
