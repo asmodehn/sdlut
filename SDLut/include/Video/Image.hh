@@ -100,6 +100,9 @@ public:
         return  m_img->setpixel(x, y, m_img->getPixelFormat().getPixelColor( pixel));
     }
 
+    //TODO : set alpha of the surface, using colorkey if possible ( alpha = 255 and SDL )
+    //setAlpha(unsigned char alpha);
+
 };
 
 

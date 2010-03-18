@@ -10,7 +10,7 @@ namespace SDL
 ////////////////private Conversion Constructor
 GLSurface::GLSurface(SDL_Surface * s) throw (std::logic_error)
 try :
-    RGBSurface(s), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
+    RGBSurface(s), modified(false), m_actualWidth(ptm_surf->h), m_actualHeight(ptm_surf->w)
 {
 
 #ifdef DEBUG
@@ -36,7 +36,7 @@ catch (std::exception &e)
 
 GLSurface::GLSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error)
 try :
-    RGBSurface(s), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
+    RGBSurface(s), modified(false), m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
 {
 
 #ifdef DEBUG
@@ -63,7 +63,7 @@ catch (std::exception &e)
 ////////////public Conversion constructor
 GLSurface::GLSurface( const RGBSurface & rgbs) throw (std::logic_error)
 try :
-    RGBSurface( rgbs ), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
+    RGBSurface( rgbs ), modified(false), m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
 {
 
 #ifdef DEBUG
@@ -73,6 +73,7 @@ try :
 
     computeGLWidthHeight();
     convertPixels();
+
 
 #ifdef DEBUG
 
@@ -90,7 +91,7 @@ catch (std::exception &e)
 ////////////Coopy Constructor
 GLSurface::GLSurface( const GLSurface & gls) throw (std::logic_error)
 try :
-    RGBSurface( gls ), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
+    RGBSurface( gls ), modified(false), m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
 {
 
 #ifdef DEBUG
@@ -100,6 +101,7 @@ try :
 
     computeGLWidthHeight();
     convertPixels();
+
 
 #ifdef DEBUG
 
@@ -122,7 +124,7 @@ GLSurface::GLSurface( int width, int height, int bpp, bool alpha , bool colorkey
                       unsigned long a_mask
                     ) throw (std::logic_error)
 try :
-    RGBSurface(width, height, bpp, alpha, colorkey, hardware, r_mask, g_mask, b_mask, a_mask), modified(false), textureWidth(0), textureHeight(0), texturePixels(NULL)
+    RGBSurface(width, height, bpp, alpha, colorkey, hardware, r_mask, g_mask, b_mask, a_mask), modified(false), m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
 {
 
 #ifdef DEBUG
@@ -151,7 +153,7 @@ GLSurface::GLSurface( void * pixeldata, int depth, int pitch, int width, int hei
                       unsigned long a_mask
                     ) throw (std::logic_error)
 try	:
-    RGBSurface(pixeldata, depth, pitch, width, height, r_mask, g_mask, b_mask, a_mask), modified(false),textureWidth(0), textureHeight(0), texturePixels(NULL)
+    RGBSurface(pixeldata, depth, pitch, width, height, r_mask, g_mask, b_mask, a_mask), modified(false),m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
 {
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width <<", " << height << "... ) called.";
@@ -159,6 +161,7 @@ try	:
 
     computeGLWidthHeight();
     convertPixels();
+
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width <<", " << height << "...) done -> " << ptm_surf.get() << " created.";
 #endif
@@ -172,7 +175,7 @@ catch (std::exception &e)
 }
 
 GLSurface::GLSurface(RWOps & rwops) throw (std::logic_error)
-try : RGBSurface(rwops), modified(false),textureWidth(0), textureHeight(0), texturePixels(NULL)
+try : RGBSurface(rwops), modified(false),m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
 {
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << rwops << "... ) called.";
@@ -180,6 +183,10 @@ try : RGBSurface(rwops), modified(false),textureWidth(0), textureHeight(0), text
 
     computeGLWidthHeight();
     convertPixels();
+
+
+
+
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << rwops << "...) done -> " << ptm_surf.get() << " created.";
 #endif
@@ -192,29 +199,52 @@ catch (std::exception &e)
     //TODO : much more explicit error message...
 }
 
-void GLSurface::computeGLWidthHeight()
+bool GLSurface::computeGLWidthHeight()
 {
-    if ( getWidth() == 0 && getHeight() == 0 ) return;
-    textureWidth = 1;
-    textureHeight = 1;
+    if ( getWidth() == 0 && getHeight() == 0 ) return true;
+    unsigned int textureWidth = 1;
+    unsigned int textureHeight = 1;
     while ( textureWidth < getWidth() ) textureWidth *= 2;
     while ( textureHeight < getHeight() ) textureHeight *= 2;
+
+    bool res = false;
+    // we may need to resize the surface.
+    if (textureWidth > getWidth() || textureHeight > getHeight() )
+    {
+        m_actualWidth = getWidth(); m_actualHeight = getHeight();
+        res = resizegl(textureWidth,textureHeight,true);
+    }
+    else
+    {
+        res = true; // no need to resize
+    }
+
+return res;
 }
 
-void GLSurface::convertPixels()
+bool GLSurface::convertPixels()
 {
     //Todo : We need to here convert the surface to proper BPP to match video surface
     //or OpenGL will not display it
-    RGBSurface::convertToDisplayFormat();
-    //but we re not completely ready yet
-    optimised = false;
 
+    //WIP : Shouldnt be. PixelFormat of the surface will give us proper color when we do "RGBSurface::getpixel()"
+    //WIP : Commenting.
+    //RGBSurface::convertToDisplayFormat();
+    // DANGER needs to be called after  setting up teh screen ( SetVideoMode ) otherwise SDL has problems
+
+    //
+    //NB : OpenGL texture are equivalents of SDL_HWSurfaces.
+    // Therefore original RGBSurface should be SW_SURFACE for faster access here
+    //
+
+    optimised = false;
+/* THE HARD WAY
     if ( texturePixels != NULL ) delete texturePixels, texturePixels=NULL;
     texturePixels = new unsigned int[ textureWidth * textureHeight ];
-    PixelColor c,ckey = 0x00000000;
-    if ( isSRCColorKeyset() )
+    PixelColor c,ckey = 0x00000000; //default pixelcolor value and colorkey is full transparent
+    if ( RGBSurface::isSRCColorKeyset() )
     {
-        ckey = getColorKey();
+        ckey = RGBSurface::getColorKey();
     }
     for (unsigned int y = 0; y < textureHeight; y++)
     {
@@ -222,7 +252,7 @@ void GLSurface::convertPixels()
         {
             if (x < getWidth() && y < getHeight())
             {
-                c = getpixel(x, y);
+                c = RGBSurface::getpixel(x, y);
 
                 //ColorKey to transparent
                 if ( ckey == c )
@@ -230,8 +260,8 @@ void GLSurface::convertPixels()
                     texturePixels[x + y * textureWidth] = 0x00000000;
                 }
 
-                //BUG here : TOFIX
-                texturePixels[x + y * textureWidth] = c;
+                //We need to convert the pixel color from the SDL RGBSurface format to the OpenGL format
+                texturePixels[x + y * textureWidth] = getPixelFormat().convert(c,RGBSurface::getPixelFormat());
             }
             else
             {
@@ -240,31 +270,150 @@ void GLSurface::convertPixels()
             }
         }
     }
+    */
+
+    /* The EASY WAY -> WORKING ?? */
+
+
+
+
+        // get the number of channels in the SDL surface
+        int numbytes = RGBSurface::getPixelFormat().getBytesPerPixel();
+
+        if ( numbytes < 3 ) // no conversion needed : we are in true color mode
+        {
+            //NB Conversion might not be needed
+            // refer : http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL.html
+
+                Log << nl << "Warning: the image is not truecolor... Trying Conversion";
+                // this error should not go unhandled
+                SDL_Surface * glsurf = SDL_CreateRGBSurface( ptm_surf->flags, 1, 1, bpp_default,r_default_mask, g_default_mask, b_default_mask, a_default_mask);
+                //saving colorkey
+                //Uint32 ck = ptm_surf->format->colorkey;
+
+                bool surfok = set_SDL_Surface(SDL_ConvertSurface(ptm_surf.get(),const_cast<SDL_PixelFormat *>(glsurf->format),ptm_surf->flags));
+
+                //copying the colorkey // MAYBE NOT NEEDED ?
+                //SDL_SetColorKey(ptm_surf.get(),ptm_surf->flags,ck);
+
+
+                if (! surfok)
+                {
+                    Log << nl << "Unable to copy the RGBsurface in GL conversion" ;
+                    throw std::logic_error("SDL_ConvertSurface returned NULL");
+                }
+
+            //resetting numbytes for further texture format setup
+            numbytes = RGBSurface::getPixelFormat().getBytesPerPixel();
+
+        }
+
+        if (numbytes == 4)     // contains an alpha channel
+        {
+                //default format surface with colorkey, or alpha will have 4 channels
+                if (RGBSurface::getPixelFormat().getRmask() == 0x000000ff)
+                {
+                    textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN)?GL_ABGR_EXT:GL_RGBA;
+                }
+                else // we assume Rmask == 0xff000000
+                {
+                    textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN)?GL_RGBA:GL_ABGR_EXT;
+                }
+
+        }
+        else if (numbytes == 3)     // no alpha channel
+        {
+            //This can be tested in SDL Logo that doesnt have any Alpha.
+                if (RGBSurface::getPixelFormat().getRmask() == 0x000000ff)
+                {
+                    textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN)?GL_BGR:GL_RGB;
+                }
+                else  // we assume Rmask == 0xff000000
+                        {
+
+                            textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN)?GL_RGB:GL_BGR;
+                        }
+        }
+        else
+         {
+
+
+
+    }
+
+    //TODO : handle colorkey in OGL
+
+    ptm_pformat = new OGLPixelFormat(ptm_surf->format);
+
+    return true;
 }
 
 GLSurface::~GLSurface()
 {
-    if ( texturePixels != NULL )
-        delete[] texturePixels, texturePixels = NULL;
 }
 
 bool GLSurface::resize(int width, int height, bool keepcontent)
 {
-    //TODO : test and fix
-    bool res = RGBSurface::resize(width, height, keepcontent);
-    modified = true;
-    return res;
+    modified = RGBSurface::resize(width,height,keepcontent);
+    return modified;
+}
+
+bool GLSurface::resizegl(int glwidth, int glheight, bool keepcontent)
+{
+     bool res;
+
+    //GLSurface::resize automatically set the proper pixel format for the new gl surface
+    std::auto_ptr<SDL_Surface> newSurf(0);
+    if ( isSRCAlphaset() || isSRCColorKeyset() ) // Alpha is set by SDL if bpp == 32, and we need Alpha in GL if we got colorkey in SDL
+    {
+     newSurf.reset(SDL_CreateRGBSurface(ptm_surf->flags,glwidth,glheight,32, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
+     //need to fill with stuff ???
+    }
+    else
+    {
+        newSurf.reset(SDL_CreateRGBSurface(ptm_surf->flags,glwidth,glheight,24, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
+    }
+
+    if (!newSurf.get()) //CreateRGBSurface has failed
+    {
+        Log << "Unable to resize to " << glwidth << " x " << glheight << " 2D GL surface " << nl << GetError();
+        res = false;
+    }
+    else
+    {
+        if (keepcontent)
+        {
+            SDL_BlitSurface(ptm_surf.get(), NULL , newSurf.get(), NULL);
+        }
+
+        SDL_FreeSurface(ptm_surf.release());
+        ptm_surf=newSurf;
+        res = true;
+    }
+    modified = res;
+    return (modified && ptm_surf.get() != 0 ) ;
+}
+
+
+unsigned int GLSurface::getWidth()
+{
+    return m_actualWidth;
+}
+
+unsigned int GLSurface::getHeight()
+{
+    return m_actualHeight;
 }
 
 
 unsigned int GLSurface::getTextureWidth()
 {
-    return textureWidth;
+    return RGBSurface::getWidth();
 }
 
 unsigned int GLSurface::getTextureHeight()
 {
-    return textureHeight;
+    return RGBSurface::getHeight();
 }
 
 bool GLSurface::fill (const PixelColor& color, Rect dest_rect)
@@ -281,25 +430,33 @@ bool GLSurface::blit (const RGBSurface& src, Rect& dest_rect, const Rect& src_re
     return RGBSurface::blit(src, dest_rect, src_rect);
 }
 
+
+///Accessor to pixelFormat
+const PixelFormat& GLSurface::getPixelFormat(void) const
+{
+    return *ptm_pformat;
+}
+
 bool GLSurface::convertToDisplayFormat()
 {
-    if (texturePixels == NULL)
-    {
-        //No data to convert
-        // Problem, convert Pixels should have been called before if there was any modification...
-        // Or no conversion is actually needed...
-        return false;
-    }
+
+    /* Standard OpenGL texture creation code */
+    //these might be use for screen capture as well
+    // refer : http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL.html#blits
+    //glPixelStorei( GL_PACK_ROW_LENGTH, 0 ) ;
+
+    //glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+    glPixelStorei(GL_UNPACK_ALIGNMENT,ptm_surf->format->BytesPerPixel);
+    //glPixelStorei(GL_UNPACK_ALIGNMENT,4);
 
     glGenTextures(1, &textureHandle);
     glBindTexture(GL_TEXTURE_2D, textureHandle);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, 4, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, texturePixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, ptm_surf->format->BytesPerPixel, ptm_surf->w, ptm_surf->h, 0, textureFormat, GL_UNSIGNED_BYTE, ptm_surf->pixels);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    delete[] texturePixels, texturePixels = NULL;
     //TODO : set SDLut Error string to GLerror value...
     GLenum error = glGetError();
     if (error)
@@ -332,6 +489,22 @@ bool GLSurface::convertToDisplayFormat()
     optimised = true;
     return true;
 }
+
+bool GLSurface::setColorKey(const PixelColor & key, bool rleAccel)
+{
+    bool res = RGBSurface::setColorKey(key,rleAccel);
+    modified = res;
+    return modified;
+}
+
+
+bool GLSurface::setAlpha(unsigned int alpha, bool rleAccel)
+{
+    bool res = RGBSurface::setAlpha(alpha,rleAccel);
+    modified = res;
+    return modified;
+}
+
 
 
 } //SDL

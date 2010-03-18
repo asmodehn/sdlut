@@ -6,6 +6,12 @@ namespace RAGE
 namespace SDL
 {
 
+PixelFormat::PixelFormat()
+: ptm_sdl_pformat( new SDL_PixelFormat )
+{
+    pointerCopy = false;
+}
+
 PixelFormat::PixelFormat(const SDL_PixelFormat* pf) : ptm_sdl_pformat(pf)
 {
     pointerCopy = true;
@@ -119,11 +125,25 @@ Logger & operator << (Logger & log, const PixelFormat & pformat)
 
 PixelColor PixelFormat::getPixelColor(const Color& color) const
 {
+    PixelColor pc;
     if ( ! color.hasAlpha() )
     {
-        return SDL_MapRGB(const_cast<SDL_PixelFormat*>(ptm_sdl_pformat), color.getR(), color.getG(), color.getB());
+        pc = SDL_MapRGB(const_cast<SDL_PixelFormat*>(ptm_sdl_pformat), color.getR(), color.getG(), color.getB());
+
+        //no alpha : setting last bits of PixelColor
+        //TMP : TO make sure in case of color BUG
+//if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+//    pc = pc | 0x000000ff;
+//else
+//    pc = pc | 0xff000000;
+
     }
-    return SDL_MapRGBA(const_cast<SDL_PixelFormat*>(ptm_sdl_pformat),color.getR(),color.getG(),color.getB(), color.getA());
+    else
+    {
+    pc = SDL_MapRGBA(const_cast<SDL_PixelFormat*>(ptm_sdl_pformat),color.getR(),color.getG(),color.getB(), color.getA());
+    }
+
+    return pc;
 }
 
 Color PixelFormat::getColor(const PixelColor& val) const
@@ -136,35 +156,16 @@ Color PixelFormat::getColor(const PixelColor& val) const
     return Color(r, g, b, a);
 }
 
-/*
-#ifdef WK_OPENGL_FOUND
-    const GLbyte [] PixelFormat::getGLColor3bv(const PixelColor& val) const
-    {
-    }
+PixelColor PixelFormat::convert(PixelColor val, const PixelFormat & pf) const
+{
+    Uint8 r, g, b, a;
+    //SDL_PixelFormat * fmt = new SDL_PixelFormat(*_pformat);
+    SDL_GetRGBA(val, const_cast<SDL_PixelFormat*>(pf.ptm_sdl_pformat), &r, &g, &b, &a);
 
-    const GLshort [] PixelFormat::getGLColor3sv(const PixelColor& val) const;
-    const GLint [] PixelFormat::getGLColor3iv(const PixelColor& val) const;
-    const GLfloat [] PixelFormat::getGLColor3fv(const PixelColor& val) const;
-    const GLdouble [] PixelFormat::getGLColor3dv(const PixelColor& val) const;
-    const GLubyte [] PixelFormat::getGLColor3ubv(const PixelColor& val) const;
-    const GLushort [] PixelFormat::getGLColor3usv(const PixelColor& val) const;
-    const GLuint [] PixelFormat::getGLColor3uiv(const PixelColor& val) const;
+    PixelColor pc = SDL_MapRGBA(const_cast<SDL_PixelFormat*>(ptm_sdl_pformat),r,g,b,a);
 
-    const GLbyte [] PixelFormat::getGLColor4bv(const PixelColor& val) const;
-    const GLshort [] PixelFormat::getGLColor4sv(const PixelColor& val) const;
-    const GLint [] PixelFormat::getGLColor4iv(const PixelColor& val) const;
-    const GLfloat [] PixelFormat::getGLColor4fv(const PixelColor& val) const;
-    const GLdouble [] PixelFormat::getGLColor4dv(const PixelColor& val) const;
-    const GLubyte [] PixelFormat::getGLColor4ubv(const PixelColor& val) const;
-    const GLushort [] PixelFormat::getGLColor4usv(const PixelColor& val) const;
-    const GLuint [] PixelFormat::getGLColor4uiv(const PixelColor& val) const;
-
-#endif
-*/
-
-
-
-
+    return pc;
+}
 
 
 }

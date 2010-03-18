@@ -35,6 +35,7 @@ namespace SDL
 class VideoInfo
 {
     friend class ScreenBuffer;
+    friend class VideoSurface;
 
 private:
     //Actual VideoInfo pointer

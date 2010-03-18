@@ -61,17 +61,12 @@ public:
     ///This type of detection avoid dynamic casts, which can be annoying and shouldnt be common anyway.
     virtual Renderer getRenderer() = 0;
 
-
-private:
-    static const VideoInfo * pvm_vinfo; ///a usefull static pointer, set to the current VideoInfo by ScreenBuffer and reset to 0 on Window destruction
-
-
-
 protected:
 
     //Moved out of RGBSurface, because VideoSurface might need those sometime...
     //SDL interprets each pixel as a 32-bit number, so our masks must depend
-    //on the endianness (byte order) of the machine */
+    //on the endianness (byte order) of the machine
+    //Here we setup the default internal pixel format : RGBA
 #if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
     static const unsigned long r_default_mask = 0xff000000;
     static const unsigned long g_default_mask = 0x00ff0000;
@@ -83,6 +78,7 @@ protected:
     static const unsigned long b_default_mask = 0x00ff0000;
     static const unsigned long a_default_mask = 0xff000000;
 #endif
+    static const unsigned short bpp_default = 32;
 
     //TODO : improve wrapping with const SDL_Surface * // or maybe (const?) SDL_Surface &
     //... look at SDL_video.h to access correctly to SDL_Surface like as for PixelFormat and everything else
@@ -91,10 +87,8 @@ protected:
     //SDL_Surface * const _surf;
     //except for resize...
     std::auto_ptr<SDL_Surface> ptm_surf; ///< the actual allocated surface
-    static const VideoInfo * getVideoInfo()
-    {
-        return pvm_vinfo;
-    } ///access method to be used by derivated classes
+
+    const PixelFormat * ptm_pformat; //container for the SDL_PixelFormat embedded in the SDL_Surface
 
 public: //useful else we can't access those functions outside of friend class (for example in GuiChan)
 
@@ -197,7 +191,7 @@ public:
     void * getpixels(void) const;
 
     ///Accessor to pixelFormat
-    PixelFormat getPixelFormat(void) const;
+    virtual const PixelFormat& getPixelFormat(void) const;
 
     //Set the clip rect
     //Default Reset the clip rect to the full size of the surface

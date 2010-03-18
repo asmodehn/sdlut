@@ -7,6 +7,8 @@ namespace RAGE
 namespace SDL
 {
 
+const VideoInfo * VideoSurface::sptm_vinfo = 0;
+
 std::vector<int> VideoSurface::availableWidth;
 std::vector<int> VideoSurface::availableHeight;
 unsigned long VideoSurface::ptm_defaultflags = SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE ;

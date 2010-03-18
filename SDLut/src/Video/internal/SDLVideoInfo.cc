@@ -10,7 +10,7 @@ namespace SDL
 //VideoInfo* VideoInfo::_Instance=NULL;
 
 //beware : throw bad_alloc if SDL_GetVideoInfo failed.
-//Usefull for windows because this must be called AFTER SDL_setVideo
+//Usefull for windows because this must be called AFTER SDL_setVideo // DOUBT IT
 //On linux/unix this should be called BEFORE to set best pixelmode...
 VideoInfo::VideoInfo(void) throw (std::logic_error)
 try

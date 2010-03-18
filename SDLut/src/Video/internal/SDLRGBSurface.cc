@@ -221,34 +221,29 @@ RGBSurface& RGBSurface::operator=(const BaseSurface& s)
 }
 */
 
-bool RGBSurface::setColorKeyAndAlpha(const PixelColor & key, bool rleAccel)
+bool RGBSurface::setColorKey(const PixelColor & key, bool rleAccel)
 {
     Uint32 flags;
 
-    //Check if we have alpha transparency
-#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-    Uint8 alpha= (Uint8) key & 0xff;
-#else
-    Uint8 alpha= (Uint8) (key >> 24) & 0xff;
-#endif
-    if (alpha < 255)
-    {
-        if (rleAccel)
-            flags=SDL_SRCCOLORKEY | SDL_SRCALPHA | SDL_RLEACCEL;
-        else
-            flags=SDL_SRCCOLORKEY | SDL_SRCALPHA;
-
-        SDL_SetAlpha(ptm_surf.get(), flags, alpha);
-    }
-    else
-    {
         if (rleAccel)
             flags=SDL_SRCCOLORKEY | SDL_RLEACCEL;
         else
             flags=SDL_SRCCOLORKEY;
-    }
 
     return SDL_SetColorKey(ptm_surf.get(), flags, key ) == 0;
+}
+
+
+bool RGBSurface::setAlpha(unsigned int alpha, bool rleAccel)
+{
+    Uint32 flags;
+
+    if (rleAccel)
+            flags=SDL_SRCCOLORKEY | SDL_SRCALPHA | SDL_RLEACCEL;
+        else
+            flags=SDL_SRCCOLORKEY | SDL_SRCALPHA;
+
+        return SDL_SetAlpha(ptm_surf.get(), flags, alpha) == 0;
 }
 
 bool RGBSurface::resize(int width, int height, bool keepcontent)
@@ -257,7 +252,7 @@ bool RGBSurface::resize(int width, int height, bool keepcontent)
 
     std::auto_ptr<SDL_Surface> newSurf( SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
 
-    if (!newSurf.get()) //SetVideoMode has failed
+    if (!newSurf.get()) //CreateRGBSurface has failed
     {
         Log << "Unable to resize to " << width << " x " << height << " 2D RGB surface " << nl << GetError();
         res = false;
@@ -276,8 +271,6 @@ bool RGBSurface::resize(int width, int height, bool keepcontent)
     return (res && ptm_surf.get() != 0 ) ;
 }
 
-
-//Accesseurs - are they all really usefull ?
 bool RGBSurface::isSRCColorKeyset(void)
 {
     return ( SDL_SRCCOLORKEY & ptm_surf->flags ) != 0;
@@ -305,8 +298,15 @@ bool RGBSurface::convertToDisplayFormat()
         res = false;
     else
     {
+        //removing old pixelformat container
+        delete ptm_pformat, ptm_pformat = NULL;
+        //freeing old Surface
         SDL_FreeSurface(ptm_surf.release());
+        //reseting surface
         ptm_surf=optsurf;
+        //recreating proper pixelformat container
+        ptm_pformat = new PixelFormat(ptm_surf->format);
+        //setting flags
         optimised= true;
         res = true;
     }

@@ -56,6 +56,15 @@ class VideoSurface : public BaseSurface
     friend class ScreenBuffer;
     friend class Manager;
 
+protected:
+    //managing one static member for all instances to store "SDL advised" display capabilities
+    //Initialized by ScreenBuffer, after SDL_Init(SDL_VIDEO ) but before SDL_SetVideoMode
+    static const VideoInfo * sptm_vinfo;
+
+    //instance holding the actual display capabilities used
+    //set after SDL_SetVideoMode
+    VideoInfo ptm_vinfo;
+
 public:
     virtual Renderer getRenderer()
     {
@@ -139,6 +148,20 @@ public:
     static bool checkAvailableSize( const PixelFormat & fmt );
     static bool checkAvailableSize( void);
     static int getSuggestedBPP(int width, int height);
+
+    ///static method returning best available video mode
+    static const VideoInfo * getVideoInfo()
+    {
+        assert (sptm_vinfo);
+        return sptm_vinfo;
+    } ///access method to be used by derivated classes
+
+    ///instance method, returning currently used video mode
+    const VideoInfo & getInfo()
+    {
+        return ptm_vinfo;
+    } ///access method to be used by derivated classes
+
 
     /**
      * Use a list of "standard" PC resolutions (width * height), test if they fit with the user computer and return the list of available ones.

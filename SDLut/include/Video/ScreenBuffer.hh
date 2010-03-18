@@ -24,7 +24,7 @@
 #include "Video/Image.hh"
 
 #ifdef WK_OPENGL_FOUND
-#include "Video/internal/OpenGL/SDLGLManager.hh"
+#include "Video/internal/OpenGL/OGLVideoInfo.hh"
 #endif //WK_OPENGL_FOUND
 #include "Video/internal/SDLEngine.hh"
 #include "Functor.hh" //for callbacks storage...
@@ -50,7 +50,7 @@ class ScreenBuffer
     int m_bpp;
 
 protected:
-    VideoInfo m_videoinfo;
+
     #ifdef WK_OPENGL_FOUND
     std::auto_ptr<VideoGLSurface> m_screen;
     #else
@@ -62,7 +62,7 @@ protected:
 
     Manager* pm_manager;
 #ifdef WK_OPENGL_FOUND
-    GLManager m_glmanager;
+    OGLVideoInfo m_oglvideoinfo;
 #endif // WK_OPENGL_FOUND
     Color m_background;
 
@@ -101,9 +101,9 @@ public:
     bool setFullscreen(bool val);
 #ifdef WK_OPENGL_FOUND
 
-    inline GLManager & getGLManager()
+    inline OGLVideoInfo & getOGLVideoInfo()
     {
-        return m_glmanager;
+        return m_oglvideoinfo;
     }
     bool setOpenGL(bool val);
 #endif // WK_OPENGL_FOUND
@@ -131,11 +131,6 @@ public:
     {
         //if (!pvm_screen.get()) resetDisplay();
         return *m_screen;
-    }
-
-    inline VideoInfo & getVideoInfo( void )
-    {
-        return m_videoinfo;
     }
 
     bool resize(int width, int height);

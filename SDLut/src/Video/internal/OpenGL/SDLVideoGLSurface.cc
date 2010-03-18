@@ -148,9 +148,9 @@ void VideoGLSurface::setpixel(int x, int y, PixelColor color)
 
     //alpha test
 #if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
-    if ( color & 0x000000ff != 0 )
+    if ( (color & 0x000000ff) != 0 )
 #else
-    if ( color & 0xff000000 != 0 )
+    if ( (color & 0xff000000) != 0 )
 #endif
     {
         glEnable(GL_BLEND);
@@ -173,9 +173,9 @@ void VideoGLSurface::setpixel(int x, int y, PixelColor color)
 
     //alpha test
 #if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
-    if ( color & 0x000000ff != 0 )
+    if ( (color & 0x000000ff) != 0 )
 #else
-    if ( color & 0xff000000 != 0 )
+    if ( (color & 0xff000000) != 0 )
 #endif
     {
         glDisable(GL_ALPHA_TEST);
@@ -332,6 +332,9 @@ if ( ! isOpenGLset() )
                 glsrc.convertToDisplayFormat();
         }
 
+
+        Log << nl << glsrc.getPixelFormat();
+
         //in case the dest_rect is of different size than src_rect, we need to avoid scaling
         // of the texture by opengl
         dest_rect.resetw( min ( dest_rect.getw(), src_rect.getw()) );
@@ -357,9 +360,10 @@ if ( ! isOpenGLset() )
 
         if ( glsrc.isSRCAlphaset() || glsrc.isSRCColorKeyset())
         {
-            glEnable(GL_BLEND);
-            glEnable(GL_ALPHA_TEST);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            //TMP
+            //glEnable(GL_BLEND);
+            //glEnable(GL_ALPHA_TEST);
+            //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         }
 
         //Enable texturing
@@ -389,8 +393,9 @@ if ( ! isOpenGLset() )
 
         if ( glsrc.isSRCAlphaset() || glsrc.isSRCColorKeyset())
         {
-            glDisable(GL_ALPHA_TEST);
-            glDisable(GL_BLEND);
+            //TMP
+            //glDisable(GL_ALPHA_TEST);
+            //glDisable(GL_BLEND);
         }
 
         //Disable texturing

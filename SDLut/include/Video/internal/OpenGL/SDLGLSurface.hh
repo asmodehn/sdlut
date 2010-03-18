@@ -6,7 +6,7 @@
  ******************************************************************************/
 
 #include "Video/internal/SDLRGBSurface.hh"
-
+#include "Video/internal/OpenGL/OGLPixelFormat.hh"
 namespace RAGE
 {
 namespace SDL
@@ -34,8 +34,8 @@ private:
     ///Conversion Constructor with explicit ownership transfert
     explicit GLSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error);
 
-    void computeGLWidthHeight();
-    void convertPixels();
+    bool computeGLWidthHeight();
+    bool convertPixels();
 
 protected:
 
@@ -43,9 +43,10 @@ protected:
     bool modified;
 
     unsigned int textureHandle;
-    unsigned int textureWidth;
-    unsigned int textureHeight;
-    unsigned int * texturePixels;
+    unsigned int textureFormat;
+
+    unsigned int m_actualWidth;
+    unsigned int m_actualHeight;
 
     unsigned int getTextureHandle();
 
@@ -81,13 +82,27 @@ public :
 
     virtual ~GLSurface();
 
+    //reutrne hte OpenGL texture size ( same as internal SDL_Surface
     unsigned int getTextureWidth();
-
     unsigned int getTextureHeight();
+
+    //Return actual original surface size, before OpenGL transofrmation
+    virtual unsigned int getWidth();
+    virtual unsigned int getHeight();
+
+
+    ///Accessor to pixelFormat
+    const PixelFormat& getPixelFormat(void) const;
 
     bool convertToDisplayFormat();
 
+bool setColorKey(const PixelColor & key, bool rleAccel = true);
+bool setAlpha(unsigned int alpha, bool rleAccel = true);
+
+
+
     virtual bool resize(int width, int height, bool keepcontent = false);
+    bool resizegl(int width, int height, bool keepcontent = false);
 
     bool fill (const PixelColor& color, Rect dest_rect);
 

@@ -190,9 +190,6 @@ int main(int argc, char** argv)
     App::getInstance().initVideo(false,true,false);
     App::getInstance().setName ("RAGE::SDL test - OpenGL");
 
-    //Getting video informations
-    testlog << nl << App::getInstance().getDisplay().getScreenBuffer().getVideoInfo() << std::endl;
-
     //MyUserInput ui;
     //App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 

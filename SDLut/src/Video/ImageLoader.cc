@@ -127,8 +127,8 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename, const Color & color
             surf.reset(new RGBSurface( sdlsurf ) );
 #endif
 
-        //TOFIX : otherwise makes all image transparent
-        //surf->setColorKeyAndAlpha(surf->getPixelFormat().getPixelColor(colorKey));
+        //TOFIX : makes all image transparent
+        surf->setColorKey(surf->getPixelFormat().getPixelColor(colorKey));
 
     }
     catch (std::exception &e)

@@ -10,14 +10,6 @@ ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) thr
         : m_width(width), m_height(height),m_bpp(bpp), fullRefreshNeeded(true), pm_manager(manager), m_background(Color(0,0,0))
 {
 
-    //setting the static videoInfo to be used by all surfaces...
-    BaseSurface::pvm_vinfo = &m_videoinfo;
-
-    setSize( width, height );
-
-    setBPP ( bpp );
-
-
 //setting the required flags...
 #ifdef WK_OPENGL_FOUND
         //OpenGL set by default
@@ -27,6 +19,19 @@ ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) thr
         setFullscreen(false);
         setResizable(true);
         setNoFrame(false);
+
+#ifdef WK_OPENGL_FOUND
+    //Here SDL_Init(SDL_VIDEO) has already been called
+    VideoSurface::sptm_vinfo = new OGLVideoInfo();
+#else
+    //Here SDL_Init(SDL_VIDEO) has already been called
+    VideoSurface::sptm_vinfo = new VideoInfo();
+#endif
+
+    setSize( width, height );
+
+    setBPP ( bpp );
+
 
 
     //but beware about bpp == 0...
@@ -55,7 +60,6 @@ ScreenBuffer::ScreenBuffer( const ScreenBuffer & sb )
 
 ScreenBuffer::~ScreenBuffer()
 {
-    BaseSurface::pvm_vinfo = NULL;
 }
 
 

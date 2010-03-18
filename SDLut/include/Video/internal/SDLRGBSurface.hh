@@ -80,10 +80,8 @@ public :
     //Destructor
     virtual ~RGBSurface() {}
 
-    //if color has an alpha component, the surface alpha component will be set to it.
-    //otherwise (color.getA() == 255 ) and the color will be assigned as colorkey for the surface
-    bool setColorKeyAndAlpha(const PixelColor &color, bool rleAccel = true);
-
+bool setColorKey(const PixelColor & key, bool rleAccel = true);
+bool setAlpha(unsigned int alpha, bool rleAccel = true);
 
     //Use Standard Colors here
     //setPixel();

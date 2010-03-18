@@ -21,10 +21,6 @@
 #include "Video/internal/SDLWindow.hh"
 #include "System/SDLEventManager.hh"
 
-
-#ifdef WK_OPENGL_FOUND
-#include "Video/internal/OpenGL/SDLGLManager.hh"
-#endif //WK_OPENGL_FOUND
 #include "Video/internal/SDLEngine.hh"
 
 //to access functors and callback features
