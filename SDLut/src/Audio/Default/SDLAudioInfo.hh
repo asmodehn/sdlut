@@ -23,9 +23,9 @@
 //declarign SDL_type for late binding
 struct SDL_AudioSpec;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 //classes interaction :
@@ -80,13 +80,13 @@ public :
         return _spec.get();
     }
 
-    friend Logger & operator << (Logger & ostr, const AudioInfo & ai);
+    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const AudioInfo & ai);
 
 }; //class Audio
 
 
 } // namespace SDL
-} // namespace RAGE
+} // namespace SDLut
 
 
 

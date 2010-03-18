@@ -11,9 +11,9 @@
 #include <stdexcept>
 
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 /**

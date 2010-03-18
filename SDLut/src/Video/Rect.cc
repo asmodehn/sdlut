@@ -12,9 +12,9 @@
 #endif
 //#define ifpositive( a ) a>0?a:0
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
 
 //usefull to get the SDL rect without any risk of modification
@@ -226,4 +226,4 @@ Rect Rect::sup(const Rect & r)
 
 
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL

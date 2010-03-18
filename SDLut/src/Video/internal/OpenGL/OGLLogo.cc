@@ -8,13 +8,16 @@
 #define M_PI  3.14159265358979323846
 #endif
 
-namespace RAGE
+namespace SDLut
 {
 
-    namespace SDL
+    namespace video
 
     {
+        namespace internal{
 
+namespace OGL
+{
 
 void OGLLogo::setMaterial(int mode,float *f,float alpha) const
 {
@@ -2124,5 +2127,7 @@ const GLfloat OGLLogo::normals [1338][3] = {
 {-0.975735f,0.0f,-0.218956f},{-0.953991f,0.0f,0.299835f},{-0.476996f,0.0f,0.878906f}
 };
 
+}
+        }
     }
 }

@@ -5,9 +5,11 @@
 #include "Default/SDLMusicImpl.hh"
 #include "MIX/SDLMusicExtend.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 

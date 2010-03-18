@@ -4,9 +4,11 @@
 
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace font
 {
 
 //if SDL_TTF used, provide a class to be used as a bridge.
@@ -16,13 +18,13 @@ namespace SDL
 
 FontExtend::FontExtend(std::string filename, int ptsize, long index) throw (std::logic_error)
 try :
-    FontImpl(), ptsize(ptsize), index(index),pvm_OriginalData(new RWOps(filename.c_str(), "rb")),pvm_ttfstruct(TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index))
+    FontImpl(), ptsize(ptsize), index(index),pvm_OriginalData(new system::RWOps(filename.c_str(), "rb")),pvm_ttfstruct(TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index))
 {
     if (pvm_ttfstruct == NULL)
     {
         throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
     }
-    pvm_OriginalData->seek(0,RWOps::Set);
+    pvm_OriginalData->seek(0,system::RWOps::Set);
 }
 catch (std::exception& e)
 {
@@ -33,7 +35,7 @@ catch (std::exception& e)
 
 FontExtend::FontExtend(const FontExtend & font)  throw (std::logic_error)
 try :
-    FontImpl(font), ptsize(font.ptsize), index(font.index), pvm_OriginalData(font.pvm_OriginalData.get() !=0 ? new RWOps(*font.pvm_OriginalData) : 0),pvm_ttfstruct(0)
+    FontImpl(font), ptsize(font.ptsize), index(font.index), pvm_OriginalData(font.pvm_OriginalData.get() !=0 ? new system::RWOps(*font.pvm_OriginalData) : 0),pvm_ttfstruct(0)
 {
     pvm_ttfstruct = TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index);
     if (pvm_ttfstruct == 0)
@@ -41,7 +43,7 @@ try :
         Log << nl << pvm_OriginalData->get_pSDL();
         throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
     }
-    pvm_OriginalData->seek(0,RWOps::Set);
+    pvm_OriginalData->seek(0,system::RWOps::Set);
 }
 catch (std::exception& e)
 {
@@ -56,9 +58,9 @@ FontExtend & FontExtend::operator=(const FontExtend & font) throw (std::logic_er
     FontImpl::operator=(font);
     ptsize = font.ptsize;
     index = font.index;
-    pvm_OriginalData.reset(font.pvm_OriginalData.get() !=0 ? new RWOps(*font.pvm_OriginalData) : 0 );
+    pvm_OriginalData.reset(font.pvm_OriginalData.get() !=0 ? new system::RWOps(*font.pvm_OriginalData) : 0 );
     pvm_ttfstruct = TTF_OpenFontIndexRW(pvm_OriginalData->get_pSDL(),0,ptsize,index);
-    pvm_OriginalData->seek(0,RWOps::Set);
+    pvm_OriginalData->seek(0,system::RWOps::Set);
     if (pvm_ttfstruct == 0)
     {
         throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
@@ -71,7 +73,7 @@ FontExtend::~FontExtend()
     TTF_CloseFont(pvm_ttfstruct);
 }
 
-std::auto_ptr<RGBSurface> FontExtend::render(const std::string& text, Color c, Color bgc, Font::RenderMode mode) const
+std::auto_ptr<video::internal::RGBSurface> FontExtend::render(const std::string& text, video::Color c, video::Color bgc, Font::RenderMode mode) const
 {
     std::auto_ptr<SDL_Surface> surf;
     switch ( mode )
@@ -89,12 +91,12 @@ std::auto_ptr<RGBSurface> FontExtend::render(const std::string& text, Color c, C
     }
 
 
-    GLSurface * glsurf = new GLSurface (surf);
+    video::internal::OGL::GLSurface * glsurf = new video::internal::OGL::GLSurface (surf);
 
     //glsurf->saveBMP( text + "_fext.bmp" );
 
     //beware : auto_ptr ownership transferred ;)
-    std::auto_ptr<RGBSurface> result(glsurf );
+    std::auto_ptr<video::internal::RGBSurface> result(glsurf );
 
 
     //result->saveBMP ( text + "_fextres.bmp");
@@ -191,15 +193,15 @@ std::string FontExtend::faceStyleName()
     return std::string( TTF_FontFaceStyleName(pvm_ttfstruct) );
 }
 
-Rect FontExtend::getSize(const std::string & text) const
+video::Rect FontExtend::getSize(const std::string & text) const
 {
     int w,h;
     int test = TTF_SizeText(pvm_ttfstruct,text.c_str(),&w,&h);
     if (!test) //success
-        return Rect(0,0,w,h);
+        return video::Rect(0,0,w,h);
     //failure
     Log << nl << Optional::GetError(Optional::TTF);
-    return Rect(0,0,0,0);
+    return video::Rect(0,0,0,0);
 }
 
 #endif //WK_SDLTTF_FOUND

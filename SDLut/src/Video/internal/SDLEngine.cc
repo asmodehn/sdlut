@@ -4,10 +4,12 @@
 
 #include "SDLResources.inc"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+    namespace internal
+    {
 
 //loading the default RGBSurface from the Resources as logo
 SDLEngine::SDLEngine() : m_Logo()
@@ -16,7 +18,7 @@ SDLEngine::SDLEngine() : m_Logo()
 
 //this render function should not modify the engine
 #ifdef WK_OPENGL_FOUND
-bool SDLEngine::render(VideoGLSurface & screen) const
+bool SDLEngine::render(OGL::VideoGLSurface & screen) const
 #else
 bool SDLEngine::render(VideoSurface & screen) const
 #endif
@@ -47,7 +49,7 @@ SDLEngine::~SDLEngine()
 }
 
 
-
+    }
 }
 }
 

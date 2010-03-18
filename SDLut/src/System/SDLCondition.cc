@@ -1,9 +1,11 @@
 #include "System/SDLCondition.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 Condition::Condition() throw (std::logic_error)

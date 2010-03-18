@@ -7,9 +7,13 @@
 
 #include "Video/internal/SDLLogo.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
+{
+namespace internal
+{
+namespace OGL
 {
 
 #ifdef WK_OPENGL_FOUND
@@ -61,9 +65,10 @@ virtual bool render(VideoGLSurface & screen) const;
 #endif // WK_OPENGL_FOUND
 
 
-
-} //SDL
-} //RAGE
+} //OGL
+} //internal
+} //video
+} //SDLut
 
 
 

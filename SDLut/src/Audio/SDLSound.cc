@@ -5,21 +5,23 @@
 #include "Default/SDLSoundImpl.hh"
 #include "MIX/SDLSoundExtend.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 
 SoundIf::SoundIf(std::string filename, bool loop_status) throw (std::logic_error)
 try :
-    pvm_OriginalData(new RWOps(filename.c_str(), "rb"))
+    pvm_OriginalData(new system::RWOps(filename.c_str(), "rb"))
 {
     if ( !pvm_OriginalData.get() )
     {
         throw std::logic_error(" Unable to access the sound file !");
     }
-    pvm_OriginalData->seek(0,RWOps::Set);
+    pvm_OriginalData->seek(0,system::RWOps::Set);
 }
 catch (std::exception &e )
 {
@@ -29,13 +31,13 @@ catch (std::exception &e )
 
 SoundIf::SoundIf(const SoundIf & s) throw (std::logic_error)
 try :
-    pvm_OriginalData(s.pvm_OriginalData.get() !=0 ? new RWOps(*s.pvm_OriginalData) : 0)
+    pvm_OriginalData(s.pvm_OriginalData.get() !=0 ? new system::RWOps(*s.pvm_OriginalData) : 0)
 {
     if ( ! pvm_OriginalData.get() )
     {
         throw std::logic_error(" Unable to access the sound in memory !");
     }
-    pvm_OriginalData->seek(0,RWOps::Set);
+    pvm_OriginalData->seek(0,system::RWOps::Set);
 }
 catch (std::exception &e )
 {

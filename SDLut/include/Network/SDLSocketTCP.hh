@@ -7,9 +7,9 @@
 
 #include "Logger.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace network
 {
 
 /**
@@ -99,7 +99,7 @@ public:
     int send(const void * data, int len);
     int receive(void * data, int maxlen);
 
-    friend Logger & operator << (Logger & log, const SocketTCP & sock);
+    friend RAGE::Logger & operator << (RAGE::Logger & log, const SocketTCP & sock);
 };
 
 }

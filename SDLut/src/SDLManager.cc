@@ -1,9 +1,9 @@
 #include "SDLManager.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
-{
-namespace SDL
+using namespace RAGE;
+
+namespace SDLut
 {
 
 Manager::Manager(bool video, bool audio, bool timer, bool cdrom, bool joystick, bool noparachute, bool eventthread) throw (std::logic_error)
@@ -180,7 +180,7 @@ bool Manager::isEventThreadEnabled(void) const
     return ( SDL_WasInit(SDL_INIT_EVENTTHREAD) ) != 0;
 }
 
-Logger & operator << (Logger & log, const Manager & man)
+RAGE::Logger & operator << (RAGE::Logger & log, const Manager & man)
 {
     log << nl << std::boolalpha << "Manager :" << nl <<
     "- Is Timer Enabled ? " << man.isTimerEnabled() << nl <<
@@ -193,5 +193,5 @@ Logger & operator << (Logger & log, const Manager & man)
     return log;
 
 }
-}
-}//namespace RAGE::SDL
+
+}//namespace SDLut::SDL

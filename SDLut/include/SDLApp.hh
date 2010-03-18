@@ -50,12 +50,10 @@ typedef uint32_t	Uint32;
 #include <cassert>
 
 #ifndef LOGFILENAME
-#define LOGFILENAME "RAGE_SDLut.log"
+#define LOGFILENAME "SDLut_SDLut.log"
 #endif //LOGFILENAME
 
-namespace RAGE
-{
-namespace SDL
+namespace SDLut
 {
 
 extern std::string GetError();
@@ -68,13 +66,13 @@ class App
     std::auto_ptr<Manager> pvm_manager;
 
     ///Handling Video Ouput related behaviour
-    std::auto_ptr<Display> pvm_display; // for video
+    std::auto_ptr<video::Display> pvm_display; // for video
 
     ///Handling Audio Ouput related behaviour
-    std::auto_ptr<Mixer> pvm_mixer; // for audio framework
+    std::auto_ptr<audio::Mixer> pvm_mixer; // for audio framework
 
     ///Handling Jostick Pool for input
-    std::auto_ptr<JoystickPool> pvm_jpool; //for joystick
+    std::auto_ptr<input::JoystickPool> pvm_jpool; //for joystick
 
     ///Storing name and icon for this application
     std::string pvm_name,pvm_icon;
@@ -151,7 +149,7 @@ public:
     bool initNet();
 
     ///Accessor to the Window
-    Display & getDisplay()
+    video::Display & getDisplay()
     {
         assert (pvm_display.get() && "The Window has not been created yet.To do that, use the initVideo() function before calling getWindow()." );
         return *pvm_display;
@@ -159,7 +157,7 @@ public:
 
 
     ///Accessor to the Mixer
-    Mixer & getMixer()
+    audio::Mixer & getMixer()
     {
         assert (pvm_mixer.get() && "The Mixer has not been created yet.To do that, use the initAudio() function before calling getMixer()." );
         return *pvm_mixer;
@@ -173,7 +171,7 @@ public:
     }
 
     ///Accessor to the JoystickPool
-    JoystickPool & getJoystickPool()
+    input::JoystickPool & getJoystickPool()
     {
         assert (pvm_jpool.get() && "The JoystickPool has not been created yet.To do that, use the initJoystick() function before calling getJoystickPool()." );
         return *pvm_jpool;
@@ -187,6 +185,6 @@ public:
 
 
 };
-}
+
 }
 #endif

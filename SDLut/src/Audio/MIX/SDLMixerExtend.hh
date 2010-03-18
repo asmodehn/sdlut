@@ -5,9 +5,9 @@
 #include "SDLSoundExtend.hh"
 #include "SDLMusicExtend.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 //if SDL_Mixer is used, provide a class to be used as a bridge.

@@ -31,9 +31,10 @@
 #define DEFAULT_DISPLAY_HEIGHT 480
 #define DEFAULT_DISPLAY_BPP 0 //0 for current display pixel mode
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+    class App;
+namespace video
 {
 
 //further reference to break dependency cycles
@@ -42,7 +43,7 @@ namespace SDL
 
 class Display
 {
-    friend class App; //to access the constructor
+    friend class SDLut::App; //to access the constructor
 
     //and be able to exit mainloop
 
@@ -52,9 +53,9 @@ protected:
     Manager* pvm_manager; // here because the manager contains also the SDL specific settings that we need...
 
     //here because Event are initialised along with video...
-    EventManager pvm_eventmanager;
+    system::EventManager pvm_eventmanager;
 
-    Window pvm_window; //delegating charge of the window frame and decorations only
+    internal::Window pvm_window; //delegating charge of the window frame and decorations only
     ScreenBuffer pvm_screen;
 
 public:
@@ -75,7 +76,7 @@ public:
     //    return pvm_screen.getDisplay();
     //}
 
-    Window & getWindow()
+    internal::Window & getWindow()
     {
         return pvm_window;
     }
@@ -85,7 +86,7 @@ public:
         return pvm_screen;
     }
 
-    inline EventManager & getEventManager()
+    inline system::EventManager & getEventManager()
     {
         return pvm_eventmanager;
     }
@@ -263,10 +264,10 @@ public:
     //this callback is run just for rendering purpose. therefore it s already too late to modify anything -> const
     //if there is anything you need to modify please use the newframe callback
     template <class WaClass>
-    void resetRenderCallback(WaClass& instance, bool (WaClass::*func) (RAGE::SDL::ScreenBuffer& ) const )
+    void resetRenderCallback(WaClass& instance, bool (WaClass::*func) (video::ScreenBuffer& ) const )
     {
         //TODO : check if old callback is deleted by reset...
-        m_rendercb.reset(new Core::Callback1const<WaClass,RAGE::SDL::ScreenBuffer&,bool>(instance,func));
+        m_rendercb.reset(new Core::Callback1const<WaClass,video::ScreenBuffer&,bool>(instance,func));
     }
 
 };
@@ -274,6 +275,6 @@ public:
 
 }// SDL
 
-}// RAGE
+}// SDLut
 
 #endif

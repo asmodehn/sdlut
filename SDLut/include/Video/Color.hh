@@ -20,8 +20,8 @@ struct SDL_Color;
 struct SDL_Palette;
 
 
-namespace RAGE {
-    namespace SDL {
+namespace SDLut {
+    namespace video {
 
 
 //should be 32 bits color. needs to match pixel format...
@@ -105,10 +105,12 @@ public:
  *
  */
 
+namespace internal { class PixelFormat;}
+
 //read-only access
 class Palette
 {
-    friend class PixelFormat;
+    friend class internal::PixelFormat;
 
     bool pointerCopy;
 protected:
@@ -147,6 +149,6 @@ public:
 };
 
 
-}
-}// namespace RAGE::SDL
+}//namespace video
+}// namespace SDLut
 #endif

@@ -2,9 +2,9 @@
 
 #include "SDLConfig.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 ChannelImpl::ChannelImpl(const SoundImpl * s, bool loop, bool autoplay, unsigned short volpct)

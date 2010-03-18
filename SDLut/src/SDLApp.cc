@@ -2,9 +2,9 @@
 
 #include "SDLConfig.hh"
 
-namespace RAGE
-{
-namespace SDL
+using namespace RAGE;
+
+namespace SDLut
 {
 
 App::App() : m_quitRequested(false), pvm_manager(0), pvm_display(0), pvm_mixer(0), pvm_jpool(0)
@@ -120,7 +120,7 @@ bool App::initVideo( bool fullscreen, bool resizable, bool noframe)
             res = pvm_manager->enableVideo();
         }
 
-        pvm_display.reset(new Display(pvm_name, pvm_manager.get()));//manager now contains also the SDL specific settings
+        pvm_display.reset(new video::Display(pvm_name, pvm_manager.get()));//manager now contains also the SDL specific settings
 
         pvm_display->getScreenBuffer().setFullscreen(fullscreen);
         pvm_display->getScreenBuffer().setResizable(resizable);
@@ -161,7 +161,7 @@ bool App::initJoystick()
 
     if ( res )
     {
-        pvm_jpool.reset( new JoystickPool());
+        pvm_jpool.reset( new input::JoystickPool());
 #ifdef DEBUG
 
         Log << nl << "Number of Joysticks available : " << pvm_jpool->countAvailable();
@@ -192,7 +192,7 @@ bool App::initAudio(int frequency /*= 44100*/,unsigned short channels /*= 2*/,un
 
         if ( res == true )
         {
-            pvm_mixer.reset(new Mixer(frequency, channels, buffer_size));
+            pvm_mixer.reset(new audio::Mixer(frequency, channels, buffer_size));
         }
 
     }
@@ -235,6 +235,6 @@ bool App::requestTermination(bool emergencyBreak )
 
     return m_quitRequested;
 }
-}
+
 }
 

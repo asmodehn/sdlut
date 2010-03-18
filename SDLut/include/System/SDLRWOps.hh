@@ -9,9 +9,9 @@
 //forward declaration for late time binding...
 struct SDL_RWops;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 /**

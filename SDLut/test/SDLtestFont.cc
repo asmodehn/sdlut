@@ -1,9 +1,12 @@
 #include "SDL.hh"
 #include "Logger.hh"
 using namespace RAGE;
-using namespace RAGE::SDL;
 
-Logger Log("Test Font");
+using namespace SDLut;
+using namespace SDLut::font;
+using namespace SDLut::video;
+
+RAGE::Logger Log("Test Font");
 
 //Engine will displayed the text with the different styles and rendermode availables in the font.
 
@@ -144,7 +147,7 @@ int main(int argc, char** argv)
 	//unknown caracters shown another caracter (ç --> h; è --> g)
 	//IN OpenGL mode: caracters are not displayed on the program windows
 
-    Logger testlog("Test Log");
+    RAGE::Logger testlog("Test Log");
 
 
 #ifdef WK_OPENGL_FOUND
@@ -157,7 +160,7 @@ int main(int argc, char** argv)
     //Setup example
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
-	App::getInstance().setName ("RAGE::SDL test - Font");
+	App::getInstance().setName ("SDLut::SDL test - Font");
     App::getInstance().initVideo(false,false,false);
 	App::getInstance().initText();
 

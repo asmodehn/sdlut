@@ -1,10 +1,12 @@
 #include "Video/internal/SDLBaseSurface.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
-{
+namespace video{
+    namespace internal{
 
 bool BaseSurface::lock(void)
 {
@@ -430,7 +432,7 @@ Rect BaseSurface::getClipRect(void) const
     return r;
 }
 
-Logger & operator << (Logger & log, const BaseSurface & surf)
+RAGE::Logger & operator << (RAGE::Logger & log, const BaseSurface & surf)
 {
     log << nl << "SDLBaseSurface::" << nl
     << " - Height = " << surf.getHeight() << nl
@@ -444,5 +446,7 @@ Logger & operator << (Logger & log, const BaseSurface & surf)
     << " - PreAlloc ? " << surf.isPreAllocset();
     return log;
 }
+
+    }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL

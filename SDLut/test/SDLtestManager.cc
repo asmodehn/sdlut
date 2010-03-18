@@ -3,18 +3,20 @@
 */
 
 #include "SDL.hh"
+using namespace SDLut;
+
 using namespace RAGE;
 
 int main(int argc, char *argv[])
 {
-	Logger testlog("testManager");
+	RAGE::Logger testlog("testManager");
 
-	SDL::App::getInstance().setName ("RAGE::SDL Functionnal testing - Manager");
+	App::getInstance().setName ("SDLut Functionnal testing - Manager");
 
 	testlog << nl << " Init minimal... " ;
-	testlog << ( (SDL::App::getInstance().init()) ? "OK": "FAILED" ) << std::endl;
+	testlog << ( (App::getInstance().init()) ? "OK": "FAILED" ) << std::endl;
 
-	SDL::Manager manager= SDL::App::getInstance().getManager();
+	Manager manager= App::getInstance().getManager();
 	testlog << nl << manager;
 
 	return 0;

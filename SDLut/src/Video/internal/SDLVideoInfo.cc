@@ -2,10 +2,14 @@
 #include "SDLManager.hh"
 
 #include "SDLConfig.hh"
-namespace RAGE
+
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+    namespace internal {
 
 //VideoInfo* VideoInfo::_Instance=NULL;
 
@@ -154,7 +158,7 @@ const PixelFormat & VideoInfo::getPixelFormat() const
     return *ptm_pformat;
 }
 
-Logger & operator << (Logger & log, const VideoInfo & vinfo)
+RAGE::Logger & operator << (RAGE::Logger & log, const VideoInfo & vinfo)
 {
     log << nl << "VideoInfo :"  << nl <<
     " - Driver Name : " << vinfo.getDriverName() << nl <<
@@ -173,5 +177,7 @@ Logger & operator << (Logger & log, const VideoInfo & vinfo)
 
     return log;
 }
+
+    }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL

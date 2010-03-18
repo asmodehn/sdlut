@@ -1,5 +1,5 @@
-#ifndef SDLFONT_HH
-#define SDLFONT_HH
+#ifndef SDLUT_FONT_HH
+#define SDLUT_FONT_HH
 
 #include "Video/Color.hh"
 #include "Video/Rect.hh"
@@ -7,16 +7,16 @@
 
 #include <memory>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace font
 {
 
 
 /**
  * \class Font
  *
- * \ingroup Text
+ * \ingroup font
  *
  * \brief This class handles Font Display
  *
@@ -72,13 +72,13 @@ public:
     Style getStyle() const;
     void setStyle(Style s);
 
-    Rect getSize(const std::string& text);
+    video::Rect getSize(const std::string& text);
     int getHeight() const;
 
 
     //Rendering
     //The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-    std::auto_ptr<RGBSurface> render(std::string text, Color c, RenderMode mode, Color bgc = Color()) const;
+    std::auto_ptr<video::internal::RGBSurface> render(std::string text, video::Color c, RenderMode mode, video::Color bgc = video::Color()) const;
 
 };
 

@@ -4,9 +4,9 @@
 //forward declaration for late time binding...
 struct SDL_mutex;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 /**
@@ -44,6 +44,6 @@ public :
 };
 
 } // SDL
-}// RAGE
+}// SDLut
 
 #endif

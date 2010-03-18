@@ -3,15 +3,18 @@
 
 #include "SDLResources.inc"
 
-namespace RAGE
+using namespace RAGE;
+
+
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
 
 ImageLoader::ImageLoader()
 try :
     pvm_RGBFlags(SDL_SWSURFACE),
-    pvm_errorContent(_defaultImage,sizeof(_defaultImage)),
+    pvm_errorContent(resources::_defaultImage,sizeof(resources::_defaultImage)),
     pvm_offset(pvm_errorContent.tell())
 {
 
@@ -70,7 +73,7 @@ void ImageLoader::resetFlags(	bool SWSURFACE,
 //creates surface from file, copying its content...
 std::auto_ptr<Image> ImageLoader::load(std::string filename , bool no_failure ) throw (std::logic_error)
 {
-    std::auto_ptr<RGBSurface> surf;
+    std::auto_ptr<internal::RGBSurface> surf;
     try
     {
 #ifdef WK_SDLIMAGE_FOUND
@@ -80,9 +83,9 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename , bool no_failure ) 
 #endif
 
 #ifdef WK_OPENGL_FOUND
-            surf.reset(new GLSurface( sdlsurf ) );
+            surf.reset(new internal::OGL::GLSurface( sdlsurf ) );
 #else
-            surf.reset(new RGBSurface( sdlsurf ) );
+            surf.reset(new internal::RGBSurface( sdlsurf ) );
 #endif
 
     }
@@ -95,9 +98,9 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename , bool no_failure ) 
         if (no_failure)
 
 #ifdef WK_SDLIMAGE_FOUND
-        surf.reset(new GLSurface(pvm_errorContent));
+        surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
 #else
-surf.reset(new RGBSurface(pvm_errorContent));
+surf.reset(new internal::RGBSurface(pvm_errorContent));
 #endif
         else throw;
     }
@@ -108,9 +111,9 @@ surf.reset(new RGBSurface(pvm_errorContent));
 std::auto_ptr<Image> ImageLoader::load(std::string filename, const Color & colorKey, bool no_failure ) throw ( std::logic_error)
 {
 #ifdef WK_OPENGL_FOUND
-    std::auto_ptr<GLSurface> surf;
+    std::auto_ptr<internal::OGL::GLSurface> surf;
 #else
-    std::auto_ptr<RGBSurface> surf;
+    std::auto_ptr<internal::RGBSurface> surf;
 #endif
 
     try
@@ -122,9 +125,9 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename, const Color & color
 #endif
 
 #ifdef WK_OPENGL_FOUND
-            surf.reset(new GLSurface( sdlsurf ) );
+            surf.reset(new internal::OGL::GLSurface( sdlsurf ) );
 #else
-            surf.reset(new RGBSurface( sdlsurf ) );
+            surf.reset(new internal::RGBSurface( sdlsurf ) );
 #endif
 
         //TOFIX : makes all image transparent
@@ -140,9 +143,9 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename, const Color & color
         if (no_failure)
         {
 #ifdef WK_SDLIMAGE_FOUND
-        surf.reset(new GLSurface(pvm_errorContent));
+        surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
 #else
-surf.reset(new RGBSurface(pvm_errorContent));
+surf.reset(new internal::RGBSurface(pvm_errorContent));
 #endif
         }
         else throw;
@@ -151,9 +154,9 @@ surf.reset(new RGBSurface(pvm_errorContent));
 }
 
 //convert creates a new RGBSurface
-std::auto_ptr<Image> ImageLoader::copyconvert(const Image & s, const PixelFormat & pfmt, bool no_failure ) throw (std::logic_error)
+std::auto_ptr<Image> ImageLoader::copyconvert(const Image & s, const internal::PixelFormat & pfmt, bool no_failure ) throw (std::logic_error)
 {
-    std::auto_ptr<RGBSurface> surf;
+    std::auto_ptr<internal::RGBSurface> surf;
     SDL_Surface * cvtsurf = SDL_ConvertSurface(const_cast<SDL_Surface *>(s.m_img->get_pSDL()),const_cast<SDL_PixelFormat *>( pfmt.ptm_sdl_pformat ),pvm_RGBFlags);
 
     if ( cvtsurf == NULL) // convert error
@@ -162,9 +165,9 @@ std::auto_ptr<Image> ImageLoader::copyconvert(const Image & s, const PixelFormat
         {
 
 #ifdef WK_SDLIMAGE_FOUND
-        surf.reset(new GLSurface(pvm_errorContent));
+        surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
 #else
-surf.reset(new RGBSurface(pvm_errorContent));
+surf.reset(new internal::RGBSurface(pvm_errorContent));
 #endif
             return std::auto_ptr<Image>(new Image(surf));
         }
@@ -172,9 +175,9 @@ surf.reset(new RGBSurface(pvm_errorContent));
     }
 
 #ifdef WK_OPENGL_FOUND
-            surf.reset(new GLSurface( cvtsurf ) );
+            surf.reset(new internal::OGL::GLSurface( cvtsurf ) );
 #else
-            surf.reset(new RGBSurface( cvtsurf ) );
+            surf.reset(new internal::RGBSurface( cvtsurf ) );
 #endif
 
     return std::auto_ptr<Image> (new Image(surf));
@@ -183,5 +186,5 @@ surf.reset(new RGBSurface(pvm_errorContent));
 
 } //SDL
 
-} // RAGE
+} // SDLut
 

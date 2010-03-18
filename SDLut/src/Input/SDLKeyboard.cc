@@ -5,71 +5,71 @@
 #include "SDLConfig.hh"
 #include <cassert>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace input
 {
-std::map<short,Keyboard::Key> Keyboard::Keysdl2rage;
-std::map<std::string,Keyboard::Key> Keyboard::Keystr2rage;
-std::map<Keyboard::Key,std::string> Keyboard::Keyrage2str;
+std::map<short,Keyboard::Key> Keyboard::Keysdl2SDLut;
+std::map<std::string,Keyboard::Key> Keyboard::Keystr2SDLut;
+std::map<Keyboard::Key,std::string> Keyboard::KeySDLut2str;
 
-std::map<short,Keyboard::Modifier> Keyboard::Modsdl2rage;
-std::map<std::string,Keyboard::Modifier> Keyboard::Modstr2rage;
-std::map<Keyboard::Modifier,std::string> Keyboard::Modrage2str;
+std::map<short,Keyboard::Modifier> Keyboard::Modsdl2SDLut;
+std::map<std::string,Keyboard::Modifier> Keyboard::Modstr2SDLut;
+std::map<Keyboard::Modifier,std::string> Keyboard::ModSDLut2str;
 
 short Keyboard::Key2sdl(Keyboard::Key k)
 {
-    return Keyrage2sdl[k];
+    return KeySDLut2sdl[k];
 }
 Keyboard::Key Keyboard::sdl2Key(short sdlk)
 {
-    return Keysdl2rage[sdlk];
+    return Keysdl2SDLut[sdlk];
 }
 std::string Keyboard::Key2str(Keyboard::Key k)
 {
-    return (k == 0) ? ("") : (Keyrage2str[k]);
+    return (k == 0) ? ("") : (KeySDLut2str[k]);
 }
 Keyboard::Key Keyboard::str2Key(std::string strk)
 {
-    return Keystr2rage[strk];
+    return Keystr2SDLut[strk];
 }
 
 
 short Keyboard::Modifier2sdl(Keyboard::Modifier m)
 {
-    return Modrage2sdl[m];
+    return ModSDLut2sdl[m];
 }
 Keyboard::Modifier Keyboard::sdl2Modifier(short sdlm)
 {
-    return Modsdl2rage[sdlm];
+    return Modsdl2SDLut[sdlm];
 }
 std::string Keyboard::Modifier2str(Keyboard::Modifier m)
 {
-    return Modrage2str[m];
+    return ModSDLut2str[m];
 }
 Keyboard::Modifier Keyboard::str2Modifier(std::string strm)
 {
-    return Modstr2rage[strm];
+    return Modstr2SDLut[strm];
 }
 
-//based on the fact that Rage's enum map to in [0..number-1]. This way the vector is easily built
+//based on the fact that SDLut's enum map to in [0..number-1]. This way the vector is easily built
 std::vector<short> Keyboard::InitKeyMapping()
 {
     std::vector<short> result;
-    std::map<Key,SDLKey> Keyrage2sdlmap;
+    std::map<Key,SDLKey> KeySDLut2sdlmap;
 
     //using a max here to support partial mapping list...
     int maxvecindex =0;
 
-#define ASSOCIATE( key, sdlkey, strkey ) Keyrage2sdlmap[key] = sdlkey; Keysdl2rage[sdlkey] = key; Keystr2rage[strkey] = key; Keyrage2str[key] = strkey; maxvecindex = (maxvecindex>key)? maxvecindex : key;
+#define ASSOCIATE( key, sdlkey, strkey ) KeySDLut2sdlmap[key] = sdlkey; Keysdl2SDLut[sdlkey] = key; Keystr2SDLut[strkey] = key; KeySDLut2str[key] = strkey; maxvecindex = (maxvecindex>key)? maxvecindex : key;
 #include "SDLKeyMapping.inl"
 #undef ASSOCIATE
 
     {
         result.resize(maxvecindex+1, SDLK_UNKNOWN);
 
-        std::map<Key, SDLKey>::iterator it = Keyrage2sdlmap.begin();
-        std::map<Key, SDLKey>::iterator itEnd = Keyrage2sdlmap.end();
+        std::map<Key, SDLKey>::iterator it = KeySDLut2sdlmap.begin();
+        std::map<Key, SDLKey>::iterator itEnd = KeySDLut2sdlmap.end();
         for (; it != itEnd; ++it)
         {
             assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
@@ -80,23 +80,23 @@ std::vector<short> Keyboard::InitKeyMapping()
 }
 
 //using vector because the values of enum are cointiguous
-std::vector<short> Keyboard::Keyrage2sdl = InitKeyMapping();
+std::vector<short> Keyboard::KeySDLut2sdl = InitKeyMapping();
 
 std::vector<short> Keyboard::InitModMapping()
 {
     std::vector<short> result;
-    std::map<Modifier,SDLMod> Modrage2sdlmap;
+    std::map<Modifier,SDLMod> ModSDLut2sdlmap;
 
     int maxvecindex =0;
-#define ASSOCIATE( mod, sdlmod, strmod ) Modrage2sdlmap[mod] = sdlmod; Modsdl2rage[sdlmod] = mod; Modstr2rage[strmod] = mod; Modrage2str[mod] = strmod; maxvecindex = (maxvecindex>mod)? maxvecindex : mod;
+#define ASSOCIATE( mod, sdlmod, strmod ) ModSDLut2sdlmap[mod] = sdlmod; Modsdl2SDLut[sdlmod] = mod; Modstr2SDLut[strmod] = mod; ModSDLut2str[mod] = strmod; maxvecindex = (maxvecindex>mod)? maxvecindex : mod;
 #include "SDLModMapping.inl"
 #undef ASSOCIATE
 
     {
         result.resize(maxvecindex+1, KMOD_NONE);
 
-        std::map<Modifier, SDLMod>::iterator it = Modrage2sdlmap.begin();
-        std::map<Modifier, SDLMod>::iterator itEnd = Modrage2sdlmap.end();
+        std::map<Modifier, SDLMod>::iterator it = ModSDLut2sdlmap.begin();
+        std::map<Modifier, SDLMod>::iterator itEnd = ModSDLut2sdlmap.end();
         for (; it != itEnd; ++it)
         {
             assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
@@ -106,7 +106,7 @@ std::vector<short> Keyboard::InitModMapping()
     return result;
 }
 
-std::vector<short> Keyboard::Modrage2sdl = InitModMapping();
+std::vector<short> Keyboard::ModSDLut2sdl = InitModMapping();
 
 //initialises state at size 255 because of the ASCII table size.
 Keyboard::Keyboard() : _state(255,false)

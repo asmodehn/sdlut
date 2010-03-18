@@ -5,7 +5,7 @@
 #ifdef _DEBUG
 #define DEBUG 1
 #endif
-//TODO : change all DEBUG here to RAGE_SDL_DEBUG and map it to DEBUG here.
+//TODO : change all DEBUG here to SDLut_SDL_DEBUG and map it to DEBUG here.
 //find a way to manage debug level also... ( for logging stuff in tights loops )
 
 //TODO : make a macro to make it easier
@@ -23,7 +23,7 @@
 //utils
 #include "Logger.hh"
 
-//TODO : look for a possibility to include all SDLs into RAGE::SDLut::SDL namespace after changed RAGE::SDL to RAGE::SDLut
+//TODO : look for a possibility to include all SDLs into SDLut::SDLut::SDL namespace after changed SDLut::SDL to SDLut::SDLut
 #ifdef WK_OPENGL_FOUND
 #include <SDL_opengl.h>
 #endif
@@ -53,12 +53,10 @@
 #endif
 
 //Global default declarations
-namespace RAGE
-{
-namespace SDL
+namespace SDLut
 {
 //global, namespace visible, declaration for the SDLut logger. Will be initialized only once.
-extern Logger Log;
+extern RAGE::Logger Log;
 
 std::string GetError();
 
@@ -84,15 +82,13 @@ void Quit(Module);
 }
 
 }
-}
 
 
 #if SDL_VERSION_ATLEAST(1, 2, 7)
 #include "SDL_cpuinfo.h"
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
-{
+
 class CPU
 {
 public:
@@ -107,7 +103,7 @@ public:
 
 };
 }
-}
+
 #endif
 
 

@@ -1,9 +1,11 @@
 #include "SDL.hh"
 #include "Logger.hh"
 using namespace RAGE;
-using namespace RAGE::SDL;
 
-Logger Log("Test Video");
+using namespace SDLut;
+using namespace SDLut::video;
+
+RAGE::Logger Log("Test Video");
 
 class MyEngine
 {
@@ -79,14 +81,14 @@ int main(int argc, char** argv)
 #endif
 
 
-    Logger testlog("Test Log");
+    RAGE::Logger testlog("Test Log");
 
     //Setup example
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
     App::getInstance().initVideo(false,true,false);
 
-	App::getInstance().setName ("RAGE::SDL test - Video");
+	App::getInstance().setName ("SDLut::SDL test - Video");
 
     App::getInstance().getDisplay().getScreenBuffer().setBGColor(Color (128,0,0));
 

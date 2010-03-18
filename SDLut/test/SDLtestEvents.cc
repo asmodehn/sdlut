@@ -1,7 +1,9 @@
 #include "SDL.hh"
 #include "Logger.hh"
 using namespace RAGE;
-using namespace RAGE::SDL;
+
+using namespace SDLut;
+
 
 #include <sstream>
 #include <string>
@@ -9,11 +11,11 @@ using namespace RAGE::SDL;
 
 using namespace std;
 
-Logger Log("Test Events");
+RAGE::Logger Log("Test Events");
 
 
 //Defining general EventHandler
-class MyGeneralHandler : public DefaultEventHandler
+class MyGeneralHandler : public system::DefaultEventHandler
 {
 	friend class EventManager;
         bool _quitRequested;
@@ -52,7 +54,7 @@ class MyGeneralHandler : public DefaultEventHandler
 			}
 
             //Callback on other Events
-			virtual bool handleUserEvent(Event::Type type, int code, void* data1, void* data2)
+			virtual bool handleUserEvent(system::Event::Type type, int code, void* data1, void* data2)
 			{
         		::Log << nl <<"User Event";
 				return true;
@@ -67,7 +69,7 @@ class MyGeneralHandler : public DefaultEventHandler
 			}
 
 			//Catch-all callback
-            virtual bool handleEvent(Event & cevent)
+            virtual bool handleEvent(system::Event & cevent)
 			{
 				//Getting the details of the Event
 				::Log << nl << "Last chance handler : " << cevent.getType() << std::endl;
@@ -76,11 +78,11 @@ class MyGeneralHandler : public DefaultEventHandler
 
 };
 
-class MyKeyboard: public DefaultKeyboard
+class MyKeyboard: public input::DefaultKeyboard
 {
 public:
 
-	MyKeyboard() : DefaultKeyboard() {}
+	MyKeyboard() : input::DefaultKeyboard() {}
 
 	virtual bool handleKeyEvent (const Sym &s, bool pressed)
 	{
@@ -95,11 +97,11 @@ public:
 	}
 };
 
-class MyMouse: public Mouse
+class MyMouse: public input::Mouse
 {
 public:
 
-	MyMouse() : Mouse() {}
+	MyMouse() : input::Mouse() {}
 
 	//Callbacks on Mouse Events
         virtual bool handleMouseMotionEvent (bool button_pressed, unsigned int x, unsigned int y,
@@ -147,18 +149,18 @@ public:
 int main(int argc, char** argv)
 {
 
-    Logger testlog("Test Log");
+    RAGE::Logger testlog("Test Log");
 
     //Setup example
 
     testlog << nl << " Enabling SDL Video... " << std::endl;
-	App::getInstance().setName ("RAGE::SDL test - Font");
+	App::getInstance().setName ("SDLut::SDL test - Events");
     App::getInstance().initVideo(false,false,false);
 	App::getInstance().initText();
 
     testlog << nl << " Creating the User Interface... " << std::endl;
 
-    App::getInstance().getDisplay().getScreenBuffer().setBGColor(Color (64,0,0));
+    App::getInstance().getDisplay().getScreenBuffer().setBGColor(video::Color (64,0,0));
 
     MyGeneralHandler gh;
 	MyKeyboard kb;

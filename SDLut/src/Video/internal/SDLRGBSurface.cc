@@ -3,10 +3,13 @@
 
 #include "SDLResources.inc"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+    namespace internal{
 
 //Conversion Constructor
 RGBSurface::RGBSurface(SDL_Surface * s) throw (std::logic_error)
@@ -117,7 +120,7 @@ catch (std::exception &e)
     //TODO : much more explicit error message...
 }
 
-RGBSurface::RGBSurface(RWOps& rwops) throw (std::logic_error)
+RGBSurface::RGBSurface(system::RWOps& rwops) throw (std::logic_error)
 #ifdef WK_SDLIMAGE_FOUND
 try : BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0)), optimised(false)
 #else
@@ -125,7 +128,7 @@ try : BaseSurface(SDL_LoadBMP_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0)), o
 #endif
 {
         //We put back the RWOps read cursor at the beginning ( needed after load... )
-        rwops.seek(0,RWOps::Set);
+        rwops.seek(0,system::RWOps::Set);
 
     }
     catch (std::exception &e)
@@ -421,7 +424,7 @@ int RGBSurface::update(void)
 }
 */
 
-Logger & operator << (Logger & log, const RGBSurface & surf)
+RAGE::Logger & operator << (RAGE::Logger & log, const RGBSurface & surf)
 {
     log << nl << "RGBSurface::" << nl
     << " - Height = " << surf.getHeight() << nl
@@ -436,6 +439,7 @@ Logger & operator << (Logger & log, const RGBSurface & surf)
     return log;
 }
 
+    }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL
 

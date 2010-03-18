@@ -6,9 +6,9 @@
 
 typedef struct _TCPsocket *TCPsocket;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace network
 {
 
 //if SDL_Mixer is used, provide a class to be used as a bridge.

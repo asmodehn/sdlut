@@ -6,10 +6,13 @@
 //declaring SDL_type for late binding
 struct SDL_PixelFormat;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+    class ImageLoader;
+
+    namespace internal {
 
 class PixelFormat
 {
@@ -18,7 +21,7 @@ class PixelFormat
     friend class VideoSurface;
     friend class RGBSurface;
     friend class BaseSurface;
-    friend class ImageLoader;
+    friend class video::ImageLoader;
 
     bool pointerCopy;
 
@@ -69,7 +72,7 @@ public: //necessary if we want to use getPixelFormat() accessor from the BaseSur
     Palette getPalette() const;
 
     //display all detected informations about pixelformat
-    friend Logger & operator << (Logger & ostr, const PixelFormat & pformat);
+    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const PixelFormat & pformat);
 
     //methods for Color conversion :
     virtual PixelColor getPixelColor(const Color& color) const ;
@@ -80,7 +83,8 @@ public: //necessary if we want to use getPixelFormat() accessor from the BaseSur
 
 };
 
+    }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL
 
 #endif

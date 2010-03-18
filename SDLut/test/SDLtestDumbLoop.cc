@@ -4,13 +4,13 @@
 
 
  #include "SDL.hh"
- using namespace RAGE;
- using namespace RAGE::SDL;
+ using namespace SDLut;
+ using namespace SDLut::SDL;
 
  int main(int argc, char *argv[])
  {
-  Logger testlog("testApp");
-  SDL::App::getInstance().setName ("RAGE::SDL Functionnal testing - App");
+  RAGE::Logger testlog("testApp");
+  SDL::App::getInstance().setName ("SDLut::SDL Functionnal testing - App");
   //Minimum Init
   testlog << nl << " Minimum init... " << std::endl;
   testlog << ( (SDL::App::getInstance().init())? "OK" : "FAILED" );

@@ -5,9 +5,11 @@
 #include "Default/SDLMixerImpl.hh"
 #include "MIX/SDLMixerExtend.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 Mixer::Mixer(int frequency /*= 44100*/,unsigned short channels /*= 2*/,unsigned short samples /*= 512*/) throw (std::logic_error)

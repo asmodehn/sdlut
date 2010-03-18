@@ -3,7 +3,7 @@
 #include "SDLConfig.hh"
 
 
-namespace RAGE
+namespace SDLut
 {
 namespace SDL
 {

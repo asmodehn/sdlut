@@ -1,9 +1,9 @@
 #include "Video/internal/SDLOverlay.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
 
 unsigned long Overlay::formatConvert(Format f )
@@ -34,7 +34,7 @@ unsigned long Overlay::formatConvert(Format f )
 
 //Constructor
 //maybe the current display size must be used ?
-Overlay::Overlay(Format f, int width, int height, VideoSurface* dsurf)
+Overlay::Overlay(Format f, int width, int height, internal::VideoSurface* dsurf)
         : _overlay( SDL_CreateYUVOverlay( width, height, formatConvert(f), const_cast<SDL_Surface*>(&dsurf->get_rSDL()) ) )
 {}
 //Destructor
@@ -94,5 +94,5 @@ bool Overlay::display(Rect r)
     return SDL_DisplayYUVOverlay(_overlay,const_cast<SDL_Rect*>(r.get_pSDL())) == 0;
 }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL
 

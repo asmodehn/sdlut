@@ -1,9 +1,11 @@
 #include "System/SDLRWOps.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 RWOps::RWOps() throw (std::logic_error)

@@ -26,10 +26,14 @@
 #include <vector>
 #include <list>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+    class ScreenBuffer;
+
+    namespace internal {
+
 
 
 /**
@@ -53,7 +57,7 @@ class VideoSurface : public BaseSurface
 {
 
     friend class Overlay;
-    friend class ScreenBuffer;
+    friend class video::ScreenBuffer;
     friend class Manager;
 
 protected:
@@ -170,10 +174,11 @@ public:
      **/
     static std::auto_ptr<std::list<std::pair<int, int> > > Get_Resolution_List();
 
-    friend Logger & operator << (Logger & log, const VideoSurface & surf);
+    friend RAGE::Logger & operator << (RAGE::Logger & log, const VideoSurface & surf);
 };
 
+    }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL
 
 #endif

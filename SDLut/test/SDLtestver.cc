@@ -4,17 +4,19 @@
 */
 
 #include "SDL.hh"
+
 using namespace RAGE;
+using namespace SDLut;
 
 int main(int argc, char *argv[])
 {
-    Logger testlog("testver");
+    RAGE::Logger testlog("testver");
 
-    testlog <<nl << "SDL : " << SDL::Version(SDL::Version::Main)<< std::endl;
-    testlog <<nl << "TTF : " << SDL::Version(SDL::Version::TTF)<< std::endl;
-    testlog <<nl << "Image : " << SDL::Version(SDL::Version::Image)<< std::endl;
-    testlog <<nl << "Mixer : " << SDL::Version(SDL::Version::Mixer)<< std::endl;
-    testlog <<nl << "Net : " << SDL::Version(SDL::Version::Net)<< std::endl;
+    testlog <<nl << "SDL : " << Version(Version::Main)<< std::endl;
+    testlog <<nl << "TTF : " << Version(Version::TTF)<< std::endl;
+    testlog <<nl << "Image : " << Version(Version::Image)<< std::endl;
+    testlog <<nl << "Mixer : " << Version(Version::Mixer)<< std::endl;
+    testlog <<nl << "Net : " << Version(Version::Net)<< std::endl;
 
     return 0;
 }

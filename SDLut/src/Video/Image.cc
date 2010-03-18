@@ -6,15 +6,15 @@
 //as the interface might be used directly by the client...
 //TODO : Have a Singleton containing the settings of the Application, available everywhere through SDLConfig.hh
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
 
 #ifdef WK_OPENGL_FOUND
 
 ///Conversion Constructor with explicit ownership transfert
-Image::Image(std::auto_ptr<GLSurface> s) throw (std::logic_error)
+Image::Image(std::auto_ptr<internal::OGL::GLSurface> s) throw (std::logic_error)
         : m_img(NULL)
 {
     m_img=s;
@@ -25,11 +25,11 @@ Image::Image(std::auto_ptr<GLSurface> s) throw (std::logic_error)
 ///Conversion Constructor
 
 ///Conversion Constructor with explicit ownership transfert
-Image::Image(std::auto_ptr<RGBSurface> s) throw (std::logic_error)
+Image::Image(std::auto_ptr<internal::RGBSurface> s) throw (std::logic_error)
         : m_img(NULL)
 {
 #ifdef WK_OPENGL_FOUND
-    m_img.reset(new GLSurface(*s));// conversion if needed
+    m_img.reset(new internal::OGL::GLSurface(*s));// conversion if needed
 #else
     m_img=s;
 #endif
@@ -48,9 +48,9 @@ Image::Image( int width, int height, int bpp,
 
 {
 #ifdef WK_OPENGL_FOUND
-        m_img.reset(new GLSurface(width, height, bpp, alpha, colorkey, hardware));
+        m_img.reset(new internal::OGL::GLSurface(width, height, bpp, alpha, colorkey, hardware));
 #else
-        m_img.reset(new RGBSurface(width, height, bpp, alpha, colorkey, hardware));
+        m_img.reset(new internal::RGBSurface(width, height, bpp, alpha, colorkey, hardware));
 #endif
 }
 
@@ -60,9 +60,9 @@ Image::Image( void * pixeldata, int depth, int pitch, int width, int height
 {
 
 #ifdef WK_OPENGL_FOUND
-        m_img.reset(new GLSurface(pixeldata, depth, pitch, width, height));
+        m_img.reset(new internal::OGL::GLSurface(pixeldata, depth, pitch, width, height));
 #else
-        m_img.reset(new RGBSurface(pixeldata, depth, pitch, width, height));
+        m_img.reset(new internal::RGBSurface(pixeldata, depth, pitch, width, height));
 #endif
 }
 
@@ -71,9 +71,9 @@ Image::Image(const Image & img)
 {
 
 #ifdef WK_OPENGL_FOUND
-        m_img.reset(new GLSurface(*(img.m_img)));
+        m_img.reset(new internal::OGL::GLSurface(*(img.m_img)));
 #else
-        m_img.reset(new RGBSurface(*(img.m_img)));
+        m_img.reset(new internal::RGBSurface(*(img.m_img)));
 #endif
 
 }
@@ -107,6 +107,6 @@ bool Image::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)
 
 } //SDL
 
-} // RAGE
+} // SDLut
 
 

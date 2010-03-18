@@ -28,9 +28,7 @@
 
 #include <stdexcept>
 
-namespace RAGE
-{
-namespace SDL
+namespace SDLut
 {
 
 //Class to manage initializations in SDL
@@ -77,11 +75,11 @@ public:
     bool isEventThreadEnabled(void) const;
 
     //display all Informations
-    friend Logger & operator << (Logger & log, const Manager & man);
+    friend RAGE::Logger & operator << (RAGE::Logger & log, const Manager & man);
 
 };
 
-}
-}//namespace RAGE::SDL
+
+}//namespace SDLut
 #endif
 

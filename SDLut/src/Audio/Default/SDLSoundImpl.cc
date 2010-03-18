@@ -1,9 +1,11 @@
 #include "SDLSoundImpl.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 //class SoundImpl
@@ -22,7 +24,7 @@ try :
     {
         throw std::logic_error(" Unable to open the sound file !");
     }
-    pvm_OriginalData->seek(0,RWOps::Set);
+    pvm_OriginalData->seek(0,system::RWOps::Set);
 
     _length = static_cast<unsigned long>(len);
 
@@ -55,7 +57,7 @@ try :
     {
         throw std::logic_error(" Unable to read the sound in memory !");
     }
-    pvm_OriginalData->seek(0,RWOps::Set);
+    pvm_OriginalData->seek(0,system::RWOps::Set);
 
     _length = static_cast<unsigned long>(len);
 

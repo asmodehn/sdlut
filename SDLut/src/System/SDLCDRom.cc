@@ -1,9 +1,9 @@
 #include "System/SDLCDRom.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 int CDRom::numDrives(void)

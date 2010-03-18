@@ -6,8 +6,8 @@
 
 #include <stdexcept>
 
-namespace RAGE{
-    namespace SDL{
+namespace SDLut{
+    namespace font{
 
 /*****************
  *
@@ -16,14 +16,14 @@ namespace RAGE{
  *
  **************/
 
-class Text : public Image
+class Text : public video::Image
 {
     //TODO : need to manage fonts, shared, different styles and so on...
     //Simple for now
     Font m_font;
     std::string m_text;
 
-    Color m_fgc,m_bgc;
+    video::Color m_fgc,m_bgc;
 
     Font::RenderMode m_mode;
 
@@ -33,7 +33,7 @@ public:
 		return m_text;
 	}
 
-    Text(std::string = "",Font fnt = Font(),Color fg = Color(255,255,255),Color bgc = Color(0,0,0)) throw (std::logic_error);
+    Text(std::string = "",Font fnt = Font(),video::Color fg = video::Color(255,255,255),video::Color bgc = video::Color(0,0,0)) throw (std::logic_error);
 
     ///Copy Constructor
     Text(const Text & txt) throw (std::logic_error);
@@ -43,8 +43,8 @@ public:
 
     ~Text();
 
-    void changeColor(Color c);
-    void changeBGColor(Color c);
+    void changeColor(video::Color c);
+    void changeBGColor(video::Color c);
 
     void changeRendermode(Font::RenderMode rm = Font::Solid);
 

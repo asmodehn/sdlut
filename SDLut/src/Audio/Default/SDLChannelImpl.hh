@@ -18,9 +18,9 @@
 
 #include "SDLSoundImpl.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 class ChannelImpl

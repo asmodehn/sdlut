@@ -3,10 +3,11 @@
 
 #include "SDLConfig.hh"
 
+using namespace RAGE;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
 
 Display::Display(std::string title, Manager * manager)
@@ -251,5 +252,5 @@ bool Display::mainLoop(unsigned int framerate, unsigned int eventrate)
 
 }//SDL
 
-}//RAGE
+}//SDLut
 

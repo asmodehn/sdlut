@@ -1,5 +1,5 @@
-#ifndef SDLMUSIC_HH
-#define SDLMUSIC_HH
+#ifndef SDLUT_MUSIC_HH
+#define SDLUT_MUSIC_HH
 
 #include <memory>
 #include <string>
@@ -7,15 +7,15 @@
 
 #include "System/SDLRWOps.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 /**
  * \class MusicIf
  *
- * \ingroup Audio
+ * \ingroup audio
  *
  * \brief This class may interface different Music Implementations
  *

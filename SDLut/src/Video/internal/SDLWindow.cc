@@ -4,11 +4,14 @@
 #include "SDLConfig.hh"
 #include "SDLResources.inc"
 
-namespace RAGE
-{
-namespace SDL
-{
+using namespace RAGE;
 
+namespace SDLut
+{
+namespace video
+{
+namespace internal
+{
 
 bool Window::iconify(void)
 {
@@ -79,7 +82,7 @@ Window::Window(std::string title)
 
     try
     {
-        RWOps iconres = RWOps( _defaultIcon, sizeof(_defaultIcon));
+        system::RWOps iconres = system::RWOps( resources::_defaultIcon, sizeof(resources::_defaultIcon));
         ptm_icon.reset( new RGBSurface(iconres));
         if ( ( ptm_icon.get() == 0 ) || ( ! ptm_icon->initialized() ) )
         {
@@ -123,6 +126,6 @@ Window::~Window()
 }
 
 
-
+}
 }
 }

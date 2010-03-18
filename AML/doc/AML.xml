@@ -124,7 +124,7 @@
       <emphasis>mandatory.</emphasis></para>
 
       <para>The SDL library is used via a C++ wrapper : <ulink
-      url="sdl/">RAGE::SDL</ulink></para>
+      url="sdl/">SDLut</ulink></para>
     </section>
 
     <section>

@@ -5,9 +5,9 @@
 #include "Default/SDLSocketUDPImpl.hh"
 #include "NET/SDLSocketUDPExtend.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace network
 {
 
 SocketUDPIf::SocketUDPIf() throw (std::logic_error)

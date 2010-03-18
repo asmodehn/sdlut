@@ -10,9 +10,9 @@
 #include "Video/Image.hh"
 //#include "Video/SDLSurfaceLoader.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
 
 class ImageLoader
@@ -21,7 +21,7 @@ class ImageLoader
     unsigned long pvm_RGBFlags;
     // resource used in case of error during loading...
     // because we know it works...
-    RWOps pvm_errorContent;
+    system::RWOps pvm_errorContent;
     int pvm_offset;//usefull to debug RWOps
 
 
@@ -47,12 +47,12 @@ public:
     std::auto_ptr<Image> create(int width, int height, int bpp, bool no_failure = false )throw (std::logic_error);
 
     //convert creates a new RGBSurface
-    std::auto_ptr<Image> copyconvert(const Image &, const PixelFormat & pfmt, bool no_failure = false )throw (std::logic_error);
+    std::auto_ptr<Image> copyconvert(const Image &, const internal::PixelFormat & pfmt, bool no_failure = false )throw (std::logic_error);
 
 };
 
 } //SDL
 
-}// RAGE
+}// SDLut
 
 #endif //ImageLoader_HH

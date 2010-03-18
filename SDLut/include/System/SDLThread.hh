@@ -13,9 +13,9 @@
 //forward declaration for late time binding...
 struct SDL_Thread;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 /**

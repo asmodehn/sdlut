@@ -7,9 +7,9 @@
 #include <map>
 #include <string>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace input
 {
 
 
@@ -41,8 +41,8 @@ public:
     }
     Button;
 
-    Rect getPos();
-    Rect getDeltaPos();
+    video::Rect getPos();
+    video::Rect getDeltaPos();
 
     bool isButtonPressed(Button b);
 
@@ -73,10 +73,10 @@ public:
 
 private :
 
-    static std::vector<short> Buttonrage2sdl;
-    static std::map<short,Button> Buttonsdl2rage;
-    static std::map<std::string,Button> Buttonstr2rage;
-    static std::map<Mouse::Button,std::string> Buttonrage2str;
+    static std::vector<short> ButtonSDLut2sdl;
+    static std::map<short,Button> Buttonsdl2SDLut;
+    static std::map<std::string,Button> Buttonstr2SDLut;
+    static std::map<Mouse::Button,std::string> ButtonSDLut2str;
     static std::vector<short> InitButtonMapping();
 
 };

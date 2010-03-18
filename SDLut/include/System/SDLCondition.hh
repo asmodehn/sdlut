@@ -9,9 +9,9 @@
 //forward declaration for late time binding...
 struct SDL_cond;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 /**

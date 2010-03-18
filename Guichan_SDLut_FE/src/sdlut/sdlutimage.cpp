@@ -88,56 +88,56 @@ void SDLutImage::convertToDisplayFormat()
     //mSurface->convertToDisplayFormat();
 
     //NOT SURE if part of the old algorithms is still needed...
-/*
-    SDLut::Color pink = magicPink;
 
-    bool hasPink = false;
-    bool hasAlpha = false;
+    /*    SDLut::Color pink = magicPink;
 
-    for (signed int x = 0; x < mSurface->getWidth(); x++)
-    {
-        for (signed int y = 0; y < mSurface->getHeight(); y++)
+        bool hasPink = false;
+        bool hasAlpha = false;
+
+        for (signed int x = 0; x < mSurface->getWidth(); x++)
         {
-            SDLut::Color Current_pxColor = SDLutgetPixel((SDLut::Image*&)mSurface, x, y);
+            for (signed int y = 0; y < mSurface->getHeight(); y++)
+            {
+                SDLut::Color Current_pxColor = SDLutgetPixel((SDLut::Image*&)mSurface, x, y);
 
-            //Looking for pink color as it's the default ColorKey for image in GuiChan
-            if (!hasPink)
-                if (Current_pxColor == pink )
-                    hasPink = true;
+                //Looking for pink color as it's the default ColorKey for image in GuiChan
+                if (!hasPink)
+                    if (Current_pxColor == pink )
+                        hasPink = true;
 
-            //looking for an alpha
-            if (!hasAlpha)
-                if ( Current_pxColor.getA() != 255 )
-                {
-                    hasAlpha = true;
-                    pink.setA( Current_pxColor.getA() );
-                }
+                //looking for an alpha
+                if (!hasAlpha)
+                    if ( Current_pxColor.getA() != 255 )
+                    {
+                        hasAlpha = true;
+                        pink.setA( Current_pxColor.getA() );
+                    }
 
 
+                //leave loop when both has been found
+                if ( hasPink && hasAlpha )
+                    break;
+            }
             //leave loop when both has been found
             if ( hasPink && hasAlpha )
                 break;
+
         }
-        //leave loop when both has been found
-        if ( hasPink && hasAlpha )
-            break;
 
-    }
+        mSurface->optimise(hasAlpha);
 
-    mSurface->optimise(hasAlpha);
+        //Enable alpha-blending with SDL_SRCALPHA
+        if (hasAlpha)
+        {
+            mSurface->resetFlags(true,false,false,true);
+        }
 
-    //Enable alpha-blending with SDL_SRCALPHA
-    if (hasAlpha)
-    {
-        mSurface->resetFlags(true,false,false,true);
-    }
+        if (hasPink)
+        {
+            mSurface->setColorKeyAndAlpha( pink, true );
+        }
 
-    if (hasPink)
-    {
-        mSurface->setColorKeyAndAlpha( pink, true );
-    }
-*/
-
+    */
 
 }
 
@@ -146,4 +146,5 @@ void SDLutImage::free()
 {
     delete mSurface, mSurface = NULL;
 }
+
 }

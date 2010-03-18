@@ -195,7 +195,7 @@ void implement(std::string fontfile = "" )
 
     if (fontfile != "")
     {
-        font = new gcn::SDLutFont(fontfile, 13, RAGE::SDL::Font::Blended );
+        font = new gcn::SDLutFont(fontfile, 13, RAGE::SDL::Font::Solid );
         delete widgets::font, widgets::font = NULL;
         // The global font is static and must be set.
         gcn::Widget::setGlobalFont(font);

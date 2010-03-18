@@ -9,9 +9,12 @@
 
 #include <stdexcept>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+
+    namespace video { class Display; }
+
+namespace system
 {
 
 
@@ -33,7 +36,7 @@ namespace SDL
 */
 class EventManager
 {
-    friend class Display; // to build the unique instance of EventManager
+    friend class video::Display; // to build the unique instance of EventManager
 
 protected:
 
@@ -42,13 +45,13 @@ protected:
     BaseEventHandler * ghndlr;
 
     bool usermouse;
-    Mouse * mhndlr;
+    input::Mouse * mhndlr;
 
     bool userkeyboard;
-    Keyboard * khndlr;
+    input::Keyboard * khndlr;
 
 
-    EventManager()  : usergeneral(false),ghndlr(new DefaultEventHandler()),usermouse(false),mhndlr(new Mouse()),userkeyboard(false), khndlr(new DefaultKeyboard())
+    EventManager()  : usergeneral(false),ghndlr(new DefaultEventHandler()),usermouse(false),mhndlr(new input::Mouse()),userkeyboard(false), khndlr(new input::DefaultKeyboard())
     {
 
     }
@@ -66,7 +69,7 @@ public :
     }
 
 
-    void setKeyboard(Keyboard * newkhndlr)
+    void setKeyboard(input::Keyboard * newkhndlr)
     {
         delete khndlr,khndlr=NULL;
         userkeyboard = true;
@@ -78,7 +81,7 @@ public :
         usergeneral = true;
         ghndlr = newghndlr;
     }
-    void setMouse(Mouse * newmhndlr)
+    void setMouse(input::Mouse * newmhndlr)
     {
         delete mhndlr,mhndlr=NULL;
         usermouse = true;
@@ -108,8 +111,9 @@ public :
     void pump();
 
 };
-}
-}
+
+} //namespace system
+} //namespace SDLut
 
 #endif
 

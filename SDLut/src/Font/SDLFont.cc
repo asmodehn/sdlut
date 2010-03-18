@@ -6,10 +6,11 @@
 #include "TTF/SDLFontExtend.hh"
 
 //#define DEBUG 2
+using namespace RAGE;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace font
 {
 
 Font::Font() throw (std::logic_error)
@@ -89,9 +90,9 @@ Font::~Font()
 {
 }
 
-std::auto_ptr<RGBSurface> Font::render(std::string text, Color c, RenderMode mode, Color bgc) const
+std::auto_ptr<video::internal::RGBSurface> Font::render(std::string text, video::Color c, RenderMode mode, video::Color bgc) const
 {
-    std::auto_ptr<RGBSurface> textimg = pvm_font->render(text,c,bgc,mode);
+    std::auto_ptr<video::internal::RGBSurface> textimg = pvm_font->render(text,c,bgc,mode);
 
 #if( DEBUG == 2)
     textimg->saveBMP( text + ".bmp");
@@ -135,7 +136,7 @@ void Font::setStyle(Style s)
     pvm_font->setStyle(s);
 }
 
-Rect Font::getSize(const std::string& text)
+video::Rect Font::getSize(const std::string& text)
 {
     //return (static_cast<FontExtend*>(_font.get()))->getSize(text);
     return pvm_font.get()->getSize(text);

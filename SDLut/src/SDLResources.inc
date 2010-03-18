@@ -1,5 +1,5 @@
-namespace RAGE {
-	namespace SDL{
+namespace SDLut {
+	namespace resources{
 
 //TODO : default Image -> SDL Logo
 // but we also need an error image for silent error option if loading fails...

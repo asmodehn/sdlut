@@ -1,11 +1,16 @@
 #include "Video/internal/OpenGL/SDLGLSurface.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
-{
-namespace SDL
-{
+using namespace RAGE;
 
+namespace SDLut
+{
+namespace video
+{
+namespace internal
+{
+    namespace OGL
+    {
 
 ////////////////private Conversion Constructor
 GLSurface::GLSurface(SDL_Surface * s) throw (std::logic_error)
@@ -174,7 +179,7 @@ catch (std::exception &e)
     //TODO : much more explicit error message...
 }
 
-GLSurface::GLSurface(RWOps & rwops) throw (std::logic_error)
+GLSurface::GLSurface(system::RWOps & rwops) throw (std::logic_error)
 try : RGBSurface(rwops), modified(false),m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
 {
 #ifdef DEBUG
@@ -542,5 +547,9 @@ bool GLSurface::setAlpha(unsigned int alpha, bool rleAccel)
 
 
 
+
+    }
+}
+
 } //SDL
-}// RAGE
+}// SDLut

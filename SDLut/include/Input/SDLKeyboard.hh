@@ -7,12 +7,15 @@
 
 struct SDL_keysym;
 
-namespace RAGE
-{
-namespace SDL
+namespace SDLut
 {
 
-class EventManager;
+    //further reference
+namespace system { class EventManager; class Event;}
+
+namespace input
+{
+
 
 ///This class is not suitable for Full Text Input. Use TextInput instead.
 ///However this class is well adapted to key press / release detection, for gaming purpose...
@@ -22,7 +25,7 @@ class Keyboard
     //State of the Keyboard, updated only on demand by getKeyState
     std::vector<bool> _state;
 
-    friend class EventManager;
+    friend class system::EventManager;
 
 public:
 
@@ -43,10 +46,10 @@ public:
     };
 
 private :
-    static std::vector<short> Modrage2sdl;
-    static std::map<short,Modifier> Modsdl2rage;
-    static std::map<std::string,Modifier> Modstr2rage;
-    static std::map<Modifier,std::string> Modrage2str;
+    static std::vector<short> ModSDLut2sdl;
+    static std::map<short,Modifier> Modsdl2SDLut;
+    static std::map<std::string,Modifier> Modstr2SDLut;
+    static std::map<Modifier,std::string> ModSDLut2str;
 
     static std::vector<short> InitModMapping();
 
@@ -152,10 +155,10 @@ public :
     };
 
 private :
-    static std::vector<short> Keyrage2sdl;
-    static std::map<short,Key> Keysdl2rage;
-    static std::map<std::string,Key> Keystr2rage;
-    static std::map<Key,std::string> Keyrage2str;
+    static std::vector<short> KeySDLut2sdl;
+    static std::map<short,Key> Keysdl2SDLut;
+    static std::map<std::string,Key> Keystr2SDLut;
+    static std::map<Key,std::string> KeySDLut2str;
 
     static std::vector<short> InitKeyMapping();
 
@@ -173,7 +176,7 @@ public :
 
         //the only class allowed to create Sym object from SDL_keysym
         friend class CriticalEvent;
-        friend class Event;
+        friend class system::Event;
 
         Sym(const SDL_keysym & ksym);
 
@@ -211,7 +214,7 @@ public :
 
 
     //initialises state at size 255 because of the ASCII table size.
-    //also intialize the mapping between used dependency librairy and rage's enum
+    //also intialize the mapping between used dependency librairy and SDLut's enum
     Keyboard();
     virtual ~Keyboard();
 

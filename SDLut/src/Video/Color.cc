@@ -1,9 +1,9 @@
 #include "Video/Color.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
 
 Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a)

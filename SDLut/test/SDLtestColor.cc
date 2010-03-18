@@ -1,7 +1,7 @@
 #include "SDL.hh"
 
-using namespace RAGE;
-using namespace RAGE::SDL;
+using namespace SDLut;
+using namespace SDLut::video;
 
 class MyEngine
 {
@@ -79,7 +79,7 @@ int main(int argc, char** argv)
 
     //Starting with usual SDL window
     App::getInstance().initVideo(false,true,false);
-	App::getInstance().setName ("RAGE::SDL test Color : Displayed Color order \"Red - Green - Blue - Purple if alpha is working otherwise White\"");
+	App::getInstance().setName ("SDLut::SDL test Color : Displayed Color order \"Red - Green - Blue - Purple if alpha is working otherwise White\"");
 
     //Setting Display size and BPP
     App::getInstance().getDisplay().setDisplay(800,600); // using autodetected bpp

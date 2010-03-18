@@ -22,13 +22,13 @@ class GCN_EXTENSION_DECLSPEC SDLutImageLoader : public ImageLoader
 public:
     static const SDLut::Color magicPink;
 
-	SDLutImageLoader();
+    SDLutImageLoader();
 
     // Inherited from ImageLoader
     //loadgin with default Guichan magicPink colorkey
-    virtual Image* load(const std::string& filename, bool convertToDisplayFormat = true);
+    virtual Image* load(const std::string& filename, bool ignored_param = true);
     //loading with custom colorkey. We need two different functions, to make sure hte interface base class function is overloaded
-    virtual Image* load(const std::string& filename, const SDLut::Color& rgba_color, bool convertToDisplayFormat = true);
+    virtual Image* load(const std::string& filename, const SDLut::Color& rgba_color,bool ignored_param = true);
 
 protected:
 

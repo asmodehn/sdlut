@@ -27,10 +27,11 @@
 //Declaring SDL types for late binding.
 struct SDL_VideoInfo;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+    namespace internal{
 
 class VideoInfo
 {
@@ -91,8 +92,10 @@ public:
     const PixelFormat & getPixelFormat() const;
 
     //display all detected informations about graphics
-    friend Logger & operator << (Logger & ostr, const VideoInfo & vinfo);
+    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const VideoInfo & vinfo);
 };
+
+    }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL
 #endif

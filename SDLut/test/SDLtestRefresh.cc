@@ -3,8 +3,8 @@
 #include <cstdlib>
 #include <ctime>
 
-using namespace RAGE;
-using namespace RAGE::SDL;
+using namespace SDLut;
+using namespace SDLut::SDL;
 
 class Sprite
 {
@@ -272,7 +272,7 @@ int main(int argc, char** argv)
 
     //Starting with usual SDL window
     App::getInstance().initVideo(false,true,false);
-	App::getInstance().setName ("RAGE::SDL test Scene and refresh strategy");
+	App::getInstance().setName ("SDLut::SDL test Scene and refresh strategy");
 
 
     //Setting Display size and BPP

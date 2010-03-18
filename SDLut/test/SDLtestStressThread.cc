@@ -4,15 +4,15 @@
 
 #include <iostream>
 #include "SDL.hh"
-using namespace RAGE;
+using namespace SDLut;
 
-Logger testlog("testThread");
+RAGE::Logger testlog("testThread");
 
 class ObjectWithThreadCall
 {
 	public:
 	ObjectWithThreadCall() {}
-	
+
 	int threadcall(void* args)
 	{
 		testlog << nl << " --- Thread " << SDL::getCurrentThreadID() << "called. Counting from 0 to 20000 --- " << std::endl;
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	testlog << nl<<"SDL init...";
 
 	SDL::App::getInstance();
-			
+
 	testlog << nl<<"Creating instance";
 	ObjectWithThreadCall * obj = new ObjectWithThreadCall();
 
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
 	testlog << nl << "Main exit !"<< std::endl;
 	//Reminder hte logger is not thread safe... concurrency access may cause problems...
-	//such as not writing "Main exit" in the log file quick enough 
+	//such as not writing "Main exit" in the log file quick enough
 	//because it s been used by the thread...
 	//TODO : improve the test to avoid such issue... we shouldnt need to check a log file to determine if it s successful or not anyway...
 	return 0;

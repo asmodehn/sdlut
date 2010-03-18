@@ -1,15 +1,15 @@
-#ifndef SDLMIXER_HH
-#define SDLMIXER_HH
+#ifndef SDLUT_MIXER_HH
+#define SDLUT_MIXER_HH
 
-#include "SDLSound.hh"
-#include "SDLMusic.hh"
+#include "Audio/SDLSound.hh"
+#include "Audio/SDLMusic.hh"
 
 #include <memory>
 #include <map>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 /**

@@ -5,19 +5,19 @@
 
 #include <map>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace font
 {
 //Class implementing the default font character render (with alpha masks)
 class FontImpl
 {
 
     //this version keeps the right value for render
-    std::auto_ptr<RGBSurface> pvm_fontsurf;
+    std::auto_ptr<video::internal::RGBSurface> pvm_fontsurf;
 
-    static std::map<char,Rect> alphalookup;
-    static std::map<char,Rect> InitAlphaLookup();
+    static std::map<char,video::Rect> alphalookup;
+    static std::map<char,video::Rect> InitAlphaLookup();
 
 public :
 
@@ -27,7 +27,7 @@ public :
     FontImpl & operator=(const FontImpl & font)   throw (std::logic_error);
     virtual ~FontImpl();
 
-    virtual Rect getSize(const std::string & text) const;
+    virtual video::Rect getSize(const std::string & text) const;
     virtual int height();
 
     virtual Font::Style getStyle()
@@ -42,7 +42,7 @@ public :
     }
     //Rendering
     //bgc is used only if mode == shaded. Otherwise it s transparent
-    virtual std::auto_ptr<RGBSurface> render(const std::string & text,Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid ) const;
+    virtual std::auto_ptr<video::internal::RGBSurface> render(const std::string & text,video::Color c, video::Color bgc = video::Color(), Font::RenderMode mode = Font::Solid ) const;
 
 };
 }

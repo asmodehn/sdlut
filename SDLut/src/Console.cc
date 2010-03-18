@@ -1,10 +1,9 @@
 #include "Console.hh"
 
-namespace RAGE{
+namespace SDLut{
 
-    namespace SDL{
 
-	Console::Console(const Font & fnt,Color c ,Color bgc)
+	Console::Console(const font::Font & fnt,video::Color c ,video::Color bgc)
 	 : Image(CONS_COL * fnt.getHeight(), CONS_ROW * fnt.getHeight(),8,true, false, true),
 	 m_font(fnt),m_color(c),m_bgcolor(bgc),curline("")
 	{
@@ -45,7 +44,7 @@ namespace RAGE{
 */
     }
 
-	bool Console::render(ScreenBuffer & screen) const
+	bool Console::render(video::ScreenBuffer & screen) const
     {
 /*
         surf->fill(m_bgColor);
@@ -74,5 +73,5 @@ namespace RAGE{
     return false;
     }
 
-    } // SDL
-} //RAGE
+
+} //SDLut

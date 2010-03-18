@@ -4,10 +4,14 @@
 
 #include "SDLResources.inc"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-    namespace SDL
+    namespace video
     {
+namespace internal
+{
 
 int Logo::m_render_width = 128;
 int Logo::m_render_height = 64;
@@ -25,9 +29,9 @@ Logo::Logo()
 {
     try
     {
-        RWOps _iconres( _defaultImage,sizeof(_defaultImage) );
+        system::RWOps _iconres( resources::_defaultImage,sizeof(resources::_defaultImage) );
         #ifdef WK_OPENGL_FOUND
-        m_logo.reset(new GLSurface( _iconres ));
+        m_logo.reset(new OGL::GLSurface( _iconres ));
         #else
         m_logo.reset(new RGBSurface( _iconres ));
         #endif
@@ -50,7 +54,7 @@ void Logo::setLogoImage( const RGBSurface & mylogo )
 {
     //we copy the image
     #ifdef WK_OPENGL_FOUND
-    GLSurface* newlogo = new GLSurface(mylogo);
+    OGL::GLSurface* newlogo = new OGL::GLSurface(mylogo);
     #else
     RGBSurface* newlogo = new RGBSurface(mylogo);
     #endif
@@ -60,7 +64,7 @@ void Logo::setLogoImage( const RGBSurface & mylogo )
 
 //this render function should not modify the engine
 #ifdef WK_OPENGL_FOUND
-bool Logo::render(VideoGLSurface & screen) const
+bool Logo::render(OGL::VideoGLSurface & screen) const
 #else
 bool Logo::render(VideoSurface & screen) const
 #endif
@@ -73,5 +77,6 @@ bool Logo::render(VideoSurface & screen) const
     return res;
 }
 
+}
     }
 }

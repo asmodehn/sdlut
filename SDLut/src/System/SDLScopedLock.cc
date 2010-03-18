@@ -1,9 +1,11 @@
 #include "System/SDLScopedLock.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 ScopedLock::ScopedLock(Mutex& mtx) throw(std::logic_error)

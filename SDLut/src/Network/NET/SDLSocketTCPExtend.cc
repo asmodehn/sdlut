@@ -1,9 +1,11 @@
 #include "SDLSocketTCPExtend.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace network
 {
 #ifdef WK_SDLNET_FOUND
 

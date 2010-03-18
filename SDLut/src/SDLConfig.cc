@@ -1,10 +1,9 @@
 #include "SDLConfig.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
-{
-Logger Log("RAGE::SDL");
+
+RAGE::Logger Log("SDLut::SDL");
 
 std::string GetError()
 {
@@ -231,5 +230,4 @@ bool CPU::hasAltiVec()
 
 #endif
 
-}
 }

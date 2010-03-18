@@ -1,9 +1,11 @@
 #include "SDLSoundExtend.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 #ifdef WK_SDLMIXER_FOUND
 
@@ -15,7 +17,7 @@ try :
     {
         throw std::logic_error(" Unable to open the sound file !");
     }
-    pvm_OriginalData->seek(0,RWOps::Set);
+    pvm_OriginalData->seek(0,system::RWOps::Set);
 
 }
 catch (std::exception &e )
@@ -32,7 +34,7 @@ try :
     {
         throw std::logic_error(" Unable to read the sound in memory !");
     }
-    pvm_OriginalData->seek(0,RWOps::Set);
+    pvm_OriginalData->seek(0,system::RWOps::Set);
 
 }
 catch (std::exception &e )

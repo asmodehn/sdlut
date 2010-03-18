@@ -1,9 +1,11 @@
 #include "System/SDLSemaphore.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 Semaphore::Semaphore(unsigned long initialValue) throw (std::logic_error)

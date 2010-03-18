@@ -1,9 +1,11 @@
 #include "SDLMixerExtend.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 #ifdef WK_SDLMIXER_FOUND
 

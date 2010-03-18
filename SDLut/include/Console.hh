@@ -11,20 +11,21 @@
 
 #include <vector>
 
-namespace RAGE
+namespace SDLut
 {
-    namespace SDL
-    {
+
+
+
 
 //Console is an Image with a default size, and default colors
-class Console : public Image
+class Console : public video::Image
 {
 	//if member embedded (object not reference), error when destructing Font...
 	//to debug -> copy / deletion problem
-	const Font m_font;
+	const font::Font m_font;
 
-    Color m_color;
-    Color m_bgcolor;
+    video::Color m_color;
+    video::Color m_bgcolor;
 
     std::vector<std::string> rowbuffer;
     std::string curline;
@@ -33,7 +34,7 @@ class Console : public Image
 	std::vector<Image> rowimage;
 
 public :
-	Console(const Font & fnt = Font(),Color c = Color(255,255,255),Color bgc = Color(0,0,0,128));
+	Console(const font::Font & fnt = font::Font(),video::Color c = video::Color(255,255,255),video::Color bgc = video::Color(0,0,0,128));
 
 	//WARNING : BUG here if trying to set to fullscreen using F6, then error, then trying to resize -> crash
 	bool resize(int width, int height);
@@ -41,10 +42,10 @@ public :
 	void addchar(char newchar);
     void addline(std::string newtext);
 
-	bool render(ScreenBuffer & screen) const;
+	bool render(video::ScreenBuffer & screen) const;
 };
 
-    }
+
 }
 
 #endif // SDLUT_CONSOLE_HH

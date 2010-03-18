@@ -35,10 +35,11 @@
 struct SDL_Surface;
 
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+    namespace internal {
 
 ///defining a enumeration for renderers availables
 ///here because must be available for both video and rgb surfaces
@@ -221,10 +222,12 @@ public:
 
     virtual bool resize(int width, int height, bool keepcontent = false) = 0;
 
-    friend Logger & operator << (Logger & ostr, const BaseSurface & surf);
+    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const BaseSurface & surf);
 
 };
+
+    }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL
 
 #endif

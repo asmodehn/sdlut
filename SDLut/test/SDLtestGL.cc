@@ -7,10 +7,10 @@
 #endif
 #include <GL/gl.h>
 
-using namespace RAGE;
-using namespace RAGE::SDL;
+using namespace SDLut;
+using namespace SDLut::video;
 
-Logger Log("Test GL");
+RAGE::Logger Log("Test GL");
 
 #include <math.h>
 //if not define by math (why ??)
@@ -184,24 +184,25 @@ int main(int argc, char** argv)
 #endif
 
 
-    Logger testlog("Test Log");
+    RAGE::Logger testlog("Test Log");
 
     //Starting with usual SDL window
     App::getInstance().initVideo(false,true,false);
-    App::getInstance().setName ("RAGE::SDL test - OpenGL");
+    App::getInstance().setName ("SDLut::SDL test - OpenGL");
 
     //MyUserInput ui;
     //App::getInstance().getWindow()->getEventManager()->setKeyboard(&ui);
 
+    //TODO : GLMAnager is actually an extended OGLVideoInfo. Needs to be implemented as such.
     //GLManager test
-    GLManager glman = App::getInstance().getDisplay().getScreenBuffer().getGLManager();
-    testlog << nl<<std::boolalpha <<
-    "setRsize(5) " << glman.setRSize(5) << nl <<
-    "setGSize(5) " << glman.setGSize(5) << nl <<
-    "setBSize(5) " << glman.setBSize(5) << nl <<
-    "setASize(5) " << glman.setASize(5) << nl <<
-    "setBufferSize(5) " << glman.setBufferSize(12) << nl <<
-    std::endl;
+    //GLManager glman = App::getInstance().getDisplay().getScreenBuffer().getGLManager();
+    //testlog << nl<<std::boolalpha <<
+    //"setRsize(5) " << glman.setRSize(5) << nl <<
+    //"setGSize(5) " << glman.setGSize(5) << nl <<
+    //"setBSize(5) " << glman.setBSize(5) << nl <<
+    //"setASize(5) " << glman.setASize(5) << nl <<
+    //"setBufferSize(5) " << glman.setBufferSize(12) << nl <<
+    //std::endl;
 
 
 	//switch to opengl

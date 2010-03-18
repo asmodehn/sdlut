@@ -24,9 +24,15 @@
 #include <vector>
 #include <list>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
+{
+
+namespace internal
+{
+
+namespace OGL
 {
 
 
@@ -116,10 +122,12 @@ public:
     virtual bool update(std::vector<Rect> rlist);
 
 
-    friend Logger & operator << (Logger & log, const VideoSurface & surf);
+    friend RAGE::Logger & operator << (RAGE::Logger & log, const VideoSurface & surf);
 };
 
-}
-} //namespace RAGE::SDL
+} //OGL
+} //internal
+} //video
+} //namespace SDLut::SDL
 
 #endif

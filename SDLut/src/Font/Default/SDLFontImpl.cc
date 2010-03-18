@@ -6,16 +6,18 @@
 #include "SDLConfig.hh"
 #include "SDLResources.inc"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace font
 {
 FontImpl::FontImpl()  throw (std::logic_error)
 try:
     pvm_fontsurf(0)
 {
-    RWOps res(_defaultFont,sizeof(_defaultFont));
-    pvm_fontsurf.reset(new RGBSurface(res));
+    system::RWOps res(resources::_defaultFont,sizeof(resources::_defaultFont));
+    pvm_fontsurf.reset(new video::internal::RGBSurface(res));
     //checking initialized font
     if ( ( pvm_fontsurf.get() == 0 ) || ( ! pvm_fontsurf->initialized() ) )
     {
@@ -27,23 +29,23 @@ catch (std::exception& e)
     Log << nl << "Exception caught in internal FontImpl constructor : " << e.what();
 }
 
-std::map<char, Rect> FontImpl::InitAlphaLookup()
+std::map<char, video::Rect> FontImpl::InitAlphaLookup()
 {
-    std::map<char, Rect> result;
-#define ASSOCIATE( key, x, y ) result[key] = Rect( 14 * x, 16 * y, 14, 16 );
+    std::map<char, video::Rect> result;
+#define ASSOCIATE( key, x, y ) result[key] = video::Rect( 14 * x, 16 * y, 14, 16 );
 #include "SDLFontLookup.inl"
 #undef ASSOCIATE
 
     return result;
 }
 
-std::map<char, Rect> FontImpl::alphalookup = FontImpl::InitAlphaLookup();
+std::map<char, video::Rect> FontImpl::alphalookup = FontImpl::InitAlphaLookup();
 
-Rect FontImpl::getSize(const std::string & text) const
+video::Rect FontImpl::getSize(const std::string & text) const
 {
     //number of lines in text -> todo
     //number of character max per line
-    Rect r(0,0,text.size() * 14,16);
+    video::Rect r(0,0,text.size() * 14,16);
     return r;
 }
 
@@ -56,7 +58,7 @@ FontImpl::FontImpl(const FontImpl & font) throw (std::logic_error)
  try : pvm_fontsurf(0)
 {
     //deep copy of the RGB Surface
-    pvm_fontsurf.reset( new RGBSurface(*(font.pvm_fontsurf)) );
+    pvm_fontsurf.reset( new video::internal::RGBSurface(*(font.pvm_fontsurf)) );
     if ( pvm_fontsurf.get() == 0 )
         throw std::logic_error("RGBSurface for fontsurf is NULL");
 }
@@ -69,7 +71,7 @@ catch (std::exception& e)
 FontImpl & FontImpl::operator=(const FontImpl & font) throw (std::logic_error)
 {
     //deep copy of the RGB Surface
-    pvm_fontsurf.reset( new RGBSurface(*(font.pvm_fontsurf)) );
+    pvm_fontsurf.reset( new video::internal::RGBSurface(*(font.pvm_fontsurf)) );
     if ( pvm_fontsurf.get() == 0 )
         throw std::logic_error("RGBSurface for fontsurf is NULL");
 
@@ -83,15 +85,15 @@ FontImpl::~FontImpl()
     //alphalookup.clear();
 }
 
-std::auto_ptr<RGBSurface> FontImpl::render(const std::string & text,Color c, Color bgc, Font::RenderMode mode) const
+std::auto_ptr<video::internal::RGBSurface> FontImpl::render(const std::string & text,video::Color c, video::Color bgc, Font::RenderMode mode) const
 {
 
-    std::auto_ptr<RGBSurface> result( new GLSurface( getSize(text).getw(), getSize(text).geth(), 16) );
+    std::auto_ptr<video::internal::RGBSurface> result( new video::internal::OGL::GLSurface( getSize(text).getw(), getSize(text).geth(), 16) );
     //std::auto_ptr<SDL_Surface> result(SDL_CreateRGBSurface(SDL_SWSURFACE, getSize(text).getw(), getSize(text).geth(), 16, BaseSurface::r_default_mask, BaseSurface::g_default_mask, BaseSurface::b_default_mask, BaseSurface::a_default_mask));
     //Log << getSize(text);
     for (unsigned int i= 0; i< text.size(); i++)
     {
-        Rect src(i*14,0,14,16);
+        video::Rect src(i*14,0,14,16);
         result->blit(*pvm_fontsurf, src,alphalookup[text[i]]);
         //
         //TODO : better if we code that directly in SDL, as we wont be affected by other code parts changes...

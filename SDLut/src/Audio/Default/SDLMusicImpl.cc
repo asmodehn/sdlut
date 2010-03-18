@@ -1,9 +1,11 @@
 #include "SDLMusicImpl.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 //class MusicImpl

@@ -1,5 +1,5 @@
-#ifndef SDL_CURSOR_HH
-#define SDL_CURSOR_HH
+#ifndef SDLUT_CURSOR_HH
+#define SDLUT_CURSOR_HH
 
 #include "Video/Rect.hh"
 
@@ -8,7 +8,7 @@
 /**
  * \class Cursor
  *
- * \ingroup Video
+ * \ingroup input
  *
  * \brief This class is a mouse Cursor
  *
@@ -26,9 +26,9 @@
 
 struct SDL_Cursor;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace input
 {
 
 typedef enum
@@ -65,7 +65,7 @@ public :
     //Static Methods
     static void setCurrent (const Cursor & cur);
     static Cursor getCurrent (void);
-    static void warpCurrent (Rect p);
+    static void warpCurrent (video::Rect p);
 
     //Methods
     void show(void); // show the current Cursor
@@ -74,6 +74,6 @@ public :
 
 };
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::input
 
 #endif

@@ -21,9 +21,9 @@
 
 #include <vector>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 //This class handle the playing of sounds, and some basic mixing features.

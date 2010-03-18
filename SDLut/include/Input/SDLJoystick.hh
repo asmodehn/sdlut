@@ -8,9 +8,9 @@
 //forward reference
 typedef struct _SDL_Joystick SDL_Joystick;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace input
 {
 
 class Joystick
@@ -41,7 +41,7 @@ public :
     signed int getAxisPos(int axis);
     // to think about the hat :  how to handle the different states and combinations
     bool isButtonPressed(int button);
-    Rect getBallDeltaPos(int ball);
+    video::Rect getBallDeltaPos(int ball);
 
     static short JoyHat2sdl(JoyHat jh); //protect this ??
     static JoyHat sdl2JoyHat(short sdljh);
@@ -49,9 +49,9 @@ public :
 
 private :
 
-    static std::vector<short> JoyHatrage2sdl;
-    static std::map<short,JoyHat> JoyHatsdl2rage;
-    static std::map<std::string,JoyHat> JoyHatstr2rage;
+    static std::vector<short> JoyHatSDLut2sdl;
+    static std::map<short,JoyHat> JoyHatsdl2SDLut;
+    static std::map<std::string,JoyHat> JoyHatstr2SDLut;
     static std::vector<short> InitJoyHatMapping();
 
 

@@ -5,9 +5,9 @@
 
 struct SDL_CD;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 class CDRom

@@ -1,9 +1,9 @@
 #include "System/SDLMutex.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 Mutex::Mutex()

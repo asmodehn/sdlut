@@ -1,9 +1,11 @@
 #include "Video/ScreenBuffer.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
 
 ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error)
@@ -22,10 +24,10 @@ ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) thr
 
 #ifdef WK_OPENGL_FOUND
     //Here SDL_Init(SDL_VIDEO) has already been called
-    VideoSurface::sptm_vinfo = new OGLVideoInfo();
+    internal::VideoSurface::sptm_vinfo = new internal::OGL::OGLVideoInfo();
 #else
     //Here SDL_Init(SDL_VIDEO) has already been called
-    VideoSurface::sptm_vinfo = new VideoInfo();
+    internal::VideoSurface::sptm_vinfo = new internal::VideoInfo();
 #endif
 
     setSize( width, height );
@@ -76,8 +78,8 @@ void ScreenBuffer::setSize(int width, int height)
     //Both equal to 0 means use dekstop/current mode.
     if (width == 0 && height == 0)
     {
-        width = VideoSurface::getVideoInfo()->getCurrentWidth();
-        height = VideoSurface::getVideoInfo()->getCurrentHeight();
+        width = internal::VideoSurface::getVideoInfo()->getCurrentWidth();
+        height = internal::VideoSurface::getVideoInfo()->getCurrentHeight();
     }
 
     m_width = width;
@@ -90,7 +92,7 @@ void ScreenBuffer::setBPP(int bpp)
 
     if ( bpp == 0 ) //here 0 means autodetection
     {
-        bpp=VideoSurface::getSuggestedBPP(m_width, m_height);
+        bpp=internal::VideoSurface::getSuggestedBPP(m_width, m_height);
     }
     else
     {
@@ -106,12 +108,12 @@ bool ScreenBuffer::setResizable(bool val)
     bool res = true;
     if (!m_screen.get()) //if not already created, set the static flag.
     {
-        VideoSurface::setResizable(val);
+        internal::VideoSurface::setResizable(val);
     }
     else if (m_screen->isResizableset() !=val ) //if called inside mainLoop while screen is active
     {
         hide();
-        VideoSurface::setResizable(val); //set static flag
+        internal::VideoSurface::setResizable(val); //set static flag
         if (! show()) //reset the screen
             res=false;
     }
@@ -127,7 +129,7 @@ bool ScreenBuffer::setFullscreen(bool val)
     bool res = true;
     if (!m_screen.get())
     {
-        VideoSurface::setFullscreen(val);
+        internal::VideoSurface::setFullscreen(val);
     }
     else
     {
@@ -137,7 +139,7 @@ bool ScreenBuffer::setFullscreen(bool val)
         if (m_screen->isFullScreenset() != val ) //if called inside mainLoop while screen is active
         {
             hide();
-            VideoSurface::setFullscreen(val);
+            internal::VideoSurface::setFullscreen(val);
             if (! show() )//resetDisplay(m_screen->getWidth(),m_screen->getHeight(),m_screen->getBPP()))
             {
                 res=false;
@@ -155,11 +157,11 @@ bool ScreenBuffer::setNoFrame(bool val)
 {
     bool res = true;
     if (!m_screen.get())
-        VideoSurface::setNoFrame(val);
+        internal::VideoSurface::setNoFrame(val);
     else if (m_screen->isNoFrameset() !=val )  //if called inside mainLoop while screen is active
     {
         hide();
-        VideoSurface::setNoFrame(val);
+        internal::VideoSurface::setNoFrame(val);
         if (! show() ) //resetDisplay(m_screen->getWidth(),m_screen->getHeight(),m_screen->getBPP()))
             res=false;
     }
@@ -177,14 +179,14 @@ bool ScreenBuffer::setOpenGL(bool val)
     bool res = true;
     if (!m_screen.get())
     {
-        VideoSurface::setOpenGL(val);
+        internal::VideoSurface::setOpenGL(val);
     }
     else
     {
         if (m_screen->isOpenGLset() != val ) //if called inside mainLoop while screen is active
         {
             hide();
-            VideoSurface::setOpenGL(val);
+            internal::VideoSurface::setOpenGL(val);
             if (! show() )//resetDisplay(m_screen->getWidth(),m_screen->getHeight(),m_screen->getBPP()))
             {
                 res=false;
@@ -208,7 +210,7 @@ bool ScreenBuffer::isFullscreen()
     }
     else
     {
-        return ( SDL_FULLSCREEN & VideoSurface::ptm_defaultflags ) != 0;
+        return ( SDL_FULLSCREEN & internal::VideoSurface::ptm_defaultflags ) != 0;
     }
 }
 bool ScreenBuffer::isResizable()
@@ -219,7 +221,7 @@ bool ScreenBuffer::isResizable()
     }
     else
     {
-        return ( SDL_RESIZABLE & VideoSurface::ptm_defaultflags ) != 0;
+        return ( SDL_RESIZABLE & internal::VideoSurface::ptm_defaultflags ) != 0;
     }
 }
 bool ScreenBuffer::isOpenGL()
@@ -231,7 +233,7 @@ bool ScreenBuffer::isOpenGL()
     }
     else
     {
-        return (SDL_OPENGL & VideoSurface::ptm_defaultflags ) != 0;
+        return (SDL_OPENGL & internal::VideoSurface::ptm_defaultflags ) != 0;
     }
 }
 bool ScreenBuffer::isNoFrame()
@@ -243,7 +245,7 @@ bool ScreenBuffer::isNoFrame()
     }
     else
     {
-        return ( SDL_NOFRAME & VideoSurface::ptm_defaultflags ) != 0;
+        return ( SDL_NOFRAME & internal::VideoSurface::ptm_defaultflags ) != 0;
     }
 }
 
@@ -290,13 +292,13 @@ bool ScreenBuffer::show()
     try
     {
         #ifdef WK_OPENGL_FOUND
-        m_screen.reset(new VideoGLSurface(m_width, m_height, m_bpp));
+        m_screen.reset(new internal::OGL::VideoGLSurface(m_width, m_height, m_bpp));
         #else
-        m_screen.reset(new VideoSurface(m_width, m_height, m_bpp));
+        m_screen.reset(new internal::VideoSurface(m_width, m_height, m_bpp));
         #endif
 
         //initializing engine
-        m_engine.reset(new SDLEngine());
+        m_engine.reset(new internal::SDLEngine());
 
         requestFullRefresh();
         res=true;
@@ -333,7 +335,7 @@ bool ScreenBuffer::resize (int width, int height)
 
         //resetting our Engine. Useful if OpenGL dependent : need to reload the new created context
         //resizing engine doesnt make much sense though.
-        m_engine.reset(new SDLEngine());
+        m_engine.reset(new internal::SDLEngine());
 
         //We do need to resetthis order otherwise we lose opengl context from the engine just after the resize ( reinit )
         //because screen resize recreates the window, and lose opengl context as documented in SDL docs...
@@ -375,7 +377,7 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
     //TODO : this could be handled by calling a virtual function and letting inheritance do the rest, which would be nicer.
     //However it implies that the VideoSurface itself would manage list of rectangles to refresh...
     // Maybe later...
-    if ( m_screen->getRenderer() == OpenGL )
+    if ( m_screen->getRenderer() == internal::OpenGL )
     {
         m_screen->refresh();
 
@@ -452,4 +454,4 @@ bool ScreenBuffer::blit (const Image& src, Rect& dest_rect, const Rect& src_rect
 
 
 } // SDL
-} // RAGE
+} // SDLut

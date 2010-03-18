@@ -5,9 +5,9 @@
 
 typedef struct _TTF_Font TTF_Font;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace font
 {
 
 //if SDL_TTF used, provide a class to be used as a bridge.
@@ -18,7 +18,7 @@ class FontExtend : public FontImpl
 {
     int ptsize;
     long index;
-    std::auto_ptr<RWOps> pvm_OriginalData;
+    std::auto_ptr<system::RWOps> pvm_OriginalData;
     TTF_Font * pvm_ttfstruct;
 
 public:
@@ -54,10 +54,10 @@ public:
     std::string faceFamilyName();
     std::string faceStyleName();
 
-    Rect getSize(const std::string& text) const;
+    video::Rect getSize(const std::string& text) const;
 
     //The Background color is used only if RenderMode = Shaded otherwise the background is transparent.
-    std::auto_ptr<RGBSurface> render(const std::string& text, Color c, Color bgc = Color(), Font::RenderMode mode = Font::Solid) const;
+    std::auto_ptr<video::internal::RGBSurface> render(const std::string& text, video::Color c, video::Color bgc = video::Color(), Font::RenderMode mode = Font::Solid) const;
 };
 
 

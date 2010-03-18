@@ -7,9 +7,9 @@
 //forward declaration for late time binding...
 typedef struct SDL_semaphore SDL_sem;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 /**

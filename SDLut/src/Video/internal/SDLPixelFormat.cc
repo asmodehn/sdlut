@@ -1,10 +1,14 @@
 #include "Video/internal/SDLPixelFormat.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+    namespace internal
+    {
 
 PixelFormat::PixelFormat()
 : ptm_sdl_pformat( new SDL_PixelFormat )
@@ -97,7 +101,7 @@ Palette PixelFormat::getPalette() const
 }
 
 
-Logger & operator << (Logger & log, const PixelFormat & pformat)
+RAGE::Logger & operator << (RAGE::Logger & log, const PixelFormat & pformat)
 {
     log << nl << "PixelFormat:" << nl <<
     " - Bits Per Pixel = " << pformat.getBitsPerPixel() << nl <<
@@ -168,5 +172,6 @@ PixelColor PixelFormat::convert(PixelColor val, const PixelFormat & pf) const
 }
 
 
+    }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL

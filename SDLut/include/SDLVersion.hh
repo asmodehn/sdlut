@@ -24,10 +24,7 @@
 struct SDL_version;
 
 
-namespace RAGE
-{
-
-namespace SDL
+namespace SDLut
 {
 
 class Version
@@ -62,9 +59,9 @@ public:
     //check if link and compiled matches
     bool check() const;
 
-    friend Logger & operator << (Logger& log, const Version & v);
+    friend RAGE::Logger & operator << (RAGE::Logger& log, const Version & v);
 };
-}
+
 }
 
 #endif

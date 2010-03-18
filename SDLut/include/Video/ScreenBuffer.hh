@@ -27,16 +27,16 @@
 #include "Video/internal/OpenGL/OGLVideoInfo.hh"
 #endif //WK_OPENGL_FOUND
 #include "Video/internal/SDLEngine.hh"
-#include "Functor.hh" //for callbacks storage...
+#include "Functor.hh" //for callbacks stoSDLut...
 
 //Default Setup
 #define DEFAULT_DISPLAY_WIDTH 640 // TODO not needed , can default to 4/3 mode or advised mode or desktop if nothing given...
 #define DEFAULT_DISPLAY_HEIGHT 480
 #define DEFAULT_DISPLAY_BPP 0 //0 for current display pixel mode
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
 
 
@@ -52,9 +52,9 @@ class ScreenBuffer
 protected:
 
     #ifdef WK_OPENGL_FOUND
-    std::auto_ptr<VideoGLSurface> m_screen;
+    std::auto_ptr<internal::OGL::VideoGLSurface> m_screen;
     #else
-    std::auto_ptr<VideoSurface> m_screen;
+    std::auto_ptr<internal::VideoSurface> m_screen;
     #endif
 
 
@@ -62,11 +62,11 @@ protected:
 
     Manager* pm_manager;
 #ifdef WK_OPENGL_FOUND
-    OGLVideoInfo m_oglvideoinfo;
+    internal::OGL::OGLVideoInfo m_oglvideoinfo;
 #endif // WK_OPENGL_FOUND
     Color m_background;
 
-    std::auto_ptr<SDLEngine> m_engine; // for now only one engine... later multiple engines will be possible
+    std::auto_ptr<internal::SDLEngine> m_engine; // for now only one engine... later multiple engines will be possible
 
 public:
     ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error);
@@ -101,7 +101,7 @@ public:
     bool setFullscreen(bool val);
 #ifdef WK_OPENGL_FOUND
 
-    inline OGLVideoInfo & getOGLVideoInfo()
+    inline internal::OGL::OGLVideoInfo & getOGLVideoInfo()
     {
         return m_oglvideoinfo;
     }
@@ -127,7 +127,7 @@ public:
     //fill the VideoSurface with the BGColor
     void applyBGColor() const;
 
-    VideoSurface & getDisplay( void )
+    internal::VideoSurface & getDisplay( void )
     {
         //if (!pvm_screen.get()) resetDisplay();
         return *m_screen;
@@ -185,6 +185,6 @@ public:
 
 } // SDL
 
-} // RAGE
+} // SDLut
 
 #endif // SDLut_ScreenBuffer_hh

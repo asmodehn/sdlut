@@ -2,10 +2,13 @@
 #include "SDLConfig.hh"
 //#include <sstream>
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+    namespace internal {
 
 const VideoInfo * VideoSurface::sptm_vinfo = 0;
 
@@ -415,7 +418,7 @@ bool VideoSurface::isHWPaletteset(void) const
 }
 
 
-Logger & operator << (Logger & log, const VideoSurface & surf)
+RAGE::Logger & operator << (RAGE::Logger & log, const VideoSurface & surf)
 {
     //log << static_cast<BaseSurface>(surf);
     log << nl<<std::boolalpha << "- Fullscreen ? " << surf.isFullScreenset() << nl
@@ -425,5 +428,7 @@ Logger & operator << (Logger & log, const VideoSurface & surf)
     << "- Double Buffered ? " << surf.isDoubleBufset();
     return log;
 }
+
+    }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL

@@ -9,10 +9,11 @@
 #include "Video/Color.hh"
 #include "System/SDLRWOps.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+    namespace internal{
 
 class RGBSurface : public BaseSurface
 {
@@ -65,7 +66,7 @@ public :
                 unsigned long a_mask = a_default_mask
               ) throw (std::logic_error);
 
-    RGBSurface(RWOps& rwops) throw (std::logic_error);
+    RGBSurface(system::RWOps& rwops) throw (std::logic_error);
 
 public :
     //should be used as the copy constructor. But should also be able to get DisplaySurface as input...
@@ -118,11 +119,12 @@ bool setAlpha(unsigned int alpha, bool rleAccel = true);
 
     bool flip(bool vertical = true, bool horizontal = false);
 
-    friend Logger & operator << (Logger & ostr, const RGBSurface & surf);
+    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const RGBSurface & surf);
 
 };
 
+    }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL
 
 #endif

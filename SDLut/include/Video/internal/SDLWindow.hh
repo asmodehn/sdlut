@@ -32,16 +32,20 @@
 #define DEFAULT_WINDOW_TITLE "SDLut Window"
 #define DEFAULT_ICON_TITLE "SDLut"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+
+    class Display;
+
+    namespace internal{
 
 
 class Window
 {
 
-    friend class Display;//to be able to create the unique window
+    friend class video::Display;//to be able to create the unique window
 
 protected:
 
@@ -85,6 +89,8 @@ public :
 
 
 };
+
+    }
 }
 }
 #endif

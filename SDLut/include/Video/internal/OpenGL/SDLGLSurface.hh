@@ -7,19 +7,29 @@
 
 #include "Video/internal/SDLRGBSurface.hh"
 #include "Video/internal/OpenGL/OGLPixelFormat.hh"
-namespace RAGE
-{
-namespace SDL
+namespace SDLut
 {
 
-class GLSurface : public RGBSurface
+    namespace font { class FontExtend; }
+
+namespace video
+{
+    class ImageLoader;
+
+namespace internal
+{
+
+namespace OGL
+{
+
+class GLSurface : public video::internal::RGBSurface
 {
 
     friend class VideoGLSurface;
 
-    friend class ImageLoader;
+    friend class video::ImageLoader;
 
-    friend class FontExtend;
+    friend class font::FontExtend;
 
 public:
     virtual Renderer getRenderer()
@@ -71,7 +81,7 @@ public :
                unsigned long a_mask = a_default_mask
              ) throw (std::logic_error);
 
-    GLSurface ( RWOps & rwops) throw(std::logic_error);
+    GLSurface ( system::RWOps & rwops) throw(std::logic_error);
 
     ///Conversion from internal RGBSurface. Used by Image if needed in emergency.
     explicit GLSurface( const RGBSurface & rgbs) throw (std::logic_error);
@@ -100,6 +110,7 @@ bool setColorKey(const PixelColor & key, bool rleAccel = true);
 bool setAlpha(unsigned int alpha, bool rleAccel = true);
 
 
+    //saveBMP // TODO useful for screenshots
 
     virtual bool resize(int width, int height, bool keepcontent = false);
     //bool resizegl(int width, int height, bool keepcontent = false);
@@ -108,11 +119,13 @@ bool setAlpha(unsigned int alpha, bool rleAccel = true);
 
     bool blit (const RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
 
-    friend Logger & operator << (Logger & ostr, const RGBSurface & surf);
+    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const RGBSurface & surf);
 
 };
 
 }
-} //namespace RAGE::SDL
+}
+}
+} //namespace SDLut::SDL
 
 #endif

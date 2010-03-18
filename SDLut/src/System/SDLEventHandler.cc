@@ -4,9 +4,9 @@
 #include "SDLConfig.hh"
 
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 bool DefaultEventHandler::handleActiveEvent(bool gain, bool active, bool inputfocus, bool mousefocus)
@@ -52,4 +52,4 @@ bool DefaultEventHandler::handleEvent(Event &event)
 
 
 } //SDL
-}//RAGE
+}//SDLut

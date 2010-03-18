@@ -12,9 +12,9 @@
 
 union SDL_Event;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 //further reference
@@ -53,9 +53,9 @@ protected :
 
     explicit Event(SDL_Event * const event);
 
-    static std::vector<short> EventTyperage2sdl;
-    static std::map<short,Event::Type> EventTypesdl2rage;
-    static std::map<std::string,Event::Type> EventTypestr2rage;
+    static std::vector<short> EventTypeSDLut2sdl;
+    static std::map<short,Event::Type> EventTypesdl2SDLut;
+    static std::map<std::string,Event::Type> EventTypestr2SDLut;
     static std::vector<short> InitEventMapping();
 public :
     static short Type2sdl(Type t);
@@ -91,7 +91,7 @@ public:
 
 
     //calls the handler coresponding to the event
-    bool callHandler(BaseEventHandler * ghndlr, Keyboard * khndlr, Mouse *  mhndlr);
+    bool callHandler(BaseEventHandler * ghndlr, input::Keyboard * khndlr, input::Mouse *  mhndlr);
 
     SDL_Event get_SDL();
     SDL_Event* get_pSDL()
@@ -100,12 +100,12 @@ public:
     }
 
 
-    void Set_KeyboardInfosFromEvent(Keyboard::Sym& s, short& state);
-    void Set_MouseButtonInfosFromEvent(Mouse::Button& button, Rect& position, short& state);
-    void Set_MouseMotionInfosFromEvent(Rect& position, short& state);
+    void Set_KeyboardInfosFromEvent(input::Keyboard::Sym& s, short& state);
+    void Set_MouseButtonInfosFromEvent(input::Mouse::Button& button, video::Rect& position, short& state);
+    void Set_MouseMotionInfosFromEvent(video::Rect& position, short& state);
     void Set_ActiveInfosFromEvent(bool& isActive, bool& hasInputFocus, bool& hasMouseFocus, bool& gain);
 
-    friend Logger & operator << (Logger & log, const Type & type);
+    friend RAGE::Logger & operator << (RAGE::Logger & log, const Type & type);
 
 };
 }

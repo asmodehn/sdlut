@@ -1,14 +1,15 @@
 #include "SDLMixerImpl.hh"
 #include "SDLConfig.hh"
 
+using namespace RAGE;
 
 #ifndef min
 #define min( a , b )  ( (a)>(b) )?(b):(a)
 #endif
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 std::vector<ChannelImpl*> MixerImpl::pvm_channels;

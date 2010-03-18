@@ -6,32 +6,32 @@
 #include "SDLConfig.hh"
 
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
-std::map<short,Event::Type> Event::EventTypesdl2rage;
-std::map<std::string,Event::Type> Event::EventTypestr2rage;
+std::map<short,Event::Type> Event::EventTypesdl2SDLut;
+std::map<std::string,Event::Type> Event::EventTypestr2SDLut;
 
-//based on the fact that Rage's enum map to in [0..number-1]. This way the vector is easily built
+//based on the fact that SDLut's enum map to in [0..number-1]. This way the vector is easily built
 std::vector<short> Event::InitEventMapping()
 {
     std::vector<short> result;
-    std::map<Event::Type,SDL_EventType> EventTyperage2sdlmap;
+    std::map<Event::Type,SDL_EventType> EventTypeSDLut2sdlmap;
 
     //using a max here to support partial mapping list...
     int maxvecindex =0;
 
-#define ASSOCIATE( key, sdlkey, strkey ) EventTyperage2sdlmap[key] = sdlkey; EventTypesdl2rage[sdlkey] = key; EventTypestr2rage[strkey] = key; maxvecindex = (maxvecindex>key)? maxvecindex : key;
+#define ASSOCIATE( key, sdlkey, strkey ) EventTypeSDLut2sdlmap[key] = sdlkey; EventTypesdl2SDLut[sdlkey] = key; EventTypestr2SDLut[strkey] = key; maxvecindex = (maxvecindex>key)? maxvecindex : key;
 #include "SDLEventMapping.inl"
 #undef ASSOCIATE
 
     {
         result.resize(maxvecindex+1, SDLK_UNKNOWN);
 
-        std::map<Event::Type, SDL_EventType>::iterator it = EventTyperage2sdlmap.begin();
-        std::map<Event::Type, SDL_EventType>::iterator itEnd = EventTyperage2sdlmap.end();
+        std::map<Event::Type, SDL_EventType>::iterator it = EventTypeSDLut2sdlmap.begin();
+        std::map<Event::Type, SDL_EventType>::iterator itEnd = EventTypeSDLut2sdlmap.end();
         for (; it != itEnd; ++it)
         {
             assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
@@ -41,20 +41,20 @@ std::vector<short> Event::InitEventMapping()
     return result;
 }
 
-std::vector<short> Event::EventTyperage2sdl = InitEventMapping();
+std::vector<short> Event::EventTypeSDLut2sdl = InitEventMapping();
 
 
 short Event::Type2sdl(Event::Type b)
 {
-    return EventTyperage2sdl[b];
+    return EventTypeSDLut2sdl[b];
 }
 Event::Type Event::sdl2Type(short sdlb)
 {
-    return EventTypesdl2rage[sdlb];
+    return EventTypesdl2SDLut[sdlb];
 }
 Event::Type Event::str2Type(std::string strt)
 {
-    return EventTypestr2rage[strt];
+    return EventTypestr2SDLut[strt];
 }
 
 Event::Event(Event::Type type) : _event( new SDL_Event() )
@@ -155,22 +155,22 @@ Event::Type Event::getType()
     return sdl2Type(_event->type);
 }
 
-void Event::Set_KeyboardInfosFromEvent(Keyboard::Sym& s, short& state)
+void Event::Set_KeyboardInfosFromEvent(input::Keyboard::Sym& s, short& state)
 {
-    s = static_cast<Keyboard::Sym>(_event->key.keysym);
+    s = static_cast<input::Keyboard::Sym>(_event->key.keysym);
     state = static_cast<short>(_event->key.state);
 }
 
-void Event::Set_MouseButtonInfosFromEvent(Mouse::Button& button, Rect& position, short& state)
+void Event::Set_MouseButtonInfosFromEvent(input::Mouse::Button& button, video::Rect& position, short& state)
 {
-    button = Mouse::sdl2Button(_event->button.button);
-    position = Rect(_event->button.x, _event->button.y,0,0);
+    button = input::Mouse::sdl2Button(_event->button.button);
+    position = video::Rect(_event->button.x, _event->button.y,0,0);
     state = static_cast<short>(_event->button.state);
 }
 //TODO : Maybe we cn replace these 2 by only one with a proper Rect... need to check SDL doc
-void Event::Set_MouseMotionInfosFromEvent(Rect& position, short& state)
+void Event::Set_MouseMotionInfosFromEvent(video::Rect& position, short& state)
 {
-    position = Rect(_event->motion.x, _event->motion.y,0,0);
+    position = video::Rect(_event->motion.x, _event->motion.y,0,0);
     state = static_cast<short>(_event->motion.state);
 }
 
@@ -182,7 +182,7 @@ void Event::Set_ActiveInfosFromEvent(bool& isActive, bool& hasInputFocus, bool& 
     gain = (_event->active.gain == 1);
 }
 
-bool Event::callHandler(BaseEventHandler * ghndlr, Keyboard * khndlr, Mouse*  mhndlr )
+bool Event::callHandler(BaseEventHandler * ghndlr, input::Keyboard * khndlr, input::Mouse*  mhndlr )
 {
 
     bool ev_handled = false;
@@ -192,19 +192,19 @@ bool Event::callHandler(BaseEventHandler * ghndlr, Keyboard * khndlr, Mouse*  mh
         ev_handled = ghndlr->handleActiveEvent(_event->active.gain == 1, (_event->active.state & SDL_APPACTIVE) == SDL_APPACTIVE, (_event->active.state & SDL_APPINPUTFOCUS) == SDL_APPINPUTFOCUS, (_event->active.state & SDL_APPMOUSEFOCUS) == SDL_APPMOUSEFOCUS );
         break;
     case SDL_KEYDOWN:
-        ev_handled = khndlr == NULL ? false : khndlr->handleKeyPressEvent(static_cast<Keyboard::Sym>(_event->key.keysym));
+        ev_handled = khndlr == NULL ? false : khndlr->handleKeyPressEvent(static_cast<input::Keyboard::Sym>(_event->key.keysym));
         break;
     case SDL_KEYUP:
-        ev_handled = khndlr == NULL ? false : khndlr->handleKeyReleaseEvent(static_cast<Keyboard::Sym>(_event->key.keysym));
+        ev_handled = khndlr == NULL ? false : khndlr->handleKeyReleaseEvent(static_cast<input::Keyboard::Sym>(_event->key.keysym));
         break;
     case SDL_MOUSEMOTION:
         ev_handled = mhndlr->handleMouseMotionEvent( (_event->motion.state == SDL_PRESSED) , _event->motion.x, _event->motion.y, _event->motion.xrel, _event->motion.yrel);
         break;
     case SDL_MOUSEBUTTONDOWN:
-        ev_handled = mhndlr->handleMouseButtonPressEvent(Mouse::sdl2Button(_event->button.button), _event->button.x, _event->button.y);
+        ev_handled = mhndlr->handleMouseButtonPressEvent(input::Mouse::sdl2Button(_event->button.button), _event->button.x, _event->button.y);
         break;
     case SDL_MOUSEBUTTONUP:
-        ev_handled = mhndlr->handleMouseButtonReleaseEvent(Mouse::sdl2Button(_event->button.button), _event->button.x, _event->button.y);
+        ev_handled = mhndlr->handleMouseButtonReleaseEvent(input::Mouse::sdl2Button(_event->button.button), _event->button.x, _event->button.y);
         break;
     case SDL_JOYAXISMOTION:
         ev_handled = App::getInstance().getJoystickPool().handleJoyAxisEvent(_event->jaxis.which, _event->jaxis.axis, _event->jaxis.value);
@@ -213,7 +213,7 @@ bool Event::callHandler(BaseEventHandler * ghndlr, Keyboard * khndlr, Mouse*  mh
         ev_handled = App::getInstance().getJoystickPool().handleJoyBallEvent(_event->jball.which, _event->jball.ball, _event->jball.xrel, _event->jball.yrel);
         break;
     case SDL_JOYHATMOTION:
-        ev_handled = App::getInstance().getJoystickPool().handleJoyHatEvent(_event->jhat.which, Joystick::sdl2JoyHat(_event->jhat.hat), _event->jhat.value);
+        ev_handled = App::getInstance().getJoystickPool().handleJoyHatEvent(_event->jhat.which, input::Joystick::sdl2JoyHat(_event->jhat.hat), _event->jhat.value);
         break;
     case SDL_JOYBUTTONDOWN:
         ev_handled = App::getInstance().getJoystickPool().handleJoyButtonPressEvent(_event->jbutton.which, _event->jbutton.button);
@@ -247,7 +247,7 @@ SDL_Event Event::get_SDL()
     return *_event;
 }
 
-Logger & operator << (Logger & log, const  Event::Type & type)
+RAGE::Logger & operator << (RAGE::Logger & log, const  Event::Type & type)
 {
     switch (type)
     {

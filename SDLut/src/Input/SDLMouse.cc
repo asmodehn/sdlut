@@ -2,33 +2,33 @@
 #include "SDLConfig.hh"
 #include <cassert>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace input
 {
-std::map<short,Mouse::Button> Mouse::Buttonsdl2rage;
-std::map<std::string,Mouse::Button> Mouse::Buttonstr2rage;
-std::map<Mouse::Button,std::string> Mouse::Buttonrage2str;
+std::map<short,Mouse::Button> Mouse::Buttonsdl2SDLut;
+std::map<std::string,Mouse::Button> Mouse::Buttonstr2SDLut;
+std::map<Mouse::Button,std::string> Mouse::ButtonSDLut2str;
 
-//based on the fact that Rage's enum map to in [0..number-1]. This way the vector is easily built
+//based on the fact that SDLut's enum map to in [0..number-1]. This way the vector is easily built
 std::vector<short> Mouse::InitButtonMapping()
 {
     std::vector<short> result;
 
-    std::map<Mouse::Button,short> Buttonrage2sdlmap;
+    std::map<Mouse::Button,short> ButtonSDLut2sdlmap;
 
     //using a max here to support partial mapping list...
     int maxvecindex =0;
 
-#define ASSOCIATE( button, sdlbutton, strbutton ) Buttonrage2sdlmap[button] = sdlbutton; Buttonsdl2rage[sdlbutton] = button; Buttonstr2rage[strbutton] = button;  Buttonrage2str[button] = strbutton; maxvecindex = (maxvecindex>button)? maxvecindex : button;
+#define ASSOCIATE( button, sdlbutton, strbutton ) ButtonSDLut2sdlmap[button] = sdlbutton; Buttonsdl2SDLut[sdlbutton] = button; Buttonstr2SDLut[strbutton] = button;  ButtonSDLut2str[button] = strbutton; maxvecindex = (maxvecindex>button)? maxvecindex : button;
 #include "SDLButtonMapping.inl"
 #undef ASSOCIATE
 
     {
         result.resize(maxvecindex+1, 0);
 
-        std::map<Mouse::Button,short>::iterator it = Buttonrage2sdlmap.begin();
-        std::map<Mouse::Button, short>::iterator itEnd = Buttonrage2sdlmap.end();
+        std::map<Mouse::Button,short>::iterator it = ButtonSDLut2sdlmap.begin();
+        std::map<Mouse::Button, short>::iterator itEnd = ButtonSDLut2sdlmap.end();
         for (; it != itEnd; ++it)
         {
             assert((*it).first >= 0 && (*it).first < static_cast<int>(result.size()));
@@ -38,40 +38,40 @@ std::vector<short> Mouse::InitButtonMapping()
     return result;
 }
 
-std::vector<short> Mouse::Buttonrage2sdl = InitButtonMapping();
+std::vector<short> Mouse::ButtonSDLut2sdl = InitButtonMapping();
 
 
 short Mouse::Button2sdl(Mouse::Button b)
 {
-    return Buttonrage2sdl[b];
+    return ButtonSDLut2sdl[b];
 }
 Mouse::Button Mouse::sdl2Button(short sdlb)
 {
-    return Buttonsdl2rage[sdlb];
+    return Buttonsdl2SDLut[sdlb];
 }
 std::string  Mouse::Button2str(Mouse::Button b)
 {
-    return Buttonrage2str[b];
+    return ButtonSDLut2str[b];
 }
 
 Mouse::Button Mouse::str2Button(std::string strb)
 {
-    return Buttonstr2rage[strb];
+    return Buttonstr2SDLut[strb];
 }
 
 
-Rect Mouse::getPos()
+video::Rect Mouse::getPos()
 {
     int posX,posY;
     SDL_GetMouseState(&posX,&posY);
-    return Rect(posX,posY,1,1);
+    return video::Rect(posX,posY,1,1);
 }
 // TODO : Maybe we can combine thee into just one, returning a Rect
-Rect Mouse::getDeltaPos()
+video::Rect Mouse::getDeltaPos()
 {
     int rposX,rposY;
     SDL_GetRelativeMouseState(&rposX,&rposY);
-    return Rect(rposX,rposY,1,1);
+    return video::Rect(rposX,rposY,1,1);
 }
 
 bool Mouse::isButtonPressed(Button b)
@@ -82,7 +82,7 @@ bool Mouse::isButtonPressed(Button b)
 
 Mouse::Mouse()
 {
-    if (Buttonrage2sdl.empty())
+    if (ButtonSDLut2sdl.empty())
     {
         InitButtonMapping();
     }

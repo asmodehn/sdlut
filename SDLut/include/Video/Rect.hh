@@ -26,18 +26,19 @@
 //further definition
 struct SDL_Rect;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
 
+namespace internal { class BaseSurface;}
 
 class Rect
 {
     //Because some functions of SDLBaseSurface needs access to SDL_Rect directly
     //And because SDLBaseSurface includes SDLRect.hh, we cannot specify the functions
     //here.
-    friend class BaseSurface;
+    friend class internal::BaseSurface;
     friend class VideoSurface;
     friend class Overlay;
 
@@ -118,6 +119,6 @@ public:
 };
 
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL
 
 #endif

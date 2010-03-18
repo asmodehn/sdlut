@@ -2,9 +2,11 @@
 #include "System/SDLNewTimer.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 Mutex TimerMtx;

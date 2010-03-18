@@ -5,9 +5,9 @@
 #include <string>
 #include <stdexcept>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace network
 {
 
 /**

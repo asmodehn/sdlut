@@ -1,9 +1,11 @@
 #include "Input/SDLCursor.hh"
 #include "SDLConfig.hh"
 
-namespace RAGE
+using namespace RAGE;
+
+namespace SDLut
 {
-namespace SDL
+namespace input
 {
 
 /* XPMs */
@@ -181,7 +183,7 @@ Cursor Cursor::getCurrent (void)
     return Cursor(SDL_GetCursor());
 
 }
-void Cursor::warpCurrent (Rect p)
+void Cursor::warpCurrent (video::Rect p)
 {
     SDL_WarpMouse((Uint16)p.getx(),(Uint16)p.gety());
     std::cout << "Mouse warped !" << std::endl;
@@ -204,4 +206,4 @@ bool Cursor::isVisible(void) // query the cursor - return true if the cursor is 
 
 
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL

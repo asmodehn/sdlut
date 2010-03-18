@@ -9,11 +9,16 @@
 #define min( a , b )  ( (a)>(b) )?(b):(a)
 #endif
 
+using namespace RAGE;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+    namespace internal
+    {
+        namespace OGL
+        {
 
 //Constructor
 VideoGLSurface::VideoGLSurface(int width, int height, int bpp) throw (std::logic_error)
@@ -489,7 +494,7 @@ bool VideoGLSurface::fill (const PixelColor& pcolor, Rect dest_rect)
 
 }
 
-Logger & operator << (Logger & log, const VideoGLSurface & surf)
+RAGE::Logger & operator << (RAGE::Logger & log, const VideoGLSurface & surf)
 {
     //TODO : call base operator here...
     //log << static_cast<BaseSurface>(surf);
@@ -502,6 +507,8 @@ Logger & operator << (Logger & log, const VideoGLSurface & surf)
     return log;
 }
 
+        }
+    }
 }
-} //namespace RAGE::SDL
+} //namespace SDLut::SDL
 

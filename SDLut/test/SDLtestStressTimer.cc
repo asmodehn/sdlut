@@ -12,13 +12,13 @@
 #define SCOPED_LOCK(mtx) ScopedLock lock(mtx)
 //#define SCOPED_LOCK(mtx)
 
-using namespace RAGE;
-using namespace RAGE::SDL;
+using namespace SDLut;
+using namespace SDLut::SDL;
 using namespace std;
 
 static long ticks;
 
-Logger testlog("testTimer");
+RAGE::Logger testlog("testTimer");
 
 /*static unsigned int callback(unsigned int interval, void * args)
 {

@@ -11,9 +11,9 @@
 
 typedef struct _SDL_TimerID *SDL_TimerID;
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 //Simple overloaded implementations
 void Delay(long millisec);

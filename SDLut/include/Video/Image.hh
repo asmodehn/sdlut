@@ -11,9 +11,9 @@
 #include "Video/Rect.hh"
 #include "Video/Color.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
 
 
@@ -24,19 +24,19 @@ class Image
 
 protected:
 #ifdef WK_OPENGL_FOUND
-    std::auto_ptr<GLSurface> m_img;
+    std::auto_ptr<internal::OGL::GLSurface> m_img;
 #else
-    std::auto_ptr<RGBSurface> m_img;
+    std::auto_ptr<internal::RGBSurface> m_img;
 #endif
 
 #ifdef WK_OPENGL_FOUND
     ///Conversion Constructor with explicit ownership transfert
-    explicit Image(std::auto_ptr<GLSurface> s) throw (std::logic_error);
+    explicit Image(std::auto_ptr<internal::OGL::GLSurface> s) throw (std::logic_error);
 #endif
 //this is also valid in OpenGL : a GL surface will be made from RGB surfaces
 
     ///Conversion Constructor with explicit ownership transfert
-    explicit Image(std::auto_ptr<RGBSurface> s) throw (std::logic_error);
+    explicit Image(std::auto_ptr<internal::RGBSurface> s) throw (std::logic_error);
 
 
 public:
@@ -111,6 +111,6 @@ public:
 
 } //SDL
 
-} // RAGE
+} // SDLut
 
 #endif //Image_HH

@@ -8,9 +8,9 @@
 
 #include "System/SDLTimer.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 extern void TimerLog(const std::string& text);
@@ -272,7 +272,7 @@ ArgNewTimer<TArgs>::~ArgNewTimer()
 
 
 }//SDL
-}//RAGE
+}//SDLut
 
 
 

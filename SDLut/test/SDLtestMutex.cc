@@ -7,11 +7,11 @@
 #include <vector>
 #include <algorithm>
 #include "SDL.hh"
-using namespace RAGE;
+using namespace SDLut;
 
 #define DEFAULT_THREAD_NUMBER 5
 
-Logger testlog("testMutex");
+RAGE::Logger testlog("testMutex");
 //TODO : make Logger thread safe, somehow...
 
 class Launcher;
@@ -52,7 +52,7 @@ class ObjectWithThreadCall
 		for (int i = start; i < end; i++)
 		{
 			testlog << nl << " --- Thread " << SDL::getCurrentThreadID() << " Mutex Lock";
-					
+
 			//DEBUG: randomly fails locking mutex
 			//if ( rand() % DEFAULT_THREAD_NUMBER != 0 ) mtxtest.lock();
 			//else testlog << nl << " === Simulating mutex problem === ";
@@ -63,7 +63,7 @@ class ObjectWithThreadCall
 
 			testlog << nl << " --- Thread " << SDL::getCurrentThreadID() << " --> Mutex Acquired ! Iteration N " << i ;
 			SDL::Delay(100);
-			
+
 			m_updatecb->call(1);
 
 			mtxtest.unlock();
@@ -82,7 +82,7 @@ class ObjectWithThreadCall
 	~ObjectWithThreadCall()
 	{
 	}
-	
+
 	int threadcall(void* args)
 	{
 		if ( m_updatecb == 0 ) return 0;
@@ -118,9 +118,9 @@ public:
 	{
 		threadid.reserve(nbThread);
 		obj.reserve(nbThread);
-		running.reserve(nbThread);		
+		running.reserve(nbThread);
 	}
-	
+
 	~Launcher()
 	{}
 
@@ -145,7 +145,7 @@ public:
 		for ( unsigned int i = 0; i < nb_thread; ++i )
 		{
 			threadid[i]->wait();
-			
+
 			statemtx.lock();
 			delete threadid[i];	threadid[i] = 0;
 			delete obj[i]; obj[i] = 0;
@@ -168,7 +168,7 @@ public:
 	int check_integrity(void* args)
 	{
 		int res = 0; // OK
-		
+
 		bool goon = true;
 		while ( goon )
 		{
@@ -176,11 +176,11 @@ public:
 			int isrunning = std::count(running.begin(),running.end(),2 /* counting thread */);
 			statemtx.unlock();
 
-			if ( 1 < isrunning) // more than one result 
+			if ( 1 < isrunning) // more than one result
 			{
 				testlog << nl << " !!! ERROR : At least 2 threads have been detected in mutex section at the same time !!! ";
 				res = -1 * isrunning; // ERROR : number of concurrent threads detected
-				
+
 				// more investigation can be coded here for DEBUG
 				// using vectors obj and threadid...
 
@@ -211,12 +211,12 @@ int main(int argc, char *argv[])
 
 	testlog << nl<<"Preparing Launcher for " << nb_thread << " threads";
 	Launcher launcher(nb_thread);
-	
+
 	int res = launcher.launchAll(1000);
-	
+
 	testlog << nl << "Main exit !"<< std::endl;
 	//Reminder hte logger is not thread safe... concurrency access may cause problems...
-	//such as not writing "Main exit" in the log file quick enough 
+	//such as not writing "Main exit" in the log file quick enough
 	//because it s been used by the thread...
 
 	return res;

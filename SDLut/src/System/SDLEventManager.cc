@@ -4,9 +4,9 @@
 
 #include <cassert>
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 Event EventManager::wait () throw(std::logic_error)

@@ -18,10 +18,11 @@
 #include "Video/internal/SDLVideoSurface.hh"
 #include "Video/internal/OpenGL/OGLLogo.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace video
 {
+namespace internal{
 
 
 // Default 2D Engine ( only used if no engine is defined )
@@ -36,7 +37,7 @@ protected:
 #ifdef WK_OPENGL_FOUND
     //OpenGL logo + SDL Logo in texture
     //OpenGL logo displayed only if renderer is opengl
-    OGLLogo m_Logo;
+    OGL::OGLLogo m_Logo;
 #else
     //SDL default logo in BMP/PNG
     Logo m_Logo;
@@ -49,7 +50,7 @@ public:
 
     //this render function should not modify the engine
     #ifdef WK_OPENGL_FOUND
-    virtual bool render(VideoGLSurface & screen) const;
+    virtual bool render(OGL::VideoGLSurface & screen) const;
     #else
     virtual bool render(VideoSurface & screen) const;
     #endif
@@ -63,7 +64,7 @@ public:
 
 
 
-
+}
 }
 }
 

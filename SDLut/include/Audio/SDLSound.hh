@@ -1,5 +1,5 @@
-#ifndef SDLSOUND_HH
-#define SDLSOUND_HH
+#ifndef SDLUT_SOUND_HH
+#define SDLUT_SOUND_HH
 
 #include <memory>
 #include <string>
@@ -7,15 +7,15 @@
 
 #include "System/SDLRWOps.hh"
 
-namespace RAGE
+namespace SDLut
 {
-namespace SDL
+namespace audio
 {
 
 /**
  * \class SoundIf
  *
- * \ingroup Audio
+ * \ingroup audio
  *
  * \brief This class may interface different Sound Implementations
  *
@@ -36,7 +36,7 @@ namespace SDL
 class SoundIf
 {
 protected:
-    std::auto_ptr<RWOps> pvm_OriginalData;
+    std::auto_ptr<system::RWOps> pvm_OriginalData;
 
 public:
     //Sound Loader
@@ -54,7 +54,7 @@ public:
 /**
  * \class Sound
  *
- * \ingroup Audio
+ * \ingroup audio
  *
  * \brief This class handles Sound
  *
