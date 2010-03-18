@@ -201,18 +201,17 @@ catch (std::exception &e)
 
 bool GLSurface::computeGLWidthHeight()
 {
-    if ( getWidth() == 0 && getHeight() == 0 ) return true;
-    unsigned int textureWidth = 1;
-    unsigned int textureHeight = 1;
-    while ( textureWidth < getWidth() ) textureWidth *= 2;
-    while ( textureHeight < getHeight() ) textureHeight *= 2;
+    if ( getTextureWidth() == 0 && getTextureHeight() == 0 ) return true;
+    unsigned int properWidth = 1;
+    unsigned int properHeight = 1;
+    while ( properWidth < getTextureWidth() ) properWidth *= 2;
+    while ( properHeight < getTextureHeight() ) properHeight *= 2;
 
     bool res = false;
     // we may need to resize the surface.
-    if (textureWidth > getWidth() || textureHeight > getHeight() )
+    if (properWidth > getTextureWidth() || properHeight > getTextureHeight() )
     {
-        m_actualWidth = getWidth(); m_actualHeight = getHeight();
-        res = resizegl(textureWidth,textureHeight,true);
+        res = resize(properWidth,properHeight,true);
     }
     else
     {
@@ -274,78 +273,7 @@ bool GLSurface::convertPixels()
 
     /* The EASY WAY -> WORKING ?? */
 
-
-
-
-        // get the number of channels in the SDL surface
-        int numbytes = RGBSurface::getPixelFormat().getBytesPerPixel();
-
-        if ( numbytes < 3 ) // no conversion needed : we are in true color mode
-        {
-            //NB Conversion might not be needed
-            // refer : http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL.html
-
-                Log << nl << "Warning: the image is not truecolor... Trying Conversion";
-                // this error should not go unhandled
-                SDL_Surface * glsurf = SDL_CreateRGBSurface( ptm_surf->flags, 1, 1, bpp_default,r_default_mask, g_default_mask, b_default_mask, a_default_mask);
-                //saving colorkey
-                //Uint32 ck = ptm_surf->format->colorkey;
-
-                bool surfok = set_SDL_Surface(SDL_ConvertSurface(ptm_surf.get(),const_cast<SDL_PixelFormat *>(glsurf->format),ptm_surf->flags));
-
-                //copying the colorkey // MAYBE NOT NEEDED ?
-                //SDL_SetColorKey(ptm_surf.get(),ptm_surf->flags,ck);
-
-
-                if (! surfok)
-                {
-                    Log << nl << "Unable to copy the RGBsurface in GL conversion" ;
-                    throw std::logic_error("SDL_ConvertSurface returned NULL");
-                }
-
-            //resetting numbytes for further texture format setup
-            numbytes = RGBSurface::getPixelFormat().getBytesPerPixel();
-
-        }
-
-        if (numbytes == 4)     // contains an alpha channel
-        {
-                //default format surface with colorkey, or alpha will have 4 channels
-                if (RGBSurface::getPixelFormat().getRmask() == 0x000000ff)
-                {
-                    textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN)?GL_ABGR_EXT:GL_RGBA;
-                }
-                else // we assume Rmask == 0xff000000
-                {
-                    textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN)?GL_RGBA:GL_ABGR_EXT;
-                }
-
-        }
-        else if (numbytes == 3)     // no alpha channel
-        {
-            //This can be tested in SDL Logo that doesnt have any Alpha.
-                if (RGBSurface::getPixelFormat().getRmask() == 0x000000ff)
-                {
-                    textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN)?GL_BGR:GL_RGB;
-                }
-                else  // we assume Rmask == 0xff000000
-                        {
-
-                            textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN)?GL_RGB:GL_BGR;
-                        }
-        }
-        else
-         {
-
-
-
-    }
-
-    //TODO : handle colorkey in OGL
-
-    ptm_pformat = new OGLPixelFormat(ptm_surf->format);
-
-    return true;
+return true;
 }
 
 GLSurface::~GLSurface()
@@ -355,9 +283,12 @@ GLSurface::~GLSurface()
 bool GLSurface::resize(int width, int height, bool keepcontent)
 {
     modified = RGBSurface::resize(width,height,keepcontent);
+    ptm_pformat = new OGLPixelFormat(ptm_surf->format);
     return modified;
 }
 
+//resize the surface, doesnt scale the image at all
+/*
 bool GLSurface::resizegl(int glwidth, int glheight, bool keepcontent)
 {
      bool res;
@@ -366,12 +297,12 @@ bool GLSurface::resizegl(int glwidth, int glheight, bool keepcontent)
     std::auto_ptr<SDL_Surface> newSurf(0);
     if ( isSRCAlphaset() || isSRCColorKeyset() ) // Alpha is set by SDL if bpp == 32, and we need Alpha in GL if we got colorkey in SDL
     {
-     newSurf.reset(SDL_CreateRGBSurface(ptm_surf->flags,glwidth,glheight,32, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
+     newSurf.reset(SDL_CreateRGBSurface(ptm_surf->flags,glwidth,glheight,ptm_surf->, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
      //need to fill with stuff ???
     }
     else
     {
-        newSurf.reset(SDL_CreateRGBSurface(ptm_surf->flags,glwidth,glheight,24, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
+        newSurf.reset(SDL_CreateRGBSurface(ptm_surf->flags,glwidth,glheight,bpp_default_noalpha, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
     }
 
     if (!newSurf.get()) //CreateRGBSurface has failed
@@ -393,7 +324,7 @@ bool GLSurface::resizegl(int glwidth, int glheight, bool keepcontent)
     modified = res;
     return (modified && ptm_surf.get() != 0 ) ;
 }
-
+*/
 
 unsigned int GLSurface::getWidth()
 {
@@ -439,6 +370,112 @@ const PixelFormat& GLSurface::getPixelFormat(void) const
 
 bool GLSurface::convertToDisplayFormat()
 {
+
+
+
+
+        // get the number of channels in the SDL surface
+        int numbytes = RGBSurface::getPixelFormat().getBytesPerPixel();
+
+        if ( numbytes < 3 ) // conversion needed : we are not in a true color mode
+        {
+            //NB Conversion might not be needed
+            // refer : http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL.html
+
+Log << nl << "Warning: the image is not truecolor... Trying Conversion";
+Log << nl << " Before Convert " << RGBSurface::getPixelFormat();
+
+saveBMP("beforeconvert.bmp");
+
+/*
+            SDL_Surface * glsurf;
+
+            //if transparency -> need alpha channel
+            if ( isSRCColorKeyset() || isSRCAlphaset() )
+            {
+                glsurf = SDL_CreateRGBSurface( ptm_surf->flags, 1, 1, bpp_default_alpha ,r_default_mask, g_default_mask, b_default_mask, a_default_mask);
+                //saving colorkey
+                //Uint32 ck = ptm_surf->format->colorkey;
+            }
+            else
+
+            {
+                glsurf = SDL_CreateRGBSurface( ptm_surf->flags, 1, 1, bpp_default_noalpha ,g_default_mask, b_default_mask, a_default_mask, 0);
+            }
+
+            bool surfok = set_SDL_Surface(SDL_ConvertSurface(ptm_surf.get(),const_cast<SDL_PixelFormat *>(glsurf->format),ptm_surf->flags));
+
+                //copying the colorkey // MAYBE NOT NEEDED ?
+                //SDL_SetColorKey(ptm_surf.get(),ptm_surf->flags,ck);
+
+*/
+bool surfok = RGBSurface::convertToDisplayFormat();
+// display Format dependent...
+
+                if (! surfok)
+                {
+                    Log << nl << "Unable to copy the RGBsurface in GL conversion" ;
+                    throw std::logic_error("SDL_ConvertToDisplayFormat returned NULL");
+                }
+
+            Log << nl << " After Convert " << RGBSurface::getPixelFormat();
+
+            saveBMP("afterconvert.bmp");
+
+            //resetting numbytes for further texture format setup
+            numbytes = RGBSurface::getPixelFormat().getBytesPerPixel();
+
+        }
+
+        if (numbytes == 4) // contains an alpha channel
+        {
+            //WHAT ABOUT SDL_BYTEORDER == SDL_BIG_ENDIAN ???
+            if (RGBSurface::getPixelFormat().getRshift() == 24 && RGBSurface::getPixelFormat().getAloss() == 0)
+            {
+                //for little endian
+                textureFormat = GL_ABGR_EXT;
+            }
+            else if ( RGBSurface::getPixelFormat().getRshift() == 16 && RGBSurface::getPixelFormat().getAloss() == 8)
+            {
+                //for little endian
+                textureFormat = GL_BGRA;
+            }
+            else //joker
+            {
+                    Log << nl << "Unable to recognise converted GLSurface Format : " << nl << getPixelFormat() ;
+                    throw std::logic_error("Pixel Format not recognized for GL display");
+            }
+
+        }
+        else if (numbytes == 3)     // no alpha channel
+        {
+            //This can be tested in SDL Logo that doesnt have any Alpha.
+                if (RGBSurface::getPixelFormat().getRshift() == 16)
+                {
+                    textureFormat = GL_BGR;
+                }
+                else if ( RGBSurface::getPixelFormat().getRshift() == 0)
+                {
+                    textureFormat = GL_RGB;
+                }
+
+            else //joker
+            {
+                    Log << nl << "Unable to recognise converted GLSurface Format : " << nl << getPixelFormat() ;
+                    throw std::logic_error("Pixel Format not recognized for GL display");
+            }
+        }
+
+            else //joker
+            {
+                    Log << nl << "Unable to recognise converted GLSurface Format : " << nl << getPixelFormat() ;
+                    throw std::logic_error("Pixel Format not recognized for GL display");
+            }
+
+    //TODO : handle colorkey in OGL
+
+    ptm_pformat = new OGLPixelFormat(ptm_surf->format);
+
 
     /* Standard OpenGL texture creation code */
     //these might be use for screen capture as well

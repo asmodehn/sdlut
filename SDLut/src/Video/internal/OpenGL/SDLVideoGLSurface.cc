@@ -195,7 +195,8 @@ void VideoGLSurface::setpixel(int x, int y, PixelColor color)
 }
 
 
-//TODO : rethink about that again...( recopy the content if 2D or not at all ??? )
+// keepcontent option very useful for quickly resizing surface to fit in OpengL power of two policy
+// TODO : check if we actually need to signal resized surface as modified...
 bool VideoGLSurface::resize(int width, int height, bool keepcontent)
 {
 
@@ -333,7 +334,7 @@ if ( ! isOpenGLset() )
         }
 
 
-        Log << nl << glsrc.getPixelFormat();
+        //Log << nl << glsrc.getPixelFormat();
 
         //in case the dest_rect is of different size than src_rect, we need to avoid scaling
         // of the texture by opengl
@@ -360,10 +361,14 @@ if ( ! isOpenGLset() )
 
         if ( glsrc.isSRCAlphaset() || glsrc.isSRCColorKeyset())
         {
-            //TMP
-            //glEnable(GL_BLEND);
+            glEnable(GL_BLEND);
             //glEnable(GL_ALPHA_TEST);
-            //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            //alpha meaning in SDL : 255 = opaque, 0 = transparent
+            //glAlphaFunc(GL_GREATER,0.0f);
+            // need to have same alpha meaning in OpenGL...
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);// -> this works for transparent = 1.0f and opaque = 0.0f
+            //here we need
+            //glBlendFunc( GL_ONE_MINUS_SRC_ALPHA,GL_SRC_ALPHA);
         }
 
         //Enable texturing
@@ -393,9 +398,8 @@ if ( ! isOpenGLset() )
 
         if ( glsrc.isSRCAlphaset() || glsrc.isSRCColorKeyset())
         {
-            //TMP
-            //glDisable(GL_ALPHA_TEST);
-            //glDisable(GL_BLEND);
+            glDisable(GL_ALPHA_TEST);
+            glDisable(GL_BLEND);
         }
 
         //Disable texturing
@@ -420,6 +424,8 @@ bool VideoGLSurface::fill (const PixelColor& pcolor)
 
 bool VideoGLSurface::fill (const PixelColor& pcolor, Rect dest_rect)
 {
+
+/////TODO : FIX IT
 
 #if (DEBUG == 2)
     Log << nl << "VideoGLSurface::fill ( " << color << ", " << dest_rect << ") called...";
@@ -446,7 +452,7 @@ bool VideoGLSurface::fill (const PixelColor& pcolor, Rect dest_rect)
     if ( color.hasAlpha() )
     {
         glEnable(GL_BLEND);
-        glEnable(GL_ALPHA_TEST);
+        //glEnable(GL_ALPHA_TEST);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
     glColor4ub(color.getR(), color.getG(), color.getB(), color.getA() );

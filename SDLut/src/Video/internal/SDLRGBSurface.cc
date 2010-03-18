@@ -250,7 +250,7 @@ bool RGBSurface::resize(int width, int height, bool keepcontent)
 {
     bool res;
 
-    std::auto_ptr<SDL_Surface> newSurf( SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
+    std::auto_ptr<SDL_Surface> newSurf( SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, ptm_surf->format->Rmask,ptm_surf->format->Gmask,ptm_surf->format->Bmask, ptm_surf->format->Amask) );
 
     if (!newSurf.get()) //CreateRGBSurface has failed
     {

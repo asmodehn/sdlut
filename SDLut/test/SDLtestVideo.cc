@@ -17,7 +17,7 @@ public:
 	{
 		ImageLoader loader;
 		//setting white as transparent
-		loadedimage = loader.load(imagefilename,Color(255,255,255));
+		loadedimage = loader.load(imagefilename)/*,Color(255,255,255))*/;
 
 		loadedimage->saveBMP("TestVideoImage.bmp");
 	}
@@ -108,7 +108,7 @@ int main(int argc, char** argv)
 	//otherwise we use the default engine only.
 	}
 
-    if (! (App::getInstance().getDisplay().setDisplay(800,600,16)))
+    if (! (App::getInstance().getDisplay().setDisplay(800,600,24)))
     {
         testlog << nl << "Display Creation FAILED !"<< std::endl;
     }

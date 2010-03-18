@@ -78,7 +78,8 @@ protected:
     static const unsigned long b_default_mask = 0x00ff0000;
     static const unsigned long a_default_mask = 0xff000000;
 #endif
-    static const unsigned short bpp_default = 32;
+    static const unsigned short bpp_default_alpha = 32;
+    static const unsigned short bpp_default_noalpha = 24;
 
     //TODO : improve wrapping with const SDL_Surface * // or maybe (const?) SDL_Surface &
     //... look at SDL_video.h to access correctly to SDL_Surface like as for PixelFormat and everything else

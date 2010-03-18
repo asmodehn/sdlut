@@ -251,10 +251,14 @@ void ScreenBuffer::applyBGColor() const
 {
     if (m_screen.get()) // if auto pointer valid
     {
+
+        //TODO : TEST alpha transparent background color...
 #ifdef WK_OPENGL_FOUND
         if (m_screen->isOpenGLset())
         {
-            glClearColor(static_cast<float> (m_background.getR() ) / 255.0f, static_cast<float> (m_background.getG() ) / 255.0f,static_cast<float> (m_background.getB() ) / 255.0f,0.0f);
+
+//            glClearColor(0.0f,0.0f,0.0f,0.0f); // default opengl
+            glClearColor(static_cast<float> (m_background.getR() ) / 255.0f, static_cast<float> (m_background.getG() ) / 255.0f,static_cast<float> (m_background.getB() ) / 255.0f, 1.0f-(static_cast<float>(m_background.getA()) / 255.0f));
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
         else

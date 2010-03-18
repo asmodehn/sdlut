@@ -102,7 +102,7 @@ bool setAlpha(unsigned int alpha, bool rleAccel = true);
 
 
     virtual bool resize(int width, int height, bool keepcontent = false);
-    bool resizegl(int width, int height, bool keepcontent = false);
+    //bool resizegl(int width, int height, bool keepcontent = false);
 
     bool fill (const PixelColor& color, Rect dest_rect);
 
