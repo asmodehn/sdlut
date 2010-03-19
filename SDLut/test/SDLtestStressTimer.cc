@@ -13,7 +13,8 @@
 //#define SCOPED_LOCK(mtx)
 
 using namespace SDLut;
-using namespace SDLut::SDL;
+using namespace SDLut::system;
+using namespace RAGE;
 using namespace std;
 
 static long ticks;
@@ -22,7 +23,7 @@ RAGE::Logger testlog("testTimer");
 
 /*static unsigned int callback(unsigned int interval, void * args)
 {
-	testlog << nl << SDL::GetTicks() - ticks  << " ms : Static Function called back !" ;
+	testlog << nl << GetTicks() - ticks  << " ms : Static Function called back !" ;
 	return 50;
 }*/
 
@@ -73,7 +74,7 @@ class ObjectWithCallbacks
 	friend class OwnerOfObjWCallbacks;
 
 private:
-	SDL::NewTimer *Play_Timer_1x;
+	NewTimer *Play_Timer_1x;
 	SimpleObject *sobj;
 
 	int direct_timer_it, direct_timer_int;
@@ -148,9 +149,9 @@ SCOPED_LOCK(mymtx);
 		flag = 1;
 		delete Play_Timer_1x, Play_Timer_1x = NULL;
 
-		Play_Timer_1x = new SDL::NewTimer(*this,&ObjectWithCallbacks::callback1_1);
+		Play_Timer_1x = new NewTimer(*this,&ObjectWithCallbacks::callback1_1);
 
-		testlog << nl << SDL::GetTicks() - ticks  << " ms : " << this << "\'s play1_1 create Timer " << Play_Timer_1x << " and launching it" << std::endl;
+		testlog << nl << GetTicks() - ticks  << " ms : " << this << "\'s play1_1 create Timer " << Play_Timer_1x << " and launching it" << std::endl;
 
 	} catch (std::exception &exc) {
 		Clean_ObjectWithCallbacks();
@@ -167,7 +168,7 @@ private:
 	{
 	try	{
 SCOPED_LOCK(mymtx);
-		testlog << nl << SDL::GetTicks() - ticks  << " ms : " << this << "\'s callback1_1 called back at frame " << loop_nb << std::endl;
+		testlog << nl << GetTicks() - ticks  << " ms : " << this << "\'s callback1_1 called back at frame " << loop_nb << std::endl;
 
 /*		if (args == NULL)
 		{
@@ -239,12 +240,12 @@ SCOPED_LOCK(objwcb->mymtx);
 		{
 		case 0: //no callback running
 			testlog << nl << "OwnerOfObjWCallbacks " << this << "\'s ObjectWithCallbacks @ " << this->objwcb << " ::play1_1() called" << std::endl;
-			objwcb->start_timer_tick = SDL::GetTicks();
+			objwcb->start_timer_tick = GetTicks();
 			objwcb->play1_1( sao );
 			break;
 
 		case 1: //one callback running
-			if (objwcb->start_timer_tick + 3000 < SDL::GetTicks()) //1100ms = max nb de frame potential * max interval potentiel + 100ms
+			if (objwcb->start_timer_tick + 3000 < GetTicks()) //1100ms = max nb de frame potential * max interval potentiel + 100ms
 			{
 				testlog << nl << "ERROR : A timer encounter an abornal termination for OwnerOfObjWCallbacks " << this << "\'s ObjectWithCallbacks @ " << this->objwcb << std::endl;
 				throw logic_error( " A timer encounter an abornal termination");
@@ -295,7 +296,7 @@ try {
 	testlog.enableFileLog("testTimer.log");
 	testlog << nl<<"SDL init...";
 
-	SDL::App::getInstance().initTimer();
+	App::getInstance().initTimer();
 
 	vector<OwnerOfObjWCallbacks*>* voocb = new vector<OwnerOfObjWCallbacks*>;
 	for (unsigned int i = 0; i < NB_OBJ; i++)
@@ -306,14 +307,14 @@ try {
 	//DerivateOwnerOfObjWCallbacks* iocb = new DerivateOwnerOfObjWCallbacks();
 
 /***Run***/
-	//SDL::Delay(15000); //TODO Display time running
-	ticks = SDL::GetTicks();
+	//Delay(15000); //TODO Display time running
+	ticks = GetTicks();
 
-	while (SDL::GetTicks() < (ticks + TEST_DURATION))
+	while (GetTicks() < (ticks + TEST_DURATION))
 	{
 		for (unsigned int i = 0; i < voocb->size(); i++)
 		{
-			std::cout << SDL::GetTicks() << "\r";
+			std::cout << GetTicks() << "\r";
 			voocb->at(i)->DoSthg();
 		}
 		//iocb->DoSthg();
@@ -331,12 +332,12 @@ try {
 
 	//delete iocb, iocb = NULL;
 
-	//SDL::RemoveGlobalTimer(gt_id);
+	//RemoveGlobalTimer(gt_id);
 
 	return 0;
 } catch (std::exception &exc) {
 	testlog << nl << " ***** ERROR ***** : " << exc.what();
-	//SDL::Delay(2000);
+	//Delay(2000);
 
 } catch (...) {
 	throw std::logic_error("Unhandled Error in Main !" );

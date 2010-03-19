@@ -13,6 +13,7 @@ namespace video
     class ImageLoader;
 
     namespace internal {
+		class VideoSurface;
 
 
 /**
@@ -77,7 +78,7 @@ class PixelFormat
 {
     //because SDLPixelColor needs to access actual SDL_PixelFormat
     friend class VideoInfo;
-    friend class VideoSurface;
+	friend class SDLut::video::internal::VideoSurface;
     friend class RGBSurface;
     friend class BaseSurface;
     friend class video::ImageLoader;

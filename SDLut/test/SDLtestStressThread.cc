@@ -4,7 +4,10 @@
 
 #include <iostream>
 #include "SDL.hh"
+
 using namespace SDLut;
+using namespace SDLut::system;
+using namespace RAGE;
 
 RAGE::Logger testlog("testThread");
 
@@ -15,7 +18,7 @@ class ObjectWithThreadCall
 
 	int threadcall(void* args)
 	{
-		testlog << nl << " --- Thread " << SDL::getCurrentThreadID() << "called. Counting from 0 to 20000 --- " << std::endl;
+		testlog << nl << " --- Thread " << getCurrentThreadID() << "called. Counting from 0 to 20000 --- " << std::endl;
 		for (int i = 0; i < 20000; i++)
 		{
 			testlog << nl << "Iteration N°" << i << std::endl;
@@ -30,14 +33,14 @@ int main(int argc, char *argv[])
 	testlog.enableFileLog("testThread.log");
 	testlog << nl<<"SDL init...";
 
-	SDL::App::getInstance();
+	App::getInstance();
 
 	testlog << nl<<"Creating instance";
 	ObjectWithThreadCall * obj = new ObjectWithThreadCall();
 
 	testlog << nl<<"Creating instance timer";
-	SDL::NewThread<ObjectWithThreadCall>* thread = new SDL::NewThread<ObjectWithThreadCall>(obj,&ObjectWithThreadCall::threadcall,(void*)NULL);
-	SDL::Delay(3000);
+	NewThread<ObjectWithThreadCall>* thread = new NewThread<ObjectWithThreadCall>(obj,&ObjectWithThreadCall::threadcall,(void*)NULL);
+	Delay(3000);
 
 	if ( argc > 1 && std::string(argv[1]) == "wait" )
 	{

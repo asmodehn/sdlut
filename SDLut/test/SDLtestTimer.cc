@@ -13,6 +13,8 @@
 //#define SCOPED_LOCK(mtx)
 
 using namespace SDLut;
+using namespace SDLut::system;
+using namespace RAGE;
 using namespace std;
 
 static long ticks;
@@ -21,7 +23,7 @@ RAGE::Logger testlog("testTimer");
 
 /*static unsigned int callback(unsigned int interval, void * args)
 {
-	testlog << nl << SDL::GetTicks() - ticks  << " ms : Static Function called back !" ;
+	testlog << nl << GetTicks() - ticks  << " ms : Static Function called back !" ;
 	return 50;
 }*/
 
@@ -72,7 +74,7 @@ class ObjectWithCallbacks
 	friend class OwnerOfObjWCallbacks;
 
 private:
-	SDL::NewTimer *Play_Timer_1x;
+	NewTimer *Play_Timer_1x;
 	SimpleObject *sobj;
 
 	int direct_timer_it, direct_timer_int;
@@ -143,7 +145,7 @@ public:
 	{
 	try	{
 SCOPED_LOCK(mymtx);
-		testlog << nl << " ====>> " << SDL::GetTicks() - ticks  << " ms : " << this << "\'s direct callback2 Called back ! Number: " << direct_timer_it-- ;
+		testlog << nl << " ====>> " << GetTicks() - ticks  << " ms : " << this << "\'s direct callback2 Called back ! Number: " << direct_timer_it-- ;
 
 		if ( direct_timer_it != 0 )
 			return direct_timer_int;
@@ -176,26 +178,26 @@ try {
 	testlog.enableFileLog("testTimer.log");
 	testlog << nl<<"SDL init...";
 
-	SDL::App::getInstance().initTimer();
+	App::getInstance().initTimer();
 
-	//static SDL_TimerID gt_id = SDL::AddGlobalTimer(50,callback,NULL);
+	//static SDL_TimerID gt_id = AddGlobalTimer(50,callback,NULL);
 
 	testlog << nl<<"Creating instance";
 	ObjectWithCallbacks gobj;
 
 	testlog << nl<<"Creating instance timer";
-	SDL::NewTimer direct_timer(gobj,&ObjectWithCallbacks::callback2,200);
+	NewTimer direct_timer(gobj,&ObjectWithCallbacks::callback2,200);
 
 	testlog << nl <<"Starting instance timer 2 (every 200ms)";
 
 
 /***Run***/
-	//SDL::Delay(15000); //TODO Display time running
-	ticks = SDL::GetTicks();
+	//Delay(15000); //TODO Display time running
+	ticks = GetTicks();
 
-	while (SDL::GetTicks() < (ticks + TEST_DURATION))
+	while (GetTicks() < (ticks + TEST_DURATION))
 	{
-		std::cout << SDL::GetTicks() << "\r";
+		std::cout << GetTicks() << "\r";
 	}
 
 /***Clean***/

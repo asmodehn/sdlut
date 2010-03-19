@@ -221,7 +221,7 @@ public:
     /*			void HideLoadingScreen();
     */
     //Handles the event, and Call engine->prerender, engine ->render() and engine->postrender()
-    bool mainLoop(unsigned int framerate = 60,unsigned int eventrate = 60);
+    int mainLoop(unsigned int framerate = 60,unsigned int eventrate = 60);
 
     bool exitMainLoop(int exitstatus);
 

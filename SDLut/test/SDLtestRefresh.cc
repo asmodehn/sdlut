@@ -4,7 +4,7 @@
 #include <ctime>
 
 using namespace SDLut;
-using namespace SDLut::SDL;
+using namespace SDLut::video;
 
 class Sprite
 {

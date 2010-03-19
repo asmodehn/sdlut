@@ -183,7 +183,7 @@ bool Display::resizeDisplay (int width, int height)
 		}
 */
 
-bool Display::mainLoop(unsigned int framerate, unsigned int eventrate)
+int Display::mainLoop(unsigned int framerate, unsigned int eventrate)
 {
     if (ShowingLoadingScreen)
     {

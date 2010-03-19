@@ -31,11 +31,12 @@ namespace SDLut
 namespace video
 {
     namespace internal{
+		class VideoSurface;
 
 class VideoInfo
 {
     friend class ScreenBuffer;
-    friend class VideoSurface;
+	friend class SDLut::video::internal::VideoSurface;
 
 private:
     //Actual VideoInfo pointer
