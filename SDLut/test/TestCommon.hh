@@ -178,20 +178,24 @@ public:
 
   bool isSDL()
   {
-      #ifdef WK_OPENGL_FOUND
-      return args[1] == "nogl";
-      #else
-      return true;
-      #endif
+	return !isOGL();
   }
 
   bool isOGL()
   {
-      #ifdef WK_OPENGL_FOUND
-      return args[1] != "nogl";
-      #else
+#ifdef WK_OPENGL_FOUND
+	  for (unsigned int i = 0; i < args.size(); i++)
+	  {
+		  if ( args[i] == "nogl" )
+		  {
+			  return false;
+		  }
+	  }
+	  return true;
+
+#else
       return false;
-      #endif
+#endif
   }
 
   std::string getcmd()
