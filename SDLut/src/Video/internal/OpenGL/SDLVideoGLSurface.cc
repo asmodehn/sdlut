@@ -104,25 +104,37 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
     if ( isOpenGLset() )
     {
 
-    unsigned int p[4];
-    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, &p);
 
-    Uint32 pixel;
+        // get the number of channels in the SDL surface
+        int numbytes = getPixelFormat().getBytesPerPixel();
 
-//#if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
-//    color = (0xff000000 & pixel[3]) | (0x00ff0000 & pixel[2]) | (0x0000ff00 & pixel[1]) | (0x000000ff & pixel[0]);
-//#else
-//    color = (0xff000000 & pixel[0]) | (0x00ff0000 & pixel[1]) | (0x0000ff00 & pixel[2]) | (0x000000ff & pixel[3]);
-//#endif
-//
-//OR
-//
-        //pixel= *(Uint32 *)p;
-#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-        pixel= p[0] << 24 | p[1] << 16 | p[2] << 8 | p[3];
-#else
-        pixel= p[0] | p[1] << 8 | p[2] << 16 | p[3] << 24;
-#endif
+    //these might be use for screen capture as well
+    // refer : http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL.html#blits
+    //glPixelStorei( GL_PACK_ROW_LENGTH, 0 ) ;
+
+    //glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+    //glPixelStorei(GL_UNPACK_ALIGNMENT,ptm_surf->format->BytesPerPixel);
+    //glPixelStorei(GL_UNPACK_ALIGNMENT,4);
+
+    if (numbytes == 4 )
+    {
+    //To test :
+    //SDL_BYTE_ORDER == SDL_BIG_ENDIAN
+    // -> *_REV ????
+    //LIL_ENDIAN HERE
+    glReadPixels(x, y, 1, 1, GL_BGRA, GL_UNSIGNED_BYTE, &color);
+    }
+    else if ( numbytes == 3 )
+    {
+        //To test :
+    //SDL_BYTE_ORDER == SDL_BIG_ENDIAN
+    // -> *_REV ???
+    //LIL_ENDIAN HERE
+    glReadPixels(x, y, 1, 1, GL_BGR, GL_UNSIGNED_BYTE, &color);
+    }
+
+
+
     }
     else
     {

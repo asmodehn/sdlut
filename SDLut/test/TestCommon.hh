@@ -179,7 +179,7 @@ public:
   bool isSDL()
   {
       #ifdef WK_OPENGL_FOUND
-      return args[0] == "nogl";
+      return args[1] == "nogl";
       #else
       return true;
       #endif
@@ -188,10 +188,15 @@ public:
   bool isOGL()
   {
       #ifdef WK_OPENGL_FOUND
-      return args[0] != "nogl";
+      return args[1] != "nogl";
       #else
       return false;
       #endif
+  }
+
+  std::string getcmd()
+  {
+      return args[0];
   }
 
 };

@@ -226,7 +226,7 @@ PixelColor BaseSurface::getpixel(int x, int y)
     lock();
 
     //nbBytesPerPixel is hte number of bytes used to store a pixel
-    //We can there fore get the color depth of the image : 8, 16, 24 or 32 bits.
+    //We can therefore get the color depth of the image : 8, 16, 24 or 32 bits.
     Uint8 bpp = ptm_surf->format->BytesPerPixel;
     // Here p is the address to the pixel we want to retrieve
     // surface->pixels contains the address of the first pixel of the image

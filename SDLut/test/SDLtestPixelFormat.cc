@@ -106,7 +106,7 @@ public:
 
 	virtual bool assertrender(ScreenBuffer & screen) const
     {
-        bool res = false;
+        bool res = true;
         res &=  red == screen.getpixel(posred.getx(),posred.gety());
         if (!res)
         {
@@ -147,7 +147,7 @@ int main(int argc, char** argv)
 
     //Starting with usual SDL window
     App::getInstance().initVideo(false,true,false);
-	App::getInstance().setName ("SDLut::SDL test Color : Displayed Color order \"Red - Green - Blue - Purple if alpha is working otherwise White\"");
+	App::getInstance().setName ("SDLut::video test PixelFormat");
 
     //Setting Display size and BPP
     App::getInstance().getDisplay().setDisplay(800,600); // using autodetected bpp
