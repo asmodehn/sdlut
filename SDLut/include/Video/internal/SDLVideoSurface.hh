@@ -57,7 +57,7 @@ public:
     }
 
 protected:
-    static unsigned long ptm_defaultflags;
+    static unsigned long ptm_defaultflags; // TODO : check : redundant with video info content ???
 
     Color ptm_background;
 

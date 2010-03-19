@@ -238,6 +238,7 @@ public:
         //TODO : check if old callback is deleted by reset...
         m_initcb.reset(new Core::Callback2<TaClass,int,int,bool>(instance, func));
     }
+    void resetInitCallback() { m_initcb.reset(0); }
 
     //this callback is run whenever a resize is needed.
     //parameter is the desired new size.
@@ -247,6 +248,7 @@ public:
         //TODO : check if old callback is deleted by reset...
         m_resizecb.reset(new Core::Callback2<UaClass,int,int,bool>(instance,func));
     }
+    void resetResizeCallback() { m_resizecb.reset(0); }
 
     //this callback is run just before the render
     //deltaticks is the amount of ticks between the end of the last render and now.
@@ -257,6 +259,7 @@ public:
         //TODO : check if old callback is deleted by reset...
         m_newframecb.reset(new Core::Callback2<VaClass,unsigned long, unsigned long, bool>(instance,func));
     }
+    void resetNewFrameCallback() { m_resizecb.reset(0); }
 
     //this callback is run just for rendering purpose. therefore it s already too late to modify anything -> const
     //if there is anything you need to modify please use the newframe callback
@@ -266,6 +269,7 @@ public:
         //TODO : check if old callback is deleted by reset...
         m_rendercb.reset(new Core::Callback1const<WaClass,video::ScreenBuffer&,bool>(instance,func));
     }
+    void resetRenderCallback() { m_rendercb.reset(0); }
 
 };
 

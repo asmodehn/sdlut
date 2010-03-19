@@ -19,6 +19,9 @@ WkDoc()
 WkTestBuild ( SDLtestColor )
 WkTestRun   ( SDLtestColor )
 
+WkTestBuild ( SDLtestPixelFormat )
+WkTestRun   ( SDLtestPixelFormat )
+
 WkTestBuild (SDLtestRefresh)
 WkTestData  (SDLtestRefresh smiley.bmp)
 WkTestRun   (SDLtestRefresh)
