@@ -16,17 +16,36 @@ using namespace SDLut;
 //engine holding the test code to be run
 class AssertEngine
 {
+//to be albe to set error, even while rendering
+mutable std::string m_error;
+mutable int m_exitstatus;
+
     unsigned int m_numrender;
     unsigned int m_maxrender;
 
+protected :
+
+//to be able to write in log, even while rendering
+mutable    Logger & m_log;
+
+
+
     public :
     ///max_render = 0 means it will run forever
-    AssertEngine(int max_render = 0) : m_numrender(0), m_maxrender(max_render)
+    AssertEngine( Logger & log, int max_render = 0) : m_error("OK"), m_exitstatus(0), m_log(log), m_numrender(0), m_maxrender(max_render)
     {
     }
 
     ~AssertEngine() {}
 
+    //Will log an Error string and exit
+    bool setError(int status, std::string err) const
+    {
+        m_exitstatus = status;
+        m_error = err;
+        m_log << nl<< "ERROR : " << err ;
+        return App::getInstance().requestTermination(status);
+    }
 
     //init and resize code is often the same ( but not always )
 	virtual bool assertinit(int width, int height)
@@ -34,10 +53,7 @@ class AssertEngine
 	    return assertresize(width,height);
 	}
 
-	virtual bool assertresize(int width, int height)
-	{
-	    return true;
-	}
+	virtual bool assertresize(int width, int height) = 0;
 
 	bool testquit_assertnewframe(unsigned long framerate, unsigned long deltaticks)
 	{
@@ -55,10 +71,7 @@ class AssertEngine
 	    return true;
 	}
 
-	virtual bool assertrender(video::ScreenBuffer & screen) const
-	{
-	    return true;
-	}
+	virtual bool assertrender(video::ScreenBuffer & screen) const = 0;
 
 };
 
@@ -70,19 +83,18 @@ class AssertEngine
 class TestEngine
 {
 
-AssertEngine m_assertengine;
+AssertEngine & m_assertengine;
 
 protected:
 
-Logger log;
+//to be able to write in log, even while rendering
+mutable Logger & m_log;
 
 public:
 
 
-	TestEngine(std::string testname  = "Test_Log", const AssertEngine & ae = AssertEngine() ) : m_assertengine(ae), log(testname)
+	TestEngine(Logger & log, AssertEngine & ae ) : m_log(log),m_assertengine(ae)
 	{
-
-        log.enableFileLog(testname + ".log");
 
         App::getInstance().getDisplay().resetInitCallback(*this,&TestEngine::testinit);
         App::getInstance().getDisplay().resetResizeCallback(*this,&TestEngine::testresize);

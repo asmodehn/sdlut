@@ -4,18 +4,16 @@ using namespace SDLut::video;
 
 class AssertEngine;
 
+Logger testlog("TestPixelFormat");
+
 class MyEngine : public TestEngine
 {
     Image * red,*green,*blue,*alpha;
 
 
-	MyEngine() : red(0), green(0),blue(0),alpha(0)
-	{
-	}
-
 public:
 
-	MyEngine(std::string testname, const AssertEngine & ae) : TestEngine(testname,ae), red(0), green(0),blue(0),alpha(0)
+	MyEngine(Logger & log, AssertEngine & ae) : TestEngine(log,ae), red(0), green(0),blue(0),alpha(0)
 	{
 	}
 
@@ -72,23 +70,28 @@ class Test : public AssertEngine
 {
     Rect posred,posgreen,posblue,posalpha;
 
+    Color red,green,blue,alpha;
 public:
     //we only need one render to see which color are there
-    Test() : AssertEngine(1)
+    Test( Logger & log) : AssertEngine(log,1)
 	{
+	    red = Color(255,0,0);
+	    green = Color(0,255,0);
+	    blue  = Color(0,0,255);
+	    alpha = Color(0,0,0,0);
 	}
 
     virtual ~Test()
     {
     }
 
-	virtual bool init(int width, int height)
+	virtual bool assertinit(int width, int height)
 	{
 
-	    return resize(width,height);
+	    return assertresize(width,height);
 	}
 
-	virtual bool resize(int width, int height)
+	virtual bool assertresize(int width, int height)
 	{
 
 
@@ -101,15 +104,39 @@ public:
 		return true;
 	}
 
-	virtual bool render(ScreenBuffer & screen) const
+	virtual bool assertrender(ScreenBuffer & screen) const
     {
+        bool res = false;
+        res &=  red == screen.getpixel(posred.getx(),posred.gety());
+        if (!res)
+        {
+            m_log << nl << "Red = " << red;
+            m_log << nl << "Pixel = " << screen.getpixel(posred.getx(),posred.gety());
+            setError(-1,"Red Pixel is wrong");
+        }
+		res &= green == screen.getpixel(posgreen.getx(),posgreen.gety());
+		if (!res)
+        {
+            m_log << nl << "Green = " << green;
+            m_log << nl << "Pixel = " << screen.getpixel(posgreen.getx(),posgreen.gety());
+            setError(-1,"Green Pixel is wrong");
+        }
+		res &= blue == screen.getpixel(posblue.getx(),posblue.gety());
+		if (!res)
+        {
+            m_log << nl << "Blue = " << blue;
+            m_log << nl << "Pixel = " << screen.getpixel(posblue.getx(),posblue.gety());
+            setError(-1,"Blue Pixel is wrong");
+        }
+		res &= alpha == screen.getpixel(posalpha.getx(),posalpha.gety());
+		if (!res)
+        {
+            m_log << nl << "Alpha = " << alpha;
+            m_log << nl << "Pixel = " << screen.getpixel(posalpha.getx(),posalpha.gety());
+            setError(-1,"Alpha Pixel is wrong");
+        }
 
-        std::cout << "Red Pixel : " << std::hex << screen.getpixel(posred.getx(),posred.gety()) << std::endl;
-		std::cout << "Green Pixel : " << std::hex << screen.getpixel(posgreen.getx(),posgreen.gety())<< std::endl;
-		std::cout << "Blue Pixel : " << std::hex << screen.getpixel(posblue.getx(),posblue.gety())<< std::endl;
-		std::cout << "Alpha Pixel : " << std::hex << screen.getpixel(posblue.getx(),posblue.gety())<< std::endl;
-
-		return true;
+		return res;
     }
 
 };
@@ -130,14 +157,16 @@ int main(int argc, char** argv)
 	//yellow background color (useful to test alpha / color key)
 	App::getInstance().getDisplay().getScreenBuffer().setBGColor(Color (255,255,0));
 
-	MyEngine engine("Test_PixelFormat",Test());
+    Test teng(testlog);
+	MyEngine engine(testlog,teng);
 
+    int exitstatus = -1;
     if(App::getInstance().getDisplay().show())
     {
-       App::getInstance().getDisplay().mainLoop();
+       exitstatus = App::getInstance().getDisplay().mainLoop();
     }
 
-    return 0;
+    return exitstatus;
 }
 
 

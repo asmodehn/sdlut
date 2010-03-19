@@ -12,6 +12,7 @@ namespace video
 
 Display::Display(std::string title, Manager * manager)
         : m_exitMainLoop(false),
+        m_exitstatus(0),
         pvm_manager(manager),
         pvm_window(title),
         pvm_screen(ScreenBuffer(0,0,0, manager)),
@@ -23,6 +24,7 @@ Display::Display(std::string title, Manager * manager)
 
 Display::Display( const Display & d)
         : m_exitMainLoop(false),
+        m_exitstatus(0),
         pvm_manager(d.pvm_manager),
         pvm_window(d.pvm_window.getTitle()),
         pvm_screen(ScreenBuffer(0,0,0, d.pvm_manager)),
@@ -188,7 +190,6 @@ bool Display::mainLoop(unsigned int framerate, unsigned int eventrate)
         framerate = 1, eventrate = 1;
     }
     assert(framerate > 0 && "framerate must be greater than 0 !");
-    bool res = false;
 
     //if the videosurface is displayed ( ie the content of the window is shown )
     if (pvm_screen.show()) // is shown only ? can game not run hidden ??
@@ -227,7 +228,7 @@ bool Display::mainLoop(unsigned int framerate, unsigned int eventrate)
             pvm_screen.refresh(framerate, lastframe);
 
         }
-        res = true;
+
     }
     else
     {
@@ -235,16 +236,16 @@ bool Display::mainLoop(unsigned int framerate, unsigned int eventrate)
         Log  << nl <<" Ignoring mainLoop call." << std::endl;
     }
 
-    if (!res)
-    {
-        Log  << nl << "An error occured when trying to launch the main loop, make sure you have initialized everything." << std::endl;
-        Log  << nl <<" Ignoring mainLoop call." << std::endl;
-    }
-    return res;
+    //returning status
+    return m_exitstatus;
 
 }
 
-
+bool Display::exitMainLoop(int exitstatus)
+{
+    m_exitstatus = exitstatus;
+     return m_exitMainLoop = true;
+}
 
 
 

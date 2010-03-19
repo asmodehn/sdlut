@@ -177,7 +177,7 @@ public:
         return *pvm_jpool;
     }
 
-    bool requestTermination(bool emergencyBreak = false );
+    bool requestTermination(int exitstatus = 0);
     bool isTerminating ()
     {
         return m_quitRequested;

@@ -45,6 +45,7 @@ class Display
     //and be able to exit mainloop
 
     bool m_exitMainLoop;
+    int m_exitstatus;
 
 protected:
     Manager* pvm_manager; // here because the manager contains also the SDL specific settings that we need...
@@ -222,6 +223,7 @@ public:
     //Handles the event, and Call engine->prerender, engine ->render() and engine->postrender()
     bool mainLoop(unsigned int framerate = 60,unsigned int eventrate = 60);
 
+    bool exitMainLoop(int exitstatus);
 
 private:
     //AutoPtr to callbacks. plymorphism _must_ be used...

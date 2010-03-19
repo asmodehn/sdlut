@@ -219,21 +219,12 @@ bool App::init()
 
 }
 
-bool App::requestTermination(bool emergencyBreak )
+bool App::requestTermination(int exitstatus )
 {
-    if  ( emergencyBreak )
-    {
-        m_quitRequested = true;
-        this->pvm_display->m_exitMainLoop = true;
-    }
-    else
-    {
         //TODO : do whatever is needed for a gracefull termination
         m_quitRequested = true;
-        this->pvm_display->m_exitMainLoop = true;
-    }
+        return this->pvm_display->exitMainLoop(exitstatus);
 
-    return m_quitRequested;
 }
 
 }
