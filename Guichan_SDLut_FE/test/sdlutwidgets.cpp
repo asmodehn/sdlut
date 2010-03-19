@@ -10,20 +10,17 @@ gcn::Gui* gui;
 }
 #include "widgets.hpp"
 
-using namespace RAGE;
-using namespace RAGE::SDL;
 using namespace globals;
 
-
-gcn::SDLutInput* input;             // Input driver
+gcn::SDLutInput* mySDLutInput;             // Input driver
 gcn::SDLutGraphics* graphics;       // Graphics driver
 gcn::SDLutImageLoader* imageLoader; // For loading images
-gcn::Font* font;
+gcn::Font* myfont;
 
 Logger logger("Example"); //prefix
 
 //Defining UserInput
-class KeyboardInput : public TextInput
+class KeyboardInput : public input::TextInput
 {
 public:
 
@@ -69,7 +66,7 @@ public:
         */
         if (!res)
         {
-            input->pushInput(s, pressed);
+            mySDLutInput->pushInput(s, pressed);
             res = true;
         }
 
@@ -78,7 +75,7 @@ public:
 };
 
 //Defining Mouse Input
-class MouseInput : public Mouse
+class MouseInput : public input::Mouse
 {
 public:
 
@@ -88,7 +85,7 @@ public:
 
         if (!res)
         {
-            input->pushInput(button, x, y, pressed);
+            mySDLutInput->pushInput(button, x, y, pressed);
             res = true;
         }
 
@@ -101,7 +98,7 @@ public:
 
         if (!res)
         {
-            input->pushInput(x, y, xrel, yrel, button_pressed);
+            mySDLutInput->pushInput(x, y, xrel, yrel, button_pressed);
             res = true;
         }
 
@@ -138,7 +135,7 @@ public:
         return true;
     }
 
-    bool render(ScreenBuffer& screen) const
+	bool render(video::ScreenBuffer& screen) const
     {
         // Set the target for the graphics object to be the screen.
         // In other words, we will draw to the screen.
@@ -188,17 +185,17 @@ void implement(std::string fontfile = "" )
     gcn::Image::setImageLoader(imageLoader);
     gui->setGraphics(graphics);
 
-    input = new gcn::SDLutInput();
-    gui->setInput(input);
+    mySDLutInput = new gcn::SDLutInput();
+    gui->setInput(mySDLutInput);
 
     widgets::init();
 
     if (fontfile != "")
     {
-        font = new gcn::SDLutFont(fontfile, 13, RAGE::SDL::Font::Solid );
+		myfont = new gcn::SDLutFont(fontfile, 13, font::Font::Solid );
         delete widgets::font, widgets::font = NULL;
         // The global font is static and must be set.
-        gcn::Widget::setGlobalFont(font);
+        gcn::Widget::setGlobalFont(myfont);
     }
 
     //SDLuT Stuff
@@ -217,13 +214,13 @@ void implement(std::string fontfile = "" )
 void clean()
 {
     delete globals::gui, globals::gui = NULL;
-    delete font, font = NULL;
+    delete myfont, myfont = NULL;
 
     widgets::halt();
     if (widgets::image != NULL)
         delete widgets::image, widgets::image = NULL;
 
-    delete input, input = NULL;
+    delete mySDLutInput, mySDLutInput = NULL;
     delete graphics, graphics = NULL;
     delete imageLoader, imageLoader = NULL;
 
@@ -274,19 +271,19 @@ int main(int argc, char **argv)
     catch (gcn::Exception e)
     {
         logger << nl << e.getMessage() << std::endl;
-        Delay(2000);
+		system::Delay(2000);
         return 1;
     }
     catch (std::exception exc)
     {
         logger << nl << exc.what() << std::endl;
-        Delay(2000);
+        system::Delay(2000);
         return 1;
     }
     catch (...)
     {
         logger << nl << "Unknown exception" << std::endl;
-        Delay(2000);
+        system::Delay(2000);
         return 1;
     }
 

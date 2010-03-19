@@ -28,8 +28,6 @@ gcn::Gui* gui;
 }
 #include "helloworld.hpp"
 
-using namespace RAGE;
-using namespace RAGE::SDL;
 using namespace globals;
 
 //TODO : IF we dont want to use SLDut for the main window and top event handling...
@@ -40,7 +38,7 @@ gcn::SDLutImageLoader* imageLoader; // For loading images
 Logger logger("Example"); //prefix
 
 //Defining UserInput
-class KeyboardInput : public TextInput
+class KeyboardInput : public input::TextInput
 {
 public:
 
@@ -102,7 +100,7 @@ public:
         return true;
     }
 
-    bool render(ScreenBuffer& screen) const
+	bool render(video::ScreenBuffer& screen) const
     {
 
         //Check Gui Logic
@@ -199,19 +197,19 @@ int main(int argc, char **argv)
     catch (gcn::Exception e)
     {
         logger << nl << e.getMessage() << std::endl;
-        Delay(2000);
+		system::Delay(2000);
         return 1;
     }
     catch (std::exception exc)
     {
         logger << nl << exc.what() << std::endl;
-        Delay(2000);
+        system::Delay(2000);
         return 1;
     }
     catch (...)
     {
         logger << nl << "Unknown exception" << std::endl;
-        Delay(2000);
+        system::Delay(2000);
         return 1;
     }
 

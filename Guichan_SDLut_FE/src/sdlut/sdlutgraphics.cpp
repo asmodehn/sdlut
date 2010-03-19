@@ -28,12 +28,12 @@ SDLutGraphics::SDLutGraphics()
     mAlpha = false;
 }
 
-void SDLutGraphics::setTarget(SDLut::ScreenBuffer* target)
+void SDLutGraphics::setTarget(video::ScreenBuffer* target)
 {
     mTarget = target;
 }
 
-SDLut::ScreenBuffer* SDLutGraphics::getTarget() const
+video::ScreenBuffer* SDLutGraphics::getTarget() const
 {
     return mTarget;
 }
@@ -63,7 +63,7 @@ bool SDLutGraphics::pushClipArea(Rectangle area)
 
     const ClipRectangle& carea = mClipStack.top();
 
-    SDLut::Rect rect( carea.x, carea.y, carea.width, carea.height );
+    video::Rect rect( carea.x, carea.y, carea.width, carea.height );
 
     mTarget->setClipRect(rect);
 
@@ -82,7 +82,7 @@ void SDLutGraphics::popClipArea()
     }
 
     const ClipRectangle& carea = mClipStack.top();
-    SDLut::Rect rect(carea.x, carea.y, carea.width, carea.height);
+    video::Rect rect(carea.x, carea.y, carea.width, carea.height);
     /*rect.setx( carea.x );
      rect.sety( carea.y );
      rect.setw( carea.width );
@@ -109,8 +109,8 @@ void SDLutGraphics::drawImage(const Image* image,
 
     const ClipRectangle& top = mClipStack.top();
 
-    SDLut::Rect src (srcX, srcY, width, height);
-    SDLut::Rect dst (dstX + top.xOffset, dstY + top.yOffset, width, height);
+    video::Rect src (srcX, srcY, width, height);
+    video::Rect dst (dstX + top.xOffset, dstY + top.yOffset, width, height);
     /*src.setx( srcX );
     src.sety( srcY );
     src.setw( width );
@@ -166,13 +166,13 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
     }
     else
     {
-        SDLut::Rect rect(area.x, area.y, area.width, area.height);
+        video::Rect rect(area.x, area.y, area.width, area.height);
         /*rect.setx( area.x );
         rect.sety( area.y );
         rect.setw( area.width );
         rect.seth( area.height );*/
 
-        SDLut::Color rgbacolor( (unsigned char)mColor.r, (unsigned char)mColor.g, (unsigned char)mColor.b, (unsigned char)mColor.a );
+        video::Color rgbacolor( (unsigned char)mColor.r, (unsigned char)mColor.g, (unsigned char)mColor.b, (unsigned char)mColor.a );
         mTarget->fill(rgbacolor, rect );
 
     }
@@ -370,9 +370,9 @@ const gcn::Color& SDLutGraphics::getColor() const
     return mColor;
 }
 
-void SDLutGraphics::drawSDLutSurface(SDLut::Image& surface,
-                                     SDLut::Rect& source,
-                                     SDLut::Rect& destination)
+void SDLutGraphics::drawSDLutSurface(video::Image& surface,
+                                     video::Rect& source,
+                                     video::Rect& destination)
 {
     if (mClipStack.empty())
     {

@@ -37,14 +37,14 @@ public:
      *
      * @param target the target to draw to.
      */
-    virtual void setTarget(SDLut::ScreenBuffer* target);
+    virtual void setTarget(video::ScreenBuffer* target);
 
     /**
      * Gets the target BaseSurface.
      *
      * @return the target BaseSurface.
      */
-    virtual SDLut::ScreenBuffer* getTarget() const;
+    virtual video::ScreenBuffer* getTarget() const;
 
     /**
      * Draws a BaseSurface on the target surface. Normaly you'll
@@ -52,9 +52,9 @@ public:
      *
      * NOTE: The clip areas will be taken into account.
      */
-    virtual void drawSDLutSurface(SDLut::Image& surface,
-                                  SDLut::Rect& source,
-                                  SDLut::Rect& destination);
+	virtual void drawSDLutSurface(video::Image& surface,
+                                  video::Rect& source,
+                                  video::Rect& destination);
 
 
     // Inherited from Graphics
@@ -106,7 +106,7 @@ protected:
      */
     virtual void drawVLine(int x, int y1, int y2);
 
-    SDLut::ScreenBuffer* mTarget;
+    video::ScreenBuffer* mTarget;
     gcn::Color mColor;
     bool mAlpha;
 };

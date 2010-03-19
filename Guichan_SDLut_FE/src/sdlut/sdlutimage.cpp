@@ -14,9 +14,9 @@ Made by XorfacX
 namespace gcn
 {
 //moved into loader
-//const SDLut::RGBAColor SDLutImage::magicPink = SDLut::RGBAColor(255,0,255,255);
+//const RGBAColor SDLutImage::magicPink = RGBAColor(255,0,255,255);
 
-SDLutImage::SDLutImage(SDLut::Image* surface, bool autoFree)
+SDLutImage::SDLutImage(video::Image* surface, bool autoFree)
 {
     mAutoFree = autoFree;
     mSurface = surface;
@@ -30,7 +30,7 @@ SDLutImage::~SDLutImage()
     }
 }
 
-SDLut::Image* SDLutImage::getSurface() const
+video::Image* SDLutImage::getSurface() const
 {
     return mSurface;
 }
@@ -61,7 +61,7 @@ gcn::Color SDLutImage::getPixel(int x, int y)
     {
         throw GCN_EXCEPTION("Trying to get a pixel from a non loaded image.");
     }
-    SDLut::Color color = SDLutgetPixel(mSurface, x, y);
+	video::Color color = SDLutgetPixel(mSurface, x, y);
     return gcn::Color( color.getR(), color.getG(), color.getB(), color.getA() );
 }
 
@@ -89,7 +89,7 @@ void SDLutImage::convertToDisplayFormat()
 
     //NOT SURE if part of the old algorithms is still needed...
 
-    /*    SDLut::Color pink = magicPink;
+    /*    Color pink = magicPink;
 
         bool hasPink = false;
         bool hasAlpha = false;
@@ -98,7 +98,7 @@ void SDLutImage::convertToDisplayFormat()
         {
             for (signed int y = 0; y < mSurface->getHeight(); y++)
             {
-                SDLut::Color Current_pxColor = SDLutgetPixel((SDLut::Image*&)mSurface, x, y);
+                Color Current_pxColor = SDLutgetPixel((Image*&)mSurface, x, y);
 
                 //Looking for pink color as it's the default ColorKey for image in GuiChan
                 if (!hasPink)

@@ -18,11 +18,11 @@ namespace gcn
 /**
  * SDLut implementation of Image.
  */
-class GCN_EXTENSION_DECLSPEC SDLutImage : public Image
+	class GCN_EXTENSION_DECLSPEC SDLutImage : public gcn::Image
 {
 public:
     /**
-     * Constructor. Load an image from an SDLut BaseSurface.
+     * Constructor. Load an image from an SDLut Image.
      *
      * NOTE: The functions getPixel and putPixel are only guaranteed to work
      *       before an image has been converted to display format.
@@ -32,8 +32,8 @@ public:
      */
 
     //moved into loader
-    //static const SDLut::RGBAColor magicPink;
-    SDLutImage(SDLut::Image* surface, bool autoFree);
+    //static const RGBAColor magicPink;
+    SDLutImage(video::Image* surface, bool autoFree);
 
     /**
      * Destructor.
@@ -45,7 +45,7 @@ public:
      *
      * @return the RGBSurface for the image.
      */
-    virtual SDLut::Image* getSurface() const;
+    virtual video::Image* getSurface() const;
 
     // Inherited from Image
 
@@ -62,7 +62,7 @@ public:
     virtual void convertToDisplayFormat();
 
 protected:
-    SDLut::Image* mSurface;
+    video::Image* mSurface;
     bool mAutoFree;
 };
 }

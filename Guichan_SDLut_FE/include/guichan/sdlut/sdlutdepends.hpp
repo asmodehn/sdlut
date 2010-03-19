@@ -7,8 +7,8 @@ Made by XorfacX
 //Include the main SDLut header
 #include "SDL.hh"
 
-//to prepare for namespace changes
-#define SDLut RAGE::SDL
+using namespace SDLut;
+using namespace RAGE;
 
 
 #if defined(_MSC_VER)

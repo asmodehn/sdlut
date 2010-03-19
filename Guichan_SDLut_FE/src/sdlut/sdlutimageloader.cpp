@@ -14,22 +14,22 @@ Made by XorfacX
 namespace gcn
 {
 
-const SDLut::Color SDLutImageLoader::magicPink = SDLut::Color(255,0,255,255);
+	const video::Color SDLutImageLoader::magicPink = video::Color(255,0,255,255);
 
 SDLutImageLoader::SDLutImageLoader()
 {
 
 }
 
-Image* SDLutImageLoader::load(const std::string& filename, bool convertToDisplayFormat)
+gcn::Image* SDLutImageLoader::load(const std::string& filename, bool convertToDisplayFormat)
 {
     //Inner default color key in guichan
     return load(filename, magicPink, convertToDisplayFormat);
 }
 
-Image* SDLutImageLoader::load(const std::string& filename, const SDLut::Color& rgba_color, bool convertToDisplayFormat)
+gcn::Image* SDLutImageLoader::load(const std::string& filename, const video::Color& rgba_color, bool convertToDisplayFormat)
 {
-    std::auto_ptr<SDLut::Image> img=sdlutimgloader.load(filename, rgba_color);
+    std::auto_ptr<video::Image> img = sdlutimgloader.load(filename, rgba_color);
     SDLutImage* image = new SDLutImage( img.release() , true );
 
     if (image && convertToDisplayFormat)

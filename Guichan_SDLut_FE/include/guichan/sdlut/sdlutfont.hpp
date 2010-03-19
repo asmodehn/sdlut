@@ -22,11 +22,8 @@ namespace gcn
  * to display True Type Fonts with SDL.
  *
  * NOTE: You must initialize the SDL_ttf library before using this
- *       class. Also, remember to call the SDL_ttf libraries quit
- *       function.
+ *       class.
  *
- * @author Walluce Pinkham
- * @author Olof Naessén
  */
 class GCN_EXTENSION_DECLSPEC SDLutFont: public Font
 {
@@ -45,7 +42,7 @@ public:
      * @param size: the size the font should be in.
      * @param AntiAliasing: set AntiAliasing ON/OFF
      */
-    SDLutFont (const std::string& filename, int size, SDLut::Font::RenderMode renderMode = SDLut::Font::Blended, SDLut::Font::Style style = SDLut::Font::Normal);
+	SDLutFont (const std::string& filename, int size, font::Font::RenderMode renderMode = font::Font::Blended, font::Font::Style style = font::Font::Normal);
 
     /**
     * Destructor.
@@ -95,19 +92,19 @@ public:
     *
     * @return the Style.
     */
-    SDLut::Font::Style getStyle();
+    font::Font::Style getStyle();
 
     /**
     * Sets the Font Style.
     *
     * @param s, the Font Style.
     */
-    void setStyle(SDLut::Font::Style s);
+    void setStyle(font::Font::Style s);
 
 protected:
-    SDLut::Font *mFont;
-    SDLut::Font::RenderMode mRenderMode;
-    SDLut::Font::Style mStyle;
+	font::Font *mFont;
+	font::Font::RenderMode mRenderMode;
+    font::Font::Style mStyle;
 
     int mHeight;
     int mGlyphSpacing;

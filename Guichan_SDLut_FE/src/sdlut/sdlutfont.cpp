@@ -13,9 +13,10 @@ Made by XorfacX
 
 #include <guichan/sdlut/sdlutgraphics.hpp>
 
+
 namespace gcn
 {
-SDLutFont::SDLutFont (const std::string& filename, int size, RAGE::SDL::Font::RenderMode renderMode, RAGE::SDL::Font::Style style)
+SDLutFont::SDLutFont (const std::string& filename, int size, font::Font::RenderMode renderMode /*= font::Font::Blended*/, font::Font::Style style /*= font::Font::Normal*/)
 {
     try
     {
@@ -26,7 +27,7 @@ SDLutFont::SDLutFont (const std::string& filename, int size, RAGE::SDL::Font::Re
         mFilename = filename;
         mFont = NULL;
 
-        mFont = new RAGE::SDL::Font(filename.c_str(), size);
+		mFont = new font::Font(filename.c_str(), size);
         mFont->setStyle(mStyle);
 
     }
@@ -89,20 +90,20 @@ void SDLutFont::drawString(Graphics* graphics, const std::string& text, const in
 
     Color col = sdlutGraphics->getColor();
 
-    SDLut::Color RGBACol (  static_cast<unsigned char>( col.r ),
+	video::Color RGBACol (  static_cast<unsigned char>( col.r ),
                             static_cast<unsigned char>( col.g ),
                             static_cast<unsigned char>( col.b ),
 							static_cast<unsigned char>( col.a )
                          );
 
 
-    SDLut::Text textsurf(text, *mFont, RGBACol);
+	font::Text textsurf(text, *mFont, RGBACol);
     textsurf.changeRendermode(mRenderMode);
 
-    //SDLut::Rect dst(x, y + yoffset, 0, 0);
-    //SDLut::Rect src(0, 0, textsurf.getWidth(), textsurf.getHeight());
-	SDLut::Rect dst(x, y + yoffset, textsurf.getWidth(), textsurf.getHeight());
-    SDLut::Rect src(0, 0, textsurf.getWidth(), textsurf.getHeight());
+    //Rect dst(x, y + yoffset, 0, 0);
+    //Rect src(0, 0, textsurf.getWidth(), textsurf.getHeight());
+	video::Rect dst(x, y + yoffset, textsurf.getWidth(), textsurf.getHeight());
+    video::Rect src(0, 0, textsurf.getWidth(), textsurf.getHeight());
 
     /*
     dst.resetx( x );
@@ -137,11 +138,11 @@ int SDLutFont::getGlyphSpacing()
     return mGlyphSpacing;
 }
 
-RAGE::SDL::Font::Style SDLutFont::getStyle()
+font::Font::Style SDLutFont::getStyle()
 {
     return mStyle;
 }
-void SDLutFont::setStyle(RAGE::SDL::Font::Style s)
+void SDLutFont::setStyle(font::Font::Style s)
 {
     mFont->setStyle(s);
 }
