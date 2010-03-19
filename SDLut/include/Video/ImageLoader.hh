@@ -2,9 +2,6 @@
 #define ImageLoader_HH
 
 /*******************************************************************************
- * Loads an Image from a file
- * GLSurface are created if compilation found OpenGL
- * otherwise RGBSurface are created.
  ******************************************************************************/
 
 #include "Video/Image.hh"
@@ -14,6 +11,26 @@ namespace SDLut
 {
 namespace video
 {
+
+
+/**
+ * \class ImageLoader
+ * \ingroup SDLut_Video
+ *
+ * \brief This class handles an Image
+ *
+ * This class loads an Image from a file
+ * GLSurface are created if compilation found OpenGL
+ * otherwise RGBSurface are created.
+ *
+ * \author Alex
+ *
+ * \date 2010\03\19
+ *
+ * contact : asmodehn@gna.org
+ */
+
+
 
 class ImageLoader
 {

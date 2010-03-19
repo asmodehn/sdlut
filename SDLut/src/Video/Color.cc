@@ -99,31 +99,6 @@ bool Color::operator!=(const Color& color) const
 
 
 
-Palette::Palette(const SDL_Palette* palette) : ptm_sdl_palette(palette)
-{
-    pointerCopy = true;
-}
-
-Palette::~Palette(void)
-{
-    if (!pointerCopy)
-        delete ptm_sdl_palette;
-}
-
-int Palette::getNColors(void) const
-{
-    return ptm_sdl_palette->ncolors;
-}
-Color Palette::getColors(int index) const
-{
-    //creates a new color to protects color in Palette...
-    //maybe using const would be better ??
-    return Color(	ptm_sdl_palette->colors[index].r,
-                      ptm_sdl_palette->colors[index].g,
-                      ptm_sdl_palette->colors[index].b,
-                      ptm_sdl_palette->colors[index].unused
-                    );
-}
 
 
 }

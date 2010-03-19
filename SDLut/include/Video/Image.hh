@@ -1,10 +1,6 @@
 #ifndef Image_HH
 #define Image_HH
 
-/*******************************************************************************
- * Handle an Image
- ******************************************************************************/
-
 #include "Video/internal/SDLRGBSurface.hh"
 #include "Video/internal/OpenGL/SDLGLSurface.hh"
 
@@ -15,6 +11,21 @@ namespace SDLut
 {
 namespace video
 {
+
+/**
+ * \class Image
+ * \ingroup SDLut_Video
+ *
+ * \brief This class handles an Image
+ *
+ * This class hides the details of implementation of 2D display and contains a window and a Screenbuffer.
+ *
+ * \author Alex
+ *
+ * \date 2010\03\19
+ *
+ * contact : asmodehn@gna.org
+ */
 
 
 class Image

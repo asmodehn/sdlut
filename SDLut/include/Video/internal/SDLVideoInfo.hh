@@ -4,7 +4,6 @@
 /**
  * \class VideoInfo
  *
- * \ingroup Video
  *
  * \brief A class to wrap SDL_VideoInfo
  *

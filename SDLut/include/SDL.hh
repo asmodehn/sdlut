@@ -94,7 +94,7 @@
 #include "SDLManager.hh"
 
 /**
-  * \defgroup SDLut::video
+  * \defgroup SDLut_Video
   *
   * This Module provides a set of classes to make the use of SDL in C++ much more convenient.
   * The classes in this namespace wrap the following SDL commands :
@@ -171,7 +171,7 @@
 #include "Video/Rect.hh"
 
 /**
-  * \defgroup SDLut::system
+  * \defgroup SDLut_System
   */
 #include "System/SDLEvent.hh"
 #include "System/SDLEventManager.hh"
@@ -185,12 +185,12 @@
 #include "System/SDLCondition.hh"
 
 /**
-  * \defgroup SDLut::network
+  * \defgroup SDLut_Network
   */
 #include "Network/SDLSocketTCP.hh"
 
 /**
-  * \defgroup SDLut::input
+  * \defgroup SDLut_Input
   */
 #include "Input/SDLMouse.hh"
 #include "Input/SDLCursor.hh"
@@ -198,13 +198,13 @@
 #include "Input/SDLJoystick.hh"
 
 /**
-  * \defgroup SDLut::audio
+  * \defgroup SDLut_Audio
  */
 #include "Audio/SDLMixer.hh"
 #include "Audio/SDLSound.hh"
 
 /**
-  * \defgroup SDLut::font
+  * \defgroup SDLut_Font
   */
 #include "Font/SDLFont.hh"
 #include "Font/Text.hh"

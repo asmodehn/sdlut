@@ -1,22 +1,6 @@
 #ifndef SDLut_ScreenBuffer_hh
 #define SDLut_ScreenBuffer_hh
 
-/**
- * \class ScreenBuffer
- * \ingroup Video
- *
- * \brief This class handles the displayed zone stored on memory...
- *
- * This class hides the details of implementation of 2D display and
- * the details of refreshing only the parts of the screen needed...( coming soon... )
- *
- * \author Alex
- *
- * \date 2009\06\24
- *
- * contact : asmodehn@gna.org
- */
-
 #include "SDLManager.hh"
 #include "Video/internal/SDLVideoInfo.hh"
 #include "Video/internal/SDLVideoSurface.hh"
@@ -39,6 +23,22 @@ namespace SDLut
 namespace video
 {
 
+
+/**
+ * \class ScreenBuffer
+ * \ingroup SDLut_Video
+ *
+ * \brief This class handles the displayed zone stored on memory...
+ *
+ * This class hides the details of implementation of 2D display and
+ * the details of refreshing only the parts of the screen needed...( coming soon... )
+ *
+ * \author Alex
+ *
+ * \date 2009\06\24
+ *
+ * contact : asmodehn@gna.org
+ */
 
 class ScreenBuffer
 {

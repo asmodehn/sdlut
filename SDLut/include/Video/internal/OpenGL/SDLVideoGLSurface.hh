@@ -4,9 +4,6 @@
 /**
  * \class VideoGLSurface
  *
- * \ingroup Video
- * \ingroup WindowManager
- *
  * \brief This class is handle a video OpenGL surface.
  *
  * \author Alex
@@ -39,7 +36,7 @@ namespace OGL
 /**
  * \class Videosurface
  *
- * \ingroup Video
+ * \ingroup SDLut_Video
  *
  * \brief A class to wrap SDL_Surface only when it is a Video one
  *
@@ -111,7 +108,7 @@ public:
 
 
     //to resize the display
-    virtual bool resize (int width, int height, bool keepcontent = false);
+    virtual bool resize (int width, int height);
 
     //to flip the videosurface
     virtual bool refresh(void);

@@ -1,6 +1,8 @@
 #include "Video/internal/SDLBaseSurface.hh"
 #include "SDLConfig.hh"
 
+#include <stdexcept>
+
 using namespace RAGE;
 
 namespace SDLut
@@ -26,7 +28,7 @@ bool BaseSurface::unlock(void)
     return true;
 }
 
-BaseSurface::BaseSurface() throw (std::logic_error)
+BaseSurface::BaseSurface()
 : ptm_pformat(NULL)
 {
 }
@@ -66,21 +68,21 @@ bool BaseSurface::set_SDL_Surface(std::auto_ptr<SDL_Surface> s)
 }
 
 ///Conversion Constructor
-BaseSurface::BaseSurface(SDL_Surface * s) throw (std::logic_error) : ptm_surf(s), ptm_pformat(NULL)
+BaseSurface::BaseSurface(SDL_Surface * s) : ptm_surf(s), ptm_pformat(NULL)
 {
     if (ptm_surf.get() == 0 ) throw std::logic_error("Surface not initialised properly : SDL_Surface NULL pointer.");
     ptm_pformat = new PixelFormat(ptm_surf->format);
 }
 
 //Conversion Constructor with explicit ownership transfer as it s using an auto_ptr
-BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error) : ptm_surf(s),ptm_pformat(NULL)
+BaseSurface::BaseSurface(std::auto_ptr<SDL_Surface> s) : ptm_surf(s),ptm_pformat(NULL)
 {
     if (ptm_surf.get() == 0 ) throw std::logic_error("Surface not initialised properly : SDL_Surface NULL pointer.");
     ptm_pformat = new PixelFormat(ptm_surf->format);
 }
 
 //deep copy
-BaseSurface::BaseSurface(const BaseSurface & s) throw (std::logic_error)
+BaseSurface::BaseSurface(const BaseSurface & s)
 try :
     ptm_surf(0),
     ptm_pformat(NULL)
@@ -137,7 +139,7 @@ BaseSurface::~BaseSurface()
     SDL_FreeSurface(ptm_surf.release());
 }
 
-BaseSurface::BaseSurface(const BaseSurface & s ,unsigned long flags, PixelFormat pfmt) throw (std::logic_error)
+BaseSurface::BaseSurface(const BaseSurface & s ,unsigned long flags, PixelFormat pfmt)
 try :
     ptm_surf(0)
 {

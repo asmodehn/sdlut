@@ -45,7 +45,6 @@ private:
     explicit GLSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error);
 
     bool computeGLWidthHeight();
-    bool convertPixels();
 
 protected:
 
@@ -113,7 +112,6 @@ bool setAlpha(unsigned int alpha, bool rleAccel = true);
     //saveBMP // TODO useful for screenshots
 
     virtual bool resize(int width, int height, bool keepcontent = false);
-    //bool resizegl(int width, int height, bool keepcontent = false);
 
     bool fill (const PixelColor& color, Rect dest_rect);
 

@@ -2,10 +2,24 @@
 #define SDL_RECT_HH
 
 
+#include <iostream>
+
+//further definition
+struct SDL_Rect;
+
+namespace SDLut
+{
+namespace video
+{
+
+namespace internal { class BaseSurface;}
+
+
+
 /**
  * \class Rect
  *
- * \ingroup Video
+ * \ingroup SDLut_Video
  *
  * \brief This class is a Rectangle
  *
@@ -20,18 +34,6 @@
  * Contact: asmodehn@gna.org
  *
  */
-
-#include <iostream>
-
-//further definition
-struct SDL_Rect;
-
-namespace SDLut
-{
-namespace video
-{
-
-namespace internal { class BaseSurface;}
 
 class Rect
 {

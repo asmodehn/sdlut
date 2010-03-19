@@ -8,7 +8,6 @@
 /**
  * \class SDLOverlay
  *
- * \ingroup Video
  *
  * \brief This class wraps SDL_Overlay
  *

@@ -92,7 +92,11 @@ bool setAlpha(unsigned int alpha, bool rleAccel = true);
     	int update(void);
     */
 
-    virtual bool resize(int width, int height, bool keepcontent = false);
+    virtual bool resize(int width, int height, bool keepcontent);
+    bool resize(int width, int height)
+    {
+        return resize(width,height,false);
+    }
 
     bool isSRCColorKeyset(void);
     bool isSRCAlphaset(void);

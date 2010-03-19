@@ -25,7 +25,7 @@ typedef uint32_t	Uint32;
 /**
  * \class App
  *
- * \ingroup General
+ * \ingroup SDLut
  *
  * \brief Principal class that handle the Application ( Lead Manager , Manage EventHandlers,the main window, the video Info, etc.)
  *
@@ -132,7 +132,7 @@ public:
     ///Initializing Timers
     bool initTimer();
 
-    /*
+    /**
      * Initializing Audio
      * warning: the init audio parameters must be linked files that will be played else it cause pbs (speed too fast, cracks, ...)
      *

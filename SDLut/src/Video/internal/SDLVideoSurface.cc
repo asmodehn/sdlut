@@ -175,8 +175,7 @@ bool VideoSurface::refresh(void)
      return SDL_Flip(ptm_surf.get()) == 0;
 }
 
-//TODO : rethink about that again...( recopy the content if 2D or not at all ??? )
-bool VideoSurface::resize(int width, int height, bool keepcontent)
+bool VideoSurface::resize(int width, int height)
 {
 
 #ifdef DEBUG
@@ -184,14 +183,6 @@ bool VideoSurface::resize(int width, int height, bool keepcontent)
 #endif
 
     bool res;
-    std::auto_ptr<SDL_Surface> oldSurf(0);
-    if ( keepcontent && !isOpenGLset())
-    {
-        oldSurf.reset( SDL_CreateRGBSurface(SDL_SWSURFACE,getWidth(),getHeight(),getBPP(),r_default_mask,g_default_mask, b_default_mask, a_default_mask) );
-        SDL_DisplayFormat(oldSurf.get());
-        SDL_BlitSurface(ptm_surf.get(),NULL,oldSurf.get(),NULL);
-    }
-
     //BEWARE : should match DisplaySurface Constructor code
     std::auto_ptr<SDL_Surface> newSurf( SDL_SetVideoMode(width,height,getBPP(),getFlags()) );
 
@@ -207,11 +198,6 @@ bool VideoSurface::resize(int width, int height, bool keepcontent)
     else
     {
 
-        if (keepcontent  && !isOpenGLset() && oldSurf.get() != 0)
-        {
-            SDL_BlitSurface(oldSurf.get(), NULL , newSurf.get(), NULL);
-            SDL_FreeSurface(oldSurf.get());
-        }
         ptm_surf=newSurf;
 
 #ifdef DEBUG
@@ -219,8 +205,6 @@ bool VideoSurface::resize(int width, int height, bool keepcontent)
 #endif
         res = true;
     }
-
-    SDL_FreeSurface(oldSurf.release());
 
     return (res && initialized());
 }

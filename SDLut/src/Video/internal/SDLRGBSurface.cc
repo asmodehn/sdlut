@@ -286,7 +286,6 @@ bool RGBSurface::isSRCAlphaset(void)
 bool RGBSurface::convertToDisplayFormat()
 {
     assert(ptm_surf.get());
-    bool res;
     std::auto_ptr<SDL_Surface> optsurf(0);
     if ( isSRCAlphaset() /*|| isSRCColorKeyset()*/ )
     {

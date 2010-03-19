@@ -24,7 +24,6 @@ try :
 
 
     computeGLWidthHeight();
-    convertPixels();
 
 #ifdef DEBUG
 
@@ -49,7 +48,6 @@ try :
 #endif
 
     computeGLWidthHeight();
-    convertPixels();
 
 #ifdef DEBUG
 
@@ -77,7 +75,6 @@ try :
 
 
     computeGLWidthHeight();
-    convertPixels();
 
 
 #ifdef DEBUG
@@ -105,8 +102,6 @@ try :
 
 
     computeGLWidthHeight();
-    convertPixels();
-
 
 #ifdef DEBUG
 
@@ -137,7 +132,6 @@ try :
 #endif
 
     computeGLWidthHeight();
-    convertPixels();
 
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << width <<", " << height << ", " << bpp << ", "<< alpha << ", " << colorkey << ", " << hardware << "...) done -> " << ptm_surf.get() << " created.";
@@ -165,7 +159,6 @@ try	:
 #endif
 
     computeGLWidthHeight();
-    convertPixels();
 
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width <<", " << height << "...) done -> " << ptm_surf.get() << " created.";
@@ -187,9 +180,6 @@ try : RGBSurface(rwops), modified(false),m_actualWidth(ptm_surf->w), m_actualHei
 #endif
 
     computeGLWidthHeight();
-    convertPixels();
-
-
 
 
 #ifdef DEBUG
@@ -224,61 +214,6 @@ bool GLSurface::computeGLWidthHeight()
     }
 
 return res;
-}
-
-bool GLSurface::convertPixels()
-{
-    //Todo : We need to here convert the surface to proper BPP to match video surface
-    //or OpenGL will not display it
-
-    //WIP : Shouldnt be. PixelFormat of the surface will give us proper color when we do "RGBSurface::getpixel()"
-    //WIP : Commenting.
-    //RGBSurface::convertToDisplayFormat();
-    // DANGER needs to be called after  setting up teh screen ( SetVideoMode ) otherwise SDL has problems
-
-    //
-    //NB : OpenGL texture are equivalents of SDL_HWSurfaces.
-    // Therefore original RGBSurface should be SW_SURFACE for faster access here
-    //
-
-    optimised = false;
-/* THE HARD WAY
-    if ( texturePixels != NULL ) delete texturePixels, texturePixels=NULL;
-    texturePixels = new unsigned int[ textureWidth * textureHeight ];
-    PixelColor c,ckey = 0x00000000; //default pixelcolor value and colorkey is full transparent
-    if ( RGBSurface::isSRCColorKeyset() )
-    {
-        ckey = RGBSurface::getColorKey();
-    }
-    for (unsigned int y = 0; y < textureHeight; y++)
-    {
-        for (unsigned int x = 0; x < textureWidth; x++)
-        {
-            if (x < getWidth() && y < getHeight())
-            {
-                c = RGBSurface::getpixel(x, y);
-
-                //ColorKey to transparent
-                if ( ckey == c )
-                {
-                    texturePixels[x + y * textureWidth] = 0x00000000;
-                }
-
-                //We need to convert the pixel color from the SDL RGBSurface format to the OpenGL format
-                texturePixels[x + y * textureWidth] = getPixelFormat().convert(c,RGBSurface::getPixelFormat());
-            }
-            else
-            {
-                //filling with transparent 0s...
-                texturePixels[x + y * textureWidth] = 0x00000000;
-            }
-        }
-    }
-    */
-
-    /* The EASY WAY -> WORKING ?? */
-
-return true;
 }
 
 GLSurface::~GLSurface()

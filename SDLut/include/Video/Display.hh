@@ -1,21 +1,6 @@
 #ifndef SDLut_Display_hh
 #define SDLut_Display_hh
 
-/**
- * \class Display
- * \ingroup Video
- *
- * \brief This class handles the display part of the application
- *
- * This class hides the details of implementation of 2D display and contains a window and a Screenbuffer.
- *
- * \author Alex
- *
- * \date 2009\07\24
- *
- * contact : asmodehn@gna.org
- */
-
 #include "SDLManager.hh"
 #include "Video/ScreenBuffer.hh"
 #include "Video/internal/SDLWindow.hh"
@@ -37,9 +22,21 @@ namespace SDLut
 namespace video
 {
 
-//further reference to break dependency cycles
-//class EventManager;
-//Not needed anymore ??
+/**
+ * \class Display
+ * \ingroup SDLut_Video
+ *
+ * \brief This class handles the display part of the application
+ *
+ * This class hides the details of implementation of 2D display and contains a window and a Screenbuffer.
+ *
+ * \author Alex
+ *
+ * \date 2009\07\24
+ *
+ * contact : asmodehn@gna.org
+ */
+
 
 class Display
 {

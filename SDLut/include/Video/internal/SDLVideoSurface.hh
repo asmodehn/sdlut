@@ -1,26 +1,9 @@
 #ifndef SDL_VideoSurface_HH
 #define SDL_VideoSurface_HH
 
-/**
- * \class VideoSurface
- *
- * \ingroup Video
- * \ingroup WindowManager
- *
- * \brief This class is handle a video surface.
- *
- * This class has a derivative if your display is 3D (OpenGL).
- *
- * \author Alex
- *
- * \date 2005/10/02
- *
- * Contact: asmodehn@gna.org
- *
- */
-
 #include "Video/internal/SDLBaseSurface.hh"
 #include "Video/internal/SDLRGBSurface.hh" //to help with backup of screen surface
+#include "Video/internal/SDLVideoInfo.hh"
 
 #include <iostream>
 #include <vector>
@@ -38,8 +21,6 @@ namespace video
 
 /**
  * \class Videosurface
- *
- * \ingroup Video
  *
  * \brief A class to wrap SDL_Surface only when it is a Video one
  *
@@ -96,7 +77,7 @@ public:
     //this kind of surface shouldnt be deleted by hand. the raw SDL methods takes care of it
 
     //to resize the display
-    virtual bool resize (int width, int height, bool keepcontent = false);
+    virtual bool resize (int width, int height);
     //to flip the videosurface
     virtual bool refresh(void);
 

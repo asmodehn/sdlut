@@ -4,7 +4,7 @@
 /**
  * \class Manager
  *
- * \ingroup General
+ * \ingroup SDLut
  *
  * \brief Manage the global SDL state
  *

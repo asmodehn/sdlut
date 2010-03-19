@@ -5,7 +5,7 @@
 
 namespace SDLut
 {
-namespace SDL
+namespace system
 {
 
 unsigned long getCurrentThreadID()

@@ -4,7 +4,7 @@
 /**
  * \class Version
  *
- * \ingroup General
+ * \ingroup SDLut
  *
  * \brief This class provides access to both linked and compiled SDL versions and specific CPU features check...
  *

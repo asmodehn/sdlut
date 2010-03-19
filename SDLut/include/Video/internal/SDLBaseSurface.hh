@@ -1,23 +1,6 @@
 #ifndef SDL_BASESURFACE_HH
 #define SDL_BASESURFACE_HH
 
-/**
- * \class BaseSurface
- *
- * \ingroup Video
- *
- * \brief Abstract Class to manage Surfaces
- *
- * Abstract Class to handle common behaviour between display surface
- * and other surface types...
- *
- * \author Alex
- *
- * \date 2005/10/02
- *
- * Contact: asmodehn@gna.org
- *
- */
 
 #include "Logger.hh"
 
@@ -25,7 +8,7 @@
 //to be able to know which renderers can be used on the platform
 
 #include "Video/Rect.hh"
-#include "Video/internal/SDLVideoInfo.hh"
+#include "Video/internal/SDLPixelFormat.hh"
 
 #include <iostream>
 #include <cassert>
@@ -49,6 +32,23 @@ enum Renderer { SDL, OpenGL };
 enum Renderer { SDL };
 #endif
 
+
+/**
+ * \class BaseSurface
+ *
+ *
+ * \brief Abstract Class to manage Surfaces
+ *
+ * Abstract Class to handle common behaviour between display surface
+ * and other surface types...
+ *
+ * \author Alex
+ *
+ * \date 2005/10/02
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
 
 //TODO : make this class pure virtual one (how then?)... and manage creation of _surf with exception
 //in the derivating tree
@@ -113,15 +113,15 @@ public: //useful else we can't access those functions outside of friend class (f
 
 protected:
     //Default Constructor overload
-    BaseSurface() throw (std::logic_error) ;
+    BaseSurface();
     ///< should be called only by subclasses
 
     ///RAII Conversion Constructor
-    explicit BaseSurface(SDL_Surface * s) throw (std::logic_error) ;
+    explicit BaseSurface(SDL_Surface * s);
     ///< should be called only by subclasses
 
     ///RAII Conversion Constructor with explicit ownership transfer as it s using an auto_ptr
-    explicit BaseSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error) ;
+    explicit BaseSurface(std::auto_ptr<SDL_Surface> s);
     ///< should be called only by subclasses
 
     ///to assign a surface to a BaseSurface
@@ -134,8 +134,8 @@ protected:
 
     /** \brief Copy constructor overload.
       */
-    BaseSurface(const BaseSurface & s) throw (std::logic_error);
-    BaseSurface(const BaseSurface & s , unsigned long flags, PixelFormat pfmt) throw (std::logic_error);
+    BaseSurface(const BaseSurface & s);
+    BaseSurface(const BaseSurface & s , unsigned long flags, PixelFormat pfmt);
 
     /** \brief assignement operator overload.
     */
@@ -220,7 +220,7 @@ public:
         return resize(r.getw(),r.geth());
     }
 
-    virtual bool resize(int width, int height, bool keepcontent = false) = 0;
+    virtual bool resize(int width, int height) = 0;
 
     friend RAGE::Logger & operator << (RAGE::Logger & ostr, const BaseSurface & surf);
 

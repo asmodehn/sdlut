@@ -11,6 +11,24 @@
 
 #include <vector>
 
+/**
+ * \class Console
+ *
+ * \ingroup SDLut
+ *
+ * \brief Implementation fo a Console over SDL
+ *
+ * \author Alex
+ *
+ * \date 2010/03/19
+ *
+ * Contact: asmodehn@gna.org
+ *
+ */
+
+
+
+
 namespace SDLut
 {
 

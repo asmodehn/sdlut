@@ -199,10 +199,7 @@ void VideoGLSurface::setpixel(int x, int y, PixelColor color)
 
 }
 
-
-// keepcontent option very useful for quickly resizing surface to fit in OpengL power of two policy
-// TODO : check if we actually need to signal resized surface as modified...
-bool VideoGLSurface::resize(int width, int height, bool keepcontent)
+bool VideoGLSurface::resize(int width, int height)
 {
 
 #ifdef DEBUG
@@ -211,34 +208,11 @@ bool VideoGLSurface::resize(int width, int height, bool keepcontent)
 
     bool res;
     std::auto_ptr<SDL_Surface> oldSurf(0);
-    if ( keepcontent && !isOpenGLset())
-    {
-        oldSurf.reset( SDL_CreateRGBSurface(SDL_SWSURFACE,getWidth(),getHeight(),getBPP(),r_default_mask,g_default_mask, b_default_mask, a_default_mask) );
-        SDL_DisplayFormat(oldSurf.get());
-        SDL_BlitSurface(ptm_surf.get(),NULL,oldSurf.get(),NULL);
-    }
 
-    //BEWARE : should match DisplaySurface Constructor code
-    std::auto_ptr<SDL_Surface> newSurf( SDL_SetVideoMode(width,height,getBPP(),getFlags()) );
 
-    if (!newSurf.get()) //SetVideoMode has failed
-    {
-        Log << "Unable to resize to " << width << " x " << height << " 2D display surface " << nl << GetError();
+    //We need to recreate the SDL video surface anyway
+    res = VideoSurface::resize(width,height);
 
-#ifdef DEBUG
-        Log << nl << "VideoSurface::resize(" << width << ", " << height << ") failed.";
-#endif
-        res = false;
-    }
-    else
-    {
-
-        if (keepcontent  && !isOpenGLset() && oldSurf.get() != 0)
-        {
-            SDL_BlitSurface(oldSurf.get(), NULL , newSurf.get(), NULL);
-            SDL_FreeSurface(oldSurf.get());
-        }
-        ptm_surf=newSurf;
 
     if(isOpenGLset())
     {
@@ -249,10 +223,6 @@ bool VideoGLSurface::resize(int width, int height, bool keepcontent)
 #ifdef DEBUG
         Log << nl << "VideoGLSurface::resize(" << width << ", " << height << ") succeeded.";
 #endif
-        res = true;
-    }
-
-    SDL_FreeSurface(oldSurf.release());
 
     return (res && initialized());
 }
@@ -328,7 +298,6 @@ if ( ! isOpenGLset() )
         if ( glsrc.modified )
         {
             glsrc.computeGLWidthHeight();
-            glsrc.convertPixels();
             glsrc.optimised = false; // to trigger regeneration of texture if needed
         }
 
