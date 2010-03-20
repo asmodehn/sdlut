@@ -73,6 +73,13 @@ public:
     unsigned char getB() const;
     unsigned char getA() const;
 
+
+    friend Color blend(const Color & cover, const Color & cunder);
+
+    Color & blendover(const Color & c);
+    Color & blendunder(const Color &c );
+
+
     //return a pixel color formatted as RGB(A), in that order, always...
     PixelColor getGLPixelColor() const;
 
@@ -81,6 +88,7 @@ public:
         return os << "RGBAColor : R=" << (int)c.getR() << " G=" << (int)c.getG() << " B=" << (int)c.getB() << " A=" << (int)c.getA() << " " ;
     } //not sure how to derivate that properly... TODO
 
+    bool isSimilarTo(const Color& color) const;
     bool operator==(const Color& color) const;
     bool operator!=(const Color& color) const;
 

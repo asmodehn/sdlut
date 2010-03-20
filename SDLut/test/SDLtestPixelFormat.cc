@@ -6,59 +6,64 @@ class AssertEngine;
 
 Logger testlog("TestPixelFormat");
 
+Color bgc(128,128,128);
+Color red(255,0,0);
+Color green(0,255,0);
+Color blue(0,0,255);
+Color alpha(255,255,255,128);
+
+
 class MyEngine : public TestEngine
 {
-    Image * red,*green,*blue,*alpha;
-
+    Image * imgred,*imggreen,*imgblue,*imgalpha;
 
 public:
 
-	MyEngine(Logger & log, AssertEngine & ae) : TestEngine(log,ae), red(0), green(0),blue(0),alpha(0)
+	MyEngine(Logger & log, AssertEngine & ae) : TestEngine(log,ae), imgred(0), imggreen(0),imgblue(0),imgalpha(0)
 	{
+	    App::getInstance().getDisplay().getScreenBuffer().setBGColor(bgc);
 	}
 
     virtual ~MyEngine()
     {
-        delete red; delete green; delete blue; delete alpha;
+        delete imgred; delete imggreen; delete imgblue; delete imgalpha;
         }
 
 	virtual bool init(int width, int height)
 	{
-
 	    return resize(width,height);
 	}
 
 	virtual bool resize(int width, int height)
 	{
-		delete red; delete green; delete blue; delete alpha;
-		red = new Image(width/4,height,32);
-		red->fill(Color(255,0,0));
-		green = new Image(width/4,height,32);
-		green->fill(Color(0,255,0));
-		blue = new Image(width/4,height,32);
-		blue->fill(Color(0,0,255,128));
-		alpha = new Image(width-red->getWidth()-green->getWidth()-blue->getWidth(),height,32, true);
-		alpha->fill(Color(255,255,255,128));
+		delete imgred; delete imggreen; delete imgblue; delete imgalpha;
+		imgred = new Image(width/4,height,32);
+		imgred->fill(red);
+		imggreen = new Image(width/4,height,32);
+		imggreen->fill(green);
+		imgblue = new Image(width/4,height,32);
+		imgblue->fill(blue);
+		imgalpha = new Image(width-imgred->getWidth()-imggreen->getWidth()-imgblue->getWidth(),height,32, true);
+		imgalpha->fill(alpha);
 
-
-		std::cout << "Red Pixel : " << std::hex << red->getpixel(0,0) << std::endl;
-		std::cout << "Green Pixel : " << std::hex << green->getpixel(0,0)<< std::endl;
-		std::cout << "Blue Pixel : " << std::hex << blue->getpixel(0,0)<< std::endl;
-		std::cout << "Alpha Pixel : " << std::hex << alpha->getpixel(0,0)<< std::endl;
+		std::cout << "Red Pixel : " << std::hex << imgred->getpixel(0,0) << std::endl;
+		std::cout << "Green Pixel : " << std::hex << imggreen->getpixel(0,0)<< std::endl;
+		std::cout << "Blue Pixel : " << std::hex << imgblue->getpixel(0,0)<< std::endl;
+		std::cout << "Alpha Pixel : " << std::hex << imgalpha->getpixel(0,0)<< std::endl;
 
 		return true;
 	}
 
 	virtual bool render(ScreenBuffer & screen) const
     {
-        Rect red_dst(0,0,red->getWidth(),red->getHeight());
-		screen.blit(*red,red_dst);
-		Rect green_dst(0 + red->getWidth(),0,green->getWidth(),green->getHeight());
-		screen.blit(*green,green_dst);
-		Rect blue_dst(0 + red->getWidth() + green->getWidth(), 0,blue->getWidth(),blue->getHeight());
-		screen.blit(*blue,blue_dst);
-		Rect alpha_dst(0 + red->getWidth() + green->getWidth() / 2, 0,alpha->getWidth(),alpha->getHeight());
-		screen.blit(*alpha,alpha_dst);
+        Rect red_dst(0,0,imgred->getWidth(),imgred->getHeight());
+		screen.blit(*imgred,red_dst);
+		Rect green_dst(0 + imgred->getWidth(),0,imggreen->getWidth(),imggreen->getHeight());
+		screen.blit(*imggreen,green_dst);
+		Rect blue_dst(0 + imgred->getWidth() + imggreen->getWidth(), 0,imgblue->getWidth(),imgblue->getHeight());
+		screen.blit(*imgblue,blue_dst);
+		Rect alpha_dst(0 + imgred->getWidth() + imggreen->getWidth() + imgblue->getWidth(), 0, imgalpha->getWidth(),imgalpha->getHeight());
+		screen.blit(*imgalpha,alpha_dst);
 
 		return true;
     }
@@ -68,17 +73,13 @@ public:
 
 class Test : public AssertEngine
 {
+
     Rect posred,posgreen,posblue,posalpha;
 
-    Color red,green,blue,alpha;
 public:
     //we only need one render to see which color are there
     Test( Logger & log) : AssertEngine(log,1)
 	{
-	    red = Color(255,0,0);
-	    green = Color(0,255,0);
-	    blue  = Color(0,0,255);
-	    alpha = Color(0,0,0,0);
 	}
 
     virtual ~Test()
@@ -98,7 +99,7 @@ public:
 		posred = Rect(0,0,width/4,height);
 		posgreen = Rect(0 + posred.getw(),0,width/4,height);
         posblue = Rect(0 + posred.getw() + posgreen.getw(), 0,width/4,height);
-		posalpha = Rect(0 + posred.getw() + posgreen.getw() / 2, 0,width-posred.getw()-posgreen.getw()-posblue.getw(),height);
+		posalpha = Rect(0 + posred.getw() + posgreen.getw() + posblue.getw(), 0,width-posred.getw()-posgreen.getw()-posblue.getw(),height);
 
 
 		return true;
@@ -107,31 +108,31 @@ public:
 	virtual bool assertrender(ScreenBuffer & screen) const
     {
         bool res = true;
-        res &=  red == screen.getpixel(posred.getx(),posred.gety());
+        res = res &&  blend(red,bgc).isSimilarTo(screen.getpixel(posred.getx(),posred.gety()));
         if (!res)
         {
-            m_log << nl << "Red = " << red;
+            m_log << nl << "Red = " << blend(red,bgc);
             m_log << nl << "Pixel = " << screen.getpixel(posred.getx(),posred.gety());
             setError(-1,"Red Pixel is wrong");
         }
-		res &= green == screen.getpixel(posgreen.getx(),posgreen.gety());
+		res = res && blend(green,bgc).isSimilarTo(screen.getpixel(posgreen.getx(),posgreen.gety()));
 		if (!res)
         {
-            m_log << nl << "Green = " << green;
+            m_log << nl << "Green = " << blend(green,bgc);
             m_log << nl << "Pixel = " << screen.getpixel(posgreen.getx(),posgreen.gety());
             setError(-1,"Green Pixel is wrong");
         }
-		res &= blue == screen.getpixel(posblue.getx(),posblue.gety());
+		res = res && blend(blue,bgc).isSimilarTo( screen.getpixel(posblue.getx(),posblue.gety()));
 		if (!res)
         {
-            m_log << nl << "Blue = " << blue;
+            m_log << nl << "Blue = " << blend(blue,bgc);
             m_log << nl << "Pixel = " << screen.getpixel(posblue.getx(),posblue.gety());
             setError(-1,"Blue Pixel is wrong");
         }
-		res &= alpha == screen.getpixel(posalpha.getx(),posalpha.gety());
+		res = res && blend(alpha,bgc).isSimilarTo( screen.getpixel(posalpha.getx(),posalpha.gety()));
 		if (!res)
         {
-            m_log << nl << "Alpha = " << alpha;
+            m_log << nl << "Alpha = " << blend(alpha,bgc);
             m_log << nl << "Pixel = " << screen.getpixel(posalpha.getx(),posalpha.gety());
             setError(-1,"Alpha Pixel is wrong");
         }
@@ -150,12 +151,9 @@ int main(int argc, char** argv)
 	App::getInstance().setName ("SDLut::video test PixelFormat");
 
     //Setting Display size and BPP
-    App::getInstance().getDisplay().setDisplay(800,600); // using autodetected bpp
+    App::getInstance().getDisplay().setDisplay(300,240); // using autodetected bpp
 
     App::getInstance().getDisplay().getScreenBuffer().setOpenGL(args.isOGL());
-
-	//yellow background color (useful to test alpha / color key)
-	App::getInstance().getDisplay().getScreenBuffer().setBGColor(Color (255,255,0));
 
     Test teng(testlog);
 	MyEngine engine(testlog,teng);

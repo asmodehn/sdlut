@@ -32,7 +32,7 @@ mutable    Logger & m_log;
 
     public :
     ///max_render = 0 means it will run forever
-    AssertEngine( Logger & log, int max_render = 0) : m_error("OK"), m_exitstatus(0), m_log(log), m_numrender(0), m_maxrender(max_render)
+    AssertEngine( Logger & log, int max_render = 0) : m_error("OK"), m_exitstatus(0), m_numrender(0), m_maxrender(max_render),m_log(log)
     {
     }
 
@@ -93,7 +93,7 @@ mutable Logger & m_log;
 public:
 
 
-	TestEngine(Logger & log, AssertEngine & ae ) : m_log(log),m_assertengine(ae)
+	TestEngine(Logger & log, AssertEngine & ae ) : m_assertengine(ae),m_log(log)
 	{
 
         App::getInstance().getDisplay().resetInitCallback(*this,&TestEngine::testinit);
