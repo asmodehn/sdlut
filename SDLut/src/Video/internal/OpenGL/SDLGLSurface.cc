@@ -15,7 +15,7 @@ namespace internal
 ////////////////private Conversion Constructor
 GLSurface::GLSurface(SDL_Surface * s) throw (std::logic_error)
 try :
-    RGBSurface(s), modified(false), m_actualWidth(ptm_surf->h), m_actualHeight(ptm_surf->w)
+    RGBSurface(s), modified(false), m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
 {
 
 #ifdef DEBUG
