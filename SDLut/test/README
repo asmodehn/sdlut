@@ -1,0 +1,25 @@
+SDLut Tests Organization
+========================
+
+Thumb rules
+-----------
+
+- Test should be automatic, as much as possible
+- All proper test should be run with "ctest" to spot problems easily
+- Tests should match API organization.
+- No test will be made on *::internal namespace, as the classes there shouldnt be accessed by the user.
+- a test return exit status of 0 in case of success. If any error occurs, a different exist status should be returned, and a proper error message displayed
+- one test file per tested class, with parameters depending on test phase
+
+Exhaustive list of tests
+========================
+
+- TestRect : Test Rect arithmetics
+- TestColor : Test Color values, display and alpha blending
+- TestImage : Test Image loading
+- TestScreenBuffer : Test different display options
+- PerfRefresh : Performance testing of displaying sprites on screen
+- PerfRefreshAlpha : Performance testing of displaying sprites on screen, with alpha blending.
+
+TODO : more test when the API gets more stabilized...
+
