@@ -28,7 +28,11 @@ try
     if (pvm_sdl_vinfo==NULL)
         throw std::logic_error("SDL_GetVideoInfo() return NULL");
     else
+	{
+		if (ptm_pformat)
+			delete ptm_pformat, ptm_pformat = NULL;
         ptm_pformat = new PixelFormat(pvm_sdl_vinfo->vfmt);
+	}
 
 #ifdef DEBUG
 

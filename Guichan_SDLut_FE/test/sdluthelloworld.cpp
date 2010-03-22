@@ -66,7 +66,7 @@ public:
         case Key_F6: //FullScreen
             if (pressed)
             {
-                App::getInstance().getDisplay().setDisplay(800, 600);
+                App::getInstance().getDisplay().setDisplay(640, 480);
                 App::getInstance().getDisplay().getScreenBuffer().setFullscreen(!App::getInstance().getDisplay().getScreenBuffer().isFullscreen());
             }
             res = true;

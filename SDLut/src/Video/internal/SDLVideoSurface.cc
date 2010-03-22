@@ -45,7 +45,10 @@ catch (std::exception &e)
 }
 
 VideoSurface::~VideoSurface()
-{}
+{
+	if (sptm_vinfo)
+		delete sptm_vinfo, sptm_vinfo = NULL;
+}
 
 
 bool VideoSurface::checkAvailableSize( const PixelFormat & fmt )

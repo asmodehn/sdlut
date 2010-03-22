@@ -40,7 +40,7 @@ mutable    Logger & m_log;
     ~AssertEngine() {}
 
     //Will log an Error string and exit
-    bool setError(int status, std::string err) const
+    void setError(int status, std::string err) const
     {
         m_exitstatus = status;
         m_error = err;

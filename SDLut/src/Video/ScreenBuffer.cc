@@ -24,6 +24,9 @@ ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) thr
 
 #ifdef WK_OPENGL_FOUND
     //Here SDL_Init(SDL_VIDEO) has already been called
+	if (internal::VideoSurface::sptm_vinfo)
+		delete internal::VideoSurface::sptm_vinfo, internal::VideoSurface::sptm_vinfo = NULL;
+
     internal::VideoSurface::sptm_vinfo = new internal::OGL::OGLVideoInfo();
 #else
     //Here SDL_Init(SDL_VIDEO) has already been called

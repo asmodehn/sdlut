@@ -94,7 +94,7 @@ void SDLutGraphics::popClipArea()
 
 
 
-void SDLutGraphics::drawImage(const Image* image,
+void SDLutGraphics::drawImage(const gcn::Image* image,
                               int srcX,
                               int srcY,
                               int dstX,

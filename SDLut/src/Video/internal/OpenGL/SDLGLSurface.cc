@@ -223,6 +223,8 @@ GLSurface::~GLSurface()
 bool GLSurface::resize(int width, int height)
 {
     modified = RGBSurface::resize(width,height);
+	if (ptm_pformat)
+		delete ptm_pformat, ptm_pformat = NULL;
     ptm_pformat = new OGLPixelFormat(ptm_surf->format);
     return modified;
 }
@@ -379,6 +381,8 @@ saveBMP("beforeconvert.bmp");
 
     //TODO : handle colorkey in OGL
 
+	if (ptm_pformat)
+		delete ptm_pformat, ptm_pformat = NULL;
     ptm_pformat = new OGLPixelFormat(ptm_surf->format);
 
 

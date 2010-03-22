@@ -67,7 +67,7 @@ public:
 
     virtual void popClipArea();
 
-    virtual void drawImage(const Image* image,
+	virtual void drawImage(const gcn::Image* image,
                            int srcX,
                            int srcY,
                            int dstX,
