@@ -18,7 +18,7 @@ public:
 	MyEngine( const std::string & imagefilename) : imagepos()
 	{
 		ImageLoader loader;
-		loadedimage = loader.load(imagefilename);
+		loadedimage = loader.load(imagefilename,Color(255,0,255));
 	}
 
     virtual ~MyEngine(){}

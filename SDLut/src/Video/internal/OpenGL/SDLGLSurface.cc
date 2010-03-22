@@ -274,12 +274,13 @@ bool GLSurface::convertToDisplayFormat()
         // get the number of channels in the SDL surface
         int numbytes = RGBSurface::getPixelFormat().getBytesPerPixel();
 
-        if ( numbytes < 3 ) // conversion needed : we are not in a true color mode
+        if ( numbytes < 3 || isSRCColorKeyset() ) // conversion needed : we are not in a true color mode, or we have to convert colorkey
         {
             //NB Conversion might not be needed
+            // OpenGL can play with palette if we need to. Pixel Shader stuff...
             // refer : http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL.html
 
-Log << nl << "Warning: the image is not truecolor... Trying Conversion";
+Log << nl << "Warning: the image is not truecolor or has a colorkey... converting";
 Log << nl << " Before Convert " << RGBSurface::getPixelFormat();
 
 saveBMP("beforeconvert.bmp");
