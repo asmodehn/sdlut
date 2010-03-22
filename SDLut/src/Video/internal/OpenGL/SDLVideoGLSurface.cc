@@ -324,8 +324,16 @@ if ( ! isOpenGLset() )
 
         //in case the dest_rect is of different size than src_rect, we need to avoid scaling
         // of the texture by opengl
-        dest_rect.resetw( min ( dest_rect.getw(), src_rect.getw()) );
-        dest_rect.reseth( min ( dest_rect.geth(), src_rect.geth()) );
+        //
+        //From SDL_Blit doc :
+        //The width and height in srcrect determine the size of the copied rectangle.
+        //Only the position is used in the dstrect (the width and height are ignored).
+        //Blits with negative dstrect coordinates will be clipped properly.
+        //
+        // ->same behaviour here
+        //
+        dest_rect.resetw( src_rect.getw() );
+        dest_rect.reseth( src_rect.geth() );
 
         //finding texture size in coord weight
         float texx= static_cast<float>(src_rect.getx()) / glsrc.getTextureWidth();

@@ -14,6 +14,7 @@ using namespace SDLut;
 
 
 //engine holding the test code to be run
+//TODO : Maybe we can simplify with only one engine, to assert render only ???
 class AssertEngine
 {
 //to be albe to set error, even while rendering
@@ -44,7 +45,7 @@ mutable    Logger & m_log;
         m_exitstatus = status;
         m_error = err;
         m_log << nl<< "ERROR : " << err ;
-        return App::getInstance().requestTermination(status);
+        //return App::getInstance().requestTermination(status);
     }
 
     //init and resize code is often the same ( but not always )
@@ -171,10 +172,26 @@ public:
 
   ~ArgParser() {}
 
-  std::string get(int index)
+  std::string get(unsigned int index)
   {
-      return args.at(index);
+      std::string result("");
+
+      if ( args.size()>index)
+      {
+          if ( args.at(index) != "nogl" )
+          {
+              result = args.at(index);
+          }
+          else if ( args.size() > index +1)
+          {
+              result = args.at(index+1);
+          }
+      }
+
+      return result;
   }
+
+
 
   bool isSDL()
   {

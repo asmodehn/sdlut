@@ -5,7 +5,7 @@ using namespace RAGE;
 using namespace SDLut;
 using namespace SDLut::video;
 
-RAGE::Logger Log("Test Video");
+RAGE::Logger testlog("TestVideo");
 
 class MyEngine
 {
@@ -76,9 +76,6 @@ int main(int argc, char** argv)
     }
         bool ogl = false;
 #endif
-
-
-    RAGE::Logger testlog("Test Log");
 
     //Setup example
 

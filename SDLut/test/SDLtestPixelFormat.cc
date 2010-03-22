@@ -46,10 +46,10 @@ public:
 		imgalpha = new Image(width-imgred->getWidth()-imggreen->getWidth()-imgblue->getWidth(),height,32, true);
 		imgalpha->fill(alpha);
 
-		std::cout << "Red Pixel : " << std::hex << imgred->getpixel(0,0) << std::endl;
-		std::cout << "Green Pixel : " << std::hex << imggreen->getpixel(0,0)<< std::endl;
-		std::cout << "Blue Pixel : " << std::hex << imgblue->getpixel(0,0)<< std::endl;
-		std::cout << "Alpha Pixel : " << std::hex << imgalpha->getpixel(0,0)<< std::endl;
+		testlog << "Red Pixel : " << std::hex << imgred->getpixel(0,0) << std::endl;
+		testlog << "Green Pixel : " << std::hex << imggreen->getpixel(0,0)<< std::endl;
+		testlog << "Blue Pixel : " << std::hex << imgblue->getpixel(0,0)<< std::endl;
+		testlog << "Alpha Pixel : " << std::hex << imgalpha->getpixel(0,0)<< std::endl;
 
 		return true;
 	}

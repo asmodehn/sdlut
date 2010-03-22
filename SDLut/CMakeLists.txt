@@ -17,14 +17,15 @@ WkBuild ( LIBRARY STATIC )
 WkDoc()
 
 WkTestBuild ( SDLtestColor )
-WkTestRun   ( SDLtestColor )
+
+WkTestBuild ( SDLtestImage )
+WkTestRun   ( SDLtestImage )
 
 WkTestBuild ( SDLtestPixelFormat )
 WkTestRun   ( SDLtestPixelFormat )
 
 WkTestBuild (SDLtestRefresh)
 WkTestData  (SDLtestRefresh smiley.bmp)
-WkTestRun   (SDLtestRefresh)
 
 WkTestBuild ( SDLtestApp )
 WkTestBuild ( SDLtestDumbLoop )
@@ -33,11 +34,11 @@ WkTestBuild ( SDLtestver )
 WkTestBuild ( SDLtestEvents )
 WkTestBuild ( SDLtestManager )
 
-WkTestBuild ( SDLtestTimer )
-WkTestBuild ( SDLtestStressTimer )
-WkTestBuild ( SDLtestMutex )
-WkTestBuild ( SDLtestThread )
-WkTestBuild ( SDLtestStressThread )
+#WkTestBuild ( SDLtestTimer )
+#WkTestBuild ( SDLtestStressTimer )
+#WkTestBuild ( SDLtestMutex )
+#WkTestBuild ( SDLtestThread )
+#WkTestBuild ( SDLtestStressThread )
 
 WkTestBuild ( SDLtestVideo )
 WkTestBuild ( SDLtestGL )
