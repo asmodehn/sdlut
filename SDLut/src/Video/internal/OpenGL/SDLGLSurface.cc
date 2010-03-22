@@ -227,45 +227,6 @@ bool GLSurface::resize(int width, int height, bool keepcontent)
     return modified;
 }
 
-//resize the surface, doesnt scale the image at all
-/*
-bool GLSurface::resizegl(int glwidth, int glheight, bool keepcontent)
-{
-     bool res;
-
-    //GLSurface::resize automatically set the proper pixel format for the new gl surface
-    std::auto_ptr<SDL_Surface> newSurf(0);
-    if ( isSRCAlphaset() || isSRCColorKeyset() ) // Alpha is set by SDL if bpp == 32, and we need Alpha in GL if we got colorkey in SDL
-    {
-     newSurf.reset(SDL_CreateRGBSurface(ptm_surf->flags,glwidth,glheight,ptm_surf->, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
-     //need to fill with stuff ???
-    }
-    else
-    {
-        newSurf.reset(SDL_CreateRGBSurface(ptm_surf->flags,glwidth,glheight,bpp_default_noalpha, r_default_mask, g_default_mask, b_default_mask, a_default_mask) );
-    }
-
-    if (!newSurf.get()) //CreateRGBSurface has failed
-    {
-        Log << "Unable to resize to " << glwidth << " x " << glheight << " 2D GL surface " << nl << GetError();
-        res = false;
-    }
-    else
-    {
-        if (keepcontent)
-        {
-            SDL_BlitSurface(ptm_surf.get(), NULL , newSurf.get(), NULL);
-        }
-
-        SDL_FreeSurface(ptm_surf.release());
-        ptm_surf=newSurf;
-        res = true;
-    }
-    modified = res;
-    return (modified && ptm_surf.get() != 0 ) ;
-}
-*/
-
 unsigned int GLSurface::getWidth()
 {
     return m_actualWidth;
@@ -377,6 +338,11 @@ saveBMP("beforeconvert.bmp");
             {
                 //for little endian
                 textureFormat = GL_BGRA;
+            }
+            else if ( RGBSurface::getPixelFormat().getRshift() == 0 && RGBSurface::getPixelFormat().getAshift() == 24)
+            {
+                //
+                textureFormat = GL_RGBA;
             }
             else //joker
             {

@@ -253,7 +253,13 @@ bool RGBSurface::resize(int width, int height, bool keepcontent)
 {
     bool res;
 
+    saveBMP("beforeresize.bmp");
+
     std::auto_ptr<SDL_Surface> newSurf( SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, ptm_surf->format->Rmask,ptm_surf->format->Gmask,ptm_surf->format->Bmask, ptm_surf->format->Amask) );
+    if (ptm_surf->format->palette) // if we have a palette, we need to copy it as well. SDL_blit doesnt transfer palette !
+    {
+        SDL_SetColors(newSurf.get(),ptm_surf->format->palette->colors,0,ptm_surf->format->palette->ncolors);
+    }
 
     if (!newSurf.get()) //CreateRGBSurface has failed
     {
@@ -264,13 +270,23 @@ bool RGBSurface::resize(int width, int height, bool keepcontent)
     {
         if (keepcontent)
         {
-            SDL_BlitSurface(ptm_surf.get(), NULL , newSurf.get(), NULL);
+            SDL_Rect srcrct,dstrct;srcrct.x = srcrct.y = dstrct.x = dstrct.y = 0;
+            srcrct.w=ptm_surf->w;srcrct.h=ptm_surf->h;
+            dstrct.w=width;dstrct.h=height;
+            if ( 0 != SDL_BlitSurface(ptm_surf.get(), &srcrct , newSurf.get(), &dstrct))
+            {
+                Log << "Error while blitting old surface on new resized surface" << GetError();
+                res = false;
+            }
         }
 
         SDL_FreeSurface(ptm_surf.release());
         ptm_surf=newSurf;
         res = true;
     }
+
+    saveBMP("afterresize.bmp");
+
     return (res && ptm_surf.get() != 0 ) ;
 }
 
