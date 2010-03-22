@@ -65,8 +65,8 @@ void SDLutInput::pushInput(system::Event sdlut_event)
 
     input::Keyboard::Sym* psdlut_sym = NULL;
     short state = 0;
-	input::Mouse::Button button;
-	video::Rect mouse_position;
+    input::Mouse::Button button;
+    video::Rect mouse_position;
     bool motion_gain = false, motion_ActiveState = false, motion_InputFocusState = false, motion_MouseFocusState = false;
 
 
@@ -123,11 +123,11 @@ void SDLutInput::pushInput(system::Event sdlut_event)
         mouseInput.setY(mouse_position.gety());
         mouseInput.setButton(convertMouseButton(button));
 
-		if ( button == input::Mouse::str2Button( "WheelDown") )
+        if ( button == input::Mouse::str2Button( "WheelDown") )
         {
             mouseInput.setType(MouseInput::WHEEL_MOVED_DOWN);
         }
-		else if ( button == input::Mouse::str2Button( "WheelUp") )
+        else if ( button == input::Mouse::str2Button( "WheelUp") )
         {
             mouseInput.setType(MouseInput::WHEEL_MOVED_UP);
         }
@@ -242,7 +242,7 @@ void SDLutInput::pushInput(const input::Mouse::Button& button, const unsigned in
         {
             mouseInput.setType(MouseInput::PRESSED);
         }
-		mouseInput.setTimeStamp(system::GetTicks());
+        mouseInput.setTimeStamp(system::GetTicks());
 
         mMouseInputQueue.push(mouseInput);
     }
@@ -253,7 +253,7 @@ void SDLutInput::pushInput(const input::Mouse::Button& button, const unsigned in
         mouseInput.setY(y);
         mouseInput.setButton(convertMouseButton(button));
         mouseInput.setType(MouseInput::RELEASED);
-		mouseInput.setTimeStamp(system::GetTicks());
+        mouseInput.setTimeStamp(system::GetTicks());
 
         mMouseInputQueue.push(mouseInput);
     }

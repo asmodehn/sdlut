@@ -61,7 +61,7 @@ gcn::Color SDLutImage::getPixel(int x, int y)
     {
         throw GCN_EXCEPTION("Trying to get a pixel from a non loaded image.");
     }
-	video::Color color = SDLutgetPixel(mSurface, x, y);
+    video::Color color = SDLutgetPixel(mSurface, x, y);
     return gcn::Color( color.getR(), color.getG(), color.getB(), color.getA() );
 }
 

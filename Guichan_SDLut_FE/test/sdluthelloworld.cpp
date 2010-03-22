@@ -100,7 +100,7 @@ public:
         return true;
     }
 
-	bool render(video::ScreenBuffer& screen) const
+    bool render(video::ScreenBuffer& screen) const
     {
 
         //Check Gui Logic
@@ -197,7 +197,7 @@ int main(int argc, char **argv)
     catch (gcn::Exception e)
     {
         logger << nl << e.getMessage() << std::endl;
-		system::Delay(2000);
+        system::Delay(2000);
         return 1;
     }
     catch (std::exception exc)

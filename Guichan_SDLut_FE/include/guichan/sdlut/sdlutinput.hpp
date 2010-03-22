@@ -36,7 +36,7 @@ public:
      *
      * @param sdlut_event an event from SDLut.
      */
-	virtual void pushInput(system::Event sdlut_event);
+    virtual void pushInput(system::Event sdlut_event);
 
     /**
      * Pushes a KeyInput. It should be called at least once per frame to
@@ -45,7 +45,7 @@ public:
      * @param s, a sdlut KeySym.
      * @param pressed, tell if key is pressed.
      */
-	void pushInput(const input::Keyboard::Sym& s, bool& pressed);
+    void pushInput(const input::Keyboard::Sym& s, bool& pressed);
 
     /**
      * Pushes a MouseInput. It should be called at least once per frame to
@@ -55,7 +55,7 @@ public:
      * @x & y, coordinate of the button.
      * @pressed, tell if button is pressed.
      */
-	void pushInput(const input::Mouse::Button& button, const unsigned int& x, const unsigned int& y, const bool& pressed);
+    void pushInput(const input::Mouse::Button& button, const unsigned int& x, const unsigned int& y, const bool& pressed);
 
     /**
      * Pushes a MouseInput. It should be called at least once per frame to

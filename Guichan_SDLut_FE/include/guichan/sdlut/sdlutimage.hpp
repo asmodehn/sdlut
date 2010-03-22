@@ -18,7 +18,7 @@ namespace gcn
 /**
  * SDLut implementation of Image.
  */
-	class GCN_EXTENSION_DECLSPEC SDLutImage : public gcn::Image
+class GCN_EXTENSION_DECLSPEC SDLutImage : public gcn::Image
 {
 public:
     /**

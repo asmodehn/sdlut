@@ -52,7 +52,7 @@ public:
      *
      * NOTE: The clip areas will be taken into account.
      */
-	virtual void drawSDLutSurface(video::Image& surface,
+    virtual void drawSDLutSurface(video::Image& surface,
                                   video::Rect& source,
                                   video::Rect& destination);
 

@@ -135,7 +135,7 @@ public:
         return true;
     }
 
-	bool render(video::ScreenBuffer& screen) const
+    bool render(video::ScreenBuffer& screen) const
     {
         // Set the target for the graphics object to be the screen.
         // In other words, we will draw to the screen.
@@ -192,7 +192,7 @@ void implement(std::string fontfile = "" )
 
     if (fontfile != "")
     {
-		myfont = new gcn::SDLutFont(fontfile, 13, font::Font::Solid );
+        myfont = new gcn::SDLutFont(fontfile, 13, font::Font::Solid );
         delete widgets::font, widgets::font = NULL;
         // The global font is static and must be set.
         gcn::Widget::setGlobalFont(myfont);
@@ -239,11 +239,11 @@ int main(int argc, char **argv)
         {
             if ( std::string(argv[1]) == "nogl" )
             {
-                    ogl = false;
-                    if (argc > 2)
-                    {
-                        fontfile = std::string(argv[2]);
-                    }
+                ogl = false;
+                if (argc > 2)
+                {
+                    fontfile = std::string(argv[2]);
+                }
             }
             else
             {
@@ -271,7 +271,7 @@ int main(int argc, char **argv)
     catch (gcn::Exception e)
     {
         logger << nl << e.getMessage() << std::endl;
-		system::Delay(2000);
+        system::Delay(2000);
         return 1;
     }
     catch (std::exception exc)

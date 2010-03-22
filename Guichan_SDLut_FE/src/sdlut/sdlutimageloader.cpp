@@ -14,7 +14,7 @@ Made by XorfacX
 namespace gcn
 {
 
-	const video::Color SDLutImageLoader::magicPink = video::Color(255,0,255,255);
+const video::Color SDLutImageLoader::magicPink = video::Color(255,0,255,255);
 
 SDLutImageLoader::SDLutImageLoader()
 {

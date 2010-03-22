@@ -136,7 +136,7 @@ public:
         return true;
     }
 
-	bool render(video::ScreenBuffer& screen) const
+    bool render(video::ScreenBuffer& screen) const
     {
         // Set the target for the graphics object to be the screen.
         // In other words, we will draw to the screen.
@@ -237,7 +237,7 @@ int main(int argc, char **argv)
     catch (gcn::Exception e)
     {
         logger << nl << e.getMessage() << std::endl;
-		system::Delay(2000);
+        system::Delay(2000);
         return 1;
     }
     catch (std::exception exc)

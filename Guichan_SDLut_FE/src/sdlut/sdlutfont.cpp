@@ -27,7 +27,7 @@ SDLutFont::SDLutFont (const std::string& filename, int size, font::Font::RenderM
         mFilename = filename;
         mFont = NULL;
 
-		mFont = new font::Font(filename.c_str(), size);
+        mFont = new font::Font(filename.c_str(), size);
         mFont->setStyle(mStyle);
 
     }
@@ -75,7 +75,7 @@ void SDLutFont::drawString(Graphics* graphics, const std::string& text, const in
     {
         return;
     }
-  
+
 
     SDLutGraphics *sdlutGraphics = dynamic_cast<SDLutGraphics *>(graphics);
 
@@ -90,19 +90,19 @@ void SDLutFont::drawString(Graphics* graphics, const std::string& text, const in
 
     Color col = sdlutGraphics->getColor();
 
-	video::Color RGBACol (  static_cast<unsigned char>( col.r ),
+    video::Color RGBACol (  static_cast<unsigned char>( col.r ),
                             static_cast<unsigned char>( col.g ),
                             static_cast<unsigned char>( col.b ),
-							static_cast<unsigned char>( col.a )
+                            static_cast<unsigned char>( col.a )
                          );
 
 
-	font::Text textsurf(text, *mFont, RGBACol);
+    font::Text textsurf(text, *mFont, RGBACol);
     textsurf.changeRendermode(mRenderMode);
 
     //Rect dst(x, y + yoffset, 0, 0);
     //Rect src(0, 0, textsurf.getWidth(), textsurf.getHeight());
-	video::Rect dst(x, y + yoffset, textsurf.getWidth(), textsurf.getHeight());
+    video::Rect dst(x, y + yoffset, textsurf.getWidth(), textsurf.getHeight());
     video::Rect src(0, 0, textsurf.getWidth(), textsurf.getHeight());
 
     /*

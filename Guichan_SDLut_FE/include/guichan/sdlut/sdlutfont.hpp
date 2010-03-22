@@ -42,7 +42,7 @@ public:
      * @param size: the size the font should be in.
      * @param AntiAliasing: set AntiAliasing ON/OFF
      */
-	SDLutFont (const std::string& filename, int size, font::Font::RenderMode renderMode = font::Font::Blended, font::Font::Style style = font::Font::Normal);
+    SDLutFont (const std::string& filename, int size, font::Font::RenderMode renderMode = font::Font::Blended, font::Font::Style style = font::Font::Normal);
 
     /**
     * Destructor.
@@ -102,8 +102,8 @@ public:
     void setStyle(font::Font::Style s);
 
 protected:
-	font::Font *mFont;
-	font::Font::RenderMode mRenderMode;
+    font::Font *mFont;
+    font::Font::RenderMode mRenderMode;
     font::Font::Style mStyle;
 
     int mHeight;
