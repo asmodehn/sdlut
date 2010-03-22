@@ -71,7 +71,7 @@ public:
 
     //bool convertToDisplayFormat( Renderer r = SDL );
 
-    bool resize(int width, int height, bool keepcontent = false);
+    bool resize(int width, int height);
 
     bool fill (const Color& color)
     {

@@ -81,8 +81,8 @@ public :
     //Destructor
     virtual ~RGBSurface() {}
 
-bool setColorKey(const PixelColor & key, bool rleAccel = true);
-bool setAlpha(unsigned int alpha, bool rleAccel = true);
+bool resetColorKey(bool ckey, const PixelColor & key, bool rleAccel = true);
+bool resetAlpha(bool alpha, unsigned int value, bool rleAccel = true);
 
     //Use Standard Colors here
     //setPixel();
@@ -92,11 +92,7 @@ bool setAlpha(unsigned int alpha, bool rleAccel = true);
     	int update(void);
     */
 
-    virtual bool resize(int width, int height, bool keepcontent);
-    bool resize(int width, int height)
-    {
-        return resize(width,height,false);
-    }
+    virtual bool resize(int width, int height);
 
     bool isSRCColorKeyset(void);
     bool isSRCAlphaset(void);

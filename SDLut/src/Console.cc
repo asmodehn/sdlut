@@ -14,7 +14,7 @@ namespace SDLut{
 	//WARNING : BUG here if trying to set to fullscreen using F6, then error, then trying to resize -> crash
 	bool Console::resize(int width, int height)
 	{
-		bool res = Image::resize(width,height,false);
+		bool res = Image::resize(width,height);
 		res &= fill(m_bgcolor);
 		return res;
 	}

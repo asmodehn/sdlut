@@ -206,7 +206,7 @@ bool GLSurface::computeGLWidthHeight()
     // we may need to resize the surface.
     if (properWidth > getTextureWidth() || properHeight > getTextureHeight() )
     {
-        res = resize(properWidth,properHeight,true);
+        res = resize(properWidth,properHeight);
     }
     else
     {
@@ -220,9 +220,9 @@ GLSurface::~GLSurface()
 {
 }
 
-bool GLSurface::resize(int width, int height, bool keepcontent)
+bool GLSurface::resize(int width, int height)
 {
-    modified = RGBSurface::resize(width,height,keepcontent);
+    modified = RGBSurface::resize(width,height);
     ptm_pformat = new OGLPixelFormat(ptm_surf->format);
     return modified;
 }
@@ -431,17 +431,17 @@ saveBMP("beforeconvert.bmp");
     return true;
 }
 
-bool GLSurface::setColorKey(const PixelColor & key, bool rleAccel)
+bool GLSurface::resetColorKey(bool ckey, const PixelColor & key, bool rleAccel)
 {
-    bool res = RGBSurface::setColorKey(key,rleAccel);
+    bool res = RGBSurface::resetColorKey(ckey,key,rleAccel);
     modified = res;
     return modified;
 }
 
 
-bool GLSurface::setAlpha(unsigned int alpha, bool rleAccel)
+bool GLSurface::resetAlpha(bool alpha, unsigned int value, bool rleAccel)
 {
-    bool res = RGBSurface::setAlpha(alpha,rleAccel);
+    bool res = RGBSurface::resetAlpha(alpha,value,rleAccel);
     modified = res;
     return modified;
 }

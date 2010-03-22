@@ -73,7 +73,13 @@ void ImageLoader::resetFlags(	bool SWSURFACE,
 //creates surface from file, copying its content...
 std::auto_ptr<Image> ImageLoader::load(std::string filename , bool no_failure ) throw (std::logic_error)
 {
+
+#ifdef WK_OPENGL_FOUND
+    std::auto_ptr<internal::OGL::GLSurface> surf;
+#else
     std::auto_ptr<internal::RGBSurface> surf;
+#endif
+
     try
     {
 #ifdef WK_SDLIMAGE_FOUND
@@ -130,8 +136,8 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename, const Color & color
             surf.reset(new internal::RGBSurface( sdlsurf ) );
 #endif
 
-        //TOFIX : makes all image transparent
-        surf->setColorKey(surf->getPixelFormat().getPixelColor(colorKey));
+
+        surf->resetColorKey(true,surf->getPixelFormat().getPixelColor(colorKey));
 
     }
     catch (std::exception &e)

@@ -18,10 +18,7 @@ public:
 	MyEngine( const std::string & imagefilename) : imagepos()
 	{
 		ImageLoader loader;
-		//setting white as transparent
-		loadedimage = loader.load(imagefilename,Color(255,255,255));
-
-		loadedimage->saveBMP("TestVideoImage.bmp");
+		loadedimage = loader.load(imagefilename);
 	}
 
     virtual ~MyEngine(){}

@@ -224,42 +224,58 @@ RGBSurface& RGBSurface::operator=(const BaseSurface& s)
 }
 */
 
-bool RGBSurface::setColorKey(const PixelColor & key, bool rleAccel)
+bool RGBSurface::resetColorKey(bool ckey, const PixelColor & key, bool rleAccel)
 {
-    Uint32 flags;
+    Uint32 flags = 0x0;
+    if (ckey)
+    {
+        flags |= SDL_SRCCOLORKEY;
 
-        if (rleAccel)
-            flags=SDL_SRCCOLORKEY | SDL_RLEACCEL;
-        else
-            flags=SDL_SRCCOLORKEY;
+    if (rleAccel)
+        {
+            flags |= SDL_RLEACCEL;
+        }
+
+    }
 
     return SDL_SetColorKey(ptm_surf.get(), flags, key ) == 0;
 }
 
-
-bool RGBSurface::setAlpha(unsigned int alpha, bool rleAccel)
+bool RGBSurface::resetAlpha(bool alpha, unsigned int value, bool rleAccel)
 {
-    Uint32 flags;
 
-    if (rleAccel)
-            flags=SDL_SRCCOLORKEY | SDL_SRCALPHA | SDL_RLEACCEL;
-        else
-            flags=SDL_SRCCOLORKEY | SDL_SRCALPHA;
 
-        return SDL_SetAlpha(ptm_surf.get(), flags, alpha) == 0;
+    Uint32 flags = 0x0;
+    if (alpha)
+    {
+        flags |= SDL_SRCALPHA;
+        if (rleAccel)
+        {
+            flags |= SDL_RLEACCEL;
+        }
+
+    }
+
+
+        return SDL_SetAlpha(ptm_surf.get(), flags, value) == 0;
 }
 
-bool RGBSurface::resize(int width, int height, bool keepcontent)
+bool RGBSurface::resize(int width, int height)
 {
     bool res;
 
-    saveBMP("beforeresize.bmp");
+    //saveBMP("beforeresize.bmp");
 
-    std::auto_ptr<SDL_Surface> newSurf( SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, ptm_surf->format->Rmask,ptm_surf->format->Gmask,ptm_surf->format->Bmask, ptm_surf->format->Amask) );
-    if (ptm_surf->format->palette) // if we have a palette, we need to copy it as well. SDL_blit doesnt transfer palette !
+    SDL_Surface * newsurf = SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, ptm_surf->format->Rmask,ptm_surf->format->Gmask,ptm_surf->format->Bmask, ptm_surf->format->Amask);
+    std::auto_ptr<SDL_Surface> newSurf( SDL_ConvertSurface(ptm_surf.get(),ptm_surf->format,ptm_surf->flags ) );
+    //std::auto_ptr<SDL_Surface> newSurf( SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, ptm_surf->format->Rmask,ptm_surf->format->Gmask,ptm_surf->format->Bmask, ptm_surf->format->Amask));
+
+    /*if (ptm_surf->format->palette) // if we have a palette, we need to copy it as well. SDL_blit doesnt transfer palette !
+    //BUT Convert now does it for us
     {
         SDL_SetColors(newSurf.get(),ptm_surf->format->palette->colors,0,ptm_surf->format->palette->ncolors);
     }
+*/
 
     if (!newSurf.get()) //CreateRGBSurface has failed
     {
@@ -268,24 +284,33 @@ bool RGBSurface::resize(int width, int height, bool keepcontent)
     }
     else
     {
+        /* OLD WAY, before Convert...
         if (keepcontent)
         {
-            SDL_Rect srcrct,dstrct;srcrct.x = srcrct.y = dstrct.x = dstrct.y = 0;
-            srcrct.w=ptm_surf->w;srcrct.h=ptm_surf->h;
-            dstrct.w=width;dstrct.h=height;
-            if ( 0 != SDL_BlitSurface(ptm_surf.get(), &srcrct , newSurf.get(), &dstrct))
+            //Careful with colorkey and alpha for this blit...
+            // we need to copy *everything*
+            //resetColorKey(false,0);
+
+            //alpha on tiff, even if no alpha present ??
+     //       resetAlpha(false,0);
+            //
+            //SDL_Rect srcrct,dstrct;srcrct.x = srcrct.y = dstrct.x = dstrct.y = 0;
+            //srcrct.w=ptm_surf->w;srcrct.h=ptm_surf->h;
+            //dstrct.w=width;dstrct.h=height;
+
+            if ( 0 != SDL_BlitSurface(ptm_surf.get(), NULL , newSurf.get(), NULL))
             {
                 Log << "Error while blitting old surface on new resized surface" << GetError();
                 res = false;
             }
         }
-
+*/
         SDL_FreeSurface(ptm_surf.release());
         ptm_surf=newSurf;
         res = true;
     }
 
-    saveBMP("afterresize.bmp");
+    //saveBMP("afterresize.bmp");
 
     return (res && ptm_surf.get() != 0 ) ;
 }
@@ -322,7 +347,24 @@ bool RGBSurface::blit(const RGBSurface& src, Rect& dest_rect, const Rect& src_re
 #if (DEBUG == 2)
     Log << nl << "RGBSurface::blit (const RGBSurface& src," << dest_rect << ", " << src_rect << ") called...";
 #endif
+
+
+
+
     bool res = BaseSurface::blit(src, dest_rect, src_rect);
+
+/*
+//If the blit is successful, it returns 0, otherwise it returns -1.
+//If either of the surfaces were in video memory, and the blit returns -2, the video memory was lost, so it should be reloaded with artwork and re-blitted:
+ while ( SDL_BlitSurface(image, imgrect, screen, dstrect) == -2 ) {
+                while ( SDL_LockSurface(image)) < 0 )
+                        Sleep(1);
+                -- Write image pixels to image->pixels --
+                SDL_UnlockSurface(image);
+        }
+*/
+
+
 
 #if (DEBUG == 2)
     Log << nl << "RGBSurface::blit (const RGBSurface& src," << dest_rect << ", " << src_rect << ") done.";

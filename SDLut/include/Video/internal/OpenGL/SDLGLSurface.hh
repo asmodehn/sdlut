@@ -105,13 +105,13 @@ public :
 
     bool convertToDisplayFormat();
 
-bool setColorKey(const PixelColor & key, bool rleAccel = true);
-bool setAlpha(unsigned int alpha, bool rleAccel = true);
+bool resetColorKey(bool ckey, const PixelColor & key, bool rleAccel = true);
+bool resetAlpha(bool alpha, unsigned int value, bool rleAccel = true);
 
 
     //saveBMP // TODO useful for screenshots
 
-    virtual bool resize(int width, int height, bool keepcontent = false);
+    virtual bool resize(int width, int height);
 
     bool fill (const PixelColor& color, Rect dest_rect);
 

@@ -87,9 +87,9 @@ bool Image::saveBMP( std::string filename )
     return m_img->saveBMP(filename);
 }
 
-bool Image::resize(int width, int height, bool keepcontent)
+bool Image::resize(int width, int height)
 {
-    return m_img->resize(width, height, keepcontent );
+    return m_img->resize(width, height);
 }
 
 
