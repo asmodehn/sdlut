@@ -418,6 +418,7 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
 bool ScreenBuffer::captureBMP(std::string filename) const
 {
     m_screen->saveBMP(filename);
+	return true;
 }
 
 
