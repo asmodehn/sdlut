@@ -485,6 +485,29 @@ bool VideoGLSurface::fill (const PixelColor& pcolor, Rect dest_rect)
 
 }
 
+bool VideoGLSurface::saveBMP(std::string filename) const
+{
+    bool res = false;
+
+    //TODO : with glreadPixels
+    if (initialized())
+    {
+        /* This wil fail on opengl context
+        if ( SDL_SaveBMP(ptm_surf.get(),filename.c_str()) != 0 )
+        { //TODO : handle erros such as disk full, etc. )
+
+        }
+        else
+        {
+            res = true;
+        }
+*/
+    }
+    return res;
+}
+
+
+
 RAGE::Logger & operator << (RAGE::Logger & log, const VideoGLSurface & surf)
 {
     //TODO : call base operator here...
