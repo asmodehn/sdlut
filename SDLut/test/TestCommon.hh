@@ -131,7 +131,7 @@ mutable    Logger & m_log;
     {
         m_exitstatus = status;
         m_error = err;
-        m_log << nl<< "ERROR : " << err ;
+        m_log << nl<< "ERROR : " << err << nl ;
         //return App::getInstance().requestTermination(status);
     }
 
