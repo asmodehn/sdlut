@@ -98,6 +98,8 @@ try :
         Log << nl << "Unable to copy the RGBsurface" ;
         throw std::logic_error(errstr + " returns NULL");
     }
+	if (ptm_pformat)
+		delete ptm_pformat, ptm_pformat = NULL;
     ptm_pformat = new PixelFormat(ptm_surf->format);
 #ifdef DEBUG
     Log << nl << "BaseSurface::BaseSurface(" << &s << ") done.";
@@ -121,6 +123,8 @@ BaseSurface& BaseSurface::operator=(const BaseSurface& s)
         {
             Log << nl << "Unable to copy the BaseSurface : error in SDL_ConvertSurface -> " << GetError() ;
         }
+		if (ptm_pformat)
+			delete ptm_pformat, ptm_pformat = NULL;
         ptm_pformat = new PixelFormat(ptm_surf->format);
     }
     return *this;
@@ -154,6 +158,8 @@ try :
         Log << nl << "Unable to copy the RGBsurface" ;
         throw std::logic_error(errstr + " returns NULL");
     }
+	if (ptm_pformat)
+		delete ptm_pformat, ptm_pformat = NULL;
     ptm_pformat = new PixelFormat(ptm_surf->format);
 
 #ifdef DEBUG
