@@ -264,19 +264,12 @@ bool RGBSurface::resize(int width, int height)
 {
     bool res;
 
-    //saveBMP("beforeresize.bmp");
+    saveBMP("beforeresize.bmp");
 
     //creating exact same surface, with bigger size
     SDL_Surface * newsurf = SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, ptm_surf->format->Rmask,ptm_surf->format->Gmask,ptm_surf->format->Bmask, ptm_surf->format->Amask);
-    std::auto_ptr<SDL_Surface> newSurf( SDL_ConvertSurface(newsurf,ptm_surf->format,ptm_surf->flags ) );
-    //std::auto_ptr<SDL_Surface> newSurf( SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, ptm_surf->format->Rmask,ptm_surf->format->Gmask,ptm_surf->format->Bmask, ptm_surf->format->Amask));
-
-    /*if (ptm_surf->format->palette) // if we have a palette, we need to copy it as well. SDL_blit doesnt transfer palette !
-    //BUT Convert now does it for us
-    {
-        SDL_SetColors(newSurf.get(),ptm_surf->format->palette->colors,0,ptm_surf->format->palette->ncolors);
-    }
-*/
+    //std::auto_ptr<SDL_Surface> newSurf( SDL_ConvertSurface(newsurf,ptm_surf->format,ptm_surf->flags ) );
+    std::auto_ptr<SDL_Surface> newSurf( newsurf );
 
     if (!newSurf.get()) //CreateRGBSurface has failed
     {
@@ -286,16 +279,25 @@ bool RGBSurface::resize(int width, int height)
     else
     {
 
+    if (ptm_surf->format->palette) // if we have a palette, we need to copy it as well. SDL_blit doesnt transfer palette !
+    {
+        SDL_SetColors(newSurf.get(),ptm_surf->format->palette->colors,0,ptm_surf->format->palette->ncolors);
+    }
+
         //copying old content, not to loose it
 
             //Careful with colorkey and alpha for this blit...
-            // we need to copy *everything*
-            //resetColorKey(false,0);
-            // well maybe not
 
-            //alpha on tiff, even if no alpha present ??
-            //resetAlpha(false,0);
+            //transferring colorkey to dest surface. this shouldnt affect blit
+            SDL_SetColorKey (newsurf,ptm_surf->flags & ( SDL_SRCCOLORKEY | SDL_RLEACCEL ),ptm_surf->format->colorkey);
+            // we need to copy *everything*
+            SDL_SetColorKey (ptm_surf.get(), 0 , ptm_surf->format->colorkey );
+
+            //same with surface alpha
+            SDL_SetAlpha (newsurf,ptm_surf->flags & ( SDL_SRCALPHA | SDL_RLEACCEL ), ptm_surf->format->alpha);
             //
+            SDL_SetAlpha (ptm_surf.get(), 0 , ptm_surf->format->alpha );
+
             //SDL_Rect srcrct,dstrct;srcrct.x = srcrct.y = dstrct.x = dstrct.y = 0;
             //srcrct.w=ptm_surf->w;srcrct.h=ptm_surf->h;
             //dstrct.w=width;dstrct.h=height;
@@ -311,7 +313,7 @@ bool RGBSurface::resize(int width, int height)
         res = true;
     }
 
-    //saveBMP("afterresize.bmp");
+    saveBMP("afterresize.bmp");
 
     return (res && ptm_surf.get() != 0 ) ;
 }
@@ -329,10 +331,10 @@ bool RGBSurface::convertToDisplayFormat()
 {
     assert(ptm_surf.get());
     std::auto_ptr<SDL_Surface> optsurf(0);
-    if ( isSRCAlphaset() /*|| isSRCColorKeyset()*/ )
+    if ( isSRCAlphaset() )
     {
-        //this call will change colorkey in Alpha channel.
-        //Useful for GL but SDL can work without
+        //this is not needed for colorkey, as SDL works with colorkey directly.
+        //different than for opengl which needs to change colorkey in alpha.
         optsurf.reset( SDL_DisplayFormatAlpha(ptm_surf.get()) );
     }
     else
@@ -348,9 +350,6 @@ bool RGBSurface::blit(const RGBSurface& src, Rect& dest_rect, const Rect& src_re
 #if (DEBUG == 2)
     Log << nl << "RGBSurface::blit (const RGBSurface& src," << dest_rect << ", " << src_rect << ") called...";
 #endif
-
-
-
 
     bool res = BaseSurface::blit(src, dest_rect, src_rect);
 

@@ -415,6 +415,13 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
     return true; //not used for now
 }
 
+bool ScreenBuffer::captureBMP(std::string filename) const
+{
+    m_screen->saveBMP(filename);
+}
+
+
+
 void ScreenBuffer::setClipRect( const Rect& clipr )
 {
     m_screen->setClipRect(clipr);

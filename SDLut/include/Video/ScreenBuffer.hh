@@ -140,6 +140,8 @@ public:
     bool renderpass(unsigned long framerate, unsigned long& lastframe);
     bool refresh( unsigned long framerate, unsigned long& lastframe);
 
+    bool captureBMP(std::string filename) const;
+
     //pixel drawing function
     Color getpixel(int x, int y)
     {

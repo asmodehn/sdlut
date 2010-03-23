@@ -112,16 +112,6 @@ public:
 	    pos.push_back(Rect(560,380,1,1));
 	    color.push_back(Color(0x13,0x13,0x13)); // dark grey
 
-
-
-
-
-
-
-
-
-	    //TODO : need to check all colors ( in case of wrong colorkey, or format or whatever
-
 	}
 
     virtual ~Test()

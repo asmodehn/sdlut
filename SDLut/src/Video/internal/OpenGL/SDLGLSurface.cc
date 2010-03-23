@@ -273,6 +273,7 @@ const PixelFormat& GLSurface::getPixelFormat(void) const
 
 bool GLSurface::convertToDisplayFormat()
 {
+
         // get the number of channels in the SDL surface
         int numbytes = RGBSurface::getPixelFormat().getBytesPerPixel();
 

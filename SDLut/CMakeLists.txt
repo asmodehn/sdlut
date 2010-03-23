@@ -37,6 +37,9 @@ WkTestRun   ( OpenGL_PNM SDLtestImage "auto" "nogl" "data/ColorTest.pnm" )
 WkTestRun   ( OpenGL_TGA SDLtestImage "auto" "nogl" "data/ColorTest.tga" )
 WkTestRun   ( OpenGL_TIFF SDLtestImage "auto" "nogl" "data/ColorTest.tif" )
 
+WkTestBuild ( testTransparency )
+WkTestRun   ( Transparency testTransparency )
+
 WkTestBuild ( SDLtestPixelFormat )
 WkTestRun   ( "PixelFormat" SDLtestPixelFormat )
 

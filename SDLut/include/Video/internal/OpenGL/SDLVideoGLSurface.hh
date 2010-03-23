@@ -118,6 +118,8 @@ public:
 
     virtual bool update(std::vector<Rect> rlist);
 
+    bool saveBMP(std::string filename) const;
+
 
     friend RAGE::Logger & operator << (RAGE::Logger & log, const VideoSurface & surf);
 };
