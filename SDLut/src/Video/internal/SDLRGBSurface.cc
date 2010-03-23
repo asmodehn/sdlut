@@ -266,8 +266,9 @@ bool RGBSurface::resize(int width, int height)
 
     //saveBMP("beforeresize.bmp");
 
+    //creating exact same surface, with bigger size
     SDL_Surface * newsurf = SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, ptm_surf->format->Rmask,ptm_surf->format->Gmask,ptm_surf->format->Bmask, ptm_surf->format->Amask);
-    std::auto_ptr<SDL_Surface> newSurf( SDL_ConvertSurface(ptm_surf.get(),ptm_surf->format,ptm_surf->flags ) );
+    std::auto_ptr<SDL_Surface> newSurf( SDL_ConvertSurface(newsurf,ptm_surf->format,ptm_surf->flags ) );
     //std::auto_ptr<SDL_Surface> newSurf( SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, ptm_surf->format->Rmask,ptm_surf->format->Gmask,ptm_surf->format->Bmask, ptm_surf->format->Amask));
 
     /*if (ptm_surf->format->palette) // if we have a palette, we need to copy it as well. SDL_blit doesnt transfer palette !
@@ -284,15 +285,16 @@ bool RGBSurface::resize(int width, int height)
     }
     else
     {
-        /* OLD WAY, before Convert...
-        if (keepcontent)
-        {
+
+        //copying old content, not to loose it
+
             //Careful with colorkey and alpha for this blit...
             // we need to copy *everything*
             //resetColorKey(false,0);
+            // well maybe not
 
             //alpha on tiff, even if no alpha present ??
-     //       resetAlpha(false,0);
+            //resetAlpha(false,0);
             //
             //SDL_Rect srcrct,dstrct;srcrct.x = srcrct.y = dstrct.x = dstrct.y = 0;
             //srcrct.w=ptm_surf->w;srcrct.h=ptm_surf->h;
@@ -303,8 +305,7 @@ bool RGBSurface::resize(int width, int height)
                 Log << "Error while blitting old surface on new resized surface" << GetError();
                 res = false;
             }
-        }
-*/
+
         SDL_FreeSurface(ptm_surf.release());
         ptm_surf=newSurf;
         res = true;

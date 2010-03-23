@@ -13,6 +13,92 @@ using namespace SDLut;
 
 
 
+class ArgParser
+{
+  std::vector<std::string> args;
+
+public:
+  ArgParser(int argc, char* argv[])
+  {
+      for (int i = 0; i < argc; ++i )
+      {
+        args.push_back(std::string(argv[i]));
+      }
+  }
+
+  ~ArgParser() {}
+
+  std::string get(unsigned int index)
+  {
+      std::string result("");
+
+      if ( args.size()>index)
+      {
+          if ( args.at(index) != "nogl" && args.at(index) != "auto")
+          {
+              result = args.at(index);
+          }
+          else if ( args.size() > index +1)
+          {
+              result = get(index+1);
+          }
+          //else // no more args
+          //{
+          //    result = "";
+          //}
+      }
+
+      return result;
+  }
+
+
+
+  bool isSDL() const
+  {
+	return !isOGL();
+  }
+
+  bool isOGL() const
+  {
+#ifdef WK_OPENGL_FOUND
+	  for (unsigned int i = 0; i < args.size(); i++)
+	  {
+		  if ( args[i] == "nogl" )
+		  {
+			  return false;
+		  }
+	  }
+	  return true;
+
+#else
+      return false;
+#endif
+  }
+
+  bool isAuto() const
+  {
+	  for (unsigned int i = 0; i < args.size(); i++)
+	  {
+		  if ( args[i] == "auto" )
+		  {
+			  return true;
+		  }
+	  }
+	  return false;
+  }
+
+  std::string getcmd()
+  {
+      return args[0];
+  }
+
+};
+
+
+
+
+
+
 //engine holding the test code to be run
 //TODO : Maybe we can simplify with only one engine, to assert render only ???
 class AssertEngine
@@ -33,8 +119,9 @@ mutable    Logger & m_log;
 
     public :
     ///max_render = 0 means it will run forever
-    AssertEngine( Logger & log, int max_render = 0) : m_error("OK"), m_exitstatus(0), m_numrender(0), m_maxrender(max_render),m_log(log)
+    AssertEngine( Logger & log, const ArgParser & ap ) : m_error("OK"), m_exitstatus(0), m_numrender(0), m_maxrender(0),m_log(log)
     {
+        if ( ap.isAuto() ) m_maxrender = 1;
     }
 
     ~AssertEngine() {}
@@ -155,72 +242,6 @@ public:
 
 
 
-
-
-class ArgParser
-{
-  std::vector<std::string> args;
-
-public:
-  ArgParser(int argc, char* argv[])
-  {
-      for (int i = 0; i < argc; ++i )
-      {
-        args.push_back(std::string(argv[i]));
-      }
-  }
-
-  ~ArgParser() {}
-
-  std::string get(unsigned int index)
-  {
-      std::string result("");
-
-      if ( args.size()>index)
-      {
-          if ( args.at(index) != "nogl" )
-          {
-              result = args.at(index);
-          }
-          else if ( args.size() > index +1)
-          {
-              result = args.at(index+1);
-          }
-      }
-
-      return result;
-  }
-
-
-
-  bool isSDL()
-  {
-	return !isOGL();
-  }
-
-  bool isOGL()
-  {
-#ifdef WK_OPENGL_FOUND
-	  for (unsigned int i = 0; i < args.size(); i++)
-	  {
-		  if ( args[i] == "nogl" )
-		  {
-			  return false;
-		  }
-	  }
-	  return true;
-
-#else
-      return false;
-#endif
-  }
-
-  std::string getcmd()
-  {
-      return args[0];
-  }
-
-};
 
 
 #endif

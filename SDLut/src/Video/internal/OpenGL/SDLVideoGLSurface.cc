@@ -113,7 +113,7 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
     //glPixelStorei( GL_PACK_ROW_LENGTH, 0 ) ;
 
     //glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-    //glPixelStorei(GL_UNPACK_ALIGNMENT,ptm_surf->format->BytesPerPixel);
+    glPixelStorei(GL_UNPACK_ALIGNMENT,numbytes);
     //glPixelStorei(GL_UNPACK_ALIGNMENT,4);
 
     if (numbytes == 4 )
@@ -122,7 +122,9 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
     //SDL_BYTE_ORDER == SDL_BIG_ENDIAN
     // -> *_REV ????
     //LIL_ENDIAN HERE
-    glReadPixels(x, y, 1, 1, GL_BGRA, GL_UNSIGNED_BYTE, &color);
+
+    //glreadpixel reading at lower left for 0,0
+    glReadPixels(x, getHeight()-y, 1, 1, GL_BGRA, GL_UNSIGNED_BYTE, &color);
     }
     else if ( numbytes == 3 )
     {
@@ -130,7 +132,7 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
     //SDL_BYTE_ORDER == SDL_BIG_ENDIAN
     // -> *_REV ???
     //LIL_ENDIAN HERE
-    glReadPixels(x, y, 1, 1, GL_BGR, GL_UNSIGNED_BYTE, &color);
+    glReadPixels(x, getHeight()-y, 1, 1, GL_BGR, GL_UNSIGNED_BYTE, &color);
     }
 
 

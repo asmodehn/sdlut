@@ -15,8 +15,12 @@ Exhaustive list of tests
 ========================
 
 - TestRect : Test Rect arithmetics
-- TestColor : Test Color values, display and alpha blending
+- TestColor : Test Color values and display 
+- TestColorCKey : Test Color values, display and colorkey
+- TestColorAlpha : Test Color values, display and alpha blending
 - TestImage : Test Image loading
+- TestImageCKey : Test Image loading and different colorkeys
+- TestImageAlpha : Test Image loading and surface alpha
 - TestScreenBuffer : Test different display options
 - PerfRefresh : Performance testing of displaying sprites on screen
 - PerfRefreshAlpha : Performance testing of displaying sprites on screen, with alpha blending.
