@@ -202,6 +202,8 @@ bool GLSurface::computeGLWidthHeight()
     while ( properWidth < getTextureWidth() ) properWidth *= 2;
     while ( properHeight < getTextureHeight() ) properHeight *= 2;
 
+    //important if OpengL < 2.0 only
+
     bool res = false;
     // we may need to resize the surface.
     if (properWidth > getTextureWidth() || properHeight > getTextureHeight() )

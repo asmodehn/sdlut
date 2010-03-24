@@ -1,69 +1,15 @@
-#include "TestCommon.hh"
-
-using namespace SDLut::video;
-
-class AssertEngine;
+#include "testRendering.hh"
 
 Logger testlog("TestImage");
 
-
-std::auto_ptr<Image> testImg;
-
-
-class MyEngine : public TestEngine
+class Test : public RenderingAssertEngine
 {
-
-    mutable Rect imgRPos;
-
-public:
-
-	MyEngine(Logger & log, AssertEngine & ae) : TestEngine(log,ae), imgRPos()
-	{
-	}
-
-    virtual ~MyEngine()
+    void regtestPixel()
     {
+        //We expect data/test/colortest/Colortest.xxxx
+        //Measures made by hand, with The Gimp
 
-        }
-
-	virtual bool init(int width, int height)
-	{
-	    return resize(width,height);
-	}
-
-	virtual bool resize(int width, int height)
-	{
-        imgRPos.resetx( (width - testImg->getWidth()) / 2 );
-        imgRPos.resety( (height - testImg->getHeight()) /2 );
-        imgRPos.resetw(testImg->getWidth());
-	    imgRPos.reseth(testImg->getHeight());
-		return true;
-	}
-
-	virtual bool render(ScreenBuffer & screen) const
-    {
-		screen.blit(*testImg,imgRPos);
-		return true;
-    }
-
-};
-
-
-class Test : public AssertEngine
-{
-
-Rect imgRPos;
-
-//this Assert Engine check that loaded image is a proper ColorTest image
-std::vector<Rect> pos;
-std::vector<Color> color;
-
-
-public:
-    //we only need one render to see which color are there
-    Test( Logger & log, const ArgParser & ap) : AssertEngine(log,ap), imgRPos()
-	{
-	    //building pixel test
+        //building pixel test
 	    //top columns
 	    pos.push_back(Rect(10,10,1,1));
 	    color.push_back(Color(0xcc,0xcc,0xcc)); // light grey
@@ -112,44 +58,20 @@ public:
 	    pos.push_back(Rect(560,380,1,1));
 	    color.push_back(Color(0x13,0x13,0x13)); // dark grey
 
+    }
+
+public:
+
+    Test(const Image & fgimage, Color bgc, Logger & log, const ArgParser & ap)
+    : RenderingAssertEngine(fgimage,bgc,log,ap)
+	{
+	 regtestPixel();
+	 m_log.enableFileLog("TestImage.log");
 	}
+
 
     virtual ~Test()
     {
-    }
-
-	virtual bool assertinit(int width, int height)
-	{
-
-
-	    return assertresize(width,height);
-	}
-
-	virtual bool assertresize(int width, int height)
-	{
-	    imgRPos.resetx( (width - testImg->getWidth()) / 2);
-        imgRPos.resety ( (height - testImg->getHeight()) /2);
-
-		return true;
-	}
-
-	virtual bool assertrender(ScreenBuffer & screen) const
-    {
-        bool res = true;
-        for (unsigned int i= 0; i<pos.size() ; i++)
-        {
-            res  = res && color[i].isSimilarTo(screen.getpixel(imgRPos.getx() + pos[i].getx(), imgRPos.gety() + pos[i].gety()));
-            if (!res)
-            {
-                m_log << nl << "Expected = " << color[i];
-                m_log << nl << "Pixel at " << pos[i] << " : ";
-                m_log << nl << screen.getpixel(imgRPos.getx() + pos[i].getx(), imgRPos.gety() + pos[i].gety());
-                setError(-1,"Wrong color detected. Is it a ColorTest.xxx image ?");
-            }
-
-        }
-
-		return res;
     }
 
 };
@@ -173,16 +95,13 @@ int exitstatus = -1;
     std::string imgfile = args.get(1);
     if (imgfile != "" )
     {
-        testImg = loader.load(imgfile);
-        Test teng(testlog,args);
-	MyEngine engine(testlog,teng);
-
-
-    if(App::getInstance().getDisplay().show())
-    {
-       exitstatus = App::getInstance().getDisplay().mainLoop();
-    }
-
+        std::auto_ptr<Image> testImg = loader.load(imgfile);
+        Test teng(*testImg,Color(0,0,0),testlog,args);
+        RenderingTestEngine engine(testlog,teng);
+        if(App::getInstance().getDisplay().show())
+        {
+            exitstatus = App::getInstance().getDisplay().mainLoop();
+        }
     }
     else
     {

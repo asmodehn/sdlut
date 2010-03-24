@@ -124,7 +124,7 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
     //LIL_ENDIAN HERE
 
     //glreadpixel reading at lower left for 0,0
-    glReadPixels(x, getHeight()-y, 1, 1, GL_BGRA, GL_UNSIGNED_BYTE, &color);
+    glReadPixels(x, getHeight()-1 -y, 1, 1, GL_BGRA, GL_UNSIGNED_BYTE, &color);
     }
     else if ( numbytes == 3 )
     {
@@ -132,7 +132,7 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
     //SDL_BYTE_ORDER == SDL_BIG_ENDIAN
     // -> *_REV ???
     //LIL_ENDIAN HERE
-    glReadPixels(x, getHeight()-y, 1, 1, GL_BGR, GL_UNSIGNED_BYTE, &color);
+    glReadPixels(x, getHeight()-1 -y, 1, 1, GL_BGR, GL_UNSIGNED_BYTE, &color);
     }
 
 
@@ -488,6 +488,8 @@ bool VideoGLSurface::fill (const PixelColor& pcolor, Rect dest_rect)
 bool VideoGLSurface::saveBMP(std::string filename) const
 {
     bool res = false;
+if ( isOpenGLset() )
+{
 
     //TODO : with glreadPixels
     if (initialized())
@@ -503,6 +505,12 @@ bool VideoGLSurface::saveBMP(std::string filename) const
         }
 */
     }
+
+}
+else
+{
+    res = VideoSurface::saveBMP(filename);
+}
     return res;
 }
 

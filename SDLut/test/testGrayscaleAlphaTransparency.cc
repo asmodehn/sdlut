@@ -1,6 +1,6 @@
 #include "testRendering.hh"
 
-Logger testlog("TestTransparency");
+Logger testlog("Test_Grayscale_Alpha");
 
 
 class Test : public RenderingAssertEngine
@@ -12,16 +12,17 @@ void regtestPixel()
 
         //building pixel test
         // rect of 1 pixel dark red around ( or grey in palettized )
-        Color darkred(0x80,0x00,0x00);
+        Color grey(0x80,0x80,0x80);
+        //Color darkred(0x80,0x00,0x00);
 
         pos.push_back(Rect(0,0,1,1));
-        color.push_back(darkred);
+        color.push_back(grey);
         pos.push_back(Rect(m_fgimg->getWidth()-1,0,1,1));
-        color.push_back(darkred);
+        color.push_back(grey);
         pos.push_back(Rect(m_fgimg->getWidth()-1,m_fgimg->getHeight()-1,1,1));
-        color.push_back(darkred);
+        color.push_back(grey);
         pos.push_back(Rect(0,m_fgimg->getHeight()-1,1,1));
-        color.push_back(darkred);
+        color.push_back(grey);
 
 
         Color white(0xff,0xff,0xff);
@@ -94,7 +95,7 @@ public:
     : RenderingAssertEngine(fgimage,bgimage,bgc,log,ap)
 	{
 	 regtestPixel();
-	 m_log.enableFileLog("TestTransparency.log");
+	 m_log.enableFileLog("Test_Grayscale_Alpha.log");
 	}
 
 

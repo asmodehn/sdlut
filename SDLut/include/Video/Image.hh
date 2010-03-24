@@ -101,14 +101,24 @@ public:
         return m_img->getWidth();
     }
 
-    Color getpixel(int x, int y)
+    Color getpixel(int x, int y) const
     {
-        return m_img->getPixelFormat().getColor(m_img->getpixel(x, y));
+        Color res;
+        //We need to check the pixel is in the image
+        if (x > 0 && y > 0 && x < getWidth() && y < getHeight())
+        {
+            res=m_img->getPixelFormat().getColor(m_img->getpixel(x, y));
+        }
+        return res;
     }
 
     void setpixel(int x, int y, const Color & pixel)
     {
-        return  m_img->setpixel(x, y, m_img->getPixelFormat().getPixelColor( pixel));
+        //We need to check the pixel is in the image
+        if (x > 0 && y > 0 && x < getWidth() && y < getHeight())
+        {
+            m_img->setpixel(x, y, m_img->getPixelFormat().getPixelColor( pixel));
+        }
     }
 
     //TODO : set alpha of the surface, using colorkey if possible ( alpha = 255 and SDL )

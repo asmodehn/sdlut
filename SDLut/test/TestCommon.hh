@@ -11,19 +11,31 @@ using namespace RAGE;
 
 using namespace SDLut;
 
-
+#include <string>
 
 class ArgParser
 {
   std::vector<std::string> args;
+ bool m_nogl;
+ bool m_auto;
 
 public:
-  ArgParser(int argc, char* argv[])
+  ArgParser(int argc, char* argv[]) : m_nogl(false), m_auto(false)
   {
       for (int i = 0; i < argc; ++i )
       {
-        args.push_back(std::string(argv[i]));
+          std::string argstr(argv[i]);
+          if (argstr == "nogl" ) { m_nogl = true; continue;}
+          if (argstr == "auto" ) { m_auto = true; continue;}
+          //we dont store nogl and auto arguments in the vector
+          args.push_back(argstr);
       }
+
+      std::cout << " Arguments parsing : " << std::endl;
+      std::cout << " OpenGL : " << m_nogl << std::endl;
+      std::cout << " Auto : " << m_auto << std::endl;
+      for ( unsigned int j =0 ; j < args.size(); ++j) std::cout << "args.get(" << j << ") = " << args.at(j) << std::endl;
+      std::cout << std::endl;
   }
 
   ~ArgParser() {}
@@ -34,18 +46,7 @@ public:
 
       if ( args.size()>index)
       {
-          if ( args.at(index) != "nogl" && args.at(index) != "auto")
-          {
-              result = args.at(index);
-          }
-          else if ( args.size() > index +1)
-          {
-              result = get(index+1);
-          }
-          //else // no more args
-          //{
-          //    result = "";
-          //}
+          result = args.at(index);
       }
 
       return result;
@@ -55,36 +56,17 @@ public:
 
   bool isSDL() const
   {
-	return !isOGL();
+	return m_nogl;
   }
 
   bool isOGL() const
   {
-#ifdef WK_OPENGL_FOUND
-	  for (unsigned int i = 0; i < args.size(); i++)
-	  {
-		  if ( args[i] == "nogl" )
-		  {
-			  return false;
-		  }
-	  }
-	  return true;
-
-#else
-      return false;
-#endif
+      return !m_nogl;
   }
 
   bool isAuto() const
   {
-	  for (unsigned int i = 0; i < args.size(); i++)
-	  {
-		  if ( args[i] == "auto" )
-		  {
-			  return true;
-		  }
-	  }
-	  return false;
+      return m_auto;
   }
 
   std::string getcmd()
