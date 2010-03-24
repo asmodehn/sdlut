@@ -105,20 +105,28 @@ public:
     {
         Color res;
         //We need to check the pixel is in the image
-        if (x > 0 && y > 0 && x < getWidth() && y < getHeight())
+        if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
         {
-            res=m_img->getPixelFormat().getColor(m_img->getpixel(x, y));
+            res = m_img->getPixelFormat().getColor(m_img->getpixel(x, y));
         }
+		else
+		{
+			throw std::logic_error("Trying to get a pixel outside of Image range");
+		}
         return res;
     }
 
     void setpixel(int x, int y, const Color & pixel)
     {
         //We need to check the pixel is in the image
-        if (x > 0 && y > 0 && x < getWidth() && y < getHeight())
+        if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
         {
             m_img->setpixel(x, y, m_img->getPixelFormat().getPixelColor( pixel));
         }
+		else
+		{
+			throw std::logic_error("Trying to pu a pixel outside of Image range");
+		}
     }
 
     //TODO : set alpha of the surface, using colorkey if possible ( alpha = 255 and SDL )
