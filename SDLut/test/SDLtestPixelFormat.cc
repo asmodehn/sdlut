@@ -78,7 +78,7 @@ class Test : public AssertEngine
 
 public:
     //we only need one render to see which color are there
-    Test( Logger & log) : AssertEngine(log,1)
+    Test( Logger & log, const ArgParser & args) : AssertEngine(log,args)
 	{
 	}
 
@@ -155,7 +155,7 @@ int main(int argc, char** argv)
 
     App::getInstance().getDisplay().getScreenBuffer().setOpenGL(args.isOGL());
 
-    Test teng(testlog);
+    Test teng(testlog,args);
 	MyEngine engine(testlog,teng);
 
     int exitstatus = -1;
