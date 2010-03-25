@@ -30,13 +30,14 @@ namespace SDLut
 {
 namespace video
 {
-    namespace internal{
-		class VideoSurface;
+namespace internal
+{
+class VideoSurface;
 
 class VideoInfo
 {
     friend class ScreenBuffer;
-	friend class SDLut::video::internal::VideoSurface;
+    friend class SDLut::video::internal::VideoSurface;
 
 private:
     //Actual VideoInfo pointer
@@ -95,7 +96,7 @@ public:
     friend RAGE::Logger & operator << (RAGE::Logger & ostr, const VideoInfo & vinfo);
 };
 
-    }
+}
 }
 } //namespace SDLut::SDL
 #endif

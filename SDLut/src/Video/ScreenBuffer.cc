@@ -14,18 +14,18 @@ ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) thr
 
 //setting the required flags...
 #ifdef WK_OPENGL_FOUND
-        //OpenGL set by default
-        setOpenGL(true);
+    //OpenGL set by default
+    setOpenGL(true);
 #endif
-        //default
-        setFullscreen(false);
-        setResizable(true);
-        setNoFrame(false);
+    //default
+    setFullscreen(false);
+    setResizable(true);
+    setNoFrame(false);
 
 #ifdef WK_OPENGL_FOUND
     //Here SDL_Init(SDL_VIDEO) has already been called
-	if (internal::VideoSurface::sptm_vinfo)
-		delete internal::VideoSurface::sptm_vinfo, internal::VideoSurface::sptm_vinfo = NULL;
+    if (internal::VideoSurface::sptm_vinfo)
+        delete internal::VideoSurface::sptm_vinfo, internal::VideoSurface::sptm_vinfo = NULL;
 
     internal::VideoSurface::sptm_vinfo = new internal::OGL::OGLVideoInfo();
 #else
@@ -294,11 +294,11 @@ bool ScreenBuffer::show()
     //create a new screen
     try
     {
-        #ifdef WK_OPENGL_FOUND
+#ifdef WK_OPENGL_FOUND
         m_screen.reset(new internal::OGL::VideoGLSurface(m_width, m_height, m_bpp));
-        #else
+#else
         m_screen.reset(new internal::VideoSurface(m_width, m_height, m_bpp));
-        #endif
+#endif
 
         //initializing engine
         m_engine.reset(new internal::SDLEngine());
@@ -418,14 +418,14 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
 bool ScreenBuffer::captureBMP(std::string filename) const
 {
     m_screen->saveBMP(filename);
-	return true;
+    return true;
 }
 
 
 
-void ScreenBuffer::setClipRect( const Rect& clipr )
+void ScreenBuffer::resetClipRect( const Rect& clipr )
 {
-    m_screen->setClipRect(clipr);
+    m_screen->resetClipRect(clipr);
     //adding to refresh list here, in case we use applyBGColor with different color, we need to refresh it properly
     //NB we could also do the refresh when we set ApplyBG color, but that kill the point of smart refresh
     //if we applyBGcolor at everyrender, like now...

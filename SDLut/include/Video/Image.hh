@@ -109,10 +109,10 @@ public:
         {
             res = m_img->getPixelFormat().getColor(m_img->getpixel(x, y));
         }
-		else
-		{
-			throw std::logic_error("Trying to get a pixel outside of Image range");
-		}
+        else
+        {
+            throw std::logic_error("Trying to get a pixel outside of Image range");
+        }
         return res;
     }
 
@@ -123,10 +123,10 @@ public:
         {
             m_img->setpixel(x, y, m_img->getPixelFormat().getPixelColor( pixel));
         }
-		else
-		{
-			throw std::logic_error("Trying to pu a pixel outside of Image range");
-		}
+        else
+        {
+            throw std::logic_error("Trying to pu a pixel outside of Image range");
+        }
     }
 
     //TODO : set alpha of the surface, using colorkey if possible ( alpha = 255 and SDL )

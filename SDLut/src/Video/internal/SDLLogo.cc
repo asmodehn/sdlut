@@ -8,8 +8,8 @@ using namespace RAGE;
 
 namespace SDLut
 {
-    namespace video
-    {
+namespace video
+{
 namespace internal
 {
 
@@ -30,11 +30,11 @@ Logo::Logo()
     try
     {
         system::RWOps _iconres( resources::_defaultImage,sizeof(resources::_defaultImage) );
-        #ifdef WK_OPENGL_FOUND
+#ifdef WK_OPENGL_FOUND
         m_logo.reset(new OGL::GLSurface( _iconres ));
-        #else
+#else
         m_logo.reset(new RGBSurface( _iconres ));
-        #endif
+#endif
     }
     catch (std::exception &)
     {
@@ -53,11 +53,11 @@ Logo::~Logo()
 void Logo::setLogoImage( const RGBSurface & mylogo )
 {
     //we copy the image
-    #ifdef WK_OPENGL_FOUND
+#ifdef WK_OPENGL_FOUND
     OGL::GLSurface* newlogo = new OGL::GLSurface(mylogo);
-    #else
+#else
     RGBSurface* newlogo = new RGBSurface(mylogo);
-    #endif
+#endif
     m_logo.reset(newlogo);
 }
 
@@ -78,5 +78,5 @@ bool Logo::render(VideoSurface & screen) const
 }
 
 }
-    }
+}
 }

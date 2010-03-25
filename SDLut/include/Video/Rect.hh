@@ -12,7 +12,10 @@ namespace SDLut
 namespace video
 {
 
-namespace internal { class BaseSurface;}
+namespace internal
+{
+class BaseSurface;
+}
 
 
 

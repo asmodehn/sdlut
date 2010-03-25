@@ -7,10 +7,10 @@ namespace SDLut
 {
 namespace video
 {
-    namespace internal
-    {
-        namespace OGL
-        {
+namespace internal
+{
+namespace OGL
+{
 
 #ifdef WK_OPENGL_FOUND
 
@@ -29,7 +29,7 @@ RAGE::Logger & operator << (RAGE::Logger & log, const OGLVideoInfo & glvi)
 #pragma message "No OpenGL ! OGLVideoInfo class not generated."
 #endif
 }
-    }
+}
 }
 }
 

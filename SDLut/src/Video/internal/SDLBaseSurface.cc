@@ -7,8 +7,10 @@ using namespace RAGE;
 
 namespace SDLut
 {
-namespace video{
-    namespace internal{
+namespace video
+{
+namespace internal
+{
 
 bool BaseSurface::lock(void)
 {
@@ -29,7 +31,7 @@ bool BaseSurface::unlock(void)
 }
 
 BaseSurface::BaseSurface()
-: ptm_pformat(NULL)
+        : ptm_pformat(NULL)
 {
 }
 
@@ -98,8 +100,8 @@ try :
         Log << nl << "Unable to copy the RGBsurface" ;
         throw std::logic_error(errstr + " returns NULL");
     }
-	if (ptm_pformat)
-		delete ptm_pformat, ptm_pformat = NULL;
+    if (ptm_pformat)
+        delete ptm_pformat, ptm_pformat = NULL;
     ptm_pformat = new PixelFormat(ptm_surf->format);
 #ifdef DEBUG
     Log << nl << "BaseSurface::BaseSurface(" << &s << ") done.";
@@ -123,8 +125,8 @@ BaseSurface& BaseSurface::operator=(const BaseSurface& s)
         {
             Log << nl << "Unable to copy the BaseSurface : error in SDL_ConvertSurface -> " << GetError() ;
         }
-		if (ptm_pformat)
-			delete ptm_pformat, ptm_pformat = NULL;
+        if (ptm_pformat)
+            delete ptm_pformat, ptm_pformat = NULL;
         ptm_pformat = new PixelFormat(ptm_surf->format);
     }
     return *this;
@@ -137,8 +139,8 @@ unsigned long BaseSurface::getFlags(void) const
 
 BaseSurface::~BaseSurface()
 {
-       //removing old pixelformat container
-        delete ptm_pformat, ptm_pformat = NULL;
+    //removing old pixelformat container
+    delete ptm_pformat, ptm_pformat = NULL;
 
     SDL_FreeSurface(ptm_surf.release());
 }
@@ -158,8 +160,8 @@ try :
         Log << nl << "Unable to copy the RGBsurface" ;
         throw std::logic_error(errstr + " returns NULL");
     }
-	if (ptm_pformat)
-		delete ptm_pformat, ptm_pformat = NULL;
+    if (ptm_pformat)
+        delete ptm_pformat, ptm_pformat = NULL;
     ptm_pformat = new PixelFormat(ptm_surf->format);
 
 #ifdef DEBUG
@@ -231,7 +233,7 @@ PixelColor BaseSurface::getpixel(int x, int y)
 
     lock();
 
-    //nbBytesPerPixel is hte number of bytes used to store a pixel
+    //nbBytesPerPixel is the number of bytes used to store a pixel
     //We can therefore get the color depth of the image : 8, 16, 24 or 32 bits.
     Uint8 bpp = ptm_surf->format->BytesPerPixel;
     // Here p is the address to the pixel we want to retrieve
@@ -239,27 +241,31 @@ PixelColor BaseSurface::getpixel(int x, int y)
     Uint8 *p = (Uint8 *)ptm_surf->pixels + y * ptm_surf->pitch + x * bpp;
 
     /*Gestion différente suivant le nombre d'octets par pixel de l'image*/
-    switch(bpp)
+    switch (bpp)
     {
-        case 1:
-            pc = *p;break;
-
-        case 2:
-            pc = *(Uint16 *)p;break;
-
-        case 3:
-            // Depending on machine architecture
-            if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-                pc = p[0] << 16 | p[1] << 8 | p[2];
-            else
-                pc = p[0] | p[1] << 8 | p[2] << 16;
+    case 1: //simple case of 8bits image ( palettized )
+        pc = *p;
         break;
-        case 4:
-            pc = *(Uint32 *)p;break;
+
+    case 2:
+        pc = *(Uint16 *)p;
+        break;
+
+    case 3:
+        // Depending on machine architecture
+        if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+            pc = p[0] << 16 | p[1] << 8 | p[2];
+        else
+            pc = p[0] | p[1] << 8 | p[2] << 16;
+        break;
+    case 4:
+        pc = *(Uint32 *)p;
+        break;
 
         //shouldnt happen but avoid warnings
-        default:
-            pc =  0; break;
+    default:
+        pc =  0;
+        break;
     }
     unlock();
     return pc;
@@ -268,7 +274,7 @@ PixelColor BaseSurface::getpixel(int x, int y)
 void BaseSurface::setpixel(int x, int y, PixelColor pixel)
 {
     lock();
-        //nbBytesPerPixel is hte number of bytes used to store a pixel
+    //nbBytesPerPixel is hte number of bytes used to store a pixel
     //We can there fore get the color depth of the image : 8, 16, 24 or 32 bits.
     Uint8 bpp = ptm_surf->format->BytesPerPixel;
 
@@ -277,10 +283,10 @@ void BaseSurface::setpixel(int x, int y, PixelColor pixel)
 
     Uint8 alpha;
 
-if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-    alpha = (Uint8) pixel & 0xff;
-else
-    alpha= (Uint8) (pixel >> 24) & 0xff;
+    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+        alpha = (Uint8) pixel & 0xff;
+    else
+        alpha= (Uint8) (pixel >> 24) & 0xff;
 
     if ( alpha == 255 )
     {
@@ -427,7 +433,7 @@ bool BaseSurface::blit(const BaseSurface& src, Rect& dest_rect, const Rect& src_
 }
 
 //Set the clip rect
-void BaseSurface::setClipRect(const Rect& rect)
+void BaseSurface::resetClipRect(const Rect& rect)
 {
     SDL_SetClipRect(ptm_surf.get(),rect.get_pSDL());
 }
@@ -455,6 +461,6 @@ RAGE::Logger & operator << (RAGE::Logger & log, const BaseSurface & surf)
     return log;
 }
 
-    }
+}
 }
 } //namespace SDLut::SDL

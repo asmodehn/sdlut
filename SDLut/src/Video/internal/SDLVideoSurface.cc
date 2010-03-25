@@ -8,7 +8,8 @@ namespace SDLut
 {
 namespace video
 {
-    namespace internal {
+namespace internal
+{
 
 const VideoInfo * VideoSurface::sptm_vinfo = 0;
 
@@ -46,8 +47,8 @@ catch (std::exception &e)
 
 VideoSurface::~VideoSurface()
 {
-	if (sptm_vinfo)
-		delete sptm_vinfo, sptm_vinfo = NULL;
+    if (sptm_vinfo)
+        delete sptm_vinfo, sptm_vinfo = NULL;
 }
 
 
@@ -175,7 +176,7 @@ std::auto_ptr <std::list <std::pair <int, int> > > VideoSurface::Get_Resolution_
 
 bool VideoSurface::refresh(void)
 {
-     return SDL_Flip(ptm_surf.get()) == 0;
+    return SDL_Flip(ptm_surf.get()) == 0;
 }
 
 bool VideoSurface::resize(int width, int height)
@@ -416,6 +417,6 @@ RAGE::Logger & operator << (RAGE::Logger & log, const VideoSurface & surf)
     return log;
 }
 
-    }
+}
 }
 } //namespace SDLut::SDL

@@ -55,7 +55,8 @@ int FontImpl::height()
 }
 
 FontImpl::FontImpl(const FontImpl & font) throw (std::logic_error)
- try : pvm_fontsurf(0)
+try :
+    pvm_fontsurf(0)
 {
     //deep copy of the RGB Surface
     pvm_fontsurf.reset( new video::internal::RGBSurface(*(font.pvm_fontsurf)) );

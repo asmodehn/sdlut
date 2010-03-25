@@ -13,9 +13,10 @@ namespace SDLut
 {
 namespace video
 {
-    class ScreenBuffer;
+class ScreenBuffer;
 
-    namespace internal {
+namespace internal
+{
 
 
 
@@ -158,7 +159,7 @@ public:
     friend RAGE::Logger & operator << (RAGE::Logger & log, const VideoSurface & surf);
 };
 
-    }
+}
 }
 } //namespace SDLut::SDL
 

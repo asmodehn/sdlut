@@ -48,9 +48,9 @@ Image::Image( int width, int height, int bpp,
 
 {
 #ifdef WK_OPENGL_FOUND
-        m_img.reset(new internal::OGL::GLSurface(width, height, bpp, alpha, colorkey, hardware));
+    m_img.reset(new internal::OGL::GLSurface(width, height, bpp, alpha, colorkey, hardware));
 #else
-        m_img.reset(new internal::RGBSurface(width, height, bpp, alpha, colorkey, hardware));
+    m_img.reset(new internal::RGBSurface(width, height, bpp, alpha, colorkey, hardware));
 #endif
 }
 
@@ -60,20 +60,20 @@ Image::Image( void * pixeldata, int depth, int pitch, int width, int height
 {
 
 #ifdef WK_OPENGL_FOUND
-        m_img.reset(new internal::OGL::GLSurface(pixeldata, depth, pitch, width, height));
+    m_img.reset(new internal::OGL::GLSurface(pixeldata, depth, pitch, width, height));
 #else
-        m_img.reset(new internal::RGBSurface(pixeldata, depth, pitch, width, height));
+    m_img.reset(new internal::RGBSurface(pixeldata, depth, pitch, width, height));
 #endif
 }
 
 Image::Image(const Image & img)
-: m_img(NULL)
+        : m_img(NULL)
 {
 
 #ifdef WK_OPENGL_FOUND
-        m_img.reset(new internal::OGL::GLSurface(*(img.m_img)));
+    m_img.reset(new internal::OGL::GLSurface(*(img.m_img)));
 #else
-        m_img.reset(new internal::RGBSurface(*(img.m_img)));
+    m_img.reset(new internal::RGBSurface(*(img.m_img)));
 #endif
 
 }

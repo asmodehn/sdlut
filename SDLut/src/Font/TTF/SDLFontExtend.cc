@@ -65,7 +65,7 @@ FontExtend & FontExtend::operator=(const FontExtend & font) throw (std::logic_er
     {
         throw std::logic_error("TTF_OpenFont Error : " + Optional::GetError(Optional::TTF));
     }
-        return *this;
+    return *this;
 }
 
 FontExtend::~FontExtend()

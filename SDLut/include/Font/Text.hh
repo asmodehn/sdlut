@@ -6,8 +6,10 @@
 
 #include <stdexcept>
 
-namespace SDLut{
-    namespace font{
+namespace SDLut
+{
+namespace font
+{
 
 /*****************
  *
@@ -28,10 +30,10 @@ class Text : public video::Image
     Font::RenderMode m_mode;
 
 public:
-	inline std::string Get_String()
-	{
-		return m_text;
-	}
+    inline std::string Get_String()
+    {
+        return m_text;
+    }
 
     Text(std::string = "",Font fnt = Font(),video::Color fg = video::Color(255,255,255),video::Color bgc = video::Color(0,0,0)) throw (std::logic_error);
 
@@ -48,7 +50,7 @@ public:
 
     void changeRendermode(Font::RenderMode rm = Font::Solid);
 
-    private:
+private:
     bool render();
 };
 
@@ -59,7 +61,7 @@ public:
 
 
 
-    }
+}
 }
 
 

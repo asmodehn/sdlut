@@ -20,30 +20,30 @@ class Sprite
 public:
 
 
-Sprite() : m_width(0), m_height(0), m_posx(0), m_posy(0), pm_img(NULL)
-{
-}
+    Sprite() : m_width(0), m_height(0), m_posx(0), m_posy(0), pm_img(NULL)
+    {
+    }
 
-Sprite( const Sprite& s ) : m_width(s.m_width), m_height(s.m_height), m_posx(s.m_posx), m_posy(s.m_posy), pm_img(s.pm_img)
-{
-}
+    Sprite( const Sprite& s ) : m_width(s.m_width), m_height(s.m_height), m_posx(s.m_posx), m_posy(s.m_posy), pm_img(s.pm_img)
+    {
+    }
 
-~Sprite()
-{
-}
+    ~Sprite()
+    {
+    }
 
-bool setImage( const Image * img)
-{
-    //default useful values
-    m_width = img->getWidth();
-    m_height = img->getHeight();
+    bool setImage( const Image * img)
+    {
+        //default useful values
+        m_width = img->getWidth();
+        m_height = img->getHeight();
 
 
-    pm_img = img;
-    return true;
-}
+        pm_img = img;
+        return true;
+    }
 
-bool hasImage()
+    bool hasImage()
     {
         return pm_img >0;
     }
@@ -53,20 +53,20 @@ bool hasImage()
     }
 
     bool move( int deltax, int deltay )
-{
-    m_posx += deltax;
-    m_posy += deltay;
+    {
+        m_posx += deltax;
+        m_posy += deltay;
 
-    return true; //todo
-}
+        return true; //todo
+    }
 
-bool moveto( int posx, int posy)
-{
-    m_posx = posx;
-    m_posy = posy;
+    bool moveto( int posx, int posy)
+    {
+        m_posx = posx;
+        m_posy = posy;
 
-    return true; //todo
-}
+        return true; //todo
+    }
 
     int posX()
     {
@@ -90,76 +90,76 @@ class Scene
 public:
 
 
-Scene(int width, int height) : m_width(width), m_height(height) {}
-Scene( const Scene & s ) : m_width(s.m_width),m_height(s.m_height)
-{
-    //TODO : copy hte content of the vector
-    //we probably also need to copy the sprites..
-    // -> deep copy
-}
-
-~Scene()
-{
-    //we shall delete all sprites...
-    for ( unsigned int i=0; i< m_spritelist.size(); i++ )
+    Scene(int width, int height) : m_width(width), m_height(height) {}
+    Scene( const Scene & s ) : m_width(s.m_width),m_height(s.m_height)
     {
-        delete m_spritelist[i], m_spritelist[i]= NULL;
+        //TODO : copy hte content of the vector
+        //we probably also need to copy the sprites..
+        // -> deep copy
     }
-    m_spritelist.clear();
-}
+
+    ~Scene()
+    {
+        //we shall delete all sprites...
+        for ( unsigned int i=0; i< m_spritelist.size(); i++ )
+        {
+            delete m_spritelist[i], m_spritelist[i]= NULL;
+        }
+        m_spritelist.clear();
+    }
 
 
-bool setWidth(int width)
-{
-    m_width = width;
-    return true;
-}
+    bool setWidth(int width)
+    {
+        m_width = width;
+        return true;
+    }
 
-bool setHeight(int height)
-{
-    m_height = height;
-    return true;
-}
+    bool setHeight(int height)
+    {
+        m_height = height;
+        return true;
+    }
 
 
 
-bool add( std::auto_ptr<Sprite> s) // sink auto_ptr
-{
-    m_spritelist.push_back(s.release());
-    return true; //todo
-}
+    bool add( std::auto_ptr<Sprite> s) // sink auto_ptr
+    {
+        m_spritelist.push_back(s.release());
+        return true; //todo
+    }
 
-void moveRandom()
-{
+    void moveRandom()
+    {
         for ( unsigned int i=0; i<m_spritelist.size(); i++ )
         {
             int newx = rand() % m_width;
             int newy = rand() % m_height;
             m_spritelist[i]->moveto( newx, newy );
         }
-}
+    }
 
 //This return the list of sprite that need to be displayed, with the correct screen coordinates and dimensions
-std::vector<Sprite*> getRenderList() const
-{
-    std::vector<Sprite*> res;
-
-    for ( unsigned int i=0; i<m_spritelist.size(); i++)
+    std::vector<Sprite*> getRenderList() const
     {
+        std::vector<Sprite*> res;
 
-        int posx = m_spritelist[i]->posX();
-        int posy = m_spritelist[i]->posY();
-//#ifdef DEBUG
-        //std::cout << "X = " << posx << " Y= " << posy;
-//#endif
-        if ( ( posx > 0 && posx < m_width ) //TODO : correct this
-                && ( posy>0 && posy< m_height ) ) //TODO : and that
+        for ( unsigned int i=0; i<m_spritelist.size(); i++)
         {
-            res.push_back(m_spritelist[i]);
+
+            int posx = m_spritelist[i]->posX();
+            int posy = m_spritelist[i]->posY();
+//#ifdef DEBUG
+            //std::cout << "X = " << posx << " Y= " << posy;
+//#endif
+            if ( ( posx > 0 && posx < m_width ) //TODO : correct this
+                    && ( posy>0 && posy< m_height ) ) //TODO : and that
+            {
+                res.push_back(m_spritelist[i]);
+            }
         }
+        return res;
     }
-    return res;
-}
 
 };
 
@@ -175,56 +175,56 @@ class MyEngine
 
 public:
 
-	MyEngine(int width,int height)
-	{
-	        //TODO : improve this section by improving ImageLoader...
-    ImageLoader loader;
-    loadedimage = loader.load("test/data/smiley.bmp") ;
+    MyEngine(int width,int height)
+    {
+        //TODO : improve this section by improving ImageLoader...
+        ImageLoader loader;
+        loadedimage = loader.load("test/data/smiley.bmp") ;
 
-    pvm_scene.reset( new Scene(width,height) );
+        pvm_scene.reset( new Scene(width,height) );
 
-	}
+    }
 
-    virtual ~MyEngine(){}
+    virtual ~MyEngine() {}
 
     bool addSmiley()
     {
 
-    std::auto_ptr<Sprite> sp1(new Sprite());
-    sp1->setImage(loadedimage.get());
+        std::auto_ptr<Sprite> sp1(new Sprite());
+        sp1->setImage(loadedimage.get());
 
-    return pvm_scene->add(sp1);
+        return pvm_scene->add(sp1);
 
     }
 
-	bool init(int width, int height)
-	{
-	    /* initialize random seed: */
+    bool init(int width, int height)
+    {
+        /* initialize random seed: */
         srand ( (unsigned)time(NULL) );
 
 
-	    m_width = width;
-	    m_height = height;
+        m_width = width;
+        m_height = height;
 
         pvm_scene->setWidth(width);
         pvm_scene->setHeight(height);
 
 
 
-		return true;
-	}
+        return true;
+    }
 
-	bool resize(int width, int height)
-	{
+    bool resize(int width, int height)
+    {
 
-	    m_width = width;
-	    m_height = height;
+        m_width = width;
+        m_height = height;
 
         pvm_scene->setWidth(width);
         pvm_scene->setHeight(height);
 
-		return true;
-	}
+        return true;
+    }
 
     bool newframe(unsigned long framerate, unsigned long elapsedticks )
     {
@@ -232,26 +232,26 @@ public:
         return true;
     }
 
-	bool render(ScreenBuffer & screen) const
+    bool render(ScreenBuffer & screen) const
     {
 
-    //the scene sould here decide which sprite get displayed or not
-    //Maybe we ll do that in Screenbuffer later if small code enough...
-    std::vector<Sprite*> rlist = pvm_scene->getRenderList();
+        //the scene sould here decide which sprite get displayed or not
+        //Maybe we ll do that in Screenbuffer later if small code enough...
+        std::vector<Sprite*> rlist = pvm_scene->getRenderList();
 
-    for ( unsigned int i = 0; i< rlist.size(); i++)
-    {
-        //TODO make sure the pointer is valid here
-        assert ( rlist[i] && "ERROR : sprite has been deleted before render!!!" );
-
-        if ( rlist[i]->hasImage() )
+        for ( unsigned int i = 0; i< rlist.size(); i++)
         {
-            Rect dest(rlist[i]->posX(), rlist[i]->posY(),rlist[i]->getImage().getWidth(),rlist[i]->getImage().getHeight());
-            screen.blit(rlist[i]->getImage(),dest);
-        }
-    }
+            //TODO make sure the pointer is valid here
+            assert ( rlist[i] && "ERROR : sprite has been deleted before render!!!" );
 
-		return true;
+            if ( rlist[i]->hasImage() )
+            {
+                Rect dest(rlist[i]->posX(), rlist[i]->posY(),rlist[i]->getImage().getWidth(),rlist[i]->getImage().getHeight());
+                screen.blit(rlist[i]->getImage(),dest);
+            }
+        }
+
+        return true;
     }
 
 };
@@ -263,8 +263,8 @@ int main(int argc, char** argv)
 // only in SDL it seems
 
 #ifdef WK_OPENGL_FOUND
-	bool ogl = true;
-	if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
+    bool ogl = true;
+    if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
 #else
     bool ogl = false;
 #endif
@@ -272,7 +272,7 @@ int main(int argc, char** argv)
 
     //Starting with usual SDL window
     App::getInstance().initVideo(false,true,false);
-	App::getInstance().setName ("SDLut::SDL test Scene and refresh strategy");
+    App::getInstance().setName ("SDLut::SDL test Scene and refresh strategy");
 
 
     //Setting Display size and BPP
@@ -284,19 +284,19 @@ int main(int argc, char** argv)
         App::getInstance().getDisplay().getScreenBuffer().setOpenGL(false);
     }
 
-	std::auto_ptr<MyEngine> engine(new MyEngine(800,600));
+    std::auto_ptr<MyEngine> engine(new MyEngine(800,600));
 
-	App::getInstance().getDisplay().resetInitCallback(*engine,&MyEngine::init);
-	App::getInstance().getDisplay().resetResizeCallback(*engine,&MyEngine::resize);
-	App::getInstance().getDisplay().resetNewFrameCallback(*engine,&MyEngine::newframe);
-	App::getInstance().getDisplay().resetRenderCallback(*engine,&MyEngine::render);
+    App::getInstance().getDisplay().resetInitCallback(*engine,&MyEngine::init);
+    App::getInstance().getDisplay().resetResizeCallback(*engine,&MyEngine::resize);
+    App::getInstance().getDisplay().resetNewFrameCallback(*engine,&MyEngine::newframe);
+    App::getInstance().getDisplay().resetRenderCallback(*engine,&MyEngine::render);
 
     engine->addSmiley();
     engine->addSmiley();
 
-    if(App::getInstance().getDisplay().show())
+    if (App::getInstance().getDisplay().show())
     {
-       App::getInstance().getDisplay().mainLoop();
+        App::getInstance().getDisplay().mainLoop();
     }
 
     return 0;

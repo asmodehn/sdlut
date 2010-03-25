@@ -18,19 +18,20 @@ namespace video
 {
 
 //usefull to get the SDL rect without any risk of modification
-    SDL_Rect Rect::get_SDL() const
-    {
-        return *pvm_rect;
-    }
-    //usefull to get the SDL rect
-    SDL_Rect * Rect::get_pSDL() const
-    {
-        return pvm_rect;
-    }
+SDL_Rect Rect::get_SDL() const
+{
+    return *pvm_rect;
+}
+//usefull to get the SDL rect
+SDL_Rect * Rect::get_pSDL() const
+{
+    return pvm_rect;
+}
 
 
 Rect::Rect()
-try : pvm_rect(new SDL_Rect)
+try :
+    pvm_rect(new SDL_Rect)
 {
     pvm_rect->x= 0;
     pvm_rect->y= 0;
@@ -43,7 +44,8 @@ catch (std::exception &e)
 }
 
 Rect::Rect(int nx, int ny , unsigned int nw, unsigned int nh)
-try : pvm_rect(new SDL_Rect)
+try :
+    pvm_rect(new SDL_Rect)
 {
     pvm_rect->x=(Sint16) nx;
     pvm_rect->y=(Sint16) ny;
@@ -58,7 +60,8 @@ catch (std::exception &e)
 
 //Copy Constructor
 Rect::Rect( const Rect& r)
-try : pvm_rect(new SDL_Rect)
+try :
+    pvm_rect(new SDL_Rect)
 {
     pvm_rect->x=(Sint16) r.getx();
     pvm_rect->y=(Sint16) r.gety();

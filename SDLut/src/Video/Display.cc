@@ -244,7 +244,7 @@ int Display::mainLoop(unsigned int framerate, unsigned int eventrate)
 bool Display::exitMainLoop(int exitstatus)
 {
     m_exitstatus = exitstatus;
-     return m_exitMainLoop = true;
+    return m_exitMainLoop = true;
 }
 
 

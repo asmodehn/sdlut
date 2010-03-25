@@ -27,14 +27,14 @@ namespace video
 {
 namespace internal
 {
-    namespace OGL
-    {
+namespace OGL
+{
 
 //This may be useless in Windows....
 //TEst to do on linux, to choose a class behaviour
 class OGLVideoInfo : public VideoInfo
 {
-    public :
+public :
     OGLVideoInfo() {}
 
     ~OGLVideoInfo() {}
@@ -56,7 +56,7 @@ class OGLVideoInfo : public VideoInfo
     friend RAGE::Logger & operator << (RAGE::Logger & ostr, const OGLVideoInfo & glvi);
 };
 
-    } // OGL
+} // OGL
 } // internal
 } // video
 } // namespace SDLut

@@ -37,9 +37,10 @@ namespace SDLut
 namespace video
 {
 
-    class Display;
+class Display;
 
-    namespace internal{
+namespace internal
+{
 
 
 class Window
@@ -90,7 +91,7 @@ public :
 
 };
 
-    }
+}
 }
 }
 #endif

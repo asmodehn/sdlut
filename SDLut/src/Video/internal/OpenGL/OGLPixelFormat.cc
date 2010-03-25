@@ -7,10 +7,10 @@ namespace SDLut
 {
 namespace video
 {
-    namespace internal
-    {
-        namespace OGL
-        {
+namespace internal
+{
+namespace OGL
+{
 
 #ifdef WK_OPENGL_FOUND
 
@@ -18,86 +18,86 @@ namespace video
 // SDL seems to manage pixel format for OpenGL fine, once you know how it works...
 // But GLVideoInfo needed for setting up videosurface (SDL_GL_Attribute) before displaying it...
 
-    //default Constructor
-    OGLPixelFormat::OGLPixelFormat(void)
-    : PixelFormat()
-    {
-    }
+//default Constructor
+OGLPixelFormat::OGLPixelFormat(void)
+        : PixelFormat()
+{
+}
 
-    OGLPixelFormat::OGLPixelFormat(const SDL_PixelFormat* pf)
-    : PixelFormat(pf)
-    {
-    }
+OGLPixelFormat::OGLPixelFormat(const SDL_PixelFormat* pf)
+        : PixelFormat(pf)
+{
+}
 
-    OGLPixelFormat::~OGLPixelFormat()
-    {}
-
-
+OGLPixelFormat::~OGLPixelFormat()
+{}
 
 
-    int OGLPixelFormat::getBitsPerPixel() const
-    {
-        return PixelFormat::getBitsPerPixel();
-    }
 
-    int OGLPixelFormat::getBytesPerPixel() const
-    {
-        return PixelFormat::getBytesPerPixel();
-    }
 
-    int OGLPixelFormat::getRshift() const
-    {
-        return PixelFormat::getRshift();
-    }
+int OGLPixelFormat::getBitsPerPixel() const
+{
+    return PixelFormat::getBitsPerPixel();
+}
 
-    int OGLPixelFormat::getGshift() const
-    {
-        return PixelFormat::getGshift();
-    }
+int OGLPixelFormat::getBytesPerPixel() const
+{
+    return PixelFormat::getBytesPerPixel();
+}
 
-    int OGLPixelFormat::getBshift() const
-    {
-        return PixelFormat::getBshift();
-    }
+int OGLPixelFormat::getRshift() const
+{
+    return PixelFormat::getRshift();
+}
 
-    int OGLPixelFormat::getAshift() const
-    {
-        return PixelFormat::getAshift();
-    }
+int OGLPixelFormat::getGshift() const
+{
+    return PixelFormat::getGshift();
+}
 
-    int OGLPixelFormat::getRloss() const
-    {
-           return PixelFormat::getRloss();
-    }
-    int OGLPixelFormat::getGloss() const
-    {
-        return PixelFormat::getGloss();
-    }
-    int OGLPixelFormat::getBloss() const
-    {
-        return PixelFormat::getBloss();
-    }
-    int OGLPixelFormat::getAloss() const
-    {
-        return PixelFormat::getAloss();
-    }
+int OGLPixelFormat::getBshift() const
+{
+    return PixelFormat::getBshift();
+}
 
-    unsigned long OGLPixelFormat::getRmask() const
-    {
-        return PixelFormat::getRmask();
-    }
-    unsigned long OGLPixelFormat::getGmask() const
-    {
-        return PixelFormat::getGmask();
-    }
-    unsigned long OGLPixelFormat::getBmask() const
-    {
-        return PixelFormat::getBmask();
-    }
-    unsigned long OGLPixelFormat::getAmask() const
-    {
-        return PixelFormat::getAmask();
-    }
+int OGLPixelFormat::getAshift() const
+{
+    return PixelFormat::getAshift();
+}
+
+int OGLPixelFormat::getRloss() const
+{
+    return PixelFormat::getRloss();
+}
+int OGLPixelFormat::getGloss() const
+{
+    return PixelFormat::getGloss();
+}
+int OGLPixelFormat::getBloss() const
+{
+    return PixelFormat::getBloss();
+}
+int OGLPixelFormat::getAloss() const
+{
+    return PixelFormat::getAloss();
+}
+
+unsigned long OGLPixelFormat::getRmask() const
+{
+    return PixelFormat::getRmask();
+}
+unsigned long OGLPixelFormat::getGmask() const
+{
+    return PixelFormat::getGmask();
+}
+unsigned long OGLPixelFormat::getBmask() const
+{
+    return PixelFormat::getBmask();
+}
+unsigned long OGLPixelFormat::getAmask() const
+{
+    return PixelFormat::getAmask();
+}
 
 
 
@@ -268,7 +268,8 @@ RAGE::Logger & operator << (RAGE::Logger & log, const OGLPixelFormat & glman)
 #pragma message "No OpenGL ! OGLPixelFormat class not generated."
 #endif
 
-        }}
+}
+}
 }
 }
 

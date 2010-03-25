@@ -51,11 +51,11 @@ class ScreenBuffer
 
 protected:
 
-    #ifdef WK_OPENGL_FOUND
+#ifdef WK_OPENGL_FOUND
     std::auto_ptr<internal::OGL::VideoGLSurface> m_screen;
-    #else
+#else
     std::auto_ptr<internal::VideoSurface> m_screen;
-    #endif
+#endif
 
 
     bool fullRefreshNeeded;
@@ -147,16 +147,16 @@ public:
     {
         //return m_screen->getPixelFormat().getColor(m_screen->getpixel(x, y));
 
-		 Color res;
+        Color res;
         //We need to check the pixel is in the ScreenBuffer
         if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
         {
             res = m_screen->getPixelFormat().getColor(m_screen->getpixel(x, y));
         }
-		else
-		{
-			throw std::logic_error("Trying to get a pixel outside of ScreenBuffer range");
-		}
+        else
+        {
+            throw std::logic_error("Trying to get a pixel outside of ScreenBuffer range");
+        }
         return res;
     }
 
@@ -164,19 +164,19 @@ public:
     {
         //m_screen->setpixel(x, y, m_screen->getPixelFormat().getPixelColor(pixel));
 
-		 //We need to check the pixel is in the ScreenBuffer
+        //We need to check the pixel is in the ScreenBuffer
         if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
         {
             m_screen->setpixel(x, y, m_screen->getPixelFormat().getPixelColor(pixel));
         }
-		else
-		{
-			throw std::logic_error("Trying to pu a pixel outside of ScreenBuffer range");
-		}
+        else
+        {
+            throw std::logic_error("Trying to pu a pixel outside of ScreenBuffer range");
+        }
     }
 
     //Defines a clippin Area
-    void setClipRect( const Rect& clipr );
+    void resetClipRect( const Rect& clipr );
     Rect getClipRect( void ) const;
 
     //filling function for screen

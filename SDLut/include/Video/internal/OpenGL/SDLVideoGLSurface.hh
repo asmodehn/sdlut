@@ -64,9 +64,9 @@ public:
     virtual Renderer getRenderer()
     {
         if (isOpenGLset() )
-            {
-                return OpenGL;
-            }
+        {
+            return OpenGL;
+        }
         else
         {
             return SDL;
@@ -105,14 +105,13 @@ public:
     virtual bool fill (const PixelColor& pcolor, Rect dest_rect);
 
 
-
+    virtual void resetClipRect(const Rect& rect);
 
     //to resize the display
     virtual bool resize (int width, int height);
 
     //to flip the videosurface
     virtual bool refresh(void);
-
 
     virtual bool update(Rect r);
 

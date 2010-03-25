@@ -10,11 +10,14 @@
 namespace SDLut
 {
 
-    namespace font { class FontExtend; }
+namespace font
+{
+class FontExtend;
+}
 
 namespace video
 {
-    class ImageLoader;
+class ImageLoader;
 
 namespace internal
 {
@@ -105,8 +108,8 @@ public :
 
     bool convertToDisplayFormat();
 
-bool resetColorKey(bool ckey, const PixelColor & key, bool rleAccel = true);
-bool resetAlpha(bool alpha, unsigned int value, bool rleAccel = true);
+    bool resetColorKey(bool ckey, const PixelColor & key, bool rleAccel = true);
+    bool resetAlpha(bool alpha, unsigned int value, bool rleAccel = true);
 
 
     //saveBMP // TODO useful for screenshots

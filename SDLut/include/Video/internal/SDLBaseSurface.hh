@@ -22,7 +22,8 @@ namespace SDLut
 {
 namespace video
 {
-    namespace internal {
+namespace internal
+{
 
 ///defining a enumeration for renderers availables
 ///here because must be available for both video and rgb surfaces
@@ -197,11 +198,11 @@ public:
 
     //Set the clip rect
     //Default Reset the clip rect to the full size of the surface
-    inline void setClipRect(void)
+    inline void resetClipRect(void)
     {
-        return setClipRect(Rect(0,0,getWidth(),getHeight()));
+        return resetClipRect(Rect(0,0,getWidth(),getHeight()));
     }
-    void setClipRect(const Rect& rect);
+    virtual void resetClipRect(const Rect& rect);
     //get the clip rect
     Rect getClipRect(void) const;
 
@@ -226,7 +227,7 @@ public:
 
 };
 
-    }
+}
 }
 } //namespace SDLut::SDL
 

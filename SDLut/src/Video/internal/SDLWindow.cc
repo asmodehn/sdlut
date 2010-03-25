@@ -74,7 +74,7 @@ std::string Window::getIconName() const
 
 Window::Window(std::string title)
         :	ptm_title(title),
-            ptm_icon(0)
+        ptm_icon(0)
 {
 #ifdef DEBUG
     Log << nl << "Window::Window(" << title << ") called ..." ;

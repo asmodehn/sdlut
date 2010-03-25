@@ -9,7 +9,8 @@ namespace SDLut
 {
 namespace video
 {
-    namespace internal{
+namespace internal
+{
 
 //Conversion Constructor
 RGBSurface::RGBSurface(SDL_Surface * s) throw (std::logic_error)
@@ -122,21 +123,23 @@ catch (std::exception &e)
 
 RGBSurface::RGBSurface(system::RWOps& rwops) throw (std::logic_error)
 #ifdef WK_SDLIMAGE_FOUND
-try : BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0)), optimised(false)
+try :
+    BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0)), optimised(false)
 #else
-try : BaseSurface(SDL_LoadBMP_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0)), optimised(false)
+try :
+    BaseSurface(SDL_LoadBMP_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0)), optimised(false)
 #endif
 {
-        //We put back the RWOps read cursor at the beginning ( needed after load... )
-        rwops.seek(0,system::RWOps::Set);
+    //We put back the RWOps read cursor at the beginning ( needed after load... )
+    rwops.seek(0,system::RWOps::Set);
 
-    }
-    catch (std::exception &e)
-    {
-        Log << "Exception catched in RGBSurface Constructor !!!" << nl <<
-        e.what() << nl << GetError() ;
-        //TODO : much more explicit error message...
-    }
+}
+catch (std::exception &e)
+{
+    Log << "Exception catched in RGBSurface Constructor !!!" << nl <<
+    e.what() << nl << GetError() ;
+    //TODO : much more explicit error message...
+}
 
 
 
@@ -231,7 +234,7 @@ bool RGBSurface::resetColorKey(bool ckey, const PixelColor & key, bool rleAccel)
     {
         flags |= SDL_SRCCOLORKEY;
 
-    if (rleAccel)
+        if (rleAccel)
         {
             flags |= SDL_RLEACCEL;
         }
@@ -257,7 +260,7 @@ bool RGBSurface::resetAlpha(bool alpha, unsigned int value, bool rleAccel)
     }
 
 
-        return SDL_SetAlpha(ptm_surf.get(), flags, value) == 0;
+    return SDL_SetAlpha(ptm_surf.get(), flags, value) == 0;
 }
 
 bool RGBSurface::resize(int width, int height)
@@ -279,34 +282,34 @@ bool RGBSurface::resize(int width, int height)
     else
     {
 
-    if (ptm_surf->format->palette) // if we have a palette, we need to copy it as well. SDL_blit doesnt transfer palette !
-    {
-        SDL_SetColors(newSurf.get(),ptm_surf->format->palette->colors,0,ptm_surf->format->palette->ncolors);
-    }
+        if (ptm_surf->format->palette) // if we have a palette, we need to copy it as well. SDL_blit doesnt transfer palette !
+        {
+            SDL_SetColors(newSurf.get(),ptm_surf->format->palette->colors,0,ptm_surf->format->palette->ncolors);
+        }
 
         //copying old content, not to loose it
 
-            //Careful with colorkey and alpha for this blit...
+        //Careful with colorkey and alpha for this blit...
 
-            //transferring colorkey to dest surface. this shouldnt affect blit
-            SDL_SetColorKey (newsurf,ptm_surf->flags & ( SDL_SRCCOLORKEY | SDL_RLEACCEL ),ptm_surf->format->colorkey);
-            // we need to copy *everything*
-            SDL_SetColorKey (ptm_surf.get(), 0 , ptm_surf->format->colorkey );
+        //transferring colorkey to dest surface. this shouldnt affect blit
+        SDL_SetColorKey (newsurf,ptm_surf->flags & ( SDL_SRCCOLORKEY | SDL_RLEACCEL ),ptm_surf->format->colorkey);
+        // we need to copy *everything*
+        SDL_SetColorKey (ptm_surf.get(), 0 , ptm_surf->format->colorkey );
 
-            //same with surface alpha
-            SDL_SetAlpha (newsurf,ptm_surf->flags & ( SDL_SRCALPHA | SDL_RLEACCEL ), ptm_surf->format->alpha);
-            //
-            SDL_SetAlpha (ptm_surf.get(), 0 , ptm_surf->format->alpha );
+        //same with surface alpha
+        SDL_SetAlpha (newsurf,ptm_surf->flags & ( SDL_SRCALPHA | SDL_RLEACCEL ), ptm_surf->format->alpha);
+        //
+        SDL_SetAlpha (ptm_surf.get(), 0 , ptm_surf->format->alpha );
 
-            //SDL_Rect srcrct,dstrct;srcrct.x = srcrct.y = dstrct.x = dstrct.y = 0;
-            //srcrct.w=ptm_surf->w;srcrct.h=ptm_surf->h;
-            //dstrct.w=width;dstrct.h=height;
+        //SDL_Rect srcrct,dstrct;srcrct.x = srcrct.y = dstrct.x = dstrct.y = 0;
+        //srcrct.w=ptm_surf->w;srcrct.h=ptm_surf->h;
+        //dstrct.w=width;dstrct.h=height;
 
-            if ( 0 != SDL_BlitSurface(ptm_surf.get(), NULL , newSurf.get(), NULL))
-            {
-                Log << "Error while blitting old surface on new resized surface" << GetError();
-                res = false;
-            }
+        if ( 0 != SDL_BlitSurface(ptm_surf.get(), NULL , newSurf.get(), NULL))
+        {
+            Log << "Error while blitting old surface on new resized surface" << GetError();
+            res = false;
+        }
 
         SDL_FreeSurface(ptm_surf.release());
         ptm_surf=newSurf;
@@ -353,16 +356,16 @@ bool RGBSurface::blit(const RGBSurface& src, Rect& dest_rect, const Rect& src_re
 
     bool res = BaseSurface::blit(src, dest_rect, src_rect);
 
-/*
-//If the blit is successful, it returns 0, otherwise it returns -1.
-//If either of the surfaces were in video memory, and the blit returns -2, the video memory was lost, so it should be reloaded with artwork and re-blitted:
- while ( SDL_BlitSurface(image, imgrect, screen, dstrect) == -2 ) {
-                while ( SDL_LockSurface(image)) < 0 )
-                        Sleep(1);
-                -- Write image pixels to image->pixels --
-                SDL_UnlockSurface(image);
-        }
-*/
+    /*
+    //If the blit is successful, it returns 0, otherwise it returns -1.
+    //If either of the surfaces were in video memory, and the blit returns -2, the video memory was lost, so it should be reloaded with artwork and re-blitted:
+     while ( SDL_BlitSurface(image, imgrect, screen, dstrect) == -2 ) {
+                    while ( SDL_LockSurface(image)) < 0 )
+                            Sleep(1);
+                    -- Write image pixels to image->pixels --
+                    SDL_UnlockSurface(image);
+            }
+    */
 
 
 
@@ -496,7 +499,7 @@ RAGE::Logger & operator << (RAGE::Logger & log, const RGBSurface & surf)
     return log;
 }
 
-    }
+}
 }
 } //namespace SDLut::SDL
 

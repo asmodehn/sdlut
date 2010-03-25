@@ -38,9 +38,9 @@ namespace SDLut
 //Console is an Image with a default size, and default colors
 class Console : public video::Image
 {
-	//if member embedded (object not reference), error when destructing Font...
-	//to debug -> copy / deletion problem
-	const font::Font m_font;
+    //if member embedded (object not reference), error when destructing Font...
+    //to debug -> copy / deletion problem
+    const font::Font m_font;
 
     video::Color m_color;
     video::Color m_bgcolor;
@@ -49,18 +49,18 @@ class Console : public video::Image
     std::string curline;
 
     //buffer to store previous lines
-	std::vector<Image> rowimage;
+    std::vector<Image> rowimage;
 
 public :
-	Console(const font::Font & fnt = font::Font(),video::Color c = video::Color(255,255,255),video::Color bgc = video::Color(0,0,0,128));
+    Console(const font::Font & fnt = font::Font(),video::Color c = video::Color(255,255,255),video::Color bgc = video::Color(0,0,0,128));
 
-	//WARNING : BUG here if trying to set to fullscreen using F6, then error, then trying to resize -> crash
-	bool resize(int width, int height);
+    //WARNING : BUG here if trying to set to fullscreen using F6, then error, then trying to resize -> crash
+    bool resize(int width, int height);
 
-	void addchar(char newchar);
+    void addchar(char newchar);
     void addline(std::string newtext);
 
-	bool render(video::ScreenBuffer & screen) const;
+    bool render(video::ScreenBuffer & screen) const;
 };
 
 

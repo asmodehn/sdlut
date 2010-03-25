@@ -13,7 +13,8 @@ namespace SDLut
 {
 namespace video
 {
-    namespace internal{
+namespace internal
+{
 
 class RGBSurface : public BaseSurface
 {
@@ -81,8 +82,8 @@ public :
     //Destructor
     virtual ~RGBSurface() {}
 
-bool resetColorKey(bool ckey, const PixelColor & key, bool rleAccel = true);
-bool resetAlpha(bool alpha, unsigned int value, bool rleAccel = true);
+    bool resetColorKey(bool ckey, const PixelColor & key, bool rleAccel = true);
+    bool resetAlpha(bool alpha, unsigned int value, bool rleAccel = true);
 
     //Use Standard Colors here
     //setPixel();
@@ -123,7 +124,7 @@ bool resetAlpha(bool alpha, unsigned int value, bool rleAccel = true);
 
 };
 
-    }
+}
 }
 } //namespace SDLut::SDL
 

@@ -10,10 +10,11 @@ namespace SDLut
 {
 namespace video
 {
-    class ImageLoader;
+class ImageLoader;
 
-    namespace internal {
-		class VideoSurface;
+namespace internal
+{
+class VideoSurface;
 
 
 /**
@@ -78,7 +79,7 @@ class PixelFormat
 {
     //because SDLPixelColor needs to access actual SDL_PixelFormat
     friend class VideoInfo;
-	friend class SDLut::video::internal::VideoSurface;
+    friend class SDLut::video::internal::VideoSurface;
     friend class RGBSurface;
     friend class BaseSurface;
     friend class video::ImageLoader;
@@ -146,7 +147,7 @@ public: //necessary if we want to use getPixelFormat() accessor from the BaseSur
 
 
 
-    }
+}
 }
 } //namespace SDLut::SDL
 

@@ -9,16 +9,16 @@ using namespace RAGE;
 
 int main(int argc, char *argv[])
 {
-	RAGE::Logger testlog("testManager");
+    RAGE::Logger testlog("testManager");
 
-	App::getInstance().setName ("SDLut Functionnal testing - Manager");
+    App::getInstance().setName ("SDLut Functionnal testing - Manager");
 
-	testlog << nl << " Init minimal... " ;
-	testlog << ( (App::getInstance().init()) ? "OK": "FAILED" ) << std::endl;
+    testlog << nl << " Init minimal... " ;
+    testlog << ( (App::getInstance().init()) ? "OK": "FAILED" ) << std::endl;
 
-	Manager manager= App::getInstance().getManager();
-	testlog << nl << manager;
+    Manager manager= App::getInstance().getManager();
+    testlog << nl << manager;
 
-	return 0;
+    return 0;
 }
 

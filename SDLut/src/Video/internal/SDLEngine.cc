@@ -8,8 +8,8 @@ namespace SDLut
 {
 namespace video
 {
-    namespace internal
-    {
+namespace internal
+{
 
 //loading the default RGBSurface from the Resources as logo
 SDLEngine::SDLEngine() : m_Logo()
@@ -49,7 +49,7 @@ SDLEngine::~SDLEngine()
 }
 
 
-    }
+}
 }
 }
 

@@ -54,7 +54,7 @@ private:
     //The user should never be able to free the original pixelformat
     //nor to use SDL directly.
 
-    public :
+public :
 
 
     ~OGLPixelFormat();

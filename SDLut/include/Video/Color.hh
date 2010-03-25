@@ -20,8 +20,10 @@ struct SDL_Color;
 struct SDL_Palette;
 
 
-namespace SDLut {
-    namespace video {
+namespace SDLut
+{
+namespace video
+{
 
 
 //should be 32 bits color. needs to match pixel format...

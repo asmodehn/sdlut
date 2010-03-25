@@ -7,8 +7,8 @@ namespace SDLut
 {
 namespace video
 {
-    namespace internal
-    {
+namespace internal
+{
 
 Palette::Palette(const SDL_Palette* palette) : ptm_sdl_palette(palette)
 {
@@ -30,15 +30,15 @@ Color Palette::getColors(int index) const
     //creates a new color to protects color in Palette...
     //maybe using const would be better ??
     return Color(	ptm_sdl_palette->colors[index].r,
-                      ptm_sdl_palette->colors[index].g,
-                      ptm_sdl_palette->colors[index].b,
-                      ptm_sdl_palette->colors[index].unused
-                    );
+                  ptm_sdl_palette->colors[index].g,
+                  ptm_sdl_palette->colors[index].b,
+                  ptm_sdl_palette->colors[index].unused
+                );
 }
 
 
 PixelFormat::PixelFormat()
-: ptm_sdl_pformat( new SDL_PixelFormat )
+        : ptm_sdl_pformat( new SDL_PixelFormat )
 {
     pointerCopy = false;
 }
@@ -171,7 +171,7 @@ PixelColor PixelFormat::getPixelColor(const Color& color) const
     }
     else
     {
-    pc = SDL_MapRGBA(const_cast<SDL_PixelFormat*>(ptm_sdl_pformat),color.getR(),color.getG(),color.getB(), color.getA());
+        pc = SDL_MapRGBA(const_cast<SDL_PixelFormat*>(ptm_sdl_pformat),color.getR(),color.getG(),color.getB(), color.getA());
     }
 
     return pc;
@@ -199,6 +199,6 @@ PixelColor PixelFormat::convert(PixelColor val, const PixelFormat & pf) const
 }
 
 
-    }
+}
 }
 } //namespace SDLut::SDL

@@ -89,9 +89,9 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename , bool no_failure ) 
 #endif
 
 #ifdef WK_OPENGL_FOUND
-            surf.reset(new internal::OGL::GLSurface( sdlsurf ) );
+        surf.reset(new internal::OGL::GLSurface( sdlsurf ) );
 #else
-            surf.reset(new internal::RGBSurface( sdlsurf ) );
+        surf.reset(new internal::RGBSurface( sdlsurf ) );
 #endif
 
     }
@@ -104,9 +104,9 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename , bool no_failure ) 
         if (no_failure)
 
 #ifdef WK_SDLIMAGE_FOUND
-        surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
+            surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
 #else
-surf.reset(new internal::RGBSurface(pvm_errorContent));
+            surf.reset(new internal::RGBSurface(pvm_errorContent));
 #endif
         else throw;
     }
@@ -131,9 +131,9 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename, const Color & color
 #endif
 
 #ifdef WK_OPENGL_FOUND
-            surf.reset(new internal::OGL::GLSurface( sdlsurf ) );
+        surf.reset(new internal::OGL::GLSurface( sdlsurf ) );
 #else
-            surf.reset(new internal::RGBSurface( sdlsurf ) );
+        surf.reset(new internal::RGBSurface( sdlsurf ) );
 #endif
 
 
@@ -149,9 +149,9 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename, const Color & color
         if (no_failure)
         {
 #ifdef WK_SDLIMAGE_FOUND
-        surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
+            surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
 #else
-surf.reset(new internal::RGBSurface(pvm_errorContent));
+            surf.reset(new internal::RGBSurface(pvm_errorContent));
 #endif
         }
         else throw;
@@ -171,9 +171,9 @@ std::auto_ptr<Image> ImageLoader::copyconvert(const Image & s, const internal::P
         {
 
 #ifdef WK_SDLIMAGE_FOUND
-        surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
+            surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
 #else
-surf.reset(new internal::RGBSurface(pvm_errorContent));
+            surf.reset(new internal::RGBSurface(pvm_errorContent));
 #endif
             return std::auto_ptr<Image>(new Image(surf));
         }
@@ -181,9 +181,9 @@ surf.reset(new internal::RGBSurface(pvm_errorContent));
     }
 
 #ifdef WK_OPENGL_FOUND
-            surf.reset(new internal::OGL::GLSurface( cvtsurf ) );
+    surf.reset(new internal::OGL::GLSurface( cvtsurf ) );
 #else
-            surf.reset(new internal::RGBSurface( cvtsurf ) );
+    surf.reset(new internal::RGBSurface( cvtsurf ) );
 #endif
 
     return std::auto_ptr<Image> (new Image(surf));

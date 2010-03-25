@@ -5,7 +5,7 @@ Logger testlog("TestTransparency");
 
 class Test : public RenderingAssertEngine
 {
-void regtestPixel()
+    void regtestPixel()
     {
         //We expect data/test/transparency/png/* over data/test/transparency/png/stripe.gif
         //Measures made by hand, with The Gimp
@@ -30,8 +30,8 @@ void regtestPixel()
 
         // 5 sample pixel test to make sure transparency is progressive
         //measure made on gray16a.png with The GIMP.
-         unsigned int xtst[5] = {1,21,42,62,83};
-         unsigned int alphaval[5] ={255,212,128,48,0};
+        unsigned int xtst[5] = {1,21,42,62,83};
+        unsigned int alphaval[5] ={255,212,128,48,0};
 
         //black stripe
         pos.push_back( Rect( xtst[0],10,1,1));
@@ -91,11 +91,11 @@ void regtestPixel()
 public:
 
     Test(const Image & fgimage, const Image & bgimage, Color bgc, Logger & log, const ArgParser & ap)
-    : RenderingAssertEngine(fgimage,bgimage,bgc,log,ap)
-	{
-	 regtestPixel();
-	 m_log.enableFileLog("TestTransparency.log");
-	}
+            : RenderingAssertEngine(fgimage,bgimage,bgc,log,ap)
+    {
+        regtestPixel();
+        m_log.enableFileLog("TestTransparency.log");
+    }
 
 
     virtual ~Test()
@@ -109,14 +109,14 @@ int main(int argc, char** argv)
 
     //Starting with usual SDL window
     App::getInstance().initVideo(false,true,false);
-	App::getInstance().setName ("SDLut::video test Image");
+    App::getInstance().setName ("SDLut::video test Image");
 
     //Setting Display size and BPP
     App::getInstance().getDisplay().setDisplay(300,240); // using autodetected bpp
 
     App::getInstance().getDisplay().getScreenBuffer().setOpenGL(args.isOGL());
 
-int exitstatus = -1;
+    int exitstatus = -1;
 
     ImageLoader loader;
     std::string imgfile = args.get(1);
@@ -131,10 +131,10 @@ int exitstatus = -1;
         RenderingTestEngine engine(testlog,teng);
 
 
-    if(App::getInstance().getDisplay().show())
-    {
-       exitstatus = App::getInstance().getDisplay().mainLoop();
-    }
+        if (App::getInstance().getDisplay().show())
+        {
+            exitstatus = App::getInstance().getDisplay().mainLoop();
+        }
 
     }
     else

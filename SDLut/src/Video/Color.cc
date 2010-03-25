@@ -78,17 +78,17 @@ unsigned char Color::getA(void) const
 }
 
 
-    Color & Color::blendover(const Color & c)
-    {
-        *this = blend(*this,c);
-        return *this;
-    }
+Color & Color::blendover(const Color & c)
+{
+    *this = blend(*this,c);
+    return *this;
+}
 
-    Color & Color::blendunder(const Color &c )
-    {
-        *this = blend(c,*this);
-        return *this;
-    }
+Color & Color::blendunder(const Color &c )
+{
+    *this = blend(c,*this);
+    return *this;
+}
 
 
 PixelColor Color::getGLPixelColor() const
@@ -127,16 +127,16 @@ bool Color::operator!=(const Color& color) const
 
 
 
-    Color blend(const Color & cover, const Color & cunder)
-    { //  alpha = aover // proper alpha value.
-      // compo = alpha * cover + ( 1 - alpha) * cunder   ==>  compo = cunder + alpha ( cover - cunder )
-      // and acompo = aover + aunder * ( 1 - aover ) <==> acompo = aunder + aover ( 1 - aunder )
-        Color compo;
-        compo.setR( cunder.getR() + float(cover.getA())/255.0f * ( cover.getR() - cunder.getR() ) );
-        compo.setG( cunder.getG() + float(cover.getA())/255.0f * ( cover.getG() - cunder.getG() ) );
-        compo.setB( cunder.getB() + float(cover.getA())/255.0f * ( cover.getB() - cunder.getB() ) );
-        compo.setA( cunder.getA() + cover.getA() * float( 255 - cunder.getA() )/255.0f );
-        return compo;
-    }
+Color blend(const Color & cover, const Color & cunder)
+{ //  alpha = aover // proper alpha value.
+    // compo = alpha * cover + ( 1 - alpha) * cunder   ==>  compo = cunder + alpha ( cover - cunder )
+    // and acompo = aover + aunder * ( 1 - aover ) <==> acompo = aunder + aover ( 1 - aunder )
+    Color compo;
+    compo.setR( cunder.getR() + float(cover.getA())/255.0f * ( cover.getR() - cunder.getR() ) );
+    compo.setG( cunder.getG() + float(cover.getA())/255.0f * ( cover.getG() - cunder.getG() ) );
+    compo.setB( cunder.getB() + float(cover.getA())/255.0f * ( cover.getB() - cunder.getB() ) );
+    compo.setA( cunder.getA() + cover.getA() * float( 255 - cunder.getA() )/255.0f );
+    return compo;
+}
 }
 }

@@ -22,7 +22,8 @@ namespace SDLut
 {
 namespace video
 {
-namespace internal{
+namespace internal
+{
 
 
 // Default 2D Engine ( only used if no engine is defined )
@@ -49,11 +50,11 @@ public:
     virtual ~SDLEngine();
 
     //this render function should not modify the engine
-    #ifdef WK_OPENGL_FOUND
+#ifdef WK_OPENGL_FOUND
     virtual bool render(OGL::VideoGLSurface & screen) const;
-    #else
+#else
     virtual bool render(VideoSurface & screen) const;
-    #endif
+#endif
 
     //to initialise the engine, just called once before any render
     //virtual bool init(int width, int height);

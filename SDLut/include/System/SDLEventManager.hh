@@ -12,7 +12,10 @@
 namespace SDLut
 {
 
-    namespace video { class Display; }
+namespace video
+{
+class Display;
+}
 
 namespace system
 {

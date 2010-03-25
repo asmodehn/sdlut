@@ -10,8 +10,12 @@ struct SDL_keysym;
 namespace SDLut
 {
 
-    //further reference
-namespace system { class EventManager; class Event;}
+//further reference
+namespace system
+{
+class EventManager;
+class Event;
+}
 
 namespace input
 {

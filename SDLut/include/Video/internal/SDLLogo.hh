@@ -20,37 +20,38 @@
 
 namespace SDLut
 {
-    namespace video
-    {
-        namespace internal{
+namespace video
+{
+namespace internal
+{
 
 class Logo
 {
 
 protected:
 //TODO : later manage resize of all logos at once
-static int m_render_width;
-static int m_render_height;
+    static int m_render_width;
+    static int m_render_height;
 
 #ifdef WK_OPENGL_FOUND
-std::auto_ptr<OGL::GLSurface> m_logo;
+    std::auto_ptr<OGL::GLSurface> m_logo;
 #else
-std::auto_ptr<RGBSurface> m_logo;
+    std::auto_ptr<RGBSurface> m_logo;
 #endif
 
 public:
 //default size matching SDL logo size
-Logo();
-virtual ~Logo();
+    Logo();
+    virtual ~Logo();
 
-virtual void setLogoImage( const RGBSurface & mylogo );
+    virtual void setLogoImage( const RGBSurface & mylogo );
 
-static void resizerender(int renderwidth=128, int renderheight= 64);
+    static void resizerender(int renderwidth=128, int renderheight= 64);
 
 #ifdef WK_OPENGL_FOUND
-virtual bool render(OGL::VideoGLSurface & screen) const;
+    virtual bool render(OGL::VideoGLSurface & screen) const;
 #else
-virtual bool render(VideoSurface & screen) const;
+    virtual bool render(VideoSurface & screen) const;
 #endif
 
 };
@@ -60,8 +61,8 @@ virtual bool render(VideoSurface & screen) const;
 
 
 
-        }
-    }
+}
+}
 }
 
 
