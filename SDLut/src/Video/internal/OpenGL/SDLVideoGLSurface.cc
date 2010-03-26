@@ -498,8 +498,7 @@ void VideoGLSurface::resetClipRect(const Rect& rect)
 {
     if ( isOpenGLset() )
     {
-        //or getheight() -1 - gety() ?
-        glScissor(rect.getx(),rect.gety(),rect.getw(),rect.geth());
+        glScissor(rect.getx(),getHeight()-1 - rect.gety() - rect.geth(),rect.getw(),rect.geth());
     }
     else
     {

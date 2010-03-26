@@ -161,9 +161,11 @@ public :
 class TestEngine
 {
 
+protected:
+
     AssertEngine & m_assertengine;
 
-protected:
+
 
 //to be able to write in log, even while rendering
     mutable Logger & m_log;
