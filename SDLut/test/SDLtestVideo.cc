@@ -43,7 +43,7 @@ public:
 
     bool render(ScreenBuffer & screen) const
     {
-		video::Color rect_color(80,80,96,255);
+		video::Color rect_color(80,80,96,100);
 		for (unsigned int i = 50; i<100; i++)
 		{
 			for (unsigned int j = 50; j<100; j++)

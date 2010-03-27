@@ -271,9 +271,13 @@ PixelColor BaseSurface::getpixel(int x, int y)
     return pc;
 }
 
+///beware : no alpha blending is done here, as the pixel should have proper colorvalue already
+///if you are drawing a pixel with alpha, on a surface without alpha ( such as the screen )
+///get pixel must be called and the blending calculated before calling setpixel.
 void BaseSurface::setpixel(int x, int y, PixelColor pixel)
 {
     lock();
+
     //nbBytesPerPixel is hte number of bytes used to store a pixel
     //We can there fore get the color depth of the image : 8, 16, 24 or 32 bits.
     Uint8 bpp = ptm_surf->format->BytesPerPixel;
@@ -281,15 +285,6 @@ void BaseSurface::setpixel(int x, int y, PixelColor pixel)
     /* Here p is the address to the pixel we want to set */
     Uint8 *p = (Uint8 *)ptm_surf->pixels + y * ptm_surf->pitch + x * bpp;
 
-    Uint8 alpha;
-
-    if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-        alpha = (Uint8) pixel & 0xff;
-    else
-        alpha= (Uint8) (pixel >> 24) & 0xff;
-
-    if ( alpha == 255 )
-    {
         switch (bpp)
         {
         case 1:
@@ -301,6 +296,17 @@ void BaseSurface::setpixel(int x, int y, PixelColor pixel)
             break;
 
         case 3:
+                    // Format/endian independent
+            //Uint8 r, g, b;
+
+            //r = (pixel>>screen->format->Rshift)&0xFF;
+            //g = (pixel>>screen->format->Gshift)&0xFF;
+            //b = (pixel>>screen->format->Bshift)&0xFF;
+            //*((p)+screen->format->Rshift/8) = r;
+            //*((p)+screen->format->Gshift/8) = g;
+            //*((p)+screen->format->Bshift/8) = b;
+
+
             if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
             {
                 *(Uint16 *)p = ((pixel >> 8) & 0xff00) | ((pixel >> 8) & 0xff);
@@ -318,6 +324,8 @@ void BaseSurface::setpixel(int x, int y, PixelColor pixel)
             break;
 
         }
+
+    /*
     }
     else //If We Want To Set A Pixel With Alpha !
     {
@@ -357,6 +365,7 @@ void BaseSurface::setpixel(int x, int y, PixelColor pixel)
             break;
         }
     }
+    */
     unlock();
 }
 

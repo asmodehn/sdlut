@@ -167,7 +167,16 @@ public:
         //We need to check the pixel is in the ScreenBuffer
         if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
         {
-            m_screen->setpixel(x, y, m_screen->getPixelFormat().getPixelColor(pixel));
+            Color pcolor = pixel;
+            //we need to check that the color doesnt have any alpha
+            //we need to maintain same behaviour as the blitting
+            //http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetAlpha
+            if ( pixel.hasAlpha() && m_screen->getPixelFormat().getAmask() == 0 )
+            {
+                pcolor = blend(pixel,m_screen->getPixelFormat().getColor(m_screen->getpixel(x,y)));
+            }
+
+            m_screen->setpixel(x, y, m_screen->getPixelFormat().getPixelColor(pcolor));
         }
         else
         {

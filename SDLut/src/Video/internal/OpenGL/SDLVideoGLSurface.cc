@@ -100,6 +100,11 @@ bool VideoGLSurface::refresh(void)
 
 PixelColor VideoGLSurface::getpixel(int x, int y)
 {
+
+#if (DEBUG == 2)
+    Log << nl << "VideoGLSurface::getpixel ( " << x << ", "<< y << ") called...";
+#endif
+
     PixelColor color;
     if ( isOpenGLset() )
     {
@@ -142,6 +147,12 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
     {
         color = VideoSurface::getpixel(x,y);
     }
+
+#if (DEBUG == 2)
+    Log << nl << "VideoGLSurface::getpixel ( " << x << ", "<< y << ") done.";
+#endif
+
+
     return color;
 }
 
@@ -154,53 +165,44 @@ void VideoGLSurface::setpixel(int x, int y, PixelColor color)
 
     if ( isOpenGLset() )
     {
-        //render it
-        //2D Rendering
 
-        glDisable( GL_DEPTH_TEST ) ;
-        glMatrixMode( GL_PROJECTION ) ;
-        glLoadIdentity() ;
+        // get the number of channels in the SDL surface
+        int numbytes = getPixelFormat().getBytesPerPixel();
 
-        glOrtho( 0, this->getWidth(), this->getHeight(), 0, 0, 1 ) ;
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+        //putting raster at correct position
+        glRasterPos2i(x,y);
 
-        //alpha test
-#if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
-        if ( (color & 0x000000ff) != 0 )
-#else
-        if ( (color & 0xff000000) != 0 )
-#endif
+        //these might be use for screen capture as well
+        // refer : http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL.html#blits
+        //glPixelStorei( GL_PACK_ROW_LENGTH, 0 ) ;
+
+        //glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+        glPixelStorei(GL_UNPACK_ALIGNMENT,numbytes);
+        //glPixelStorei(GL_UNPACK_ALIGNMENT,4);
+
+        if (numbytes == 4 )
         {
-            glEnable(GL_BLEND);
-            glEnable(GL_ALPHA_TEST);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            //To test :
+            //SDL_BYTE_ORDER == SDL_BIG_ENDIAN
+            // -> *_REV ????
+            //LIL_ENDIAN HERE
+
+            //glreadpixel reading at lower left for 0,0
+            glDrawPixels(1, 1, GL_BGRA, GL_UNSIGNED_BYTE, &color);
+        }
+        else if ( numbytes == 3 )
+        {
+            //To test :
+            //SDL_BYTE_ORDER == SDL_BIG_ENDIAN
+            // -> *_REV ???
+            //LIL_ENDIAN HERE
+            glDrawPixels(1, 1, GL_BGR, GL_UNSIGNED_BYTE, &color);
         }
 
-        Uint8 p[4];
-        //conversion from BaseSurface code
-        *(Uint32 *)p = (Uint32) color;
-
-        glColor4ubv(p);
-
-        glBegin( GL_POINTS ) ;
-
-        glVertex2i( x, y ) ;
-
-        glEnd() ;
 
 
-        //alpha test
-#if (SDL_BYTE_ORDER == SDL_BIG_ENDIAN)
-        if ( (color & 0x000000ff) != 0 )
-#else
-        if ( (color & 0xff000000) != 0 )
-#endif
-        {
-            glDisable(GL_ALPHA_TEST);
-            glDisable(GL_BLEND);
-        }
     }
+
     else
     {
         VideoSurface::setpixel(x,y,color);
