@@ -153,7 +153,11 @@ RAGE::Logger & operator << (RAGE::Logger & log, const PixelFormat & pformat)
     return log;
 }
 
-
+//For SDL Video. getPixelColor removes alpha value in the case of RGBA -> RGB blending (as on screen).
+//Therefore, it is impossible to blend afterwards.
+//However OpenGL supports alpha blending for setting pixels on screen ( since v???)
+//TODO : GLPixelFormat must keep alpha value, but still using SDL Format
+//TODO : SDL alpha blending should be done before (in facade)
 PixelColor PixelFormat::getPixelColor(const Color& color) const
 {
     PixelColor pc;

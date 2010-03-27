@@ -8,6 +8,7 @@
  * \brief This class is an OpenGL Video Info, similar to the SDL one
  *
  * This class implements the opengl functions related to SDL Video Info
+ * Especially the SGL_GL_set/get_attributes, that can be set either before display creation or after.
  *
  * \author Alex
  *

@@ -139,6 +139,10 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
             //LIL_ENDIAN HERE
             glReadPixels(x, getHeight()-1 -y, 1, 1, GL_BGR, GL_UNSIGNED_BYTE, &color);
         }
+        else
+        {
+            //WTF ? how did you get here ?
+        }
 
 
 
@@ -187,8 +191,14 @@ void VideoGLSurface::setpixel(int x, int y, PixelColor color)
             // -> *_REV ????
             //LIL_ENDIAN HERE
 
-            //glreadpixel reading at lower left for 0,0
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
             glDrawPixels(1, 1, GL_BGRA, GL_UNSIGNED_BYTE, &color);
+
+        glDisable(GL_BLEND);
+
         }
         else if ( numbytes == 3 )
         {

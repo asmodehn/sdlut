@@ -43,16 +43,18 @@ public:
 
     bool render(ScreenBuffer & screen) const
     {
+
+        screen.blit(*loadedimage, imagepos );
+
 		video::Color rect_color(80,80,96,100);
-		for (unsigned int i = 50; i<100; i++)
+		for (unsigned int i = 0; i<50; i++)
 		{
-			for (unsigned int j = 50; j<100; j++)
+			for (unsigned int j = 0; j<50; j++)
 			{
-				screen.setpixel(i, j, rect_color);
+				screen.setpixel(imagepos.getx() + i, imagepos.gety() + j, rect_color);
 			}
 		}
 
-        screen.blit(*loadedimage, imagepos );
         return true;
     }
 };

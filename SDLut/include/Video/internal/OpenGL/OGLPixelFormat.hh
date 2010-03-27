@@ -9,6 +9,17 @@
  * \brief This class is an OpenGL Pixel Format
  *
  * This class implements the opengl functions that SDL provides related to pixel format
+ * Especially, Color information regarding alpha and pixel access
+ * SDL doesnt support out of the box pixel access. Therefore we have our own, but alpha blending must be done outside of SDL
+ * as the display using PixelFormat will not allow it.
+ *
+ * OpenGL allows glDrawPixel to have alpha composant, and blending is computed accordingly.
+ *
+ * IE : once in internal : PixelColor contains color coded according to Pixel Format.
+ * For SDL Pixel Format has the usual meaning.
+ * For OpenGL Pixel Format has alpha information on top of usual SDLPixelFormat. (HW alpha OpenGL accelerated is MUCH faster than SW )
+ *
+ * Therefore GLPixel format hides that difference. BEWARE (GL)PixelColor write into GL Surface ( which might still be SDL surface inside )
  *
  * \author Alex
  *

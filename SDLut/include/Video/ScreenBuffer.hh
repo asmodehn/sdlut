@@ -143,46 +143,8 @@ public:
     bool captureBMP(std::string filename) const;
 
     //pixel drawing function
-    Color getpixel(int x, int y)
-    {
-        //return m_screen->getPixelFormat().getColor(m_screen->getpixel(x, y));
-
-        Color res;
-        //We need to check the pixel is in the ScreenBuffer
-        if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
-        {
-            res = m_screen->getPixelFormat().getColor(m_screen->getpixel(x, y));
-        }
-        else
-        {
-            throw std::logic_error("Trying to get a pixel outside of ScreenBuffer range");
-        }
-        return res;
-    }
-
-    void setpixel(int x, int y, const Color & pixel)
-    {
-        //m_screen->setpixel(x, y, m_screen->getPixelFormat().getPixelColor(pixel));
-
-        //We need to check the pixel is in the ScreenBuffer
-        if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
-        {
-            Color pcolor = pixel;
-            //we need to check that the color doesnt have any alpha
-            //we need to maintain same behaviour as the blitting
-            //http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetAlpha
-            if ( pixel.hasAlpha() && m_screen->getPixelFormat().getAmask() == 0 )
-            {
-                pcolor = blend(pixel,m_screen->getPixelFormat().getColor(m_screen->getpixel(x,y)));
-            }
-
-            m_screen->setpixel(x, y, m_screen->getPixelFormat().getPixelColor(pcolor));
-        }
-        else
-        {
-            throw std::logic_error("Trying to pu a pixel outside of ScreenBuffer range");
-        }
-    }
+    Color getpixel(int x, int y);
+    void setpixel(int x, int y, const Color & pixel);
 
     //Defines a clippin Area
     void resetClipRect( const Rect& clipr );
