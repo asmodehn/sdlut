@@ -18,7 +18,7 @@ WkDoc()
 
 WkTestBuild ( SDLtestColor )
 
-WkTestBuild ( testScreenClipRect "testScreenClipRect.cc" "TestCommon.hh")
+#WkTestBuild ( testScreenClipRect "testScreenClipRect.cc" "TestCommon.hh")
 
 WkTestBuild ( testImageFormat "testImageFormat.cc" "testRendering.hh" "TestCommon.hh" )
 WkTestRun   ( SDL_GIF testImageFormat "auto" "data/test/imageformat/ColorTest.gif" )

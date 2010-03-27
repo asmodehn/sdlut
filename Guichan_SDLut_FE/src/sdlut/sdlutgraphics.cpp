@@ -65,7 +65,7 @@ bool SDLutGraphics::pushClipArea(Rectangle area)
 
     video::Rect rect( carea.x, carea.y, carea.width, carea.height );
 
-    mTarget->setClipRect(rect);
+    mTarget->resetClipRect(rect);
 
     //SDL_SetClipRect(mTarget, &rect);
 
@@ -88,7 +88,7 @@ void SDLutGraphics::popClipArea()
      rect.setw( carea.width );
      rect.seth( carea.height );*/
 
-    mTarget->setClipRect(rect);
+    mTarget->resetClipRect(rect);
     //SDL_SetClipRect(mTarget, &rect);
 }
 
