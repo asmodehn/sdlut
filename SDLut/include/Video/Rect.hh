@@ -70,6 +70,9 @@ public:
     Rect();
     //Handy Constructor
     Rect(int x, int y, unsigned int nw, unsigned int nh);
+    ///TOTHINK ABOUT : One constructor with 0,0,1,1 as default. pixelsized rect.
+
+
 
     //Copy Constructor
     Rect( const Rect& r);

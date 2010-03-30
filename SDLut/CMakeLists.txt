@@ -16,8 +16,9 @@ WkBuild ( LIBRARY STATIC )
 
 WkDoc()
 
-WkTestBuild ( SDLtestColor )
 
+WkTestBuild ( testRect "testRect.cc" "TestCommon.hh")
+WkTestBuild ( SDLtestColor )
 #WkTestBuild ( testScreenClipRect "testScreenClipRect.cc" "TestCommon.hh")
 
 WkTestBuild ( testImageFormat "testImageFormat.cc" "testRendering.hh" "TestCommon.hh" )

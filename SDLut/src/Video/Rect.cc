@@ -184,7 +184,7 @@ bool Rect::operator!=(const Rect& r)
 }
 
 
-//this computes the intersection of 2 rects, that if the greatest rect contained in both of them
+//this computes the intersection of 2 rects, that is the greatest rect contained in both of them
 Rect Rect::inf(const Rect & r)
 {
     //getting the lower right corner
