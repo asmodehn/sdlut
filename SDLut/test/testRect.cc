@@ -1,4 +1,4 @@
-#include "TestCommon.hh" / for argParser only
+#include "TestCommon.hh" // for argParser only
 
 Logger testlog("RectTest");
 

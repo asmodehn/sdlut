@@ -464,7 +464,7 @@ bool ScreenBuffer::captureBMP(std::string filename) const
                     //adding Alpha to pixel color
                     //as the SDL_pixelformat for OpenGL discards alpha information
                     PixelColor alpha = pixel.getA() ;
-                    PixelColor properalpha = (alpha << m_screen->getPixelFormat().getBitsPerPixel() - m_screen->getPixelFormat().getAloss() );
+                    PixelColor properalpha = (alpha << (m_screen->getPixelFormat().getBitsPerPixel() - m_screen->getPixelFormat().getAloss()) );
                     pcolor = pcolor | properalpha ;
                 }
             }

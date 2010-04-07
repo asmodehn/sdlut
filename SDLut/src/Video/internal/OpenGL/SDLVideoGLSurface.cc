@@ -105,7 +105,7 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
     Log << nl << "VideoGLSurface::getpixel ( " << x << ", "<< y << ") called...";
 #endif
 
-    PixelColor color;
+    PixelColor color = 0;
     if ( isOpenGLset() )
     {
 
@@ -143,6 +143,11 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
         {
             //WTF ? how did you get here ?
         }
+		/*else if ( numbytes == 2 )
+        {
+            //To test
+            glReadPixels(x, getHeight()-1 -y, 1, 1, GL_IMPLEMENTATION_COLOR_READ_FORMAT_OES, GL_IMPLEMENTATION_COLOR_READ_TYPE_OES, &color);
+        }*/
 
 
 

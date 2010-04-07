@@ -18,7 +18,17 @@ WkDoc()
 
 
 WkTestBuild ( testRect "testRect.cc" "TestCommon.hh")
+
 WkTestBuild ( SDLtestColor )
+
+WkTestBuild ( testPixel "testPixel.cc" "TestCommon.hh")
+WkTestRun   ( SDL_Pixel testPixel "nogl" )
+WkTestRun   ( SDL_Pixel_Image_woAlpha testPixel "nogl" "data/test/transparency/png/pal_bk_notrns.png" )
+WkTestRun   ( SDL_Pixel_Image_wAlpha testPixel "nogl" "data/test/transparency/png/pal_bk.png" )
+WkTestRun   ( OpenGL_Pixel testPixel )
+WkTestRun   ( OpenGL_Pixel_Image_woAlpha testPixel "data/test/transparency/png/pal_bk_notrns.png" )
+WkTestRun   ( OpenGL_Pixel_Image_wAlpha testPixel "data/test/transparency/png/pal_bk.png" )
+
 #WkTestBuild ( testScreenClipRect "testScreenClipRect.cc" "TestCommon.hh")
 
 WkTestBuild ( testImageFormat "testImageFormat.cc" "testRendering.hh" "TestCommon.hh" )

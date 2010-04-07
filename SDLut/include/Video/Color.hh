@@ -1,5 +1,5 @@
-#ifndef SDL_COLOR_HH
-#define SDL_COLOR_HH
+#ifndef SDLCOLOR_HH
+#define SDLCOLOR_HH
 
 #include <iostream>
 //#include "SDLPixelFormat.hh"
