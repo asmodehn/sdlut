@@ -46,14 +46,14 @@ public:
 
         screen.blit(*loadedimage, imagepos );
 
-		video::Color rect_color(80,80,96,100);
-		for (unsigned int i = 0; i<50; i++)
-		{
-			for (unsigned int j = 0; j<50; j++)
-			{
-				screen.setpixel(imagepos.getx() + i, imagepos.gety() + j, rect_color);
-			}
-		}
+        video::Color rect_color(80,80,96,100);
+        for (unsigned int i = 0; i<50; i++)
+        {
+            for (unsigned int j = 0; j<50; j++)
+            {
+                screen.setpixel(imagepos.getx() + i, imagepos.gety() + j, rect_color);
+            }
+        }
 
         return true;
     }

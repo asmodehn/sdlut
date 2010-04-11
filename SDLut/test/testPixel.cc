@@ -9,142 +9,142 @@ class MyEngine
 {
 
 public:
-	mutable std::auto_ptr<video::Image> loadedimage;
-	mutable std::string fn;
-	mutable video::Rect imagepos;
-	ArgParser arg;
-	mutable unsigned int test_it;
-	mutable video::Color bgcolor, pixel, objectivePixel;
-	mutable video::ImageLoader loader;
+    mutable std::auto_ptr<video::Image> loadedimage;
+    mutable std::string fn;
+    mutable video::Rect imagepos;
+    ArgParser arg;
+    mutable unsigned int test_it;
+    mutable video::Color bgcolor, pixel, objectivePixel;
+    mutable video::ImageLoader loader;
 
     MyEngine( ArgParser _arg) : imagepos(), arg(_arg), test_it(0), bgcolor(240,128,128,255), pixel(50, 220, 80, 255)
     {
-		fn = arg.get(1);
+        fn = arg.get(1);
     }
 
     virtual ~MyEngine() {}
 
     bool init(int width, int height)
     {
-		if (fn != "")
-		{
-			loadedimage = loader.load(fn);
+        if (fn != "")
+        {
+            loadedimage = loader.load(fn);
 
-			imagepos.resetx(0);
-			imagepos.resety(0);
-			imagepos.resetw( loadedimage->getWidth());
-			imagepos.reseth( loadedimage->getHeight());
-		}
-		return true;
+            imagepos.resetx(0);
+            imagepos.resety(0);
+            imagepos.resetw( loadedimage->getWidth());
+            imagepos.reseth( loadedimage->getHeight());
+        }
+        return true;
     }
 
-	bool render(video::ScreenBuffer & screen) const
+    bool render(video::ScreenBuffer & screen) const
     {
-		//No image
-		if (fn == "")
-		{			
-			switch(test_it)
-			{
-				case 0: //Get
-					screen.fill(bgcolor);				
-					if (screen.getpixel(10,10) != bgcolor)
-						App::getInstance().requestTermination(-1);
-					break;		
+        //No image
+        if (fn == "")
+        {
+            switch (test_it)
+            {
+            case 0: //Get
+                screen.fill(bgcolor);
+                if (screen.getpixel(10,10) != bgcolor)
+                    App::getInstance().requestTermination(-1);
+                break;
 
-				case 1: //set pixel on screenbuffer
-					screen.fill(bgcolor);
-					screen.setpixel(10,10, pixel);
-					if (screen.getpixel(10,10) != pixel)
-						App::getInstance().requestTermination(-1); //OGL error here
-					break;
-				
-				case 2: //set pixel w alpha on screenbuffer
-					screen.fill(bgcolor);
+            case 1: //set pixel on screenbuffer
+                screen.fill(bgcolor);
+                screen.setpixel(10,10, pixel);
+                if (screen.getpixel(10,10) != pixel)
+                    App::getInstance().requestTermination(-1); //OGL error here
+                break;
 
-					pixel.setA(128);
-					objectivePixel = screen.getpixel(10,10).blendunder(pixel);					
-					screen.setpixel(10,10, pixel);
-					pixel.setA(255);
+            case 2: //set pixel w alpha on screenbuffer
+                screen.fill(bgcolor);
 
-					if (screen.getpixel(10,10) != objectivePixel)
-						App::getInstance().requestTermination(-1);
-					break;		
+                pixel.setA(128);
+                objectivePixel = screen.getpixel(10,10).blendunder(pixel);
+                screen.setpixel(10,10, pixel);
+                pixel.setA(255);
 
-				default:
-					App::getInstance().requestTermination(0); //OK
-					break;
+                if (screen.getpixel(10,10) != objectivePixel)
+                    App::getInstance().requestTermination(-1);
+                break;
 
-			}
-		}
+            default:
+                App::getInstance().requestTermination(0); //OK
+                break;
 
-		//PNG
-		else 
+            }
+        }
 
-		{
-			loadedimage = loader.load(fn);
+        //PNG
+        else
 
-			//http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetAlpha
+        {
+            loadedimage = loader.load(fn);
 
-			switch(test_it)
-			{
-				case 0: //set pixel wo alpha on image, get on image
-					pixel.setA(255);
+            //http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetAlpha
 
-					objectivePixel = loadedimage->getpixel(10,10).blendunder(pixel);
+            switch (test_it)
+            {
+            case 0: //set pixel wo alpha on image, get on image
+                pixel.setA(255);
 
-					loadedimage->setpixel(10,10, pixel);					
-					if (loadedimage->getpixel(10,10) != objectivePixel)
-						App::getInstance().requestTermination(-1);					
-					break;
+                objectivePixel = loadedimage->getpixel(10,10).blendunder(pixel);
 
-				case 1: //set pixel w alpha on image, get on image
-					pixel.setA(128);					
+                loadedimage->setpixel(10,10, pixel);
+                if (loadedimage->getpixel(10,10) != objectivePixel)
+                    App::getInstance().requestTermination(-1);
+                break;
 
-					objectivePixel = loadedimage->getpixel(12,12).blendunder(pixel);
+            case 1: //set pixel w alpha on image, get on image
+                pixel.setA(128);
 
-					loadedimage->setpixel(12,12, pixel);					
-					if (loadedimage->getpixel(12,12) != objectivePixel)
-						App::getInstance().requestTermination(-1);					
-					break;
+                objectivePixel = loadedimage->getpixel(12,12).blendunder(pixel);
 
-				case 2: //no bg, set pixel wo alpha on image, blit image, get on screen
-					pixel.setA(255);
+                loadedimage->setpixel(12,12, pixel);
+                if (loadedimage->getpixel(12,12) != objectivePixel)
+                    App::getInstance().requestTermination(-1);
+                break;
 
-					objectivePixel = loadedimage->getpixel(14,14).blendunder(pixel);
-					objectivePixel.setA(255);
-					
-					loadedimage->setpixel(14,14, pixel);
-					screen.blit(*loadedimage.get(), imagepos);
-					if (screen.getpixel(14,14) != objectivePixel)
-						App::getInstance().requestTermination(-1);					
-					break;
+            case 2: //no bg, set pixel wo alpha on image, blit image, get on screen
+                pixel.setA(255);
 
-				case 3: //no bg, set pixel w alpha on image, blit image, get on screen
-					pixel.setA(128);
+                objectivePixel = loadedimage->getpixel(14,14).blendunder(pixel);
+                objectivePixel.setA(255);
 
-					objectivePixel = loadedimage->getpixel(16,16).blendunder(pixel);
-					objectivePixel.setA(255);
+                loadedimage->setpixel(14,14, pixel);
+                screen.blit(*loadedimage.get(), imagepos);
+                if (screen.getpixel(14,14) != objectivePixel)
+                    App::getInstance().requestTermination(-1);
+                break;
 
-					loadedimage->setpixel(16,16, pixel);
-					screen.blit(*loadedimage.get(), imagepos);
-					pixel.setA(255);
-					if (screen.getpixel(16,16) != objectivePixel)
-						App::getInstance().requestTermination(-1);					
-					break;				
+            case 3: //no bg, set pixel w alpha on image, blit image, get on screen
+                pixel.setA(128);
 
-				default:
-					App::getInstance().requestTermination(0); //OK
-					break;
+                objectivePixel = loadedimage->getpixel(16,16).blendunder(pixel);
+                objectivePixel.setA(255);
 
-			}			
-			
+                loadedimage->setpixel(16,16, pixel);
+                screen.blit(*loadedimage.get(), imagepos);
+                pixel.setA(255);
+                if (screen.getpixel(16,16) != objectivePixel)
+                    App::getInstance().requestTermination(-1);
+                break;
 
-		} //PNG
+            default:
+                App::getInstance().requestTermination(0); //OK
+                break;
 
-		
+            }
 
-		test_it++; //increment
-		
+
+        } //PNG
+
+
+
+        test_it++; //increment
+
         return true;
     }
 };
@@ -153,29 +153,29 @@ public:
 //Main Program
 int main(int argc, char** argv)
 {
-	ArgParser args(argc,argv);
+    ArgParser args(argc,argv);
 
     App::getInstance().initVideo(false,false,false);
     App::getInstance().setName ("SDLut test - Pixel");
-	
-	testlog.enableFileLog("TestPixel.log");
+
+    testlog.enableFileLog("TestPixel.log");
 
     App::getInstance().getDisplay().setDisplay(300,240); // using autodetected bpp
 
     App::getInstance().getDisplay().getScreenBuffer().setOpenGL(args.isOGL());
-   
+
     int exitstatus = -1;
 
-	std::auto_ptr<MyEngine> engine;
+    std::auto_ptr<MyEngine> engine;
     engine.reset(new MyEngine(args));
 
     App::getInstance().getDisplay().resetInitCallback(*engine,&MyEngine::init);
     App::getInstance().getDisplay().resetRenderCallback(*engine,&MyEngine::render);
 
     if (App::getInstance().getDisplay().show())
-	{
-		exitstatus = App::getInstance().getDisplay().mainLoop();
-	}
+    {
+        exitstatus = App::getInstance().getDisplay().mainLoop();
+    }
 
     return exitstatus;
 }

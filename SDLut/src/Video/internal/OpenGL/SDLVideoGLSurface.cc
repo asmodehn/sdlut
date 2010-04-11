@@ -111,7 +111,7 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
 
 
         // get the number of channels in the SDL surface
-        int numbytes = getPixelFormat().getBytesPerPixel();
+        int numbytes = getVideoInfo()->getPixelFormat().getBytesPerPixel();
 
         //these might be use for screen capture as well
         // refer : http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL.html#blits
@@ -143,7 +143,7 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
         {
             //WTF ? how did you get here ?
         }
-		/*else if ( numbytes == 2 )
+        /*else if ( numbytes == 2 )
         {
             //To test
             glReadPixels(x, getHeight()-1 -y, 1, 1, GL_IMPLEMENTATION_COLOR_READ_FORMAT_OES, GL_IMPLEMENTATION_COLOR_READ_TYPE_OES, &color);
@@ -176,7 +176,7 @@ void VideoGLSurface::setpixel(int x, int y, PixelColor color)
     {
 
         // get the number of channels in the SDL surface
-        int numbytes = getPixelFormat().getBytesPerPixel();
+        int numbytes = getVideoInfo()->getPixelFormat().getBytesPerPixel();
 
         //putting raster at correct position
         glRasterPos2i(x,y);
@@ -197,12 +197,12 @@ void VideoGLSurface::setpixel(int x, int y, PixelColor color)
             //LIL_ENDIAN HERE
 
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
             glDrawPixels(1, 1, GL_BGRA, GL_UNSIGNED_BYTE, &color);
 
-        glDisable(GL_BLEND);
+            glDisable(GL_BLEND);
 
         }
         else if ( numbytes == 3 )
@@ -470,7 +470,7 @@ bool VideoGLSurface::fill (const PixelColor& pcolor, Rect dest_rect)
 
         //TODO : this might be improved without using Color
         //there should be a more direct way...
-        Color color= getPixelFormat().getColor(pcolor);
+        Color color= getVideoInfo()->getPixelFormat().getColor(pcolor);
         if ( color.hasAlpha() )
         {
             glEnable(GL_BLEND);

@@ -43,8 +43,10 @@ public :
     //may be connected with constructor ???
     bool loadGLLibrary(const std::string & path);
 
-    //TODO : I don't know how to manage this....
+    //TODO : how to manage this....
     //getProcAddress
+
+
 
 
 

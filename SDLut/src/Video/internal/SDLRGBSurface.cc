@@ -348,6 +348,14 @@ bool RGBSurface::convertToDisplayFormat()
     return optimised = set_SDL_Surface(optsurf);
 }
 
+
+///Accessor to pixelFormat
+const PixelFormat& RGBSurface::getPixelFormat(void) const
+{
+    return *ptm_pformat;
+}
+
+
 bool RGBSurface::blit(const RGBSurface& src, Rect& dest_rect, const Rect& src_rect )
 {
 #if (DEBUG == 2)

@@ -193,9 +193,6 @@ public:
     //TO FIX
     void * getpixels(void) const;
 
-    ///Accessor to pixelFormat
-    virtual const PixelFormat& getPixelFormat(void) const;
-
     //Set the clip rect
     //Default Reset the clip rect to the full size of the surface
     inline void resetClipRect(void)

@@ -221,11 +221,6 @@ void * BaseSurface::getpixels(void) const
     return ptm_surf->pixels;
 }
 
-///Accessor to pixelFormat
-const PixelFormat& BaseSurface::getPixelFormat(void) const
-{
-    return *ptm_pformat;
-}
 
 PixelColor BaseSurface::getpixel(int x, int y)
 {
@@ -285,45 +280,45 @@ void BaseSurface::setpixel(int x, int y, PixelColor pixel)
     /* Here p is the address to the pixel we want to set */
     Uint8 *p = (Uint8 *)ptm_surf->pixels + y * ptm_surf->pitch + x * bpp;
 
-        switch (bpp)
+    switch (bpp)
+    {
+    case 1:
+        *p = (Uint8) pixel;
+        break;
+
+    case 2:
+        *(Uint16 *)p = (Uint16) pixel;
+        break;
+
+    case 3:
+        // Format/endian independent
+        //Uint8 r, g, b;
+
+        //r = (pixel>>screen->format->Rshift)&0xFF;
+        //g = (pixel>>screen->format->Gshift)&0xFF;
+        //b = (pixel>>screen->format->Bshift)&0xFF;
+        //*((p)+screen->format->Rshift/8) = r;
+        //*((p)+screen->format->Gshift/8) = g;
+        //*((p)+screen->format->Bshift/8) = b;
+
+
+        if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
         {
-        case 1:
-            *p = (Uint8) pixel;
-            break;
-
-        case 2:
-            *(Uint16 *)p = (Uint16) pixel;
-            break;
-
-        case 3:
-                    // Format/endian independent
-            //Uint8 r, g, b;
-
-            //r = (pixel>>screen->format->Rshift)&0xFF;
-            //g = (pixel>>screen->format->Gshift)&0xFF;
-            //b = (pixel>>screen->format->Bshift)&0xFF;
-            //*((p)+screen->format->Rshift/8) = r;
-            //*((p)+screen->format->Gshift/8) = g;
-            //*((p)+screen->format->Bshift/8) = b;
-
-
-            if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-            {
-                *(Uint16 *)p = ((pixel >> 8) & 0xff00) | ((pixel >> 8) & 0xff);
-                *(p + 2) = pixel & 0xff;
-            }
-            else
-            {
-                *(Uint16 *)p = pixel & 0xffff;
-                *(p + 2) = ((pixel >> 16) & 0xff) ;
-            }
-            break;
-
-        case 4:
-            *(Uint32 *)p = (Uint32) pixel;
-            break;
-
+            *(Uint16 *)p = ((pixel >> 8) & 0xff00) | ((pixel >> 8) & 0xff);
+            *(p + 2) = pixel & 0xff;
         }
+        else
+        {
+            *(Uint16 *)p = pixel & 0xffff;
+            *(p + 2) = ((pixel >> 16) & 0xff) ;
+        }
+        break;
+
+    case 4:
+        *(Uint32 *)p = (Uint32) pixel;
+        break;
+
+    }
 
     /*
     }

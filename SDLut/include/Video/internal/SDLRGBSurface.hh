@@ -93,6 +93,10 @@ public :
     	int update(void);
     */
 
+
+    ///Accessor to pixelFormat
+    virtual const PixelFormat& getPixelFormat(void) const;
+
     virtual bool resize(int width, int height);
 
     bool isSRCColorKeyset(void);

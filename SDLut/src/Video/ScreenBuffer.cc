@@ -269,7 +269,7 @@ void ScreenBuffer::applyBGColor() const
         else
         {
 #endif
-            m_screen->fill(m_screen->getPixelFormat().getPixelColor(m_background));
+            m_screen->fill(m_screen->getVideoInfo()->getPixelFormat().getPixelColor(m_background));
 #ifdef WK_OPENGL_FOUND
         }
 #endif
@@ -422,65 +422,65 @@ bool ScreenBuffer::captureBMP(std::string filename) const
 }
 
 
-    //pixel drawing function
-    Color ScreenBuffer::getpixel(int x, int y)
-    {
-        //return m_screen->getPixelFormat().getColor(m_screen->getpixel(x, y));
+//pixel drawing function
+Color ScreenBuffer::getpixel(int x, int y)
+{
+    //return m_screen->getPixelFormat().getColor(m_screen->getpixel(x, y));
 
-        Color res;
-        //We need to check the pixel is in the ScreenBuffer
-        if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
-        {
-            res = m_screen->getPixelFormat().getColor(m_screen->getpixel(x, y));
-        }
-        else
-        {
-            throw std::logic_error("Trying to get a pixel outside of ScreenBuffer range");
-        }
-        return res;
+    Color res;
+    //We need to check the pixel is in the ScreenBuffer
+    if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
+    {
+        res = m_screen->getVideoInfo()->getPixelFormat().getColor(m_screen->getpixel(x, y));
     }
-
-    void ScreenBuffer::setpixel(int x, int y, const Color & pixel)
+    else
     {
-        //We need to check the pixel is in the ScreenBuffer
-        if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
+        throw std::logic_error("Trying to get a pixel outside of ScreenBuffer range");
+    }
+    return res;
+}
+
+void ScreenBuffer::setpixel(int x, int y, const Color & pixel)
+{
+    //We need to check the pixel is in the ScreenBuffer
+    if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
+    {
+        PixelColor pcolor = m_screen->getVideoInfo()->getPixelFormat().getPixelColor(pixel);
+        //we need to take care about alpha blending.
+        //we need to maintain same behaviour as the blitting with alpha.
+        //http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetAlpha
+        if ( m_screen->getVideoInfo()->getPixelFormat().getAmask() == 0 ) //screen doesnt support alpha pixel format
         {
-            PixelColor pcolor = m_screen->getPixelFormat().getPixelColor(pixel);
-            //we need to take care about alpha blending.
-            //we need to maintain same behaviour as the blitting with alpha.
-            //http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetAlpha
-            if ( m_screen->getPixelFormat().getAmask() == 0 ) //screen doesnt support alpha pixel format
+            if ( !m_screen->isOpenGLset() ) // screen is not opengl : alpha blending pixel not supported
             {
-                if ( !m_screen->isOpenGLset() ) // screen is not opengl : alpha blending pixel not supported
+                if ( pixel.hasAlpha() ) // we have alpha
                 {
-                    if ( pixel.hasAlpha() ) // we have alpha
-                    {
-                        //reset color with preblending computation
-                        pcolor = m_screen->getPixelFormat().getPixelColor(blend(pixel,m_screen->getPixelFormat().getColor(m_screen->getpixel(x,y))));
-                    }
-                }
-                else//m_screen->isOpenGLset() -> we can keep alpha
-                {
-                    //adding Alpha to pixel color
-                    //as the SDL_pixelformat for OpenGL discards alpha information
-                    PixelColor alpha = pixel.getA() ;
-                    PixelColor properalpha = (alpha << (m_screen->getPixelFormat().getBitsPerPixel() - m_screen->getPixelFormat().getAloss()) );
-                    pcolor = pcolor | properalpha ;
+                    //reset color with preblending computation
+                    pcolor = m_screen->getVideoInfo()->getPixelFormat().getPixelColor(blend(pixel,m_screen->getVideoInfo()->getPixelFormat().getColor(m_screen->getpixel(x,y))));
                 }
             }
-            else //pcolor should be properly set
+            else//m_screen->isOpenGLset() -> we can keep alpha
             {
-                //Really is there one screen that support this ??
-                //GLPixelFormat ??
+                //adding Alpha to pixel color
+                //as the SDL_pixelformat for OpenGL discards alpha information
+                PixelColor alpha = pixel.getA() ;
+                PixelColor properalpha = (alpha << (m_screen->getVideoInfo()->getPixelFormat().getBitsPerPixel() - m_screen->getVideoInfo()->getPixelFormat().getAloss()) );
+                pcolor = pcolor | properalpha ;
             }
-
-            m_screen->setpixel(x, y,pcolor);
         }
-        else
+        else //pcolor should be properly set
         {
-            throw std::logic_error("Trying to pu a pixel outside of ScreenBuffer range");
+            //Really is there one screen that support this ??
+            //GLPixelFormat ??
         }
+
+        m_screen->setpixel(x, y,pcolor);
     }
+    else
+    {
+        throw std::logic_error("Trying to pu a pixel outside of ScreenBuffer range");
+    }
+}
 
 
 
@@ -511,7 +511,7 @@ Rect ScreenBuffer::getClipRect( void ) const
 
 bool ScreenBuffer::fill (const Color& color, const Rect& dest_rect)
 {
-    m_screen->fill(m_screen->getPixelFormat().getPixelColor(color),dest_rect);
+    m_screen->fill(m_screen->getVideoInfo()->getPixelFormat().getPixelColor(color),dest_rect);
     return true; //todo
 }
 
