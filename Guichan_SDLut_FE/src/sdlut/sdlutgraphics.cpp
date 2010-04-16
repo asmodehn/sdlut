@@ -13,6 +13,7 @@ Made by XorfacX
 #include "guichan/image.hpp"
 #include "guichan/sdlut/sdlutimage.hpp"
 #include "guichan/sdlut/sdlutpixel.hpp"
+#include "guichan/sdlut/sdlutimageloader.hpp" //for magicPink
 
 // For some reason an old version of MSVC did not like std::abs,
 // so we added this macro.
@@ -32,12 +33,16 @@ void SDLutGraphics::setTarget(video::ScreenBuffer* target)
 {
     mTarget = target;
 	
-	//image not set or screen dims have changed (after a resize)
-	if (!Image4Pixels.get() || (Image4PixelsDim.getw() != mTarget->getWidth() || Image4PixelsDim.geth() != mTarget->getHeight()) ) 
+	//if (!Image4Pixels.get())
 	{
-		Image4Pixels.reset( new video::Image(mTarget->getWidth(), mTarget->getHeight(), mTarget->getBPP() ) );
-		Image4PixelsDim = video::Rect(0, 0, mTarget->getWidth(), mTarget->getHeight());
+		Image4Pixels.reset( new video::Image(mTarget->getWidth(), mTarget->getHeight(), mTarget->getBPP(), false, false ) );
+		//Image4Pixels->resetColorKey(true, SDLutImageLoader::magicPink);
 	}
+
+	//Image4Pixels->resize(mTarget->getWidth(), mTarget->getHeight());
+	Image4PixelsDim = video::Rect(0, 0, Image4Pixels->getWidth(), Image4Pixels->getHeight());
+
+	//Image4Pixels->fill(SDLutImageLoader::magicPink);
 }
 
 video::ScreenBuffer* SDLutGraphics::getTarget() const
@@ -59,6 +64,9 @@ void SDLutGraphics::_beginDraw()
 
 void SDLutGraphics::_endDraw()
 {
+	tempImage4PixelsDim = Image4PixelsDim;
+	mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
+
     popClipArea();
 }
 
@@ -90,13 +98,8 @@ void SDLutGraphics::popClipArea()
 
     const ClipRectangle& carea = mClipStack.top();
     video::Rect rect(carea.x, carea.y, carea.width, carea.height);
-    /*rect.setx( carea.x );
-     rect.sety( carea.y );
-     rect.setw( carea.width );
-     rect.seth( carea.height );*/
-
+ 
     mTarget->resetClipRect(rect);
-    //SDL_SetClipRect(mTarget, &rect);
 }
 
 
@@ -169,17 +172,10 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
                 SDLutputPixel(Image4Pixels.get(), x, y, mColor);
             }
         }
-		tempImage4PixelsDim = Image4PixelsDim;
-		mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
-
     }
     else
     {
         video::Rect rect(area.x, area.y, area.width, area.height);
-        /*rect.setx( area.x );
-        rect.sety( area.y );
-        rect.setw( area.width );
-        rect.seth( area.height );*/
 
         video::Color rgbacolor( (unsigned char)mColor.r, (unsigned char)mColor.g, (unsigned char)mColor.b, (unsigned char)mColor.a );
         mTarget->fill(rgbacolor, rect );
@@ -203,9 +199,6 @@ void SDLutGraphics::drawPoint(int x, int y)
         return;
 
     SDLutputPixel(Image4Pixels.get(), x, y, mColor);
-
-	tempImage4PixelsDim = Image4PixelsDim;
-	mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
 }
 
 void SDLutGraphics::drawHLine(int x1, int y, int x2)
@@ -367,9 +360,6 @@ void SDLutGraphics::drawLine(int x1, int y1, int x2, int y2)
             }
         }
     }
-
-	tempImage4PixelsDim = Image4PixelsDim;
-	mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
 }
 
 void SDLutGraphics::setColor(const gcn::Color& color)

@@ -89,7 +89,11 @@ bool Image::saveBMP( std::string filename )
 
 bool Image::resize(int width, int height)
 {
-    return m_img->resize(width, height);
+	bool res = true;
+	if (m_img->getWidth() != width || m_img->getHeight() != height)
+		res = m_img->resize(width, height);
+
+    return res;
 }
 
 
@@ -102,6 +106,11 @@ bool Image::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)
 {
     m_img->blit( *(src.m_img), dest_rect, src_rect );
     return true; //todo
+}
+
+bool Image::resetColorKey(bool ckey, video::Color ck)
+{
+	return m_img->resetColorKey(ckey, m_img->getPixelFormat().getPixelColor( ck ) );
 }
 
 

@@ -71,6 +71,14 @@ public:
 
     //bool convertToDisplayFormat( Renderer r = SDL );
 
+	/**
+	 * Resize the Image to the given dimensions if dimensions varies from the Image's dimensions
+	 *
+	 * @width: future width of the image
+	 * @height: future height of the image
+	 * 
+	 * return true if resize successful or not needed
+	 */
     bool resize(int width, int height);
 
     bool fill (const Color& color)
@@ -131,6 +139,16 @@ public:
 
     //TODO : set alpha of the surface, using colorkey if possible ( alpha = 255 and SDL )
     //setAlpha(unsigned char alpha);
+
+	/**
+	 * Reset the colorkey the image
+	 *
+	 * @ckey, true set the colorKey, false remove it
+	 * @ck, the colorKey value
+	 *
+	 * Return: true if everything went fine, false otherwise
+	 */
+	bool resetColorKey(bool ckey, video::Color ck);
 
 };
 
