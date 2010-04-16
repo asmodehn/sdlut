@@ -106,6 +106,11 @@ protected:
      */
     virtual void drawVLine(int x, int y1, int y2);
 
+	//used for blitting pixels on
+	std::auto_ptr<video::Image> Image4Pixels;
+	video::Rect Image4PixelsDim, tempImage4PixelsDim;
+
+
     video::ScreenBuffer* mTarget;
     gcn::Color mColor;
     bool mAlpha;

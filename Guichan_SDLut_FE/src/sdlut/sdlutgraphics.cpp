@@ -31,6 +31,13 @@ SDLutGraphics::SDLutGraphics()
 void SDLutGraphics::setTarget(video::ScreenBuffer* target)
 {
     mTarget = target;
+	
+	//image not set or screen dims have changed (after a resize)
+	if (!Image4Pixels.get() || (Image4PixelsDim.getw() != mTarget->getWidth() || Image4PixelsDim.geth() != mTarget->getHeight()) ) 
+	{
+		Image4Pixels.reset( new video::Image(mTarget->getWidth(), mTarget->getHeight(), mTarget->getBPP() ) );
+		Image4PixelsDim = video::Rect(0, 0, mTarget->getWidth(), mTarget->getHeight());
+	}
 }
 
 video::ScreenBuffer* SDLutGraphics::getTarget() const
@@ -159,9 +166,11 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
         {
             for (x = x1; x < x2; x++)
             {
-                SDLutputPixel(mTarget, x, y, mColor);
+                SDLutputPixel(Image4Pixels.get(), x, y, mColor);
             }
         }
+		tempImage4PixelsDim = Image4PixelsDim;
+		mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
 
     }
     else
@@ -193,8 +202,10 @@ void SDLutGraphics::drawPoint(int x, int y)
     if (!top.isPointInRect(x,y))
         return;
 
-    SDLutputPixel(mTarget, x, y, mColor);
+    SDLutputPixel(Image4Pixels.get(), x, y, mColor);
 
+	tempImage4PixelsDim = Image4PixelsDim;
+	mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
 }
 
 void SDLutGraphics::drawHLine(int x1, int y, int x2)
@@ -264,7 +275,7 @@ void SDLutGraphics::drawLine(int x1, int y1, int x2, int y2)
             {
                 if (top.isPointInRect(x, y))
                 {
-                    SDLutputPixel(mTarget, x, y, mColor);
+                    SDLutputPixel(Image4Pixels.get(), x, y, mColor);
                 }
 
                 p += dy;
@@ -285,7 +296,7 @@ void SDLutGraphics::drawLine(int x1, int y1, int x2, int y2)
             {
                 if (top.isPointInRect(x, y))
                 {
-                    SDLutputPixel(mTarget, x, y, mColor);
+                    SDLutputPixel(Image4Pixels.get(), x, y, mColor);
                 }
 
                 p += dy;
@@ -322,7 +333,7 @@ void SDLutGraphics::drawLine(int x1, int y1, int x2, int y2)
             {
                 if (top.isPointInRect(x, y))
                 {
-                    SDLutputPixel(mTarget, x, y, mColor);
+                    SDLutputPixel(Image4Pixels.get(), x, y, mColor);
                 }
 
                 p += dx;
@@ -343,7 +354,7 @@ void SDLutGraphics::drawLine(int x1, int y1, int x2, int y2)
             {
                 if (top.isPointInRect(x, y))
                 {
-                    SDLutputPixel(mTarget, x, y, mColor);
+                    SDLutputPixel(Image4Pixels.get(), x, y, mColor);
                 }
 
                 p += dx;
@@ -356,6 +367,9 @@ void SDLutGraphics::drawLine(int x1, int y1, int x2, int y2)
             }
         }
     }
+
+	tempImage4PixelsDim = Image4PixelsDim;
+	mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
 }
 
 void SDLutGraphics::setColor(const gcn::Color& color)
