@@ -128,7 +128,6 @@ public:
         return res;
     }
 
-
     int testall()
     {
         int status = 0;
@@ -161,53 +160,53 @@ public:
 
         if ( parameters )
         {
-        testlog << nl << "Testing " << width << " x "  << height << " @ " << bpp;
+            testlog << nl << "Testing " << width << " x "  << height << " @ " << bpp;
 
-        if ( ! testDefault(width, height, bpp) )
-        {
-            testlog << nl << "test Default failed";
-            status |= 0x1;
-        }
-        if ( ! testResizable(width,height,bpp))
-        {
-            testlog << nl << "test Resizable failed";
-            status |= 0x2;
-        }
-        if ( ! testFullscreen(width,height,bpp))
-        {
-            testlog << nl << " test Fullscreen failed";
-            status |= 0x4;
-        }
-        if ( ! testNoFrame(width,height,bpp))
-        {
-            testlog << nl << " test NoFrame failed";
-            status |= 0x8;
-        }
+            if ( ! testDefault(width, height, bpp) )
+            {
+                testlog << nl << "test Default failed";
+                status |= 0x1;
+            }
+            if ( ! testResizable(width,height,bpp))
+            {
+                testlog << nl << "test Resizable failed";
+                status |= 0x2;
+            }
+            if ( ! testFullscreen(width,height,bpp))
+            {
+                testlog << nl << " test Fullscreen failed";
+                status |= 0x4;
+            }
+            if ( ! testNoFrame(width,height,bpp))
+            {
+                testlog << nl << " test NoFrame failed";
+                status |= 0x8;
+            }
         }
         else
         {
             testlog << nl << "Testing Default Desktop format.";
 
-        if ( ! testDefault() )
-        {
-            testlog << nl << "test Default failed";
-            status |= 0x1;
-        }
-        if ( ! testResizable())
-        {
-            testlog << nl << "test Resizable failed";
-            status |= 0x2;
-        }
-        if ( ! testFullscreen())
-        {
-            testlog << nl << " test Fullscreen failed";
-            status |= 0x4;
-        }
-        if ( ! testNoFrame())
-        {
-            testlog << nl << " test NoFrame failed";
-            status |= 0x8;
-        }
+            if ( ! testDefault() )
+            {
+                testlog << nl << "test Default failed";
+                status |= 0x1;
+            }
+            if ( ! testResizable())
+            {
+                testlog << nl << "test Resizable failed";
+                status |= 0x2;
+            }
+            if ( ! testFullscreen())
+            {
+                testlog << nl << " test Fullscreen failed";
+                status |= 0x4;
+            }
+            if ( ! testNoFrame())
+            {
+                testlog << nl << " test NoFrame failed";
+                status |= 0x8;
+            }
         }
         return status;
     }

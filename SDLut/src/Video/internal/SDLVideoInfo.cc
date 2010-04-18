@@ -15,8 +15,9 @@ namespace internal
 ///IF run before SDL_SetVideo, it should contain best available mode
 ///IF run after SDL_SetVideo, it will contain current used mode
 VideoInfo::VideoInfo(void)
-try :   pvm_sdl_vinfo(SDL_GetVideoInfo()), ptm_pformat(new PixelFormat(pvm_sdl_vinfo->vfmt)),
-        ptm_videoflags(SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE )
+try :
+    pvm_sdl_vinfo(SDL_GetVideoInfo()), ptm_pformat(new PixelFormat(pvm_sdl_vinfo->vfmt)),
+    ptm_videoflags(SDL_RESIZABLE | SDL_DOUBLEBUF | SDL_ANYFORMAT | SDL_HWSURFACE | SDL_HWPALETTE )
 {
 #ifdef DEBUG
     Log << nl << "VideoInfo::VideoInfo() called ...";
@@ -27,10 +28,10 @@ try :   pvm_sdl_vinfo(SDL_GetVideoInfo()), ptm_pformat(new PixelFormat(pvm_sdl_v
     else
     {
 
-    //putting advised values as requested values
-    ptm_requestedWidth = pvm_sdl_vinfo->current_w;
-    ptm_requestedHeight = pvm_sdl_vinfo->current_h;
-    ptm_requestedBPP = pvm_sdl_vinfo->vfmt->BitsPerPixel;
+        //putting advised values as requested values
+        ptm_requestedWidth = pvm_sdl_vinfo->current_w;
+        ptm_requestedHeight = pvm_sdl_vinfo->current_h;
+        ptm_requestedBPP = pvm_sdl_vinfo->vfmt->BitsPerPixel;
 
         //if (ptm_pformat)
         //    delete ptm_pformat, ptm_pformat = NULL;
@@ -65,10 +66,10 @@ try
     else
     {
 
-    //putting advised values as requested values
-    ptm_requestedWidth = width;
-    ptm_requestedHeight = height;
-    ptm_requestedBPP = bpp;
+        //putting advised values as requested values
+        ptm_requestedWidth = width;
+        ptm_requestedHeight = height;
+        ptm_requestedBPP = bpp;
 
         pointerCopy = false;
     }
@@ -236,7 +237,7 @@ VideoInfo::~VideoInfo()
     if ( ! pointerCopy )
     {
         delete ptm_pformat;//, ptm_pformat = NULL;
-    //delete pvm_sdl_vinfo; //This is managed by SDL, we cant delete that here
+        //delete pvm_sdl_vinfo; //This is managed by SDL, we cant delete that here
     }
 
 #ifdef DEBUG
@@ -322,58 +323,58 @@ void VideoInfo::requestAsyncBlit(bool val)
 
 void VideoInfo::requestSize(unsigned width, unsigned int height)
 {
-            //TODO : check if mode is available before changing request
-            ptm_requestedHeight= height;
-            ptm_requestedWidth = width;
+    //TODO : check if mode is available before changing request
+    ptm_requestedHeight= height;
+    ptm_requestedWidth = width;
 }
 
 void VideoInfo::requestBPP(unsigned short bpp)
-        {
-            //TODO : check mode is OK before changing request
-         ptm_requestedBPP = bpp;
-        }
+{
+    //TODO : check mode is OK before changing request
+    ptm_requestedBPP = bpp;
+}
 
 
-    bool VideoInfo::isOpenGL() const
-    {
-        return ! (0 == (ptm_videoflags & SDL_OPENGL)) ;
-    }
-    bool VideoInfo::isFullscreen() const
-    {
-        return ! ( 0 == (ptm_videoflags & SDL_FULLSCREEN));
-    }
-    bool VideoInfo::isResizable() const
-    {
-        return ! ( 0 == (ptm_videoflags & SDL_RESIZABLE));
-    }
-    bool VideoInfo::isNoFrame() const
-    {
-        return ! ( 0 == (ptm_videoflags & SDL_NOFRAME));
-    }
-    bool VideoInfo::isDoubleBuf() const
-    {
-        return ! ( 0 == (ptm_videoflags & SDL_DOUBLEBUF));
-    }
-    bool VideoInfo::isAnyFormat() const
-    {
-        return ! ( 0 == (ptm_videoflags & SDL_ANYFORMAT));
-    }
-    bool VideoInfo::isSWSurface() const
-    {
-        return ! ( 0 == (ptm_videoflags & SDL_SWSURFACE));
-    }
-    bool VideoInfo::isHWSurface() const
-    {
-        return ! ( 0 == (ptm_videoflags & SDL_HWSURFACE));
-    }
-    bool VideoInfo::isHWPalette() const
-    {
-        return ! ( 0 == (ptm_videoflags & SDL_HWPALETTE));
-    }
-    bool VideoInfo::isAsyncBlit() const
-    {
-        return ! ( 0 == (ptm_videoflags & SDL_ASYNCBLIT));
-    }
+bool VideoInfo::isOpenGL() const
+{
+    return ! (0 == (ptm_videoflags & SDL_OPENGL)) ;
+}
+bool VideoInfo::isFullscreen() const
+{
+    return ! ( 0 == (ptm_videoflags & SDL_FULLSCREEN));
+}
+bool VideoInfo::isResizable() const
+{
+    return ! ( 0 == (ptm_videoflags & SDL_RESIZABLE));
+}
+bool VideoInfo::isNoFrame() const
+{
+    return ! ( 0 == (ptm_videoflags & SDL_NOFRAME));
+}
+bool VideoInfo::isDoubleBuf() const
+{
+    return ! ( 0 == (ptm_videoflags & SDL_DOUBLEBUF));
+}
+bool VideoInfo::isAnyFormat() const
+{
+    return ! ( 0 == (ptm_videoflags & SDL_ANYFORMAT));
+}
+bool VideoInfo::isSWSurface() const
+{
+    return ! ( 0 == (ptm_videoflags & SDL_SWSURFACE));
+}
+bool VideoInfo::isHWSurface() const
+{
+    return ! ( 0 == (ptm_videoflags & SDL_HWSURFACE));
+}
+bool VideoInfo::isHWPalette() const
+{
+    return ! ( 0 == (ptm_videoflags & SDL_HWPALETTE));
+}
+bool VideoInfo::isAsyncBlit() const
+{
+    return ! ( 0 == (ptm_videoflags & SDL_ASYNCBLIT));
+}
 
 std::string VideoInfo::getDriverName(void) const
 {

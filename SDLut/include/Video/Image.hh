@@ -54,13 +54,13 @@ public:
 
     //Constructor
     //BPP should NEVER be == 0 !!!!
-    Image( int width = 0, int height = 0, int bpp = 8,
+    Image( unsigned int width = 0, unsigned int height = 0, unsigned short bpp = 8,
            bool alpha = false,
            bool colorkey = false,
            bool hardware = false
          ) throw (std::logic_error);
 
-    Image( void * pixeldata, int depth, int pitch, int width, int height
+    Image( void * pixeldata, int depth, int pitch, unsigned int width,unsigned int height
          ) throw (std::logic_error);
 
     Image(const Image &);
@@ -71,15 +71,15 @@ public:
 
     //bool convertToDisplayFormat( Renderer r = SDL );
 
-	/**
-	 * Resize the Image to the given dimensions if dimensions varies from the Image's dimensions
-	 *
-	 * @width: future width of the image
-	 * @height: future height of the image
-	 * 
-	 * return true if resize successful or not needed
-	 */
-    bool resize(int width, int height);
+    /**
+     * Resize the Image to the given dimensions if dimensions varies from the Image's dimensions
+     *
+     * @width: future width of the image
+     * @height: future height of the image
+     *
+     * return true if resize successful or not needed
+     */
+    bool resize(unsigned int width, unsigned int height);
 
     bool fill (const Color& color)
     {
@@ -99,56 +99,31 @@ public:
 
     bool blit (const Image& src, Rect& dest_rect, const Rect& src_rect);
 
-    int getHeight(void) const
+    unsigned int getHeight(void) const
     {
         return m_img->getHeight();
     }
 
-    int getWidth(void) const
+    unsigned int getWidth(void) const
     {
         return m_img->getWidth();
     }
 
-    Color getpixel(int x, int y) const
-    {
-        Color res;
-        //We need to check the pixel is in the image
-        if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
-        {
-            res = m_img->getPixelFormat().getColor(m_img->getpixel(x, y));
-        }
-        else
-        {
-            throw std::logic_error("Trying to get a pixel outside of Image range");
-        }
-        return res;
-    }
-
-    void setpixel(int x, int y, const Color & pixel)
-    {
-        //We need to check the pixel is in the image
-        if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
-        {
-            m_img->setpixel(x, y, m_img->getPixelFormat().getPixelColor( pixel));
-        }
-        else
-        {
-            throw std::logic_error("Trying to pu a pixel outside of Image range");
-        }
-    }
+    Color getpixel(unsigned int x, unsigned int y) const;
+    void setpixel(unsigned int x, unsigned int y, const Color & pixel);
 
     //TODO : set alpha of the surface, using colorkey if possible ( alpha = 255 and SDL )
     //setAlpha(unsigned char alpha);
 
-	/**
-	 * Reset the colorkey the image
-	 *
-	 * @ckey, true set the colorKey, false remove it
-	 * @ck, the colorKey value
-	 *
-	 * Return: true if everything went fine, false otherwise
-	 */
-	bool resetColorKey(bool ckey, video::Color ck);
+    /**
+     * Reset the colorkey the image
+     *
+     * @ckey, true set the colorKey, false remove it
+     * @ck, the colorKey value
+     *
+     * Return: true if everything went fine, false otherwise
+     */
+    bool resetColorKey(bool ckey, video::Color ck);
 
 };
 

@@ -14,7 +14,7 @@ namespace font
 //if SDL_TTF used, provide a class to be used as a bridge.
 //this way the client doesnt have to take care of which function is available
 #ifdef WK_SDLTTF_FOUND
-
+#pragma message "SDL_TTf Found. Compiling FontExtend."
 
 FontExtend::FontExtend(std::string filename, int ptsize, long index) throw (std::logic_error)
 try :

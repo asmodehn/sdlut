@@ -1,5 +1,4 @@
 #include "Audio/SDLSound.hh"
-
 #include "SDLConfig.hh"
 
 #include "Default/SDLSoundImpl.hh"

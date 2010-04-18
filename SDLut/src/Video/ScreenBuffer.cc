@@ -9,25 +9,26 @@ namespace video
 {
 
 ScreenBuffer::ScreenBuffer(const ScreenInfo& scinf, Manager* manager) throw (std::logic_error)
-try : fullRefreshNeeded(true), pm_manager(manager), m_background(Color(0,0,0)), m_scinfo()
+try :
+    fullRefreshNeeded(true), pm_manager(manager), m_background(Color(0,0,0)), m_scinfo()
 {
-   Log << nl << "Creating new ScreenBuffer. ScreenInfo Requested " << scinf;
+    Log << nl << "Creating new ScreenBuffer. ScreenInfo Requested " << scinf;
 #ifdef WK_OPENGL_FOUND
-        m_screen.reset(new internal::OGL::VideoGLSurface(scinf.m_videoinfo));
+    m_screen.reset(new internal::OGL::VideoGLSurface(scinf.m_videoinfo));
 #else
-        m_screen.reset(new internal::VideoSurface(scinf.m_videoinfo));
+    m_screen.reset(new internal::VideoSurface(scinf.m_videoinfo));
 #endif
 
-        m_scinfo.reset(new ScreenInfo(m_screen->getVideoInfo()));
+    m_scinfo.reset(new ScreenInfo(m_screen->getVideoInfo()));
 
-        //initializing engine
-        m_engine.reset(new internal::SDLEngine());
+    //initializing engine
+    m_engine.reset(new internal::SDLEngine());
 
 
-        //TO TEST, maybe not needed anymore
-        requestFullRefresh();
+    //TO TEST, maybe not needed anymore
+    requestFullRefresh();
 
-        Log << nl <<"ScreenInfo Obtained " << *m_scinfo ;
+    Log << nl <<"ScreenInfo Obtained " << *m_scinfo ;
 
     //we need a manager to manage settings
     if (! pm_manager )
@@ -36,10 +37,10 @@ try : fullRefreshNeeded(true), pm_manager(manager), m_background(Color(0,0,0)), 
         throw std::logic_error("SDL::Manager manager parameter points to 0x0");
     }
 }
-    catch (std::exception & e)
-    {
-        Log << nl << " Exception caught in ScreenBuffer Constructor : " << e.what();
-    }
+catch (std::exception & e)
+{
+    Log << nl << " Exception caught in ScreenBuffer Constructor : " << e.what();
+}
 
 
 //recreating Engine here to make sure both origin and destination engines are independant.
@@ -280,7 +281,7 @@ unsigned short ScreenBuffer::getBPP()
     return m_screen->getVideoInfo().getPixelFormat().getBitsPerPixel();
 }
 
-bool ScreenBuffer::resize (int width, int height)
+bool ScreenBuffer::resize (unsigned int width,unsigned int height)
 {
 
 #ifdef DEBUG
@@ -292,14 +293,14 @@ bool ScreenBuffer::resize (int width, int height)
     //NEW DESIGN : always the case
     //if (m_screen.get())
     //{
-        res = res && m_screen->resize(width,height);//doesnt keep content
+    res = res && m_screen->resize(width,height);//doesnt keep content
 
-        //resetting our Engine. Useful if OpenGL dependent : need to reload the new created context
-        //resizing engine doesnt make much sense though.
-        m_engine.reset(new internal::SDLEngine());
+    //resetting our Engine. Useful if OpenGL dependent : need to reload the new created context
+    //resizing engine doesnt make much sense though.
+    m_engine.reset(new internal::SDLEngine());
 
-        //We do need to resetthis order otherwise we lose opengl context from the engine just after the resize ( reinit )
-        //because screen resize recreates the window, and lose opengl context as documented in SDL docs...
+    //We do need to resetthis order otherwise we lose opengl context from the engine just after the resize ( reinit )
+    //because screen resize recreates the window, and lose opengl context as documented in SDL docs...
     //}
     //else
     //{
@@ -378,7 +379,7 @@ bool ScreenBuffer::captureBMP(std::string filename) const
 
 
 //pixel drawing function
-Color ScreenBuffer::getpixel(int x, int y)
+Color ScreenBuffer::getpixel(unsigned int x, unsigned int y)
 {
     //return m_screen->getPixelFormat().getColor(m_screen->getpixel(x, y));
 
@@ -395,7 +396,7 @@ Color ScreenBuffer::getpixel(int x, int y)
     return res;
 }
 
-void ScreenBuffer::setpixel(int x, int y, const Color & pixel)
+void ScreenBuffer::setpixel(unsigned int x,unsigned int y, const Color & pixel)
 {
     //We need to check the pixel is in the ScreenBuffer
     if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())

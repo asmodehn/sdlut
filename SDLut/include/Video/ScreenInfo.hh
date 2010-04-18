@@ -23,12 +23,15 @@ namespace video
 
 
 
- class ScreenInfo
- {
-     friend class ScreenBuffer;
+class ScreenInfo
+{
+    friend class ScreenBuffer;
 
     //forbiddend assignment
-    const ScreenInfo & operator=(const ScreenInfo& si) { return si;}
+    const ScreenInfo & operator=(const ScreenInfo& si)
+    {
+        return si;
+    }
 
 
 protected :
@@ -78,7 +81,7 @@ public:
     friend RAGE::Logger & operator << (RAGE::Logger & ostr, const ScreenInfo & vinfo);
 
 
- };
+};
 
 
 

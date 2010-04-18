@@ -18,6 +18,8 @@
  */
 
 #include "Logger.hh"
+#include "WkPlatform.h"
+
 #include "SDLPixelFormat.hh"
 
 #include <iostream>
@@ -45,7 +47,10 @@ class VideoInfo
     friend class SDLut::video::internal::VideoSurface;
 
     //forbidden assignement
-    const VideoInfo& operator=(const VideoInfo& vi) { return vi;}
+    const VideoInfo& operator=(const VideoInfo& vi)
+    {
+        return vi;
+    }
 
     bool pointerCopy;
 
@@ -111,9 +116,18 @@ public:
     void requestSize(unsigned width, unsigned int height);
     void requestBPP(unsigned short bpp);
 
-    unsigned int getRequestedWidth() const { return ptm_requestedWidth; }
-    unsigned int getRequestedHeight() const { return ptm_requestedHeight; }
-    unsigned short getRequestedBPP() const {return ptm_requestedBPP; }
+    unsigned int getRequestedWidth() const
+    {
+        return ptm_requestedWidth;
+    }
+    unsigned int getRequestedHeight() const
+    {
+        return ptm_requestedHeight;
+    }
+    unsigned short getRequestedBPP() const
+    {
+        return ptm_requestedBPP;
+    }
 
     bool isOpenGL() const;
     bool isFullscreen() const;

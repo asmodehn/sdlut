@@ -90,7 +90,7 @@ public:
     //fill the VideoSurface with the BGColor
     void applyBGColor() const;
 
-    bool resize(int width, int height);
+    bool resize(unsigned int width, unsigned int height);
 
     unsigned int getWidth();
     unsigned int getHeight();
@@ -103,8 +103,8 @@ public:
 
     // direct pixel drawing function
     ///WARNING : Slow
-    Color getpixel(int x, int y);
-    void setpixel(int x, int y, const Color & pixel);
+    Color getpixel(unsigned int x,unsigned int y);
+    void setpixel(unsigned int x, unsigned int y, const Color & pixel);
 
     //Defines a 2D clippin Rect Area
     void resetClipRect( const Rect& clipr );

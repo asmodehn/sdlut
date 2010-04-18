@@ -182,13 +182,13 @@ int main(int argc, char** argv)
     MyEngine engine(font);
 
     App::getInstance().getDisplay().getScreenRequest().requestOpenGL(ogl);
-	App::getInstance().getDisplay().getScreenRequest().requestSize(800,600);
+    App::getInstance().getDisplay().getScreenRequest().requestSize(800,600);
 
     App::getInstance().getDisplay().resetInitCallback(engine,&MyEngine::init);
     App::getInstance().getDisplay().resetResizeCallback(engine,&MyEngine::resize);
     App::getInstance().getDisplay().resetRenderCallback(engine,&MyEngine::render);
 
-	if ( App::getInstance().getDisplay().show() )
+    if ( App::getInstance().getDisplay().show() )
     {
         App::getInstance().getDisplay().mainLoop();
     }

@@ -31,6 +31,8 @@ namespace internal
 namespace OGL
 {
 
+#ifdef WK_OPENGL_FOUND
+
 //This may be useless in Windows....
 //TEst to do on linux, to choose a class behaviour
 class OGLVideoInfo : public VideoInfo
@@ -66,6 +68,11 @@ public :
 
     friend RAGE::Logger & operator << (RAGE::Logger & ostr, const OGLVideoInfo & glvi);
 };
+
+#else
+/* OGLLogo is defined only if Built with OpenGL */
+#endif // WK_OPENGL_FOUND
+
 
 } // OGL
 } // internal

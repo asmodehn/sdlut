@@ -208,7 +208,7 @@ bool DefaultKeyboard::handleKeyEvent (const Sym &s, bool pressed)
             //TODO : find proper way to toggle fullscreen with new design
             //App::getInstance().getDisplay().requestFullscreen(!App::getInstance().getDisplay().getScreenBuffer().getScreenInfo().isFullscreen());
             //App::getInstance().getDisplay().show();
-        res = true;
+            res = true;
         break;
     default:
         res = false;

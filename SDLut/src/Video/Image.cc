@@ -40,7 +40,7 @@ Image::Image(std::auto_ptr<internal::RGBSurface> s) throw (std::logic_error)
 
 //Constructor
 //BPP should NEVER be == 0 !!!!
-Image::Image( int width, int height, int bpp,
+Image::Image( unsigned int width, unsigned int height, unsigned short bpp,
               bool alpha,
               bool colorkey,
               bool hardware
@@ -55,7 +55,7 @@ Image::Image( int width, int height, int bpp,
 }
 
 
-Image::Image( void * pixeldata, int depth, int pitch, int width, int height
+Image::Image( void * pixeldata, int depth, int pitch, unsigned int width, unsigned int height
             ) throw (std::logic_error)
 {
 
@@ -87,11 +87,11 @@ bool Image::saveBMP( std::string filename )
     return m_img->saveBMP(filename);
 }
 
-bool Image::resize(int width, int height)
+bool Image::resize(unsigned int width, unsigned int height)
 {
-	bool res = true;
-	if (m_img->getWidth() != width || m_img->getHeight() != height)
-		res = m_img->resize(width, height);
+    bool res = true;
+    if (m_img->getWidth() != width || m_img->getHeight() != height)
+        res = m_img->resize(width, height);
 
     return res;
 }
@@ -108,9 +108,41 @@ bool Image::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)
     return true; //todo
 }
 
+Color Image::getpixel(unsigned int x, unsigned int y) const
+{
+    Color res;
+    //We need to check the pixel is in the image
+    if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
+    {
+        res = m_img->getPixelFormat().getColor(m_img->getpixel(x, y));
+    }
+    else
+    {
+        throw std::logic_error("Trying to get a pixel outside of Image range");
+    }
+    return res;
+}
+
+void Image::setpixel(unsigned int x, unsigned int y, const Color & pixel)
+{
+    //We need to check the pixel is in the image
+    if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
+    {
+        m_img->setpixel(x, y, m_img->getPixelFormat().getPixelColor( pixel));
+    }
+    else
+    {
+        throw std::logic_error("Trying to pu a pixel outside of Image range");
+    }
+}
+
+
+
+
+
 bool Image::resetColorKey(bool ckey, video::Color ck)
 {
-	return m_img->resetColorKey(ckey, m_img->getPixelFormat().getPixelColor( ck ) );
+    return m_img->resetColorKey(ckey, m_img->getPixelFormat().getPixelColor( ck ) );
 }
 
 

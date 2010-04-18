@@ -20,6 +20,10 @@ namespace internal
 namespace OGL
 {
 
+
+#ifdef WK_OPENGL_FOUND
+#pragma message "OpenGL Found. Compiling OGL::SDLVideoGLSurface."
+
 //Constructor
 VideoGLSurface::VideoGLSurface( const OGLVideoInfo & glvi) throw (std::logic_error)
 try
@@ -568,6 +572,11 @@ RAGE::Logger & operator << (RAGE::Logger & log, const VideoGLSurface & surf)
     << "- Double Buffered ? " << surf.isDoubleBufset();
     return log;
 }
+
+#else
+#pragma message "No OpenGL ! SDLVideoGLSurface class not generated."
+#endif
+
 
 }
 }

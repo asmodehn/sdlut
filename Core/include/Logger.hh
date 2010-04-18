@@ -87,6 +87,7 @@ public :
     }
 
     //warning, this is likely to return false in release build
+    //TODO : why ? tests on a  release lib needs to be able to log...
     bool enableFileLog( const std::string & filename)
     {
 #ifdef RAGELOG

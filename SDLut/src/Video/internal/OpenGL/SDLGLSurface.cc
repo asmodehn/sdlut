@@ -12,6 +12,10 @@ namespace internal
 namespace OGL
 {
 
+
+#ifdef WK_OPENGL_FOUND
+#pragma message "OpenGL Found. Compiling OGL::SDLGLSurface."
+
 ////////////////private Conversion Constructor
 GLSurface::GLSurface(SDL_Surface * s) throw (std::logic_error)
 try :
@@ -456,6 +460,9 @@ bool GLSurface::resetAlpha(bool alpha, unsigned int value, bool rleAccel)
 }
 
 
+#else
+#pragma message "No OpenGL ! SDLGLSurface class not generated."
+#endif
 
 
 }

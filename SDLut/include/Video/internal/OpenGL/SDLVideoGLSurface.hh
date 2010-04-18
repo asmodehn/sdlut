@@ -33,7 +33,7 @@ namespace internal
 namespace OGL
 {
 
-
+#ifdef WK_OPENGL_FOUND
 /**
  * \class Videosurface
  *
@@ -122,6 +122,12 @@ public:
 
     friend RAGE::Logger & operator << (RAGE::Logger & log, const VideoSurface & surf);
 };
+
+
+#else
+/* OGLLogo is defined only if Built with OpenGL */
+#endif // WK_OPENGL_FOUND
+
 
 } //OGL
 } //internal
