@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     //Setting Display size and BPP
     App::getInstance().getDisplay().setDisplay(800,600); // using autodetected bpp
 
-    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(ogl);
+    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(ogl);
 
     //yellow background color (useful to test alpha / color key)
     App::getInstance().getDisplay().getScreenBuffer().setBGColor(Color (255,255,0));

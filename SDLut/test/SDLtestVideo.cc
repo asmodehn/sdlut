@@ -98,7 +98,7 @@ int main(int argc, char** argv)
 
 
     //setting proper opengl value ( before the engine, otherwise wrong image format )
-    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(ogl);
+    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(ogl);
 
     //if argument we load the image in the test engine
     std::auto_ptr<MyEngine> engine;

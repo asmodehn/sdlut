@@ -61,8 +61,8 @@ public:
 
     bool resize(int width, int height)
     {
-        int hmargin = .1 * width;
-        int vmargin = .1 * height;
+        int hmargin = static_cast<int>( .1 * width );
+        int vmargin = static_cast<int>( .1 * height );
         int cwidth = ( width - 2* hmargin) / 3;
         int cheight = ( height - 2* vmargin) / 5;
 
@@ -181,19 +181,14 @@ int main(int argc, char** argv)
 
     MyEngine engine(font);
 
-    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(ogl);
+    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(ogl);
+	App::getInstance().getDisplay().getScreenRequest().requestSize(800,600);
 
     App::getInstance().getDisplay().resetInitCallback(engine,&MyEngine::init);
     App::getInstance().getDisplay().resetResizeCallback(engine,&MyEngine::resize);
     App::getInstance().getDisplay().resetRenderCallback(engine,&MyEngine::render);
 
-
-    if (! (App::getInstance().getDisplay().setDisplay(800,600)))
-    {
-        testlog << nl << "Display Creation FAILED !"<< std::endl;
-        exit(0);
-    }
-    else if ( App::getInstance().getDisplay().show() )
+	if ( App::getInstance().getDisplay().show() )
     {
         App::getInstance().getDisplay().mainLoop();
     }

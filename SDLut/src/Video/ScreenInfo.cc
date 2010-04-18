@@ -45,33 +45,39 @@ ScreenInfo::ScreenInfo() // generate a videoinfo structure from SDL "getVideoInf
     {
         //TODO : check new mode is ok
         m_videoinfo.requestSize(width,height);
+		return true;
     }
 
     bool ScreenInfo::requestBPP(unsigned short bpp)
     {
         //TODO : check new mode is ok
         m_videoinfo.requestBPP(bpp);
+		return true;
     }
 
     bool ScreenInfo::requestOpenGL( bool value)
     {
         //TODO : check new mode is ok
         m_videoinfo.requestOpenGL(value);
+		return true;
     }
 
     bool ScreenInfo::requestResizable (bool value)
     {
         m_videoinfo.requestResizable(value);
+		return true;
     }
 
     bool ScreenInfo::requestNoFrame (bool value)
     {
         m_videoinfo.requestNoFrame(value);
+		return true;
     }
 
     bool ScreenInfo::requestFullscreen (bool value)
     {
         m_videoinfo.requestFullscreen(value);
+		return true;
     }
 
     //accessor, to ask the status of screen setup

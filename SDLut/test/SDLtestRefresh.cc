@@ -281,7 +281,7 @@ int main(int argc, char** argv)
     //TOFIX
     if (argc > 1 && std::string(argv[1]) == "nogl" )
     {
-        App::getInstance().getDisplay().getScreenBuffer().setOpenGL(false);
+        App::getInstance().getDisplay().getScreenRequest().requestOpenGL(false);
     }
 
     std::auto_ptr<MyEngine> engine(new MyEngine(800,600));

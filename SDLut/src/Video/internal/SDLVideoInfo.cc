@@ -336,43 +336,43 @@ void VideoInfo::requestBPP(unsigned short bpp)
 
     bool VideoInfo::isOpenGL() const
     {
-        return ! (0 == ptm_videoflags & SDL_OPENGL) ;
+        return ! (0 == (ptm_videoflags & SDL_OPENGL)) ;
     }
     bool VideoInfo::isFullscreen() const
     {
-        return ! ( 0 == ptm_videoflags & SDL_FULLSCREEN);
+        return ! ( 0 == (ptm_videoflags & SDL_FULLSCREEN));
     }
     bool VideoInfo::isResizable() const
     {
-        return ! ( 0 == ptm_videoflags & SDL_RESIZABLE);
+        return ! ( 0 == (ptm_videoflags & SDL_RESIZABLE));
     }
     bool VideoInfo::isNoFrame() const
     {
-        return ! ( 0 == ptm_videoflags & SDL_NOFRAME);
+        return ! ( 0 == (ptm_videoflags & SDL_NOFRAME));
     }
     bool VideoInfo::isDoubleBuf() const
     {
-        return ! ( 0 == ptm_videoflags & SDL_DOUBLEBUF);
+        return ! ( 0 == (ptm_videoflags & SDL_DOUBLEBUF));
     }
     bool VideoInfo::isAnyFormat() const
     {
-        return ! ( 0 == ptm_videoflags & SDL_ANYFORMAT);
+        return ! ( 0 == (ptm_videoflags & SDL_ANYFORMAT));
     }
     bool VideoInfo::isSWSurface() const
     {
-        return ! ( 0 == ptm_videoflags & SDL_SWSURFACE);
+        return ! ( 0 == (ptm_videoflags & SDL_SWSURFACE));
     }
     bool VideoInfo::isHWSurface() const
     {
-        return ! ( 0 == ptm_videoflags & SDL_HWSURFACE);
+        return ! ( 0 == (ptm_videoflags & SDL_HWSURFACE));
     }
     bool VideoInfo::isHWPalette() const
     {
-        return ! ( 0 == ptm_videoflags & SDL_HWPALETTE);
+        return ! ( 0 == (ptm_videoflags & SDL_HWPALETTE));
     }
     bool VideoInfo::isAsyncBlit() const
     {
-        return ! ( 0 == ptm_videoflags & SDL_ASYNCBLIT);
+        return ! ( 0 == (ptm_videoflags & SDL_ASYNCBLIT));
     }
 
 std::string VideoInfo::getDriverName(void) const
