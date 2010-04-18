@@ -47,8 +47,9 @@ public:
         case Key_F6: //FullScreen
             if (pressed)
             {
-                App::getInstance().getDisplay().resizeDisplay(640, 480);
-                App::getInstance().getDisplay().getScreenBuffer().setFullscreen(!App::getInstance().getDisplay().getScreenBuffer().isFullscreen());
+				App::getInstance().getDisplay().getScreenRequest().requestSize(640, 480);
+				App::getInstance().getDisplay().getScreenRequest().requestBPP(App::getInstance().getDisplay().getScreenRequest().getRequestedBPP());
+                App::getInstance().getDisplay().getScreenRequest().requestFullscreen(!App::getInstance().getDisplay().getScreenRequest().isFullscreen());
             }
             res = true;
             break;
@@ -161,15 +162,12 @@ void init(bool ogl = false)
     if (! App::getInstance().initVideo(false, true, false) )
         throw std::logic_error( "Init Video Failed: " + GetError() );
 
-    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(ogl);
-
     if (! App::getInstance().initText())
         throw std::logic_error( "TTF Init Failed: " + GetError() );
 
-    if (! App::getInstance().getDisplay().setDisplay(640, 480, 32)  )
-        throw std::logic_error( "Create Surface Failed: " + GetError() );
-
-
+    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(ogl);
+	App::getInstance().getDisplay().getScreenRequest().requestSize(640, 480);
+	App::getInstance().getDisplay().getScreenRequest().requestBPP(32);
 }
 
 void implement(std::string fontfile = "" )

@@ -176,9 +176,10 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
     else
     {
         video::Rect rect(area.x, area.y, area.width, area.height);
-
         video::Color rgbacolor( (unsigned char)mColor.r, (unsigned char)mColor.g, (unsigned char)mColor.b, (unsigned char)mColor.a );
-        mTarget->fill(rgbacolor, rect );
+
+		//mTarget->fill(rgbacolor, rect );
+		Image4Pixels->fill(rgbacolor, rect );
 
     }
 }
