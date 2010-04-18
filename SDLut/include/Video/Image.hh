@@ -123,7 +123,32 @@ public:
      *
      * Return: true if everything went fine, false otherwise
      */
-    bool resetColorKey(bool ckey, video::Color ck);
+    bool resetColorKey(bool ckey, Color ck );
+
+    /**
+     * Get the colorkey of the image
+     *
+     * Return: the Colorkey or exception if no colorKey set.
+     */
+    Color getColorKey();
+
+    bool hasColorKey();
+
+    /**
+     * Reset the global alpha value of the image
+     *
+     * @val, the global alpha value [0..255]. 255 is opaque, 0 is transparent.
+     *
+     * Return: true if everything went fine, false otherwise
+     */
+    bool resetGlobalAlpha(int val = 255);
+
+
+    /**
+     * Get the global Alpha value
+     * Return: the alpha value. (255 means no global alpha)
+     */
+    int getGlobalAlpha();
 
 };
 

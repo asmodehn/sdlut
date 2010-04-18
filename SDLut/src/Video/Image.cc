@@ -136,14 +136,43 @@ void Image::setpixel(unsigned int x, unsigned int y, const Color & pixel)
     }
 }
 
-
-
-
-
-bool Image::resetColorKey(bool ckey, video::Color ck)
+bool Image::resetColorKey(bool ckey, Color ck)
 {
     return m_img->resetColorKey(ckey, m_img->getPixelFormat().getPixelColor( ck ) );
 }
+
+Color Image::getColorKey()
+{
+    return m_img->getPixelFormat().getColor(m_img->getColorKey());
+}
+
+bool Image::hasColorKey()
+{
+    return m_img->isSRCColorKeyset();
+}
+
+/**
+ * Reset the global alpha value of the image
+ *
+ * @val, the global alpha value [0..255]. 255 is opaque, 0 is transparent.
+ *
+ * Return: true if everything went fine, false otherwise
+ */
+bool Image::resetGlobalAlpha(int val)
+{
+    return m_img->resetAlpha( ( val >0 && val <= 255), val);
+}
+
+
+/**
+ * Get the global Alpha value
+ * Return: the alpha value. (255 means no global alpha)
+ */
+int Image::getGlobalAlpha()
+{
+    return m_img->isSRCAlphaset();
+}
+
 
 
 } //SDL
