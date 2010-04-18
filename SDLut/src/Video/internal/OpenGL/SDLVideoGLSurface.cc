@@ -21,10 +21,10 @@ namespace OGL
 {
 
 //Constructor
-VideoGLSurface::VideoGLSurface(int width, int height, int bpp) throw (std::logic_error)
+VideoGLSurface::VideoGLSurface( const OGLVideoInfo & glvi) throw (std::logic_error)
 try
 :
-    VideoSurface(width,height,bpp)
+    VideoSurface(glvi)
 {
 #ifdef DEBUG
     Log << nl << "VideoGLSurface::VideoGLSurface() called ...";
@@ -39,7 +39,7 @@ try
 
     if (!initialized())
     {
-        Log << nl <<"Unable to set " << width << " x " << height << " GL display surface : ";
+        Log << nl <<"Unable to set GL display surface requested : " << glvi;
         throw std::logic_error("VideoSurface::VideoSurface() Failed.");
     }
 
@@ -111,7 +111,7 @@ PixelColor VideoGLSurface::getpixel(int x, int y)
 
 
         // get the number of channels in the SDL surface
-        int numbytes = getVideoInfo()->getPixelFormat().getBytesPerPixel();
+        int numbytes = getVideoInfo().getPixelFormat().getBytesPerPixel();
 
         //these might be use for screen capture as well
         // refer : http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL.html#blits
@@ -176,7 +176,7 @@ void VideoGLSurface::setpixel(int x, int y, PixelColor color)
     {
 
         // get the number of channels in the SDL surface
-        int numbytes = getVideoInfo()->getPixelFormat().getBytesPerPixel();
+        int numbytes = getVideoInfo().getPixelFormat().getBytesPerPixel();
 
         //putting raster at correct position
         glRasterPos2i(x,y);
@@ -470,7 +470,7 @@ bool VideoGLSurface::fill (const PixelColor& pcolor, Rect dest_rect)
 
         //TODO : this might be improved without using Color
         //there should be a more direct way...
-        Color color= getVideoInfo()->getPixelFormat().getColor(pcolor);
+        Color color= getVideoInfo().getPixelFormat().getColor(pcolor);
         if ( color.hasAlpha() )
         {
             glEnable(GL_BLEND);

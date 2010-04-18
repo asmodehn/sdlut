@@ -113,9 +113,9 @@ int main(int argc, char** argv)
     App::getInstance().setName ("SDLut::video test Image");
 
     //Setting Display size and BPP
-    App::getInstance().getDisplay().setDisplay(300,240); // using autodetected bpp
+    App::getInstance().getDisplay().getScreenRequest().requestSize(300,240); // using autodetected bpp
 
-    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(args.isOGL());
+    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(args.isOGL());
 
     int exitstatus = -1;
 

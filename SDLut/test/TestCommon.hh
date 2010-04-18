@@ -48,7 +48,7 @@ public:
 
     ~ArgParser() {}
 
-    std::string get(unsigned int index)
+    std::string get(unsigned int index) const
     {
         std::string result("");
 

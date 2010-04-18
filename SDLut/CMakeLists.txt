@@ -21,6 +21,8 @@ WkTestBuild ( testRect "testRect.cc" "TestCommon.hh")
 
 WkTestBuild ( SDLtestColor )
 
+WkTestBuild ( testScreenBufferInit "testScreenBufferInit.cc" "TestCommon.hh" )
+
 WkTestBuild ( testPixel "testPixel.cc" "TestCommon.hh")
 WkTestRun   ( SDL_Pixel testPixel "nogl" )
 WkTestRun   ( SDL_Pixel_Image_woAlpha testPixel "nogl" "data/test/transparency/png/pal_bk_notrns.png" )

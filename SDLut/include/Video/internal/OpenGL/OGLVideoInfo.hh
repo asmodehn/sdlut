@@ -35,10 +35,18 @@ namespace OGL
 //TEst to do on linux, to choose a class behaviour
 class OGLVideoInfo : public VideoInfo
 {
+
+private: //accessed by friends only
+    const VideoInfo & upcast() const
+    {
+        return *this;
+    }
+
+
 public :
     OGLVideoInfo() {}
 
-    ~OGLVideoInfo() {}
+    virtual ~OGLVideoInfo() {}
 
     //may be connected with constructor ???
     bool loadGLLibrary(const std::string & path);

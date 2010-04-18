@@ -15,7 +15,7 @@ Display::Display(std::string title, Manager * manager)
         m_exitstatus(0),
         pvm_manager(manager),
         pvm_window(title),
-        pvm_screen(ScreenBuffer(0,0,0, manager)),
+        pvm_screen(0),
         //myLoadingScreen(NULL),
         ShowingLoadingScreen(false),
         m_initcb(NULL),m_resizecb(NULL), m_newframecb(NULL), m_rendercb(NULL)
@@ -27,7 +27,7 @@ Display::Display( const Display & d)
         m_exitstatus(0),
         pvm_manager(d.pvm_manager),
         pvm_window(d.pvm_window.getTitle()),
-        pvm_screen(ScreenBuffer(0,0,0, d.pvm_manager)),
+        pvm_screen(0),
         //myLoadingScreen(NULL),
 
         ShowingLoadingScreen(false),
@@ -42,36 +42,39 @@ Display::~Display()
 
 bool Display::setDisplay (unsigned int width, unsigned int height, unsigned int bpp)
 {
-    pvm_screen.setSize(width, height);
-    pvm_screen.setBPP(bpp);
+    pvm_scinf_req.requestSize(width, height);
+    pvm_scinf_req.requestBPP(bpp);
 
     return true; // for now always true.
     //TODO: Checks must be done to make sure the required resolution is supported
 }
 
-//TODO : this show() is a bit useless... Init could be done inside mainloop.
-// Also if we thing it s needed to have an init, we should have a fin to, for symetry reason.
+// if we think it s needed to have an init, we should have a fin to, for symetry reason.
 // The show/hide thing is tied to events being disjoint from display loop... apart from that
-// there is not much reason for such functions... Later
+// there is not much reason for such functions...
 //TODO
-// One solution : one mainloop that calls init.
+// One solution : one mainloop that calls init and fin.
 // show / hide just switch a flag that determine if we do the display part of the mainloop.
 bool Display::show()
 {
-    bool res = pvm_screen.show();
+    pvm_screen.reset(new ScreenBuffer(pvm_scinf_req,pvm_manager));
+
+    bool res = ( pvm_screen.get() != 0 ) ;
     //calling user init callback if it exists
-    if ( m_initcb.get() ) res = res && m_initcb->call( pvm_screen.getWidth() , pvm_screen.getHeight() );
+    if ( m_initcb.get() ) res = res && m_initcb->call( pvm_screen->getWidth() , pvm_screen->getHeight() );
     return res;
 }
 
 bool Display::hide()
 {
-    return pvm_screen.hide();
+    pvm_screen.reset(0);
+
+    return true;
 }
 
 bool Display::resizeDisplay (int width, int height)
 {
-    bool res = pvm_screen.resize(width,height);
+    bool res = pvm_screen->resize(width,height);
 
     //calling user callback for resize if it exists
     if ( m_resizecb.get() ) res = res && m_resizecb->call(width, height);
@@ -192,7 +195,7 @@ int Display::mainLoop(unsigned int framerate, unsigned int eventrate)
     assert(framerate > 0 && "framerate must be greater than 0 !");
 
     //if the videosurface is displayed ( ie the content of the window is shown )
-    if (pvm_screen.show()) // is shown only ? can game not run hidden ??
+    if (pvm_screen.get()) // is shown only ? can game not run hidden ??
         //TODO : separate event and render loop
     {
         unsigned long lastframe = SDL_GetTicks();
@@ -215,17 +218,17 @@ int Display::mainLoop(unsigned int framerate, unsigned int eventrate)
 
             //applying the background
             //if (!ShowingLoadingScreen)
-            pvm_screen.applyBGColor();
+            pvm_screen->applyBGColor();
 
             //if (!ShowingLoadingScreen)
             if ( m_rendercb.get() )
-                m_rendercb->call( pvm_screen );
+                m_rendercb->call( *pvm_screen );
 
 
             //calling internal engine render
-            pvm_screen.renderpass(framerate, lastframe);
+            pvm_screen->renderpass(framerate, lastframe);
 
-            pvm_screen.refresh(framerate, lastframe);
+            pvm_screen->refresh(framerate, lastframe);
 
         }
 

@@ -3,6 +3,7 @@
 
 #include "SDLManager.hh"
 #include "Video/ScreenBuffer.hh"
+#include "Video/ScreenInfo.hh"
 #include "Video/internal/SDLWindow.hh"
 #include "System/SDLEventManager.hh"
 
@@ -54,7 +55,9 @@ protected:
     system::EventManager pvm_eventmanager;
 
     internal::Window pvm_window; //delegating charge of the window frame and decorations only
-    ScreenBuffer pvm_screen;
+
+    std::auto_ptr<ScreenBuffer> pvm_screen;
+    ScreenInfo pvm_scinf_req; // storing best screeninfo upon initialization, then modified by user request to get requested screen parameters
 
 public:
     //sets Display size and BPP
@@ -62,17 +65,12 @@ public:
     bool show();
     bool hide();
 
+
+
     //just resize the screen (without changing flags, or bpp)
     //returns NULL if no screen available
     // calls Engine->resize();
     bool resizeDisplay (int width, int height);
-
-
-    //VideoSurface & getDisplay( void )
-    //{
-    ////if (!pvm_screen.get()) resetDisplay();
-    //    return pvm_screen.getDisplay();
-    //}
 
     internal::Window & getWindow()
     {
@@ -81,7 +79,19 @@ public:
 
     ScreenBuffer & getScreenBuffer( )
     {
-        return pvm_screen;
+        if ( pvm_screen.get() != 0 )
+        {
+            return *pvm_screen;
+        }
+        else
+        {
+            throw std::logic_error("Screen Buffer not initialized. Display::show() must be called before accessing ScreenBuffer.");
+        }
+    }
+
+    ScreenInfo & getScreenRequest()
+    {
+        return pvm_scinf_req;
     }
 
     inline system::EventManager & getEventManager()

@@ -8,43 +8,26 @@ namespace SDLut
 namespace video
 {
 
-ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) throw (std::logic_error)
-        : m_width(width), m_height(height),m_bpp(bpp), fullRefreshNeeded(true), pm_manager(manager), m_background(Color(0,0,0))
+ScreenBuffer::ScreenBuffer(const ScreenInfo& scinf, Manager* manager) throw (std::logic_error)
+try : fullRefreshNeeded(true), pm_manager(manager), m_background(Color(0,0,0)), m_scinfo()
 {
-
-//setting the required flags...
+   Log << nl << "Creating new ScreenBuffer. ScreenInfo Requested " << scinf;
 #ifdef WK_OPENGL_FOUND
-    //OpenGL set by default
-    setOpenGL(true);
-#endif
-    //default
-    setFullscreen(false);
-    setResizable(true);
-    setNoFrame(false);
-
-#ifdef WK_OPENGL_FOUND
-    //Here SDL_Init(SDL_VIDEO) has already been called
-    if (internal::VideoSurface::sptm_vinfo)
-        delete internal::VideoSurface::sptm_vinfo, internal::VideoSurface::sptm_vinfo = NULL;
-
-    internal::VideoSurface::sptm_vinfo = new internal::OGL::OGLVideoInfo();
+        m_screen.reset(new internal::OGL::VideoGLSurface(scinf.m_videoinfo));
 #else
-    //Here SDL_Init(SDL_VIDEO) has already been called
-    internal::VideoSurface::sptm_vinfo = new internal::VideoInfo();
+        m_screen.reset(new internal::VideoSurface(scinf.m_videoinfo));
 #endif
 
-    setSize( width, height );
+        m_scinfo.reset(new ScreenInfo(m_screen->getVideoInfo()));
 
-    setBPP ( bpp );
+        //initializing engine
+        m_engine.reset(new internal::SDLEngine());
 
 
+        //TO TEST, maybe not needed anymore
+        requestFullRefresh();
 
-    //but beware about bpp == 0...
-    if (m_bpp == 0 )
-    {//0 as return code mean the current format is not supported
-        Log << nl << "The requested video mode is not supported under any bit depth. Screen creation cancelled !";
-        throw std::logic_error("VideoSurface::getSuggestedBPP(width, height) returned 0");
-    }
+        Log << nl <<"ScreenInfo Obtained " << *m_scinfo ;
 
     //we need a manager to manage settings
     if (! pm_manager )
@@ -53,12 +36,18 @@ ScreenBuffer::ScreenBuffer(int width, int height, int bpp, Manager* manager) thr
         throw std::logic_error("SDL::Manager manager parameter points to 0x0");
     }
 }
+    catch (std::exception & e)
+    {
+        Log << nl << " Exception caught in ScreenBuffer Constructor : " << e.what();
+    }
+
 
 //recreating Engine here to make sure both origin and destination engines are independant.
 //maybe not really needed, but safer in case of copy ( or should we completely forbid copy ? )
 ScreenBuffer::ScreenBuffer( const ScreenBuffer & sb )
-        : m_width(sb.m_width), m_height(sb.m_height),m_bpp(sb.m_bpp), fullRefreshNeeded(true),pm_manager(sb.pm_manager), m_background(sb.m_background)
+        : fullRefreshNeeded(true),pm_manager(sb.pm_manager), m_background(sb.m_background), m_scinfo(0)
 {
+    //WHAT TO DO HERE ??
     //also what about video surface flags ?
     //warning no protection offered here in case of wrong / unsupported size ( for the moment )
 }
@@ -67,7 +56,7 @@ ScreenBuffer::~ScreenBuffer()
 {
 }
 
-
+/*
 void ScreenBuffer::setSize(int width, int height)
 {
     //force usage of DEFAULT_DISPLAY_WIDTH & DEFAULT_DISPLAY_HEIGHT when only one param is equal to 0.
@@ -81,8 +70,8 @@ void ScreenBuffer::setSize(int width, int height)
     //Both equal to 0 means use dekstop/current mode.
     if (width == 0 && height == 0)
     {
-        width = internal::VideoSurface::getVideoInfo()->getCurrentWidth();
-        height = internal::VideoSurface::getVideoInfo()->getCurrentHeight();
+        width = m_bestvideoinfo.getCurrentWidth();
+        height = m_bestvideoinfo.getCurrentHeight();
     }
 
     m_width = width;
@@ -95,28 +84,28 @@ void ScreenBuffer::setBPP(int bpp)
 
     if ( bpp == 0 ) //here 0 means autodetection
     {
-        bpp=internal::VideoSurface::getSuggestedBPP(m_width, m_height);
+        bpp=m_videoinfo.getSuggestedBPP(m_width, m_height);
     }
     else
     {
         //TODO : check that the value of bpp asked for is supported...
     }
 
-    m_bpp = bpp;
+    m_videoinfo.bpp = bpp;
 
 }
 
 bool ScreenBuffer::setResizable(bool val)
 {
     bool res = true;
-    if (!m_screen.get()) //if not already created, set the static flag.
+    if (!m_screen.get()) //if not already created, set the requested videoinfo
     {
-        internal::VideoSurface::setResizable(val);
+        m_videoinfo.request().setResizable(val);
     }
     else if (m_screen->isResizableset() !=val ) //if called inside mainLoop while screen is active
     {
         hide();
-        internal::VideoSurface::setResizable(val); //set static flag
+        m_videoinfo.request().setResizable(val); //set new requested videoinfo
         if (! show()) //reset the screen
             res=false;
     }
@@ -132,7 +121,7 @@ bool ScreenBuffer::setFullscreen(bool val)
     bool res = true;
     if (!m_screen.get())
     {
-        internal::VideoSurface::setFullscreen(val);
+        m_videoinfo.request().setFullscreen(val);
     }
     else
     {
@@ -142,7 +131,7 @@ bool ScreenBuffer::setFullscreen(bool val)
         if (m_screen->isFullScreenset() != val ) //if called inside mainLoop while screen is active
         {
             hide();
-            internal::VideoSurface::setFullscreen(val);
+            m_videoinfo.request().setFullscreen(val);
             if (! show() )//resetDisplay(m_screen->getWidth(),m_screen->getHeight(),m_screen->getBPP()))
             {
                 res=false;
@@ -160,11 +149,11 @@ bool ScreenBuffer::setNoFrame(bool val)
 {
     bool res = true;
     if (!m_screen.get())
-        internal::VideoSurface::setNoFrame(val);
+        m_videoinfo.request().setNoFrame(val);
     else if (m_screen->isNoFrameset() !=val )  //if called inside mainLoop while screen is active
     {
         hide();
-        internal::VideoSurface::setNoFrame(val);
+        m_videoinfo.request().setNoFrame(val);
         if (! show() ) //resetDisplay(m_screen->getWidth(),m_screen->getHeight(),m_screen->getBPP()))
             res=false;
     }
@@ -182,14 +171,14 @@ bool ScreenBuffer::setOpenGL(bool val)
     bool res = true;
     if (!m_screen.get())
     {
-        internal::VideoSurface::setOpenGL(val);
+        m_videoinfo.request().setOpenGL(val);
     }
     else
     {
         if (m_screen->isOpenGLset() != val ) //if called inside mainLoop while screen is active
         {
             hide();
-            internal::VideoSurface::setOpenGL(val);
+            m_videoinfo.request().setOpenGL(val);
             if (! show() )//resetDisplay(m_screen->getWidth(),m_screen->getHeight(),m_screen->getBPP()))
             {
                 res=false;
@@ -213,7 +202,7 @@ bool ScreenBuffer::isFullscreen()
     }
     else
     {
-        return ( SDL_FULLSCREEN & internal::VideoSurface::ptm_defaultflags ) != 0;
+        return ( SDL_FULLSCREEN & m_videoinfo.request().getNewSurfaceFlags() ) != 0;
     }
 }
 bool ScreenBuffer::isResizable()
@@ -224,7 +213,7 @@ bool ScreenBuffer::isResizable()
     }
     else
     {
-        return ( SDL_RESIZABLE & internal::VideoSurface::ptm_defaultflags ) != 0;
+        return ( SDL_RESIZABLE & m_videoinfo.request().getNewSurfaceFlags() ) != 0;
     }
 }
 bool ScreenBuffer::isOpenGL()
@@ -236,7 +225,7 @@ bool ScreenBuffer::isOpenGL()
     }
     else
     {
-        return (SDL_OPENGL & internal::VideoSurface::ptm_defaultflags ) != 0;
+        return (SDL_OPENGL & m_videoinfo.request().getNewSurfaceFlags() ) != 0;
     }
 }
 bool ScreenBuffer::isNoFrame()
@@ -248,16 +237,17 @@ bool ScreenBuffer::isNoFrame()
     }
     else
     {
-        return ( SDL_NOFRAME & internal::VideoSurface::ptm_defaultflags ) != 0;
+        return ( SDL_NOFRAME & m_videoinfo.request().getNewSurfaceFlags() ) != 0;
     }
 }
-
+*/
 void ScreenBuffer::applyBGColor() const
 {
     if (m_screen.get()) // if auto pointer valid
     {
 
         //TODO : TEST alpha transparent background color...
+        //TODO : optimize...
 #ifdef WK_OPENGL_FOUND
         if (m_screen->isOpenGLset())
         {
@@ -269,7 +259,7 @@ void ScreenBuffer::applyBGColor() const
         else
         {
 #endif
-            m_screen->fill(m_screen->getVideoInfo()->getPixelFormat().getPixelColor(m_background));
+            m_screen->fill(m_screen->getVideoInfo().getPixelFormat().getPixelColor(m_background));
 #ifdef WK_OPENGL_FOUND
         }
 #endif
@@ -277,50 +267,17 @@ void ScreenBuffer::applyBGColor() const
 }
 
 
-
-bool ScreenBuffer::show()
+unsigned int ScreenBuffer::getWidth()
 {
-#ifdef DEBUG
-    Log << nl << "SceenBuffer::show() called ..." << std::endl;
-#endif
-    if ( m_screen.get() != NULL ) // no need to reset the display
-    {			//if reset is wanted the buffer should be recreated
-        return true;
-    }
-    //else the screen hasnt been displayed yet, or has been hidden.
-    bool res = false;
-
-    Log << nl <<"SDL is using " << m_width << "x" << m_height << "@" <<m_bpp;
-    //create a new screen
-    try
-    {
-#ifdef WK_OPENGL_FOUND
-        m_screen.reset(new internal::OGL::VideoGLSurface(m_width, m_height, m_bpp));
-#else
-        m_screen.reset(new internal::VideoSurface(m_width, m_height, m_bpp));
-#endif
-
-        //initializing engine
-        m_engine.reset(new internal::SDLEngine());
-
-        requestFullRefresh();
-        res=true;
-    }
-    catch (std::exception & e)
-    {
-        Log << nl << " Exception caught in Window::resetDisplay() : " << e.what();
-        res=false;
-    }
-#ifdef DEBUG
-    Log << nl << "ScreenBuffer::show() done." << std::endl;
-#endif
-    return res;
+    return m_screen->getWidth();
 }
-
-bool ScreenBuffer::hide()
+unsigned int ScreenBuffer::getHeight()
 {
-    delete m_screen.release();// to test...
-    return true; //not used for now
+    return m_screen->getHeight();
+}
+unsigned short ScreenBuffer::getBPP()
+{
+    return m_screen->getVideoInfo().getPixelFormat().getBitsPerPixel();
 }
 
 bool ScreenBuffer::resize (int width, int height)
@@ -332,8 +289,9 @@ bool ScreenBuffer::resize (int width, int height)
 
     bool res = true;
 
-    if (m_screen.get())
-    {
+    //NEW DESIGN : always the case
+    //if (m_screen.get())
+    //{
         res = res && m_screen->resize(width,height);//doesnt keep content
 
         //resetting our Engine. Useful if OpenGL dependent : need to reload the new created context
@@ -342,11 +300,11 @@ bool ScreenBuffer::resize (int width, int height)
 
         //We do need to resetthis order otherwise we lose opengl context from the engine just after the resize ( reinit )
         //because screen resize recreates the window, and lose opengl context as documented in SDL docs...
-    }
-    else
-    {
-        setSize( (width>0) ? width : 0 , (height>0) ? height : 0 );
-    }
+    //}
+    //else
+    //{
+    //    m_scinfo->requestSize( (width>0) ? width : 0 , (height>0) ? height : 0 );
+    //}
 #ifdef DEBUG
     Log << nl << "ScreenBuffer::resize() done.";
 #endif
@@ -363,9 +321,6 @@ bool ScreenBuffer::renderpass( unsigned long framerate, unsigned long& lastframe
     //TODO : add a timer to display logos if not demo release...
 
     m_engine->render(*m_screen);
-
-    //TODO : we can here compute what part of the screen should be refreshed...
-    //for the user render callback, we can ask/expect a refresh zone in return...
 
     return true; //todo
 }
@@ -431,7 +386,7 @@ Color ScreenBuffer::getpixel(int x, int y)
     //We need to check the pixel is in the ScreenBuffer
     if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
     {
-        res = m_screen->getVideoInfo()->getPixelFormat().getColor(m_screen->getpixel(x, y));
+        res = m_screen->getVideoInfo().getPixelFormat().getColor(m_screen->getpixel(x, y));
     }
     else
     {
@@ -445,18 +400,18 @@ void ScreenBuffer::setpixel(int x, int y, const Color & pixel)
     //We need to check the pixel is in the ScreenBuffer
     if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
     {
-        PixelColor pcolor = m_screen->getVideoInfo()->getPixelFormat().getPixelColor(pixel);
+        PixelColor pcolor = m_screen->getVideoInfo().getPixelFormat().getPixelColor(pixel);
         //we need to take care about alpha blending.
         //we need to maintain same behaviour as the blitting with alpha.
         //http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetAlpha
-        if ( m_screen->getVideoInfo()->getPixelFormat().getAmask() == 0 ) //screen doesnt support alpha pixel format
+        if ( m_screen->getVideoInfo().getPixelFormat().getAmask() == 0 ) //screen doesnt support alpha pixel format
         {
             if ( !m_screen->isOpenGLset() ) // screen is not opengl : alpha blending pixel not supported
             {
                 if ( pixel.hasAlpha() ) // we have alpha
                 {
                     //reset color with preblending computation
-                    pcolor = m_screen->getVideoInfo()->getPixelFormat().getPixelColor(blend(pixel,m_screen->getVideoInfo()->getPixelFormat().getColor(m_screen->getpixel(x,y))));
+                    pcolor = m_screen->getVideoInfo().getPixelFormat().getPixelColor(blend(pixel,m_screen->getVideoInfo().getPixelFormat().getColor(m_screen->getpixel(x,y))));
                 }
             }
             else//m_screen->isOpenGLset() -> we can keep alpha
@@ -464,7 +419,7 @@ void ScreenBuffer::setpixel(int x, int y, const Color & pixel)
                 //adding Alpha to pixel color
                 //as the SDL_pixelformat for OpenGL discards alpha information
                 PixelColor alpha = pixel.getA() ;
-                PixelColor properalpha = (alpha << (m_screen->getVideoInfo()->getPixelFormat().getBitsPerPixel() - m_screen->getVideoInfo()->getPixelFormat().getAloss()) );
+                PixelColor properalpha = (alpha << (m_screen->getVideoInfo().getPixelFormat().getBitsPerPixel() - m_screen->getVideoInfo().getPixelFormat().getAloss()) );
                 pcolor = pcolor | properalpha ;
             }
         }
@@ -509,12 +464,13 @@ Rect ScreenBuffer::getClipRect( void ) const
     return m_screen->getClipRect();
 }
 
+/*
 bool ScreenBuffer::fill (const Color& color, const Rect& dest_rect)
 {
-    m_screen->fill(m_screen->getVideoInfo()->getPixelFormat().getPixelColor(color),dest_rect);
+    m_screen->fill(m_screen->getVideoInfo().getPixelFormat().getPixelColor(color),dest_rect);
     return true; //todo
 }
-
+*/
 bool ScreenBuffer::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)
 {
     //NOTE :

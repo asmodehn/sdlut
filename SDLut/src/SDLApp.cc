@@ -122,9 +122,9 @@ bool App::initVideo( bool fullscreen, bool resizable, bool noframe)
 
         pvm_display.reset(new video::Display(pvm_name, pvm_manager.get()));//manager now contains also the SDL specific settings
 
-        pvm_display->getScreenBuffer().setFullscreen(fullscreen);
-        pvm_display->getScreenBuffer().setResizable(resizable);
-        pvm_display->getScreenBuffer().setNoFrame(noframe);
+        pvm_display->getScreenRequest().requestFullscreen(fullscreen);
+        pvm_display->getScreenRequest().requestResizable(resizable);
+        pvm_display->getScreenRequest().requestNoFrame(noframe);
 
     }
     catch (std::exception &e)

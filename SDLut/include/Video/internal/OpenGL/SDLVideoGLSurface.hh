@@ -16,6 +16,7 @@
 
 #include "Video/internal/SDLVideoSurface.hh"
 #include "Video/internal/OpenGL/SDLGLSurface.hh"
+#include "Video/internal/OpenGL/OGLVideoInfo.hh"
 
 #include <iostream>
 #include <vector>
@@ -75,7 +76,7 @@ public:
 
     //Constructor
     //Note : The user should not be able to set raw SDL flags manually.
-    VideoGLSurface(int width, int height, int bpp) throw (std::logic_error);
+    VideoGLSurface(const OGLVideoInfo & glvi) throw (std::logic_error);
 
 public:
 
@@ -86,7 +87,6 @@ public:
 
     virtual PixelColor getpixel(int x, int y);
     virtual void setpixel(int x, int y, PixelColor pixel);
-
 
     //Blit src into the current surface.
     //emergency handling : surface might not be GLSurface, and if so, needs to be converted...

@@ -166,6 +166,7 @@
 #include "Video/Color.hh"
 #include "Video/Display.hh"
 #include "Video/ScreenBuffer.hh"
+#include "Video/ScreenInfo.hh"
 #include "Video/Image.hh"
 #include "Video/ImageLoader.hh"
 #include "Video/Rect.hh"

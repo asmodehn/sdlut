@@ -21,7 +21,6 @@ public:
 
     MyEngine(Logger & log, AssertEngine & ae) : TestEngine(log,ae), imgred(0), imggreen(0),imgblue(0),imgalpha(0)
     {
-        App::getInstance().getDisplay().getScreenBuffer().setBGColor(bgc);
     }
 
     virtual ~MyEngine()
@@ -43,6 +42,9 @@ public:
         delete imggreen;
         delete imgblue;
         delete imgalpha;
+
+        App::getInstance().getDisplay().getScreenBuffer().setBGColor(bgc);
+
         imgred = new Image(width/4,height,32);
         imgred->fill(red);
         imggreen = new Image(width/4,height,32);
@@ -157,9 +159,9 @@ int main(int argc, char** argv)
     App::getInstance().setName ("SDLut::video test PixelFormat");
 
     //Setting Display size and BPP
-    App::getInstance().getDisplay().setDisplay(300,240); // using autodetected bpp
+    App::getInstance().getDisplay().getScreenRequest().requestSize(300,240); // using autodetected bpp
 
-    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(args.isOGL());
+    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(args.isOGL());
 
     Test teng(testlog,args);
     MyEngine engine(testlog,teng);

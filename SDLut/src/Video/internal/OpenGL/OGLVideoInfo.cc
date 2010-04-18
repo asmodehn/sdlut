@@ -22,7 +22,10 @@ bool OGLVideoInfo::loadGLLibrary(const std::string & path)
 
 RAGE::Logger & operator << (RAGE::Logger & log, const OGLVideoInfo & glvi)
 {
-    log << nl << "OGLVideoInfo : " << nl ;
+    log << nl << "OGLVideoInfo : " ;
+
+
+    log << nl << glvi.upcast();
     return log;
 }
 #else

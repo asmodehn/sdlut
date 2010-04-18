@@ -46,20 +46,20 @@ public:
             switch (test_it)
             {
             case 0: //Get
-                screen.fill(bgcolor);
+                //screen.fill(bgcolor);
                 if (screen.getpixel(10,10) != bgcolor)
                     App::getInstance().requestTermination(-1);
                 break;
 
             case 1: //set pixel on screenbuffer
-                screen.fill(bgcolor);
+                //screen.fill(bgcolor);
                 screen.setpixel(10,10, pixel);
                 if (screen.getpixel(10,10) != pixel)
                     App::getInstance().requestTermination(-1); //OGL error here
                 break;
 
             case 2: //set pixel w alpha on screenbuffer
-                screen.fill(bgcolor);
+                //screen.fill(bgcolor);
 
                 pixel.setA(128);
                 objectivePixel = screen.getpixel(10,10).blendunder(pixel);
@@ -160,9 +160,9 @@ int main(int argc, char** argv)
 
     testlog.enableFileLog("TestPixel.log");
 
-    App::getInstance().getDisplay().setDisplay(300,240); // using autodetected bpp
+    App::getInstance().getDisplay().getScreenRequest().requestSize(300,240); // using autodetected bpp
 
-    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(args.isOGL());
+    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(args.isOGL());
 
     int exitstatus = -1;
 

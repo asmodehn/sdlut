@@ -131,6 +131,7 @@ Palette PixelFormat::getPalette() const
 RAGE::Logger & operator << (RAGE::Logger & log, const PixelFormat & pformat)
 {
     log << nl << "PixelFormat:" << nl <<
+    std::dec <<
     " - Bits Per Pixel = " << pformat.getBitsPerPixel() << nl <<
     " - Bytes Per Pixel = " << pformat.getBytesPerPixel() << nl <<
     " - Red shift = " << pformat.getRshift() << nl <<
