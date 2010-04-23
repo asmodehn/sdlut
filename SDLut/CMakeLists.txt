@@ -103,3 +103,37 @@ WkTestBuild ( SDLtestTextInput )
 
 WkTestBuild ( SDLtestFont )
 
+
+# Running Tests : Guidelines.
+# Logical Order. for each different case of one test, the following tests should have multiple possibilities.
+# For exemple, if the Screen SDL Init provides either 8, 16, 24 or 32 bits, the following Test Screen Blit, should be ran in either 8, 16, 24, 32 bits, which ever is working.
+#
+# Step 1 : SDL basic functions.
+# From grounds and simple things to complex concepts
+# - Test Color (Blue, red, yellow, etc.). Abstract, Logic only, no display
+# - Test Rect ( default 1,1, size, widht, etc. ). Logic only, no display
+# - Test Screen SDL Init ( setup, config, etc. ). Will test ScreenInfo mostly, as well as execution platform !!!
+# - Test Screen Access. Will test Filling pixel and rectangle directly on screen (slow), and getPixel.
+# - Test Screen Blit. Will test blitting of surfaces filled with color squares.
+# - Test Screen Blit Alpha. Will test blitting of surfaces filled with color squares with alpha.
+# - Test Surface Blit. Will test blitting of surfaces fill of one color, on another surface, and then displayed on screen.
+# - Test Surface Blit Alpha. Will test blitting of surfaces fill of one color with alpha, on another surface, and then displayed on screen.
+# - Test Image BMP Display ( loading and display ). Will test Image, mostly.
+# - Test Screen Refresh. Will test ScreenBuffer, mostly.
+
+# Step 1.5 : Performances in real life use cases with Step 1 tested features
+# - Perf Screen Refresh
+# - Perf Screen Refresh Alpha
+
+# Step 2 : Testing optional, but very likely, extensions : OpenGL
+# - Same tests as Step 1, all in OpenGL mode
+
+
+# Step 2.5 : Performances in real life use cases with Step 2 tested features
+#
+# Step 3 : Testing optional, less likely, extensions. Need to group by dependency required
+# - Image formats ( PNG, JPG, etc. ) Display SDL et GL. Will test ImageLoader a bit.
+# - Fonts display , SDL et GL.
+# - etc. 
+
+#Step 4 : Testing complex situation, unexpected, that are known to cause problems sometimes, and for which none of the previous tests detect the failure
