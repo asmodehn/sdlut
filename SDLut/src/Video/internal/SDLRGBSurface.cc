@@ -260,7 +260,7 @@ bool RGBSurface::resetAlpha(bool alpha, unsigned int value, bool rleAccel)
     }
 
 
-    return SDL_SetAlpha(ptm_surf.get(), flags, value) == 0;
+    return SDL_SetAlpha(ptm_surf.get(), flags, static_cast<Uint8>(value) ) == 0;
 }
 
 bool RGBSurface::resize(int width, int height)

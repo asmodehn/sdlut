@@ -132,10 +132,10 @@ Color blend(const Color & cover, const Color & cunder)
     // compo = alpha * cover + ( 1 - alpha) * cunder   ==>  compo = cunder + alpha ( cover - cunder )
     // and acompo = aover + aunder * ( 1 - aover ) <==> acompo = aunder + aover ( 1 - aunder )
     Color compo;
-    compo.setR( cunder.getR() + float(cover.getA())/255.0f * ( cover.getR() - cunder.getR() ) );
-    compo.setG( cunder.getG() + float(cover.getA())/255.0f * ( cover.getG() - cunder.getG() ) );
-    compo.setB( cunder.getB() + float(cover.getA())/255.0f * ( cover.getB() - cunder.getB() ) );
-    compo.setA( cunder.getA() + cover.getA() * float( 255 - cunder.getA() )/255.0f );
+    compo.setR( cunder.getR() + static_cast<unsigned char>( float(cover.getA())/255.0f * ( cover.getR() - cunder.getR() ) ) );
+    compo.setG( cunder.getG() + static_cast<unsigned char>( float(cover.getA())/255.0f * ( cover.getG() - cunder.getG() ) ) );
+    compo.setB( cunder.getB() + static_cast<unsigned char>( float(cover.getA())/255.0f * ( cover.getB() - cunder.getB() ) ) );
+    compo.setA( cunder.getA() + static_cast<unsigned char>( cover.getA() * float( 255 - cunder.getA() )/255.0f ) );
     return compo;
 }
 }

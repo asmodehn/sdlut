@@ -248,10 +248,11 @@ PixelColor BaseSurface::getpixel(int x, int y)
 
     case 3:
         // Depending on machine architecture
-        if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
             pc = p[0] << 16 | p[1] << 8 | p[2];
-        else
+#else
             pc = p[0] | p[1] << 8 | p[2] << 16;
+#endif
         break;
     case 4:
         pc = *(Uint32 *)p;
@@ -302,16 +303,17 @@ void BaseSurface::setpixel(int x, int y, PixelColor pixel)
         //*((p)+screen->format->Bshift/8) = b;
 
 
-        if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+#if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
         {
             *(Uint16 *)p = ((pixel >> 8) & 0xff00) | ((pixel >> 8) & 0xff);
             *(p + 2) = pixel & 0xff;
         }
-        else
+#else
         {
             *(Uint16 *)p = pixel & 0xffff;
             *(p + 2) = ((pixel >> 16) & 0xff) ;
         }
+#endif
         break;
 
     case 4:

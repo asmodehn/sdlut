@@ -8,7 +8,7 @@ namespace SDLut
 namespace audio
 {
 #ifdef WK_SDLMIXER_FOUND
-#pragma message "SDL_Mixer Found. Compiling SoundExtend."
+#pragma message ("SDL_Mixer Found. Compiling SoundExtend.")
 SoundExtend::SoundExtend(std::string filename, bool loop_status) throw (std::logic_error)
 try :
     SoundIf(filename, loop_status), pvm_chunk(Mix_LoadWAV_RW(pvm_OriginalData->get_pSDL(),0))

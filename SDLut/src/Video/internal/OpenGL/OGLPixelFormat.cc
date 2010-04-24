@@ -13,7 +13,7 @@ namespace OGL
 {
 
 #ifdef WK_OPENGL_FOUND
-#pragma message "OpenGL Found. Compiling OGL::OGLPixelFormat."
+#pragma message ("OpenGL Found. Compiling OGL::OGLPixelFormat.")
 //TODO : check maybe opengl pixel format is not needed
 // SDL seems to manage pixel format for OpenGL fine, once you know how it works...
 // But GLVideoInfo needed for setting up videosurface (SDL_GL_Attribute) before displaying it...
@@ -265,7 +265,7 @@ RAGE::Logger & operator << (RAGE::Logger & log, const OGLPixelFormat & glman)
     return log;
 }
 #else
-#pragma message "No OpenGL ! OGLPixelFormat class not generated."
+#pragma message ("No OpenGL ! OGLPixelFormat class not generated.")
 #endif
 
 }

@@ -69,7 +69,7 @@ try
         //putting advised values as requested values
         ptm_requestedWidth = width;
         ptm_requestedHeight = height;
-        ptm_requestedBPP = bpp;
+        ptm_requestedBPP = static_cast<unsigned short>( bpp );
 
         pointerCopy = false;
     }

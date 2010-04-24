@@ -22,7 +22,7 @@ namespace OGL
 
 
 #ifdef WK_OPENGL_FOUND
-#pragma message "OpenGL Found. Compiling OGL::SDLVideoGLSurface."
+#pragma message ("OpenGL Found. Compiling OGL::SDLVideoGLSurface.")
 
 //Constructor
 VideoGLSurface::VideoGLSurface( const OGLVideoInfo & glvi) throw (std::logic_error)
@@ -574,7 +574,7 @@ RAGE::Logger & operator << (RAGE::Logger & log, const VideoGLSurface & surf)
 }
 
 #else
-#pragma message "No OpenGL ! SDLVideoGLSurface class not generated."
+#pragma message ("No OpenGL ! SDLVideoGLSurface class not generated.")
 #endif
 
 

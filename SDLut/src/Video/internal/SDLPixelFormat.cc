@@ -150,7 +150,8 @@ RAGE::Logger & operator << (RAGE::Logger & log, const PixelFormat & pformat)
     std::dec<<
     " - Color Key = " << pformat.getColorKey() << nl <<
     " - Alpha = " << pformat.getAlpha() << nl <<
-    " - Palette = " << &pformat.getPalette() ; //TODO: Palette debug display on stream...
+    " - Palette = " << &pformat.getPalette() ; //TODO: Palette debug display on stream... //Warning	C4238: nonstandard extension used : class rvalue used as lvalue
+
     return log;
 }
 

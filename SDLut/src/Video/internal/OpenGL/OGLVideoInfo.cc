@@ -13,7 +13,7 @@ namespace OGL
 {
 
 #ifdef WK_OPENGL_FOUND
-#pragma message "OpenGL Found. Compiling OGL::OGLVideoInfo."
+#pragma message ("OpenGL Found. Compiling OGL::OGLVideoInfo.")
 //may be connected with constructor ???
 bool OGLVideoInfo::loadGLLibrary(const std::string & path)
 {
@@ -29,7 +29,7 @@ RAGE::Logger & operator << (RAGE::Logger & log, const OGLVideoInfo & glvi)
     return log;
 }
 #else
-#pragma message "No OpenGL ! OGL::OGLVideoInfo class not compiled."
+#pragma message ("No OpenGL ! OGL::OGLVideoInfo class not compiled.")
 #endif
 }
 }

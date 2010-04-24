@@ -278,7 +278,7 @@ unsigned int ScreenBuffer::getHeight()
 }
 unsigned short ScreenBuffer::getBPP()
 {
-    return m_screen->getVideoInfo().getPixelFormat().getBitsPerPixel();
+    return static_cast<unsigned short>( m_screen->getVideoInfo().getPixelFormat().getBitsPerPixel() );
 }
 
 bool ScreenBuffer::resize (unsigned int width,unsigned int height)

@@ -21,7 +21,7 @@ namespace OGL
 {
 
 #ifdef WK_OPENGL_FOUND
-#pragma message "OpenGL Found. Compiling OGL::OGLLogo."
+#pragma message ("OpenGL Found. Compiling OGL::OGLLogo.")
 void OGLLogo::setMaterial(int mode,float *f,float alpha) const
 {
     GLfloat d[4];
@@ -2136,7 +2136,7 @@ const GLfloat OGLLogo::normals [1338][3] =
 
 
 #else
-#pragma message "No OpenGL ! OGL::OGLLogo class not compiled."
+#pragma message ("No OpenGL ! OGL::OGLLogo class not compiled.")
 #endif
 
 }
