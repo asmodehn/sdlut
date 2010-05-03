@@ -45,7 +45,7 @@ public:
         TTF,
         Mixer,
         Net
-    }Component;
+    } Component;
 
     ///Constructor
     Version(Component c);

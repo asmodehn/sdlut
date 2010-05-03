@@ -50,9 +50,9 @@ OGLLogo::OGLLogo()
 
     // Logo Faces
     glBegin (GL_TRIANGLES);
-    for (int i=0;i< (int) (sizeof(face_indices)/sizeof(face_indices[0]));i++)
+    for (int i=0; i< (int) (sizeof(face_indices)/sizeof(face_indices[0])); i++)
     {
-        for (int j=0;j<3;j++)
+        for (int j=0; j<3; j++)
         {
             int vi=face_indices[i][j];
             int ni=face_indices[i][j+3];//Normal index

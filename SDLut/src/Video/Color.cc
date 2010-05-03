@@ -6,6 +6,16 @@ namespace SDLut
 namespace video
 {
 
+
+Color::Color(unsigned char r, unsigned char g, unsigned char b)
+        : ptm_sdl_color(new SDL_Color)
+{
+    ptm_sdl_color->r=r;
+    ptm_sdl_color->g=g;
+    ptm_sdl_color->b=b;
+    ptm_sdl_color->unused=255;
+}
+
 Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
         : ptm_sdl_color(new SDL_Color)
 {
@@ -42,19 +52,19 @@ SDL_Color Color::get_SDL() const
     return *ptm_sdl_color;
 }
 
-void Color::setR(unsigned char nr)
+void Color::resetR(unsigned char nr)
 {
     ptm_sdl_color->r=nr ;
 }
-void Color::setG(unsigned char ng)
+void Color::resetG(unsigned char ng)
 {
     ptm_sdl_color->g=ng ;
 }
-void Color::setB(unsigned char nb)
+void Color::resetB(unsigned char nb)
 {
     ptm_sdl_color->b=nb ;
 }
-void Color::setA(unsigned char na)
+void Color::resetA(unsigned char na)
 {
     ptm_sdl_color->unused=na ;
 }
@@ -132,10 +142,10 @@ Color blend(const Color & cover, const Color & cunder)
     // compo = alpha * cover + ( 1 - alpha) * cunder   ==>  compo = cunder + alpha ( cover - cunder )
     // and acompo = aover + aunder * ( 1 - aover ) <==> acompo = aunder + aover ( 1 - aunder )
     Color compo;
-    compo.setR( cunder.getR() + static_cast<unsigned char>( float(cover.getA())/255.0f * ( cover.getR() - cunder.getR() ) ) );
-    compo.setG( cunder.getG() + static_cast<unsigned char>( float(cover.getA())/255.0f * ( cover.getG() - cunder.getG() ) ) );
-    compo.setB( cunder.getB() + static_cast<unsigned char>( float(cover.getA())/255.0f * ( cover.getB() - cunder.getB() ) ) );
-    compo.setA( cunder.getA() + static_cast<unsigned char>( cover.getA() * float( 255 - cunder.getA() )/255.0f ) );
+    compo.resetR( cunder.getR() + static_cast<unsigned char>( float(cover.getA())/255.0f * ( cover.getR() - cunder.getR() ) ) );
+    compo.resetG( cunder.getG() + static_cast<unsigned char>( float(cover.getA())/255.0f * ( cover.getG() - cunder.getG() ) ) );
+    compo.resetB( cunder.getB() + static_cast<unsigned char>( float(cover.getA())/255.0f * ( cover.getB() - cunder.getB() ) ) );
+    compo.resetA( cunder.getA() + static_cast<unsigned char>( cover.getA() * float( 255 - cunder.getA() )/255.0f ) );
     return compo;
 }
 }

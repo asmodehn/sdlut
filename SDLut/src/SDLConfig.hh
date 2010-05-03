@@ -69,7 +69,7 @@ typedef enum
     TTF,
     Mixer,
     Net
-}Module;
+} Module;
 
 std::string GetError(Module);
 

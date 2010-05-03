@@ -127,7 +127,7 @@ bool VideoInfo::checkAvailableSize( const PixelFormat & fmt )
         }
         else
         {
-            for (int i=0;modes[i];++i)
+            for (int i=0; modes[i]; ++i)
             {
                 availableWidth.push_back(modes[i]->w);
                 availableHeight.push_back(modes[i]->h);

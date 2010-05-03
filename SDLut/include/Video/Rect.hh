@@ -62,17 +62,13 @@ protected :
 
 public:
 
-    //CAreful with default values.
-    //size and position tends to be confused
-
-    //Default Constructor ( needed for conatiners )
-    //construct rect(0,0,0,0)
-    Rect();
+    ///Default Constructor ( needed for conatiners )
+    ///default position = (0,0) -> top left pixel
+    ///default size = 1 pixel size (1,1)
+    Rect(int x=0, int y=0);
     //Handy Constructor
+
     Rect(int x, int y, unsigned int nw, unsigned int nh);
-    ///TOTHINK ABOUT : One constructor with 0,0,1,1 as default. pixelsized rect.
-
-
 
     //Copy Constructor
     Rect( const Rect& r);
@@ -85,8 +81,8 @@ public:
 
     void resetx(int nx = 0);
     void resety(int ny = 0);
-    void resetw(unsigned int nw = 0);
-    void reseth(unsigned int nh = 0);
+    void resetw(unsigned int nw = 1);
+    void reseth(unsigned int nh = 1);
 
     int getx() const;
     int gety() const;

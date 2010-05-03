@@ -56,19 +56,21 @@ protected:
 
 public:
 
-    //Because NULL has no sense for function using colors, defaut constructor
-    // just paint it black :)
-    Color(unsigned char r=0, unsigned char g=0, unsigned char b=0, unsigned char a=255);
+    /// Default Constructor : Black
+    /// Default Alpha value : opaque = 255
+    Color(unsigned char r=0, unsigned char g=0, unsigned char b=0);
+    Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+
     Color(const Color & rgbacolor);
     Color& operator=( const Color & rgbacolor );
     virtual ~Color();
 
     SDL_Color get_SDL() const;
 
-    void setR(unsigned char nr);
-    void setG(unsigned char ng);
-    void setB(unsigned char nb);
-    void setA(unsigned char na);
+    void resetR(unsigned char nr = 0);
+    void resetG(unsigned char ng = 0);
+    void resetB(unsigned char nb = 0);
+    void resetA(unsigned char na = 255);
 
     unsigned char getR() const;
     unsigned char getG() const;

@@ -103,7 +103,7 @@ MixerImpl::~MixerImpl()
     Log << nl << "MixerImpl::~MixerImpl() called";
 #endif
     //delete all remaining channels
-    for (unsigned int i= 0 ; i< pvm_channels.size();i++)
+    for (unsigned int i= 0 ; i< pvm_channels.size(); i++)
     {
         freeChannel(i);
     }

@@ -1,15 +1,18 @@
 #include "TestCommon.hh" // for argParser only
 
-Logger testlog("RectTest");
+Logger testlog("testRect");
 
 using namespace SDLut::video;
 
 class RectTester
 {
-    Rect r1,r2;
+    Rect r1,r2,r3;
 
 public:
-    RectTester() : r1(-15,-4,63,37), r2(34,-12,56,87)
+    RectTester()
+            : r1(), //testing default position is top left (0,0)
+            r2(-15,-4), //testing default size is pixel size (1,1)
+            r3(34,-12,56,87)
     {
         testlog.enableFileLog("TestRect.log");
     }
@@ -21,92 +24,109 @@ public:
     //first tests to run, they will be used later
     bool testgetx()
     {
-        return r1.getx() == -15 && r2.getx() == 34;
+        return r1.getx() == 0 && r2.getx() == -15 && r3.getx() == 34;
     }
     bool testgety()
     {
-        return r1.gety() == -4 && r2.gety()== -12;
+        return r1.gety() == 0 && r2.gety() == -4 && r3.gety()== -12;
     }
     bool testgetw()
     {
-        return r1.getw() == 63 && r2.getw() == 56;
+        return r1.getw() == 1 && r2.getw() == 1 && r3.getw() == 56;
     }
     bool testgeth()
     {
-        return r1.geth() == 37 && r2.geth() == 87;
+        return r1.geth() == 1 && r2.geth() == 1 && r3.geth() == 87;
     }
 
     //we use testget* to make sure the rect are returned to ther initial coordinates
     bool testsetx()
     {
-        r2.resetx(r1.getx());
-        r1.resetx(42);
-        bool res=(r1.getx() == 42);
         r1.resetx(r2.getx());
-        r2.resetx(34);
+        r2.resetx(42);
+        bool res=(r2.getx() == 42);
+        r2.resetx(r1.getx());
+        r1.resetx(); //testing default
         return res && testgetx();
     }
     bool testsety()
     {
-        r2.resety(r1.gety());
-        r1.resety(42);
-        bool res=(r1.gety() == 42);
         r1.resety(r2.gety());
-        r2.resety(-12);
+        r2.resety(42);
+        bool res=(r2.gety() == 42);
+        r2.resety(r1.gety());
+        r1.resety(); // testing default
         return res && testgety();
     }
     bool testsetw()
     {
-        r2.resetw(r1.getw());
-        r1.resetw(42);
-        bool res=(r1.getw() == 42);
         r1.resetw(r2.getw());
-        r2.resetw(56);
+        r2.resetw(42);
+        bool res=(r2.getw() == 42);
+        r2.resetw(r1.getw());
+        r1.resetw(); // testing default
         return res && testgetw();
     }
     bool testseth()
     {
-        r2.reseth(r1.geth());
-        r1.reseth(42);
-        bool res=(r1.geth() == 42);
         r1.reseth(r2.geth());
-        r2.reseth(87);
+        r2.reseth(42);
+        bool res=(r2.geth() == 42);
+        r2.reseth(r1.geth());
+        r1.reseth(); // testing default
         return res && testgeth();
     }
 
     bool testinf()
     {
-        Rect res = r1.inf(r2);
+        r2.reseth(37);
+        r2.resetw(63);
+        Rect res = r2.inf(r3);
         return res.getx() == 34 && res.gety() == -4 && res.getw() == 14 && res.geth() == 37;
     }
     bool testsup()
     {
-        Rect res = r1.sup(r2);
+
+        r2.reseth(37);
+        r2.resetw(63);
+        Rect res = r2.sup(r3);
         return res.getx() == -15 && res.gety() ==-12 && res.getw() == 105 && res.geth()==87;
     }
 
     bool testmult()
     {
-        Rect res = r1 * 3;
+
+        r2.reseth(37);
+        r2.resetw(63);
+        Rect res = r2 * 3;
         return res.getx() == -15 && res.gety() == -4 && res.getw() == 63*3 && res.geth() == 37*3;
     }
     bool testdiv()
     {
-        Rect res = r1 / 3;
+
+        r2.reseth(37);
+        r2.resetw(63);
+        Rect res = r2 / 3;
         return res.getx() == -15 && res.gety() == -4 && res.getw() == 63/3 && res.geth() == 37/3;
     }
     bool testequal()
     {
-        Rect r1eq = Rect(r1.getx(),r1.gety(),r1.getw(),r1.geth());
-        return r1eq == r1;
+
+        r2.reseth(37);
+        r2.resetw(63);
+        Rect r2eq = Rect(r2.getx(),r2.gety(),r2.getw(),r2.geth());
+        return r2eq == r2;
     }
     bool testdiff()
     {
-        Rect r1d1 = Rect(r1.getx() -1,r1.gety(),r1.getw(),r1.geth() );
-        Rect r1d2 = Rect(r1.getx() ,r1.gety() +3,r1.getw(),r1.geth() );
-        Rect r1d3 = Rect(r1.getx() ,r1.gety(),r1.getw() -5,r1.geth() );
-        Rect r1d4 = Rect(r1.getx(),r1.gety(),r1.getw(),r1.geth() +4 );
-        return r1 != r1d1 && r1 != r1d2 && r1 != r1d3 && r1 != r1d4;
+
+        r2.reseth(37);
+        r2.resetw(63);
+        Rect r2d1 = Rect(r2.getx() -1,r2.gety(),r2.getw(),r2.geth() );
+        Rect r2d2 = Rect(r2.getx() ,r2.gety() +3,r2.getw(),r2.geth() );
+        Rect r2d3 = Rect(r2.getx() ,r2.gety(),r2.getw() -5,r2.geth() );
+        Rect r2d4 = Rect(r2.getx(),r2.gety(),r2.getw(),r2.geth() +4 );
+        return r2 != r2d1 && r2 != r2d2 && r2 != r2d3 && r2 != r2d4;
     }
 
     int testall()
@@ -207,17 +227,7 @@ int main(int argc, char** argv)
     RectTester rt;
 
     int exitstatus = rt.testall();
-    //Setting Display size and BPP
-//    App::getInstance().getDisplay().setDisplay(640,480); // using autodetected bpp
 
-//    App::getInstance().getDisplay().getScreenBuffer().setOpenGL(args.isOGL());
-
-//    int exitstatus = -1;
-
-//       if (App::getInstance().getDisplay().show())
-//       {
-//           exitstatus = App::getInstance().getDisplay().mainLoop();
-//       }
     return exitstatus;
 }
 

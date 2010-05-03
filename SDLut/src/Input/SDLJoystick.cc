@@ -17,7 +17,7 @@ JoystickPool::JoystickPool()
 
 JoystickPool::~JoystickPool()
 {
-    for (unsigned int i=0;i< _pool.size();i++)
+    for (unsigned int i=0; i< _pool.size(); i++)
         if ( _pool[i] != NULL ) SDL_JoystickClose(_pool[i]->_joystick);
 }
 

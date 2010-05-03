@@ -18,7 +18,7 @@ namespace video
  *
  * \brief This class handles an Image
  *
- * This class hides the details of implementation of 2D display and contains a window and a Screenbuffer.
+ * This class hides the details of implementation of 2D images
  *
  * \author Alex
  *

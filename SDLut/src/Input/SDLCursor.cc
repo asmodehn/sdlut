@@ -144,11 +144,11 @@ SDL_Cursor * Cursor::init_system_cursor(const char *image[])
             }
         }
     }
-    
+
 #ifndef _MSC_VER
-	sscanf(image[4+row], "%d,%d", &hot_x, &hot_y);
+    sscanf(image[4+row], "%d,%d", &hot_x, &hot_y);
 #else
-	sscanf_s(image[4+row], "%d,%d", &hot_x, &hot_y);
+    sscanf_s(image[4+row], "%d,%d", &hot_x, &hot_y);
 #endif
     return SDL_CreateCursor(data, mask, 32, 32, hot_x, hot_y);
 }

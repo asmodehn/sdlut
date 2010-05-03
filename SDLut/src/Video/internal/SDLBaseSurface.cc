@@ -249,9 +249,9 @@ PixelColor BaseSurface::getpixel(int x, int y)
     case 3:
         // Depending on machine architecture
 #if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-            pc = p[0] << 16 | p[1] << 8 | p[2];
+        pc = p[0] << 16 | p[1] << 8 | p[2];
 #else
-            pc = p[0] | p[1] << 8 | p[2] << 16;
+        pc = p[0] | p[1] << 8 | p[2] << 16;
 #endif
         break;
     case 4:

@@ -29,13 +29,13 @@ SDL_Rect * Rect::get_pSDL() const
 }
 
 
-Rect::Rect()
+Rect::Rect(int nx, int ny)
 try :
     pvm_rect(new SDL_Rect)
 {
-    pvm_rect->x= 0;
-    pvm_rect->y= 0;
-    pvm_rect->w= pvm_rect->h= 0;
+    pvm_rect->x= nx;
+    pvm_rect->y= ny;
+    pvm_rect->w= pvm_rect->h= 1;
 }
 catch (std::exception &e)
 {
