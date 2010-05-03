@@ -20,6 +20,18 @@ bool OGLVideoInfo::loadGLLibrary(const std::string & path)
     return SDL_GL_LoadLibrary(path.c_str()) == 0;
 }
 
+OGLVideoInfo::OGLVideoInfo()
+: VideoInfo()
+{
+}
+
+OGLVideoInfo::OGLVideoInfo(unsigned int width, unsigned int height, unsigned int bpp, unsigned long vflags)
+: VideoInfo(width,height,bpp,vflags)
+{
+}
+
+
+
 RAGE::Logger & operator << (RAGE::Logger & log, const OGLVideoInfo & glvi)
 {
     log << nl << "OGLVideoInfo : " ;

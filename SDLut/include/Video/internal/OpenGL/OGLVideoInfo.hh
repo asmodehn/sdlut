@@ -46,8 +46,8 @@ private: //accessed by friends only
 
 
 public :
-    OGLVideoInfo() {}
-
+    OGLVideoInfo();
+    OGLVideoInfo(unsigned int width, unsigned int height, unsigned int bpp, unsigned long vflags) ;
     virtual ~OGLVideoInfo() {}
 
     //may be connected with constructor ???

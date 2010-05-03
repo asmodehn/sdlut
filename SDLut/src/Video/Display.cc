@@ -16,6 +16,7 @@ Display::Display(std::string title, Manager * manager)
         pvm_manager(manager),
         pvm_window(title),
         pvm_screen(0),
+        pvm_scinf(new ScreenInfo()),
         //myLoadingScreen(NULL),
         ShowingLoadingScreen(false),
         m_initcb(NULL),m_resizecb(NULL), m_newframecb(NULL), m_rendercb(NULL)
@@ -28,8 +29,8 @@ Display::Display( const Display & d)
         pvm_manager(d.pvm_manager),
         pvm_window(d.pvm_window.getTitle()),
         pvm_screen(0),
+        pvm_scinf(0),
         //myLoadingScreen(NULL),
-
         ShowingLoadingScreen(false),
         m_initcb(0),m_resizecb(0), m_newframecb(0), m_rendercb(0) // no duplication of auto_ptr, but meaning of display copy ?
 {
@@ -42,8 +43,8 @@ Display::~Display()
 
 bool Display::setDisplay (unsigned int width, unsigned int height, unsigned int bpp)
 {
-    pvm_scinf_req.requestSize(width, height);
-    pvm_scinf_req.requestBPP(bpp);
+    pvm_scinf->requestSize(width, height);
+    pvm_scinf->requestBPP(bpp);
 
     return true; // for now always true.
     //TODO: Checks must be done to make sure the required resolution is supported
@@ -57,9 +58,12 @@ bool Display::setDisplay (unsigned int width, unsigned int height, unsigned int 
 // show / hide just switch a flag that determine if we do the display part of the mainloop.
 bool Display::show()
 {
-    pvm_screen.reset(new ScreenBuffer(pvm_scinf_req,pvm_manager));
+    pvm_screen.reset(new ScreenBuffer(*pvm_scinf,pvm_manager));
 
     bool res = ( pvm_screen.get() != 0 ) ;
+
+    if (res) pvm_scinf.reset(0);
+
     //calling user init callback if it exists
     if ( m_initcb.get() ) res = res && m_initcb->call( pvm_screen->getWidth() , pvm_screen->getHeight() );
     return res;
@@ -68,6 +72,7 @@ bool Display::show()
 bool Display::hide()
 {
     pvm_screen.reset(0);
+    pvm_scinf.reset(new ScreenInfo());
 
     return true;
 }

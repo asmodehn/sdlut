@@ -36,15 +36,15 @@ public:
     /// this must be done in manual.
     int testit(unsigned int width, unsigned int height, unsigned short bpp)
     {
-        m_disp.getScreenRequest().requestSize(width, height);
-        m_disp.getScreenRequest().requestBPP(bpp);
+        m_disp.getScreenInfo().requestSize(width, height);
+        m_disp.getScreenInfo().requestBPP(bpp);
         return testit();
     }
     int testit()
     {
-        m_disp.getScreenRequest().requestOpenGL(m_ap.isOGL());
+        m_disp.getScreenInfo().requestOpenGL(m_ap.isOGL());
 
-        ScreenInfo * reqVI = &m_disp.getScreenRequest();
+        ScreenInfo * reqVI = &m_disp.getScreenInfo();
         testlog << nl << *reqVI;
         const ScreenInfo * gotVI;
 
@@ -66,6 +66,7 @@ public:
         res = res && reqVI->isNoFrame() == gotVI->isNoFrame();
         res = res && reqVI->isFullscreen() == gotVI->isFullscreen();
 
+        App::getInstance().getDisplay().hide();
 
         return res;
     }
@@ -80,7 +81,7 @@ public:
         int res = 0;
         //No Frame => Not Resizable
         testlog << nl << "NoFrame config : ";
-        m_disp.getScreenRequest().requestNoFrame(true);
+        m_disp.getScreenInfo().requestNoFrame(true);
         if (runtest) res = testit();
         return res;
     }
@@ -95,7 +96,7 @@ public:
         int res = 0;
         //Fullscreen => noframe + Not Resizable
         testlog << nl << "Fullscreen config : ";
-        m_disp.getScreenRequest().requestFullscreen(true);
+        m_disp.getScreenInfo().requestFullscreen(true);
         if (runtest) res = testit();
         return res;
     }
@@ -110,7 +111,7 @@ public:
         int res = 0;
         //Resizable => Frame + No Fullscreen
         testlog << nl << "Resizable config : ";
-        m_disp.getScreenRequest().requestResizable(true);
+        m_disp.getScreenInfo().requestResizable(true);
         if (runtest) res = testit();
         return res;
     }

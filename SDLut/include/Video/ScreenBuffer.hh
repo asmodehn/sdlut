@@ -11,11 +11,6 @@
 #include "Video/internal/SDLEngine.hh"
 #include "Functor.hh" //for callbacks stoSDLut...
 
-//Default Setup
-#define DEFAULT_DISPLAY_WIDTH 640 // TODO not needed , can default to 4/3 mode or advised mode or desktop if nothing given...
-#define DEFAULT_DISPLAY_HEIGHT 480
-#define DEFAULT_DISPLAY_BPP 0 //0 for current display pixel mode
-
 namespace SDLut
 {
 namespace video

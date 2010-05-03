@@ -65,12 +65,6 @@ try
         throw std::logic_error("SDL_GetVideoInfo() return NULL");
     else
     {
-
-        //putting advised values as requested values
-        ptm_requestedWidth = width;
-        ptm_requestedHeight = height;
-        ptm_requestedBPP = static_cast<unsigned short>( bpp );
-
         pointerCopy = false;
     }
 
@@ -89,7 +83,12 @@ catch (std::exception &e)
 
 
 VideoInfo::VideoInfo( const VideoInfo& vi)
-        : pvm_sdl_vinfo(vi.pvm_sdl_vinfo), ptm_pformat(vi.ptm_pformat), ptm_videoflags(vi.ptm_videoflags)
+: pvm_sdl_vinfo(vi.pvm_sdl_vinfo),
+  ptm_pformat(vi.ptm_pformat),
+  ptm_videoflags(vi.ptm_videoflags),
+  ptm_requestedWidth (vi.ptm_requestedWidth),
+  ptm_requestedHeight (vi.ptm_requestedHeight),
+  ptm_requestedBPP (vi.ptm_requestedBPP)
 {
     pointerCopy = true;
 }

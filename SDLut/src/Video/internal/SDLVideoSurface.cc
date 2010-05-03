@@ -15,7 +15,9 @@ namespace internal
 VideoSurface::VideoSurface( const VideoInfo & vi) throw (std::logic_error)
 try
 :
-    BaseSurface(SDL_SetVideoMode(vi.getRequestedWidth(),vi.getRequestedHeight(),vi.getRequestedBPP(),vi.ptm_videoflags )),ptm_background(0,0,0)
+    BaseSurface(SDL_SetVideoMode(vi.getRequestedWidth(),vi.getRequestedHeight(),vi.getRequestedBPP(),vi.ptm_videoflags )),
+    ptm_vinfo(getWidth(),getHeight(),getBPP(),getFlags()),
+    ptm_background(0,0,0)
 {
 #ifdef DEBUG
     Log << nl << "VideoSurface::VideoSurface( "<< vi.getRequestedWidth()<<", "<<vi.getRequestedHeight()<<", "<<vi.getRequestedBPP()<<", "<<vi.ptm_videoflags<<") called ...";

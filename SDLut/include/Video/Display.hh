@@ -12,11 +12,6 @@
 //to access functors and callback features
 #include "Core.hh"
 
-//Default Setup
-#define DEFAULT_DISPLAY_WIDTH 640 // TODO not needed , can default to 4/3 mode or advised mode or desktop if nothing given...
-#define DEFAULT_DISPLAY_HEIGHT 480
-#define DEFAULT_DISPLAY_BPP 0 //0 for current display pixel mode
-
 namespace SDLut
 {
 class App;
@@ -30,6 +25,8 @@ namespace video
  * \brief This class handles the display part of the application
  *
  * This class hides the details of implementation of 2D display and contains a window and a Screenbuffer.
+ * More specifically it manages different states of the screenbuffer, and handles changes between these states,
+ * calling the appropriate callback.
  *
  * \author Alex
  *
@@ -56,8 +53,11 @@ protected:
 
     internal::Window pvm_window; //delegating charge of the window frame and decorations only
 
+    ///on Display instantiation : pvm_screen = 0 and pvm_scinf = best
+    ///Then user modifies pvm_scinf
+    ///on show() -> screenbuffer created and pvm_scinf = 0
     std::auto_ptr<ScreenBuffer> pvm_screen;
-    ScreenInfo pvm_scinf_req; // storing best screeninfo upon initialization, then modified by user request to get requested screen parameters
+    std::auto_ptr<ScreenInfo> pvm_scinf; // storing best screeninfo upon initialization, then modified by user request to get requested screen parameters
 
 public:
     //sets Display size and BPP
@@ -89,9 +89,19 @@ public:
         }
     }
 
-    ScreenInfo & getScreenRequest()
+    ///Returns Requested mode before creation of screenbuffer
+    ///Returns created screen info, after creation of screenbuffer
+    ScreenInfo & getScreenInfo()
     {
-        return pvm_scinf_req;
+        if ( pvm_scinf.get() != 0 )
+        {
+            return *pvm_scinf;
+        }
+        else
+        {
+            throw std::logic_error("Screen Buffer initialized. ScreenInfo must be accessed through ScreenBuffer.");
+        }
+
     }
 
     inline system::EventManager & getEventManager()
