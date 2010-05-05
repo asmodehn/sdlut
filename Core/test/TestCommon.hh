@@ -14,12 +14,31 @@
 #define TEST_FVAL(val, comp) assert( abs((val) - (comp)) < SMALL_NUMBER )
 
 ///Common classes used in all tests
+#include "Logger.hh"
 
 ///Common functions used in all tests
+///Accessor to the error counter
 inline int& testErr()
 {
     static int err = 0;
     return err;
+}
+
+///Checking error counter
+inline int reportErrors(Core::Logger & l)
+{
+    int errors = testErr();
+
+    if( errors == 0 )
+    {
+        l << Core::nl << "No errors detected.";
+        return 0;
+    }
+    else
+    {
+        l << Core::nl <<  errors << " error(s) detected.";
+        return 1;
+    }
 }
 
 inline int reportErrors()
@@ -28,12 +47,12 @@ inline int reportErrors()
 
     if( errors == 0 )
     {
-        fprintf(stderr,"No errors detected.\n");
+        std::clog << "No errors detected.";
         return 0;
     }
     else
     {
-        fprintf(stderr, "%d error(s) detected.\n", errors);
+        std::clog <<  errors << " error(s) detected.";
         return 1;
     }
 }

@@ -59,7 +59,7 @@ std::string GenericErrorCategory::message( int ev ) const
                 ? std::string( c_str )
                 : unknownError;
 #  else
-        result = strerror_s( bp, sz, ev );
+    result = strerror_s( bp, sz, ev );
 #  endif
         if (result == 0 )
             break;

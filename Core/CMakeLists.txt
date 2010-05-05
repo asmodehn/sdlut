@@ -10,15 +10,25 @@ WkBuild ( LIBRARY STATIC )
 WkDoc()
 WkSvn()
 
+#TestBed
+
+# From most basic feature to most advanced :
+# Logger
+WkTestBuild( TestLogger )
+WkTestRun( Logger TestLogger )
+# Time
+WkTestBuild( TestTime )
+WkTestRun( Time TestTime )
+# Randomizer
+WkTestBuild ( TestRandomizer )
+WkTestRun ( Randomizer TestRandomizer )
+
+#others... to organise...
 WkTestBuild( TestError )
 WkTestBuild( TestDbgMem )
 WkTestRun( DbgMem TestDbgMem )
-WkTestBuild( TestLogger )
-WkTestRun( Logger TestLogger )
 WkTestBuild( TestStaticAssert )
 WkTestRun( StaticAssert TestStaticAssert )
-WkTestBuild( TestTime )
-WkTestRun( Time TestTime )
 WkTestBuild ( TestFunctor )
 WkTestRun( Functor TestFunctor )
 WkTestBuild ( TestCallback )

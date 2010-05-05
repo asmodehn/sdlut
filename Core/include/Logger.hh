@@ -25,7 +25,7 @@
 #define RAGELOG
 #endif
 
-namespace RAGE
+namespace Core
 {
 
 /**
@@ -139,7 +139,7 @@ Logger& Logger::operator<< ( const M & msg)
 
 Logger& nl (Logger& log); // adds a new line with the prefix
 
-}
+} // Core
 
 
 #endif

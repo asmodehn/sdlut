@@ -396,28 +396,28 @@ std::string SystemErrorCategory::message( int ev ) const
     std::string str( static_cast<LPCSTR>(lpMsgBuf) );
     ::LocalFree( lpMsgBuf ); // free the buffer
 # else  // WinCE workaround
-    LPVOID lpMsgBuf;
-    DWORD retval = ::FormatMessageW(
-                       FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                       FORMAT_MESSAGE_FROM_SYSTEM |
-                       FORMAT_MESSAGE_IGNORE_INSERTS,
-                       NULL,
-                       ev,
-                       MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-                       (LPWSTR) &lpMsgBuf,
-                       0,
-                       NULL
-                   );
-    if (retval == 0)
-        return std::string("Unknown error");
+LPVOID lpMsgBuf;
+DWORD retval = ::FormatMessageW(
+                   FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                   FORMAT_MESSAGE_FROM_SYSTEM |
+                   FORMAT_MESSAGE_IGNORE_INSERTS,
+                   NULL,
+                   ev,
+                   MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+                   (LPWSTR) &lpMsgBuf,
+                   0,
+                   NULL
+               );
+if (retval == 0)
+    return std::string("Unknown error");
 
-    int num_chars = (wcslen( static_cast<LPCWSTR>(lpMsgBuf) ) + 1) * 2;
-    LPSTR narrow_buffer = (LPSTR)_alloca( num_chars );
-    if (::WideCharToMultiByte(CP_ACP, 0, static_cast<LPCWSTR>(lpMsgBuf), -1, narrow_buffer, num_chars, NULL, NULL) == 0)
-        return std::string("Unknown error");
+int num_chars = (wcslen( static_cast<LPCWSTR>(lpMsgBuf) ) + 1) * 2;
+LPSTR narrow_buffer = (LPSTR)_alloca( num_chars );
+if (::WideCharToMultiByte(CP_ACP, 0, static_cast<LPCWSTR>(lpMsgBuf), -1, narrow_buffer, num_chars, NULL, NULL) == 0)
+    return std::string("Unknown error");
 
-    std::string str( narrow_buffer );
-    ::LocalFree( lpMsgBuf ); // free the buffer
+std::string str( narrow_buffer );
+::LocalFree( lpMsgBuf ); // free the buffer
 # endif
     while ( str.size()
             && (str[str.size()-1] == '\n' || str[str.size()-1] == '\r') )

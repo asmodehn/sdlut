@@ -1,6 +1,6 @@
 #include "Logger.hh"
 
-namespace RAGE
+namespace Core
 {
 
 Logger::Logger(const std::string & LogPrefix,int indentlvl, int indentwidth)

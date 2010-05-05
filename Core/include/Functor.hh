@@ -33,9 +33,9 @@ struct ternary_function
 };
 
 template <class Predicate> class ternary_negate
-            : public ternary_function <typename Predicate::first_argument_type,
-            typename Predicate::second_argument_type,
-            typename Predicate::third_argument_type, bool>
+        : public ternary_function <typename Predicate::first_argument_type,
+        typename Predicate::second_argument_type,
+        typename Predicate::third_argument_type, bool>
 {
 protected:
     Predicate fn;
@@ -172,10 +172,10 @@ struct quaternary_function
 
 
 template <class Predicate> class quaternary_negate
-            : public quaternary_function <typename Predicate::first_argument_type,
-            typename Predicate::second_argument_type,
-            typename Predicate::third_argument_type,
-            typename Predicate::forth_argument_type, bool>
+        : public quaternary_function <typename Predicate::first_argument_type,
+        typename Predicate::second_argument_type,
+        typename Predicate::third_argument_type,
+        typename Predicate::forth_argument_type, bool>
 {
 protected:
     Predicate fn;
@@ -315,11 +315,11 @@ struct quinary_function
 
 
 template <class Predicate> class quinary_negate
-            : public quinary_function <typename Predicate::first_argument_type,
-            typename Predicate::second_argument_type,
-            typename Predicate::third_argument_type,
-            typename Predicate::forth_argument_type,
-            typename Predicate::fifth_argument_type, bool>
+        : public quinary_function <typename Predicate::first_argument_type,
+        typename Predicate::second_argument_type,
+        typename Predicate::third_argument_type,
+        typename Predicate::forth_argument_type,
+        typename Predicate::fifth_argument_type, bool>
 {
 protected:
     Predicate fn;

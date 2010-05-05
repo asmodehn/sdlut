@@ -3,7 +3,7 @@
 */
 
 #include "Core.hh"
-using namespace RAGE;
+using namespace Core;
 
 int main(int argc, char *argv[])
 {

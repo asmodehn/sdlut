@@ -3,109 +3,36 @@
 #include <cassert>
 #include <iostream>
 
-Randomizer * Randomizer::instance= 0 ;
-
-///from http://www.cppreference.com/wiki/c/other/rand
-//the correct random number generator for [min,max]
-
-unsigned int Randomizer::getui ( unsigned int min, unsigned int max)
+namespace Core
 {
-    if ( ! instance )
-    {
-        instance = new Randomizer();
-    }
 
-    // scale in range [0,1)
-    const float scale = rand()/float(RAND_MAX);
+///specialized instanciation for each built-in type
+/// built in type list from http://en.literateprograms.org/Basic_constructs_%28C_Plus_Plus%29#Built-in_types
+template<> Randomizer<char> * Randomizer<char>::instance = 0;
+template<> Randomizer<signed char> * Randomizer<signed char>::instance = 0;
+template<> Randomizer<unsigned char> * Randomizer<unsigned char>::instance = 0;
 
-    // return range [min ,max]
-    //cast and truncation
-    unsigned int res = static_cast<unsigned int>(min + scale * (max-min) + 0.5);
+template<> Randomizer<wchar_t> * Randomizer<wchar_t>::instance = 0;
 
-#ifdef _DEBUG
-    if ( res < min || res > max )
-    {
-        std::cerr << "Error random number generated " << res << "is not in" << "[" << min << "," << max << "]" << std::endl;
-    }
-#endif
+template<> Randomizer<short> * Randomizer<short>::instance = 0;
+template<> Randomizer<unsigned short> * Randomizer<unsigned short>::instance = 0;
 
-    return  res;
-}
+template<> Randomizer<int> * Randomizer<int>::instance = 0;
+template<> Randomizer<unsigned int> * Randomizer<unsigned int>::instance = 0;
 
-int Randomizer::geti ( int min, int max )
-{
-    if ( ! instance )
-    {
-        instance = new Randomizer();
-    }
+template<> Randomizer<long> * Randomizer<long>::instance = 0;
+template<> Randomizer<unsigned long> * Randomizer<unsigned long>::instance = 0;
 
-    // scale in range [0,1)
-    const float scale = rand()/float(RAND_MAX);
+//TODO : need specialization for bool.
+template<> Randomizer<bool> * Randomizer<bool>::instance = 0;
 
-    // return range [0,hi]
-    //cast and truncation
-    int res = static_cast<int>(min + scale * (max-min) + 0.5);
+template<> Randomizer<float> * Randomizer<float>::instance = 0;
+template<> Randomizer<double> * Randomizer<double>::instance = 0;
+template<> Randomizer<long double> * Randomizer<long double>::instance = 0;
 
-    //TODO : with assert
-#ifdef _DEBUG
-    if ( res < min || res > max )
-    {
-        std::cerr << "Error random number generated " << res << "is not in" << "[" << min << "," << max << "]" << std::endl;
-    }
-#endif
+// the following types are not in the current C++ standard, but a very common extension,
+// part of C99, and will be part of next version of the C++ standard
+template<> Randomizer<long long> * Randomizer<long long>::instance = 0;
+template<> Randomizer<unsigned long long> * Randomizer<unsigned long long>::instance = 0;
 
-    return  res;
-}
-
-
-
-float Randomizer::getf ( float min , float max )
-{
-    if ( ! instance )
-    {
-        instance = new Randomizer();
-    }
-
-    // scale in range [0,1)
-    const float scale = rand()/float(RAND_MAX);
-
-    // return range [0,hi]
-    //cast and truncation
-    float res = static_cast<float>(min + scale * (max-min) );
-
-    //TODO : with assert
-#ifdef _DEBUG
-    if ( res < min || res > max )
-    {
-        std::cerr << "Error random number generated " << res << "is not in" << "[" << min << "," << max << "]" << std::endl;
-    }
-#endif
-
-    return  res;
-}
-
-
-double Randomizer::getd ( double min, double max )
-{
-    if ( ! instance )
-    {
-        instance = new Randomizer();
-    }
-
-    // scale in range [0,1)
-    const double scale = rand()/double(RAND_MAX);
-
-    // return range [0,hi]
-    //cast and truncation
-    double res = static_cast<double>(min + scale * (max-min));
-
-    //TODO : with assert
-#ifdef _DEBUG
-    if ( res < min || res > max )
-    {
-        std::cerr << "Error random number generated " << res << "is not in" << "[" << min << "," << max << "]" << std::endl;
-    }
-#endif
-
-    return  res;
 }

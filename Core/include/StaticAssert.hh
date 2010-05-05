@@ -21,8 +21,8 @@ template <> struct compile_time_check<true> {};
     do {                                                        \
         typedef misc::compile_time_check< (test) != 0 > Static_Assertion_Failed; \
         Static_Assertion_Failed ERROR_##errormsg;		\
-        sizeof(ERROR_##errormsg);                                          \
-    } while (0)
+sizeof(ERROR_##errormsg);                                          \
+} while (0)
 #else
 #   define StaticAssert1(test, errormsg)                         \
     do {} while (0)
