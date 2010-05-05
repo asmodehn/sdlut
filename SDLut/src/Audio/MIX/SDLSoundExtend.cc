@@ -1,7 +1,7 @@
 #include "SDLSoundExtend.hh"
 #include "SDLConfig.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {

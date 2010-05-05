@@ -131,7 +131,7 @@ public:
     } ///access method to be used by derivated classes
 #endif
 
-    friend RAGE::Logger & operator << (RAGE::Logger & log, const VideoSurface & surf);
+    friend Core::Logger & operator << (Core::Logger & log, const VideoSurface & surf);
 };
 
 }

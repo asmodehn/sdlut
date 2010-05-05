@@ -66,7 +66,7 @@ public :
     //TODO -> different behavior depending if GLWindow is already set or not ? ( refer SDLManager... )
 
 
-    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const OGLVideoInfo & glvi);
+    friend Core::Logger & operator << (Core::Logger & ostr, const OGLVideoInfo & glvi);
 };
 
 #else

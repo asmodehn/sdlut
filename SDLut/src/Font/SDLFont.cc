@@ -6,7 +6,7 @@
 #include "TTF/SDLFontExtend.hh"
 
 //#define DEBUG 2
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {

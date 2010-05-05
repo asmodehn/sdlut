@@ -3,7 +3,7 @@
 namespace SDLut
 {
 
-RAGE::Logger Log("SDLut::SDL");
+Core::Logger Log("SDLut::SDL");
 
 std::string GetError()
 {

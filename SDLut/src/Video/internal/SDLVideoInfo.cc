@@ -3,7 +3,7 @@
 
 #include "SDLConfig.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -83,12 +83,12 @@ catch (std::exception &e)
 
 
 VideoInfo::VideoInfo( const VideoInfo& vi)
-: pvm_sdl_vinfo(vi.pvm_sdl_vinfo),
-  ptm_pformat(vi.ptm_pformat),
-  ptm_videoflags(vi.ptm_videoflags),
-  ptm_requestedWidth (vi.ptm_requestedWidth),
-  ptm_requestedHeight (vi.ptm_requestedHeight),
-  ptm_requestedBPP (vi.ptm_requestedBPP)
+        : pvm_sdl_vinfo(vi.pvm_sdl_vinfo),
+        ptm_pformat(vi.ptm_pformat),
+        ptm_videoflags(vi.ptm_videoflags),
+        ptm_requestedWidth (vi.ptm_requestedWidth),
+        ptm_requestedHeight (vi.ptm_requestedHeight),
+        ptm_requestedBPP (vi.ptm_requestedBPP)
 {
     pointerCopy = true;
 }
@@ -460,7 +460,7 @@ const PixelFormat & VideoInfo::getPixelFormat() const
     return *ptm_pformat;
 }
 
-RAGE::Logger & operator << (RAGE::Logger & log, const VideoInfo & vinfo)
+Core::Logger & operator << (Core::Logger & log, const VideoInfo & vinfo)
 {
     log << nl << "VideoInfo :"  << nl <<
     " - Driver Name : " << vinfo.getDriverName() << nl <<

@@ -2,7 +2,7 @@
 #include "SDLConfig.hh"
 #include <cassert>
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {

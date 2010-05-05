@@ -75,7 +75,7 @@ public:
     bool isEventThreadEnabled(void) const;
 
     //display all Informations
-    friend RAGE::Logger & operator << (RAGE::Logger & log, const Manager & man);
+    friend Core::Logger & operator << (Core::Logger & log, const Manager & man);
 
 };
 

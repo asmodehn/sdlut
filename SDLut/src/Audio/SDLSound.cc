@@ -4,7 +4,7 @@
 #include "Default/SDLSoundImpl.hh"
 #include "MIX/SDLSoundExtend.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {

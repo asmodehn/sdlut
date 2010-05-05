@@ -1,7 +1,7 @@
 #include "Video/internal/SDLPixelFormat.hh"
 #include "SDLConfig.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -128,7 +128,7 @@ Palette PixelFormat::getPalette() const
 }
 
 
-RAGE::Logger & operator << (RAGE::Logger & log, const PixelFormat & pformat)
+Core::Logger & operator << (Core::Logger & log, const PixelFormat & pformat)
 {
     log << nl << "PixelFormat:" << nl <<
     std::dec <<

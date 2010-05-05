@@ -7,7 +7,7 @@
 #include "SDL.hh"
 
 #include "Logger.hh"
-using namespace RAGE;
+using namespace Core;
 
 using namespace SDLut;
 
@@ -102,10 +102,8 @@ class AssertEngine
 
 protected :
 
-//to be able to write in log, even while rendering
+    //to be able to write in log, even while rendering
     mutable    Logger & m_log;
-
-
 
 public :
     ///max_render = 0 means it will run forever
@@ -165,13 +163,10 @@ protected:
 
     AssertEngine & m_assertengine;
 
-
-
-//to be able to write in log, even while rendering
+    //to be able to write in log, even while rendering
     mutable Logger & m_log;
 
 public:
-
 
     TestEngine(Logger & log, AssertEngine & ae ) : m_assertengine(ae),m_log(log)
     {
@@ -232,8 +227,59 @@ public:
 };
 
 
+/* EXAMPLE : Dumb sample test
+
+#include "TestCommon.hh" //to get argparser
+
+using namespace SDLut;
+
+Logger testlog("MyTestName");
+
+class Assert : public AssertEngine
+    {
+        public:
+        Assert(Logger& l, ArgParser& ap) : AssertEngine(l,ap) {}
+        bool assertresize(int, int) { return true;}
+        bool assertrender(video::ScreenBuffer&) const { return true;}
+        };
+
+class Test : public TestEngine
+    {
+        public:
+        Test(Logger& l, Assert & a) : TestEngine(l,a) {}
+        bool resize(int, int) { return true; }
+        bool render(video::ScreenBuffer&) const { return true;}
+        };
+
+int main(int argc, char** argv)
+{
+    ArgParser args(argc,argv);
+
+    //Starting with usual SDL window
+    App::getInstance().initVideo(false,true,false);
+    App::getInstance().setName ("SDLut::video Dumb test ");
+
+    //Setting Display size and BPP
+    App::getInstance().getDisplay().getScreenInfo().requestSize(300,240); // using autodetected bpp
+    App::getInstance().getDisplay().getScreenInfo().requestOpenGL(args.isOGL());
+
+    int exitstatus = -1;
+
+    Assert asrt(testlog,args);
+    Test engine(testlog,asrt);
+
+    if (App::getInstance().getDisplay().show())
+    {
+        exitstatus = App::getInstance().getDisplay().mainLoop();
+    }
+
+    return exitstatus;
+}
 
 
+
+
+*/
 
 
 #endif

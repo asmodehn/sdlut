@@ -98,8 +98,10 @@ public:
 
     // direct pixel drawing function
     ///WARNING : Slow
-    Color getpixel(unsigned int x,unsigned int y);
-    void setpixel(unsigned int x, unsigned int y, const Color & pixel);
+    Color getColorAt(unsigned int x,unsigned int y);
+    void setColorAt(unsigned int x, unsigned int y, const Color & pixel);
+    //TODO
+    //void setColorAt(Rect& dest_rect, const Color & pixel);
 
     //Defines a 2D clippin Rect Area
     void resetClipRect( const Rect& clipr );

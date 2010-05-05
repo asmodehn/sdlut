@@ -105,7 +105,7 @@ public:
     void Set_MouseMotionInfosFromEvent(video::Rect& position, short& state);
     void Set_ActiveInfosFromEvent(bool& isActive, bool& hasInputFocus, bool& hasMouseFocus, bool& gain);
 
-    friend RAGE::Logger & operator << (RAGE::Logger & log, const Type & type);
+    friend Core::Logger & operator << (Core::Logger & log, const Type & type);
 
 };
 }

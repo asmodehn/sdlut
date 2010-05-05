@@ -2,7 +2,7 @@
 #include "SDLConfig.hh"
 //#include <sstream>
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -209,7 +209,7 @@ bool VideoSurface::isHWPaletteset(void) const
 }
 
 
-RAGE::Logger & operator << (RAGE::Logger & log, const VideoSurface & surf)
+Core::Logger & operator << (Core::Logger & log, const VideoSurface & surf)
 {
     //log << static_cast<BaseSurface>(surf);
     log << nl<<std::boolalpha << "- Fullscreen ? " << surf.isFullScreenset() << nl

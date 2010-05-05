@@ -1,8 +1,7 @@
 #include "SDLVersion.hh"
 #include "SDLConfig.hh"
 
-//tmp
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -130,7 +129,7 @@ bool Version::check() const
     return (_linked->major == _compiled->major) && (_linked->minor == _compiled->minor) && (_linked->patch == _compiled->patch);
 }
 
-RAGE::Logger & operator << (RAGE::Logger& log, const Version & v)
+Core::Logger & operator << (Core::Logger& log, const Version & v)
 {
     log << nl <<"Compiled version: "<< v.getcompiledmajor() <<"."<< v.getcompiledminor() <<"."<< v.getcompiledpatch();
     log << nl << "Linked version: " << v.getcompiledmajor() <<"."<< v.getcompiledminor() <<"."<< v.getcompiledpatch();

@@ -99,7 +99,7 @@ public:
     int send(const void * data, int len);
     int receive(void * data, int maxlen);
 
-    friend RAGE::Logger & operator << (RAGE::Logger & log, const SocketTCP & sock);
+    friend Core::Logger & operator << (Core::Logger & log, const SocketTCP & sock);
 };
 
 }

@@ -20,14 +20,10 @@ WkDoc()
 
 
 
-#WkTestRun   ( SDL_Pixel testPixel "nogl" )
-#WkTestRun   ( SDL_Pixel_Image_woAlpha testPixel "nogl" "data/test/transparency/png/pal_bk_notrns.png" )
-#WkTestRun   ( SDL_Pixel_Image_wAlpha testPixel "nogl" "data/test/transparency/png/pal_bk.png" )
 #WkTestRun   ( OpenGL_Pixel testPixel )
 #WkTestRun   ( OpenGL_Pixel_Image_woAlpha testPixel "data/test/transparency/png/pal_bk_notrns.png" )
 #WkTestRun   ( OpenGL_Pixel_Image_wAlpha testPixel "data/test/transparency/png/pal_bk.png" )
 
-#WkTestBuild ( testScreenClipRect "testScreenClipRect.cc" "TestCommon.hh")
 
 #WkTestBuild ( testImageFormat "testImageFormat.cc" "testRendering.hh" "TestCommon.hh" )
 #WkTestRun   ( SDL_GIF testImageFormat "auto" "data/test/imageformat/ColorTest.gif" )
@@ -108,6 +104,7 @@ WkTestBuild ( testVersion "testVersion.cc" "TestCommon.hh" )
 WkTestBuild ( testColor "testColor.cc" "TestCommon.hh" )
 WkTestBuild ( testRect "testRect.cc" "TestCommon.hh")
 WkTestBuild ( testScreenBufferInit "testScreenBufferInit.cc" "TestCommon.hh" )
+WkTestBuild ( testScreenBGColor "testScreenBGColor.cc" "TestCommon.hh" )
 #WkTestBuild ( testPixel "testPixel.cc" "TestCommon.hh")
 # From grounds and simple things to complex concepts
 # - Test Library version access
@@ -117,8 +114,34 @@ WkTestRun( Color testColor )
 # - Test Rect ( default 1,1, size, width, etc. ). Logic only, no display
 WkTestRun( Rect testRect )
 # - Test Screen SDL Init ( setup, config, etc. ). Will test ScreenInfo mostly, as well as execution platform !!!
+# TO UNCOMMENT when testing on separate machine / user, TODO for continuous integration... (Hudson ?)
+# Will mess up desktop in fullscreen test
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "640" "480" "8")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "640" "480" "16")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "640" "480" "24")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "640" "480" "32")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "800" "600" "8")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "800" "600" "16")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "800" "600" "24")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "800" "600" "32")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "1024" "768" "8")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "1024" "768" "16")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "1024" "768" "24")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "1024" "768" "32")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "1280" "1024" "8")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "1280" "1024" "16")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "1280" "1024" "24")
+#WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "1280" "1024" "32")
+#Will test SDL advised video mode ( at desktop size ) -> harmless on user machine
 WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl")
+WkTestRun (ScreenBGColor testScreenBGColor "auto" "nogl")
 # - Test Screen Access. Will test Filling pixel and rectangle directly on screen (slow), and getPixel.
+
+#WkTestRun   ( SDL_Pixel testPixel "nogl" )
+#WkTestRun   ( SDL_Pixel_Image_woAlpha testPixel "nogl" "data/test/transparency/png/pal_bk_notrns.png" )
+#WkTestRun   ( SDL_Pixel_Image_wAlpha testPixel "nogl" "data/test/transparency/png/pal_bk.png" )
+#WkTestBuild ( testScreenClipRect "testScreenClipRect.cc" "TestCommon.hh")
+
 # - Test Screen Blit. Will test blitting of surfaces filled with color squares.
 # - Test Screen Blit Alpha. Will test blitting of surfaces filled with color squares with alpha.
 # - Test Surface Access. Will test Filling pixel and rectnagle on a surface and then display on screen.

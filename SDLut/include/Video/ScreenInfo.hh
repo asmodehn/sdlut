@@ -33,6 +33,11 @@ class ScreenInfo
         return si;
     }
 
+    //forbidden copy
+    ScreenInfo( const ScreenInfo &); // copy the videoinfo structure
+
+    ///we should have only one instance of screeninfo per screen ( or display for request if screen not created ) at any moment in time.
+    ///This is to match SDL which provides only a pointer to internal read-only videoinfo structure.
 
 protected :
 #ifdef WK_OPENGL_FOUND
@@ -46,9 +51,7 @@ protected :
 
 public:
     ScreenInfo(); // generate a videoinfo structure from SDL "getVideoInfo" function
-    ScreenInfo( const ScreenInfo &); // copy the videoinfo structure
     ~ScreenInfo();
-
 
     //these modify the videoinfo structure to store requested parameters
     /// WARNING : These are non-const !
@@ -78,7 +81,7 @@ public:
 
 
     //display all detected informations about graphics
-    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const ScreenInfo & vinfo);
+    friend Core::Logger & operator << (Core::Logger & ostr, const ScreenInfo & vinfo);
 
 
 };

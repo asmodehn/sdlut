@@ -80,7 +80,7 @@ public :
         return _spec.get();
     }
 
-    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const AudioInfo & ai);
+    friend Core::Logger & operator << (Core::Logger & ostr, const AudioInfo & ai);
 
 }; //class Audio
 

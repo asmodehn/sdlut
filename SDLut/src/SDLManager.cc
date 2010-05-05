@@ -1,7 +1,7 @@
 #include "SDLManager.hh"
 #include "SDLConfig.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -180,7 +180,7 @@ bool Manager::isEventThreadEnabled(void) const
     return ( SDL_WasInit(SDL_INIT_EVENTTHREAD) ) != 0;
 }
 
-RAGE::Logger & operator << (RAGE::Logger & log, const Manager & man)
+Core::Logger & operator << (Core::Logger & log, const Manager & man)
 {
     log << nl << std::boolalpha << "Manager :" << nl <<
     "- Is Timer Enabled ? " << man.isTimerEnabled() << nl <<

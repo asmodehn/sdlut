@@ -1,7 +1,7 @@
 #include "SDLAudioInfo.hh"
 #include "SDLConfig.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -127,7 +127,7 @@ SDL_AudioSpec AudioInfo::get_SDL()
 }
 
 
-RAGE::Logger & operator << (RAGE::Logger & log, const AudioInfo & ai)
+Core::Logger & operator << (Core::Logger & log, const AudioInfo & ai)
 {
     log << nl << "AudioInfo::" << nl
     << " - Frequency = " << ai.frequency() << nl

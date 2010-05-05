@@ -1,9 +1,8 @@
 #include "TestCommon.hh" //to get argparser
 
 using namespace SDLut;
-using namespace std;
 
-RAGE::Logger testlog("testPixel");
+Logger testlog("testScreenAccess");
 
 class MyEngine
 {

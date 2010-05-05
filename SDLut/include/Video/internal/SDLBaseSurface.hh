@@ -220,7 +220,7 @@ public:
 
     virtual bool resize(int width, int height) = 0;
 
-    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const BaseSurface & surf);
+    friend Core::Logger & operator << (Core::Logger & ostr, const BaseSurface & surf);
 
 };
 

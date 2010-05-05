@@ -2,7 +2,7 @@
 #include "System/SDLNewTimer.hh"
 #include "SDLConfig.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {

@@ -3,7 +3,7 @@
 
 #include <stdexcept>
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -452,7 +452,7 @@ Rect BaseSurface::getClipRect(void) const
     return r;
 }
 
-RAGE::Logger & operator << (RAGE::Logger & log, const BaseSurface & surf)
+Core::Logger & operator << (Core::Logger & log, const BaseSurface & surf)
 {
     log << nl << "SDLBaseSurface::" << nl
     << " - Height = " << surf.getHeight() << nl

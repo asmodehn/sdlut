@@ -133,7 +133,7 @@ public: //necessary if we want to use getPixelFormat() accessor from the BaseSur
     Palette getPalette() const;
 
     //display all detected informations about pixelformat
-    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const PixelFormat & pformat);
+    friend Core::Logger & operator << (Core::Logger & ostr, const PixelFormat & pformat);
 
     //methods for Color conversion :
     virtual PixelColor getPixelColor(const Color& color) const ;

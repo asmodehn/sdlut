@@ -173,7 +173,7 @@ public:
     const PixelFormat & getPixelFormat() const;
 
     //display all detected informations about graphics
-    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const VideoInfo & vinfo);
+    friend Core::Logger & operator << (Core::Logger & ostr, const VideoInfo & vinfo);
 };
 
 

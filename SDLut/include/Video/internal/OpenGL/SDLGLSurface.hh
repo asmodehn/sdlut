@@ -121,7 +121,7 @@ public :
 
     bool blit (const RGBSurface& src, Rect& dest_rect, const Rect& src_rect);
 
-    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const RGBSurface & surf);
+    friend Core::Logger & operator << (Core::Logger & ostr, const RGBSurface & surf);
 
 };
 

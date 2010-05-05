@@ -1,7 +1,7 @@
 #include "Video/ScreenBuffer.hh"
 #include "SDLConfig.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -378,11 +378,11 @@ bool ScreenBuffer::captureBMP(std::string filename) const
 }
 
 
-//pixel drawing function
-Color ScreenBuffer::getpixel(unsigned int x, unsigned int y)
-{
-    //return m_screen->getPixelFormat().getColor(m_screen->getpixel(x, y));
 
+
+//pixel drawing function
+Color ScreenBuffer::getColorAt(unsigned int x, unsigned int y)
+{
     Color res;
     //We need to check the pixel is in the ScreenBuffer
     if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
@@ -396,7 +396,7 @@ Color ScreenBuffer::getpixel(unsigned int x, unsigned int y)
     return res;
 }
 
-void ScreenBuffer::setpixel(unsigned int x,unsigned int y, const Color & pixel)
+void ScreenBuffer::setColorAt(unsigned int x,unsigned int y, const Color & pixel)
 {
     //We need to check the pixel is in the ScreenBuffer
     if (x >= 0 && y >= 0 && x < getWidth() && y < getHeight())
@@ -438,7 +438,8 @@ void ScreenBuffer::setpixel(unsigned int x,unsigned int y, const Color & pixel)
     }
 }
 
-
+//TODO
+//void setColorAt(Rect& dest_rect, const Color & pixel);
 
 
 

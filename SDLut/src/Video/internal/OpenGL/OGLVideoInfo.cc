@@ -1,7 +1,7 @@
 #include "Video/internal/OpenGL/OGLVideoInfo.hh"
 #include "SDLConfig.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -21,18 +21,18 @@ bool OGLVideoInfo::loadGLLibrary(const std::string & path)
 }
 
 OGLVideoInfo::OGLVideoInfo()
-: VideoInfo()
+        : VideoInfo()
 {
 }
 
 OGLVideoInfo::OGLVideoInfo(unsigned int width, unsigned int height, unsigned int bpp, unsigned long vflags)
-: VideoInfo(width,height,bpp,vflags)
+        : VideoInfo(width,height,bpp,vflags)
 {
 }
 
 
 
-RAGE::Logger & operator << (RAGE::Logger & log, const OGLVideoInfo & glvi)
+Core::Logger & operator << (Core::Logger & log, const OGLVideoInfo & glvi)
 {
     log << nl << "OGLVideoInfo : " ;
 

@@ -5,7 +5,7 @@
 #include "Default/SDLMusicImpl.hh"
 #include "MIX/SDLMusicExtend.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {

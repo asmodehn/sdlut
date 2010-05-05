@@ -120,7 +120,7 @@ public:
     bool saveBMP(std::string filename) const;
 
 
-    friend RAGE::Logger & operator << (RAGE::Logger & log, const VideoSurface & surf);
+    friend Core::Logger & operator << (Core::Logger & log, const VideoSurface & surf);
 };
 
 

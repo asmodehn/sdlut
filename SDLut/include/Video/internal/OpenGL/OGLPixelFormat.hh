@@ -129,7 +129,7 @@ public :
     bool setAccumBSize(int bits);
     bool setAccumASize(int bits);
 
-    friend RAGE::Logger & operator << (RAGE::Logger & ostr, const OGLPixelFormat & glman);
+    friend Core::Logger & operator << (Core::Logger & ostr, const OGLPixelFormat & glman);
 };
 
 #endif // WK_OPENGL_FOUND

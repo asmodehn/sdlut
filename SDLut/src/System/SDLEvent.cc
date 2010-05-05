@@ -247,7 +247,7 @@ SDL_Event Event::get_SDL()
     return *_event;
 }
 
-RAGE::Logger & operator << (RAGE::Logger & log, const  Event::Type & type)
+Core::Logger & operator << (Core::Logger & log, const  Event::Type & type)
 {
     switch (type)
     {

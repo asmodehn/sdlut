@@ -5,7 +5,7 @@
 #include "Default/SDLSocketTCPImpl.hh"
 #include "NET/SDLSocketTCPExtend.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -90,7 +90,7 @@ int SocketTCP::receive(void * data, int maxlen)
     return pvm_sockettcpimpl->receive(data, maxlen);
 }
 
-RAGE::Logger & operator << (RAGE::Logger & log, const SocketTCP & sock)
+Core::Logger & operator << (Core::Logger & log, const SocketTCP & sock)
 {
     log << nl << "SocketTCP::" << nl
     << " - Server ? " << std::boolalpha << sock.isServer() << nl

@@ -9,7 +9,7 @@
 #define min( a , b )  ( (a)>(b) )?(b):(a)
 #endif
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -560,7 +560,7 @@ bool VideoGLSurface::saveBMP(std::string filename) const
 
 
 
-RAGE::Logger & operator << (RAGE::Logger & log, const VideoGLSurface & surf)
+Core::Logger & operator << (Core::Logger & log, const VideoGLSurface & surf)
 {
     //TODO : call base operator here...
     //log << static_cast<BaseSurface>(surf);

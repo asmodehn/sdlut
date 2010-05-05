@@ -1,7 +1,7 @@
 #include "Video/internal/OpenGL/OGLPixelFormat.hh"
 #include "SDLConfig.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -247,7 +247,7 @@ int OGLPixelFormat::getAlpha() const
 
 
 
-RAGE::Logger & operator << (RAGE::Logger & log, const OGLPixelFormat & glman)
+Core::Logger & operator << (Core::Logger & log, const OGLPixelFormat & glman)
 {
     log << static_cast<const PixelFormat &>(glman); // calling parent log
     log << nl << "OGLPixelFormat : " << nl <<

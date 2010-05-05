@@ -3,7 +3,7 @@
 
 #include "SDLResources.inc"
 
-using namespace RAGE;
+using namespace Core;
 
 
 namespace SDLut

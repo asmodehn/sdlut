@@ -5,7 +5,7 @@
 #include "Default/SDLMixerImpl.hh"
 #include "MIX/SDLMixerExtend.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {

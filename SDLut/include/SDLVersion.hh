@@ -71,7 +71,7 @@ public:
     bool check() const;
 
     ///Friend function to output to the Logger
-    friend RAGE::Logger & operator << (RAGE::Logger& log, const Version & v);
+    friend Core::Logger & operator << (Core::Logger& log, const Version & v);
 };
 
 }

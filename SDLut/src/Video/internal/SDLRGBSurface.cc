@@ -3,7 +3,7 @@
 
 #include "SDLResources.inc"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -492,7 +492,7 @@ int RGBSurface::update(void)
 }
 */
 
-RAGE::Logger & operator << (RAGE::Logger & log, const RGBSurface & surf)
+Core::Logger & operator << (Core::Logger & log, const RGBSurface & surf)
 {
     log << nl << "RGBSurface::" << nl
     << " - Height = " << surf.getHeight() << nl

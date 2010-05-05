@@ -56,7 +56,7 @@
 namespace SDLut
 {
 //global, namespace visible, declaration for the SDLut logger. Will be initialized only once.
-extern RAGE::Logger Log;
+extern Core::Logger Log;
 
 std::string GetError();
 

@@ -1,7 +1,7 @@
 #include "Video/ScreenInfo.hh"
 #include "SDLConfig.hh"
 
-using namespace RAGE;
+using namespace Core;
 
 namespace SDLut
 {
@@ -119,7 +119,7 @@ bool ScreenInfo::isFullscreen() const
 
 
 //display all detected informations about graphics
-RAGE::Logger & operator << (RAGE::Logger & ostr, const ScreenInfo & vinfo)
+Core::Logger & operator << (Core::Logger & ostr, const ScreenInfo & vinfo)
 {
     ostr << vinfo.m_videoinfo;
     return ostr;
