@@ -36,7 +36,8 @@ private :
 public:
 
     ///return a randomly generated number in between [ min, max )
-    static T get ( T min = 0, T max = 100);
+    static T get ( T min, T max);
+    static T get (); //default behaviour. might depend on specialization
 
 };
 
@@ -47,6 +48,7 @@ Randomizer<T> * Randomizer<T>::instance;
 
 ///from http://www.cppreference.com/wiki/c/other/rand
 //the correct random number generator for [min,max]
+//TODO : check that we actually can get max
 template <class T>
 T Randomizer<T>::get ( T min, T max)
 {
@@ -65,7 +67,12 @@ T Randomizer<T>::get ( T min, T max)
     return  res;
 }
 
-
+template <class T>
+T Randomizer<T>::get ()
+{
+    std::numeric_limits<unsigned char> limits;
+    return Randomizer<T>::get(limits.min(), limits.max());
+}
 
 
 } // Core
