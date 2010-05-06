@@ -173,8 +173,8 @@ public:
     }
 
 public:
-    unsigned int getHeight(void) const;
-    unsigned int getWidth(void) const;
+    virtual unsigned int getHeight(void) const;
+    virtual unsigned int getWidth(void) const;
 
     Rect getSize() const
     {
@@ -191,7 +191,7 @@ public:
     //if not NULL, contains the raw pixel data for the surface
     //shouldnt be public -> format problems, managed by pixel format
     //TO FIX
-    void * getpixels(void) const;
+    virtual void * getpixels(void) const;
 
     //Set the clip rect
     //Default Reset the clip rect to the full size of the surface

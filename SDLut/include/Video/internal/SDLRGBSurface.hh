@@ -82,8 +82,8 @@ public :
     //Destructor
     virtual ~RGBSurface() {}
 
-    bool resetColorKey(bool ckey, const PixelColor & key, bool rleAccel = true);
-    bool resetAlpha(bool alpha, unsigned int value, bool rleAccel = true);
+    virtual bool resetColorKey(bool ckey, const PixelColor & key, bool rleAccel = true);
+    virtual bool resetAlpha(bool alpha, unsigned int value, bool rleAccel = true);
 
     //Use Standard Colors here
     //setPixel();

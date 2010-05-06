@@ -47,9 +47,9 @@ public:
         case Key_F6: //FullScreen
             if (pressed)
             {
-				App::getInstance().getDisplay().getScreenRequest().requestSize(640, 480);
-				App::getInstance().getDisplay().getScreenRequest().requestBPP(App::getInstance().getDisplay().getScreenRequest().getRequestedBPP());
-                App::getInstance().getDisplay().getScreenRequest().requestFullscreen(!App::getInstance().getDisplay().getScreenRequest().isFullscreen());
+				App::getInstance().getDisplay().getScreenInfo().requestSize(640, 480);
+				App::getInstance().getDisplay().getScreenInfo().requestBPP(App::getInstance().getDisplay().getScreenInfo().getRequestedBPP());
+                App::getInstance().getDisplay().getScreenInfo().requestFullscreen(!App::getInstance().getDisplay().getScreenInfo().isFullscreen());
             }
             res = true;
             break;
@@ -165,9 +165,9 @@ void init(bool ogl = false)
     if (! App::getInstance().initText())
         throw std::logic_error( "TTF Init Failed: " + GetError() );
 
-    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(ogl);
-	App::getInstance().getDisplay().getScreenRequest().requestSize(640, 480);
-	App::getInstance().getDisplay().getScreenRequest().requestBPP(32);
+    App::getInstance().getDisplay().getScreenInfo().requestOpenGL(ogl);
+	App::getInstance().getDisplay().getScreenInfo().requestSize(640, 480);
+	App::getInstance().getDisplay().getScreenInfo().requestBPP(32);
 }
 
 void implement(std::string fontfile = "" )
