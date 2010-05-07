@@ -57,8 +57,8 @@ public:
     /// WARNING : These are non-const !
     /// When retrieving existing screen's info, instance should be read only, to forbid any request.
     /// returns true if request granted, false otherwise
-    bool requestSize(unsigned int width, unsigned int height );
-    bool requestBPP(unsigned short bpp);
+    unsigned short requestSize(unsigned int width, unsigned int height );
+    unsigned short requestBPP(unsigned short bpp);
     bool requestOpenGL( bool value);
     bool requestResizable (bool value);
     bool requestNoFrame (bool value);

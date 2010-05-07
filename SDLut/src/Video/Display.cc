@@ -41,7 +41,7 @@ Display::~Display()
 }
 
 
-bool Display::requestSize(unsigned int width, unsigned int height )
+unsigned short Display::requestSize(unsigned int width, unsigned int height )
 {
     if ( pvm_screen.get() != 0 ) // screen initialized
     {
@@ -49,7 +49,7 @@ bool Display::requestSize(unsigned int width, unsigned int height )
     }
     else return pvm_scinf->requestSize(width,height);
 }
-bool Display::requestBPP(unsigned short bpp)
+unsigned short Display::requestBPP(unsigned short bpp)
 {
     if ( pvm_screen.get() != 0 ) // screen initialized
     {

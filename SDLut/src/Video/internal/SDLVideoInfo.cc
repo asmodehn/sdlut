@@ -248,89 +248,134 @@ VideoInfo::~VideoInfo()
 
 
 //those methods just changes the static flags used on display creation.
-//use the App::methods to also reset the display.
-void VideoInfo::requestOpenGL(bool val)
+// false is returned if the request cannot be satisfied
+bool VideoInfo::requestOpenGL(bool val)
 {
+#ifdef WK_OPENGL_FOUND
     if (val)
+	{
+		//TODO : check that the opengl libraries are available on the running platform...
         ptm_videoflags|= SDL_OPENGL;
+	}
     else
+	{
         ptm_videoflags&= (~SDL_OPENGL) ;
+	}
+	return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
+
+#else
+	return ! val;
+#endif
 }
-void VideoInfo::requestFullscreen(bool val)
+bool VideoInfo::requestFullscreen(bool val)
 {
     if (val)
         ptm_videoflags|= SDL_FULLSCREEN;
     else
         ptm_videoflags&= (~SDL_FULLSCREEN) ;
+
+	return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
+
 }
-void VideoInfo::requestResizable(bool val)
+bool VideoInfo::requestResizable(bool val)
 {
     if (val)
         ptm_videoflags|= SDL_RESIZABLE;
     else
         ptm_videoflags&= (~SDL_RESIZABLE) ;
+
+	return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
 }
-void VideoInfo::requestNoFrame(bool val)
+bool VideoInfo::requestNoFrame(bool val)
 {
     if (val)
         ptm_videoflags|= SDL_NOFRAME;
     else
         ptm_videoflags&= (~SDL_NOFRAME) ;
+
+	return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
+
 }
-void VideoInfo::requestDoubleBuf(bool val)
+bool VideoInfo::requestDoubleBuf(bool val)
 {
     if (val)
         ptm_videoflags|= SDL_DOUBLEBUF;
     else
         ptm_videoflags&= (~SDL_DOUBLEBUF) ;
+
+	return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
+
 }
-void VideoInfo::requestAnyFormat(bool val)
+bool VideoInfo::requestAnyFormat(bool val)
 {
     if (val)
         ptm_videoflags|= SDL_ANYFORMAT;
     else
         ptm_videoflags&= (~SDL_ANYFORMAT) ;
+
+	return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
 }
-void VideoInfo::requestSWSurface(bool val)
+bool VideoInfo::requestSWSurface(bool val)
 {
     if (val)
         ptm_videoflags|= SDL_SWSURFACE;
     else
         ptm_videoflags&= (~SDL_SWSURFACE) ;
+
+	return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
 }
-void VideoInfo::requestHWSurface(bool val)
+bool VideoInfo::requestHWSurface(bool val)
 {
     if (val)
         ptm_videoflags|= SDL_HWSURFACE;
     else
         ptm_videoflags&= (~SDL_HWSURFACE) ;
+
+	return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
 }
-void VideoInfo::requestHWPalette(bool val)
+bool VideoInfo::requestHWPalette(bool val)
 {
     if (val)
         ptm_videoflags|= SDL_HWPALETTE;
     else
         ptm_videoflags&= (~SDL_HWPALETTE) ;
+
+	return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
 }
-void VideoInfo::requestAsyncBlit(bool val)
+bool VideoInfo::requestAsyncBlit(bool val)
 {
     if (val)
         ptm_videoflags|= SDL_ASYNCBLIT;
     else
         ptm_videoflags&= (~SDL_ASYNCBLIT) ;
+
+	return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) ;
 }
 
-void VideoInfo::requestSize(unsigned width, unsigned int height)
+unsigned short VideoInfo::requestSize(unsigned width, unsigned int height)
 {
-    //TODO : check if mode is available before changing request
     ptm_requestedHeight= height;
     ptm_requestedWidth = width;
+
+	int suggestedbpp; 
+	if ( ! (0 == (suggestedbpp=SDL_VideoModeOK(width, height,ptm_requestedBPP, ptm_videoflags)) ) )
+	{
+		ptm_requestedHeight= height;
+		ptm_requestedWidth = width;
+	}
+
+	return suggestedbpp;
 }
 
-void VideoInfo::requestBPP(unsigned short bpp)
+unsigned short VideoInfo::requestBPP(unsigned short bpp)
 {
-    //TODO : check mode is OK before changing request
-    ptm_requestedBPP = bpp;
+    int suggestedbpp; 
+	if ( ! (0 == (suggestedbpp=SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight,bpp, ptm_videoflags)) ) )
+	{
+		ptm_requestedBPP = suggestedbpp;
+	}
+
+	return ptm_requestedBPP;
 }
 
 

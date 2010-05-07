@@ -101,20 +101,25 @@ public:
 
     virtual ~VideoInfo();
 
-    //those methods just changes the static flags used on display creation.
-    void requestOpenGL(bool val);
-    void requestFullscreen(bool val);
-    void requestResizable(bool val);
-    void requestNoFrame(bool val);
-    void requestDoubleBuf(bool val);
-    void requestAnyFormat(bool val);
-    void requestSWSurface(bool val);
-    void requestHWSurface(bool val);
-    void requestHWPalette(bool val);
-    void requestAsyncBlit(bool val);
+    ///these methods just changes the static flags used on display creation.
+	///they will return false if the requested bpp is not available with these flags.
+	///Therefore it is advised to set the flags before the bpp
+    virtual bool requestOpenGL(bool val);
+    bool requestFullscreen(bool val);
+    bool requestResizable(bool val);
+    bool requestNoFrame(bool val);
+    virtual bool requestDoubleBuf(bool val);
+    bool requestAnyFormat(bool val);
+    bool requestSWSurface(bool val);
+    bool requestHWSurface(bool val);
+    bool requestHWPalette(bool val);
+    bool requestAsyncBlit(bool val);
 
-    void requestSize(unsigned width, unsigned int height);
-    void requestBPP(unsigned short bpp);
+	///returns the suggested bpp for this width and height
+    unsigned short requestSize(unsigned int width, unsigned int height);
+	/// set and returns the suggested bpp closest to the bpp requested
+	/// therefore it s usually better to set bpp at last to make sure the videosurface can be created.
+    unsigned short requestBPP(unsigned short bpp);
 
     unsigned int getRequestedWidth() const
     {

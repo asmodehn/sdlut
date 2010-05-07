@@ -42,43 +42,34 @@ ScreenInfo::~ScreenInfo()
 /// WARNING : These are non-const !
 /// When retrieving existing screen's info, instance should be read only, to forbid any request.
 /// returns true if request granted, false otherwise
-bool ScreenInfo::requestSize(unsigned int width, unsigned int height )
+unsigned short  ScreenInfo::requestSize(unsigned int width, unsigned int height )
 {
-    //TODO : check new mode is ok
-    m_videoinfo.requestSize(width,height);
-    return true;
+    return m_videoinfo.requestSize(width,height);
 }
 
-bool ScreenInfo::requestBPP(unsigned short bpp)
+unsigned short ScreenInfo::requestBPP(unsigned short bpp)
 {
-    //TODO : check new mode is ok
-    m_videoinfo.requestBPP(bpp);
-    return true;
+    return m_videoinfo.requestBPP(bpp);
 }
 
 bool ScreenInfo::requestOpenGL( bool value)
 {
-    //TODO : check new mode is ok
-    m_videoinfo.requestOpenGL(value);
-    return true;
+    return m_videoinfo.requestOpenGL(value);
 }
 
 bool ScreenInfo::requestResizable (bool value)
 {
-    m_videoinfo.requestResizable(value);
-    return true;
+    return m_videoinfo.requestResizable(value);
 }
 
 bool ScreenInfo::requestNoFrame (bool value)
 {
-    m_videoinfo.requestNoFrame(value);
-    return true;
+    return m_videoinfo.requestNoFrame(value);
 }
 
 bool ScreenInfo::requestFullscreen (bool value)
 {
-    m_videoinfo.requestFullscreen(value);
-    return true;
+    return m_videoinfo.requestFullscreen(value);
 }
 
 //accessor, to ask the status of screen setup
