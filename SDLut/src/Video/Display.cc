@@ -41,6 +41,72 @@ Display::~Display()
 }
 
 
+bool Display::requestSize(unsigned int width, unsigned int height )
+{
+    if ( pvm_screen.get() != 0 ) // screen initialized
+    {
+        return false;
+    }
+    else return pvm_scinf->requestSize(width,height);
+}
+bool Display::requestBPP(unsigned short bpp)
+{
+    if ( pvm_screen.get() != 0 ) // screen initialized
+    {
+        return false;
+    }
+    else return pvm_scinf->requestBPP(bpp);
+}
+bool Display::requestOpenGL( bool value)
+{
+    if ( pvm_screen.get() != 0 ) // screen initialized
+    {
+        return false;
+    }
+    else return pvm_scinf->requestOpenGL( value);
+}
+
+bool Display::requestResizable (bool value)
+{
+    if ( pvm_screen.get() != 0 ) // screen initialized
+    {
+        return false;
+    }
+    else return pvm_scinf->requestResizable(value);
+}
+bool Display::requestNoFrame (bool value)
+{
+    if ( pvm_screen.get() != 0 ) // screen initialized
+    {
+        return false;
+    }
+    else return pvm_scinf->requestNoFrame(value);
+}
+
+bool Display::requestFullscreen (bool value)
+{
+    if ( pvm_screen.get() != 0 ) // screen initialized
+    {
+        return false;
+    }
+    else return pvm_scinf->requestFullscreen(value);
+}
+
+unsigned int Display::getRequestedWidth() const
+{
+    return pvm_scinf->getRequestedWidth();
+}
+
+unsigned int Display::getRequestedHeight() const
+{
+    return pvm_scinf->getRequestedHeight();
+}
+
+unsigned short Display::getRequestedBPP() const
+{
+    return pvm_scinf->getRequestedBPP();
+}
+
 bool Display::setDisplay (unsigned int width, unsigned int height, unsigned int bpp)
 {
     pvm_scinf->requestSize(width, height);

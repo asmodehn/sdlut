@@ -51,10 +51,12 @@ protected:
     Manager* pm_manager;
 
     Color m_background;
+    //for SDL rendering only
+    std::auto_ptr<Image>m_bgsurf;
 
     std::auto_ptr<ScreenInfo> m_scinfo;
 
-    std::auto_ptr<internal::SDLEngine> m_engine; // for now only one engine... later multiple engines will be possible
+    std::auto_ptr<internal::SDLEngine> m_engine;
 
 public:
     ///creates a screenbuffer with ScreenInfo as requested parameters
@@ -73,17 +75,14 @@ public:
         return *m_scinfo;
     }
 
-    void setBGColor(const Color & color)
-    {
-        m_background = color;
-    }
+    void setBGColor(const Color & color);
     Color getBGColor()
     {
         return m_background;
     }
 
-    //fill the VideoSurface with the BGColor
-    void applyBGColor() const;
+    //fill the VideoSurface with the BGColor (in OpenGL ; in SDL blit a surface in the background )
+    void applyBGColor();
 
     bool resize(unsigned int width, unsigned int height);
 

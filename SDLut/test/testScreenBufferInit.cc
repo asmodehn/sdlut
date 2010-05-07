@@ -34,20 +34,32 @@ public:
     /// Test succeed if requested configuration ( obtained after parameters setup ) is the same as obtained configuration
     /// which means this test cannot be used to automatically detect if a configuration si supported.
     /// this must be done in manual.
-    int testit(unsigned int width, unsigned int height, unsigned short bpp)
+    int testit(unsigned int width, unsigned int height, unsigned short bpp, bool resizable = false,  bool fullscreen = false, bool noframe = false)
     {
-        m_disp.getScreenInfo().requestSize(width, height);
-        m_disp.getScreenInfo().requestBPP(bpp);
-        return testit();
+        bool sizereq = m_disp.requestSize(width, height);
+        bool bppreq = m_disp.requestBPP(bpp);
+
+        bool res = testit( noframe, fullscreen, resizable );
+
+        //if size we got is different, it should have been signaled before with a false return
+        //otherwise both should be true
+        res = res && (sizereq  == ( m_disp.getScreenBuffer().getWidth() == width ) );
+        res = res && (sizereq ==  ( m_disp.getScreenBuffer().getHeight() == height ) ) ;
+        //if bpp we got is different, it should have been signaled before with a false return.
+        //otherwise both should be true
+        res = res && (bppreq == ( m_disp.getScreenBuffer().getBPP() == bpp ) );
+
+        return res;
     }
-    int testit()
+    ///testing default desktop mode
+    int testit( bool resizable = false,  bool fullscreen = false, bool noframe = false)
     {
-        m_disp.getScreenInfo().requestOpenGL(m_ap.isOGL());
+        bool oglreq = m_disp.requestOpenGL(m_ap.isOGL());
+        bool nfreq = m_disp.requestNoFrame(noframe);
+        bool fscreq = m_disp.requestFullscreen(fullscreen);
+        bool resreq = m_disp.requestResizable(resizable);
 
-        ScreenInfo * reqVI = &m_disp.getScreenInfo();
-        testlog << nl << *reqVI;
         const ScreenInfo * gotVI;
-
         bool res = false;
 
         if (App::getInstance().getDisplay().show())
@@ -57,75 +69,13 @@ public:
             res = true;
         }
 
-        res = res && reqVI->getRequestedWidth() == m_disp.getScreenBuffer().getWidth();
-        res = res && reqVI->getRequestedHeight() == m_disp.getScreenBuffer().getHeight();
-        res = res && reqVI->getRequestedBPP() == m_disp.getScreenBuffer().getBPP();
-
-        res = res && reqVI->isOpenGL() == gotVI->isOpenGL();
-        res = res && reqVI->isResizable() == gotVI->isResizable();
-        res = res && reqVI->isNoFrame() == gotVI->isNoFrame();
-        res = res && reqVI->isFullscreen() == gotVI->isFullscreen();
+        res = res && ( oglreq == ( gotVI->isOpenGL() == m_ap.isOGL() ) );
+        res = res && ( resreq == ( gotVI->isResizable() == resizable) );
+        res = res && ( nfreq == (gotVI->isNoFrame() == noframe) );
+        res = res && ( fscreq == (gotVI->isFullscreen() == fullscreen) );
 
         App::getInstance().getDisplay().hide();
 
-        return res;
-    }
-
-    int testNoFrame(unsigned int width, unsigned int height, unsigned short bpp )
-    {
-        testNoFrame(false);
-        return testit(width, height, bpp);
-    }
-    int testNoFrame(bool runtest = true)
-    {
-        int res = 0;
-        //No Frame => Not Resizable
-        testlog << nl << "NoFrame config : ";
-        m_disp.getScreenInfo().requestNoFrame(true);
-        if (runtest) res = testit();
-        return res;
-    }
-
-    int testFullscreen(unsigned int width, unsigned int height, unsigned short bpp )
-    {
-        testFullscreen(false);
-        return testit(width, height, bpp);
-    }
-    int testFullscreen(bool runtest = true)
-    {
-        int res = 0;
-        //Fullscreen => noframe + Not Resizable
-        testlog << nl << "Fullscreen config : ";
-        m_disp.getScreenInfo().requestFullscreen(true);
-        if (runtest) res = testit();
-        return res;
-    }
-
-    int testResizable(unsigned int width, unsigned int height, unsigned short bpp )
-    {
-        testResizable(false);
-        return testit(width, height, bpp);
-    }
-    int testResizable(bool runtest = true)
-    {
-        int res = 0;
-        //Resizable => Frame + No Fullscreen
-        testlog << nl << "Resizable config : ";
-        m_disp.getScreenInfo().requestResizable(true);
-        if (runtest) res = testit();
-        return res;
-    }
-
-    int testDefault(unsigned int width, unsigned int height, unsigned short bpp)
-    {
-        testDefault(false);
-        return testit(width,height,bpp);
-    }
-    int testDefault(bool runtest = true)
-    {
-        int res = 0;
-        testlog << nl << "Default config : Window, Frame, Not Resizable, ";
-        if (runtest) res = testit();
         return res;
     }
 
@@ -163,50 +113,102 @@ public:
         {
             testlog << nl << "Testing " << width << " x "  << height << " @ " << bpp;
 
-            if ( ! testDefault(width, height, bpp) )
+            if ( ! testit(width, height, bpp) )
             {
                 testlog << nl << "test Default failed";
-                status |= 0x1;
+                status |= 0x01;
             }
-            if ( ! testResizable(width,height,bpp))
+            if ( ! testit(width,height,bpp,true, false, false))
             {
                 testlog << nl << "test Resizable failed";
-                status |= 0x2;
+                status |= 0x02;
             }
-            if ( ! testFullscreen(width,height,bpp))
+            if ( ! testit(width,height,bpp, false, true, false))
             {
                 testlog << nl << " test Fullscreen failed";
-                status |= 0x4;
+                status |= 0x04;
             }
-            if ( ! testNoFrame(width,height,bpp))
+            if ( ! testit(width,height,bpp, false, false, true))
             {
                 testlog << nl << " test NoFrame failed";
-                status |= 0x8;
+                status |= 0x08;
+            }
+
+            ///Warning : some of these requested mode might not be possible.
+            ///However setting both should have been prevented by SDLut, and the test should therefore succeed.
+            if ( ! testit(width,height,bpp, true, false, true))
+            {
+                testlog << nl << " test Resizable + NoFrame failed";
+                status |= 0x10;
+            }
+
+            if ( ! testit(width,height,bpp, false, true, true))
+            {
+                testlog << nl << " test Fullscreen + NoFrame failed";
+                status |= 0x20;
+            }
+
+            if ( ! testit(width,height,bpp, true, true, false))
+            {
+                testlog << nl << " test Resizable + Fullscreen failed";
+                status |= 0x40;
+            }
+
+            if ( ! testit(width,height,bpp, true, true, true))
+            {
+                testlog << nl << " test Resizable + Fullscreen + NoFrame failed";
+                status |= 0x80;
             }
         }
         else
         {
             testlog << nl << "Testing Default Desktop format.";
 
-            if ( ! testDefault() )
+            if ( ! testit() )
             {
                 testlog << nl << "test Default failed";
-                status |= 0x1;
+                status |= 0x01;
             }
-            if ( ! testResizable())
+            if ( ! testit(true, false, false))
             {
                 testlog << nl << "test Resizable failed";
-                status |= 0x2;
+                status |= 0x02;
             }
-            if ( ! testFullscreen())
+            if ( ! testit( false, true, false))
             {
                 testlog << nl << " test Fullscreen failed";
-                status |= 0x4;
+                status |= 0x04;
             }
-            if ( ! testNoFrame())
+            if ( ! testit( false, false, true))
             {
                 testlog << nl << " test NoFrame failed";
-                status |= 0x8;
+                status |= 0x08;
+            }
+
+            ///Warning : some of these requested mode might not be possible.
+            ///However setting both should have been prevented by SDLut, and the test should therefore succeed.
+            if ( ! testit( true, false, true))
+            {
+                testlog << nl << " test Resizable + NoFrame failed";
+                status |= 0x10;
+            }
+
+            if ( ! testit( false, true, true))
+            {
+                testlog << nl << " test Fullscreen + NoFrame failed";
+                status |= 0x20;
+            }
+
+            if ( ! testit( true, true, false))
+            {
+                testlog << nl << " test Resizable + Fullscreen failed";
+                status |= 0x40;
+            }
+
+            if ( ! testit( true, true, true))
+            {
+                testlog << nl << " test Resizable + Fullscreen + NoFrame failed";
+                status |= 0x80;
             }
         }
         return status;

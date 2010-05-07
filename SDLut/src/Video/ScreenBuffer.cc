@@ -10,7 +10,7 @@ namespace video
 
 ScreenBuffer::ScreenBuffer(const ScreenInfo& scinf, Manager* manager) throw (std::logic_error)
 try :
-    fullRefreshNeeded(true), pm_manager(manager), m_background(Color(0,0,0)), m_scinfo()
+    fullRefreshNeeded(true), pm_manager(manager), m_background(Color(0,0,0)), m_scinfo(), m_bgsurf()
 {
     Log << nl << "Creating new ScreenBuffer. ScreenInfo Requested " << scinf;
 #ifdef WK_OPENGL_FOUND
@@ -20,6 +20,9 @@ try :
 #endif
 
     m_scinfo.reset(new ScreenInfo(m_screen->getVideoInfo()));
+
+    m_bgsurf.reset(new Image(m_screen->getWidth(), m_screen->getHeight(),m_screen->getBPP()));
+    m_bgsurf->fill(m_background);
 
     //initializing engine
     m_engine.reset(new internal::SDLEngine());
@@ -242,7 +245,14 @@ bool ScreenBuffer::isNoFrame()
     }
 }
 */
-void ScreenBuffer::applyBGColor() const
+
+void ScreenBuffer::setBGColor(const Color & color)
+{
+    m_background = color;
+    m_bgsurf->fill(color);
+}
+
+void ScreenBuffer::applyBGColor()
 {
     if (m_screen.get()) // if auto pointer valid
     {
@@ -260,7 +270,13 @@ void ScreenBuffer::applyBGColor() const
         else
         {
 #endif
-            m_screen->fill(m_screen->getVideoInfo().getPixelFormat().getPixelColor(m_background));
+
+            if ( ! (m_background == Color() ) ) // if background color not black
+            {
+                Rect sc_rect (0,0,m_screen->getWidth(), m_screen->getHeight());
+                blit(*m_bgsurf,sc_rect);
+            }
+
 #ifdef WK_OPENGL_FOUND
         }
 #endif
@@ -295,9 +311,6 @@ bool ScreenBuffer::resize (unsigned int width,unsigned int height)
     //{
     res = res && m_screen->resize(width,height);//doesnt keep content
 
-    //resetting our Engine. Useful if OpenGL dependent : need to reload the new created context
-    //resizing engine doesnt make much sense though.
-    m_engine.reset(new internal::SDLEngine());
 
     //We do need to resetthis order otherwise we lose opengl context from the engine just after the resize ( reinit )
     //because screen resize recreates the window, and lose opengl context as documented in SDL docs...
@@ -306,6 +319,16 @@ bool ScreenBuffer::resize (unsigned int width,unsigned int height)
     //{
     //    m_scinfo->requestSize( (width>0) ? width : 0 , (height>0) ? height : 0 );
     //}
+
+    //resizing background surface
+    m_bgsurf->resize(m_screen->getWidth(), m_screen->getHeight());
+    m_bgsurf->fill(m_background);
+
+    //resetting our Engine. Useful if OpenGL dependent : need to reload the new created context
+    //resizing engine doesnt make much sense though.
+    m_engine.reset(new internal::SDLEngine());
+
+
 #ifdef DEBUG
     Log << nl << "ScreenBuffer::resize() done.";
 #endif

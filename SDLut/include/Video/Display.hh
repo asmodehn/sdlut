@@ -57,15 +57,31 @@ protected:
     ///Then user modifies pvm_scinf
     ///on show() -> screenbuffer created and pvm_scinf = 0
     std::auto_ptr<ScreenBuffer> pvm_screen;
-    std::auto_ptr<ScreenInfo> pvm_scinf; // storing best screeninfo upon initialization, then modified by user request to get requested screen parameters
+
+
+
+    /// storing best screeninfo upon initialization, then modified by user request to get requested screen parameters through request*() accessors
+    std::auto_ptr<ScreenInfo> pvm_scinf;
 
 public:
+
+    ///these modify the screeninfo structure to store requested parameters
+    /// WARNING : These are modifying existing screeninfo !
+    bool requestSize(unsigned int width, unsigned int height );
+    bool requestBPP(unsigned short bpp);
+    bool requestOpenGL( bool value);
+    bool requestResizable (bool value);
+    bool requestNoFrame (bool value);
+    bool requestFullscreen (bool value);
+
+    unsigned int getRequestedWidth() const;
+    unsigned int getRequestedHeight() const;
+    unsigned short getRequestedBPP() const;
+
     //sets Display size and BPP
     bool setDisplay( unsigned int width = 0, unsigned int height = 0, unsigned int bpp = 0 );
     bool show();
     bool hide();
-
-
 
     //just resize the screen (without changing flags, or bpp)
     //returns NULL if no screen available
@@ -87,21 +103,6 @@ public:
         {
             throw std::logic_error("Screen Buffer not initialized. Display::show() must be called before accessing ScreenBuffer.");
         }
-    }
-
-    ///Returns Requested mode before creation of screenbuffer
-    ///Returns created screen info, after creation of screenbuffer
-    ScreenInfo & getScreenInfo()
-    {
-        if ( pvm_scinf.get() != 0 )
-        {
-            return *pvm_scinf;
-        }
-        else
-        {
-            throw std::logic_error("Screen Buffer initialized. ScreenInfo must be accessed through ScreenBuffer.");
-        }
-
     }
 
     inline system::EventManager & getEventManager()
