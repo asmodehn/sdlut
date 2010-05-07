@@ -8,7 +8,7 @@ Made by XorfacX
 #include "SDL.hh"
 
 using namespace SDLut;
-using namespace RAGE;
+using namespace Core;
 
 
 #if defined(_MSC_VER)

@@ -22,7 +22,7 @@ namespace gcn
  */
 inline const video::Color SDLutgetPixel(video::Image*& img, int x, int y)
 {
-    return img->getpixel(x, y);
+	return img->getpixel(x, y);
 }
 
 /**
@@ -35,7 +35,7 @@ inline const video::Color SDLutgetPixel(video::Image*& img, int x, int y)
  */
 inline const video::Color SDLutgetPixel(video::ScreenBuffer*& scr, int x, int y)
 {
-    return scr->getpixel(x, y);
+    return scr->getColorAt(x, y);
 }
 
 /**
@@ -48,7 +48,7 @@ inline const video::Color SDLutgetPixel(video::ScreenBuffer*& scr, int x, int y)
  */
 inline void SDLutputPixel(video::Image* img, int x, int y, const gcn::Color& color)
 {
-    img->setpixel( x, y, video::Color( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b, (unsigned char)color.a ) );
+	img->setpixel( x, y, video::Color( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b, (unsigned char)color.a ) );
 }
 
 /**
@@ -61,7 +61,7 @@ inline void SDLutputPixel(video::Image* img, int x, int y, const gcn::Color& col
  */
 inline void SDLutputPixel(video::ScreenBuffer* scr, int x, int y, const gcn::Color& color)
 {
-    scr->setpixel( x, y, video::Color( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b, (unsigned char)color.a ) );
+	scr->setColorAt( x, y, video::Color( (unsigned char)color.r, (unsigned char)color.g, (unsigned char)color.b, (unsigned char)color.a ) );
 }
 
 }
