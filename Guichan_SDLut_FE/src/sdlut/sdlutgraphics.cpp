@@ -31,18 +31,7 @@ SDLutGraphics::SDLutGraphics()
 
 void SDLutGraphics::setTarget(video::ScreenBuffer* target)
 {
-    mTarget = target;
-
-    //if (!Image4Pixels.get())
-    {
-        Image4Pixels.reset( new video::Image(mTarget->getWidth(), mTarget->getHeight(), mTarget->getBPP(), false, false ) );
-        //Image4Pixels->resetColorKey(true, SDLutImageLoader::magicPink);
-    }
-
-    //Image4Pixels->resize(mTarget->getWidth(), mTarget->getHeight());
-    Image4PixelsDim = video::Rect(0, 0, Image4Pixels->getWidth(), Image4Pixels->getHeight());
-
-    //Image4Pixels->fill(SDLutImageLoader::magicPink);
+    mTarget = target;	
 }
 
 video::ScreenBuffer* SDLutGraphics::getTarget() const
@@ -54,20 +43,28 @@ video::ScreenBuffer* SDLutGraphics::getTarget() const
 // Inherited from Graphics
 void SDLutGraphics::_beginDraw()
 {
-    Rectangle area;
-    area.x = 0;
+    Rectangle area (0, 0, mTarget->getWidth(), mTarget->getHeight() );
+    /*area.x = 0;
     area.y = 0;
     area.width = mTarget->getWidth();
-    area.height = mTarget->getHeight();
+    area.height = mTarget->getHeight();*/
+
+	if (!Image4Pixels.get() || Image4Pixels->getWidth() != mTarget->getWidth() || Image4Pixels->getHeight() != mTarget->getHeight() )
+    {
+        Image4Pixels.reset( new video::Image(mTarget->getWidth(), mTarget->getHeight(), mTarget->getBPP(), false, false ) );
+		Image4PixelsDim = video::Rect(0, 0, Image4Pixels->getWidth(), Image4Pixels->getHeight());
+    }
+	Image4Pixels->fill(video::Color(0,0,0,0));
+
     pushClipArea(area);
 }
 
 void SDLutGraphics::_endDraw()
 {
     tempImage4PixelsDim = Image4PixelsDim;
+    popClipArea();	
     mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
 
-    popClipArea();
 }
 
 
@@ -135,7 +132,9 @@ void SDLutGraphics::drawImage(const gcn::Image* image,
         throw GCN_EXCEPTION("Trying to draw an image of unknown format, must be an SDLutImage.");
     }
 
-    mTarget->blit(*(srcImage->getSurface()), dst, src);
+    //mTarget->blit(*(srcImage->getSurface()), dst, src);
+	Image4Pixels->blit(*(srcImage->getSurface()), dst, src);
+
     //SDL_BlitSurface(srcImage->getSurface(), &src, mTarget, &dst);
 }
 
@@ -157,13 +156,14 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
         return;
     }
 
+	video::Rect rect;
     if (mAlpha)
     {
         int x1 = area.x > top.x ? area.x : top.x;
         int y1 = area.y > top.y ? area.y : top.y;
         int x2 = area.x + area.width < top.x + top.width ? area.x + area.width : top.x + top.width;
         int y2 = area.y + area.height < top.y + top.height ? area.y + area.height : top.y + top.height;
-        int x, y;
+        /*int x, y;
 
         for (y = y1; y < y2; y++)
         {
@@ -171,17 +171,20 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
             {
                 SDLutputPixel(Image4Pixels.get(), x, y, mColor);
             }
-        }
+        }*/
+		rect = video::Rect(x1, y1, x2-x1, y2-y1);
     }
     else
     {
-        video::Rect rect(area.x, area.y, area.width, area.height);
-        video::Color rgbacolor( (unsigned char)mColor.r, (unsigned char)mColor.g, (unsigned char)mColor.b, (unsigned char)mColor.a );
+        rect = video::Rect(area.x, area.y, area.width, area.height);
+        //video::Color rgbacolor( (unsigned char)mColor.r, (unsigned char)mColor.g, (unsigned char)mColor.b, (unsigned char)mColor.a );
 
         //mTarget->fill(rgbacolor, rect );
         //Image4Pixels->fill(rgbacolor, rect );
 
     }
+	video::Color rgbacolor( (unsigned char)mColor.r, (unsigned char)mColor.g, (unsigned char)mColor.b, (unsigned char)mColor.a );
+	Image4Pixels->fill(rgbacolor, rect );
 }
 
 void SDLutGraphics::drawPoint(int x, int y)
@@ -204,12 +207,14 @@ void SDLutGraphics::drawPoint(int x, int y)
 
 void SDLutGraphics::drawHLine(int x1, int y, int x2)
 {
-    drawLine(x1, y, x2, y);
+    //drawLine(x1, y, x2, y);
+	fillRectangle( gcn::Rectangle(std::min<int>(x1, x2), y, abs(x2-x1), 1) );
 }
 
 void SDLutGraphics::drawVLine(int x, int y1, int y2)
 {
-    drawLine(x, y1, x, y2);
+    //drawLine(x, y1, x, y2);
+	fillRectangle( gcn::Rectangle(x, std::min<int>(y1, y2), 1, abs(y2-y1)) );
 }
 
 void SDLutGraphics::drawRectangle(const Rectangle& rectangle)
@@ -389,7 +394,8 @@ void SDLutGraphics::drawSDLutSurface(video::Image& surface,
     destination.resetx( top.xOffset + destination.getx() );
     destination.resety( top.yOffset + destination.gety() );
 
-    mTarget->blit( surface, destination, source);
+    //mTarget->blit( surface, destination, source);
+	Image4Pixels->blit( surface, destination, source);
 }
 
 } //gcn

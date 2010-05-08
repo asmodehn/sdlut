@@ -31,10 +31,8 @@ public:
     SDLutGraphics();
 
     /**
-     * Sets the target BaseSurface to draw to. The target can be any
-     * BaseSurface. This funtion also pushes a clip areas corresponding to
-     * the dimension of the target.
-     *
+     * Sets the target ScreenBuffer to draw to.
+	 * 
      * @param target the target to draw to.
      */
     virtual void setTarget(video::ScreenBuffer* target);
@@ -47,7 +45,7 @@ public:
     virtual video::ScreenBuffer* getTarget() const;
 
     /**
-     * Draws a BaseSurface on the target surface. Normaly you'll
+     * Draws an Image on the target surface. Normaly you'll
      * use drawImage
      *
      * NOTE: The clip areas will be taken into account.
