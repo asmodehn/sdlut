@@ -7,7 +7,7 @@ namespace SDLut
 {
 namespace network
 {
-#ifdef WK_SDLNET_FOUND
+#ifdef WK_SDLut_FOUND_SDLNET
 
 SocketTCPExtend::SocketTCPExtend(const TCPsocket & tcpsocket)
 try :

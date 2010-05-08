@@ -16,7 +16,7 @@ Mixer::Mixer(int frequency /*= 44100*/,unsigned short channels /*= 2*/,unsigned 
 try :
     pvm_mixerimpl(0)
 {
-#ifdef WK_SDLMIXER_FOUND
+#ifdef WK_SDLut_FOUND_SDLMIXER
     pvm_mixerimpl.reset( new MixerExtend(frequency, channels, samples) );
 #else
     pvm_mixerimpl.reset( new MixerImpl(frequency,channels,samples) );

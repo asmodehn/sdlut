@@ -133,9 +133,9 @@ private:
 
     protected:
     	std::auto_ptr<RGBSurface> Loading_BG;
-    	#ifdef WK_SDLTTF_FOUND
+    	#ifdef WK_SDLut_FOUND_SDLTTF
     		Font Loading_Global_Msg_Font, Loading_Specific_Msg_Font; //ref
-    	#endif // WK_SDLTTF_FOUND
+    	#endif // WK_SDLut_FOUND_SDLTTF
     	std::string Loading_Global_Msg, Loading_Specific_Msg;
     	short Progress_Percent;
     	Rect Progress_Bar_Infos;
@@ -143,24 +143,24 @@ private:
     	LoadingScreen(
     		std::auto_ptr<RGBSurface> _Loading_BG,
     		const std::string& _Loading_Global_Msg,
-    		#ifdef WK_SDLTTF_FOUND
+    		#ifdef WK_SDLut_FOUND_SDLTTF
     			const Font& _Loading_Global_Msg_Font,
-    		#endif // WK_SDLTTF_FOUND
+    		#endif // WK_SDLut_FOUND_SDLTTF
     		const std::string& _Loading_Specific_Msg,
-    		#ifdef WK_SDLTTF_FOUND
+    		#ifdef WK_SDLut_FOUND_SDLTTF
     			const Font& _Loading_Specific_Msg_Font,
-    		#endif // WK_SDLTTF_FOUND
+    		#endif // WK_SDLut_FOUND_SDLTTF
     		const Rect& Progress_Bar_Infos
     		) :
     			Loading_BG(_Loading_BG),
     			Loading_Global_Msg(_Loading_Global_Msg),
-    			#ifdef WK_SDLTTF_FOUND
+    			#ifdef WK_SDLut_FOUND_SDLTTF
     				Loading_Global_Msg_Font(_Loading_Global_Msg_Font),
-    			#endif // WK_SDLTTF_FOUND
+    			#endif // WK_SDLut_FOUND_SDLTTF
     			Loading_Specific_Msg(_Loading_Specific_Msg),
-    			#ifdef WK_SDLTTF_FOUND
+    			#ifdef WK_SDLut_FOUND_SDLTTF
     				Loading_Specific_Msg_Font(_Loading_Specific_Msg_Font),
-    			#endif // WK_SDLTTF_FOUND
+    			#endif // WK_SDLut_FOUND_SDLTTF
     			Progress_Bar_Infos(Progress_Bar_Infos)
     	{
     		Progress_Percent = 0;
@@ -187,7 +187,7 @@ int sbpp = Screen->getVideoInfo()->getPixelFormat()->getBitsPerPixel();
 //Blit BG
 Screen->blit(*Loading_BG, Point( ls_x, ls_y ) );
 
-#ifdef WK_SDLTTF_FOUND
+#ifdef WK_SDLut_FOUND_SDLTTF
 //Blit Global Msg
 if (Loading_Global_Msg != "")
 Screen->blit(*(Loading_Global_Msg_Font.render(Loading_Global_Msg,RGBAColor(0,0,0), Font::Blended )), Point( ls_x + Progress_Bar_Infos.getx(), std::max(ls_y, ls_y + Progress_Bar_Infos.gety() - 40) ) );
@@ -195,7 +195,7 @@ Screen->blit(*(Loading_Global_Msg_Font.render(Loading_Global_Msg,RGBAColor(0,0,0
 //Blit Specific Msg
 if (Loading_Specific_Msg != "")
 Screen->blit(*(Loading_Specific_Msg_Font.render(Loading_Specific_Msg,RGBAColor(0,0,0), Font::Blended )), Point(ls_x + Progress_Bar_Infos.getx(), ls_y + Progress_Bar_Infos.gety() + Progress_Bar_Infos.geth()*2 ) );
-#endif //WK_SDLTTF_FOUND
+#endif //WK_SDLut_FOUND_SDLTTF
 
 //progression bar
 RGBSurface progressbar( Progress_Percent*Progress_Bar_Infos.getw()/100, Progress_Bar_Infos.geth(), sbpp );
@@ -223,13 +223,13 @@ public:
     /*			void ShowLoadingScreen(
     				const std::string& Loading_BG_Filename,
     				const std::string& Loading_Global_Msg,
-    				#ifdef WK_SDLTTF_FOUND
+    				#ifdef WK_SDLut_FOUND_SDLTTF
     					const Font& Loading_Global_Msg_Font,
-    				#endif // WK_SDLTTF_FOUND
+    				#endif // WK_SDLut_FOUND_SDLTTF
     				const std::string& Loading_Specific_Msg,
-    				#ifdef WK_SDLTTF_FOUND
+    				#ifdef WK_SDLut_FOUND_SDLTTF
     					const Font& Loading_Specific_Msg_Font,
-    				#endif // WK_SDLTTF_FOUND
+    				#endif // WK_SDLut_FOUND_SDLTTF
     				const Rect& Progress_Bar_Infos = Rect()
     				);
     */

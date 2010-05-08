@@ -122,7 +122,7 @@ catch (std::exception &e)
 }
 
 RGBSurface::RGBSurface(system::RWOps& rwops) throw (std::logic_error)
-#ifdef WK_SDLIMAGE_FOUND
+#ifdef WK_SDLut_FOUND_SDLIMAGE
 try :
     BaseSurface(IMG_Load_RW(const_cast<SDL_RWops*>(rwops.get_pSDL()),0)), optimised(false)
 #else

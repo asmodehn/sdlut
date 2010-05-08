@@ -156,11 +156,11 @@ bool Display::resizeDisplay (int width, int height)
 /*		void Window::ShowLoadingScreen(
 			const std::string& Loading_BG_Filename,
 			const std::string& Loading_Global_Msg,
-			#ifdef WK_SDLTTF_FOUND
+			#ifdef WK_SDLut_FOUND_SDLTTF
 				const Font& Loading_Global_Msg_Font,
 			#endif
 			const std::string& Loading_Specific_Msg,
-			#ifdef WK_SDLTTF_FOUND
+			#ifdef WK_SDLut_FOUND_SDLTTF
 				const Font& Loading_Specific_Msg_Font,
 			#endif
 			const Rect& Progress_Bar_Infos )

@@ -25,7 +25,7 @@ Version::Version(Version::Component c)
         _linked->patch = SDL_Linked_Version()->patch;
         break;
     case TTF :
-#ifdef WK_SDLTTF_FOUND
+#ifdef WK_SDLut_FOUND_SDLTTF
         TTF_VERSION(_compiled);
         _linked->major = TTF_Linked_Version()->major;
         _linked->minor = TTF_Linked_Version()->minor;
@@ -35,7 +35,7 @@ Version::Version(Version::Component c)
 #endif
         break;
     case Image :
-#ifdef WK_SDLIMAGE_FOUND
+#ifdef WK_SDLut_FOUND_SDLIMAGE
         SDL_IMAGE_VERSION(_compiled);
         _linked->major = IMG_Linked_Version()->major;
         _linked->minor = IMG_Linked_Version()->minor;
@@ -45,7 +45,7 @@ Version::Version(Version::Component c)
 #endif
         break;
     case Mixer :
-#ifdef WK_SDLMIXER_FOUND
+#ifdef WK_SDLut_FOUND_SDLMIXER
         SDL_MIXER_VERSION(_compiled);
         _linked->major = Mix_Linked_Version()->major;
         _linked->minor = Mix_Linked_Version()->minor;
@@ -56,7 +56,7 @@ Version::Version(Version::Component c)
         break;
 
     case Net :
-#ifdef WK_SDLNET_FOUND
+#ifdef WK_SDLut_FOUND_SDLNET
         SDL_NET_VERSION(_compiled);
         _linked->major = SDLNet_Linked_Version()->major;
         _linked->minor = SDLNet_Linked_Version()->minor;

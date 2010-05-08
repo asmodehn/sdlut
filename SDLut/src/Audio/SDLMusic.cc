@@ -53,7 +53,7 @@ Music::Music(std::string filename) throw (std::logic_error)
 try :
     pvm_musicimpl(0)
 {
-#ifdef WK_SDLMIXER_FOUND
+#ifdef WK_SDLut_FOUND_SDLMIXER
     pvm_musicimpl.reset( new MusicExtend(filename) );
 #else
     pvm_musicimpl.reset( new MusicImpl(filename) );

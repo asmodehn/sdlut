@@ -44,7 +44,7 @@ public:
 
 private:
 
-//#ifdef WK_SDLTTF_FOUND
+//#ifdef WK_SDLut_FOUND_SDLTTF
 //    std::auto_ptr<FontExtend> pvm_font;
 //#else
     std::auto_ptr<FontImpl> pvm_font;

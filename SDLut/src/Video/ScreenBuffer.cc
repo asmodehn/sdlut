@@ -164,7 +164,7 @@ bool ScreenBuffer::setNoFrame(bool val)
     return res;
 }
 
-#ifdef WK_SDut_FOUND_OPENGL
+#ifdef WK_SDLut_FOUND_OPENGL
 bool ScreenBuffer::setOpenGL(bool val)
 {
 

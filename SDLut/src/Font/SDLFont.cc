@@ -103,7 +103,7 @@ std::auto_ptr<video::internal::RGBSurface> Font::render(std::string text, video:
 bool Font::setTTF(std::string filename, int ptsize)
 {
     bool changed = false;
-#ifdef WK_SDLTTF_FOUND
+#ifdef WK_SDLut_FOUND_SDLTTF
     try
     {
         pvm_font.reset( new FontExtend(filename,ptsize) );

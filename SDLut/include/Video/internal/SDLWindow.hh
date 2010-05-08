@@ -23,9 +23,9 @@
 #include "Video/Color.hh"
 #include "Video/internal/SDLRGBSurface.hh"
 
-#ifdef WK_SDLTTF_FOUND
+#ifdef WK_SDLut_FOUND_SDLTTF
 #include "Font/SDLFont.hh"
-#endif //WK_SDLTTF_FOUND
+#endif //WK_SDLut_FOUND_SDLTTF
 
 #include <memory>
 
