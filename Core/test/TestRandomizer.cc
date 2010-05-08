@@ -82,5 +82,5 @@ int main (int argc, char * argv [] )
 
     testlog << nl << "TODO : test other built in types";
 
-	return (success)? 0 : -1;
+    return (success)? 0 : -1;
 }

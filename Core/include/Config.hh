@@ -34,14 +34,14 @@
 //If we are built using WkCMake, we can use WkPlatform Detection
 
 #ifdef WK_BUILD
-# include "WkPlatform.h"
-# if defined ( WK_PLATFORM_IS_WIN32 )
+# include "WkPlatform_Core.h"
+# if defined ( WK_Core_PLATFORM_IS_WIN32 )
 #  define CORE_PLATFORM_WIN32
-# elif defined ( WK_PLATFORM_POSIX )
+# elif defined ( WK_Core_PLATFORM_POSIX )
 #  define CORE_PLATFORM_POSIX
 # endif
-# define CORE_API WK_API
-# define CORE_LOCAL WK_LOCAL
+# define CORE_API WK_Core_API
+# define CORE_LOCAL WK_Core_LOCAL
 
 // TODO
 /*
