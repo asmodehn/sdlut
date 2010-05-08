@@ -99,8 +99,7 @@ public:
     ///WARNING : Slow
     Color getColorAt(unsigned int x,unsigned int y);
     void setColorAt(unsigned int x, unsigned int y, const Color & pixel);
-    //TODO
-    //void setColorAt(Rect& dest_rect, const Color & pixel);
+    void setColorAt(Rect& dest_rect, const Color & pixel);
 
     //Defines a 2D clippin Rect Area
     void resetClipRect( const Rect& clipr );

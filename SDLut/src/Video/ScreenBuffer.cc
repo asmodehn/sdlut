@@ -457,13 +457,52 @@ void ScreenBuffer::setColorAt(unsigned int x,unsigned int y, const Color & pixel
     }
     else
     {
-        throw std::logic_error("Trying to pu a pixel outside of ScreenBuffer range");
+        throw std::logic_error("Trying to set a pixel outside of ScreenBuffer range");
     }
 }
 
-//TODO
-//void setColorAt(Rect& dest_rect, const Color & pixel);
+void ScreenBuffer::setColorAt(Rect& dest_rect, const Color & pixel)
+{
+    //We need to check the rect is in the ScreenBuffer
+    if (dest_rect.getx() >= 0 && dest_rect.gety() >= 0 && dest_rect.getx()+dest_rect.getw() < getWidth() && dest_rect.gety()+dest_rect.geth() < getHeight())
+    {
+        PixelColor pcolor = m_screen->getVideoInfo().getPixelFormat().getPixelColor(pixel);
+        //we need to take care about alpha blending.
+        //we need to maintain same behaviour as the blitting with alpha.
+        //http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetAlpha
+        if ( m_screen->getVideoInfo().getPixelFormat().getAmask() == 0 ) //screen doesnt support alpha pixel format
+        {
+            if ( !m_screen->isOpenGLset() ) // screen is not opengl : alpha blending pixel not supported
+            {
+                if ( pixel.hasAlpha() ) // we have alpha
+                {
+                    //BUG HERE : how to handle transparency on a fill ????
+                    //reset color with preblending computation
+                    pcolor = m_screen->getVideoInfo().getPixelFormat().getPixelColor(blend(pixel,m_screen->getVideoInfo().getPixelFormat().getColor(m_screen->getpixel(dest_rect.getx(),dest_rect.gety()))));
+                }
+            }
+            else//m_screen->isOpenGLset() -> we can keep alpha
+            {
+                //adding Alpha to pixel color
+                //as the SDL_pixelformat for OpenGL discards alpha information
+                PixelColor alpha = pixel.getA() ;
+                PixelColor properalpha = (alpha << (m_screen->getVideoInfo().getPixelFormat().getBitsPerPixel() - m_screen->getVideoInfo().getPixelFormat().getAloss()) );
+                pcolor = pcolor | properalpha ;
+            }
+        }
+        else //pcolor should be properly set
+        {
+            //Really is there one screen that support this ??
+            //GLPixelFormat ??
+        }
 
+        m_screen->fill(pcolor,dest_rect);
+    }
+    else
+    {
+        throw std::logic_error("Trying to set a pixel outside of ScreenBuffer range");
+    }
+}
 
 
 

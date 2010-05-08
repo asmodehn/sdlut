@@ -260,8 +260,8 @@ int main(int argc, char** argv)
     App::getInstance().setName ("SDLut::video Dumb test ");
 
     //Setting Display size and BPP
-    App::getInstance().getDisplay().getScreenInfo().requestSize(300,240); // using autodetected bpp
-    App::getInstance().getDisplay().getScreenInfo().requestOpenGL(args.isOGL());
+    App::getInstance().getDisplay().requestSize(300,240); // using autodetected bpp
+    App::getInstance().getDisplay().requestOpenGL(args.isOGL());
 
     int exitstatus = -1;
 

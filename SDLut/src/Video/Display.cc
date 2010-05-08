@@ -310,6 +310,10 @@ int Display::mainLoop(unsigned int framerate, unsigned int eventrate)
         Log  << nl <<" Ignoring mainLoop call." << std::endl;
     }
 
+
+    //default behaviour : hiding screen after mainloop
+    hide();
+
     //returning status
     return m_exitstatus;
 

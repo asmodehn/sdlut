@@ -2,144 +2,129 @@
 
 using namespace SDLut;
 
-Logger testlog("testScreenAccess");
+Logger testlog("ScreenAccess");
 
-class MyEngine
+class Assert : public AssertEngine
 {
-
+    video::Rect assertedrect;
+    video::Color color;
 public:
-    std::string fn;
-    video::Rect imagepos;
-    ArgParser arg;
-    unsigned int test_it;
-    video::Color bgcolor, pixel, objectivePixel;
-
-    MyEngine( ArgParser ap) : arg(ap), test_it(0), bgcolor(240,128,128,255), pixel(50, 220, 80, 255)
+    Assert(Logger& l, ArgParser& ap,video::Rect assertrect, video::Color c)
+            : AssertEngine(l,ap), assertedrect(assertrect), color(c)
     {
-        fn = arg.get(1);
+        if ( ! testlog.isFileLogEnabled() ) testlog.enableFileLog("TestScreenAccess.log");
     }
 
-    virtual ~MyEngine() {}
-
-    bool init(int width, int height)
+    bool assertresize(int width, int height)
     {
-        if (fn != "")
-        {
-            loadedimage = loader.load(fn);
+        if (assertedrect.getx() < 0) assertedrect.resetx(0);
+        if (assertedrect.gety() < 0) assertedrect.resety(0);
+        if ( (int)(assertedrect.getx() + assertedrect.getw() ) > width ) assertedrect.resetw( width - assertedrect.getx() );
+        if ( (int)(assertedrect.gety() + assertedrect.geth() ) > height ) assertedrect.reseth( height - assertedrect.gety() );
 
-            imagepos.resetx(0);
-            imagepos.resety(0);
-            imagepos.resetw( loadedimage->getWidth());
-            imagepos.reseth( loadedimage->getHeight());
-        }
         return true;
     }
-
-    bool render(video::ScreenBuffer & screen) const
+    bool assertrender(video::ScreenBuffer& sb) const
     {
-        //No image
-        if (fn == "")
+        bool res = true;
+        int x =assertedrect.getx(), y =assertedrect.gety();
+        while ( y < (int)assertedrect.geth())
         {
-            //screen.fill(bgcolor);
-            if (screen.getpixel(10,10) != bgcolor)
-                App::getInstance().requestTermination(-1);
-            break;
-
+            while ( x < (int)assertedrect.getw() )
+            {
+                res = res && (sb.getColorAt(x,y) == color);
+            }
         }
 
-        //PNG
-        else
+        return res ;
+    }
+};
 
+class Test : public TestEngine
+{
+    video::Rect testedrect;
+    video::Color color;
+public:
+
+    Test(Logger& l, Assert & a, video::Rect testrect, video::Color c) : TestEngine(l,a), testedrect(testrect),color(c) {}
+    bool resize(int width, int height)
+    {
+        //check rect size
+        if (testedrect.getx() < 0) testedrect.resetx(0);
+        if (testedrect.gety() < 0) testedrect.resety(0);
+        if ( (int)(testedrect.getx() + testedrect.getw()) > width ) testedrect.resetw( width - testedrect.getx() );
+        if ( (int)(testedrect.gety() + testedrect.geth()) > height ) testedrect.reseth( height - testedrect.gety() );
+
+        return true;
+    }
+    bool render(video::ScreenBuffer& sb) const
+    {
+        if ( (1 == testedrect.geth() ) && ( testedrect.getw() == 1 ) )
         {
-            loadedimage = loader.load(fn);
-
-            //http://www.libsdl.org/cgi/docwiki.cgi/SDL_SetAlpha
-
-            pixel.setA(255);
-
-            objectivePixel = loadedimage->getpixel(10,10).blendunder(pixel);
-
-            loadedimage->setpixel(10,10, pixel);
-            if (loadedimage->getpixel(10,10) != objectivePixel)
-                App::getInstance().requestTermination(-1);
-            break;
-
-
-
-        } //PNG
+            sb.setColorAt( testedrect.getx(),testedrect.gety(),color );
+        }
+        else
+        {
+            //working around constness
+            video::Rect dstrect = testedrect;
+            sb.setColorAt( dstrect,color);
+        }
 
         return true;
     }
 };
 
-
-//Main Program
 int main(int argc, char** argv)
 {
     ArgParser args(argc,argv);
 
-    App::getInstance().initVideo(false,false,false);
-    App::getInstance().setName ("SDLut test - Screen Access");
+    //Starting with usual SDL window
+    App::getInstance().initVideo(false,true,false);
+    App::getInstance().setName ("SDLut::video Dumb test ");
 
-    testlog.enableFileLog("TestScreenAccess.log");
-
-    App::getInstance().getDisplay().getScreenRequest().requestSize(300,240); // size is big enough for test. Using autodetected bpp
-    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(args.isOGL());
+    //Setting Display size and BPP
+    App::getInstance().getDisplay().requestSize(300,240); // using autodetected bpp
+    App::getInstance().getDisplay().requestOpenGL(args.isOGL());
 
     int exitstatus = -1;
 
-    std::auto_ptr<MyEngine> engine;
-    engine.reset(new MyEngine(args));
+    ///testing pixel set
+    video::Color color(Randomizer<unsigned char>::get(),Randomizer<unsigned char>::get(),Randomizer<unsigned char>::get());
+    video::Rect pix(Randomizer<unsigned int>::get(0,300),Randomizer<unsigned int>::get(0,240 - 64 )); //keeping some space for logos...
 
-    App::getInstance().getDisplay().resetInitCallback(*engine,&MyEngine::init);
-    App::getInstance().getDisplay().resetNewFrameCallback(*engine,&MyEngine::newframe);
-    App::getInstance().getDisplay().resetRenderCallback(*engine,&MyEngine::render);
+    Assert asrt(testlog,args,pix,color);
+    Test engine(testlog,asrt,pix,color);
 
     if (App::getInstance().getDisplay().show())
     {
         exitstatus = App::getInstance().getDisplay().mainLoop();
     }
 
-    return exitstatus;
-}
+    video::Rect scarea(Randomizer<unsigned int>::get(0,300),Randomizer<unsigned int>::get(0,240 - 64 )); //keeping some space for logos...
+    scarea.resetw(Randomizer<unsigned int>::get(1,300 - scarea.getx()));
+    scarea.reseth(Randomizer<unsigned int>::get(1,240-64 - scarea.gety()));
 
+    //quick check
+    if (scarea.getw() < 1)
+    {
+        scarea.resetw();
+    }
+    if (scarea.geth() < 1)
+    {
+        scarea.reseth();
+    }
 
+    ///testing rect fill
 
-
-int main(int argc, char** argv)
-{
-
-#ifdef WK_OPENGL_FOUND
-    bool ogl = true;
-    if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
-#else
-    bool ogl = false;
-#endif
-
-    //Starting with usual SDL window
-    App::getInstance().initVideo(false,true,false);
-    App::getInstance().setName ("SDLut::SDL test Color : Displayed Color order \"Red - Green - Blue - Purple if alpha is working otherwise White\"");
-
-    //Setting Display size and BPP
-    App::getInstance().getDisplay().setDisplay(800,600); // using autodetected bpp
-
-    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(ogl);
-
-    //yellow background color (useful to test alpha / color key)
-    App::getInstance().getDisplay().getScreenBuffer().setBGColor(Color (255,255,0));
-
-    std::auto_ptr<MyEngine> engine(new MyEngine());
-
-    App::getInstance().getDisplay().resetInitCallback(*engine,&MyEngine::init);
-    App::getInstance().getDisplay().resetResizeCallback(*engine,&MyEngine::resize);
-    App::getInstance().getDisplay().resetRenderCallback(*engine,&MyEngine::render);
+    //Declaring these here will construct them and reset the SDLut Callbacks as per parents classes in TestCommon.hh.
+    Assert asrtbis(testlog,args,scarea,color);
+    Test enginebis(testlog,asrtbis,scarea,color);
 
     if (App::getInstance().getDisplay().show())
     {
-        App::getInstance().getDisplay().mainLoop();
+        exitstatus = exitstatus && App::getInstance().getDisplay().mainLoop();
     }
 
-    return 0;
+    return exitstatus;
 }
-
 
