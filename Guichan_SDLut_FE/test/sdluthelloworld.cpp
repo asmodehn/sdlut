@@ -66,8 +66,8 @@ public:
         case Key_F6: //FullScreen
             if (pressed)
             {
-				App::getInstance().getDisplay().requestSize(640, 480);
-				App::getInstance().getDisplay().requestBPP(App::getInstance().getDisplay().getRequestedBPP());
+                App::getInstance().getDisplay().requestSize(640, 480);
+                App::getInstance().getDisplay().requestBPP(App::getInstance().getDisplay().getRequestedBPP());
                 App::getInstance().getDisplay().requestFullscreen(!App::getInstance().getDisplay().getScreenBuffer().getScreenInfo().isFullscreen());
             }
             res = true;
@@ -123,7 +123,7 @@ public:
 KeyboardInput* myKeyboardInput;
 RenderEngine myEngine;
 
-void init(bool ogl)
+void init(bool ogl = true)
 {
     logger.enableFileLog("Example.Log");
 
@@ -133,8 +133,8 @@ void init(bool ogl)
         throw std::logic_error( "Init Video Failed: " + GetError() );
 
     App::getInstance().getDisplay().requestOpenGL(ogl);
-	App::getInstance().getDisplay().requestSize(640, 480);
-	App::getInstance().getDisplay().requestBPP(32);
+    App::getInstance().getDisplay().requestSize(640, 480);
+    App::getInstance().getDisplay().requestBPP(32);
 }
 
 void implement()
@@ -178,13 +178,11 @@ int main(int argc, char **argv)
     try
     {
 
-#ifdef WK_OPENGL_FOUND
-        bool ogl = true;
-        if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
-#else
-        bool ogl = false;
-#endif
-        init(ogl);
+        if (argc > 1 && std::string(argv[1]) == "nogl" )
+        {init ( false) ;}
+        else
+        {init(true);}
+
         implement();
 
         if (App::getInstance().getDisplay().show())

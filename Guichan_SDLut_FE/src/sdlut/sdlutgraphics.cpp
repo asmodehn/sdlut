@@ -32,17 +32,17 @@ SDLutGraphics::SDLutGraphics()
 void SDLutGraphics::setTarget(video::ScreenBuffer* target)
 {
     mTarget = target;
-	
-	//if (!Image4Pixels.get())
-	{
-		Image4Pixels.reset( new video::Image(mTarget->getWidth(), mTarget->getHeight(), mTarget->getBPP(), false, false ) );
-		//Image4Pixels->resetColorKey(true, SDLutImageLoader::magicPink);
-	}
 
-	//Image4Pixels->resize(mTarget->getWidth(), mTarget->getHeight());
-	Image4PixelsDim = video::Rect(0, 0, Image4Pixels->getWidth(), Image4Pixels->getHeight());
+    //if (!Image4Pixels.get())
+    {
+        Image4Pixels.reset( new video::Image(mTarget->getWidth(), mTarget->getHeight(), mTarget->getBPP(), false, false ) );
+        //Image4Pixels->resetColorKey(true, SDLutImageLoader::magicPink);
+    }
 
-	//Image4Pixels->fill(SDLutImageLoader::magicPink);
+    //Image4Pixels->resize(mTarget->getWidth(), mTarget->getHeight());
+    Image4PixelsDim = video::Rect(0, 0, Image4Pixels->getWidth(), Image4Pixels->getHeight());
+
+    //Image4Pixels->fill(SDLutImageLoader::magicPink);
 }
 
 video::ScreenBuffer* SDLutGraphics::getTarget() const
@@ -64,8 +64,8 @@ void SDLutGraphics::_beginDraw()
 
 void SDLutGraphics::_endDraw()
 {
-	tempImage4PixelsDim = Image4PixelsDim;
-	mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
+    tempImage4PixelsDim = Image4PixelsDim;
+    mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
 
     popClipArea();
 }
@@ -98,7 +98,7 @@ void SDLutGraphics::popClipArea()
 
     const ClipRectangle& carea = mClipStack.top();
     video::Rect rect(carea.x, carea.y, carea.width, carea.height);
- 
+
     mTarget->resetClipRect(rect);
 }
 
@@ -178,8 +178,8 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
         video::Rect rect(area.x, area.y, area.width, area.height);
         video::Color rgbacolor( (unsigned char)mColor.r, (unsigned char)mColor.g, (unsigned char)mColor.b, (unsigned char)mColor.a );
 
-		//mTarget->fill(rgbacolor, rect );
-		Image4Pixels->fill(rgbacolor, rect );
+        //mTarget->fill(rgbacolor, rect );
+        //Image4Pixels->fill(rgbacolor, rect );
 
     }
 }

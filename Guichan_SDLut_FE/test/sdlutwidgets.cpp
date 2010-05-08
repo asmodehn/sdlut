@@ -47,8 +47,8 @@ public:
         case Key_F6: //FullScreen
             if (pressed)
             {
-				App::getInstance().getDisplay().requestSize(640, 480);
-				App::getInstance().getDisplay().requestBPP(App::getInstance().getDisplay().getRequestedBPP());
+                App::getInstance().getDisplay().requestSize(640, 480);
+                App::getInstance().getDisplay().requestBPP(App::getInstance().getDisplay().getRequestedBPP());
                 App::getInstance().getDisplay().requestFullscreen(!App::getInstance().getDisplay().getScreenBuffer().getScreenInfo().isFullscreen());
             }
             res = true;
@@ -153,7 +153,7 @@ KeyboardInput* myKeyboardInput = NULL;
 MouseInput* myMouseInput = NULL;
 RenderEngine myEngine;
 
-void init(bool ogl = false)
+void init(bool ogl = true)
 {
     logger.enableFileLog("Example.Log");
 
@@ -166,8 +166,8 @@ void init(bool ogl = false)
         throw std::logic_error( "TTF Init Failed: " + GetError() );
 
     App::getInstance().getDisplay().requestOpenGL(ogl);
-	App::getInstance().getDisplay().requestSize(640, 480);
-	App::getInstance().getDisplay().requestBPP(32);
+    App::getInstance().getDisplay().requestSize(640, 480);
+    App::getInstance().getDisplay().requestBPP(32);
 }
 
 void implement(std::string fontfile = "" )
@@ -231,13 +231,14 @@ int main(int argc, char **argv)
     try
     {
         std::string fontfile = "";
-#ifdef WK_OPENGL_FOUND
-        bool ogl = true;
+
+
+
         if (argc > 1)
         {
             if ( std::string(argv[1]) == "nogl" )
             {
-                ogl = false;
+                init(false);
                 if (argc > 2)
                 {
                     fontfile = std::string(argv[2]);
@@ -245,18 +246,11 @@ int main(int argc, char **argv)
             }
             else
             {
+                init();
                 fontfile = std::string(argv[1]);
             }
         }
 
-#else
-        bool ogl = false;
-        if (argc > 1)
-        {
-            fontfile = std::string(argv[1]);
-        }
-#endif
-        init(ogl);
         implement(fontfile);
 
         if (App::getInstance().getDisplay().show())
