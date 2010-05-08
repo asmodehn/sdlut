@@ -154,7 +154,7 @@ KeyboardInput* myKeyboardInput = NULL;
 MouseInput* myMouseInput = NULL;
 RenderEngine myEngine;
 
-void init(bool ogl)
+void init(bool ogl = true)
 {
     logger.enableFileLog("Example.Log");
 

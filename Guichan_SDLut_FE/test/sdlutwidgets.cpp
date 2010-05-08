@@ -250,6 +250,10 @@ int main(int argc, char **argv)
                 fontfile = std::string(argv[1]);
             }
         }
+		else
+		{
+			init();
+		}
 
         implement(fontfile);
 
