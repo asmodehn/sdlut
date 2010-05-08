@@ -13,7 +13,7 @@ try :
     fullRefreshNeeded(true), pm_manager(manager), m_background(Color(0,0,0)), m_scinfo(), m_bgsurf()
 {
     Log << nl << "Creating new ScreenBuffer. ScreenInfo Requested " << scinf;
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     m_screen.reset(new internal::OGL::VideoGLSurface(scinf.m_videoinfo));
 #else
     m_screen.reset(new internal::VideoSurface(scinf.m_videoinfo));
@@ -164,7 +164,7 @@ bool ScreenBuffer::setNoFrame(bool val)
     return res;
 }
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDut_FOUND_OPENGL
 bool ScreenBuffer::setOpenGL(bool val)
 {
 
@@ -259,7 +259,7 @@ void ScreenBuffer::applyBGColor()
 
         //TODO : TEST alpha transparent background color...
         //TODO : optimize...
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
         if (m_screen->isOpenGLset())
         {
 
@@ -277,7 +277,7 @@ void ScreenBuffer::applyBGColor()
                 blit(*m_bgsurf,sc_rect);
             }
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
         }
 #endif
     }

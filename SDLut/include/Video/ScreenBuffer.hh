@@ -40,7 +40,7 @@ class ScreenBuffer
 
 protected:
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     std::auto_ptr<internal::OGL::VideoGLSurface> m_screen;
 #else
     std::auto_ptr<internal::VideoSurface> m_screen;

@@ -17,7 +17,7 @@ SDLEngine::SDLEngine() : m_Logo()
 }
 
 //this render function should not modify the engine
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 bool SDLEngine::render(OGL::VideoGLSurface & screen) const
 #else
 bool SDLEngine::render(VideoSurface & screen) const

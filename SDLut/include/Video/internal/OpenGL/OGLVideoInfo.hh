@@ -31,7 +31,7 @@ namespace internal
 namespace OGL
 {
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 
 //This may be useless in Windows....
 //TEst to do on linux, to choose a class behaviour
@@ -71,7 +71,7 @@ public :
 
 #else
 /* OGLLogo is defined only if Built with OpenGL */
-#endif // WK_OPENGL_FOUND
+#endif // WK_SDLut_FOUND_OPENGL
 
 
 } // OGL

@@ -10,7 +10,7 @@
 
 
 /* including the configuration header */
-#include "WkPlatform.h"
+#include "WkPlatform_SDLut.h"
 
 /*! \mainpage SDLut Documentation
  *

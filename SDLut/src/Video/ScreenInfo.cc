@@ -9,7 +9,7 @@ namespace video
 {
 
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 ScreenInfo::ScreenInfo( const internal::OGL::OGLVideoInfo & vi) // generate a videoinfo structure from internal structure
         : m_videoinfo(vi)
 {
@@ -21,7 +21,7 @@ ScreenInfo::ScreenInfo( const internal::VideoInfo & vi); // generate a videoinfo
 m_videoinfo(vi)
 {
 }
-#endif // WK_OPENGL_FOUND
+#endif // WK_SDLut_FOUND_OPENGL
 
 
 ScreenInfo::ScreenInfo() // generate a videoinfo structure from SDL "getVideoInfo" function

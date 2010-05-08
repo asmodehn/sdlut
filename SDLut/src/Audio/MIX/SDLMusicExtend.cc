@@ -6,7 +6,7 @@ namespace SDLut
 {
 namespace audio
 {
-#ifdef WK_SDLMIXER_FOUND
+#ifdef WK_SDLut_FOUND_SDLMIXER
 #pragma message ("SDL_Mixer Found. Compiling MusicExtend.")
 MusicExtend::MusicExtend(std::string filename) throw (std::logic_error)
 try :

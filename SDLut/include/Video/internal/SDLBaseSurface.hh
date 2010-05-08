@@ -4,7 +4,7 @@
 
 #include "Logger.hh"
 
-#include "WkPlatform.h"
+#include "WkPlatform_SDLut.h"
 //to be able to know which renderers can be used on the platform
 
 #include "Video/Rect.hh"
@@ -27,7 +27,7 @@ namespace internal
 
 ///defining a enumeration for renderers availables
 ///here because must be available for both video and rgb surfaces
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 enum Renderer { SDL, OpenGL };
 #else
 enum Renderer { SDL };

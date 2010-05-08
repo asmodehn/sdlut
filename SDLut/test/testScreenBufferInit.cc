@@ -36,12 +36,12 @@ public:
     /// this must be done in manual.
     bool testit(unsigned int width, unsigned int height, unsigned short bpp, bool resizable = false,  bool fullscreen = false, bool noframe = false)
     {
-		m_disp.requestOpenGL(m_ap.isOGL());
+        m_disp.requestOpenGL(m_ap.isOGL());
         m_disp.requestNoFrame(noframe);
         m_disp.requestFullscreen(fullscreen);
         m_disp.requestResizable(resizable);
 
-		m_disp.requestSize(width, height);
+        m_disp.requestSize(width, height);
         bool request = ( m_disp.requestBPP(bpp) != 0 );
 
         const ScreenInfo * gotVI;
@@ -54,7 +54,7 @@ public:
             res = true;
         }
 
-    	bool gotres = res;
+        bool gotres = res;
         //if size we got is different, it should have been signaled before with a false return
         //otherwise both should be true
         res = res && (request == ( m_disp.getScreenBuffer().getWidth() == width ) );
@@ -63,38 +63,38 @@ public:
         //otherwise both should be true
         res = res && (request == ( m_disp.getScreenBuffer().getBPP() == bpp ) );
 
-		if ( ! res )
-		{	
-			
-			if ( gotres )// we had error here :
-			{
-				testlog << nl << " ERROR ! ";
-				testlog << nl << " Screen requested : " << m_disp.getRequestedWidth() << " x " << m_disp.getRequestedHeight() << " @ " << m_disp.getRequestedBPP() ;
-				testlog << nl << " Screem obtained : " << m_disp.getScreenBuffer().getWidth() << " x " << m_disp.getScreenBuffer().getHeight() << " @ " <<m_disp.getScreenBuffer().getBPP();
-			}
-			else //screen creation failed
-			{
-				testlog << nl << " ERROR ! ";
-				testlog << nl << " Screen Creation failed at : " << m_disp.getRequestedWidth() << " x " << m_disp.getRequestedHeight() << " @ " << m_disp.getRequestedBPP();
-			}
+        if ( ! res )
+        {
 
-			testlog << nl << " Requested OpenGL " << std::boolalpha << m_ap.isOGL() << " and got => " << gotVI->isOpenGL();
-			testlog << nl << " Requested Resizable " << std::boolalpha << resizable << " and got => " << gotVI->isResizable();
-			testlog << nl << " Requested Fullscreen " << std::boolalpha << fullscreen << " and got => " << gotVI->isFullscreen();
-			testlog << nl << " Requested NoFrame " << std::boolalpha << noframe << " and got => " << gotVI->isNoFrame();
-		}
+            if ( gotres )// we had error here :
+            {
+                testlog << nl << " ERROR ! ";
+                testlog << nl << " Screen requested : " << m_disp.getRequestedWidth() << " x " << m_disp.getRequestedHeight() << " @ " << m_disp.getRequestedBPP() ;
+                testlog << nl << " Screem obtained : " << m_disp.getScreenBuffer().getWidth() << " x " << m_disp.getScreenBuffer().getHeight() << " @ " <<m_disp.getScreenBuffer().getBPP();
+            }
+            else //screen creation failed
+            {
+                testlog << nl << " ERROR ! ";
+                testlog << nl << " Screen Creation failed at : " << m_disp.getRequestedWidth() << " x " << m_disp.getRequestedHeight() << " @ " << m_disp.getRequestedBPP();
+            }
+
+            testlog << nl << " Requested OpenGL " << std::boolalpha << m_ap.isOGL() << " and got => " << gotVI->isOpenGL();
+            testlog << nl << " Requested Resizable " << std::boolalpha << resizable << " and got => " << gotVI->isResizable();
+            testlog << nl << " Requested Fullscreen " << std::boolalpha << fullscreen << " and got => " << gotVI->isFullscreen();
+            testlog << nl << " Requested NoFrame " << std::boolalpha << noframe << " and got => " << gotVI->isNoFrame();
+        }
         App::getInstance().getDisplay().hide();
 
         return res;
     }
-	bool testit( bool resizable = false,  bool fullscreen = false, bool noframe = false)
-	{
-		m_disp.requestOpenGL(m_ap.isOGL());
+    bool testit( bool resizable = false,  bool fullscreen = false, bool noframe = false)
+    {
+        m_disp.requestOpenGL(m_ap.isOGL());
         m_disp.requestNoFrame(noframe);
         m_disp.requestFullscreen(fullscreen);
         bool request = m_disp.requestResizable(resizable);
 
-		const ScreenInfo * gotVI;
+        const ScreenInfo * gotVI;
         bool res = false;
 
         if (App::getInstance().getDisplay().show())
@@ -104,20 +104,20 @@ public:
             res = true;
         }
 
-		if ( ! res )
-		{	
-				testlog << nl << " ERROR ! ";
-				testlog << nl << " Screen Creation failed at : " << m_disp.getRequestedWidth() << " x " << m_disp.getRequestedHeight() << " @ " << m_disp.getRequestedBPP();
+        if ( ! res )
+        {
+            testlog << nl << " ERROR ! ";
+            testlog << nl << " Screen Creation failed at : " << m_disp.getRequestedWidth() << " x " << m_disp.getRequestedHeight() << " @ " << m_disp.getRequestedBPP();
 
-			testlog << nl << " Requested OpenGL " << std::boolalpha << m_ap.isOGL() << " and got => " << gotVI->isOpenGL();
-			testlog << nl << " Requested Resizable " << std::boolalpha << resizable << " and got => " << gotVI->isResizable();
-			testlog << nl << " Requested Fullscreen " << std::boolalpha << fullscreen << " and got => " << gotVI->isFullscreen();
-			testlog << nl << " Requested NoFrame " << std::boolalpha << noframe << " and got => " << gotVI->isNoFrame();
-		}
+            testlog << nl << " Requested OpenGL " << std::boolalpha << m_ap.isOGL() << " and got => " << gotVI->isOpenGL();
+            testlog << nl << " Requested Resizable " << std::boolalpha << resizable << " and got => " << gotVI->isResizable();
+            testlog << nl << " Requested Fullscreen " << std::boolalpha << fullscreen << " and got => " << gotVI->isFullscreen();
+            testlog << nl << " Requested NoFrame " << std::boolalpha << noframe << " and got => " << gotVI->isNoFrame();
+        }
         App::getInstance().getDisplay().hide();
 
         return res;
-	}
+    }
 
     int testall()
     {
@@ -153,12 +153,12 @@ public:
         {
             testlog << nl << "Testing " << width << " x "  << height << " @ " << bpp;
 
-            if ( !  testit(width, height, bpp)) 
+            if ( !  testit(width, height, bpp))
             {
                 testlog << nl << "test Default failed";
                 status |= 0x01;
             }
-            if ( ! testit(width,height,bpp,true, false, false)) 
+            if ( ! testit(width,height,bpp,true, false, false))
             {
                 testlog << nl << "test Resizable failed";
                 status |= 0x02;

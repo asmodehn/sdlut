@@ -50,7 +50,7 @@ Sound::Sound(std::string filename, bool loop_status /* = false */) throw (std::l
 try :
     pvm_soundimpl(0)
 {
-#ifdef WK_SDLMIXER_FOUND
+#ifdef WK_SDLut_FOUND_SDLMIXER
     pvm_soundimpl.reset( new SoundExtend(filename, loop_status) );
 #else
     pvm_soundimpl.reset( new SoundImpl(filename, loop_status) );
@@ -68,13 +68,17 @@ try :
 {
     if ( s.pvm_soundimpl.get() )
     {
+#ifdef WK_SDLut_FOUND_SDLMIXER
         if (s.pvm_soundimpl->isMIXImpl() )
         {
+
             pvm_soundimpl.reset(new SoundExtend(static_cast<SoundExtend&>(*s.pvm_soundimpl)));
         }
         else
         {
-            pvm_soundimpl.reset(new SoundImpl(static_cast<SoundImpl&>(*s.pvm_soundimpl)));
+#else
+        pvm_soundimpl.reset(new SoundImpl(static_cast<SoundImpl&>(*s.pvm_soundimpl)));
+#endif
         }
     }
 }

@@ -18,7 +18,7 @@
  */
 
 #include "Logger.hh"
-#include "WkPlatform.h"
+#include "WkPlatform_SDLut.h"
 
 #include "SDLPixelFormat.hh"
 
@@ -102,8 +102,8 @@ public:
     virtual ~VideoInfo();
 
     ///these methods just changes the static flags used on display creation.
-	///they will return false if the requested bpp is not available with these flags.
-	///Therefore it is advised to set the flags before the bpp
+    ///they will return false if the requested bpp is not available with these flags.
+    ///Therefore it is advised to set the flags before the bpp
     virtual bool requestOpenGL(bool val);
     bool requestFullscreen(bool val);
     bool requestResizable(bool val);
@@ -115,10 +115,10 @@ public:
     bool requestHWPalette(bool val);
     bool requestAsyncBlit(bool val);
 
-	///returns the suggested bpp for this width and height
+    ///returns the suggested bpp for this width and height
     unsigned short requestSize(unsigned int width, unsigned int height);
-	/// set and returns the suggested bpp closest to the bpp requested
-	/// therefore it s usually better to set bpp at last to make sure the videosurface can be created.
+    /// set and returns the suggested bpp closest to the bpp requested
+    /// therefore it s usually better to set bpp at last to make sure the videosurface can be created.
     unsigned short requestBPP(unsigned short bpp);
 
     unsigned int getRequestedWidth() const

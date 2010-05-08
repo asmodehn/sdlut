@@ -18,7 +18,7 @@ SocketTCP::SocketTCP(std::auto_ptr<SocketTCPIf> stcpif)
 }
 
 SocketTCP::SocketTCP( unsigned short port, bool localonly) throw (std::logic_error)
-#ifdef WK_SDLNET_FOUND
+#ifdef WK_SDLut_FOUND_SDLNET
 try :
     pvm_sockettcpimpl(new SocketTCPExtend(port,localonly))
 #else
@@ -34,7 +34,7 @@ catch (std::exception &e)
 }
 
 SocketTCP::SocketTCP(std::string host, unsigned short port) throw (std::logic_error)
-#ifdef WK_SDLNET_FOUND
+#ifdef WK_SDLut_FOUND_SDLNET
 try :
     pvm_sockettcpimpl(new SocketTCPExtend(host,port))
 #else

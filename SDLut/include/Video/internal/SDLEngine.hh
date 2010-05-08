@@ -35,7 +35,7 @@ protected:
     std::auto_ptr<RGBSurface> m_logo;
 
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     //OpenGL logo + SDL Logo in texture
     //OpenGL logo displayed only if renderer is opengl
     OGL::OGLLogo m_Logo;
@@ -50,7 +50,7 @@ public:
     virtual ~SDLEngine();
 
     //this render function should not modify the engine
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     virtual bool render(OGL::VideoGLSurface & screen) const;
 #else
     virtual bool render(VideoSurface & screen) const;

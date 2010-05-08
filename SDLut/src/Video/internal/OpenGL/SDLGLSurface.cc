@@ -13,7 +13,7 @@ namespace OGL
 {
 
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 #pragma message ("OpenGL Found. Compiling OGL::SDLGLSurface.")
 
 ////////////////private Conversion Constructor

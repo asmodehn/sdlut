@@ -12,7 +12,7 @@
 //TODO : make our own exception class (with a macro to make launching easier and clear )
 
 //Mandatory
-#include "WkPlatform.h"
+#include "WkPlatform_SDLut.h"
 
 #include <SDL.h>
 //Mandatory because we use RWOps in the wrapper, and we even wrap it
@@ -24,7 +24,7 @@
 #include "Logger.hh"
 
 //TODO : look for a possibility to include all SDLs into SDLut::SDLut::SDL namespace after changed SDLut::SDL to SDLut::SDLut
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 #include <SDL_opengl.h>
 #endif
 
@@ -35,20 +35,20 @@
 
 //Conditionals
 
-#ifdef WK_SDLIMAGE_FOUND
+#ifdef WK_SDLut_FOUND_SDLIMAGE
 #include "SDL_image.h"
 #endif
 
 
-#ifdef WK_SDLMIXER_FOUND
+#ifdef WK_SDLut_FOUND_SDLMIXER
 #include "SDL_mixer.h"
 #endif
 
-#ifdef WK_SDLNET_FOUND
+#ifdef WK_SDLut_FOUND_SDLNET
 #include "SDL_net.h"
 #endif
 
-#ifdef WK_SDLTTF_FOUND
+#ifdef WK_SDLut_FOUND_SDLTTF
 #include "SDL_ttf.h"
 #endif
 

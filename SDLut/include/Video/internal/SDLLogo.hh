@@ -9,10 +9,10 @@
  *******************************************/
 
 
-#include "WkPlatform.h"
+#include "WkPlatform_SDLut.h"
 //to be able to know which renderers can be used for the logo
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 #include "Video/internal/OpenGL/SDLVideoGLSurface.hh"
 #else
 #include "Video/internal/SDLVideoSurface.hh"
@@ -33,7 +33,7 @@ protected:
     static int m_render_width;
     static int m_render_height;
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     std::auto_ptr<OGL::GLSurface> m_logo;
 #else
     std::auto_ptr<RGBSurface> m_logo;
@@ -48,7 +48,7 @@ public:
 
     static void resizerender(int renderwidth=128, int renderheight= 64);
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     virtual bool render(OGL::VideoGLSurface & screen) const;
 #else
     virtual bool render(VideoSurface & screen) const;

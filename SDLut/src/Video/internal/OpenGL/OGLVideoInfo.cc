@@ -12,7 +12,7 @@ namespace internal
 namespace OGL
 {
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 #pragma message ("OpenGL Found. Compiling OGL::OGLVideoInfo.")
 //may be connected with constructor ???
 bool OGLVideoInfo::loadGLLibrary(const std::string & path)

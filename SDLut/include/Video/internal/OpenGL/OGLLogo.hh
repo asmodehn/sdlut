@@ -16,7 +16,7 @@ namespace internal
 namespace OGL
 {
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 class OGLLogo : public Logo
 {
 
@@ -63,7 +63,7 @@ public:
 
 #else
 /* OGLLogo is defined only if Built with OpenGL */
-#endif // WK_OPENGL_FOUND
+#endif // WK_SDLut_FOUND_OPENGL
 
 
 } //OGL

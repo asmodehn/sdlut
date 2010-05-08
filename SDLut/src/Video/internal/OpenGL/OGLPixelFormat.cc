@@ -12,7 +12,7 @@ namespace internal
 namespace OGL
 {
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 #pragma message ("OpenGL Found. Compiling OGL::OGLPixelFormat.")
 //TODO : check maybe opengl pixel format is not needed
 // SDL seems to manage pixel format for OpenGL fine, once you know how it works...

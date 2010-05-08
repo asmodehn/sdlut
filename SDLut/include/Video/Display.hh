@@ -67,16 +67,16 @@ public:
 
     ///these modify the screeninfo structure to store requested parameters
     /// WARNING : These are modifying existing screeninfo !
-	
-	///these returns the bpp value suggested by SDL, or 0 if video mode not possible
+
+    ///these returns the bpp value suggested by SDL, or 0 if video mode not possible
     unsigned short requestSize(unsigned int width, unsigned int height );
     unsigned short requestBPP(unsigned short bpp);
 
-	/// false is returned if the requested mode cannot be satisfied ( or if screen already created )
+    /// false is returned if the requested mode cannot be satisfied ( or if screen already created )
     bool requestOpenGL( bool value);
     bool requestResizable (bool value);
     bool requestNoFrame (bool value);
-	//fullscreen automatically set noframe to true.
+    //fullscreen automatically set noframe to true.
     bool requestFullscreen (bool value);
 
     unsigned int getRequestedWidth() const;

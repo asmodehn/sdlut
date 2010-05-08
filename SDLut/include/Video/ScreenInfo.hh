@@ -1,13 +1,13 @@
 #ifndef SDLut_ScreenInfo_hh
 #define SDLut_ScreenInfo_hh
 
-#include "WkPlatform.h"
+#include "WkPlatform_SDLut.h"
 
 #include "Video/internal/SDLVideoInfo.hh"
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 #include "Video/internal/OpenGL/OGLVideoInfo.hh"
-#endif //WK_OPENGL_FOUND
+#endif //WK_SLDut_FOUND_OPENGL
 
 
 namespace SDLut
@@ -40,13 +40,13 @@ class ScreenInfo
     ///This is to match SDL which provides only a pointer to internal read-only videoinfo structure.
 
 protected :
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     internal::OGL::OGLVideoInfo m_videoinfo;
     ScreenInfo( const internal::OGL::OGLVideoInfo &); // generate a videoinfo structure from internal structure
 #else
     internal::VideoInfo m_videoinfo;
     ScreenInfo( const internal::VideoInfo &); // generate a videoinfo structure from internal structure
-#endif // WK_OPENGL_FOUND
+#endif // WK_SDLut_FOUND_OPENGL
 
 
 public:

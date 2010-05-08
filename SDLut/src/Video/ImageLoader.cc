@@ -74,7 +74,7 @@ void ImageLoader::resetFlags(	bool SWSURFACE,
 std::auto_ptr<Image> ImageLoader::load(std::string filename , bool no_failure ) throw (std::logic_error)
 {
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     std::auto_ptr<internal::OGL::GLSurface> surf;
 #else
     std::auto_ptr<internal::RGBSurface> surf;
@@ -82,13 +82,13 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename , bool no_failure ) 
 
     try
     {
-#ifdef WK_SDLIMAGE_FOUND
+#ifdef WK_SDLut_FOUND_SDLIMAGE
         SDL_Surface * sdlsurf = IMG_Load(filename.c_str());
 #else
         SDL_Surface * sdlsurf = SDL_LoadBMP(filename.c_str());
 #endif
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
         surf.reset(new internal::OGL::GLSurface( sdlsurf ) );
 #else
         surf.reset(new internal::RGBSurface( sdlsurf ) );
@@ -103,7 +103,7 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename , bool no_failure ) 
 
         if (no_failure)
 
-#ifdef WK_SDLIMAGE_FOUND
+#ifdef WK_SDLut_FOUND_SDLIMAGE
             surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
 #else
             surf.reset(new internal::RGBSurface(pvm_errorContent));
@@ -116,7 +116,7 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename , bool no_failure ) 
 
 std::auto_ptr<Image> ImageLoader::load(std::string filename, const Color & colorKey, bool no_failure ) throw ( std::logic_error)
 {
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     std::auto_ptr<internal::OGL::GLSurface> surf;
 #else
     std::auto_ptr<internal::RGBSurface> surf;
@@ -124,13 +124,13 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename, const Color & color
 
     try
     {
-#ifdef WK_SDLIMAGE_FOUND
+#ifdef WK_SDLut_FOUND_SDLIMAGE
         SDL_Surface * sdlsurf = IMG_Load(filename.c_str());
 #else
         SDL_Surface * sdlsurf = SDL_LoadBMP(filename.c_str());
 #endif
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
         surf.reset(new internal::OGL::GLSurface( sdlsurf ) );
 #else
         surf.reset(new internal::RGBSurface( sdlsurf ) );
@@ -148,7 +148,7 @@ std::auto_ptr<Image> ImageLoader::load(std::string filename, const Color & color
 
         if (no_failure)
         {
-#ifdef WK_SDLIMAGE_FOUND
+#ifdef WK_SDLut_FOUND_SDLIMAGE
             surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
 #else
             surf.reset(new internal::RGBSurface(pvm_errorContent));
@@ -170,7 +170,7 @@ std::auto_ptr<Image> ImageLoader::copyconvert(const Image & s, const internal::P
         if (no_failure)
         {
 
-#ifdef WK_SDLIMAGE_FOUND
+#ifdef WK_SDLut_FOUND_SDLIMAGE
             surf.reset(new internal::OGL::GLSurface(pvm_errorContent));
 #else
             surf.reset(new internal::RGBSurface(pvm_errorContent));
@@ -180,7 +180,7 @@ std::auto_ptr<Image> ImageLoader::copyconvert(const Image & s, const internal::P
         else throw std::logic_error("Conversion error ! ");
     }
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     surf.reset(new internal::OGL::GLSurface( cvtsurf ) );
 #else
     surf.reset(new internal::RGBSurface( cvtsurf ) );

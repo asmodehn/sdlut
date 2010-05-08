@@ -251,20 +251,20 @@ VideoInfo::~VideoInfo()
 // false is returned if the request cannot be satisfied
 bool VideoInfo::requestOpenGL(bool val)
 {
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     if (val)
-	{
-		//TODO : check that the opengl libraries are available on the running platform...
+    {
+        //TODO : check that the opengl libraries are available on the running platform...
         ptm_videoflags|= SDL_OPENGL;
-	}
+    }
     else
-	{
+    {
         ptm_videoflags&= (~SDL_OPENGL) ;
-	}
-	return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
+    }
+    return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
 
 #else
-	return ! val;
+    return ! val;
 #endif
 }
 bool VideoInfo::requestFullscreen(bool val)
@@ -274,7 +274,7 @@ bool VideoInfo::requestFullscreen(bool val)
     else
         ptm_videoflags&= (~SDL_FULLSCREEN) ;
 
-	return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
+    return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
 
 }
 bool VideoInfo::requestResizable(bool val)
@@ -284,7 +284,7 @@ bool VideoInfo::requestResizable(bool val)
     else
         ptm_videoflags&= (~SDL_RESIZABLE) ;
 
-	return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
+    return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
 }
 bool VideoInfo::requestNoFrame(bool val)
 {
@@ -293,7 +293,7 @@ bool VideoInfo::requestNoFrame(bool val)
     else
         ptm_videoflags&= (~SDL_NOFRAME) ;
 
-	return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
+    return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
 
 }
 bool VideoInfo::requestDoubleBuf(bool val)
@@ -303,7 +303,7 @@ bool VideoInfo::requestDoubleBuf(bool val)
     else
         ptm_videoflags&= (~SDL_DOUBLEBUF) ;
 
-	return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
+    return ( ! (0 == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) );
 
 }
 bool VideoInfo::requestAnyFormat(bool val)
@@ -313,7 +313,7 @@ bool VideoInfo::requestAnyFormat(bool val)
     else
         ptm_videoflags&= (~SDL_ANYFORMAT) ;
 
-	return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
+    return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
 }
 bool VideoInfo::requestSWSurface(bool val)
 {
@@ -322,7 +322,7 @@ bool VideoInfo::requestSWSurface(bool val)
     else
         ptm_videoflags&= (~SDL_SWSURFACE) ;
 
-	return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
+    return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
 }
 bool VideoInfo::requestHWSurface(bool val)
 {
@@ -331,7 +331,7 @@ bool VideoInfo::requestHWSurface(bool val)
     else
         ptm_videoflags&= (~SDL_HWSURFACE) ;
 
-	return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
+    return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
 }
 bool VideoInfo::requestHWPalette(bool val)
 {
@@ -340,7 +340,7 @@ bool VideoInfo::requestHWPalette(bool val)
     else
         ptm_videoflags&= (~SDL_HWPALETTE) ;
 
-	return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
+    return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags));
 }
 bool VideoInfo::requestAsyncBlit(bool val)
 {
@@ -349,7 +349,7 @@ bool VideoInfo::requestAsyncBlit(bool val)
     else
         ptm_videoflags&= (~SDL_ASYNCBLIT) ;
 
-	return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) ;
+    return ( ptm_requestedBPP == SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight, ptm_requestedBPP, ptm_videoflags)) ;
 }
 
 unsigned short VideoInfo::requestSize(unsigned width, unsigned int height)
@@ -357,25 +357,25 @@ unsigned short VideoInfo::requestSize(unsigned width, unsigned int height)
     ptm_requestedHeight= height;
     ptm_requestedWidth = width;
 
-	int suggestedbpp; 
-	if ( ! (0 == (suggestedbpp=SDL_VideoModeOK(width, height,ptm_requestedBPP, ptm_videoflags)) ) )
-	{
-		ptm_requestedHeight= height;
-		ptm_requestedWidth = width;
-	}
+    int suggestedbpp;
+    if ( ! (0 == (suggestedbpp=SDL_VideoModeOK(width, height,ptm_requestedBPP, ptm_videoflags)) ) )
+    {
+        ptm_requestedHeight= height;
+        ptm_requestedWidth = width;
+    }
 
-	return suggestedbpp;
+    return suggestedbpp;
 }
 
 unsigned short VideoInfo::requestBPP(unsigned short bpp)
 {
-    int suggestedbpp; 
-	if ( ! (0 == (suggestedbpp=SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight,bpp, ptm_videoflags)) ) )
-	{
-		ptm_requestedBPP = suggestedbpp;
-	}
+    int suggestedbpp;
+    if ( ! (0 == (suggestedbpp=SDL_VideoModeOK(ptm_requestedWidth, ptm_requestedHeight,bpp, ptm_videoflags)) ) )
+    {
+        ptm_requestedBPP = suggestedbpp;
+    }
 
-	return ptm_requestedBPP;
+    return ptm_requestedBPP;
 }
 
 

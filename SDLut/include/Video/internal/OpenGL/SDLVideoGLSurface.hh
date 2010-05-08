@@ -33,7 +33,7 @@ namespace internal
 namespace OGL
 {
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 /**
  * \class Videosurface
  *
@@ -41,7 +41,7 @@ namespace OGL
  *
  * \brief A class to wrap SDL_Surface only when it is a Video one
  *
- * This class code hte behaviour for a VideoSurface, when built with WK_OPENGL_FOUND
+ * This class code hte behaviour for a VideoSurface, when built with WK_SDLut_FOUND_OPENGL
  * Note that it doesnt mean that the OpenGL flag is set on the surface.
  * Therefore it must be checked before any OpenGL call, and if not, equivalent Base Function
  * should be called instead.
@@ -126,7 +126,7 @@ public:
 
 #else
 /* OGLLogo is defined only if Built with OpenGL */
-#endif // WK_OPENGL_FOUND
+#endif // WK_SDLut_FOUND_OPENGL
 
 
 } //OGL

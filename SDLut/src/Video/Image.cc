@@ -11,7 +11,7 @@ namespace SDLut
 namespace video
 {
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 
 ///Conversion Constructor with explicit ownership transfert
 Image::Image(std::auto_ptr<internal::OGL::GLSurface> s) throw (std::logic_error)
@@ -20,7 +20,7 @@ Image::Image(std::auto_ptr<internal::OGL::GLSurface> s) throw (std::logic_error)
     m_img=s;
     if ( m_img.get() == NULL ) throw std::logic_error("Error in image Conversion Constructor!!!");
 }
-#endif // WK_OPENGL_FOUND
+#endif // WK_SDLut_FOUND_OPENGL_
 
 ///Conversion Constructor
 
@@ -28,7 +28,7 @@ Image::Image(std::auto_ptr<internal::OGL::GLSurface> s) throw (std::logic_error)
 Image::Image(std::auto_ptr<internal::RGBSurface> s) throw (std::logic_error)
         : m_img(NULL)
 {
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     m_img.reset(new internal::OGL::GLSurface(*s));// conversion if needed
 #else
     m_img=s;
@@ -47,7 +47,7 @@ Image::Image( unsigned int width, unsigned int height, unsigned short bpp,
             ) throw (std::logic_error)
 
 {
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     m_img.reset(new internal::OGL::GLSurface(width, height, bpp, alpha, colorkey, hardware));
 #else
     m_img.reset(new internal::RGBSurface(width, height, bpp, alpha, colorkey, hardware));
@@ -59,7 +59,7 @@ Image::Image( void * pixeldata, int depth, int pitch, unsigned int width, unsign
             ) throw (std::logic_error)
 {
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     m_img.reset(new internal::OGL::GLSurface(pixeldata, depth, pitch, width, height));
 #else
     m_img.reset(new internal::RGBSurface(pixeldata, depth, pitch, width, height));
@@ -70,7 +70,7 @@ Image::Image(const Image & img)
         : m_img(NULL)
 {
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     m_img.reset(new internal::OGL::GLSurface(*(img.m_img)));
 #else
     m_img.reset(new internal::RGBSurface(*(img.m_img)));

@@ -13,7 +13,7 @@ namespace network
 
 //if SDL_Mixer is used, provide a class to be used as a bridge.
 //this way the client doesnt have to take care of which function is available
-#ifdef WK_SDLNET_FOUND
+#ifdef WK_SDLut_FOUND_SDLNET
 
 class SocketTCPExtend : public SocketTCPIf
 {

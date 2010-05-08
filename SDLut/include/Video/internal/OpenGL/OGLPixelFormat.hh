@@ -32,7 +32,7 @@
 #include "Logger.hh"
 #include "Video/internal/SDLPixelFormat.hh"
 
-#include "WkPlatform.h"
+#include "WkPlatform_SDLut.h"
 
 #include <string>
 
@@ -46,7 +46,7 @@ namespace OGL
 {
 
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 
 
 class OGLPixelFormat : public PixelFormat
@@ -132,7 +132,7 @@ public :
     friend Core::Logger & operator << (Core::Logger & ostr, const OGLPixelFormat & glman);
 };
 
-#endif // WK_OPENGL_FOUND
+#endif // WK_SDLut_FOUND_OPENGL
 
 } // namespace OGL
 } // namespace internal

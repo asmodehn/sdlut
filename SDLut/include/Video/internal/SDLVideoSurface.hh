@@ -5,7 +5,7 @@
 #include "Video/internal/SDLRGBSurface.hh" //to help with backup of screen surface
 #include "Video/internal/SDLVideoInfo.hh"
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 #include "Video/internal/OpenGL/SDLGLSurface.hh"
 #include "Video/internal/OpenGL/OGLVideoInfo.hh"
 #endif
@@ -49,7 +49,7 @@ class VideoSurface : public BaseSurface
 
 protected:
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     //instance holding the actual display capabilities used
     //set after SDL_SetVideoMode
     OGL::OGLVideoInfo ptm_vinfo;
@@ -119,7 +119,7 @@ public:
 
     ///static method returning current video mode.
     /// if called before Videosurface creation, contains best available mode
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     const OGL::OGLVideoInfo& getVideoInfo()
     {
         return ptm_vinfo;

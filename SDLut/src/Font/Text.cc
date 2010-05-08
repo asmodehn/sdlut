@@ -16,7 +16,7 @@ try :
 {
 
     //default
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     m_img.reset(new video::internal::OGL::GLSurface(*(m_font.render(m_text,m_fgc,m_mode,m_bgc))));
 #else
     m_img.reset(m_font.render(m_text,m_fgc,m_mode,m_bgc));
@@ -35,7 +35,7 @@ try :
     m_font(txt.m_font),m_text(txt.m_text),m_fgc(txt.m_fgc),m_bgc(txt.m_bgc),m_mode(txt.m_mode)
 {
     //we copy the surface, in case it gets changed later on...
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     m_img.reset(new video::internal::OGL::GLSurface(*(txt.m_img)));
 #else
     m_img.reset(new video::internal::RGBSurface(*(txt.m_img)));
@@ -57,7 +57,7 @@ Text & Text::operator=(const Text& txt)
     m_mode = txt.m_mode;
 
     //we copy the surface, in case it gets changed later on...
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     m_img.reset(new video::internal::OGL::GLSurface(*(txt.m_img)));
 #else
     m_img.reset(new video::internal::RGBSurface(*(txt.m_img)));
@@ -93,7 +93,7 @@ bool Text::render()
     std::auto_ptr<video::internal::RGBSurface> surf = m_font.render(m_text,m_fgc,m_mode,m_bgc);
 
     //we release the auto_ptr, and change m_img.
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     m_img.reset(new video::internal::OGL::GLSurface(*surf));
 #else
     m_img = surf;

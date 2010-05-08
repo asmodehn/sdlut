@@ -7,7 +7,7 @@ namespace SDLut
 {
 namespace audio
 {
-#ifdef WK_SDLMIXER_FOUND
+#ifdef WK_SDLut_FOUND_SDLMIXER
 #pragma message ("SDL_Mixer Found. Compiling MixerExtend.")
 MixerExtend::MixerExtend(int frequency = MIX_DEFAULT_FREQUENCY,unsigned short channels = 2 ,unsigned short samples = 512) throw (std::logic_error)
 try

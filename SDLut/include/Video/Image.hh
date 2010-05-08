@@ -34,13 +34,13 @@ class Image
     friend class ScreenBuffer;// to access m_img
 
 protected:
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     std::auto_ptr<internal::OGL::GLSurface> m_img;
 #else
     std::auto_ptr<internal::RGBSurface> m_img;
 #endif
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     ///Conversion Constructor with explicit ownership transfert
     explicit Image(std::auto_ptr<internal::OGL::GLSurface> s) throw (std::logic_error);
 #endif

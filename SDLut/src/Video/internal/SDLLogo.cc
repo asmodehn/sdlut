@@ -30,7 +30,7 @@ Logo::Logo()
     try
     {
         system::RWOps _iconres( resources::_defaultImage,sizeof(resources::_defaultImage) );
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
         m_logo.reset(new OGL::GLSurface( _iconres ));
 #else
         m_logo.reset(new RGBSurface( _iconres ));
@@ -53,7 +53,7 @@ Logo::~Logo()
 void Logo::setLogoImage( const RGBSurface & mylogo )
 {
     //we copy the image
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     OGL::GLSurface* newlogo = new OGL::GLSurface(mylogo);
 #else
     RGBSurface* newlogo = new RGBSurface(mylogo);
@@ -63,7 +63,7 @@ void Logo::setLogoImage( const RGBSurface & mylogo )
 
 
 //this render function should not modify the engine
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
 bool Logo::render(OGL::VideoGLSurface & screen) const
 #else
 bool Logo::render(VideoSurface & screen) const
