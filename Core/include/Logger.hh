@@ -105,6 +105,9 @@ public :
 #endif
     }
 
+    bool isFileLogEnabled() { return _fileLog; }
+    bool isConsoleLogEnabled() { return _consoleLog; }
+
     //void add(const std::string & message); // not const because of initial '\n' in string from streams...
     template<typename M>
     Logger& operator << (const M & msg);
