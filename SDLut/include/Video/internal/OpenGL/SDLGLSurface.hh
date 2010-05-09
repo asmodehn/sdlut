@@ -21,6 +21,7 @@ class ImageLoader;
 
 namespace internal
 {
+class Logo;
 
 namespace OGL
 {
@@ -32,6 +33,7 @@ class GLSurface : public video::internal::RGBSurface
     friend class VideoGLSurface;
 
     friend class video::ImageLoader;
+    friend class video::internal::Logo; //so that Logo can access texturehandle and render itself.
 
     friend class font::FontExtend;
 

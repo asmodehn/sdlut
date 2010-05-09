@@ -250,7 +250,7 @@ void ScreenBuffer::setBGColor(const Color & color)
 {
     m_background = color;
     m_bgsurf->fill(color);
-	requestFullRefresh();
+    requestFullRefresh();
 }
 
 void ScreenBuffer::applyBGColor()

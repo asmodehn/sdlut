@@ -70,7 +70,9 @@ bool OGLLogo::render(VideoGLSurface& screen) const
 {
     if ( screen.getRenderer() == OpenGL )
     {
-        //glDisable( GL_DEPTH_TEST ) ;
+        //to improve performance on well known model
+        glDisable( GL_DEPTH_TEST ) ;
+        glEnable(GL_CULL_FACE);
 
         //Switchig to 3D display
         glMatrixMode(GL_PROJECTION);      // Select The Projection Matrix
@@ -109,7 +111,6 @@ bool OGLLogo::render(VideoGLSurface& screen) const
         //
 
         glEnable (GL_DEPTH_TEST);
-        glEnable (GL_CULL_FACE);
 
         //TODO : background
         //TODO : shadow...

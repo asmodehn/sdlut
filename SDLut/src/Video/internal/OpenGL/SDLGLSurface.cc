@@ -27,9 +27,9 @@ try :
 #endif
 
 
-	//resizing 
-	// to make sure size is conform for OpenGL
-	resize(ptm_surf->w,ptm_surf->h);
+    //resizing
+    // to make sure size is conform for OpenGL
+    resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
 
@@ -53,9 +53,9 @@ try :
     Log << nl << "GLSurface::GLSurface(" << s.get() << ") called.";
 #endif
 
-    	//resizing 
-	// to make sure size is conform for OpenGL
-	resize(ptm_surf->w,ptm_surf->h);
+    //resizing
+    // to make sure size is conform for OpenGL
+    resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
 
@@ -82,9 +82,9 @@ try :
 #endif
 
 
-    	//resizing 
-	// to make sure size is conform for OpenGL
-	resize(ptm_surf->w,ptm_surf->h);
+    //resizing
+    // to make sure size is conform for OpenGL
+    resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
 
@@ -109,9 +109,9 @@ try :
     Log << nl << "GLSurface::GLSurface(" << &gls << ") called.";
 #endif
 
-    //resizing 
-	// to make sure size is conform for OpenGL
-	resize(ptm_surf->w,ptm_surf->h);
+    //resizing
+    // to make sure size is conform for OpenGL
+    resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
 
@@ -141,9 +141,9 @@ try :
     Log << nl << "GLSurface::GLSurface(" << width <<", " << height << ", " << bpp << ", "<< alpha << ", " << colorkey << ", " << hardware << "... ) called.";
 #endif
 
-    	//resizing 
-	// to make sure size is conform for OpenGL
-	resize(ptm_surf->w,ptm_surf->h);
+    //resizing
+    // to make sure size is conform for OpenGL
+    resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << width <<", " << height << ", " << bpp << ", "<< alpha << ", " << colorkey << ", " << hardware << "...) done -> " << ptm_surf.get() << " created.";
@@ -170,9 +170,9 @@ try	:
     Log << nl << "GLSurface::GLSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width <<", " << height << "... ) called.";
 #endif
 
-    //resizing 
-	// to make sure size is conform for OpenGL
-	resize(ptm_surf->w,ptm_surf->h);
+    //resizing
+    // to make sure size is conform for OpenGL
+    resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width <<", " << height << "...) done -> " << ptm_surf.get() << " created.";
@@ -194,8 +194,8 @@ try :
     Log << nl << "GLSurface::GLSurface(" << rwops << "... ) called.";
 #endif
 
-	//resizing 
-	// to make sure size is conform for OpenGL
+    //resizing
+    // to make sure size is conform for OpenGL
     resize(ptm_surf->w,ptm_surf->h);
 
 
@@ -217,35 +217,35 @@ GLSurface::~GLSurface()
 
 bool GLSurface::resize(int width, int height, bool force)
 {
-	bool res = true;
-	//the width and height passed here are the actual new ones
-	m_actualWidth = width;
-	m_actualHeight = height;
-	
-	//if we need to actually resize
-	if ( force	|| ( /*OpenGL < 2.0 &&*/ ( (getTextureWidth() % 2 != 0) || (getTextureHeight() %2 !=0)) )
-				|| ( getTextureWidth() < m_actualWidth ) || ( getTextureHeight() < m_actualHeight )
-		)
-	{
-	//computing proper width and height for OpengL < 2.0
-    unsigned int properWidth = 1;
-    unsigned int properHeight = 1;
-    while ( properWidth < m_actualWidth ) properWidth *= 2;
-    while ( properHeight < m_actualHeight ) properHeight *= 2;
+    bool res = true;
+    //the width and height passed here are the actual new ones
+    m_actualWidth = width;
+    m_actualHeight = height;
 
-
-    // we may need to resize the surface itself.
-    if (properWidth > getTextureWidth() || properHeight > getTextureHeight() )
+    //if we need to actually resize
+    if ( force	|| ( /*OpenGL < 2.0 &&*/ ( (getTextureWidth() % 2 != 0) || (getTextureHeight() %2 !=0)) )
+            || ( getTextureWidth() < m_actualWidth ) || ( getTextureHeight() < m_actualHeight )
+       )
     {
-        res = res && RGBSurface::resize(properWidth,properHeight);
-		//recreating the pixel format, since we recreated the RGBSurface::surf as well
-		if (ptm_pformat)
-			delete ptm_pformat, ptm_pformat = NULL;
-		ptm_pformat = new OGLPixelFormat(ptm_surf->format);
+        //computing proper width and height for OpengL < 2.0
+        unsigned int properWidth = 1;
+        unsigned int properHeight = 1;
+        while ( properWidth < m_actualWidth ) properWidth *= 2;
+        while ( properHeight < m_actualHeight ) properHeight *= 2;
+
+
+        // we may need to resize the surface itself.
+        if (properWidth > getTextureWidth() || properHeight > getTextureHeight() )
+        {
+            res = res && RGBSurface::resize(properWidth,properHeight);
+            //recreating the pixel format, since we recreated the RGBSurface::surf as well
+            if (ptm_pformat)
+                delete ptm_pformat, ptm_pformat = NULL;
+            ptm_pformat = new OGLPixelFormat(ptm_surf->format);
+        }
     }
-	}
     return res;
-	
+
 }
 
 unsigned int GLSurface::getWidth()

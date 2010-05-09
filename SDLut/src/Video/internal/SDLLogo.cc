@@ -65,9 +65,84 @@ void Logo::setLogoImage( const RGBSurface & mylogo )
 //this render function should not modify the engine
 #ifdef WK_SDLut_FOUND_OPENGL
 bool Logo::render(OGL::VideoGLSurface & screen) const
+{
+    Rect dest_rect( screen.getWidth() - m_logo->getWidth(), screen.getHeight() - m_logo->getHeight());
+    Rect src_rect(0,0,m_logo->getWidth(),m_logo->getHeight());
+    dest_rect.resetw( src_rect.getw() );
+    dest_rect.reseth( src_rect.geth() );
+
+    //if OpenGL is not set
+    if ( ! screen.isOpenGLset() )
+    {
+        //normal SDL 2D render
+        bool res = screen.blit(*m_logo,dest_rect);
+        res = res && screen.update(dest_rect);
+        return res;
+    }
+    else
+    {
+
+        if ( ! m_logo->optimised )
+        {
+            //generate the GL texture if needed
+            m_logo->convertToDisplayFormat();
+        }
+
+        //finding texture size in coord weight
+        float texx= static_cast<float>(src_rect.getx()) / m_logo->getTextureWidth();
+        float texy= static_cast<float>(src_rect.gety()) / m_logo->getTextureHeight();
+        float texw= static_cast<float>(src_rect.getw()) / m_logo->getTextureWidth();
+        float texh= static_cast<float>(src_rect.geth()) / m_logo->getTextureHeight();
+
+
+        //to NOT use clip rectangle
+        glDisable(GL_SCISSOR_TEST);
+
+        //render it
+        //2D Rendering
+
+        glDisable( GL_DEPTH_TEST ) ;
+        glMatrixMode( GL_PROJECTION ) ;
+        glLoadIdentity() ;
+
+        glOrtho( 0, screen.getWidth(), screen.getHeight(), 0, 0, 1 ) ;
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        //Enable texturing
+        glEnable(GL_TEXTURE_2D);
+
+        //Load the texture
+        glBindTexture(GL_TEXTURE_2D, m_logo->textureHandle);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+        glBegin( GL_QUADS ) ;
+        glTexCoord2f( texx,texy) ;
+        glVertex2i(dest_rect.getx(), dest_rect.gety() ) ;
+
+        glTexCoord2f( texx, texy+texh) ;
+        glVertex2i(dest_rect.getx(), dest_rect.gety() + dest_rect.geth()) ;
+
+        glTexCoord2f( texx+texw, texy+texh) ;
+        glVertex2i(dest_rect.getx() + dest_rect.getw(), dest_rect.gety() + dest_rect.geth()) ;
+
+        glTexCoord2f( texx+texw, texy) ;
+        glVertex2i( dest_rect.getx() + dest_rect.getw(), dest_rect.gety()) ;
+
+        glEnd() ;
+
+
+        //Disable texturing
+        glDisable(GL_TEXTURE_2D);
+
+        return true;
+    }
+
+}
+
 #else
 bool Logo::render(VideoSurface & screen) const
-#endif
 {
     Rect dest( screen.getWidth() - m_logo->getWidth(), screen.getHeight() - m_logo->getHeight(), m_logo->getWidth(), m_logo->getHeight());
     bool res = screen.blit(*m_logo,dest);
@@ -76,6 +151,7 @@ bool Logo::render(VideoSurface & screen) const
     //Maybe the refresh strategy should be implemented under -> in Video Surface ??
     return res;
 }
+#endif
 
 }
 }
