@@ -31,7 +31,7 @@ SDLutGraphics::SDLutGraphics()
 
 void SDLutGraphics::setTarget(video::ScreenBuffer* target)
 {
-    mTarget = target;	
+    mTarget = target;		
 }
 
 video::ScreenBuffer* SDLutGraphics::getTarget() const
@@ -63,8 +63,8 @@ void SDLutGraphics::_endDraw()
 {
     tempImage4PixelsDim = Image4PixelsDim;
     popClipArea();	
-    mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
 
+    mTarget->blit(*Image4Pixels.get(), tempImage4PixelsDim);
 }
 
 
@@ -172,7 +172,8 @@ void SDLutGraphics::fillRectangle(const Rectangle& rectangle)
                 SDLutputPixel(Image4Pixels.get(), x, y, mColor);
             }
         }*/
-		rect = video::Rect(x1, y1, x2-x1, y2-y1);
+		//rect = video::Rect(x1, y1, x2-x1+1, y2-y1+1);
+		rect = video::Rect(std::min<int>(x1, x2), std::min<int>(y1, y2), abs(x2-x1)+1, abs(y2-y1)+1);
     }
     else
     {
@@ -208,13 +209,13 @@ void SDLutGraphics::drawPoint(int x, int y)
 void SDLutGraphics::drawHLine(int x1, int y, int x2)
 {
     //drawLine(x1, y, x2, y);
-	fillRectangle( gcn::Rectangle(std::min<int>(x1, x2), y, abs(x2-x1), 1) );
+	fillRectangle( gcn::Rectangle(std::min<int>(x1, x2), y, abs(x2-x1)+1, 1) );
 }
 
 void SDLutGraphics::drawVLine(int x, int y1, int y2)
 {
     //drawLine(x, y1, x, y2);
-	fillRectangle( gcn::Rectangle(x, std::min<int>(y1, y2), 1, abs(y2-y1)) );
+	fillRectangle( gcn::Rectangle(x, std::min<int>(y1, y2), 1, abs(y2-y1)+1) );
 }
 
 void SDLutGraphics::drawRectangle(const Rectangle& rectangle)
@@ -240,132 +241,144 @@ void SDLutGraphics::drawLine(int x1, int y1, int x2, int y2)
 
     const ClipRectangle& top = mClipStack.top();
 
-    x1 += top.xOffset;
-    y1 += top.yOffset;
-    x2 += top.xOffset;
-    y2 += top.yOffset;
+	if (x1 == x2)
+	{
+		drawVLine(x1, y1, y2);
+	}
+	else if (y1 == y2)
+	{
+		drawHLine(x1, y1, x2);
+	}
+	else
+	{
 
-    // Draw a line with Bresenham
+		x1 += top.xOffset;
+		y1 += top.yOffset;
+		x2 += top.xOffset;
+		y2 += top.yOffset;
 
-    int dx = ABS(x2 - x1);
-    int dy = ABS(y2 - y1);
+		// Draw a line with Bresenham
 
-    if (dx > dy)
-    {
-        if (x1 > x2)
-        {
-            // swap x1, x2
-            x1 ^= x2;
-            x2 ^= x1;
-            x1 ^= x2;
+		int dx = ABS(x2 - x1);
+		int dy = ABS(y2 - y1);
 
-            // swap y1, y2
-            y1 ^= y2;
-            y2 ^= y1;
-            y1 ^= y2;
-        }
+		if (dx > dy)
+		{
+			if (x1 > x2)
+			{
+				// swap x1, x2
+				x1 ^= x2;
+				x2 ^= x1;
+				x1 ^= x2;
 
-        if (y1 < y2)
-        {
-            int y = y1;
-            int p = 0;
+				// swap y1, y2
+				y1 ^= y2;
+				y2 ^= y1;
+				y1 ^= y2;
+			}
 
-            for (int x = x1; x <= x2; x++)
-            {
-                if (top.isPointInRect(x, y))
-                {
-                    SDLutputPixel(Image4Pixels.get(), x, y, mColor);
-                }
+			if (y1 < y2)
+			{
+				int y = y1;
+				int p = 0;
 
-                p += dy;
+				for (int x = x1; x <= x2; x++)
+				{
+					if (top.isPointInRect(x, y))
+					{
+						SDLutputPixel(Image4Pixels.get(), x, y, mColor);
+					}
 
-                if (p * 2 >= dx)
-                {
-                    y++;
-                    p -= dx;
-                }
-            }
-        }
-        else
-        {
-            int y = y1;
-            int p = 0;
+					p += dy;
 
-            for (int x = x1; x <= x2; x++)
-            {
-                if (top.isPointInRect(x, y))
-                {
-                    SDLutputPixel(Image4Pixels.get(), x, y, mColor);
-                }
+					if (p * 2 >= dx)
+					{
+						y++;
+						p -= dx;
+					}
+				}
+			}
+			else
+			{
+				int y = y1;
+				int p = 0;
 
-                p += dy;
+				for (int x = x1; x <= x2; x++)
+				{
+					if (top.isPointInRect(x, y))
+					{
+						SDLutputPixel(Image4Pixels.get(), x, y, mColor);
+					}
 
-                if (p * 2 >= dx)
-                {
-                    y--;
-                    p -= dx;
-                }
-            }
-        }
-    }
-    else
-    {
-        if (y1 > y2)
-        {
-            // swap y1, y2
-            y1 ^= y2;
-            y2 ^= y1;
-            y1 ^= y2;
+					p += dy;
 
-            // swap x1, x2
-            x1 ^= x2;
-            x2 ^= x1;
-            x1 ^= x2;
-        }
+					if (p * 2 >= dx)
+					{
+						y--;
+						p -= dx;
+					}
+				}
+			}
+		}
+		else
+		{
+			if (y1 > y2)
+			{
+				// swap y1, y2
+				y1 ^= y2;
+				y2 ^= y1;
+				y1 ^= y2;
 
-        if (x1 < x2)
-        {
-            int x = x1;
-            int p = 0;
+				// swap x1, x2
+				x1 ^= x2;
+				x2 ^= x1;
+				x1 ^= x2;
+			}
 
-            for (int y = y1; y <= y2; y++)
-            {
-                if (top.isPointInRect(x, y))
-                {
-                    SDLutputPixel(Image4Pixels.get(), x, y, mColor);
-                }
+			if (x1 < x2)
+			{
+				int x = x1;
+				int p = 0;
 
-                p += dx;
+				for (int y = y1; y <= y2; y++)
+				{
+					if (top.isPointInRect(x, y))
+					{
+						SDLutputPixel(Image4Pixels.get(), x, y, mColor);
+					}
 
-                if (p * 2 >= dy)
-                {
-                    x++;
-                    p -= dy;
-                }
-            }
-        }
-        else
-        {
-            int x = x1;
-            int p = 0;
+					p += dx;
 
-            for (int y = y1; y <= y2; y++)
-            {
-                if (top.isPointInRect(x, y))
-                {
-                    SDLutputPixel(Image4Pixels.get(), x, y, mColor);
-                }
+					if (p * 2 >= dy)
+					{
+						x++;
+						p -= dy;
+					}
+				}
+			}
+			else
+			{
+				int x = x1;
+				int p = 0;
 
-                p += dx;
+				for (int y = y1; y <= y2; y++)
+				{
+					if (top.isPointInRect(x, y))
+					{
+						SDLutputPixel(Image4Pixels.get(), x, y, mColor);
+					}
 
-                if (p * 2 >= dy)
-                {
-                    x--;
-                    p -= dy;
-                }
-            }
-        }
-    }
+					p += dx;
+
+					if (p * 2 >= dy)
+					{
+						x--;
+						p -= dy;
+					}
+				}
+			}
+		}
+	}
 }
 
 void SDLutGraphics::setColor(const gcn::Color& color)
