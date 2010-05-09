@@ -19,7 +19,7 @@ namespace OGL
 ////////////////private Conversion Constructor
 GLSurface::GLSurface(SDL_Surface * s) throw (std::logic_error)
 try :
-    RGBSurface(s), modified(false), m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
+    RGBSurface(s), modified(false)
 {
 
 #ifdef DEBUG
@@ -27,7 +27,9 @@ try :
 #endif
 
 
-    computeGLWidthHeight();
+	//resizing 
+	// to make sure size is conform for OpenGL
+	resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
 
@@ -44,14 +46,16 @@ catch (std::exception &e)
 
 GLSurface::GLSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error)
 try :
-    RGBSurface(s), modified(false), m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
+    RGBSurface(s), modified(false)
 {
 
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << s.get() << ") called.";
 #endif
 
-    computeGLWidthHeight();
+    	//resizing 
+	// to make sure size is conform for OpenGL
+	resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
 
@@ -70,7 +74,7 @@ catch (std::exception &e)
 ////////////public Conversion constructor
 GLSurface::GLSurface( const RGBSurface & rgbs) throw (std::logic_error)
 try :
-    RGBSurface( rgbs ), modified(false), m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
+    RGBSurface( rgbs ), modified(false)
 {
 
 #ifdef DEBUG
@@ -78,8 +82,9 @@ try :
 #endif
 
 
-    computeGLWidthHeight();
-
+    	//resizing 
+	// to make sure size is conform for OpenGL
+	resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
 
@@ -94,18 +99,19 @@ catch (std::exception &e)
     //TODO : much more explicit error message...
 }
 
-////////////Coopy Constructor
+////////////Copy Constructor
 GLSurface::GLSurface( const GLSurface & gls) throw (std::logic_error)
 try :
-    RGBSurface( gls ), modified(false), m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
+    RGBSurface( gls ), modified(false)
 {
 
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << &gls << ") called.";
 #endif
 
-
-    computeGLWidthHeight();
+    //resizing 
+	// to make sure size is conform for OpenGL
+	resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
 
@@ -128,14 +134,16 @@ GLSurface::GLSurface( int width, int height, int bpp, bool alpha , bool colorkey
                       unsigned long a_mask
                     ) throw (std::logic_error)
 try :
-    RGBSurface(width, height, bpp, alpha, colorkey, hardware, r_mask, g_mask, b_mask, a_mask), modified(false), m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
+    RGBSurface(width, height, bpp, alpha, colorkey, hardware, r_mask, g_mask, b_mask, a_mask), modified(false)
 {
 
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << width <<", " << height << ", " << bpp << ", "<< alpha << ", " << colorkey << ", " << hardware << "... ) called.";
 #endif
 
-    computeGLWidthHeight();
+    	//resizing 
+	// to make sure size is conform for OpenGL
+	resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << width <<", " << height << ", " << bpp << ", "<< alpha << ", " << colorkey << ", " << hardware << "...) done -> " << ptm_surf.get() << " created.";
@@ -156,13 +164,15 @@ GLSurface::GLSurface( void * pixeldata, int depth, int pitch, int width, int hei
                       unsigned long a_mask
                     ) throw (std::logic_error)
 try	:
-    RGBSurface(pixeldata, depth, pitch, width, height, r_mask, g_mask, b_mask, a_mask), modified(false),m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
+    RGBSurface(pixeldata, depth, pitch, width, height, r_mask, g_mask, b_mask, a_mask), modified(false)
 {
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width <<", " << height << "... ) called.";
 #endif
 
-    computeGLWidthHeight();
+    //resizing 
+	// to make sure size is conform for OpenGL
+	resize(ptm_surf->w,ptm_surf->h);
 
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << pixeldata << ", " << depth << ", " << pitch << ", " << width <<", " << height << "...) done -> " << ptm_surf.get() << " created.";
@@ -178,13 +188,15 @@ catch (std::exception &e)
 
 GLSurface::GLSurface(system::RWOps & rwops) throw (std::logic_error)
 try :
-    RGBSurface(rwops), modified(false),m_actualWidth(ptm_surf->w), m_actualHeight(ptm_surf->h)
+    RGBSurface(rwops), modified(false)
 {
 #ifdef DEBUG
     Log << nl << "GLSurface::GLSurface(" << rwops << "... ) called.";
 #endif
 
-    computeGLWidthHeight();
+	//resizing 
+	// to make sure size is conform for OpenGL
+    resize(ptm_surf->w,ptm_surf->h);
 
 
 #ifdef DEBUG
@@ -199,41 +211,41 @@ catch (std::exception &e)
     //TODO : much more explicit error message...
 }
 
-bool GLSurface::computeGLWidthHeight()
-{
-    if ( getTextureWidth() == 0 && getTextureHeight() == 0 ) return true;
-    unsigned int properWidth = 1;
-    unsigned int properHeight = 1;
-    while ( properWidth < getTextureWidth() ) properWidth *= 2;
-    while ( properHeight < getTextureHeight() ) properHeight *= 2;
-
-    //important if OpengL < 2.0 only
-
-    bool res = false;
-    // we may need to resize the surface.
-    if (properWidth > getTextureWidth() || properHeight > getTextureHeight() )
-    {
-        res = resize(properWidth,properHeight);
-    }
-    else
-    {
-        res = true; // no need to resize
-    }
-
-    return res;
-}
-
 GLSurface::~GLSurface()
 {
 }
 
-bool GLSurface::resize(int width, int height)
+bool GLSurface::resize(int width, int height, bool force)
 {
-    modified = RGBSurface::resize(width,height);
-    if (ptm_pformat)
-        delete ptm_pformat, ptm_pformat = NULL;
-    ptm_pformat = new OGLPixelFormat(ptm_surf->format);
-    return modified;
+	bool res = true;
+	//the width and height passed here are the actual new ones
+	m_actualWidth = width;
+	m_actualHeight = height;
+	
+	//if we need to actually resize
+	if ( force	|| ( /*OpenGL < 2.0 &&*/ ( (getTextureWidth() % 2 != 0) || (getTextureHeight() %2 !=0)) )
+				|| ( getTextureWidth() < m_actualWidth ) || ( getTextureHeight() < m_actualHeight )
+		)
+	{
+	//computing proper width and height for OpengL < 2.0
+    unsigned int properWidth = 1;
+    unsigned int properHeight = 1;
+    while ( properWidth < m_actualWidth ) properWidth *= 2;
+    while ( properHeight < m_actualHeight ) properHeight *= 2;
+
+
+    // we may need to resize the surface itself.
+    if (properWidth > getTextureWidth() || properHeight > getTextureHeight() )
+    {
+        res = res && RGBSurface::resize(properWidth,properHeight);
+		//recreating the pixel format, since we recreated the RGBSurface::surf as well
+		if (ptm_pformat)
+			delete ptm_pformat, ptm_pformat = NULL;
+		ptm_pformat = new OGLPixelFormat(ptm_surf->format);
+    }
+	}
+    return res;
+	
 }
 
 unsigned int GLSurface::getWidth()

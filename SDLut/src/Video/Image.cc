@@ -91,7 +91,9 @@ bool Image::resize(unsigned int width, unsigned int height)
 {
     bool res = true;
     if (m_img->getWidth() != width || m_img->getHeight() != height)
-        res = m_img->resize(width, height);
+	{ 
+		res = m_img->resize(width, height);
+	}
 
     return res;
 }

@@ -332,7 +332,7 @@ bool VideoGLSurface::blit (GLSurface& glsrc, Rect& dest_rect, const Rect& src_re
     // only the emergency conversion to display format is useful here. Maybe even not...
     if ( glsrc.modified )
     {
-        glsrc.computeGLWidthHeight();
+		glsrc.resize(glsrc.getWidth(),glsrc.getHeight()); //resizing tomake sure size is OpenGL compatible
         glsrc.optimised = false; // to trigger regeneration of texture if needed
     }
 

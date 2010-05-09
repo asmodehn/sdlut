@@ -48,8 +48,6 @@ private:
     ///Conversion Constructor with explicit ownership transfert
     explicit GLSurface(std::auto_ptr<SDL_Surface> s) throw (std::logic_error);
 
-    bool computeGLWidthHeight();
-
 protected:
 
     //to mark the texture as modified, if texture update needed before using it
@@ -115,7 +113,7 @@ public :
 
     //saveBMP // TODO useful for screenshots
 
-    virtual bool resize(int width, int height);
+    virtual bool resize(int width, int height, bool force = false);
 
     bool fill (const PixelColor& color, Rect dest_rect);
 
