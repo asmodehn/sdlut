@@ -11,9 +11,13 @@ Guichan website is at http://guichan.sourceforge.net/
 3) Make sure you have the folders in the right place
 guichan/
 	src
-	includes
-	examples
+	include
 
-4) run CMake
+4) remove the defaults front end folders ( allegro, hge, openlayer, opengl and sdl ) in src and include,
+ as well as in src/contrib and include/contrib.
 
-5) Build Guichan with you usual compiler.
+5) run CMake
+
+6) Build Guichan with you usual compiler.
+
+7) Use the built guichan library to built SDLut FE.
