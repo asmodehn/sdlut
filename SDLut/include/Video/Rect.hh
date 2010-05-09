@@ -92,7 +92,7 @@ public:
 //Methods
     //Return the bigger Rect contained in both Rects
     Rect inf(const Rect & r);
-    //Return the shorter Rect containing the both Rects
+    //Return the smaller Rect containing the both Rects
     Rect sup(const Rect & r);
 
     //move from (x,y) to (nx,ny) wo impacting w & h

@@ -106,6 +106,7 @@ WkTestBuild ( testRect "testRect.cc" "TestCommon.hh")
 WkTestBuild ( testScreenBufferInit "testScreenBufferInit.cc" "TestCommon.hh" )
 WkTestBuild ( testScreenBGColor "testScreenBGColor.cc" "TestCommon.hh" )
 WkTestBuild ( testScreenAccess "testScreenAccess.cc" "TestCommon.hh")
+WkTestBuild ( testScreenClipRect "testScreenClipRect.cc" "TestCommon.hh")
 # From grounds and simple things to complex concepts
 # - Test Library version access
 WkTestRun( Version testVersion )
@@ -137,11 +138,11 @@ WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl")
 WkTestRun (ScreenBGColor testScreenBGColor "auto" "nogl")
 # - Test Screen Access. Will test Filling pixel and rectangle directly on screen (slow), and getPixel.
 WkTestRun (ScreenAccess testScreenAccess "auto" "nogl")
+WkTestRun (ScreenAccess_Clipping testScreenClipRect "auto" "nogl")
 
 #WkTestRun   ( SDL_Pixel testPixel "nogl" )
 #WkTestRun   ( SDL_Pixel_Image_woAlpha testPixel "nogl" "data/test/transparency/png/pal_bk_notrns.png" )
 #WkTestRun   ( SDL_Pixel_Image_wAlpha testPixel "nogl" "data/test/transparency/png/pal_bk.png" )
-#WkTestBuild ( testScreenClipRect "testScreenClipRect.cc" "TestCommon.hh")
 
 # - Test Screen Blit. Will test blitting of surfaces filled with color squares.
 # - Test Screen Blit Alpha. Will test blitting of surfaces filled with color squares with alpha.
