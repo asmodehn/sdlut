@@ -4,7 +4,7 @@ using namespace SDLut::video;
 
 Logger testlog("TestScreenClipRect");
 
-#define IMG_TEST_SIZE 5
+#define RECT_TEST_SIZE 2
 
 class AssertClip : public AssertEngine
 {
@@ -21,7 +21,7 @@ protected:
     Color m_bgColor;
     Color m_imgColor;
 
-    Rect clipRect;
+    //Rect clipRect;
 
 public:
 
@@ -29,13 +29,40 @@ public:
             : AssertEngine(log,ap),imgTLPos(),imgTRPos(),imgBLPos(), imgBRPos(),imgCPos(), m_bgColor(bgc), m_imgColor(imgcolor)
     {
 
+        //preparing image test positions
+        imgTLPos.resetx(clippos.getx() -1);
+        imgTLPos.resety(clippos.gety() -1);
+        imgTLPos.resetw(RECT_TEST_SIZE);
+        imgTLPos.reseth(RECT_TEST_SIZE);
+
+        imgTRPos.resetx(clippos.getx()+clippos.getw() - RECT_TEST_SIZE /2);
+        imgTRPos.resety(clippos.gety() -1 );
+        imgTRPos.resetw(RECT_TEST_SIZE);
+        imgTRPos.reseth(RECT_TEST_SIZE);
+
+        imgBLPos.resetx(clippos.getx() -1 );
+        imgBLPos.resety(clippos.gety()+clippos.geth() - RECT_TEST_SIZE /2);
+        imgBLPos.resetw(RECT_TEST_SIZE);
+        imgBLPos.reseth(RECT_TEST_SIZE);
+
+        imgBRPos.resetx(clippos.getx()+clippos.getw() - RECT_TEST_SIZE /2);
+        imgBRPos.resety(clippos.gety()+clippos.geth() - RECT_TEST_SIZE /2);
+        imgBRPos.resetw(RECT_TEST_SIZE);
+        imgBRPos.reseth(RECT_TEST_SIZE);
+
+        imgCPos.resetx(clippos.getx()+clippos.getw() /2);
+        imgCPos.resety(clippos.gety()+clippos.geth() /2);
+        imgCPos.resetw(RECT_TEST_SIZE);
+        imgCPos.reseth(RECT_TEST_SIZE);
+
+
         Rect table[5] = {imgTLPos,imgTRPos,imgBLPos,imgBRPos,imgCPos};
 
         for (int t=0; t< 5; ++t)
         {
 
-            for (int i= table[t].getx(); i < table[t].getx()+table[t].getw(); ++i)
-                for (int j= table[t].gety(); j < table[t].gety()+table[t].geth(); ++j)
+            for (int i= table[t].getx(); i < table[t].getx()+(int)table[t].getw(); ++i)
+                for (int j= table[t].gety(); j < table[t].gety()+(int)table[t].geth(); ++j)
                 {
                     //pos to test
                     Rect asrt_rect = Rect(i,j);
@@ -48,9 +75,11 @@ public:
                     {
                         col.push_back(m_imgColor);
                     }
-                    else //otherwise background color
+                    else //otherwise black color
+                    //TODO change later to background color if needed
+                    //TO THINK ABOUT how to manage background color + clip rect
                     {
-                        col.push_back(m_bgColor);
+                        col.push_back(Color());
                     }
                 }
         }
@@ -64,13 +93,6 @@ public:
     {
         //TODO handle resize
         return true;
-    }
-
-    bool testClipRect(const Rect & abspos) const
-    {
-        return (abspos.getx() > clipRect.getx() && abspos.getx() < static_cast<int>(clipRect.getx() + clipRect.getw()) )
-               && (abspos.gety() > clipRect.gety() && abspos.gety() < static_cast<int>(clipRect.gety() + clipRect.geth()) );
-
     }
 
     virtual bool assertrender(ScreenBuffer& screen)const
@@ -117,34 +139,41 @@ class TestClip : public TestEngine
     Rect imgCPos;
 
     Color m_bgc;
-    Image m_fgimg;
+    Color m_fgc;
 
 public:
 
-    TestClip(Logger & log, AssertClip & ac, Rect cliprect, Color imgcolor, Color bgcolor)
-            : TestEngine(log,ac), clipRect(cliprect), imgTLPos(), imgTRPos(), imgBRPos(), imgBLPos(), m_bgc(bgcolor), m_fgimg(IMG_TEST_SIZE,IMG_TEST_SIZE)
+    TestClip(Logger & log, AssertClip & ac, Rect cliprect, Color fgcolor, Color bgcolor)
+            : TestEngine(log,ac), clipRect(cliprect), imgTLPos(), imgTRPos(), imgBRPos(), imgBLPos(), m_bgc(bgcolor), m_fgc(fgcolor)
     {
         m_log.enableFileLog("TestScreenClipRect.log");
 
-        //preparing image
-        m_fgimg.fill(imgcolor);
-
         //preparing image test positions
-        imgTLPos.resetx(clipRect.getx());
-        imgTLPos.resety(clipRect.gety());
+        imgTLPos.resetx(clipRect.getx() -1);
+        imgTLPos.resety(clipRect.gety() -1);
+        imgTLPos.resetw(RECT_TEST_SIZE);
+        imgTLPos.reseth(RECT_TEST_SIZE);
 
-        imgTRPos.resetx(clipRect.getx()+clipRect.getw() - IMG_TEST_SIZE /2);
-        imgTRPos.resety(clipRect.gety());
 
-        imgBLPos.resetx(clipRect.getx());
-        imgBLPos.resety(clipRect.gety()+clipRect.geth() - IMG_TEST_SIZE /2);
+        imgTRPos.resetx(clipRect.getx()+clipRect.getw() - RECT_TEST_SIZE /2);
+        imgTRPos.resety(clipRect.gety() -1);
+        imgTRPos.resetw(RECT_TEST_SIZE);
+        imgTRPos.reseth(RECT_TEST_SIZE);
 
-        imgBRPos.resetx(clipRect.getx()+clipRect.getw() - IMG_TEST_SIZE /2);
-        imgBRPos.resety(clipRect.gety()+clipRect.geth() - IMG_TEST_SIZE /2);
+        imgBLPos.resetx(clipRect.getx() -1);
+        imgBLPos.resety(clipRect.gety()+clipRect.geth() - RECT_TEST_SIZE /2);
+        imgBLPos.resetw(RECT_TEST_SIZE);
+        imgBLPos.reseth(RECT_TEST_SIZE);
+
+        imgBRPos.resetx(clipRect.getx()+clipRect.getw() - RECT_TEST_SIZE /2);
+        imgBRPos.resety(clipRect.gety()+clipRect.geth() - RECT_TEST_SIZE /2);
+        imgBRPos.resetw(RECT_TEST_SIZE);
+        imgBRPos.reseth(RECT_TEST_SIZE);
 
         imgCPos.resetx(clipRect.getx()+clipRect.getw() /2);
         imgCPos.resety(clipRect.gety()+clipRect.geth() /2);
-
+        imgCPos.resetw(RECT_TEST_SIZE);
+        imgCPos.reseth(RECT_TEST_SIZE);
 
     }
 
@@ -162,21 +191,14 @@ public:
     {
         screen.setBGColor(m_bgc);
 
-        //copying rect from actual assert engine, to make sure we dont modify it
-        Rect tlpos = imgTLPos;
-        Rect trpos = imgTRPos;
-        Rect brpos = imgBRPos;
-        Rect blpos = imgBLPos;
-        Rect cpos = imgCPos;
-
-
         screen.resetClipRect(clipRect);
 
-        screen.blit(m_fgimg,tlpos);
-        screen.blit(m_fgimg,trpos);
-        screen.blit(m_fgimg,brpos);
-        screen.blit(m_fgimg,blpos);
-        screen.blit(m_fgimg,cpos);
+     Rect table[5] = {imgTLPos,imgTRPos,imgBLPos,imgBRPos,imgCPos};
+
+        for (int t=0; t< 5; ++t)
+        {
+            screen.setColorAt(table[t],m_fgc);
+        }
 
         return true;
     }
@@ -200,6 +222,7 @@ int main(int argc, char** argv)
 
     Color fgc(Randomizer<unsigned char>::get(),Randomizer<unsigned char>::get(),Randomizer<unsigned char>::get());
     Color bgc(Randomizer<unsigned char>::get(),Randomizer<unsigned char>::get(),Randomizer<unsigned char>::get());
+
 
     Rect clipr( Randomizer<unsigned int>::get(0,640),Randomizer<unsigned int>::get(0,480 - 64));
     clipr.resetw( Randomizer<unsigned int>::get(1,640 - clipr.getx()) );

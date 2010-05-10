@@ -455,6 +455,7 @@ void ScreenBuffer::setColorAt(unsigned int x,unsigned int y, const Color & pixel
         }
 
         m_screen->setpixel(x, y,pcolor);
+        refreshlist.push_back(Rect(x,y));
     }
     else
     {
@@ -498,6 +499,7 @@ void ScreenBuffer::setColorAt(Rect& dest_rect, const Color & pixel)
         }
 
         m_screen->fill(pcolor,dest_rect);
+        refreshlist.push_back(dest_rect);
     }
     else
     {
@@ -529,13 +531,6 @@ Rect ScreenBuffer::getClipRect( void ) const
     return m_screen->getClipRect();
 }
 
-/*
-bool ScreenBuffer::fill (const Color& color, const Rect& dest_rect)
-{
-    m_screen->fill(m_screen->getVideoInfo().getPixelFormat().getPixelColor(color),dest_rect);
-    return true; //todo
-}
-*/
 bool ScreenBuffer::blit (const Image& src, Rect& dest_rect, const Rect& src_rect)
 {
     //NOTE :
