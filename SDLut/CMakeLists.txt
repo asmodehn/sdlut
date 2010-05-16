@@ -104,7 +104,8 @@ WkTestBuild ( testVersion "testVersion.cc" "TestCommon.hh" )
 WkTestBuild ( testColor "testColor.cc" "TestCommon.hh" )
 WkTestBuild ( testRect "testRect.cc" "TestCommon.hh")
 WkTestBuild ( testScreenBufferInit "testScreenBufferInit.cc" "TestCommon.hh" )
-WkTestBuild ( testScreenBGColor "testScreenBGColor.cc" "TestCommon.hh" )
+#Feature removed
+#WkTestBuild ( testScreenBGColor "testScreenBGColor.cc" "TestCommon.hh" )
 WkTestBuild ( testScreenAccess "testScreenAccess.cc" "TestCommon.hh")
 WkTestBuild ( testScreenClipRect "testScreenClipRect.cc" "TestCommon.hh")
 # From grounds and simple things to complex concepts
@@ -135,7 +136,7 @@ WkTestRun( Rect testRect )
 #WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "1280" "1024" "32")
 #Will test SDL advised video mode ( at desktop size ) -> harmless on user machine
 WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl")
-WkTestRun (ScreenBGColor testScreenBGColor "auto" "nogl")
+#WkTestRun (ScreenBGColor testScreenBGColor "auto" "nogl")
 # - Test Screen Access. Will test Filling pixel and rectangle directly on screen (slow), and getPixel.
 WkTestRun (ScreenAccess testScreenAccess "auto" "nogl")
 WkTestRun (ScreenAccess_Clipping testScreenClipRect "auto" "nogl")

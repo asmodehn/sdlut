@@ -287,14 +287,9 @@ int Display::mainLoop(unsigned int framerate, unsigned int eventrate)
             if ( m_newframecb.get() )
                 m_newframecb->call( framerate, SDL_GetTicks() - lastframe );
 
-            //applying the background
-            //if (!ShowingLoadingScreen)
-            pvm_screen->applyBGColor();
-
             //if (!ShowingLoadingScreen)
             if ( m_rendercb.get() )
                 m_rendercb->call( *pvm_screen );
-
 
             //calling internal engine render
             pvm_screen->renderpass(framerate, lastframe);
@@ -302,6 +297,8 @@ int Display::mainLoop(unsigned int framerate, unsigned int eventrate)
             pvm_screen->refresh(framerate, lastframe);
 
         }
+        //already exited, need to reset the flag
+        m_exitMainLoop = false;
 
     }
     else

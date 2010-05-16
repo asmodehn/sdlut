@@ -120,9 +120,13 @@ int main(int argc, char** argv)
     Assert asrtbis(testlog,args,scarea,color);
     Test enginebis(testlog,asrtbis,scarea,color);
 
+    //BUG
+    //This should not be needed !!!
+    //TODO : FIX IT
+    App::getInstance().getDisplay().requestOpenGL(args.isOGL());
     if (App::getInstance().getDisplay().show())
     {
-        exitstatus = exitstatus && App::getInstance().getDisplay().mainLoop();
+        exitstatus = (exitstatus == 0) && App::getInstance().getDisplay().mainLoop();
     }
 
     return exitstatus;

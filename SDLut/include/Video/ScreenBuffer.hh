@@ -75,15 +75,6 @@ public:
         return *m_scinfo;
     }
 
-    void setBGColor(const Color & color);
-    Color getBGColor()
-    {
-        return m_background;
-    }
-
-    //fill the VideoSurface with the BGColor (in OpenGL ; in SDL blit a surface in the background )
-    void applyBGColor();
-
     bool resize(unsigned int width, unsigned int height);
 
     unsigned int getWidth();
@@ -104,17 +95,6 @@ public:
     //Defines a 2D clippin Rect Area
     void resetClipRect( const Rect& clipr );
     Rect getClipRect( void ) const;
-
-    // Useless and confusing function.
-    // bgcolor should be enough, no need to fill screen.
-    // Or put a rect on top of everything else
-    //filling function for screen
-    //bool fill (const Color& color)
-    //{
-    //    Rect dest_rect(0,0,getWidth(), getHeight());
-    //    return fill( color, dest_rect );
-    //}
-    //bool fill (const Color& color, const Rect& dest_rect);
 
     //Blit src image on the screen.
     //Beware ! The final blitting rectangle is saved in dest_rect.

@@ -76,8 +76,8 @@ public:
                         col.push_back(m_imgColor);
                     }
                     else //otherwise black color
-                    //TODO change later to background color if needed
-                    //TO THINK ABOUT how to manage background color + clip rect
+                        //TODO change later to background color if needed
+                        //TO THINK ABOUT how to manage background color + clip rect
                     {
                         col.push_back(Color());
                     }
@@ -189,11 +189,9 @@ public:
 
     virtual bool render(ScreenBuffer & screen) const
     {
-        screen.setBGColor(m_bgc);
-
         screen.resetClipRect(clipRect);
 
-     Rect table[5] = {imgTLPos,imgTRPos,imgBLPos,imgBRPos,imgCPos};
+        Rect table[5] = {imgTLPos,imgTRPos,imgBLPos,imgBRPos,imgCPos};
 
         for (int t=0; t< 5; ++t)
         {

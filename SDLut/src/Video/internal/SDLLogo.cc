@@ -74,9 +74,16 @@ bool Logo::render(OGL::VideoGLSurface & screen) const
     //if OpenGL is not set
     if ( ! screen.isOpenGLset() )
     {
+        //memorising clip rectangle and resetting
+        Rect clip = screen.getClipRect();
+        screen.resetClipRect();
+
         //normal SDL 2D render
         bool res = screen.blit(*m_logo,dest_rect);
         res = res && screen.update(dest_rect);
+
+        //restoring old clip rect
+        screen.resetClipRect(clip);
         return res;
     }
     else

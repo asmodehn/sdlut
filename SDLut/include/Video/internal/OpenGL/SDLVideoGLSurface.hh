@@ -104,7 +104,8 @@ public:
 
     virtual bool fill (const PixelColor& pcolor, Rect dest_rect);
 
-
+    //reseting default clip rect : all surface
+    virtual void resetClipRect();
     virtual void resetClipRect(const Rect& rect);
 
     //to resize the display

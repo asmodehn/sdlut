@@ -246,44 +246,6 @@ bool ScreenBuffer::isNoFrame()
 }
 */
 
-void ScreenBuffer::setBGColor(const Color & color)
-{
-    m_background = color;
-    m_bgsurf->fill(color);
-    requestFullRefresh();
-}
-
-void ScreenBuffer::applyBGColor()
-{
-    if (m_screen.get()) // if auto pointer valid
-    {
-
-        //TODO : TEST alpha transparent background color...
-        //TODO : optimize...
-#ifdef WK_SDLut_FOUND_OPENGL
-        if (m_screen->isOpenGLset())
-        {
-
-//            glClearColor(0.0f,0.0f,0.0f,0.0f); // default opengl
-            glClearColor(static_cast<float> (m_background.getR() ) / 255.0f, static_cast<float> (m_background.getG() ) / 255.0f,static_cast<float> (m_background.getB() ) / 255.0f, 1.0f-(static_cast<float>(m_background.getA()) / 255.0f));
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        }
-        else
-        {
-#endif
-
-            if ( ! (m_background == Color() ) ) // if background color not black
-            {
-                Rect sc_rect (0,0,m_screen->getWidth(), m_screen->getHeight());
-                blit(*m_bgsurf,sc_rect);
-            }
-
-#ifdef WK_SDLut_FOUND_OPENGL
-        }
-#endif
-    }
-}
-
 
 unsigned int ScreenBuffer::getWidth()
 {

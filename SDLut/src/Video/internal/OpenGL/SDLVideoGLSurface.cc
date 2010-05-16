@@ -95,6 +95,11 @@ bool VideoGLSurface::refresh(void)
     if (isOpenGLset())
     {
         SDL_GL_SwapBuffers();
+
+        //clearing the screen with black color
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         return true;
     }
     else
@@ -525,6 +530,13 @@ void VideoGLSurface::resetClipRect(const Rect& rect)
     {
         VideoSurface::resetClipRect(rect);
     }
+}
+
+
+void VideoGLSurface::resetClipRect()
+{
+    Rect clip(0,0,getWidth(),getHeight());
+    return resetClipRect(clip);
 }
 
 
