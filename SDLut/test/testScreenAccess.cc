@@ -27,13 +27,15 @@ public:
     bool assertrender(video::ScreenBuffer& sb) const
     {
         bool res = true;
-        int x =assertedrect.getx(), y =assertedrect.gety();
-        while ( y < (int)assertedrect.geth())
+        unsigned int x =0, y =0;
+        while ( y < assertedrect.geth())
         {
-            while ( x < (int)assertedrect.getw() )
+            while ( x < assertedrect.getw())
             {
-                res = res && (sb.getColorAt(x,y) == color);
+                res = res && (sb.getColorAt(x + assertedrect.getx(),y + assertedrect.gety()) == color);
+                x++;
             }
+            y++;
         }
 
         return res ;
