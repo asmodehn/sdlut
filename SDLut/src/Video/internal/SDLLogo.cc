@@ -92,7 +92,10 @@ bool Logo::render(OGL::VideoGLSurface & screen) const
         if ( ! m_logo->optimised )
         {
             //generate the GL texture if needed
-            m_logo->convertToDisplayFormat();
+            if ( m_logo->convertToDisplayFormat() == false );
+            {
+                Log << nl << "Error while converting to GL display format";
+            }
         }
 
         //finding texture size in coord weight

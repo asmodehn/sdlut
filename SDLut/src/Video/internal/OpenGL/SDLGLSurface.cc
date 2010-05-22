@@ -301,6 +301,7 @@ bool GLSurface::convertToDisplayFormat()
         //NB Conversion might not be needed
         // OpenGL can play with palette if we need to. Pixel Shader stuff...
         // refer : http://osdl.sourceforge.net/main/documentation/rendering/SDL-openGL.html
+        // TO COMPLEX FOR NOW
 
         Log << nl << "Warning: the image is not truecolor or has a colorkey... converting";
         Log << nl << " Before Convert " << RGBSurface::getPixelFormat();
@@ -449,6 +450,7 @@ bool GLSurface::convertToDisplayFormat()
             errmsg = "GL_OUT_OF_MEMORY";
             break;
         }
+        Log << nl << errmsg;
         return false;
     }
     modified = false;//resseting modified flag to false. in memory texture is now updated.
