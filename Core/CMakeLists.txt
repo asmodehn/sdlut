@@ -4,7 +4,19 @@ WkCMakeDir ( CMake )
 
 WkProject ( Core CXX)
 
-WkDepends ( SigC++ REQUIRED )
+#TODO :
+# remove sigC++ dependency because
+# - delegate mecanism already implemented and working.
+# - for more complex communication pattern : use 0mq
+
+# TODO : Add Ncurses dependency for UNIX type platform
+# maybe Add PDCurses dependency for Windows type platform
+# check CMake Findcurses module
+# see what we can do with it...
+
+# TODO : Logger improve : Unable to find decent logging library.
+# Gather ideas, remake teh wheel, and roll out my own...
+
 WkBuild ( LIBRARY STATIC )
 
 WkDoc()
