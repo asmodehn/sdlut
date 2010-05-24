@@ -21,8 +21,8 @@ protected:
 
 public:
 
-    RenderingAssertEngine(const Image & fgimage, const Image & bgimage, Color bgc, Logger & log, const ArgParser & ap)
-            : AssertEngine(log,ap), imgRPos(), m_bgColor(bgc), m_fgimg(&fgimage), m_bgimg(&bgimage)
+    RenderingAssertEngine(const Image & fgimage, const Image & bgimage, Logger & log, const ArgParser & ap)
+            : AssertEngine(log,ap), imgRPos(), m_fgimg(&fgimage), m_bgimg(&bgimage)
     {
         //For rendering tests : pos and color needs to be filled in the constructor
         //For the foreground image only.
@@ -58,7 +58,7 @@ public:
                 if ( m_bgimg ) expctd = blend(blend(color[i],m_bgimg->getpixel( pos[i].getx(), pos[i].gety())),m_bgColor);
                 else expctd = blend(color[i],m_bgColor);
             }
-            Color real = screen.getpixel(imgRPos.getx() + pos[i].getx(), imgRPos.gety() + pos[i].gety());
+            Color real = screen.getColorAt(imgRPos.getx() + pos[i].getx(), imgRPos.gety() + pos[i].gety());
             if (!expctd.isSimilarTo(real))
             {
                 m_log << nl << "Expected = " << expctd;
@@ -101,14 +101,13 @@ class RenderingTestEngine : public TestEngine
 
     //position of the surface to test in the screenbuffer
     const Rect * imgRPos;
-    const Color * m_bgc;
     const Image * m_fgimg;
     const Image * m_bgimg;
 
 public:
 
     RenderingTestEngine(Logger & log, RenderingAssertEngine & ae)
-            : TestEngine(log,ae), imgRPos(ae.getImgPos()), m_bgc(ae.getBGColor()), m_fgimg(ae.getFGImage()), m_bgimg(ae.getBGImage())
+            : TestEngine(log,ae), imgRPos(ae.getImgPos()), m_fgimg(ae.getFGImage()), m_bgimg(ae.getBGImage())
     {
         //TODO Logfile should be enabled here
     }
@@ -125,7 +124,6 @@ public:
 
     virtual bool render(ScreenBuffer & screen) const
     {
-        screen.setBGColor(*m_bgc);
 
         //copying rect from actual assert engine, to make sure we dont modify it
         Rect relpos = *imgRPos;

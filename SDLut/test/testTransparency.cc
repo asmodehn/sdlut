@@ -35,63 +35,63 @@ class Test : public RenderingAssertEngine
 
         //black stripe
         pos.push_back( Rect( xtst[0],10,1,1));
-        black.setA(alphaval[0]);
+        black.resetA(alphaval[0]);
         color.push_back(black); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[1],10,1,1));
-        black.setA(alphaval[1]);
+        black.resetA(alphaval[1]);
         color.push_back(black); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[2],10,1,1));
-        black.setA(alphaval[2]);
+        black.resetA(alphaval[2]);
         color.push_back(black); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[3],10,1,1));
-        black.setA(alphaval[3]);
+        black.resetA(alphaval[3]);
         color.push_back(black); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[4],10,1,1));
-        black.setA(alphaval[4]);
+        black.resetA(alphaval[4]);
         color.push_back(black); //copy of color made. we can reuse it
 
         //blue stripe
 
         pos.push_back( Rect( xtst[0],30,1,1));
-        blue.setA(alphaval[0]);
+        blue.resetA(alphaval[0]);
         color.push_back(blue); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[1],30,1,1));
-        blue.setA(alphaval[1]);
+        blue.resetA(alphaval[1]);
         color.push_back(blue); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[2],30,1,1));
-        blue.setA(alphaval[2]);
+        blue.resetA(alphaval[2]);
         color.push_back(blue); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[3],30,1,1));
-        blue.setA(alphaval[3]);
+        blue.resetA(alphaval[3]);
         color.push_back(blue); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[4],30,1,1));
-        blue.setA(alphaval[4]);
+        blue.resetA(alphaval[4]);
         color.push_back(blue); //copy of color made. we can reuse it
 
         //white stripe
 
         pos.push_back( Rect( xtst[0],50,1,1));
-        white.setA(alphaval[0]);
+        white.resetA(alphaval[0]);
         color.push_back(white); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[1],50,1,1));
-        white.setA(alphaval[1]);
+        white.resetA(alphaval[1]);
         color.push_back(white); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[2],50,1,1));
-        white.setA(alphaval[2]);
+        white.resetA(alphaval[2]);
         color.push_back(white); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[3],50,1,1));
-        white.setA(alphaval[3]);
+        white.resetA(alphaval[3]);
         color.push_back(white); //copy of color made. we can reuse it
         pos.push_back( Rect( xtst[4],50,1,1));
-        white.setA(alphaval[4]);
+        white.resetA(alphaval[4]);
         color.push_back(white); //copy of color made. we can reuse it
 
     }
 
 public:
 
-    Test(const Image & fgimage, const Image & bgimage, Color bgc, Logger & log, const ArgParser & ap)
-            : RenderingAssertEngine(fgimage,bgimage,bgc,log,ap)
+    Test(const Image & fgimage, const Image & bgimage, Logger & log, const ArgParser & ap)
+            : RenderingAssertEngine(fgimage,bgimage,log,ap)
     {
         regtestPixel();
         m_log.enableFileLog("TestTransparency.log");
@@ -112,9 +112,9 @@ int main(int argc, char** argv)
     App::getInstance().setName ("SDLut::video test Image");
 
     //Setting Display size and BPP
-    App::getInstance().getDisplay().getScreenRequest().requestSize(300,240); // using autodetected bpp
+    App::getInstance().getDisplay().requestSize(300,240); // using autodetected bpp
 
-    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(args.isOGL());
+    App::getInstance().getDisplay().requestOpenGL(args.isOGL());
 
     int exitstatus = -1;
 
@@ -127,7 +127,7 @@ int main(int argc, char** argv)
         std::auto_ptr<Image> testImg = loader.load(imgfile);
         testlog << nl << "Background Image file : " << bgfile;
         std::auto_ptr<Image> bgtestImg = loader.load(bgfile);
-        Test teng(*testImg,*bgtestImg,Color(0,0,0),testlog,args);
+        Test teng(*testImg,*bgtestImg,testlog,args);
         RenderingTestEngine engine(testlog,teng);
 
 
