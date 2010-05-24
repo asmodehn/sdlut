@@ -5,14 +5,14 @@
 #include "Config.hh"
 
 //To include mandatory, generci classes
-#include "ErrorCategory.hh"
-#include "ErrorCondition.hh"
+#include "Core/Error/ErrorCategory.hh"
+#include "Core/Error/ErrorCondition.hh"
 
 //including system specific errors.
 //These will include ErrorCode.hh
 //If a header doesnt match the targetted build platform, it will be empty
-#include "Win32Error.hh"
-#include "LinuxError.hh"
+#include "Error/Win32Error.hh"
+#include "Error/LinuxError.hh"
 
 
 

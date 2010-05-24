@@ -40,6 +40,8 @@
 
     <para>Static Assertion</para>
 
+    <para>Extended STL Functor</para>
+
     <para>Delegates</para>
 
     <para>Error Handling</para>
@@ -48,15 +50,20 @@
 
     <para>Memory</para>
 
-    <para>Portable Threads</para>
+    <para>Threads</para>
 
-    <para></para>
+    <para>Extended Randomizer</para>
+
+    <para>Time - Date</para>
 
     <para>Logger</para>
   </section>
 
   <section>
     <title>Road Map</title>
+
+    <para> Even if the feature set is not completely closed yet, the goal must be 
+    quite simple to be able to achieve it with our current resources. Core aims at providing everything thats mandatory to develop a console based application, cross-platform, with C++, easily, and with distribution / messaging capabilities</para>
 
     <para></para>
   </section>

@@ -1,7 +1,7 @@
-#include "GenericError.hh"
+#include "Core/Error/GenericError.hh"
 
-#include "ErrorCode.hh"
-#include "ErrorCondition.hh"
+#include "Core/Error/ErrorCode.hh"
+#include "Core/Error/ErrorCondition.hh"
 
 namespace Core
 {

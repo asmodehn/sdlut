@@ -5,7 +5,7 @@
 //  it is not applicable.
 #if defined(linux) || defined(__linux) || defined(__linux__)
 
-#include "ErrorCode.hh"
+#include "Core/Error/ErrorCode.hh"
 
 namespace Core
 {

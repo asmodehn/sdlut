@@ -1,6 +1,6 @@
-#include "ErrorCategory.hh"
+#include "Core/Error/ErrorCategory.hh"
 
-#include "ErrorCondition.hh"
+#include "Core/Error/ErrorCondition.hh"
 
 #include <vector>
 #include <cstdlib>

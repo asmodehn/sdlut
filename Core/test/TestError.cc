@@ -12,7 +12,7 @@
 ////////////////////////////
 //Testing Error Code //
 ////////////////////////////
-#include "Error.hh"
+#include "Core/Error/Error.hh"
 
 
 # if defined( CORE_PLATFORM_WIN32 )
