@@ -34,7 +34,7 @@ WkDoc()
 #WkTestBuild ( SDLtestThread )
 #WkTestBuild ( SDLtestStressThread )
 
-#WkTestBuild ( SDLtestVideo )
+WkTestBuild ( SDLtestVideo )
 #WkTestBuild ( SDLtestGL )
 #WkTestBuild ( SDLtestTextInput ) 
 
@@ -57,6 +57,7 @@ WkTestBuild ( testScreenBufferInit "testScreenBufferInit.cc" "TestCommon.hh" )
 #REMOVED WkTestBuild ( testScreenBGColor "testScreenBGColor.cc" "TestCommon.hh" )
 WkTestBuild ( testScreenAccess "testScreenAccess.cc" "TestCommon.hh")
 WkTestBuild ( testScreenClipRect "testScreenClipRect.cc" "TestCommon.hh")
+WkTestBuild ( testScreenBlit "testScreenBlit.cc" "TestCommon.hh")
 #WkTestBuild ( testImageFormat "testImageFormat.cc" "testRendering.hh" "TestCommon.hh" )
 # From grounds and simple things to complex concepts
 # - Test Library version access
@@ -95,6 +96,7 @@ WkTestRun (ScreenAccess testScreenAccess "auto" "nogl")
 WkTestRun (ScreenAccess_Clipping testScreenClipRect "auto" "nogl")
 
 # - Test Screen Blit. Will test blitting of surfaces filled with color squares.
+WkTestRun (ScreenBlit testScreenBlit "auto" "nogl")
 
 # - Test Screen Blit Alpha. Will test blitting of surfaces filled with color squares with alpha.
 
@@ -113,6 +115,11 @@ WkTestRun   ( SDL_BMP_Image testImageFormat "auto" "nogl" "data/test/imageformat
 # Step 2 : Testing optional, but very likely, extensions : OpenGL
 # - Same tests as Step 1, all in OpenGL mode
 
+WkTestRun (ScreenInit testScreenBufferInit "auto")
+WkTestRun (ScreenAccess testScreenAccess "auto")
+WkTestRun (ScreenAccess_Clipping testScreenClipRect "auto")
+WkTestRun (ScreenBlit testScreenBlit "auto" )
+WkTestRun ( OpenGL_BMP_Image testImageFormat "auto" "data/test/imageformat/ColorTest.bmp" )
 
 # Step 2.5 : Performances in real life use cases with Step 2 tested features
 #

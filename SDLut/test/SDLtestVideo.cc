@@ -1,11 +1,12 @@
 #include "SDL.hh"
 #include "Logger.hh"
-using namespace RAGE;
+
+using namespace Core;
 
 using namespace SDLut;
 using namespace SDLut::video;
 
-RAGE::Logger testlog("TestVideo");
+Core::Logger testlog("TestVideo");
 
 class MyEngine
 {
@@ -51,7 +52,7 @@ public:
         {
             for (unsigned int j = 0; j<50; j++)
             {
-                screen.setpixel(imagepos.getx() + i, imagepos.gety() + j, rect_color);
+                screen.setColorAt(imagepos.getx() + i, imagepos.gety() + j, rect_color);
             }
         }
 
@@ -94,11 +95,8 @@ int main(int argc, char** argv)
 
     App::getInstance().setName ("SDLut::SDL test - Video");
 
-    App::getInstance().getDisplay().getScreenBuffer().setBGColor(Color (128,0,0));
-
-
     //setting proper opengl value ( before the engine, otherwise wrong image format )
-    App::getInstance().getDisplay().getScreenRequest().requestOpenGL(ogl);
+    App::getInstance().getDisplay().requestOpenGL(true);
 
     //if argument we load the image in the test engine
     std::auto_ptr<MyEngine> engine;

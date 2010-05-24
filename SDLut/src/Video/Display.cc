@@ -12,7 +12,6 @@ namespace video
 
 Display::Display(std::string title, Manager * manager)
         : m_exitMainLoop(false),
-        m_exitstatus(0),
         pvm_manager(manager),
         pvm_window(title),
         pvm_screen(0),
@@ -25,7 +24,6 @@ Display::Display(std::string title, Manager * manager)
 
 Display::Display( const Display & d)
         : m_exitMainLoop(false),
-        m_exitstatus(0),
         pvm_manager(d.pvm_manager),
         pvm_window(d.pvm_window.getTitle()),
         pvm_screen(0),
@@ -259,6 +257,7 @@ bool Display::resizeDisplay (int width, int height)
 
 int Display::mainLoop(unsigned int framerate, unsigned int eventrate)
 {
+    int m_exitstatus = 0;
     if (ShowingLoadingScreen)
     {
         framerate = 1, eventrate = 1;
@@ -285,16 +284,20 @@ int Display::mainLoop(unsigned int framerate, unsigned int eventrate)
 
             //Callback for preparing new frame
             if ( m_newframecb.get() )
-                m_newframecb->call( framerate, SDL_GetTicks() - lastframe );
+            {
+                if ( ! m_newframecb->call( framerate, SDL_GetTicks() - lastframe ) ) m_exitstatus++;
+            }
 
             //if (!ShowingLoadingScreen)
             if ( m_rendercb.get() )
-                m_rendercb->call( *pvm_screen );
+            {
+                if ( ! m_rendercb->call( *pvm_screen ) ) m_exitstatus++;
+            }
 
             //calling internal engine render
-            pvm_screen->renderpass(framerate, lastframe);
+            if ( ! pvm_screen->renderpass(framerate, lastframe) ) m_exitstatus++;
 
-            pvm_screen->refresh(framerate, lastframe);
+            if ( ! pvm_screen->refresh(framerate, lastframe) ) m_exitstatus++;
 
         }
         //already exited, need to reset the flag
@@ -316,9 +319,8 @@ int Display::mainLoop(unsigned int framerate, unsigned int eventrate)
 
 }
 
-bool Display::exitMainLoop(int exitstatus)
+bool Display::exitMainLoop()
 {
-    m_exitstatus = exitstatus;
     return m_exitMainLoop = true;
 }
 

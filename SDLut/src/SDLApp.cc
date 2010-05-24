@@ -219,11 +219,11 @@ bool App::init()
 
 }
 
-bool App::requestTermination(int exitstatus )
+bool App::requestTermination()
 {
-    //TODO : do whatever is needed for a gracefull termination
+    //TODO : do whatever is needed for a graceful termination
     m_quitRequested = true;
-    return this->pvm_display->exitMainLoop(exitstatus);
+    return this->pvm_display->exitMainLoop();
 
 }
 

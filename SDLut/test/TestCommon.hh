@@ -93,9 +93,6 @@ public:
 //TODO : Maybe we can simplify with only one engine, to assert render only ???
 class AssertEngine
 {
-//to be albe to set error, even while rendering
-    mutable std::string m_error;
-    mutable int m_exitstatus;
 
     unsigned int m_numrender;
     unsigned int m_maxrender;
@@ -107,7 +104,7 @@ protected :
 
 public :
     ///max_render = 0 means it will run forever
-    AssertEngine( Logger & log, const ArgParser & ap ) : m_error("OK"), m_exitstatus(0), m_numrender(0), m_maxrender(0),m_log(log)
+    AssertEngine( Logger & log, const ArgParser & ap ) : m_numrender(0), m_maxrender(0),m_log(log)
     {
         if ( ap.isAuto() ) m_maxrender = 1;
     }
@@ -115,12 +112,9 @@ public :
     ~AssertEngine() {}
 
     //Will log an Error string and exit
-    void setError(int status, std::string err) const
+    void logError(std::string err) const
     {
-        m_exitstatus = status;
-        m_error = err;
         m_log << nl<< "ERROR : " << err << nl ;
-        //return App::getInstance().requestTermination(status);
     }
 
     //init and resize code is often the same ( but not always )
@@ -136,7 +130,7 @@ public :
         if (m_maxrender > 0 && m_numrender < m_maxrender )
         {
             //stop it !
-            App::getInstance().requestTermination(false);
+            App::getInstance().requestTermination();
         }
         m_numrender++;
         return assertnewframe(framerate,deltaticks);

@@ -306,7 +306,7 @@ bool GLSurface::convertToDisplayFormat()
         Log << nl << "Warning: the image is not truecolor or has a colorkey... converting";
         Log << nl << " Before Convert " << RGBSurface::getPixelFormat();
 
-        saveBMP("beforeconvert.bmp");
+        //saveBMP("beforeconvert.bmp");
 
 
         std::auto_ptr<SDL_Surface> optsurf(0);
@@ -334,7 +334,7 @@ bool GLSurface::convertToDisplayFormat()
 
         Log << nl << " After Convert " << RGBSurface::getPixelFormat();
 
-        saveBMP("afterconvert.bmp");
+        //saveBMP("afterconvert.bmp");
 
         //resetting numbytes for further texture format setup
         numbytes = RGBSurface::getPixelFormat().getBytesPerPixel();

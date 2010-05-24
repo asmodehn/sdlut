@@ -43,7 +43,6 @@ class Display
     //and be able to exit mainloop
 
     bool m_exitMainLoop;
-    int m_exitstatus;
 
 protected:
     Manager* pvm_manager; // here because the manager contains also the SDL specific settings that we need...
@@ -246,10 +245,11 @@ public:
      **/
     /*			void HideLoadingScreen();
     */
-    //Handles the event, and Call engine->prerender, engine ->render() and engine->postrender()
-    int mainLoop(unsigned int framerate = 60,unsigned int eventrate = 60);
 
-    bool exitMainLoop(int exitstatus);
+    //Handles the event, and Call engine->prerender, engine ->render() and engine->postrender()
+    //will return the number of errors detcted while using user's callback.
+    int mainLoop(unsigned int framerate = 60,unsigned int eventrate = 60);
+    bool exitMainLoop();
 
 private:
     //AutoPtr to callbacks. plymorphism _must_ be used...

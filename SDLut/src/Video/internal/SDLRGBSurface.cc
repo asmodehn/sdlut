@@ -267,7 +267,7 @@ bool RGBSurface::resize(int width, int height)
 {
     bool res;
 
-    saveBMP("beforeresize.bmp");
+    //saveBMP("beforeresize.bmp");
 
     //creating exact same surface, with bigger size
     SDL_Surface * newsurf = SDL_CreateRGBSurface(ptm_surf->flags,width,height,ptm_surf->format->BitsPerPixel, ptm_surf->format->Rmask,ptm_surf->format->Gmask,ptm_surf->format->Bmask, ptm_surf->format->Amask);
@@ -316,7 +316,7 @@ bool RGBSurface::resize(int width, int height)
         res = true;
     }
 
-    saveBMP("afterresize.bmp");
+    //saveBMP("afterresize.bmp");
 
     return (res && ptm_surf.get() != 0 ) ;
 }

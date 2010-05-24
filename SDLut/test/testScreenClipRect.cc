@@ -113,7 +113,7 @@ public:
                 {
                     m_log << nl << "Screenshot saved at " << scsht;
                 }
-                setError(-1,"Wrong color detected.");
+                logError("Wrong color detected.");
                 res = false;
             }
         }
