@@ -29,11 +29,13 @@ public:
         bool res = true;
 
         for ( unsigned int y = 0; y < assertedrect.geth(); y++)
+        {
             for ( unsigned int x = 0; x < assertedrect.getw(); x ++)
             {
                 video::Color gotclr = sb.getColorAt(x + assertedrect.getx(),y + assertedrect.gety());
                 res = res && ( gotclr== color);
             }
+        }
 
         if ( ! res ) logError("Error : Wrong color detected");
         return res ;
@@ -47,7 +49,12 @@ class Test : public TestEngine
     video::Image img;
 public:
 
-    Test(Logger& l, Assert & a, video::Rect testrect, video::Color c) : TestEngine(l,a), testedrect(testrect),color(c) {}
+    Test(Logger& l, Assert & a, video::Rect testrect, video::Color c)
+            : TestEngine(l,a), testedrect(testrect),color(c)
+    {
+        //DANGER : we get 8 bpp image ??? why ??? and palettized ???
+    }
+
     bool resize(int width, int height)
     {
         //check rect size

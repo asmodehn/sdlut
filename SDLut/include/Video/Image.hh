@@ -54,7 +54,14 @@ public:
 
     //Constructor
     //BPP should NEVER be == 0 !!!!
-    Image( unsigned int width = 0, unsigned int height = 0, unsigned short bpp = 8,
+    //default BPP is 32 to match with default (255,255,255,255) Color
+    //TODO : default behavior ?
+    // - max : 32
+    // - same as screen
+    // - customizable
+    // - min ( 8 )
+    // => ???
+    Image( unsigned int width = 0, unsigned int height = 0, unsigned short bpp = 32,
            bool alpha = false,
            bool colorkey = false,
            bool hardware = false

@@ -87,16 +87,16 @@ WkTestRun( Rect testRect )
 #WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl" "1280" "1024" "32")
 
 #Will test SDL advised video mode ( at desktop size ) -> harmless on user machine
-WkTestRun (ScreenInit testScreenBufferInit "auto" "nogl")
+WkTestRun (ScreenInit_SDL testScreenBufferInit "auto" "nogl")
 
 # - Test Screen Access. Will test Filling pixel and rectangle directly on screen (slow), and getPixel.
-WkTestRun (ScreenAccess testScreenAccess "auto" "nogl")
+WkTestRun (ScreenAccess_SDL testScreenAccess "auto" "nogl")
 
 # - Test Screen Clipping.
-WkTestRun (ScreenAccess_Clipping testScreenClipRect "auto" "nogl")
+WkTestRun (ScreenClipping_SDL testScreenClipRect "auto" "nogl")
 
 # - Test Screen Blit. Will test blitting of surfaces filled with color squares.
-WkTestRun (ScreenBlit testScreenBlit "auto" "nogl")
+WkTestRun (ScreenBlit_SDL testScreenBlit "auto" "nogl")
 
 # - Test Screen Blit Alpha. Will test blitting of surfaces filled with color squares with alpha.
 
@@ -115,17 +115,17 @@ WkTestRun   ( SDL_BMP_Image testImageFormat "auto" "nogl" "data/test/imageformat
 # Step 2 : Testing optional, but very likely, extensions : OpenGL
 # - Same tests as Step 1, all in OpenGL mode
 
-WkTestRun (ScreenInit testScreenBufferInit "auto")
-WkTestRun (ScreenAccess testScreenAccess "auto")
-WkTestRun (ScreenAccess_Clipping testScreenClipRect "auto")
-WkTestRun (ScreenBlit testScreenBlit "auto" )
+WkTestRun (ScreenInit_OpenGL testScreenBufferInit "auto")
+WkTestRun (ScreenAccess_OpenGL testScreenAccess "auto")
+WkTestRun (ScreenClipping_OpenGL testScreenClipRect "auto")
+WkTestRun (ScreenBlit_OpenGL testScreenBlit "auto" )
 WkTestRun ( OpenGL_BMP_Image testImageFormat "auto" "data/test/imageformat/ColorTest.bmp" )
 
 # Step 2.5 : Performances in real life use cases with Step 2 tested features
 #
 
 # Step 3 : Testing optional, less likely, extensions. Need to group by dependency required
-WkTestBuild ( testTransparency "testTransparency.cc" "testRendering.hh" "TestCommon.hh")
+WkTestBuild (testTransparency "testTransparency.cc" "testRendering.hh" "TestCommon.hh")
 WkTestBuild (testGrayscaleAlphaTransparency "testGrayscaleAlphaTransparency.cc" "testRendering.hh" "TestCommon.hh" )
 # - Image formats ( PNG, JPG, etc. ) Display SDL. Will test ImageLoader a bit.
 WkTestRun   ( SDL_GIF_Image testImageFormat "auto" "nogl" "data/test/imageformat/ColorTest.gif" )
