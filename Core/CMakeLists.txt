@@ -22,6 +22,8 @@ WkBuild ( LIBRARY STATIC )
 WkDoc()
 WkSvn()
 
+WkInstall()
+
 #TestBed
 
 # From most basic feature to most advanced :

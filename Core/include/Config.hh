@@ -31,69 +31,22 @@
 #ifndef CONFIG_HH
 #define CONFIG_HH
 
-//If we are built using WkCMake, we can use WkPlatform Detection
+//We are built using WkCMake, we can use WkPlatform Detection
 
 #ifdef WK_BUILD
+
 # include "WkPlatform_Core.h"
+
 # if defined ( WK_Core_PLATFORM_IS_WIN32 )
 #  define CORE_PLATFORM_WIN32
 # elif defined ( WK_Core_PLATFORM_POSIX )
 #  define CORE_PLATFORM_POSIX
 # endif
+
 # define CORE_API WK_Core_API
 # define CORE_LOCAL WK_Core_LOCAL
 
-// TODO
-/*
-#else
-
-//We have to do our own platform checks
-
-//Platform type detection
-#if defined (__MINGW32__) || defined (_MSC_VER) || defined (_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(__CYGWIN__)
-#define CORE_PLATFORM_WIN32
-#elif defined ( _POSIX_SOURCE ) || defined ( _POSIX_C_SOURCE )
-#define CORE_PLATFORM_POSIX
-#endif
-
-//adjusting declspec values
-
-// Generic helper definitions for shared library support
-#if defined _WIN32 || defined __CYGWIN__
-#define CORE_HELPER_DLL_IMPORT __declspec(dllimport)
-#define CORE_HELPER_DLL_EXPORT __declspec(dllexport)
-#define CORE_HELPER_DLL_LOCAL
-#else
-#if __GNUC__ >= 4
-#define CORE_HELPER_DLL_IMPORT __attribute__ ((visibility("default")))
-#define CORE_HELPER_DLL_EXPORT __attribute__ ((visibility("default")))
-#define CORE_HELPER_DLL_LOCAL  __attribute__ ((visibility("hidden")))
-#else
-#define CORE_HELPER_DLL_IMPORT
-#define CORE_HELPER_DLL_EXPORT
-#define CORE_HELPER_DLL_LOCAL
-#endif
-#endif
-
-#ifdef CORE_BUILD // Core library building
-#define CORE_API CORE_HELPER_DLL_EXPORT
-#define CORE_LOCAL CORE_HELPER_DLL_LOCAL
-#else // Core library using
-#define CORE_API CORE_HELPER_DLL_IMPORT
-#define CORE_LOCAL CORE_HELPER_DLL_LOCAL
-#endif
-
-#ifndef NULL
-#define NULL 0
-#endif
-*/
-
 #endif // WK_BUILD
-
-
-
-
-
 
 
 #endif // CONFIG _HH
