@@ -262,7 +262,7 @@ int main(int argc, char** argv)
 //BUG: first pass smileys (the first 2 ones) are not cleared after init nor resize
 // only in SDL it seems
 
-#ifdef WK_OPENGL_FOUND
+#ifdef WK_SDLut_FOUND_OPENGL
     bool ogl = true;
     if (argc > 1 && std::string(argv[1]) == "nogl" ) ogl = false;
 #else
@@ -278,11 +278,8 @@ int main(int argc, char** argv)
     //Setting Display size and BPP
     App::getInstance().getDisplay().setDisplay(800,600); // using autodetected bpp
 
-    //TOFIX
-    if (argc > 1 && std::string(argv[1]) == "nogl" )
-    {
-        App::getInstance().getDisplay().getScreenRequest().requestOpenGL(false);
-    }
+    App::getInstance().getDisplay().requestOpenGL(ogl);
+    
 
     std::auto_ptr<MyEngine> engine(new MyEngine(800,600));
 
