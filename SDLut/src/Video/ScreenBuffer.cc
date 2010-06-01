@@ -10,7 +10,7 @@ namespace video
 
 ScreenBuffer::ScreenBuffer(const ScreenInfo& scinf, Manager* manager) throw (std::logic_error)
 try :
-    fullRefreshNeeded(true), pm_manager(manager), m_background(Color(0,0,0)), m_scinfo(), m_bgsurf()
+    fullRefreshNeeded(true), pm_manager(manager), m_scinfo()
 {
     Log << nl << "Creating new ScreenBuffer. ScreenInfo Requested " << scinf;
 #ifdef WK_SDLut_FOUND_OPENGL
@@ -21,8 +21,8 @@ try :
 
     m_scinfo.reset(new ScreenInfo(m_screen->getVideoInfo()));
 
-    m_bgsurf.reset(new Image(m_screen->getWidth(), m_screen->getHeight(),m_screen->getBPP()));
-    m_bgsurf->fill(m_background);
+    //m_bgsurf.reset(new Image(m_screen->getWidth(), m_screen->getHeight(),m_screen->getBPP()));
+    //m_bgsurf->fill(m_background);
 
     //initializing engine
     m_engine.reset(new internal::SDLEngine());
@@ -49,7 +49,7 @@ catch (std::exception & e)
 //recreating Engine here to make sure both origin and destination engines are independant.
 //maybe not really needed, but safer in case of copy ( or should we completely forbid copy ? )
 ScreenBuffer::ScreenBuffer( const ScreenBuffer & sb )
-        : fullRefreshNeeded(true),pm_manager(sb.pm_manager), m_background(sb.m_background), m_scinfo(0)
+        : fullRefreshNeeded(true),pm_manager(sb.pm_manager), m_scinfo(0)
 {
     //WHAT TO DO HERE ??
     //also what about video surface flags ?
@@ -284,8 +284,8 @@ bool ScreenBuffer::resize (unsigned int width,unsigned int height)
     //}
 
     //resizing background surface
-    m_bgsurf->resize(m_screen->getWidth(), m_screen->getHeight());
-    m_bgsurf->fill(m_background);
+    //m_bgsurf->resize(m_screen->getWidth(), m_screen->getHeight());
+    //m_bgsurf->fill(m_background);
 
     //resetting our Engine. Useful if OpenGL dependent : need to reload the new created context
     //resizing engine doesnt make much sense though.
@@ -331,22 +331,32 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
     }
     else
     {
+        Color black(128,0,0);
         if ( fullRefreshNeeded ) // first render, or periodically to avoid problems...
         {
             fullRefreshNeeded = false;
             m_screen->refresh();
+
             oldlist.clear(); // we dont need to refresh the old ones the next time.
         }
         else
         {
 
             //now refreshing only what is needed
+            //these have been cleared previously
+            //just need to update them
+            m_screen->erase(oldlist);
+
+            //display new blits
             m_screen->update(refreshlist);
-            m_screen->update(oldlist);
+
             oldlist=refreshlist;
-            //clear should be done here
+
             refreshlist.clear();
         }
+
+
+
     }
 
 

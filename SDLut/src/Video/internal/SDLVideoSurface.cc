@@ -49,7 +49,14 @@ VideoSurface::~VideoSurface()
 
 bool VideoSurface::refresh(void)
 {
-    return SDL_Flip(ptm_surf.get()) == 0;
+    bool res = (SDL_Flip(ptm_surf.get()) == 0);
+
+    //new blank surface.
+    // in SDL by default blank is black
+    Color black(0,0,0);
+    BaseSurface::fill(getVideoInfo().getPixelFormat().getPixelColor(black));
+
+    return res;
 }
 
 bool VideoSurface::resize(int width, int height)
@@ -116,30 +123,16 @@ bool VideoSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect)
     return res;
 }
 
-
-//Fill
-/*bool VideoSurface::fill (const Color& color)
-{
-    return fill(getPixelFormat().getValueFromColor(color));
-}*/
-
 bool VideoSurface::fill (const PixelColor& color)
 {
     Rect dest_rect(0,0,getWidth(), getHeight());
     return fill( color, dest_rect );
 }
 
-/*bool VideoSurface::fill (const Color& color, Rect dest_rect)
-{
-    return fill(getPixelFormat().getValueFromColor(color), dest_rect);
-}*/
-
-
 bool VideoSurface::fill (const PixelColor& color, Rect dest_rect)
 {
     return BaseSurface::fill(color, dest_rect);
 }
-
 
 bool VideoSurface::update(Rect r)
 {
@@ -147,9 +140,16 @@ bool VideoSurface::update(Rect r)
     return true;
 }
 
+bool VideoSurface::erase(Rect r)
+{
+    Color black(0,0,0);
+    BaseSurface::fill(getVideoInfo().getPixelFormat().getPixelColor(black));
+    SDL_UpdateRect(ptm_surf.get(), r.getx(), r.gety(), r.getw(), r.geth());
+    return true;
+}
+
 bool VideoSurface::update(std::vector<Rect> rlist)
 {
-    //fill(_background);
 
     /* this breaks as soon as a rect is a bit out of the screen : known issue in SDL 1.2 */
     /* therefore we cant use it until we manage the clipping here... */
@@ -168,6 +168,16 @@ bool VideoSurface::update(std::vector<Rect> rlist)
     return true;
 }
 
+bool VideoSurface::erase(std::vector<Rect> rlist)
+{
+    for ( unsigned int i=0; i<rlist.size(); i++)
+    {
+        Color black(0,0,0);
+        BaseSurface::fill(getVideoInfo().getPixelFormat().getPixelColor(black),rlist[i]);
+        SDL_UpdateRect(ptm_surf.get(), rlist[i].getx(), rlist[i].gety(), rlist[i].getw(), rlist[i].geth());
+    }
+    return true;
+}
 
 
 

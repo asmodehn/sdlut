@@ -50,9 +50,10 @@ protected:
 
     Manager* pm_manager;
 
-    Color m_background;
+    //Color m_background;
     //for SDL rendering only
-    std::auto_ptr<Image>m_bgsurf;
+    //std::auto_ptr<Image>m_bgsurf;
+    //NO NEED !!!
 
     std::auto_ptr<ScreenInfo> m_scinfo;
 

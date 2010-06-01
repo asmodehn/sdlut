@@ -179,7 +179,7 @@ public:
     {
         //TODO : improve this section by improving ImageLoader...
         ImageLoader loader;
-        loadedimage = loader.load("test/data/smiley.bmp") ;
+        loadedimage = loader.load("smiley.bmp") ;
 
         pvm_scene.reset( new Scene(width,height) );
 
@@ -229,6 +229,7 @@ public:
     bool newframe(unsigned long framerate, unsigned long elapsedticks )
     {
         pvm_scene->moveRandom();
+
         return true;
     }
 
@@ -279,7 +280,7 @@ int main(int argc, char** argv)
     App::getInstance().getDisplay().setDisplay(800,600); // using autodetected bpp
 
     App::getInstance().getDisplay().requestOpenGL(ogl);
-    
+
 
     std::auto_ptr<MyEngine> engine(new MyEngine(800,600));
 

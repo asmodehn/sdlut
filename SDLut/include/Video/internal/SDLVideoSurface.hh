@@ -101,10 +101,17 @@ public:
     virtual bool fill (const PixelColor& color);
     virtual bool fill (const PixelColor& color, Rect dest_rect);
 
+
+    //fills rects with the default background color ( black ) in SDL
+    bool erase(Rect r);
+    bool erase(std::vector<Rect> rlist);
+
     //Maybe in Window only ?
     bool update(Rect r);
     bool update(std::vector<Rect> rlist);
     //May be using a default value.. depending on what has to be done for GLWindow
+
+
 
     //Accessors
     bool isOpenGLset(void) const;

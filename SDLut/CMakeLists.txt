@@ -19,7 +19,7 @@ WkDoc()
 #WkTestBuild ( SDLtestPixelFormat )
 #WkTestRun   ( "PixelFormat" SDLtestPixelFormat )
 
-#WkTestBuild (SDLtestRefresh)
+WkTestBuild (SDLtestRefresh)
 #WkTestData  (SDLtestRefresh smiley.bmp)
 
 #WkTestBuild ( SDLtestApp )
