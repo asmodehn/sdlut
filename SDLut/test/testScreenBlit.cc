@@ -76,7 +76,7 @@ public:
         //fname << "render_" << cnt++ << ".bmp";
         //testlog << nl << "DEBUG : " << fname.str() << " created";
         //img.saveBMP(fname.str());
-
+		return true;
     }
 
     bool render(video::ScreenBuffer& sb) const

@@ -92,9 +92,9 @@ bool Logo::render(OGL::VideoGLSurface & screen) const
         if ( ! m_logo->optimised )
         {
             //generate the GL texture if needed
-            if ( m_logo->convertToDisplayFormat(screen.getRenderer()) == false );
+            if ( m_logo->convertToDisplayFormat(screen.getRenderer()) == false )
             {
-                Log << nl << "Error while converting to GL display format";
+                Log << nl << "Error while converting Logo to GL display format";
             }
         }
 
