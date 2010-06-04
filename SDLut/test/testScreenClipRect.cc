@@ -35,26 +35,35 @@ public:
         imgTLPos.resetw(RECT_TEST_SIZE);
         imgTLPos.reseth(RECT_TEST_SIZE);
 
+        testlog << nl << " AssertClip:: Top Left Rect :" << imgTLPos;
+
         imgTRPos.resetx(clippos.getx()+clippos.getw() - RECT_TEST_SIZE /2);
         imgTRPos.resety(clippos.gety() -1 );
         imgTRPos.resetw(RECT_TEST_SIZE);
         imgTRPos.reseth(RECT_TEST_SIZE);
+
+        testlog << nl << " AssertClip:: Top Right Left Rect :" << imgTRPos;
 
         imgBLPos.resetx(clippos.getx() -1 );
         imgBLPos.resety(clippos.gety()+clippos.geth() - RECT_TEST_SIZE /2);
         imgBLPos.resetw(RECT_TEST_SIZE);
         imgBLPos.reseth(RECT_TEST_SIZE);
 
+        testlog << nl << " AssertClip:: Bottom Left Rect :" << imgBLPos;
+
         imgBRPos.resetx(clippos.getx()+clippos.getw() - RECT_TEST_SIZE /2);
         imgBRPos.resety(clippos.gety()+clippos.geth() - RECT_TEST_SIZE /2);
         imgBRPos.resetw(RECT_TEST_SIZE);
         imgBRPos.reseth(RECT_TEST_SIZE);
+
+        testlog << nl << " AssertClip:: Bottom Right Rect :" << imgBRPos;
 
         imgCPos.resetx(clippos.getx()+clippos.getw() /2);
         imgCPos.resety(clippos.gety()+clippos.geth() /2);
         imgCPos.resetw(RECT_TEST_SIZE);
         imgCPos.reseth(RECT_TEST_SIZE);
 
+        testlog << nl << " AssertClip:: Center Rect :" << imgCPos;
 
         Rect table[5] = {imgTLPos,imgTRPos,imgBLPos,imgBRPos,imgCPos};
 
@@ -148,32 +157,43 @@ public:
     {
         m_log.enableFileLog("TestScreenClipRect.log");
 
+        m_log << nl << " TestClip:: Clip Rect " << clipRect;
+
         //preparing image test positions
         imgTLPos.resetx(clipRect.getx() -1);
         imgTLPos.resety(clipRect.gety() -1);
         imgTLPos.resetw(RECT_TEST_SIZE);
         imgTLPos.reseth(RECT_TEST_SIZE);
 
+        m_log << nl << " TestClip:: Top Left Rect :" << imgTLPos;
 
         imgTRPos.resetx(clipRect.getx()+clipRect.getw() - RECT_TEST_SIZE /2);
         imgTRPos.resety(clipRect.gety() -1);
         imgTRPos.resetw(RECT_TEST_SIZE);
         imgTRPos.reseth(RECT_TEST_SIZE);
 
+        m_log << nl << " TestClip:: Top Right Rect :" << imgTRPos;
+
         imgBLPos.resetx(clipRect.getx() -1);
         imgBLPos.resety(clipRect.gety()+clipRect.geth() - RECT_TEST_SIZE /2);
         imgBLPos.resetw(RECT_TEST_SIZE);
         imgBLPos.reseth(RECT_TEST_SIZE);
+
+        m_log << nl << " TestClip:: Bottom Left Rect :" << imgBLPos;
 
         imgBRPos.resetx(clipRect.getx()+clipRect.getw() - RECT_TEST_SIZE /2);
         imgBRPos.resety(clipRect.gety()+clipRect.geth() - RECT_TEST_SIZE /2);
         imgBRPos.resetw(RECT_TEST_SIZE);
         imgBRPos.reseth(RECT_TEST_SIZE);
 
+        m_log << nl << " TestClip:: Bottom Right Rect :" << imgBRPos;
+
         imgCPos.resetx(clipRect.getx()+clipRect.getw() /2);
         imgCPos.resety(clipRect.gety()+clipRect.geth() /2);
         imgCPos.resetw(RECT_TEST_SIZE);
         imgCPos.reseth(RECT_TEST_SIZE);
+
+        m_log << nl << " TestClip:: Center Rect :" << imgCPos;
 
     }
 

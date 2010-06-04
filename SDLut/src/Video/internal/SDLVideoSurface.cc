@@ -143,7 +143,7 @@ bool VideoSurface::update(Rect r)
 bool VideoSurface::erase(Rect r)
 {
     Color black(0,0,0);
-    BaseSurface::fill(getVideoInfo().getPixelFormat().getPixelColor(black));
+    BaseSurface::fill(getVideoInfo().getPixelFormat().getPixelColor(black),r);
     SDL_UpdateRect(ptm_surf.get(), r.getx(), r.gety(), r.getw(), r.geth());
     return true;
 }

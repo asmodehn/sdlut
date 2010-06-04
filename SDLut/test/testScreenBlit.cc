@@ -87,11 +87,13 @@ public:
         //BUG WORKAROUND !!!
         //refresh doesnt seem to work properly here...
         // TOFIX !!!
-        sb.requestFullRefresh();
+        //sb.requestFullRefresh();
 
         return sb.blit( img, dst );
 
 
+        //TODO : test blitting with different sized rect ( bigger smaller than image... )
+        // need to choose policy !!!
 
     }
 };
