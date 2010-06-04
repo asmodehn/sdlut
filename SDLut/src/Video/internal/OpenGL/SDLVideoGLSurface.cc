@@ -344,7 +344,7 @@ bool VideoGLSurface::blit (GLSurface& glsrc, Rect& dest_rect, const Rect& src_re
     if ( ! glsrc.optimised )
     {
         //generate the GL texture if needed
-        if ( glsrc.convertToDisplayFormat() == false )
+        if ( glsrc.convertToDisplayFormat(getRenderer()) == false )
         {
             Log << nl << "Error while converting to GL Display Format";
         }

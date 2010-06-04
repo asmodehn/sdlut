@@ -108,7 +108,7 @@ public :
     {
         return optimised;
     }
-    virtual bool convertToDisplayFormat();
+    virtual bool convertToDisplayFormat(Renderer rend);
 
 
     //Beware ! The final blitting rectangle is saved in dest_rect.

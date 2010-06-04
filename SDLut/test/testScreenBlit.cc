@@ -52,7 +52,6 @@ public:
     Test(Logger& l, Assert & a, video::Rect testrect, video::Color c)
             : TestEngine(l,a), testedrect(testrect),color(c)
     {
-        //DANGER : we get 8 bpp image ??? why ??? and palettized ???
     }
 
     bool resize(int width, int height)
@@ -69,14 +68,31 @@ public:
         //img.saveBMP("beforetest.bmp");
         return res;
     }
+
+    bool newframe(unsigned long framerate, unsigned long deltaticks) // not mandatory
+    {
+        //static int cnt=0;
+        //std::stringstream fname;
+        //fname << "render_" << cnt++ << ".bmp";
+        //testlog << nl << "DEBUG : " << fname.str() << " created";
+        //img.saveBMP(fname.str());
+
+    }
+
     bool render(video::ScreenBuffer& sb) const
     {
-        video::Rect dst( (sb.getWidth() - img.getWidth() ) / 2 ,
-                         (sb.getHeight() - img.getHeight() ) /2 ,
-                         img.getWidth(),
-                         img.getHeight()
-                       );
+        //work around for constness of render
+        video::Rect dst = testedrect;
+
+        //BUG WORKAROUND !!!
+        //refresh doesnt seem to work properly here...
+        // TOFIX !!!
+        sb.requestFullRefresh();
+
         return sb.blit( img, dst );
+
+
+
     }
 };
 

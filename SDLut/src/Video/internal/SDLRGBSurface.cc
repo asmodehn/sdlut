@@ -330,22 +330,30 @@ bool RGBSurface::isSRCAlphaset(void)
     return ( SDL_SRCALPHA & ptm_surf->flags ) != 0;
 }
 
-bool RGBSurface::convertToDisplayFormat()
+bool RGBSurface::convertToDisplayFormat(Renderer rend)
 {
-    assert(ptm_surf.get());
-    std::auto_ptr<SDL_Surface> optsurf(0);
-    if ( isSRCAlphaset() )
+    if ( rend == SDL)
     {
-        //this is not needed for colorkey, as SDL works with colorkey directly.
-        //different than for opengl which needs to change colorkey in alpha.
-        optsurf.reset( SDL_DisplayFormatAlpha(ptm_surf.get()) );
+        assert(ptm_surf.get());
+        std::auto_ptr<SDL_Surface> optsurf(0);
+        if ( isSRCAlphaset() )
+        {
+            //this is not needed for colorkey, as SDL works with colorkey directly.
+            //different than for opengl which needs to change colorkey in alpha.
+            optsurf.reset( SDL_DisplayFormatAlpha(ptm_surf.get()) );
+        }
+        else
+        {
+            optsurf.reset( SDL_DisplayFormat(ptm_surf.get()) );
+        }
+
+        return optimised = set_SDL_Surface(optsurf);
     }
     else
     {
-        optsurf.reset( SDL_DisplayFormat(ptm_surf.get()) );
+        Log << nl << "ERROR: Unsupported renderer !!! ";
+        return false;
     }
-
-    return optimised = set_SDL_Surface(optsurf);
 }
 
 

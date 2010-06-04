@@ -107,7 +107,7 @@ public :
     ///Accessor to pixelFormat
     const PixelFormat& getPixelFormat(void) const;
 
-    bool convertToDisplayFormat();
+    bool convertToDisplayFormat(Renderer r);
 
     bool resetColorKey(bool ckey, const PixelColor & key, bool rleAccel = true);
     bool resetAlpha(bool alpha, unsigned int value, bool rleAccel = true);

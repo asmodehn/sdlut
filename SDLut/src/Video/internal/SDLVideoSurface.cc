@@ -113,7 +113,7 @@ bool VideoSurface::blit (RGBSurface& src, Rect& dest_rect, const Rect& src_rect)
 #endif
     if ( ! src.optimised )
     {
-        src.convertToDisplayFormat();
+        src.convertToDisplayFormat(getRenderer());
     }
     bool res = BaseSurface::blit(src,dest_rect, src_rect);
 

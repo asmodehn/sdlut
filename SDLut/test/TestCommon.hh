@@ -203,10 +203,10 @@ public:
 
     bool testnewframe(unsigned long framerate, unsigned long deltaticks)
     {
-        bool res = newframe();
+        bool res = newframe(framerate, deltaticks);
         return res && m_assertengine.testquit_assertnewframe(framerate,deltaticks);
     }
-    virtual bool newframe() // not mandatory
+    virtual bool newframe(unsigned long framerate, unsigned long deltaticks) // not mandatory
     {
         return true;
     }

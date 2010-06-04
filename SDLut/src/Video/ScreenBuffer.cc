@@ -322,6 +322,7 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
     //TODO : this could be handled by calling a virtual function and letting inheritance do the rest, which would be nicer.
     //However it implies that the VideoSurface itself would manage list of rectangles to refresh...
     // Maybe later...
+    // EDIT : and maybe we can have same process as seen from here.
     if ( m_screen->getRenderer() == internal::OpenGL )
     {
         m_screen->refresh();
@@ -331,34 +332,30 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
     }
     else
     {
-        Color black(128,0,0);
         if ( fullRefreshNeeded ) // first render, or periodically to avoid problems...
         {
             fullRefreshNeeded = false;
             m_screen->refresh();
 
-            oldlist.clear(); // we dont need to refresh the old ones the next time.
         }
         else
         {
-
             //now refreshing only what is needed
-            //these have been cleared previously
-            //just need to update them
+            //erase old blits
             m_screen->erase(oldlist);
 
             //display new blits
             m_screen->update(refreshlist);
 
-            oldlist=refreshlist;
-
-            refreshlist.clear();
         }
-
-
+        //these have been erased
+        oldlist.clear();
+        //preparing for next frame erase
+        oldlist=refreshlist;
+        //clearing the updated rect list
+        refreshlist.clear();
 
     }
-
 
     //Log << nl << "after :" << SDL_GetTicks() - lastframe ;
 
@@ -509,13 +506,13 @@ bool ScreenBuffer::blit (const Image& src, Rect& dest_rect, const Rect& src_rect
     //conversion will be done in Video GLSurface, only if really needed to
     //handle the VideoGL -> blit RGBSurf case. And only this one.
 
-    m_screen->blit( *(src.m_img) , dest_rect, src_rect );
+    bool res = m_screen->blit( *(src.m_img) , dest_rect, src_rect );
 
     // adding recangle to the list of rectangle to refresh
     refreshlist.push_back(dest_rect);
     //TODO: TEST extensively...
 
-    return true; //todo
+    return res; //todo
 }
 
 

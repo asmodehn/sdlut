@@ -72,7 +72,16 @@ public:
 
 };
 
-
+/* IDEA... copy SDL 1.3 :p
+enum InternalColorFormat
+{
+    RGB888,
+    RGBA8888,
+    BGR888,
+    BGRA888
+    //Indexed - TODO
+};
+*/
 
 
 class PixelFormat
@@ -103,11 +112,6 @@ protected:
 
 public: //necessary if we want to use getPixelFormat() accessor from the BaseSurface class when we're not in a PixelFormat's friend class
     virtual ~PixelFormat(void);
-
-
-
-
-
 
     virtual int getBitsPerPixel() const;
     virtual int getBytesPerPixel() const;
