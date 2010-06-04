@@ -312,6 +312,18 @@ bool ScreenBuffer::renderpass( unsigned long framerate, unsigned long& lastframe
     return true; //todo
 }
 
+bool ScreenBuffer::clean()
+{
+    //clean screen before redraw
+    if ( m_screen->getRenderer() == internal::SDL )
+    {
+        //now refreshing only what is needed
+        //erase old blits
+        m_screen->erase(oldlist);
+    }
+    return true; //not used for now
+}
+
 bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
 {
     //refresh screen
@@ -327,7 +339,8 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
     {
         m_screen->refresh();
 
-        //clear just in case ( shouldnt change anything )
+        //clear to avoid growth...
+        oldlist.clear();
         refreshlist.clear();
     }
     else
@@ -336,13 +349,12 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
         {
             fullRefreshNeeded = false;
             m_screen->refresh();
-
         }
         else
         {
             //now refreshing only what is needed
             //erase old blits
-            m_screen->erase(oldlist);
+            m_screen->update(oldlist);
 
             //display new blits
             m_screen->update(refreshlist);
@@ -350,7 +362,7 @@ bool ScreenBuffer::refresh( unsigned long framerate, unsigned long& lastframe)
         }
         //these have been erased
         oldlist.clear();
-        //preparing for next frame erase
+        //preparing for next frame clean screen
         oldlist=refreshlist;
         //clearing the updated rect list
         refreshlist.clear();

@@ -40,16 +40,16 @@ public:
         std::vector<video::Color>::const_iterator color = colorlist.begin();
         while ( color != colorlist.end() )
         {
-        for ( unsigned int y = 0; y < assertedrect->geth(); y++)
-        {
-            for ( unsigned int x = 0; x < assertedrect->getw(); x ++)
+            for ( unsigned int y = 0; y < assertedrect->geth(); y++)
             {
-                video::Color gotclr = sb.getColorAt(x + assertedrect->getx(),y + assertedrect->gety());
-                res = res && ( gotclr == *color);
+                for ( unsigned int x = 0; x < assertedrect->getw(); x ++)
+                {
+                    video::Color gotclr = sb.getColorAt(x + assertedrect->getx(),y + assertedrect->gety());
+                    res = res && ( gotclr == *color);
+                }
             }
-        }
-        assertedrect++;
-        color++;
+            assertedrect++;
+            color++;
         }
 
         if ( ! res ) logError("Error : Wrong color detected");
@@ -79,26 +79,26 @@ public:
         while ( testedrect != testedrectlist.end() )
         {
 
-        std::vector<video::Color>::iterator color = colorlist.begin();
-        while ( color != colorlist.end() )
-        {
-            //check rect size
-        if (testedrect->getx() < 0) testedrect->resetx(0);
-        if (testedrect->gety() < 0) testedrect->resety(0);
-        if ( (int)(testedrect->getx() + testedrect->getw()) > width ) testedrect->resetx( width - testedrect->getw() );
-        if ( (int)(testedrect->gety() + testedrect->geth()) > height ) testedrect->resety( height - testedrect->geth() );
+            std::vector<video::Color>::iterator color = colorlist.begin();
+            while ( color != colorlist.end() )
+            {
+                //check rect size
+                if (testedrect->getx() < 0) testedrect->resetx(0);
+                if (testedrect->gety() < 0) testedrect->resety(0);
+                if ( (int)(testedrect->getx() + testedrect->getw()) > width ) testedrect->resetx( width - testedrect->getw() );
+                if ( (int)(testedrect->gety() + testedrect->geth()) > height ) testedrect->resety( height - testedrect->geth() );
 
-            //preparing images
-            video::Image img;
-            res = img.resize(testedrect->getw(),testedrect->geth());
-            res = res && img.fill(*color);
+                //preparing images
+                video::Image img;
+                res = img.resize(testedrect->getw(),testedrect->geth());
+                res = res && img.fill(*color);
 
-            //Note : This implies Image copy works as for any POD type.
-            imglist.push_back(img);
+                //Note : This implies Image copy works as for any POD type.
+                imglist.push_back(img);
 
-            color ++;
-            testedrect++;
-        }
+                color ++;
+                testedrect++;
+            }
 
 
         }
@@ -133,20 +133,20 @@ public:
         while ( color != colorlist.end() )
         {
 
-        //work around for constness of render
-        video::Rect dst = *testedrect;
+            //work around for constness of render
+            video::Rect dst = *testedrect;
 
-        //BUG WORKAROUND !!!
-        //refresh doesnt seem to work properly here...
-        // TOFIX !!!
-        //sb.requestFullRefresh();
+            //BUG WORKAROUND !!!
+            //refresh doesnt seem to work properly here...
+            // TOFIX !!!
+            //sb.requestFullRefresh();
 
 
-        res = res && sb.blit(*img, dst);
+            res = res && sb.blit(*img, dst);
 
-        color++;
-        testedrect++;
-        img++;
+            color++;
+            testedrect++;
+            img++;
         }
 
         frame_num++;
@@ -164,18 +164,18 @@ std::vector<video::Rect> generate_rect(int number, int screenwidth, int screenhe
     while (number > 0)
     {
 
-    video::Rect rct(Randomizer<unsigned int>::get(0,screenwidth),Randomizer<unsigned int>::get(0,screenheight - 64 )); //keeping some space for logos...
-    rct.resetw(Randomizer<unsigned int>::get(1,screenwidth - rct.getx()));
-    rct.reseth(Randomizer<unsigned int>::get(1,screenheight-64 - rct.gety()));
-    //quick check
-    if (rct.getw() < 1) rct.resetw();
-    if (rct.geth() < 1) rct.reseth();
+        video::Rect rct(Randomizer<unsigned int>::get(0,screenwidth),Randomizer<unsigned int>::get(0,screenheight - 64 )); //keeping some space for logos...
+        rct.resetw(Randomizer<unsigned int>::get(1,screenwidth - rct.getx()));
+        rct.reseth(Randomizer<unsigned int>::get(1,screenheight-64 - rct.gety()));
+        //quick check
+        if (rct.getw() < 1) rct.resetw();
+        if (rct.geth() < 1) rct.reseth();
 
-    result.push_back(rct);
+        result.push_back(rct);
 
-    number--;
+        number--;
     }
-return result;
+    return result;
 }
 
 std::vector<video::Color> generate_color(int number)
@@ -185,13 +185,13 @@ std::vector<video::Color> generate_color(int number)
     {
 
         ///generating color and rect test set
-    video::Color color(Randomizer<unsigned char>::get(),Randomizer<unsigned char>::get(),Randomizer<unsigned char>::get());
+        video::Color color(Randomizer<unsigned char>::get(),Randomizer<unsigned char>::get(),Randomizer<unsigned char>::get());
 
-    result.push_back(color);
+        result.push_back(color);
 
-    number--;
+        number--;
     }
-return result;
+    return result;
 }
 
 int main(int argc, char** argv)

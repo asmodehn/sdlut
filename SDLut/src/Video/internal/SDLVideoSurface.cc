@@ -144,7 +144,6 @@ bool VideoSurface::erase(Rect r)
 {
     Color black(0,0,0);
     BaseSurface::fill(getVideoInfo().getPixelFormat().getPixelColor(black),r);
-    SDL_UpdateRect(ptm_surf.get(), r.getx(), r.gety(), r.getw(), r.geth());
     return true;
 }
 
@@ -174,7 +173,6 @@ bool VideoSurface::erase(std::vector<Rect> rlist)
     {
         Color black(0,0,0);
         BaseSurface::fill(getVideoInfo().getPixelFormat().getPixelColor(black),rlist[i]);
-        SDL_UpdateRect(ptm_surf.get(), rlist[i].getx(), rlist[i].gety(), rlist[i].getw(), rlist[i].geth());
     }
     return true;
 }

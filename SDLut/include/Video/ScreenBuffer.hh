@@ -84,6 +84,7 @@ public:
 
     bool renderpass(unsigned long framerate, unsigned long& lastframe);
     bool refresh( unsigned long framerate, unsigned long& lastframe);
+    bool clean();
 
     bool captureBMP(std::string filename) const;
 

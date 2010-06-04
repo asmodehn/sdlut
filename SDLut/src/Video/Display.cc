@@ -288,6 +288,10 @@ int Display::mainLoop(unsigned int framerate, unsigned int eventrate)
                 if ( ! m_newframecb->call( framerate, SDL_GetTicks() - lastframe ) ) m_exitstatus++;
             }
 
+            //this cleans previous render.
+            //very useful if not double buffered.
+            if ( ! pvm_screen->clean() ) m_exitstatus++;
+
             //if (!ShowingLoadingScreen)
             if ( m_rendercb.get() )
             {
