@@ -2,9 +2,13 @@
 
 namespace Core
 {
+/****************
+ * Old Logger implementation
+ */
+
 
 Logger::Logger(const std::string & LogPrefix,int indentlvl, int indentwidth)
-        : /*std::ostream(new std::stringbuf(std::ios_base::out)),*/ _indentlvl(indentlvl), _indentwidth(indentwidth),_logprefix(LogPrefix)
+        : _indentlvl(indentlvl), _indentwidth(indentwidth),_logprefix(LogPrefix)
 {
     _consoleLog = true;
     _fileLog = false;
@@ -23,7 +27,7 @@ bool Logger::setLogfile( const std::string & filename)
     _ofstr.open(filename.c_str(),std::ofstream::out);
     if (!_ofstr )
     {
-        operator<< ("Logger ERROR : Failed to open " + filename );
+        *this << "Logger ERROR : Failed to open " << filename ;
         res=false;
     }
     return res;
@@ -85,4 +89,8 @@ Logger::~Logger()
 #endif
 
 }
-}
+
+
+
+
+} // Core

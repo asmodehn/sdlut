@@ -4,6 +4,8 @@ WkCMakeDir ( CMake )
 
 WkProject ( Core CXX)
 
+WkDepends (STLPort REQUIRED)
+
 #TODO :
 # remove sigC++ dependency because
 # - delegate mecanism already implemented and working.

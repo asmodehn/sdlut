@@ -1,9 +1,31 @@
 #ifndef LOGGER_HH
 #define LOGGER_HH
 
-#include <iostream>
+#include "Core/Logging/logstream.hh"
+
 #include <fstream>
-#include <sstream>
+//to make sure our operator overload is working with strings
+#include <string>
+
+//TODO
+/****
+http://www.builderau.com.au/program/java/soa/Use-STL-streams-for-easy-C-thread-safe-logging/0,339024620,320279107,00.htm
+http://www.codeproject.com/KB/debug/STLDebugLogger.aspx
+http://www.codersource.net/c/c-miscellaneous/overloading-stream-operators.aspx
+http://www.google.com/codesearch/p?hl=fr#selboDD9lh0/~janneke/bzr/stream.cc/logstream.hpp&d=3
+http://www.drdobbs.com/cpp/201804215;jsessionid=YQFCLX0ATX4L5QE1GHPSKHWATMY32JVN?pgno=3
+http://www.codeproject.com/KB/cpp/Encoder.aspx
+http://publib.boulder.ibm.com/infocenter/comphelp/v8v101/index.jsp?topic=/com.ibm.xlcpp8a.doc/legacy/ref/s67.htm
+http://www.java2s.com/Code/Cpp/Overload/Overloadostreamandistream.htm
+http://www.gamedev.net/reference/articles/article2634.asp
+Boost Log
+*****/
+
+
+
+/********************
+ * Old Logger implementation
+ *******************/
 
 ///just a LOGINDENT value to be defined at build time. this way you have indent levels depending on built libraries
 #ifndef LOGINDENTLVL
@@ -44,7 +66,6 @@ namespace Core
  * Contact: asmodehn@gna.org
  *
  */
-
 
 typedef enum
 {
@@ -146,7 +167,12 @@ Logger& Logger::operator<< ( const M & msg)
     return *this;
 }
 
+
+
 Logger& nl (Logger& log); // adds a new line with the prefix
+
+
+
 
 } // Core
 

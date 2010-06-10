@@ -22,6 +22,17 @@
  * and relies on C99 compliant compilers.
  */
 
+//since Core relies on STLport
+#ifdef WK_Core_FOUND_STLPORT
+
+//we enable debug in STLport if we are in debug mode
+#ifdef _DEBUG
+#define _STLP_DEBUG 1
+#endif
+
+#endif
+
+
 ///Assertions
 #include "Assert.hh"
 
