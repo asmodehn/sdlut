@@ -3,28 +3,48 @@
 
 #include "Core/Logging/logstreambuf.hh"
 
-
 namespace Core
 {
 
 /**
  * \class logstream
- * \brief logstream provide log-style formatting in a stream
+ * \brief logstream provide filtering based on loglevel.
  *
  */
 
 class logstream : public std::ostream
 {
-protected:
+    logstreambuf* pvm_lsb;
 
 public :
 
-/// user pass a streambuf as in normal ostream
-    explicit logstream (std::streambuf * sb);
+    logstream();
     ~logstream();
+
+    enum Level {LVL_FATAL = 0,
+                LVL_ERROR = 1,
+                LVL_WARNING = 2,
+                LVL_INFO = 3,
+                LVL_DEBUG
+    };
+
+	//friend logstream& operator<<(logstream &o, Level lvl);
+    //logstream& level(Level l) { *this << l; return *this; };
+
+    //to use logstream as streamthrough
+    friend std::ostream& operator<<(std::ostream& o, logstream& l) { return o << l.rdbuf(); };
+
+
+    //to be able to access buffer ( after ofstream )
+    logstreambuf* rdbuf() const { return pvm_lsb; }
+    std::string str ( ) const { return rdbuf()->str(); }
+    void str ( const std::string & s ) {return rdbuf()->str(s); }
+
+
 
 ///Formatted output
 ///Insert data with format (public member function)
+/*
     logstream& operator<< (bool& val );
     logstream& operator<< (short& val );
     logstream& operator<< (unsigned short& val );
@@ -37,13 +57,14 @@ public :
     logstream& operator<< (long double& val );
     logstream& operator<< (const void* val );
 
+
     logstream& operator<< (logstreambuf* sb );
 
     logstream& operator<< (logstream& ( *pf )(logstream&));
     logstream& operator<< (std::ostream& ( *pf )(std::ostream&));
     logstream& operator<< (std::ios& ( *pf )(std::ios&));
     logstream& operator<< (std::ios_base& ( *pf )(std::ios_base&));
-
+*/
 
     ///Unformatted output
     ///Put character (public member function)
@@ -63,7 +84,7 @@ public :
     ///Flush output stream buffer (public member function)
     logstream& flush ( );
 
-
+/*
     ///Prefix/Suffix:
     ///Perform exception safe prefix/suffix operations (public member classes)
     class sentry : public std::ostream::sentry
@@ -76,10 +97,11 @@ public :
         sentry (const sentry&);             // not defined
         sentry& operator= (const sentry& ); // not defined
     };
-
+*/
 
 };
 
+/*
 logstream& operator<< (logstream& out, char c );
 logstream& operator<< (logstream& out, signed char c );
 logstream& operator<< (logstream& out, unsigned char c );
@@ -87,7 +109,7 @@ logstream& operator<< (logstream& out, unsigned char c );
 logstream& operator<< (logstream& out, const char* s );
 logstream& operator<< (logstream& out, const signed char* s );
 logstream& operator<< (logstream& out, const unsigned char* s );
-
+*/
 
 
 

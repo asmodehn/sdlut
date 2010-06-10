@@ -16,19 +16,26 @@ namespace Core
 /**
  * \class logstreambuf
  *
- * \brief This class defines an overloaded streambuf, to be used with logstream and logger
+ * \brief This class defines an overloaded streambuf, to be used with logstream
+ * It adds a prefix to each line logged with date and other useful information
  *
  *
  */
 
 class logstreambuf: public std::streambuf
 {
-    //my buffer here ??
+    //this is the actual streambuffer on which we will redirect calls, after some little adjustmesnt if required
     std::stringbuf ptm_buf;
+    //TOCHECK : stringbuf or strstreambuf ??
 
 public:
     logstreambuf();
     ~logstreambuf();
+
+//from stringbuf
+std::string str ( ) const { return ptm_buf.str(); }
+void str ( const std::string & s ) {return ptm_buf.str(s); }
+
 
 //The common functionality for all stream buffers is provided through the following public member functions:
 
@@ -75,37 +82,37 @@ protected:
     //TOFIX
     ///Locales
     ///Imbue locale (virtual protected member function)
-    virtual void imbue ( const std::locale & loc );
+    //virtual void imbue ( const std::locale & loc );
 
     ///Buffer management and positioning
     ///Set buffer
-    virtual logstreambuf* setbuf ( char* s, std::streamsize n );
+    //virtual logstreambuf* setbuf ( char* s, std::streamsize n );
     ///Set internal position pointer to relative position
-    virtual std::streampos seekoff ( std::streamoff off, std::ios_base::seekdir way, std::ios_base::openmode which = std::ios_base::in | std::ios_base::out );
+    //virtual std::streampos seekoff ( std::streamoff off, std::ios_base::seekdir way, std::ios_base::openmode which = std::ios_base::in | std::ios_base::out );
     ///Set internal position pointer to absolute position
-    virtual std::streampos seekpos ( std::streampos sp, std::ios_base::openmode which = std::ios_base::in | std::ios_base::out );
+    //virtual std::streampos seekpos ( std::streampos sp, std::ios_base::openmode which = std::ios_base::in | std::ios_base::out );
     ///Synchronize stream buffer
-    virtual int sync ( );
+    //virtual int sync ( );
 
 
     ///Input functions (get)
     ///Get number of characters available in the sequence
-    virtual std::streamsize showmanyc ( );
+    //virtual std::streamsize showmanyc ( );
     ///Get sequence of characters
-    virtual std::streamsize xsgetn ( char * s, std::streamsize n );
+    //virtual std::streamsize xsgetn ( char * s, std::streamsize n );
     ///Get character in the case of underflow
-    virtual int underflow ( );
+    //virtual int underflow ( );
     ///Get character in the case of underflow and advance get pointer
-    virtual int uflow ( );
+    //virtual int uflow ( );
     ///Put character back in the case of backup underflow
-    virtual int pbackfail ( int c = EOF );
+    //virtual int pbackfail ( int c = EOF );
 
 
     ///Output functions (put)
     ///Write sequence of characters
     virtual std::streamsize xsputn ( const char * s, std::streamsize n );
     ///Write character in the case of overflow
-    virtual int overflow ( int c = EOF );
+    //virtual int overflow ( int c = EOF );
 
 };
 

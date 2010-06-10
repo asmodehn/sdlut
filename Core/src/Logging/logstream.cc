@@ -3,20 +3,31 @@
 namespace Core
 {
 
-logstream::logstream (std::streambuf * sb)
-        :std::ostream(sb)
+logstream::logstream ()
+        : std::ostream(0)
 {
+
+    pvm_lsb = new logstreambuf();
+
+    this->init(pvm_lsb);
+
+    //setup default flags
+    this->flags ( std::ios::left | std::ios::hex | std::ios::showbase | std::ios::boolalpha );
+
 }
 
 logstream::~logstream()
 {
+    delete pvm_lsb;
 }
 
+/*
 ///Formatted output
 ///Insert data with format (public member function)
 logstream& logstream::operator<< (bool& val )
 {
-    return dynamic_cast<logstream&>(std::ostream::operator<<(val));
+    flags()
+    return *this << std::alpha(true) << val << std::boolalpha;
 }
 logstream& logstream::operator<< (short& val )
 {
@@ -59,6 +70,7 @@ logstream& logstream::operator<< (const void* val )
     return dynamic_cast<logstream&>(std::ostream::operator<<(val));
 }
 
+
 logstream& logstream::operator<< (logstreambuf* sb )
 {
     return dynamic_cast<logstream&>(std::ostream::operator<<(sb));
@@ -76,7 +88,7 @@ logstream& logstream::operator<< (std::ios_base& ( *pf )(std::ios_base&))
 {
     return dynamic_cast<logstream&>(std::ostream::operator<<(pf));
 }
-
+*/
 
 ///Unformatted output
 ///Put character (public member function)
@@ -114,7 +126,7 @@ logstream& logstream::flush ( )
     return dynamic_cast<logstream&>(std::ostream::flush());
 }
 
-
+/*
 ///Prefix/Suffix:
 ///Perform exception safe prefix/suffix operations (public member classes)
 logstream::sentry::sentry ( std::ostream& os )
@@ -129,8 +141,9 @@ logstream::sentry::operator bool() const
 {
     return std::ostream::sentry::operator bool();
 }
+*/
 
-
+/*
 logstream& operator<< (logstream& out, char c )
 {
     return dynamic_cast<logstream&>(std::operator<<(static_cast<std::ostream&>(out),c));
@@ -157,7 +170,7 @@ logstream& operator<< (logstream& out, const unsigned char* s )
 {
     return dynamic_cast<logstream&>(std::operator<<(static_cast<std::ostream&>(out),s));
 }
-
+*/
 
 } // Core
 

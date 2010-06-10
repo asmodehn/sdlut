@@ -46,9 +46,18 @@ int main(int argc, char *argv[])
 
     //streambuffer for formatting log messages
     //logstreambuf logbuf;
-    std::stringbuf strbuf;
-    logstream ls(&strbuf);
-    std::cout << ls << "Test sentence" << std::endl;
+
+
+    std::stringstream ss;
+    ss << "Test stringstream sentence" << std::endl;
+    std::cout << ss.str();
+
+    logstream ls;
+    ls << "Test logstream sentence" << std::endl;
+    std::cout << ls.str();
+
+
+
     return res;
 
 
