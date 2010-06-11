@@ -14,19 +14,30 @@ namespace Core
 
 class logstream : public std::ostream
 {
+    //log prefix storage
+    std::string ptm_prefix;
+
+    //streambuff
     logstreambuf* pvm_lsb;
+
+
 
 public :
 
     logstream();
     ~logstream();
 
+//to manage prefix
+void resetprefix(std::string newprefix = "");
+std::string getprefix() const;
+
     enum Level {LVL_FATAL = 0,
                 LVL_ERROR = 1,
                 LVL_WARNING = 2,
                 LVL_INFO = 3,
-                LVL_DEBUG
+                LVL_DEBUG = 4
     };
+    Level level;
 
 	//friend logstream& operator<<(logstream &o, Level lvl);
     //logstream& level(Level l) { *this << l; return *this; };
@@ -82,6 +93,7 @@ public :
 
     ///Synchronization
     ///Flush output stream buffer (public member function)
+    ///flush will go to std::clog
     logstream& flush ( );
 
 /*

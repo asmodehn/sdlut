@@ -6,19 +6,33 @@ namespace Core
 logstream::logstream ()
         : std::ostream(0)
 {
-
+    //to hook up to usual stream design
     pvm_lsb = new logstreambuf();
-
     this->init(pvm_lsb);
 
     //setup default flags
     this->flags ( std::ios::left | std::ios::hex | std::ios::showbase | std::ios::boolalpha );
+
+    //setup default prefix
+    resetprefix();
 
 }
 
 logstream::~logstream()
 {
     delete pvm_lsb;
+}
+
+//to manage prefix
+void logstream::resetprefix(std::string newprefix)
+{
+    ptm_prefix = newprefix;
+    pvm_lsb->resetprefix(&ptm_prefix);
+}
+
+std::string logstream::getprefix() const
+{
+    return ptm_prefix;
 }
 
 /*

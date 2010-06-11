@@ -18,6 +18,7 @@ http://www.codeproject.com/KB/cpp/Encoder.aspx
 http://publib.boulder.ibm.com/infocenter/comphelp/v8v101/index.jsp?topic=/com.ibm.xlcpp8a.doc/legacy/ref/s67.htm
 http://www.java2s.com/Code/Cpp/Overload/Overloadostreamandistream.htm
 http://www.gamedev.net/reference/articles/article2634.asp
+http://www.two-sdg.demon.co.uk/curbralan/papers/WritingStreamManipulators.html
 Boost Log
 *****/
 

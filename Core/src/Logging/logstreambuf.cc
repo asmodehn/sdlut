@@ -4,18 +4,34 @@ namespace Core
 {
 
 logstreambuf::logstreambuf()
-        : std::streambuf()
+        : std::streambuf(),
+        ptm_prefix(0), //default no prefix
+        ptm_buf(), //initializes stringbuffer
+        ptm_clogbuf(std::clog.rdbuf(&ptm_buf)) //hooking up to clog and using it as sink
 {
 }
 
 logstreambuf::~logstreambuf()
 {
-    //destructor of streambuf should be called here
+    //restoring proper streambuffer for clog
+    std::clog.rdbuf(ptm_clogbuf);
+}
+
+
+void logstreambuf::resetprefix(std::string* newprefix)
+{
+    ptm_prefix = newprefix;
+}
+
+std::string* logstreambuf::getprefix() const
+{
+    return ptm_prefix;
 }
 
 
 //The common functionality for all stream buffers is provided through the following public member functions:
-
+///Inherited, shouldnt be neeeded to overload
+/*
 //Locales:
 ///Imbue locale (public member function)
 std::locale logstreambuf::pubimbue ( const std::locale & loc )
@@ -96,31 +112,44 @@ std::streamsize logstreambuf::sputn ( const char * s, std::streamsize n )
     return ptm_buf.sputn(s,n);
 }
 
+*/
 
-/*
 ///Locales
 ///Imbue locale (virtual protected member function)
 void logstreambuf::imbue ( const std::locale & loc )
-{}
+{
+    ptm_buf.pubimbue(loc);
+}
 
 ///Buffer management and positioning
 ///Set buffer
 logstreambuf* logstreambuf::setbuf ( char* s, std::streamsize n )
-{}
+{
+    ptm_buf.pubsetbuf(s,n);
+    return this;
+}
 
 ///Set internal position pointer to relative position
 std::streampos logstreambuf::seekoff ( std::streamoff off, std::ios_base::seekdir way, std::ios_base::openmode which )
-{}
+{
+    return ptm_buf.pubseekoff(off,way,which);
+}
 
 ///Set internal position pointer to absolute position
 std::streampos logstreambuf::seekpos ( std::streampos sp, std::ios_base::openmode which )
-{}
+{
+    return ptm_buf.pubseekpos(sp,which);
+}
 
-///Synchronize stream buffer
+///Synchronizes (flush) the stream buffer
 int logstreambuf::sync ( )
-{}
+{
+    //lockthread here
+    ptm_clogbuf->pubsync();
+    return  ptm_buf.pubsync();
+}
 
-
+/*
 ///Input functions (get)
 ///Get number of characters available in the sequence
 std::streamsize logstreambuf::showmanyc ( )
@@ -139,16 +168,19 @@ int logstreambuf::uflow ( )
 int logstreambuf::pbackfail ( int c )
 {}
 */
+
 ///Output functions (put)
 ///Write sequence of characters
 std::streamsize logstreambuf::xsputn ( const char * s, std::streamsize n )
 {
-    ptm_buf.sputn(s,n);
-}
-///Write character in the case of overflow
-//int logstreambuf::overflow ( int c )
-//{
-//}
+    //TODO : find newline characters in the string and append prefix,
+    //and other useful fields ( date, time, etc. )
 
+    //after formatting :
+    std::streamsize size = ptm_buf.sputn(s,n);
+    //this is done here, but ideally should be done in sync
+    ptm_clogbuf->sputn(s,n);
+    return size;
+}
 
 } //Core

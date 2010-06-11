@@ -3,62 +3,48 @@
 */
 
 #include "Core.hh"
+#include <string>
 using namespace Core;
-
-/*
-//Utils for tests...
-//generate random test value, depending the type
-template <class T> T makeTestType()
-{
-    //default : return newly constructed object
-    return T();
-}
-
-template <class T=std::string> T makeTestType()
-{
-    return "fortytwo";
-}
-
-template <class T=int> T makeTestType()
-{
-    return 42;
-}
-
-//basic test functions
-template <class T> bool testout(Logger log, T testval)
-{
-    std::string logged;
-    log.addOutput(&logged);
-
-    std::stringstream expected;
-    for ( int i = 0 ; i < log.getIndent(); ++i) expected << "\t";
-    expected << log.getPrefix() << ": " << testval << std::endl;
-
-    log << testval << std::endl;
-    return logged == expected.str();
-}
-
-*/
 
 int main(int argc, char *argv[])
 {
     bool res = 0;
 
-    //streambuffer for formatting log messages
-    //logstreambuf logbuf;
-
-
-    std::stringstream ss;
-    ss << "Test stringstream sentence" << std::endl;
-    std::cout << ss.str();
-
     logstream ls;
+
+
+    ///Test logstream default prefix
+    res = (ls.getprefix() == "");
+
+    ///Test logstream added fields
+    std::string nowstr;
+    //date TODO
+    //std::string nowstr = Date::today().localascii();
+    //time (test should be fast enough) TODO
+    //nowstr += Time::now().localascii();
+    //thread TODO
+    //message
+    ls << "test";
+    res = res && (ls.str() == nowstr + "test");
+
+    //end test
+    ls.flush();
+
+    ///Test prefix
+    ls.resetprefix("MyLog :");
+    ls << "test";
+    res = res && (ls.str() == "MyLog : test");
+
+    ls.resetprefix();
+    //Test default logstream formatting
+    //TODO ( like for any stream )
+
+    //endtest
+    ls.flush();
+
     ls << "Test logstream sentence" << std::endl;
-    std::cout << ls.str();
 
-
-
-    return res;
+    return (res == true)?0:-1;
 
 
 
