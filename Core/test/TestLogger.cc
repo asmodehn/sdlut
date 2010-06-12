@@ -32,17 +32,19 @@ int main(int argc, char *argv[])
 
     ///Test prefix
     ls.resetprefix("MyLog :");
-    ls << "test";
-    res = res && (ls.str() == "MyLog : test");
+    ls << "test" << std::endl;//IF ENDL THEN
+    res = res && (ls.str() == "MyLog : test\n");
 
     ls.resetprefix();
     //Test default logstream formatting
     //TODO ( like for any stream )
 
-    //endtest
-    ls.flush();
+    std::clog << "clogtest";
 
-    ls << "Test logstream sentence" << std::endl;
+    //endtest
+    ls.flush();             //BUG HERE...
+
+    ls << "Test logstream sentence" << std::endl; // -> BADBIT SET
 
     return (res == true)?0:-1;
 

@@ -27,6 +27,9 @@ class logstreambuf: public std::streambuf
     //prefix pointer. can be 0x0.
     std::string* ptm_prefix;
 
+    bool ptm_logdate;
+    bool ptm_logtime;
+
     //this is the actual streambuffer on which we will redirect calls
     //after some little adjustments if required
     std::stringbuf ptm_buf;
@@ -44,6 +47,9 @@ public:
 //to manage prefix
 void resetprefix(std::string *newprefix = 0);
 std::string* getprefix() const;
+
+void resetlogdate(bool v=true) { ptm_logdate = v; }
+void resetlogtime(bool v=true) { ptm_logtime = v; }
 
 //from stringbuf
 std::string str ( ) const { return ptm_buf.str(); }

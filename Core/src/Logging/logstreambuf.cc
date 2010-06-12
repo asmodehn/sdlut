@@ -6,15 +6,19 @@ namespace Core
 logstreambuf::logstreambuf()
         : std::streambuf(),
         ptm_prefix(0), //default no prefix
+        ptm_logdate(true),ptm_logtime(true),
         ptm_buf(), //initializes stringbuffer
-        ptm_clogbuf(std::clog.rdbuf(&ptm_buf)) //hooking up to clog and using it as sink
+        ptm_clogbuf(std::clog.rdbuf())//using clog as sink
+        //to hook up to it also :
+        //ptm_clogbuf(std::clog.rdbuf(&ptm_buf))
 {
 }
 
 logstreambuf::~logstreambuf()
 {
     //restoring proper streambuffer for clog
-    std::clog.rdbuf(ptm_clogbuf);
+    //only if we hooked up to it
+    //std::clog.rdbuf(ptm_clogbuf);
 }
 
 
@@ -144,9 +148,52 @@ std::streampos logstreambuf::seekpos ( std::streampos sp, std::ios_base::openmod
 ///Synchronizes (flush) the stream buffer
 int logstreambuf::sync ( )
 {
-    //lockthread here
-    ptm_clogbuf->pubsync();
-    return  ptm_buf.pubsync();
+    int res=0;
+
+          //TODO : insert useful prefixes
+       //maybe distinction date / time useless
+        char timebuf[80];
+        if (ptm_logtime || ptm_logdate)
+        {
+            time_t rawtime;
+            struct tm * timeinfo;
+
+            time ( &rawtime );
+            timeinfo = localtime ( &rawtime );
+            if ( ptm_logtime && !ptm_logdate)
+            {
+                strftime (timebuf,80,"%X %Z : ",timeinfo);
+            }else if (ptm_logdate && !ptm_logtime)
+            {
+                strftime (timebuf,80,"%x %Z : ",timeinfo);
+            }else if (ptm_logdate && ptm_logtime)
+            {
+                strftime (timebuf,80,"%x %X %Z : ",timeinfo);
+            }
+        }
+
+        if (ptm_logtime || ptm_logdate)
+        {
+            //TODO : speed up with fixed string size
+            //passon prefixes strings
+            ptm_clogbuf->sputn(timebuf,strlen(timebuf));
+        }
+
+    //transfer ptm_buf to clogbuf
+    //copy character one by one...
+    //maybe better to lock buffer, and get it whole at once...
+    char c = ptm_buf.sbumpc();
+    while( c != EOF )
+    {
+        ptm_clogbuf->sputc(c);
+        c = ptm_buf.sbumpc();
+    }
+    ptm_clogbuf->sputc('\n');
+
+    res += ptm_buf.pubsync();
+    res += ptm_clogbuf->pubsync();
+
+    return res;
 }
 
 /*
@@ -173,14 +220,12 @@ int logstreambuf::pbackfail ( int c )
 ///Write sequence of characters
 std::streamsize logstreambuf::xsputn ( const char * s, std::streamsize n )
 {
-    //TODO : find newline characters in the string and append prefix,
-    //and other useful fields ( date, time, etc. )
+    std::streamsize ressize = 0;
+    char* laststr = (char*)s;
 
-    //after formatting :
-    std::streamsize size = ptm_buf.sputn(s,n);
-    //this is done here, but ideally should be done in sync
-    ptm_clogbuf->sputn(s,n);
-    return size;
+    //last string
+    ressize += ptm_buf.sputn(laststr,strlen(laststr));
+    return ressize;
 }
 
 } //Core
