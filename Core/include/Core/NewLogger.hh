@@ -12,7 +12,7 @@ namespace Core
      * \brief NewLogger manages the Logging outputs for the application.
      *
      */
-
+/*
 class NewLogger : std::ostream
 {
     public:
@@ -49,6 +49,7 @@ class NewLogger : std::ostream
     logstreambuf pvm_winlsb;
 
 };
+*/
 
 }
 

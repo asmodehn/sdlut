@@ -1,5 +1,5 @@
-#ifndef FUNCTOREXT_HH
-#define FUNCTOREXT_HH
+#ifndef CORE_FUNCTOREXT_HH
+#define CORE_FUNCTOREXT_HH
 
 
 #include <functional>

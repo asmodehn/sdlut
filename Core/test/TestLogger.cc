@@ -12,66 +12,45 @@ int main(int argc, char *argv[])
 
     logstream ls;
 
+    ///test logstream default setup
+    /// date insertion
+    /// default "" prefix
+    /// default loglevel
 
-    ///Test logstream default prefix
-    res = (ls.getprefix() == "");
-
-    ///Test logstream added fields
-    std::string nowstr;
-    //date TODO
-    //std::string nowstr = Date::today().localascii();
-    //time (test should be fast enough) TODO
-    //nowstr += Time::now().localascii();
-    //thread TODO
-    //message
+    ///test logstream date insertion
     ls << "test";
-    res = res && (ls.str() == nowstr + "test");
+    //TODO
+    //ls.str() == date + "test"
+    ls << std::endl;
 
-    //end test
-    ls.flush();
-
-    ///Test prefix
-    ls.resetprefix("MyLog :");
-    ls << "test" << std::endl;//IF ENDL THEN
-    res = res && (ls.str() == "MyLog : test\n");
-
+    ///test logstream custom prefix
+    ls.resetprefix("LogTest :");
+    ls << "test";
+    //TODO
+    //ls.str() == date + prefix + "test"
+    ls <<std::endl;
     ls.resetprefix();
-    //Test default logstream formatting
-    //TODO ( like for any stream )
 
-    std::clog << "clogtest";
+    ///test logstream and loglevel
+    ls.resetLevel(loglevel::INFO);
+    ls << loglevel::DEBUG << "Debug message" << std::endl; //ignored
+    ls << loglevel::INFO << "Info message" << std::endl; // ok
+    ls << loglevel::WARNING << "Warning message" << std::endl; //ok
+    ls << loglevel::ERROR << "Error message" << std::endl; //ok
+    ls << loglevel::FATAL << "Fatal message" << std::endl; //ok
 
-    //endtest
-    ls.flush();             //BUG HERE...
-
-    ls << "Test logstream sentence" << std::endl; // -> BADBIT SET
-
-    return (res == true)?0:-1;
-
+    ls.resetLevel(loglevel::ERROR);
 
 
-    /*
-        //This test the main logger from Core
-        res = testout(Logger::get(),makeTestType<std::string>());
-
-        if ( ! res )
-        {
-            std::cerr << " ERROR : Logger cannot output strings. Aborting test." << std::endl;
-            return -1;
-        }
-
-        //TODO : test more basic types
-
-        //Test differents logger
-        int level = 2;
-        std::string prefix = "lvl2log";
-        Logger log(prefix,level);
-
-        res = res && testout(log,makeTestType<std::string>());
+    ls << loglevel::DEBUG << "Debug message" << std::endl; //ignored
+    ls << loglevel::INFO << "Info message" << std::endl; //ignored
+    ls << loglevel::WARNING << "Warning message" << std::endl; //ignored
+    ls << loglevel::ERROR << "Error message" << std::endl; //ok
+    ls << loglevel::FATAL << "Fatal message" << std::endl; //ok
 
 
 
-    */
-    return 0;
+
+    return res;
 }
 

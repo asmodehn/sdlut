@@ -8,9 +8,11 @@ logstreambuf::logstreambuf()
         ptm_prefix(0), //default no prefix
         ptm_logdate(true),ptm_logtime(true),
         ptm_buf(), //initializes stringbuffer
-        ptm_clogbuf(std::clog.rdbuf())//using clog as sink
+        ptm_clogbuf(std::clog.rdbuf()),//using clog as sink
         //to hook up to it also :
-        //ptm_clogbuf(std::clog.rdbuf(&ptm_buf))
+        //ptm_clogbuf(std::clog.rdbuf(&ptm_buf)),
+        ptm_filterin(true)
+
 {
 }
 
@@ -150,9 +152,12 @@ int logstreambuf::sync ( )
 {
     int res=0;
 
-          //TODO : insert useful prefixes
+    //we add prefix only if we are in filterin state
+    if (ptm_filterin )
+    {
+        //TODO : insert useful prefixes
        //maybe distinction date / time useless
-        char timebuf[80];
+        char timebuf[32];
         if (ptm_logtime || ptm_logdate)
         {
             time_t rawtime;
@@ -162,15 +167,16 @@ int logstreambuf::sync ( )
             timeinfo = localtime ( &rawtime );
             if ( ptm_logtime && !ptm_logdate)
             {
-                strftime (timebuf,80,"%X %Z : ",timeinfo);
+                strftime (timebuf,32,"%X %Z : ",timeinfo);
             }else if (ptm_logdate && !ptm_logtime)
             {
-                strftime (timebuf,80,"%x %Z : ",timeinfo);
+                strftime (timebuf,32,"%x %Z : ",timeinfo);
             }else if (ptm_logdate && ptm_logtime)
             {
-                strftime (timebuf,80,"%x %X %Z : ",timeinfo);
+                strftime (timebuf,32,"%x %X %Z : ",timeinfo);
             }
         }
+
 
         if (ptm_logtime || ptm_logdate)
         {
@@ -178,6 +184,7 @@ int logstreambuf::sync ( )
             //passon prefixes strings
             ptm_clogbuf->sputn(timebuf,strlen(timebuf));
         }
+
 
     //transfer ptm_buf to clogbuf
     //copy character one by one...
@@ -188,7 +195,10 @@ int logstreambuf::sync ( )
         ptm_clogbuf->sputc(c);
         c = ptm_buf.sbumpc();
     }
-    ptm_clogbuf->sputc('\n');
+
+    }
+
+
 
     res += ptm_buf.pubsync();
     res += ptm_clogbuf->pubsync();
@@ -221,11 +231,37 @@ int logstreambuf::pbackfail ( int c )
 std::streamsize logstreambuf::xsputn ( const char * s, std::streamsize n )
 {
     std::streamsize ressize = 0;
-    char* laststr = (char*)s;
-
-    //last string
-    ressize += ptm_buf.sputn(laststr,strlen(laststr));
-    return ressize;
+    if ( ptm_filterin )
+    {
+        char* laststr = (char*)s;
+        //last string
+        ressize += ptm_buf.sputn(laststr,strlen(laststr));
+    }
+    else // filterout
+    {
+        //fake a proper sputn.
+        return n;
+    }
 }
+
+int logstreambuf::overflow ( int c )
+{
+    if (ptm_filterin )
+    {
+    if ( c != EOF )
+    {
+       return ptm_buf.sputc((char)c); //returns EOF if overflow fails
+    }
+        return 0;//nothing to do here c is already EOF
+    }
+    else
+    {
+        return 0; //nothing to do, message filtered out
+    }
+
+
+}
+
+
 
 } //Core

@@ -57,6 +57,7 @@
 
 ///Thread-aware Logger
 #include "Logger.hh"
+#include "Core/NewLogger.hh"
 
 ///Static Assertion
 #include "StaticAssert.hh"

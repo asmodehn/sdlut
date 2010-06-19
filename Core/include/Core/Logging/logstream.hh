@@ -1,7 +1,9 @@
 #ifndef LOGSTREAM_HH
 #define LOGSTREAM_HH
 
+#include "Core/Logging/nullstream.hh"
 #include "Core/Logging/logstreambuf.hh"
+#include "Core/Logging/loglevel.hh"
 
 namespace Core
 {
@@ -20,110 +22,50 @@ class logstream : public std::ostream
     //streambuff
     logstreambuf* pvm_lsb;
 
-
+    //level of hte log stream.
+    //anything less important than this level is ignored
+    loglevel::Level loglvl;
 
 public :
 
     logstream();
     ~logstream();
 
-//to manage prefix
-void resetprefix(std::string newprefix = "");
-std::string getprefix() const;
-
-    enum Level {LVL_FATAL = 0,
-                LVL_ERROR = 1,
-                LVL_WARNING = 2,
-                LVL_INFO = 3,
-                LVL_DEBUG = 4
-    };
-    Level level;
-
-	//friend logstream& operator<<(logstream &o, Level lvl);
-    //logstream& level(Level l) { *this << l; return *this; };
+    //to manage prefix
+    void resetprefix(std::string newprefix = "");
+    std::string getprefix() const;
 
     //to use logstream as streamthrough
     friend std::ostream& operator<<(std::ostream& o, logstream& l) { return o << l.rdbuf(); };
-
 
     //to be able to access buffer ( after ofstream )
     logstreambuf* rdbuf() const { return pvm_lsb; }
     std::string str ( ) const { return rdbuf()->str(); }
     void str ( const std::string & s ) {return rdbuf()->str(s); }
 
-
-
-///Formatted output
-///Insert data with format (public member function)
-/*
-    logstream& operator<< (bool& val );
-    logstream& operator<< (short& val );
-    logstream& operator<< (unsigned short& val );
-    logstream& operator<< (int& val );
-    logstream& operator<< (unsigned int& val );
-    logstream& operator<< (long& val );
-    logstream& operator<< (unsigned long& val );
-    logstream& operator<< (float& val );
-    logstream& operator<< (double& val );
-    logstream& operator<< (long double& val );
-    logstream& operator<< (const void* val );
-
-
-    logstream& operator<< (logstreambuf* sb );
-
-    logstream& operator<< (logstream& ( *pf )(logstream&));
-    logstream& operator<< (std::ostream& ( *pf )(std::ostream&));
-    logstream& operator<< (std::ios& ( *pf )(std::ios&));
-    logstream& operator<< (std::ios_base& ( *pf )(std::ios_base&));
-*/
-
     ///Unformatted output
     ///Put character (public member function)
-    logstream& put ( char c );
+    //logstream& put ( char c );
     ///Write block of data (public member function)
-    logstream& write ( const char* s , std::streamsize n );
-
-
-    ///Positioning
-    ///Get position of put pointer (public member function)
-    std::streampos tellp ( );
-    ///Set position of put pointer (public member function)
-    logstream& seekp ( std::streampos pos );
-    logstream& seekp ( std::streamoff off, std::ios_base::seekdir dir );
+    //logstream& write ( const char* s , std::streamsize n );
 
     ///Synchronization
     ///Flush output stream buffer (public member function)
     ///flush will go to std::clog
-    logstream& flush ( );
+    //logstream& flush ( );
 
-/*
-    ///Prefix/Suffix:
-    ///Perform exception safe prefix/suffix operations (public member classes)
-    class sentry : public std::ostream::sentry
-    {
-    public:
-        explicit sentry ( std::ostream& os );
-        ~sentry();
-        operator bool() const;
-    private:
-        sentry (const sentry&);             // not defined
-        sentry& operator= (const sentry& ); // not defined
-    };
-*/
+    //set loglevel. Messages logged here will have at least this level
+    void resetLevel(loglevel::Level l=loglevel::INFO) { loglvl = l; }
+    loglevel::Level getLevel() { return loglvl;}
+
+    //manipulator to set *messages's* level
+    friend logstream& operator<<(logstream &o, loglevel::Level lvl);
+    logstream& level(loglevel::Level l);
 
 };
 
-/*
-logstream& operator<< (logstream& out, char c );
-logstream& operator<< (logstream& out, signed char c );
-logstream& operator<< (logstream& out, unsigned char c );
-
-logstream& operator<< (logstream& out, const char* s );
-logstream& operator<< (logstream& out, const signed char* s );
-logstream& operator<< (logstream& out, const unsigned char* s );
-*/
-
-
+//overloading standard clog
+//CORE_API logstream clog;
 
 
 } //Core
