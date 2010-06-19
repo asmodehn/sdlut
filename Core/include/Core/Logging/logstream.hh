@@ -16,9 +16,6 @@ namespace Core
 
 class logstream : public std::ostream
 {
-    //log prefix storage
-    std::string ptm_prefix;
-
     //streambuff
     logstreambuf* pvm_lsb;
 
@@ -28,12 +25,12 @@ class logstream : public std::ostream
 
 public :
 
-    logstream();
+    explicit logstream(logstreambuf* lsb);
     ~logstream();
 
     //to manage prefix
-    void resetprefix(std::string newprefix = "");
-    std::string getprefix() const;
+    void resetprefix(const std::string & newprefix = "");
+    const std::string& getprefix() const;
 
     //to use logstream as streamthrough
     friend std::ostream& operator<<(std::ostream& o, logstream& l) { return o << l.rdbuf(); };

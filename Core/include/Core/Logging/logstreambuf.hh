@@ -17,28 +17,22 @@ namespace Core
  * \class logstreambuf
  *
  * \brief This class defines an overloaded streambuf, to be used with logstream
- * It adds a prefix to each line logged with date and other useful information
+ * It manages filtering in and out incoming messages from the stream.
+ * It provides helpful function for derivated classes to implement prefix adding on output to sinks, on sync() calling...
  *
- * Custom Prefix (set by logstream) | Date (internally added) | Time (internally added) [| ThreadID (internally added)] | Message ( sent by logstream )
+ * Date&Time (internally added) [TODO| ThreadID (internally added)] |Custom Prefix (set by logstream) | Message ( sent by logstream )
  */
 
-class logstreambuf: public std::streambuf
+class logstreambuf: public std::stringbuf
 {
-    //prefix pointer. can be 0x0.
-    std::string* ptm_prefix;
 
-    bool ptm_logdate;
+protected :
+    std::string ptm_prefix;
+
     bool ptm_logtime;
 
-    //this is the actual streambuffer on which we will redirect calls
-    //after some little adjustments if required
-    std::stringbuf ptm_buf;
-
-    //IDEA : ptm_buf is a temporary buffer that is accessible just like in a stringstream.
-    //On flush, the content of the stringbuf is tranferred to clog ( and other sinks... )
-
-    //clog as default sink on sync()
-    std::streambuf* ptm_clogbuf;
+    //IDEA : logstreambuf is a string buffer. Therefore it can be accessed and manipulated by a stringstream if needed.
+    //On flush, the content of the buffer is transferred to a sink ( derivated classes )
 
     //filter boolean
     bool ptm_filterin;
@@ -48,51 +42,24 @@ public:
     ~logstreambuf();
 
 //to manage prefix
-void resetprefix(std::string *newprefix = 0);
-std::string* getprefix() const;
+void resetprefix(const std::string& newprefix = 0);
+const std::string& getprefix() const;
 
-void resetlogdate(bool v=true) { ptm_logdate = v; }
 void resetlogtime(bool v=true) { ptm_logtime = v; }
-
-//from stringbuf
-std::string str ( ) const { return ptm_buf.str(); }
-void str ( const std::string & s ) {return ptm_buf.str(s); }
 
 //to start and stop getting messages
 void filterout() { ptm_filterin = false ; }
-void filterin() {ptm_filterin = true; }
+void filterin() { ptm_filterin = true; }
 
 
 protected:
 
-    ///Locales
-    ///Imbue locale (virtual protected member function)
-    virtual void imbue ( const std::locale & loc );
 
-    ///Buffer management and positioning
-    ///Set buffer
-    virtual logstreambuf* setbuf ( char* s, std::streamsize n );
-    ///Set internal position pointer to relative position
-    virtual std::streampos seekoff ( std::streamoff off, std::ios_base::seekdir way, std::ios_base::openmode which = std::ios_base::in | std::ios_base::out );
-    ///Set internal position pointer to absolute position
-    virtual std::streampos seekpos ( std::streampos sp, std::ios_base::openmode which = std::ios_base::in | std::ios_base::out );
     ///Synchronize stream buffer
-    virtual int sync ( );
+    ///must be overloaded by implementations of this abstract class (depending on log output)
+    virtual int sync ( ) = 0;
 
-    ///for now only output buffer used
-    /*
-    ///Input functions (get)
-    ///Get number of characters available in the sequence
-    //virtual std::streamsize showmanyc ( );
-    ///Get sequence of characters
-    //virtual std::streamsize xsgetn ( char * s, std::streamsize n );
-    ///Get character in the case of underflow
-    //virtual int underflow ( );
-    ///Get character in the case of underflow and advance get pointer
-    //virtual int uflow ( );
-    ///Put character back in the case of backup underflow
-    //virtual int pbackfail ( int c = EOF );
-    */
+    std::string getlocaltime();
 
     ///Output functions (put)
     ///Write sequence of characters
@@ -103,6 +70,46 @@ protected:
 
 };
 
+/* TODO
+///output to syslog
+class syslogstreambuf: public logstreambuf
+{
+    virtual int sync ( );
+};
+
+///output to win32dbg
+class win32logstreambuf: public logstreambuf
+{
+    virtual int sync ( );
+};
+*/
+
+///Output to clog
+class clogstreambuf: public logstreambuf
+{
+    //clog as sink on sync()
+    std::streambuf* ptm_clogbuf;
+public:
+    clogstreambuf();
+    ~clogstreambuf();
+
+    protected :
+    virtual int sync ( );
+};
+
+
+///Output to clog
+class filelogstreambuf: public logstreambuf
+{
+    //clog as sink on sync()
+    std::filebuf ptm_filelogbuf;
+public:
+    filelogstreambuf(const std::string & filename);
+    ~filelogstreambuf();
+
+    protected :
+    virtual int sync ( );
+};
 
 
 }// Core

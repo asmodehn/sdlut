@@ -3,11 +3,11 @@
 namespace Core
 {
 
-logstream::logstream ()
+logstream::logstream (logstreambuf* lsb)
         : std::ostream(0)
 {
     //to hook up to usual stream design
-    pvm_lsb = new logstreambuf();
+    pvm_lsb = lsb;
     this->init(pvm_lsb);
 
     //setup default flags
@@ -20,19 +20,17 @@ logstream::logstream ()
 
 logstream::~logstream()
 {
-    delete pvm_lsb;
 }
 
 //to manage prefix
-void logstream::resetprefix(std::string newprefix)
+void logstream::resetprefix(const std::string& newprefix)
 {
-    ptm_prefix = newprefix;
-    pvm_lsb->resetprefix(&ptm_prefix);
+    rdbuf()->resetprefix(newprefix);
 }
 
-std::string logstream::getprefix() const
+const std::string & logstream::getprefix() const
 {
-    return ptm_prefix;
+    return rdbuf()->getprefix();
 }
 
 

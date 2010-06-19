@@ -6,13 +6,9 @@
 #include <string>
 using namespace Core;
 
-int main(int argc, char *argv[])
+int testlogstream(logstream & ls)
 {
-    bool res = 0;
-
-    logstream ls;
-
-    ///test logstream default setup
+       ///test logstream default setup
     /// date insertion
     /// default "" prefix
     /// default loglevel
@@ -50,6 +46,24 @@ int main(int argc, char *argv[])
 
 
 
+
+}
+
+
+
+int main(int argc, char *argv[])
+{
+    bool res = 0;
+
+    clogstreambuf clsb;
+    logstream ls(&clsb);
+
+    res += testlogstream(ls);
+
+    filelogstreambuf flsb("MytestLog.txt");
+    logstream fls(&flsb);
+
+res += testlogstream(fls);
 
     return res;
 }

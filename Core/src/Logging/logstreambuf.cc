@@ -1,16 +1,14 @@
 #include "Core/Logging/logstreambuf.hh"
 
+#include <stdexcept>
+
 namespace Core
 {
 
 logstreambuf::logstreambuf()
-        : std::streambuf(),
-        ptm_prefix(0), //default no prefix
-        ptm_logdate(true),ptm_logtime(true),
-        ptm_buf(), //initializes stringbuffer
-        ptm_clogbuf(std::clog.rdbuf()),//using clog as sink
-        //to hook up to it also :
-        //ptm_clogbuf(std::clog.rdbuf(&ptm_buf)),
+        : std::stringbuf(),//stringbuf in and out required
+        ptm_prefix(""), //default no prefix
+        ptm_logtime(true),
         ptm_filterin(true)
 
 {
@@ -18,214 +16,36 @@ logstreambuf::logstreambuf()
 
 logstreambuf::~logstreambuf()
 {
-    //restoring proper streambuffer for clog
-    //only if we hooked up to it
-    //std::clog.rdbuf(ptm_clogbuf);
 }
 
 
-void logstreambuf::resetprefix(std::string* newprefix)
+void logstreambuf::resetprefix(const std::string& newprefix)
 {
     ptm_prefix = newprefix;
 }
 
-std::string* logstreambuf::getprefix() const
+const std::string& logstreambuf::getprefix() const
 {
     return ptm_prefix;
 }
 
-
-//The common functionality for all stream buffers is provided through the following public member functions:
-///Inherited, shouldnt be neeeded to overload
-/*
-//Locales:
-///Imbue locale (public member function)
-std::locale logstreambuf::pubimbue ( const std::locale & loc )
+std::string logstreambuf::getlocaltime()
 {
-    return ptm_buf.pubimbue(loc);
-}
-///Get current locale (public member function)
-std::locale logstreambuf::getloc ( ) const
-{
-    return ptm_buf.getloc();
-}
-//Buffer management and positioning:
-///Set buffer array (public member function)
-logstreambuf* logstreambuf::pubsetbuf ( char* s, std::streamsize n )
-{
-    return dynamic_cast<logstreambuf*>(ptm_buf.pubsetbuf(s,n));
-}
-///Set internal position pointer to relative position (public member function)
-std::streampos logstreambuf::pubseekoff ( std::streamoff off, std::ios_base::seekdir way, std::ios_base::openmode which )
-{
-    return ptm_buf.pubseekoff(off,way,which);
-}
-///Set internal position pointer to absolute position (public member function)
-std::streampos logstreambuf::pubseekpos ( std::streampos sp, std::ios_base::openmode which )
-{
-    return ptm_buf.pubseekpos(sp,which);
-}
-///Synchronize stream buffer (public member function)
-int logstreambuf::pubsync ( )
-{
-    return ptm_buf.pubsync();
-}
-//Input functions (get):
-///Get number of characters available to read (public member function)
-std::streamsize logstreambuf::in_avail ( )
-{
-    return ptm_buf.in_avail();
-}
-///Increase get pointer and return next character (public member function)
-int logstreambuf::snextc ( )
-{
-    return ptm_buf.snextc();
-}
-///	Get current character and increase get pointer (public member function)
-int logstreambuf::sbumpc ( )
-{
-    return ptm_buf.sbumpc();
-}
-///Get current character (public member function)
-int logstreambuf::sgetc ( )
-{
-    return ptm_buf.sgetc();
-}
-///	Get sequence of characters (public member function)
-std::streamsize logstreambuf::sgetn ( char * s, std::streamsize n )
-{
-    return ptm_buf.sgetn (s,n);
-}
-///Put character back (public member function)
-int logstreambuf::sputbackc ( char c )
-{
-    return ptm_buf.sputbackc(c);
-}
-///Decrease get pointer (public member function)
-int logstreambuf::sungetc ( )
-{
-    return ptm_buf.sungetc();
-}
-//Output functions (put):
-///Store character at current put position and increase put pointer (public member function)
-int logstreambuf::sputc ( char c )
-{
-    return ptm_buf.sputc(c);
-}
-///Write a sequence of characters (public member function)
-std::streamsize logstreambuf::sputn ( const char * s, std::streamsize n )
-{
-    return ptm_buf.sputn(s,n);
-}
-
-*/
-
-///Locales
-///Imbue locale (virtual protected member function)
-void logstreambuf::imbue ( const std::locale & loc )
-{
-    ptm_buf.pubimbue(loc);
-}
-
-///Buffer management and positioning
-///Set buffer
-logstreambuf* logstreambuf::setbuf ( char* s, std::streamsize n )
-{
-    ptm_buf.pubsetbuf(s,n);
-    return this;
-}
-
-///Set internal position pointer to relative position
-std::streampos logstreambuf::seekoff ( std::streamoff off, std::ios_base::seekdir way, std::ios_base::openmode which )
-{
-    return ptm_buf.pubseekoff(off,way,which);
-}
-
-///Set internal position pointer to absolute position
-std::streampos logstreambuf::seekpos ( std::streampos sp, std::ios_base::openmode which )
-{
-    return ptm_buf.pubseekpos(sp,which);
-}
-
-///Synchronizes (flush) the stream buffer
-int logstreambuf::sync ( )
-{
-    int res=0;
-
-    //we add prefix only if we are in filterin state
-    if (ptm_filterin )
-    {
-        //TODO : insert useful prefixes
+    //TODO : insert useful prefixes
        //maybe distinction date / time useless
         char timebuf[32];
-        if (ptm_logtime || ptm_logdate)
+        if (ptm_logtime)
         {
             time_t rawtime;
             struct tm * timeinfo;
 
             time ( &rawtime );
             timeinfo = localtime ( &rawtime ); //TODO Windows : localtime_s
-            if ( ptm_logtime && !ptm_logdate)
-            {
 				//TOFIX : strftime fails on windows... (output empty)
-                strftime (timebuf,32,"%X %Z : ",timeinfo);
-            }else if (ptm_logdate && !ptm_logtime)
-            {
-                strftime (timebuf,32,"%x %Z : ",timeinfo);
-            }else if (ptm_logdate && ptm_logtime)
-            {
                 strftime (timebuf,32,"%x %X %Z : ",timeinfo);
-            }
         }
-
-
-        if (ptm_logtime || ptm_logdate)
-        {
-            //TODO : speed up with fixed string size
-            //passon prefixes strings
-            ptm_clogbuf->sputn(timebuf,strlen(timebuf));
-        }
-
-
-    //transfer ptm_buf to clogbuf
-    //copy character one by one...
-    //maybe better to lock buffer, and get it whole at once...
-    char c = ptm_buf.sbumpc();
-    while( c != EOF )
-    {
-        ptm_clogbuf->sputc(c);
-        c = ptm_buf.sbumpc();
-    }
-
-    }
-
-
-
-    res += ptm_buf.pubsync();
-    res += ptm_clogbuf->pubsync();
-
-    return res;
+        return std::string(timebuf);
 }
-
-/*
-///Input functions (get)
-///Get number of characters available in the sequence
-std::streamsize logstreambuf::showmanyc ( )
-{}
-
-///Get sequence of characters
-std::streamsize logstreambuf::xsgetn ( char * s, std::streamsize n )
-{}
-///Get character in the case of underflow
-int logstreambuf::underflow ( )
-{}
-///Get character in the case of underflow and advance get pointer
-int logstreambuf::uflow ( )
-{}
-///Put character back in the case of backup underflow
-int logstreambuf::pbackfail ( int c )
-{}
-*/
 
 ///Output functions (put)
 ///Write sequence of characters
@@ -236,7 +56,7 @@ std::streamsize logstreambuf::xsputn ( const char * s, std::streamsize n )
     {
         char* laststr = (char*)s;
         //last string
-        ressize += ptm_buf.sputn(laststr,strlen(laststr));
+        ressize += std::stringbuf::xsputn(laststr,strlen(laststr));
     }
     else // filterout
     {
@@ -248,21 +68,125 @@ std::streamsize logstreambuf::xsputn ( const char * s, std::streamsize n )
 
 int logstreambuf::overflow ( int c )
 {
+    int res = 0;
     if (ptm_filterin )
     {
-    if ( c != EOF )
-    {
-       return ptm_buf.sputc((char)c); //returns EOF if overflow fails
-    }
-        return 0;//nothing to do here c is already EOF
+        res = std::stringbuf::overflow(c);
+        //TOTHINK ABOUT : we can do it here instead of in sync... if we want it into the stringbuf...
+        //            std::string timestr = getlocaltime();
+        //    sputn(timestr.c_str(),timestr.length());
     }
     else
     {
-        return 0; //nothing to do, message filtered out
+        res = 0; //nothing to do, message filtered out
+    }
+    return res;
+}
+
+
+/***************** For clogstreambuff : to output to clog *******/
+
+
+clogstreambuf::clogstreambuf()
+:  logstreambuf(), ptm_clogbuf(std::clog.rdbuf())//using clog as sink
+{
+}
+
+clogstreambuf::~clogstreambuf()
+{
+}
+
+///Synchronizes (flush) the stream buffer
+int clogstreambuf::sync ( )
+{
+    int res=0;
+
+    //we add prefix only if we are in filterin state
+    if (ptm_filterin )
+    {
+
+        if (ptm_logtime)
+        {
+            //TODO : speed up with fixed string size
+            //passon prefixes strings
+            std::string timestr = getlocaltime();
+            ptm_clogbuf->sputn(timestr.c_str(),timestr.length());
+        }
+
+
+    //transfer ptm_buf to clogbuf
+    //copy character one by one...
+    //maybe better to lock buffer, and get it whole at once...
+    char c = logstreambuf::sbumpc();
+    while( c != EOF )
+    {
+        ptm_clogbuf->sputc(c);
+        c = logstreambuf::sbumpc();
+    }
+
     }
 
 
+    res += ptm_clogbuf->pubsync();
+
+    return res;
 }
+
+
+/***************** For filelogstreambuf : to output to file *******/
+
+
+filelogstreambuf::filelogstreambuf(const std::string & filename)
+:   logstreambuf(), ptm_filelogbuf()//using clog as sink
+{
+    //TOTHINK ABOUT : do we delete the file everytime we open it ?
+    //or provide an option bool append for example ?
+    if (0 == ptm_filelogbuf.open(filename.c_str(),std::ios::out | std::ios::app) )
+    throw std::logic_error("unable to open" + filename);
+}
+
+filelogstreambuf::~filelogstreambuf()
+{
+    ptm_filelogbuf.close();
+}
+
+///Synchronizes (flush) the stream buffer
+int filelogstreambuf::sync ( )
+{
+    int res=0;
+    if (ptm_filelogbuf.is_open())
+    {
+    //we add prefix only if we are in filterin state
+    if (ptm_filterin )
+    {
+
+        if (ptm_logtime)
+        {
+            //TODO : speed up with fixed string size
+            //passon prefixes strings
+            std::string timestr = getlocaltime();
+            ptm_filelogbuf.sputn(timestr.c_str(),timestr.length());
+        }
+
+
+    //transfer ptm_buf to clogbuf
+    //copy character one by one...
+    //maybe better to lock buffer, and get it whole at once...
+    char c = logstreambuf::sbumpc();
+    while( c != EOF )
+    {
+        ptm_filelogbuf.sputc(c);
+        c = logstreambuf::sbumpc();
+    }
+
+    }
+
+
+    res += ptm_filelogbuf.pubsync();
+    }
+    return res;
+}
+
 
 
 
