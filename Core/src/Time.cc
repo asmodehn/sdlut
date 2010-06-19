@@ -3,6 +3,8 @@
 #include <cstdio> //to access stderr and stdio for now
 //TODO : the Logger should handle this
 
+#include <stdexcept>
+
 namespace Core
 {
 

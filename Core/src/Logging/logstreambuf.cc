@@ -164,9 +164,10 @@ int logstreambuf::sync ( )
             struct tm * timeinfo;
 
             time ( &rawtime );
-            timeinfo = localtime ( &rawtime );
+            timeinfo = localtime ( &rawtime ); //TODO Windows : localtime_s
             if ( ptm_logtime && !ptm_logdate)
             {
+				//TOFIX : strftime fails on windows... (output empty)
                 strftime (timebuf,32,"%X %Z : ",timeinfo);
             }else if (ptm_logdate && !ptm_logtime)
             {
@@ -240,8 +241,9 @@ std::streamsize logstreambuf::xsputn ( const char * s, std::streamsize n )
     else // filterout
     {
         //fake a proper sputn.
-        return n;
+        ressize += n;
     }
+	return ressize;//ressize == 0 means something is wrong -> will set ios::failbit
 }
 
 int logstreambuf::overflow ( int c )
