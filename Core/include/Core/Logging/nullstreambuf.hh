@@ -14,15 +14,24 @@ class basic_nullstreambuf: public std::basic_streambuf<cT, traits>
     basic_nullstreambuf();
     ~basic_nullstreambuf();
 
-    //must be overloaded for STLport streambuf to init properly
-    virtual void imbue(const std::locale&);
-    //OR NOT ??
-
     typename traits::int_type overflow(typename traits::int_type c)
     {
         return traits::not_eof(c); // indicate success
     }
 };
+
+
+template <class _CharT, class _Traits>
+basic_nullstreambuf<_CharT, _Traits>::basic_nullstreambuf()
+: std::basic_streambuf<_CharT, _Traits>()
+{
+}
+
+template <class _CharT, class _Traits>
+basic_nullstreambuf<_CharT, _Traits>::~basic_nullstreambuf()
+{
+}
+
 
  }
 

@@ -27,10 +27,11 @@ basic_nullstreambuf<cT, traits> m_sbuf;
 typedef basic_onullstream<char> onullstream;
 typedef basic_onullstream<wchar_t> wonullstream;
 
-   // extern stdext::onullstream cnull;
-   // extern stdext::wonullstream wcnull;
 
     } //stdext
+
+extern stdext::onullstream cnull;
+extern stdext::wonullstream wcnull;
 
 
 } //Core

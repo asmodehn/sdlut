@@ -4,6 +4,6 @@
 
 namespace Core
 {
-//CORE_API stdext::onullstream cnull;
-//CORE_API stdext::wonullstream wcnull;
+CORE_API stdext::onullstream cnull;
+CORE_API stdext::wonullstream wcnull;
 }

@@ -3,6 +3,10 @@
 
 #include "Core/Logging/logstream.hh"
 
+//to be able to access cnull
+#include "Core/Logging/nullstream.hh"
+
+
 namespace Core
 {
 

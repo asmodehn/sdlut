@@ -45,7 +45,7 @@ int testlogstream(logstream & ls)
     ls << loglevel::FATAL << "Fatal message" << std::endl; //ok
 
 
-
+return 0;
 
 }
 
@@ -63,7 +63,11 @@ int main(int argc, char *argv[])
     filelogstreambuf flsb("MytestLog.txt");
     logstream fls(&flsb);
 
-res += testlogstream(fls);
+    res += testlogstream(fls);
+
+
+    //this should not go anywhere or do anything
+    cnull << "BLABLAALALAHAHAHA" << std::endl;
 
     return res;
 }
