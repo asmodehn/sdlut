@@ -69,6 +69,14 @@ int main(int argc, char *argv[])
     //this should not go anywhere or do anything
     cnull << "BLABLAALALAHAHAHA" << std::endl;
 
+
+    //Test NewLogger
+    NewLogger log;
+    log.enableFileLog("newlogger.txt");
+    res += testlogstream(log);
+
+
+
     return res;
 }
 

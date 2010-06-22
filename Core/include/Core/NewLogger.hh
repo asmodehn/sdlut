@@ -16,44 +16,66 @@ namespace Core
      * \brief NewLogger manages the Logging outputs for the application.
      *
      */
-/*
-class NewLogger : std::ostream
+
+class NewLogger : public logstream
 {
     public:
     NewLogger();
-    NewLogger(const NewLogger& );
     ~NewLogger();
 
     ///by default outputs to std::clog
     //enable more Sinks
-    enableFileLog(std::string filename);
-    enableSysLog();
-    enableWinLog();
+    bool enableFileLog(const std::string & filename);
+    //enableSysLog();
+    //enableWinLog();
 
-    disableFileLog();
-    disableSysLog();
-    disableWinLog();
+    void disableFileLog();
+    //disableSysLog();
+    //disableWinLog();
 
 
-    //accessors to logstream ( to set levels for example )
+    //accessors to logstreams ( to set separatelevels for example )
     logstream& getFileLog();
-    logstream& getSysLog();
-    logstream& getWinLog();
+    //logstream& getSysLog();
+    //logstream& getWinLog();
+
+    template<typename M>
+    NewLogger& operator << (const M & msg);
+    //to enable manipulators on Logger
+    NewLogger& operator << (std::ostream& (*manip)(std::ostream&));
+    NewLogger& operator << (std::ios_base& (*manip)(std::ios_base&));
+    NewLogger& operator << (NewLogger& (*manip)(NewLogger&));//to enable specific manipulators on Logger
+
+    friend NewLogger& operator<<(NewLogger &log, loglevel::Level lvl);
+
+    void setFilelogLevel(loglevel::Level lvl);
 
     protected :
     //list of logstream. Each logstream has one output and only one
-    logstream pvm_filelogstream;
-    logstream pvm_syslogstream;
-    logstream pvm_winlogstream;
+    logstream* ptm_filelogstream;
+    //logstream ptm_syslogstream;
+    //logstream ptm_winlogstream;
 
     private :
     //list of logstreambuf. Each logstreambuf provide a different ouput to logstream
-    logstreambuf pvm_filelsb;
-    logstreambuf pvm_syslsb;
-    logstreambuf pvm_winlsb;
+    logstreambuf* pvm_filelsb;
+    //logstreambuf pvm_syslsb;
+    //logstreambuf pvm_winlsb;
 
 };
-*/
+
+template<typename M>
+NewLogger& NewLogger::operator<< ( const M & msg)
+{
+    /*
+    if (_consoleLog)
+        std::clog << msg;
+    if (_fileLog)
+        _ofstr << msg;
+        */
+    return *this;
+}
+
 
 }
 

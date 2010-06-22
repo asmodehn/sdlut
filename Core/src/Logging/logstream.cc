@@ -3,8 +3,23 @@
 namespace Core
 {
 
+logstream::logstream ()
+        : std::ostringstream(0)
+{
+    //to hook up to usual stream design
+    pvm_lsb = new clogstreambuf();
+    this->init(pvm_lsb);
+
+    //setup default flags
+    this->flags ( std::ios::left | std::ios::hex | std::ios::showbase | std::ios::boolalpha );
+
+    //setup default prefix
+    resetprefix();
+
+}
+
 logstream::logstream (logstreambuf* lsb)
-        : std::ostream(0)
+        : std::ostringstream(0)
 {
     //to hook up to usual stream design
     pvm_lsb = lsb;

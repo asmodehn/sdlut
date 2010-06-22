@@ -113,6 +113,7 @@ int clogstreambuf::sync ( )
             ptm_clogbuf->sputn(timestr.c_str(),timestr.length());
         }
 
+        ptm_clogbuf->sputn(ptm_prefix.c_str(),ptm_prefix.length());
 
     //transfer ptm_buf to clogbuf
     //copy character one by one...

@@ -5,6 +5,9 @@
 #include "Core/Logging/logstreambuf.hh"
 #include "Core/Logging/loglevel.hh"
 
+//to get string << operator for logstream
+#include <string>
+
 namespace Core
 {
 
@@ -14,7 +17,7 @@ namespace Core
  *
  */
 
-class logstream : public std::ostream
+class logstream : public std::ostringstream
 {
     //streambuff
     logstreambuf* pvm_lsb;
@@ -24,7 +27,8 @@ class logstream : public std::ostream
     loglevel::Level loglvl;
 
 public :
-
+    //default constructor (clog output logstreambuf )
+    logstream();
     explicit logstream(logstreambuf* lsb);
     ~logstream();
 
@@ -35,10 +39,10 @@ public :
     //to use logstream as streamthrough
     friend std::ostream& operator<<(std::ostream& o, logstream& l) { return o << l.rdbuf(); };
 
-    //to be able to access buffer ( after ofstream )
-    logstreambuf* rdbuf() const { return pvm_lsb; }
-    std::string str ( ) const { return rdbuf()->str(); }
-    void str ( const std::string & s ) {return rdbuf()->str(s); }
+    logstreambuf* rdbuf() const { return pvm_lsb;}
+    //not needed anymore since we inherit from ostringstream
+    //std::string str ( ) const { return rdbuf()->str(); }
+    //void str ( const std::string & s ) {return rdbuf()->str(s); }
 
     ///Unformatted output
     ///Put character (public member function)
@@ -60,10 +64,6 @@ public :
     logstream& level(loglevel::Level l);
 
 };
-
-//overloading standard clog
-//CORE_API logstream clog;
-
 
 } //Core
 
