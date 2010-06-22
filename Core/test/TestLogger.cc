@@ -53,7 +53,7 @@ return 0;
 
 int main(int argc, char *argv[])
 {
-    bool res = 0;
+    int res = 0;
 
     clogstreambuf clsb;
     logstream ls(&clsb);
