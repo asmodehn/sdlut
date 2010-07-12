@@ -42,14 +42,23 @@ public:
     ~logstreambuf();
 
 //to manage prefix
-void resetprefix(const std::string& newprefix = 0);
-const std::string& getprefix() const;
+    void resetprefix(const std::string& newprefix = 0);
+    const std::string& getprefix() const;
 
-void resetlogtime(bool v=true) { ptm_logtime = v; }
+    void resetlogtime(bool v=true)
+    {
+        ptm_logtime = v;
+    }
 
 //to start and stop getting messages
-void filterout() { ptm_filterin = false ; }
-void filterin() { ptm_filterin = true; }
+    void filterout()
+    {
+        ptm_filterin = false ;
+    }
+    void filterin()
+    {
+        ptm_filterin = true;
+    }
 
 
 protected:
@@ -93,7 +102,7 @@ public:
     clogstreambuf();
     ~clogstreambuf();
 
-    protected :
+protected :
     virtual int sync ( );
 };
 
@@ -107,7 +116,7 @@ public:
     filelogstreambuf(const std::string & filename);
     ~filelogstreambuf();
 
-    protected :
+protected :
     virtual int sync ( );
 };
 

@@ -10,16 +10,16 @@
 namespace Core
 {
 
-    /***
-     *
-     * \class NewLogger
-     * \brief NewLogger manages the Logging outputs for the application.
-     *
-     */
+/***
+ *
+ * \class NewLogger
+ * \brief NewLogger manages the Logging outputs for the application.
+ *
+ */
 
 class NewLogger : public logstream
 {
-    public:
+public:
     NewLogger();
     ~NewLogger();
 
@@ -50,13 +50,13 @@ class NewLogger : public logstream
 
     void setFilelogLevel(loglevel::Level lvl);
 
-    protected :
+protected :
     //list of logstream. Each logstream has one output and only one
     logstream* ptm_filelogstream;
     //logstream ptm_syslogstream;
     //logstream ptm_winlogstream;
 
-    private :
+private :
     //list of logstreambuf. Each logstreambuf provide a different ouput to logstream
     logstreambuf* pvm_filelsb;
     //logstreambuf pvm_syslsb;

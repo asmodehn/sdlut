@@ -3,14 +3,16 @@
 
 #include <streambuf>
 
-namespace Core{
+namespace Core
+{
 
- namespace stdext{
+namespace stdext
+{
 
 template <class cT, class traits = std::char_traits<cT> >
 class basic_nullstreambuf: public std::basic_streambuf<cT, traits>
 {
-    public:
+public:
     basic_nullstreambuf();
     ~basic_nullstreambuf();
 
@@ -23,7 +25,7 @@ class basic_nullstreambuf: public std::basic_streambuf<cT, traits>
 
 template <class _CharT, class _Traits>
 basic_nullstreambuf<_CharT, _Traits>::basic_nullstreambuf()
-: std::basic_streambuf<_CharT, _Traits>()
+        : std::basic_streambuf<_CharT, _Traits>()
 {
 }
 
@@ -33,7 +35,7 @@ basic_nullstreambuf<_CharT, _Traits>::~basic_nullstreambuf()
 }
 
 
- }
+}
 
 
 

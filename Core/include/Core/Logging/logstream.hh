@@ -37,9 +37,15 @@ public :
     const std::string& getprefix() const;
 
     //to use logstream as streamthrough
-    friend std::ostream& operator<<(std::ostream& o, logstream& l) { return o << l.rdbuf(); };
+    friend std::ostream& operator<<(std::ostream& o, logstream& l)
+    {
+        return o << l.rdbuf();
+    };
 
-    logstreambuf* rdbuf() const { return pvm_lsb;}
+    logstreambuf* rdbuf() const
+    {
+        return pvm_lsb;
+    }
     //not needed anymore since we inherit from ostringstream
     //std::string str ( ) const { return rdbuf()->str(); }
     //void str ( const std::string & s ) {return rdbuf()->str(s); }
@@ -56,8 +62,14 @@ public :
     //logstream& flush ( );
 
     //set loglevel. Messages logged here will have at least this level
-    void resetLevel(loglevel::Level l=loglevel::INFO) { loglvl = l; }
-    loglevel::Level getLevel() { return loglvl;}
+    void resetLevel(loglevel::Level l=loglevel::Core_LogInfo)
+    {
+        loglvl = l;
+    }
+    loglevel::Level getLevel()
+    {
+        return loglvl;
+    }
 
     //manipulator to set *messages's* level
     friend logstream& operator<<(logstream &o, loglevel::Level lvl);

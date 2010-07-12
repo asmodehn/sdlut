@@ -8,31 +8,46 @@
 
 #include <ostream>
 
-namespace Core{
+namespace Core
+{
 
-    namespace loglevel{
+namespace loglevel
+{
 
 
-        enum Level {
-            FATAL = 0,
-            ERROR = 1,
-            WARNING = 2,
-            INFO = 3,
-            DEBUG = 4
-        };
+enum Level
+{
+    Core_LogFatal = 0,
+    Core_LogError = 1,
+    Core_LogWarning = 2,
+    Core_LogInfo = 3,
+    Core_LogDebug = 4
+};
 
 
 //beware ++ means more important that is opposite in integer value in enums
 //logleve can not be more important than FATAL (=0)
-inline void operator++(Level& lvl) { lvl = (lvl == FATAL)?FATAL:Level(lvl-1); }
-inline void operator++(Level& lvl, int) { lvl = (lvl == FATAL)?FATAL:Level(lvl-1); }
+inline void operator++(Level& lvl)
+{
+    lvl = (lvl == Core_LogFatal)?Core_LogFatal:Level(lvl-1);
+}
+inline void operator++(Level& lvl, int)
+{
+    lvl = (lvl == Core_LogFatal)?Core_LogFatal:Level(lvl-1);
+}
 //loglevel can be as uninteressant as we want.
-inline void operator--(Level& lvl) { lvl = Level(lvl+1); }
-inline void operator--(Level& lvl, int) { lvl = Level(lvl+1); }
+inline void operator--(Level& lvl)
+{
+    lvl = Level(lvl+1);
+}
+inline void operator--(Level& lvl, int)
+{
+    lvl = Level(lvl+1);
+}
 
 std::ostream& operator<<( std::ostream& os, const Level& lvl );
 
-    } //loglevel
+} //loglevel
 
 
 

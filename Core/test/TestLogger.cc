@@ -8,7 +8,7 @@ using namespace Core;
 
 int testlogstream(logstream & ls)
 {
-       ///test logstream default setup
+    ///test logstream default setup
     /// date insertion
     /// default "" prefix
     /// default loglevel
@@ -28,24 +28,24 @@ int testlogstream(logstream & ls)
     ls.resetprefix();
 
     ///test logstream and loglevel
-    ls.resetLevel(loglevel::INFO);
-    ls << loglevel::DEBUG << "Debug message" << std::endl; //ignored
-    ls << loglevel::INFO << "Info message" << std::endl; // ok
-    ls << loglevel::WARNING << "Warning message" << std::endl; //ok
-    ls << loglevel::ERROR << "Error message" << std::endl; //ok
-    ls << loglevel::FATAL << "Fatal message" << std::endl; //ok
+    ls.resetLevel(loglevel::Core_LogInfo);
+    ls << loglevel::Core_LogDebug << "Debug message" << std::endl; //ignored
+    ls << loglevel::Core_LogInfo << "Info message" << std::endl; // ok
+    ls << loglevel::Core_LogWarning << "Warning message" << std::endl; //ok
+    ls << loglevel::Core_LogError << "Error message" << std::endl; //ok
+    ls << loglevel::Core_LogFatal << "Fatal message" << std::endl; //ok
 
-    ls.resetLevel(loglevel::ERROR);
-
-
-    ls << loglevel::DEBUG << "Debug message" << std::endl; //ignored
-    ls << loglevel::INFO << "Info message" << std::endl; //ignored
-    ls << loglevel::WARNING << "Warning message" << std::endl; //ignored
-    ls << loglevel::ERROR << "Error message" << std::endl; //ok
-    ls << loglevel::FATAL << "Fatal message" << std::endl; //ok
+    ls.resetLevel(loglevel::Core_LogError);
 
 
-return 0;
+    ls << loglevel::Core_LogDebug << "Debug message" << std::endl; //ignored
+    ls << loglevel::Core_LogInfo<< "Info message" << std::endl; //ignored
+    ls << loglevel::Core_LogWarning << "Warning message" << std::endl; //ignored
+    ls << loglevel::Core_LogError << "Error message" << std::endl; //ok
+    ls << loglevel::Core_LogFatal << "Fatal message" << std::endl; //ok
+
+
+    return 0;
 
 }
 

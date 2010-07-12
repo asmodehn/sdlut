@@ -59,7 +59,7 @@ WkTestBuild ( testScreenBufferInit "testScreenBufferInit.cc" "TestCommon.hh" )
 WkTestBuild ( testScreenAccess "testScreenAccess.cc" "TestCommon.hh")
 WkTestBuild ( testScreenClipRect "testScreenClipRect.cc" "TestCommon.hh")
 WkTestBuild ( testScreenBlit "testScreenBlit.cc" "TestCommon.hh")
-#WkTestBuild ( testImageFormat "testImageFormat.cc" "testRendering.hh" "TestCommon.hh" )
+WkTestBuild ( testImageFormat "testImageFormat.cc" "testRendering.hh" "TestCommon.hh" )
 # From grounds and simple things to complex concepts
 # - Test Library version access
 WkTestRun( Version testVersion )

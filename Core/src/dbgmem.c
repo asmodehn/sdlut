@@ -304,8 +304,8 @@ char* dbgmem_strdup( const char* str, const char* filename, int line )
 
     /*dbgmem_log( filename, line, "strdup of %d bytes for %s [0x%08x] OK.\n", size, str, ptr);*/
 
-	//TODO : Windows : strcpy_s
-	strcpy( ptr, str );
+    //TODO : Windows : strcpy_s
+    strcpy( ptr, str );
 
     return ptr;
 }
