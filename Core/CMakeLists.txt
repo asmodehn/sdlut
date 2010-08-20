@@ -4,7 +4,9 @@ WkCMakeDir ( CMake )
 
 WkProject ( Core CXX)
 
-WkDepends (STLPort REQUIRED)
+#Temporary : STLport doesnt have enough support yet to allow us to play around with it.
+#TODO : Optional loading of optional depends with check box in cmake-gui...
+#WkDepends (STLPort )
 
 #TODO :
 # remove sigC++ dependency because
