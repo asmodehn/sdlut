@@ -126,7 +126,7 @@ public:
         //getting to proper frame rects
         //in case we are not in auto and looping , we get modulo size
         std::vector<video::Rect>::const_iterator testedrect = testedrectlist.begin() + (frame_num * colorlist.size() ) % testedrectlist.size();
-        std::vector<video::Image>::const_iterator img = imglist.begin() +  + (frame_num * colorlist.size() ) % imglist.size();
+        std::vector<video::Image>::const_iterator img = imglist.begin() + (frame_num * colorlist.size() ) % imglist.size();
 
         std::vector<video::Color>::const_iterator color = colorlist.begin();
 

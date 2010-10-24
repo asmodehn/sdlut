@@ -133,6 +133,11 @@ void SDLutGraphics::drawImage(const gcn::Image* image,
     }
 
     //mTarget->blit(*(srcImage->getSurface()), dst, src);
+	
+	//TODO : WORK ON Setting a BG below the srcImage that will be blitted when it has alpha enable else it will use Image4Pixels alpha aka 0 and wont be visible (except if its an sdlut bug ;))
+	/*if (srcImage->getSurface()->getGlobalAlpha() != 0)
+	Image4Pixels->fill(video::Color(0,0,0,255), dst );*/
+
 	Image4Pixels->blit(*(srcImage->getSurface()), dst, src);
 
     //SDL_BlitSurface(srcImage->getSurface(), &src, mTarget, &dst);

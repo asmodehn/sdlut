@@ -70,7 +70,7 @@ public:
     Image( void * pixeldata, int depth, int pitch, unsigned int width,unsigned int height
          ) throw (std::logic_error);
 
-    Image(const Image &);
+    Image(const Image & img);
 
     ~Image();
 
