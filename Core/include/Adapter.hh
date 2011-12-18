@@ -1,8 +1,40 @@
+/**
+ * Copyright (c) 2009-2010, Asmodehn's Corp.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright notice,
+ *	    this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *		notice, this list of conditions and the following disclaimer in the
+ *	    documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the Asmodehn's Corp. nor the names of its
+ *	    contributors may be used to endorse or promote products derived
+ *	    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
+ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+ * THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * contact : alex@asmodehn.com
+ */
+
 #ifndef ADAPTER_HH
 #define ADAPTER_HH
 
 /**
- * Set of classes going along with callback to be able to pass them to legacy C libraries expecting static fonction pointers
+ * Adaptors can be used to pass a callback to a legacy C library that might call it later on.
+ * One adaptor for one set of arguments, ie. for one call of the callback associated with that adaptor
  */
 
 #include "Callback.hh"
@@ -14,79 +46,25 @@ namespace Core
 {
 
 template<class Result=void>
-class Adapter0
-{
-    Callback0Base<Result> * m_cb;
-
-public:
-    Adapter0( Callback0Base<Result> * cb )
-            : m_cb(cb)
-    {}
-
-    static Result adapt( void * v )
-    {
-        Result r;
-        try
-        {
-            Adapter0<Result>* pad = reinterpret_cast<Adapter0<Result>*>(v);
-            r=pad->m_cb->call();
-        }
-        catch ( std::exception & e)
-        {
-            //TODO : manage exceptions here
-            std::cerr << e.what();
-        }
-        return r;
-    }
-};
-
-
-template<class Result=void>
-class Adapter0const
-{
-    Callback0constBase<Result> * m_cb;
-
-public:
-    Adapter0const( Callback0constBase<Result> * cb )
-            : m_cb(cb)
-    {}
-
-    static Result adapt( void * v )
-    {
-        Result r;
-        try
-        {
-            Adapter0const<Result>* pad = reinterpret_cast<Adapter0const<Result>*>(v);
-            r=pad->m_cb->call();
-        }
-        catch ( std::exception & e)
-        {
-            //TODO : manage exceptions here
-            std::cerr << e.what();
-        }
-        return r;
-    }
-};
-
-
-/// 1 argument
-template<class Arg1, class Result=void>
 class Adapter1
 {
-    Callback1Base<Arg1,Result> * m_cb;
+    Callback1Base<void*,Result> * m_cb;
+    std::pair< Adapter1<Result>*,void*> arguments;
 
 public:
-    Adapter1( Callback1Base<Arg1,Result> * cb )
-            : m_cb(cb)
+    Adapter1( Callback1Base<void*,Result> * cb )
+        : m_cb(cb)
     {}
 
-    static Result adapt(Arg1 a,void * v )
+    static Result adapt( void * v )
     {
         Result r;
         try
         {
-            Adapter1<Arg1,Result>* pad = reinterpret_cast<Adapter1<Arg1,Result>*>(v);
-            r=pad->m_cb->call(a);
+            std::pair< Adapter1<Result>*,void*>* vpair = static_cast< std::pair< Adapter1<Result>*,void*>*> (v);
+            Adapter1<Result>* pad = reinterpret_cast<Adapter1<Result>*>(vpair->first);
+            r=pad->m_cb->call(vpair->second);
+
         }
         catch ( std::exception & e)
         {
@@ -94,18 +72,98 @@ public:
             std::cerr << e.what();
         }
         return r;
+    }
+
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
+    }
+};
+
+template<class Result=void>
+class Adapter1const
+{
+    Callback1constBase<void*,Result> * m_cb;
+    std::pair< Adapter1const<Result>*,void*> arguments;
+
+public:
+    Adapter1const( Callback1constBase<void*,Result> * cb )
+        : m_cb(cb)
+    {}
+
+    static Result adapt( void * v )
+    {
+        Result r;
+        try
+        {
+            std::pair< Adapter1const<Result>*,void*>* vpair = static_cast< std::pair< Adapter1const<Result>*,void*>*> (v);
+            Adapter1const<Result>* pad = reinterpret_cast<Adapter1const<Result>*>(vpair->first);
+            r=pad->m_cb->call(vpair->second);
+
+        }
+        catch ( std::exception & e)
+        {
+            //TODO : manage exceptions here
+            std::cerr << e.what();
+        }
+        return r;
+    }
+
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
+    }
+};
+
+/// 2 arguments
+template<class Arg1, class Result=void>
+class Adapter2
+{
+    Callback2Base<Arg1,void*,Result> * m_cb;
+    std::pair< Adapter2<Arg1,Result>*,void*> arguments;
+
+public:
+    Adapter2( Callback2Base<Arg1,void*,Result> * cb )
+        : m_cb (cb)
+    {}
+
+    static Result adapt(Arg1 a, void * v )
+    {
+        Result r;
+        try
+        {
+            std::pair< Adapter2<Arg1,Result>*,void*>* vpair = static_cast< std::pair< Adapter2<Arg1,Result>*,void*>*> (v);
+            Adapter2<Arg1,Result>* pad = reinterpret_cast<Adapter2<Arg1,Result>*>(vpair->first);
+            r=pad->m_cb->call(a,vpair->second);
+
+        }
+        catch ( std::exception & e)
+        {
+            //TODO : manage exceptions here
+            std::cerr << e.what();
+        }
+        return r;
+    }
+
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
     }
 };
 
 
 template<class Arg1,class Result=void>
-class Adapter1const
+class Adapter2const
 {
-    Callback1constBase<Arg1,Result> * m_cb;
+    Callback2constBase<Arg1,void*,Result> * m_cb;
+    std::pair< Adapter2const<Arg1,Result>*,void*> arguments;
 
 public:
-    Adapter1const( Callback1constBase<Arg1,Result> * cb )
-            : m_cb(cb)
+    Adapter2const( Callback2constBase<Arg1,void*,Result> * cb )
+        : m_cb(cb)
     {}
 
     static Result adapt( Arg1 a, void * v )
@@ -113,8 +171,9 @@ public:
         Result r;
         try
         {
-            Adapter1const<Arg1,Result>* pad = reinterpret_cast<Adapter1const<Arg1,Result>*>(v);
-            r=pad->m_cb->call(a);
+            std::pair< Adapter2const<Arg1,Result>*,void*>* vpair = static_cast< std::pair< Adapter2const<Arg1,Result>*,void*>*> (v);
+            Adapter2const<Arg1,Result>* pad = reinterpret_cast<Adapter2const<Arg1,Result>*>(vpair->first);
+            r=pad->m_cb->call(a,vpair->second);
         }
         catch ( std::exception & e)
         {
@@ -123,19 +182,25 @@ public:
         }
         return r;
     }
+
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
+    }
 };
 
 
-
-/// 2 arguments
+/// 3 arguments
 template<class Arg1, class Arg2, class Result=void>
-class Adapter2
+class Adapter3
 {
-    Callback2Base<Arg1,Arg2,Result> * m_cb;
+    Callback3Base<Arg1,Arg2,void*,Result> * m_cb;
+    std::pair< Adapter3<Arg1,Arg2,Result>*,void*> arguments;
 
 public:
-    Adapter2( Callback2Base<Arg1,Arg2,Result> * cb )
-            : m_cb (cb)
+    Adapter3( Callback3Base<Arg1,Arg2,void*,Result> * cb )
+        : m_cb (cb)
     {}
 
     static Result adapt(Arg1 a,Arg2 b,void * v )
@@ -143,8 +208,9 @@ public:
         Result r;
         try
         {
-            Adapter2<Arg1,Arg2,Result>* pad = reinterpret_cast<Adapter2<Arg1,Arg2,Result>*>(v);
-            r=pad->m_cb->call(a,b);
+            std::pair< Adapter3<Arg1,Arg2,Result>*,void*>* vpair = static_cast< std::pair< Adapter3<Arg1,Arg2,Result>*,void*>*> (v);
+            Adapter3<Arg1,Arg2,Result>* pad = reinterpret_cast<Adapter3<Arg1,Arg2,Result>*>(vpair->first);
+            r=pad->m_cb->call(a,b,vpair->second);
         }
         catch ( std::exception & e)
         {
@@ -153,17 +219,24 @@ public:
         }
         return r;
     }
+
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
+    }
 };
 
 
 template<class Arg1,class Arg2,class Result=void>
-class Adapter2const
+class Adapter3const
 {
-    Callback2constBase<Arg1,Arg2,Result> * m_cb;
+    Callback3constBase<Arg1,Arg2,void*,Result> * m_cb;
+    std::pair< Adapter3const<Arg1,Arg2,Result>*,void*> arguments;
 
 public:
-    Adapter2const( Callback2constBase<Arg1,Arg2,Result> * cb )
-            : m_cb(cb)
+    Adapter3const( Callback3constBase<Arg1,Arg2,void*,Result> * cb )
+        : m_cb(cb)
     {}
 
     static Result adapt( Arg1 a, Arg2 b, void * v )
@@ -171,8 +244,9 @@ public:
         Result r;
         try
         {
-            Adapter2const<Arg1,Arg2,Result>* pad = reinterpret_cast<Adapter2const<Arg1,Arg2,Result>*>(v);
-            r=pad->m_cb->call(a,b);
+            std::pair< Adapter3const<Arg1,Arg2,Result>*,void*>* vpair = static_cast< std::pair< Adapter3const<Arg1,Arg2,Result>*,void*>*> (v);
+            Adapter3const<Arg1,Arg2,Result>* pad = reinterpret_cast<Adapter3const<Arg1,Arg2,Result>*>(vpair->first);
+            r=pad->m_cb->call(a,b,vpair->second);
         }
         catch ( std::exception & e)
         {
@@ -181,18 +255,24 @@ public:
         }
         return r;
     }
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
+    }
 };
 
+/// 4 arguments
 
-/// 3 arguments
 template<class Arg1, class Arg2, class Arg3, class Result=void>
-class Adapter3
+class Adapter4
 {
-    Callback3Base<Arg1,Arg2,Arg3,Result> * m_cb;
+    Callback4Base<Arg1,Arg2,Arg3,void*,Result> * m_cb;
+    std::pair< Adapter4<Arg1,Arg2,Arg3,Result>*,void*> arguments;
 
 public:
-    Adapter3( Callback3Base<Arg1,Arg2,Arg3,Result> * cb )
-            : m_cb (cb)
+    Adapter4( Callback4Base<Arg1,Arg2,Arg3,void*,Result> * cb )
+        : m_cb (cb)
     {}
 
     static Result adapt(Arg1 a,Arg2 b,Arg3 c,void * v )
@@ -200,8 +280,9 @@ public:
         Result r;
         try
         {
-            Adapter3<Arg1,Arg2,Arg3,Result>* pad = reinterpret_cast<Adapter3<Arg1,Arg2,Arg3,Result>*>(v);
-            r=pad->m_cb->call(a,b,c);
+            std::pair< Adapter4<Arg1,Arg2,Arg3,Result>*,void*>* vpair = static_cast< std::pair< Adapter4<Arg1,Arg2,Arg3,Result>*,void*>*> (v);
+            Adapter4<Arg1,Arg2,Arg3,Result>* pad = reinterpret_cast<Adapter4<Arg1,Arg2,Arg3,Result>*>(vpair->first);
+            r=pad->m_cb->call(a,b,c,vpair->second);
         }
         catch ( std::exception & e)
         {
@@ -210,17 +291,24 @@ public:
         }
         return r;
     }
+
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
+    }
 };
 
 
 template<class Arg1,class Arg2, class Arg3,class Result=void>
-class Adapter3const
+class Adapter4const
 {
-    Callback3constBase<Arg1,Arg2,Arg3,Result> * m_cb;
+    Callback4constBase<Arg1,Arg2,Arg3,void*,Result> * m_cb;
+    std::pair< Adapter4const<Arg1,Arg2,Arg3,Result>*,void*> arguments;
 
 public:
-    Adapter3const( Callback3constBase<Arg1,Arg2,Arg3,Result> * cb )
-            : m_cb(cb)
+    Adapter4const( Callback4constBase<Arg1,Arg2,Arg3,void*,Result> * cb )
+        : m_cb(cb)
     {}
 
     static Result adapt( Arg1 a, Arg2 b, Arg3 c,void * v )
@@ -228,8 +316,9 @@ public:
         Result r;
         try
         {
-            Adapter3const<Arg1,Arg2,Arg3,Result>* pad = reinterpret_cast<Adapter3const<Arg1,Arg2,Arg3,Result>*>(v);
-            r=pad->m_cb->call(a,b,c);
+            std::pair< Adapter4const<Arg1,Arg2,Arg3,Result>*,void*>* vpair = static_cast< std::pair< Adapter4const<Arg1,Arg2,Arg3,Result>*,void*>*> (v);
+            Adapter4const<Arg1,Arg2,Arg3,Result>* pad = reinterpret_cast<Adapter4const<Arg1,Arg2,Arg3,Result>*>(vpair->first);
+            r=pad->m_cb->call(a,b,c,vpair->second);
         }
         catch ( std::exception & e)
         {
@@ -238,10 +327,155 @@ public:
         }
         return r;
     }
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
+    }
 };
 
+/// 5 arguments
+template<class Arg1, class Arg2, class Arg3, class Arg4, class Result=void>
+class Adapter5
+{
+    Callback5Base<Arg1,Arg2,Arg3,Arg4,void*,Result> * m_cb;
+    std::pair< Adapter5<Arg1,Arg2,Arg3,Arg4,Result>*,void*> arguments;
+
+public:
+    Adapter5( Callback5Base<Arg1,Arg2,Arg3,Arg4,void*,Result> * cb )
+        : m_cb (cb)
+    {}
+
+    static Result adapt(Arg1 a,Arg2 b,Arg3 c,Arg4 d,void * v )
+    {
+        Result r;
+        try
+        {
+            std::pair< Adapter5<Arg1,Arg2,Arg3,Arg4,Result>*,void*>* vpair = static_cast< std::pair< Adapter5<Arg1,Arg2,Arg3,Arg4,Result>*,void*>*> (v);
+            Adapter5<Arg1,Arg2,Arg3,Arg4,Result>* pad = reinterpret_cast<Adapter5<Arg1,Arg2,Arg3,Arg4,Result>*>(vpair->first);
+            r=pad->m_cb->call(a,b,c,d,vpair->second);
+        }
+        catch ( std::exception & e)
+        {
+            //TODO : manage exceptions here
+            std::cerr << e.what();
+        }
+        return r;
+    }
+
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
+    }
+};
+
+
+template<class Arg1,class Arg2, class Arg3,class Arg4,class Result=void>
+class Adapter5const
+{
+    Callback5constBase<Arg1,Arg2,Arg3,Arg4,void*,Result> * m_cb;
+    std::pair< Adapter5const<Arg1,Arg2,Arg3,Arg4,Result>*,void*> arguments;
+
+public:
+    Adapter5const( Callback5constBase<Arg1,Arg2,Arg3,Arg4,void*,Result> * cb )
+        : m_cb(cb)
+    {}
+
+    static Result adapt( Arg1 a, Arg2 b, Arg3 c,Arg4 d,void * v )
+    {
+        Result r;
+        try
+        {
+            std::pair< Adapter5const<Arg1,Arg2,Arg3,Arg4,Result>*,void*>* vpair = static_cast< std::pair< Adapter5const<Arg1,Arg2,Arg3,Arg4,Result>*,void*>*> (v);
+            Adapter5const<Arg1,Arg2,Arg3,Arg4,Result>* pad = reinterpret_cast<Adapter5const<Arg1,Arg2,Arg3,Arg4,Result>*>(vpair->first);
+            r=pad->m_cb->call(a,b,c,d,vpair->second);
+        }
+        catch ( std::exception & e)
+        {
+            //TODO : manage exceptions here
+            std::cerr << e.what();
+        }
+        return r;
+    }
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
+    }
+};
+
+/// 6 arguments const
+template<class Arg1, class Arg2, class Arg3, class Arg4, class Arg5, class Result=void>
+class Adapter6
+{
+    Callback6Base<Arg1,Arg2,Arg3,Arg4,Arg5,void*,Result> * m_cb;
+    std::pair< Adapter6<Arg1,Arg2,Arg3,Arg4,Arg5,Result>*,void*> arguments;
+
+public:
+    Adapter6( Callback6Base<Arg1,Arg2,Arg3,Arg4,Arg5,void*,Result> * cb )
+        : m_cb (cb)
+    {}
+
+    static Result adapt(Arg1 a,Arg2 b,Arg3 c,Arg4 d,Arg5 e,void * v )
+    {
+        Result r;
+        try
+        {
+            std::pair< Adapter6<Arg1,Arg2,Arg3,Arg4,Arg5,Result>*,void*>* vpair = static_cast< std::pair< Adapter6<Arg1,Arg2,Arg3,Arg4,Arg5,Result>*,void*>*> (v);
+            Adapter6<Arg1,Arg2,Arg3,Arg4,Arg5,Result>* pad = reinterpret_cast<Adapter6<Arg1,Arg2,Arg3,Arg4,Arg5,Result>*>(vpair->first);
+            r=pad->m_cb->call(a,b,c,d,e,vpair->second);
+        }
+        catch ( std::exception & e)
+        {
+            //TODO : manage exceptions here
+            std::cerr << e.what();
+        }
+        return r;
+    }
+
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
+    }
+};
+
+
+template<class Arg1,class Arg2, class Arg3,class Arg4,class Arg5,class Result=void>
+class Adapter6const
+{
+    Callback6constBase<Arg1,Arg2,Arg3,Arg4,Arg5,void*,Result> * m_cb;
+    std::pair< Adapter6const<Arg1,Arg2,Arg3,Arg4,Arg5,Result>*,void*> arguments;
+
+public:
+    Adapter6const( Callback6constBase<Arg1,Arg2,Arg3,Arg4,Arg5,void*,Result> * cb )
+        : m_cb(cb)
+    {}
+
+    static Result adapt( Arg1 a, Arg2 b, Arg3 c,Arg4 d,Arg5 e,void * v )
+    {
+        Result r;
+        try
+        {
+            std::pair< Adapter6const<Arg1,Arg2,Arg3,Arg4,Arg5,Result>*,void*>* vpair = static_cast< std::pair< Adapter6const<Arg1,Arg2,Arg3,Arg4,Arg5,Result>*,void*>*> (v);
+            Adapter6const<Arg1,Arg2,Arg3,Arg4,Arg5,Result>* pad = reinterpret_cast<Adapter6const<Arg1,Arg2,Arg3,Arg4,Arg5,Result>*>(vpair->first);
+            r=pad->m_cb->call(a,b,c,d,e,vpair->second);
+        }
+        catch ( std::exception & e)
+        {
+            //TODO : manage exceptions here
+            std::cerr << e.what();
+        }
+        return r;
+    }
+    void* build_voidP_args(void* vp)
+    {
+        arguments = std::make_pair(this,vp);
+        return static_cast<void*>( &arguments);
+    }
+};
 
 } // Core
 
 #endif
-
