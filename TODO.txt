@@ -1,0 +1,11 @@
+chekc if we can have dependencies in tests :
+- build test2 only if test1 built already
+- run test2 only if test1 succeed.
+
+Add complete unicode font support by default ( from a bitmap )
+http://czyborra.com/unifont/HEADER.html
+http://unifoundry.com/unifont.html
+
+Add game state support : http://guff.tigris.org/
+
+Add console -> recode sdlconsole to amke it SDL independent...

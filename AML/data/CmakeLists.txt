@@ -1,0 +1,21 @@
+
+#
+#	Library data
+#
+
+#copying data files to use when debugging
+CONFIGURE_FILE(${Rage_AML_SOURCE_DIR}data/AML_ico.bmp ${Rage_SDL_BINARY_DIR}/data/AML_ico.bmp COPYONLY)
+CONFIGURE_FILE(${Rage_AML_SOURCE_DIR}data/AML_sprite.gif ${Rage_SDL_BINARY_DIR}/data/AML_sprite.gif COPYONLY)
+
+# installing main shared data
+INSTALL_FILES(/data FILES data/AML_ico.bmp data/AML_sprite.gif)
+
+#
+# Library tests data
+#
+
+IF(BUILD_TESTS)
+
+INSTALL_TARGETS(/test FILES AMLtest)
+ENDIF(BUILD_TESTS)
+

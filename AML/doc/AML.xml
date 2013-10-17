@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD Simplified DocBook XML V1.0//EN"
+"http://www.oasis-open.org/docbook/xml/simple/1.0/sdocbook.dtd">
+<article>
+  <title>Abstract Media Library</title>
+
+  <section>
+    <title>Features</title>
+
+    <para>This library is mostly a C++ portable layer over many different
+    multimedia libraries. The aim is to have a common interface to the
+    different libraries out there. Users should be able to use it simply and
+    have at least a "default consistent behaviour". This default behaviour
+    must balance efficiency, usability and nice end-user experience.</para>
+
+    <para>The main features are :</para>
+
+    <para>- A simple interface to graphics libraries ( using an abstract model
+    of a graphic engine for games )</para>
+
+    <para>- A simple interface to input libraries</para>
+
+    <para>- A simple interface to audio libraries ( using an abstract model of
+    an audio engine for games )</para>
+
+    <para>- A simple interface to video libraries</para>
+
+    <para>- A simple interface to operating system - related functions.
+    (timer, thread, etc.). <emphasis>To be refined later</emphasis>.</para>
+
+    <para>- A common set of useful "management" components.</para>
+
+    <para>That's it ! Don't had anymore, this is already a lot.</para>
+
+    <para>Other nice work like GUI, scripting, skins, etc. should be done
+    somewhere else.</para>
+
+    <section>
+      <title>Graphic Interface</title>
+
+      <para>The graphic interface contains :</para>
+
+      <para>- A simple yet complete 2D graphic engine.</para>
+
+      <para>The core components of this graphic engine are "Sprite", "Layer"
+      (as a set of sprite), and "Camera"... A collision between two sprites
+      can happen inside the same layer only. <emphasis>to be
+      refined...</emphasis></para>
+
+      <para>- A simple interface with the OS Window Manager, to be able to
+      display 2D ( or 3D ) content in the window manager and link the
+      behaviour with the input interface.</para>
+
+      <para>- If the dependent library is not coded in proper C++, a C++
+      wrapper might be needed.</para>
+    </section>
+
+    <section>
+      <title>Input Interface</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Audio Interface</title>
+
+      <para>The audio interface contains :</para>
+
+      <para>- A simple audio engine</para>
+
+      <para>- A simple interface with the OS Audio Manager, to be able to tune
+      volume of channel, and all sort of stuff in the OS</para>
+
+      <para>- If the dependent library is not coded in proper C++, a C++
+      wrapper is needed.</para>
+    </section>
+
+    <section>
+      <title>Video Interface</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>OS Functions</title>
+
+      <para></para>
+
+      <section>
+        <title>Timer</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Threads</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Common Core Components</title>
+
+      <para></para>
+
+      <section>
+        <title>Logger</title>
+
+        <para></para>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>Dependencies</title>
+
+    <para></para>
+
+    <section>
+      <title>Generic Libraries</title>
+
+      <para>- <ulink url="http://www.libsdl.org">SDL</ulink>
+      <emphasis>mandatory.</emphasis></para>
+
+      <para>The SDL library is used via a C++ wrapper : <ulink
+      url="sdl/">SDLut</ulink></para>
+    </section>
+
+    <section>
+      <title>Specific Libraries</title>
+
+      <para></para>
+
+      <section>
+        <title>Graphic Libraries</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Input Libraries</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Audio Libraries</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Video Libraries</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>OS Functions Libraries</title>
+
+        <para></para>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>How to build, test and install</title>
+
+    <para></para>
+
+    <section>
+      <title>Code::Blocks build</title>
+
+      <para>I am personnaly using CodeBlocks on windows with mingw to build
+      AML. However it misses a dependency checking for the libraries needed.
+      At the moment it is not a big problem as only SDL is needed. But while
+      we will add more dependencies CMake will be used to have a consistent
+      way of building AML.</para>
+    </section>
+
+    <section>
+      <title>Makefile build</title>
+
+      <para><emphasis>Makefiles can be generated from Cmake for most of the
+      unix platforms. Not tested yet.</emphasis></para>
+    </section>
+
+    <section>
+      <title>CMake build</title>
+
+      <para>If you dont use either Codeblocks, or make files, and want to be
+      able to build AML using your own favorite environment, try the CMake
+      build. It generates files for most of the compilers / build
+      system.</para>
+
+      <para>The good thing with CMake is that it will check the dependencies
+      available on your system and help you to configure your system for
+      development.</para>
+    </section>
+
+    <section>
+      <title>Testing AML</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Installing AML</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Using AML</title>
+
+      <para>The online generated doc is available <ulink
+      url="doxygen/html">here</ulink>, thanks to <ulink
+      url="http://www.doxygen.org">Doxygen</ulink>.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Source overview : UML Diagrams</title>
+
+    <para></para>
+
+    <section>
+      <title>Overview</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Detailed</title>
+
+      <para></para>
+    </section>
+  </section>
+</article>
